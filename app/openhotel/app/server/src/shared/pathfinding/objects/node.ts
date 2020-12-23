@@ -1,4 +1,4 @@
-import {Point} from "./point";
+import {Point} from "./point/point";
 
 export class Node {
 
@@ -20,15 +20,5 @@ export class Node {
 
         this.g = 0;
         this.f = 0;
-    }
-
-    copy(): Node {
-        const node = new Node(this.point, this.cost);;
-        node.g = this.g;
-        node.f = this.f;
-        node.opened = this.opened;
-        node.closed = this.closed;
-        node.parent = this.parent;
-        return node;
     }
 }

@@ -1,8 +1,9 @@
+import {PointInterface} from "./point.interface";
 
-export class Point {
-    x: number;
-    y: number;
+export class Point implements PointInterface {
 
+    public x: number;
+    public y: number;
 
     constructor(x: number, y: number) {
         this.x = x;

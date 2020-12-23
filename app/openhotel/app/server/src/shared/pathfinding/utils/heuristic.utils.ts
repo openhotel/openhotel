@@ -1,5 +1,5 @@
 
-export class Heuristic {
+export class HeuristicUtils {
 
     static Octile (dx: number, dy: number) {
         const F = Math.SQRT2 - 1;
