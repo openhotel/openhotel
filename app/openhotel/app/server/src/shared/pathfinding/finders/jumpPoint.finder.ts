@@ -65,7 +65,6 @@ export const findPath = (
 
             const { point: nodePoint } = node;
             const { point: jumpNodePoint } = jumpNode;
-            const { point: neighborPoint } = neighbor;
 
             const jumpPoint = {
                 x: jumpNodePoint.x - nodePoint.x,
@@ -83,23 +82,7 @@ export const findPath = (
             if(jumpAverageCost > maxJumpCost)
                 return;
 
-            const jumpCostX = [...Array(absoluteJumpPoint.x).keys()]
-                .map((v, index) => grid.getNode(new Point(neighborPoint.x + neighborPoint.x > 0 ? index : - index, neighborPoint.y)))
-                .filter(node => node)
-                .map(node => node.cost)
-                .reduce((max, curr) => curr - max > max ? curr - max : max, 0);
-
-            const jumpCostY = [...Array(absoluteJumpPoint.y).keys()]
-                .map((v, index) => grid.getNode(new Point(neighborPoint.x, neighborPoint.y + neighborPoint.y > 0 ? index : - index)))
-                .filter(node => node)
-                .map(node => node.cost)
-                .reduce((max, curr) => curr - max > max ? curr - max : max, 0);
-
-
             const ng = (node.g + distance) * neighbor.cost;
-
-            // console.log(nodePoint, neighborPoint, jumpNodePoint)
-            // console.log(node.cost, neighbor.cost, jumpNode.cost)
 
             if(jumpNode.opened && ng >= jumpNode.g) return;
 
