@@ -9,7 +9,7 @@ export class Grid {
     private _width: number;
     private _height: number;
 
-    private _matrix: number[][];
+    private readonly _matrix: number[][];
 
     public nodes: Node[][];
 
