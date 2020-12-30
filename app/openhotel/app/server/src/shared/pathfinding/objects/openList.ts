@@ -55,16 +55,17 @@ export class OpenList<T> {
     }
 
     pop(): T {
-        const popped = this.end;
-        if (popped !== null) {
-            this.end = popped.prev;
-            if (this.end === null) {
-                this.start = null;
-            }
-            return popped.value;
-        } else {
-            return null;
+        if (this.empty()) {
+            throw new Error("Popping from an empty list.");
         }
+        const popped = this.end;
+        this.end = popped.prev;
+        if (this.end === null) {
+            this.start = null;
+        } else {
+            this.end.next = null;
+        }
+        return popped.value;
     }
 
     empty(): boolean {
