@@ -178,6 +178,8 @@ export const findPath = (
     while (!openList.empty()) {
 
         const node = openList.pop();
+        if(!node) continue;
+
         node.closed = true;
 
         if (node === endNode) {
