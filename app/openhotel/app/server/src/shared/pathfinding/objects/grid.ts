@@ -5,19 +5,15 @@ import {PointInterface} from "./point/point.interface";
 import {FinderEnum} from "../finders/finder.enum";
 
 export class Grid {
-
-    private _width: number;
-    private _height: number;
-
     private readonly _matrix: number[][];
 
     public nodes: Node[][];
 
-    constructor(matrix) {
+    constructor(matrix: number[][]) {
         this._matrix = matrix;
 
-        this._height = matrix.length;
-        this._width = matrix[0].length;
+        if(this._matrix[0] === undefined || this._matrix[0][0] === undefined)
+            throw ReferenceError('grid matrix cannot be empty');
 
         this.nodes = this._matrix.map((arrY, y) =>
             arrY.map((cost, x) =>
