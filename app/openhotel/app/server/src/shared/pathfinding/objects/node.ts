@@ -8,7 +8,7 @@ export class Node {
 
     public distanceFromStart: number;
     public totalCost: number
-    public heuristicDistance: number = 0;
+    public heuristicDistance: number;
 
     public opened: boolean;
     public closed: boolean;
@@ -21,5 +21,6 @@ export class Node {
 
         this.distanceFromStart = 0;
         this.totalCost = 0;
+        this.heuristicDistance = 0;
     }
 }
