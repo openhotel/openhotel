@@ -82,13 +82,13 @@ export const findPath = (
             if(jumpAverageCost > maxJumpCost)
                 return;
 
-            const ng = (node.distanceFromStart + distance) * neighbor.cost;
+            const estimatedDistance = (node.distanceFromStart + distance) * neighbor.cost;
 
-            if(jumpNode.opened && ng >= jumpNode.distanceFromStart) return;
+            if(jumpNode.opened && estimatedDistance >= jumpNode.distanceFromStart) return;
 
             const { point: endNodePoint } = endNode;
 
-            jumpNode.distanceFromStart = ng;
+            jumpNode.distanceFromStart = estimatedDistance;
             jumpNode.heuristicDistance = jumpNode.heuristicDistance || HeuristicUtils.DrManhattan(
                 Math.abs(jumpNodePoint.x - endNodePoint.x),
                 Math.abs(jumpNodePoint.y - endNodePoint.y)
