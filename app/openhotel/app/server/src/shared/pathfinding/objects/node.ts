@@ -6,15 +6,15 @@ export class Node {
     public cost: number;
 
     public g: number;
-    public h: number;
     public f: number
+    public h: number = 0;
 
-    public opened: boolean;
-    public closed: boolean;
+    public opened: boolean = false;
+    public closed: boolean = false;
 
-    public parent: Node;
+    public parent?: Node = undefined;
 
-    constructor(point: Point, cost?: number) {
+    constructor(point: Point, cost: number) {
         this.point = point;
         this.cost = cost;
 

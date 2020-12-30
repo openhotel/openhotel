@@ -5,19 +5,12 @@ import {PointInterface} from "./point/point.interface";
 import {FinderEnum} from "../finders/finder.enum";
 
 export class Grid {
-
-    private _width: number;
-    private _height: number;
-
-    private _matrix: number[][];
+    private readonly _matrix: number[][];
 
     public nodes: Node[][];
 
-    constructor(matrix) {
+    constructor(matrix: number[][]) {
         this._matrix = matrix;
-
-        this._height = matrix.length;
-        this._width = matrix[0].length;
 
         this.nodes = this._matrix.map((arrY, y) =>
             arrY.map((cost, x) =>
