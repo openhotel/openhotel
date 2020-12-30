@@ -1,14 +1,11 @@
-
-
-type CompFn<T> = (a: T, b: T) => number;
-type ListNode<T> = {value: T, prev: ListNode<T>, next: ListNode<T>};
+import {CompFn, ListNode} from "./openList.types";
 
 export class OpenList<T> {
 
     private start: ListNode<T>;
     private end: ListNode<T>;
 
-    private comparator: CompFn<T>;
+    private readonly comparator: CompFn<T>;
 
     constructor(comparator: CompFn<T>) {
         this.start = null;
@@ -51,7 +48,6 @@ export class OpenList<T> {
         } else {
             left.next = newNode;
         }
-
     }
 
     pop(): T {
