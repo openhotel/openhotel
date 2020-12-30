@@ -12,6 +12,9 @@ export class Grid {
     constructor(matrix: number[][]) {
         this._matrix = matrix;
 
+        if(this._matrix[0] === undefined || this._matrix[0][0] === undefined)
+            throw ReferenceError('grid matrix cannot be empty');
+
         this.nodes = this._matrix.map((arrY, y) =>
             arrY.map((cost, x) =>
                 new Node(new Point(x, y), cost)));

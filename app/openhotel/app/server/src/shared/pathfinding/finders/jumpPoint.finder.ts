@@ -12,16 +12,16 @@ export const findPath = (
     grid: Grid
 ): PointInterface[] => {
 
-    const openList: OpenList<Node> = new OpenList<Node>((nodeA, nodeB) => nodeA.f - nodeB.f);
-    const startNode: Node = grid.getNode(startPoint);
-    const endNode: Node = grid.getNode(endPoint);
+    const openList: OpenList<Node> = new OpenList<Node>(
+        (nodeA, nodeB) => nodeA.totalCost - nodeB.totalCost);
+    const startNode: Node | null = grid.getNode(startPoint);
+    const endNode: Node | null = grid.getNode(endPoint);
 
-    if (startNode === null) {
+    if (startNode === null)
         throw ReferenceError('startNode does not exist in the grid');
-    }
-    if (endNode === null) {
+
+    if (endNode === null)
         throw ReferenceError('endNode does not exist in the grid');
-    }
 
     startNode.opened = true;
     openList.push(startNode);
@@ -120,12 +120,9 @@ export const findPath = (
     ) => {
         return directions.reduce((acc: Node[], direction: [number, number]) => {
             const node = grid.getNode(reference.copy(...direction));
-            if (node && node.cost > 0) {
-                return [...acc, node];
-            }
-        return acc;
-    }, []);
-};
+            return (node && node.cost > 0) ? [...acc, node] : acc;
+        }, []);
+    };
     const findNeighbors = (node: Node): Node[] => {
 
         const { parent, point: nodePoint } = node;
@@ -151,7 +148,6 @@ export const findPath = (
 
             return getNeighborsByDirection(xDirections, nodePoint, grid);
         }
-
 
         if(normalizedPoint.y !== 0) {
             const xDirections = [
