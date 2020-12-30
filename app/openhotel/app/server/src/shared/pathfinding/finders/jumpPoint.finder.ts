@@ -12,9 +12,9 @@ export const findPath = (
     grid: Grid
 ): PointInterface[] => {
 
-    const openList: OpenList = new OpenList();
-    const startNode: Node | null = grid.getNode(startPoint);
-    const endNode: Node | null = grid.getNode(endPoint);
+    const openList: OpenList<Node> = new OpenList<Node>((nodeA, nodeB) => nodeA.f - nodeB.f);
+    const startNode: Node = grid.getNode(startPoint);
+    const endNode: Node = grid.getNode(endPoint);
 
     if (startNode === null) {
         throw ReferenceError('startNode does not exist in the grid');
@@ -90,18 +90,18 @@ export const findPath = (
             if(jumpAverageCost > maxJumpCost)
                 return;
 
-            const ng = (node.g + distance) * neighbor.cost;
+            const estimatedDistance = (node.distanceFromStart + distance) * neighbor.cost;
 
-            if(jumpNode.opened && ng >= jumpNode.g) return;
+            if(jumpNode.opened && estimatedDistance >= jumpNode.distanceFromStart) return;
 
             const { point: endNodePoint } = endNode;
 
-            jumpNode.g = ng;
-            jumpNode.h = jumpNode.h || HeuristicUtils.DrManhattan(
+            jumpNode.distanceFromStart = estimatedDistance;
+            jumpNode.heuristicDistance = jumpNode.heuristicDistance || HeuristicUtils.DrManhattan(
                 Math.abs(jumpNodePoint.x - endNodePoint.x),
                 Math.abs(jumpNodePoint.y - endNodePoint.y)
             );
-            jumpNode.f = jumpNode.g + jumpNode.h;
+            jumpNode.totalCost = jumpNode.distanceFromStart + jumpNode.heuristicDistance;
             jumpNode.parent = node;
 
             if(!jumpNode.opened) {

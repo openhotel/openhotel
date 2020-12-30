@@ -1,13 +1,14 @@
 import {Point} from "./point/point";
 
+// Based on A* Node
 export class Node {
 
     public readonly point: Point;
     public cost: number;
 
-    public g: number;
-    public f: number
-    public h: number = 0;
+    public distanceFromStart: number;
+    public totalCost: number
+    public heuristicDistance: number;
 
     public opened: boolean = false;
     public closed: boolean = false;
@@ -18,7 +19,8 @@ export class Node {
         this.point = point;
         this.cost = cost;
 
-        this.g = 0;
-        this.f = 0;
+        this.distanceFromStart = 0;
+        this.totalCost = 0;
+        this.heuristicDistance = 0;
     }
 }
