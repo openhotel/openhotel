@@ -1,25 +1,70 @@
-import {Node} from "./node";
 
-export class OpenList {
 
-    private list: Node[];
+type CompFn<T> = (a: T, b: T) => number;
+type ListNode<T> = {value: T, prev: ListNode<T>, next: ListNode<T>}
 
-    constructor() {
-        this.list = [];
+export class OpenList<T> {
+
+    private start: ListNode<T>
+    private end: ListNode<T>
+
+    private comparator: CompFn<T>;
+
+    constructor(comparator: CompFn<T>) {
+        this.start = null;
+        this.end = null;
+        this.comparator = comparator;
     }
 
-    push(node: Node) {
-        this.list.push(node);
+    push(value: T) {
+
+        if (this.start === null) {
+            // List is empty
+            this.start = {value, prev: null, next: null}
+            this.end = this.start;
+            return;
+        }
+
+        // Find the position to insert into
+        let aux = this.start;
+        while (aux !== null && this.comparator(aux.value, value) > 0) {
+            aux = aux.next;
+        }
+
+        if (aux === null) {
+            // Inserting at the end
+            const newNode = {value, prev: this.end, next: null}
+            this.end.next = newNode;
+            this.end = newNode;
+            return;
+        }
+
+        const left = aux.prev;
+        const right = aux;
+
+        const newNode: ListNode<T> = {value, prev: left, next: right}
+
+        right.prev = newNode;
+        if (left === null) {
+            // This means aux is the first node (this.start)
+            this.start = newNode;
+        } else {
+            left.next = newNode;
+        }
+
     }
 
-    pop(): Node {
-        const poppedNode = this.list.sort((nodeA, nodeB) => nodeA.f - nodeB.f)[0];
-        this.list = this.list.filter(node => poppedNode !== node);
-        return poppedNode;
+    pop(): T {
+        const popped = this.end;
+        this.end = popped.prev;
+        if (this.end === null) {
+            this.start = null;
+        }
+        return popped.value;
     }
 
     empty(): boolean {
-        return this.list.length === 0;
+        return this.start === null;
     }
 
 }

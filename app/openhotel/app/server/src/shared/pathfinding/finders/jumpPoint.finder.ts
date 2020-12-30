@@ -12,7 +12,7 @@ export const findPath = (
     grid: Grid
 ): PointInterface[] => {
 
-    const openList: OpenList = new OpenList();
+    const openList: OpenList<Node> = new OpenList<Node>((nodeA, nodeB) => nodeA.f - nodeB.f);
     const startNode: Node = grid.getNode(startPoint);
     const endNode: Node = grid.getNode(endPoint);
 
