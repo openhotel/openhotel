@@ -1,12 +1,12 @@
 
 
 type CompFn<T> = (a: T, b: T) => number;
-type ListNode<T> = {value: T, prev: ListNode<T>, next: ListNode<T>}
+type ListNode<T> = {value: T, prev: ListNode<T>, next: ListNode<T>};
 
 export class OpenList<T> {
 
-    private start: ListNode<T>
-    private end: ListNode<T>
+    private start: ListNode<T>;
+    private end: ListNode<T>;
 
     private comparator: CompFn<T>;
 
@@ -20,7 +20,7 @@ export class OpenList<T> {
 
         if (this.start === null) {
             // List is empty
-            this.start = {value, prev: null, next: null}
+            this.start = {value, prev: null, next: null};
             this.end = this.start;
             return;
         }
@@ -33,7 +33,7 @@ export class OpenList<T> {
 
         if (aux === null) {
             // Inserting at the end
-            const newNode = {value, prev: this.end, next: null}
+            const newNode = {value, prev: this.end, next: null};
             this.end.next = newNode;
             this.end = newNode;
             return;
@@ -42,7 +42,7 @@ export class OpenList<T> {
         const left = aux.prev;
         const right = aux;
 
-        const newNode: ListNode<T> = {value, prev: left, next: right}
+        const newNode: ListNode<T> = {value, prev: left, next: right};
 
         right.prev = newNode;
         if (left === null) {
@@ -56,11 +56,15 @@ export class OpenList<T> {
 
     pop(): T {
         const popped = this.end;
-        this.end = popped.prev;
-        if (this.end === null) {
-            this.start = null;
+        if (popped !== null) {
+            this.end = popped.prev;
+            if (this.end === null) {
+                this.start = null;
+            }
+            return popped.value;
+        } else {
+            return null;
         }
-        return popped.value;
     }
 
     empty(): boolean {
