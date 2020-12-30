@@ -41,9 +41,6 @@ export const findPath = (
             neighborPoint.y - nodePoint.y,
         );
 
-        if(correctedPoint.equal(endNode.point))
-            return endNode;
-
         const getNode = (x: number, y: number) => grid.getNode(neighborPoint.copy(x, y));
         const hasPositiveCost = (cost?: number) => cost ?? -Infinity > 0;
 
