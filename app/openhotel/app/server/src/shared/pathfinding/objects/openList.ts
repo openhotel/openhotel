@@ -13,7 +13,7 @@ export class OpenList {
     }
 
     pop(): Node {
-        const poppedNode = this.list.sort((nodeA, nodeB) => nodeA.f - nodeB.f)[0];
+        const poppedNode = this.list.sort((nodeA, nodeB) => nodeA.totalCost - nodeB.totalCost)[0];
         this.list = this.list.filter(node => poppedNode !== node);
         return poppedNode;
     }
