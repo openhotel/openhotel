@@ -1,30 +1,30 @@
-import {NeightbourGraph} from "./minimumJumpBFS.enum";
+import {NeighbourGraph} from "./minimumJumpBFS.enum";
 import {PointInterface} from "../objects/point/point.interface";
 
-const getChildren = (graph: NeightbourGraph, node: PointInterface, addedNodes: boolean[][]) => {
-    const neightboors = graph[node.y][node.x]
+const getChildren = (graph: NeighbourGraph, node: PointInterface, addedNodes: boolean[][]) => {
+    const neighbours = graph[node.y][node.x]
     let children = [] as PointInterface[]
-    if (neightboors === null) return children
+    if (neighbours === null) return children
 
-    const possibleDirections = Object.keys(neightboors)
+    const possibleDirections = Object.keys(neighbours)
 
-    // For each existing neightboor, we iterate in the same direction until find a wall
+    // For each existing neighbour, we iterate in the same direction until find a wall
     possibleDirections.forEach((direction) => {
         // First case
-        let newNeightbour = neightboors[direction] as PointInterface
-        if (newNeightbour === null) return
+        let newNeighbour = neighbours[direction] as PointInterface
+        if (newNeighbour === null) return
 
-        if (!addedNodes[newNeightbour.y][newNeightbour.x]) {
-            children.push(newNeightbour)
-            addedNodes[newNeightbour.y][newNeightbour.x] = true
+        if (!addedNodes[newNeighbour.y][newNeighbour.x]) {
+            children.push(newNeighbour)
+            addedNodes[newNeighbour.y][newNeighbour.x] = true
         }
 
         // The rest
-        while (graph[newNeightbour.y][newNeightbour.x]![direction]) {
-            newNeightbour = graph[newNeightbour.y][newNeightbour.x]![direction]
-            if (!addedNodes[newNeightbour.y][newNeightbour.x]) {
-                children.push(newNeightbour)
-                addedNodes[newNeightbour.y][newNeightbour.x] = true
+        while (graph[newNeighbour.y][newNeighbour.x]![direction]) {
+            newNeighbour = graph[newNeighbour.y][newNeighbour.x]![direction]
+            if (!addedNodes[newNeighbour.y][newNeighbour.x]) {
+                children.push(newNeighbour)
+                addedNodes[newNeighbour.y][newNeighbour.x] = true
             }
         }
     })
@@ -32,7 +32,7 @@ const getChildren = (graph: NeightbourGraph, node: PointInterface, addedNodes: b
     return children
 }
 
-type Graph = { graph: NeightbourGraph, width: number, height: number }
+type Graph = { graph: NeighbourGraph, width: number, height: number }
 
 // BFS using a directed graph
 export const minimumJumps =({graph, width, height}: Graph, {x: startX, y: startY}: PointInterface, {x: endX, y: endY}: PointInterface) => {

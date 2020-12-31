@@ -1,11 +1,11 @@
-import {NeightbourGraph, Neightbours} from "../finders/minimumJumpBFS.enum";
+import {NeighbourGraph, Neighbours} from "../finders/minimumJumpBFS.enum";
 import {minimumJumps} from "../finders/minimumJumpBFS.finder";
 import {PointInterface} from "./point/point.interface";
 
 export class Graph {
     public height: number
     public width: number
-    public graph: NeightbourGraph
+    public graph: NeighbourGraph
 
     constructor(raw: number[][], jumpCost: number) {
         if (raw.length === 0 || raw[0].length === 0 ) {
@@ -27,12 +27,12 @@ export class Graph {
         return minimumJumps(this, startPoint, endPoint)
     }
 
-    private transformToGrid(raw: number[][], jumpCost: number) : NeightbourGraph {
+    private transformToGrid(raw: number[][], jumpCost: number) : NeighbourGraph {
         return raw.map((row, indexY) => {
             return row.map((val, indexX) => {
                 if (val === 0) return null
 
-                let neightbours = {} as Neightbours
+                let neightbours = {} as Neighbours
 
                 if (indexY - 1 >= 0 && indexY - 1 < this.height ) {
                     const neightbourVal = raw[indexY - 1][indexX]
