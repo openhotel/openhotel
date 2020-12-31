@@ -1,7 +1,7 @@
 import {Grid} from "../objects/grid";
 import {Point} from "../objects/point/point";
 import {OpenList} from "../objects/openList";
-import {Node} from "../objects/node";
+import {Node} from "../objects/nodes/node";
 import {HeuristicUtils} from "../utils/heuristic.utils";
 import {PointInterface} from "../objects/point/point.interface";
 
@@ -14,8 +14,8 @@ export const findPath = (
 
     const openList: OpenList<Node> = new OpenList<Node>(
         (nodeA, nodeB) => nodeA.totalCost - nodeB.totalCost);
-    const startNode: Node | null = grid.getNode(startPoint);
-    const endNode: Node | null = grid.getNode(endPoint);
+    const startNode: Node | null = grid.getNode(startPoint) as Node;
+    const endNode: Node | null = grid.getNode(endPoint) as Node;
 
     if (startNode === null)
         throw new Error('startNode does not exist in the grid');
@@ -41,7 +41,7 @@ export const findPath = (
             neighborPoint.y - nodePoint.y,
         );
 
-        const getNode = (x: number, y: number) => grid.getNode(neighborPoint.copy(x, y));
+        const getNode = (x: number, y: number): Node => grid.getNode(neighborPoint.copy(x, y)) as Node;
         const hasPositiveCost = (cost?: number) => cost ?? -Infinity > 0;
 
         if(correctedPoint.x !== 0 && (
@@ -116,7 +116,7 @@ export const findPath = (
         grid: Grid
     ) => {
         return directions.reduce((acc: Node[], direction: [number, number]) => {
-            const node = grid.getNode(reference.copy(...direction));
+            const node: Node = grid.getNode(reference.copy(...direction)) as Node;
             return (node && node.cost > 0) ? [...acc, node] : acc;
         }, []);
     };
