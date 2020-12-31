@@ -36,13 +36,10 @@ export class OpenList<T> {
             aux = aux.next;
         }
 
-        const newNode: ListNode<T> = {
+        aux.next = {
             value,
             next: aux.next
         };
-
-        aux.next = newNode;
-
     }
 
     pop(): T {

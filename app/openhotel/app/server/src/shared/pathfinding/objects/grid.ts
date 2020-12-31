@@ -13,7 +13,7 @@ export class Grid {
         this._matrix = matrix;
 
         if(this._matrix[0] === undefined || this._matrix[0][0] === undefined)
-            throw ReferenceError('grid matrix cannot be empty');
+            throw new Error('grid matrix cannot be empty');
 
         this.nodes = this._matrix.map((arrY, y) =>
             arrY.map((cost, x) =>
