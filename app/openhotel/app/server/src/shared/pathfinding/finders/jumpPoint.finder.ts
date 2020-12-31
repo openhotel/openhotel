@@ -18,10 +18,10 @@ export const findPath = (
     const endNode: Node | null = grid.getNode(endPoint);
 
     if (startNode === null)
-        throw ReferenceError('startNode does not exist in the grid');
+        throw new Error('startNode does not exist in the grid');
 
     if (endNode === null)
-        throw ReferenceError('endNode does not exist in the grid');
+        throw new Error('endNode does not exist in the grid');
 
     startNode.opened = true;
     openList.push(startNode);
