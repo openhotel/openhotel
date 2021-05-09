@@ -7,7 +7,6 @@ import {DirectionEnum} from "../objects/nodes/direction.enum";
 export const findPath = (
     startPoint: Point,
     endPoint: Point,
-    maxJumpCost: number,
     grid: Grid
 ): PointInterface[] => {
 

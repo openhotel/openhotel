@@ -36,7 +36,7 @@ export class Grid {
             case "directionNode":
                 this.nodes = this._matrix.map((arrY, y) =>
                     arrY.map((cost, x) => {
-                        if (0 > cost) return null
+                        if (cost === null) return null
 
                         const directionNode = new DirectionNode(new Point(x, y));
 
@@ -45,7 +45,7 @@ export class Grid {
                             const nodePoint = directionNode.point.copy(point.x, point.y);
                             const neighborCost = this.getMatrixCost(nodePoint);
 
-                            return (neighborCost !== null && neighborCost > 0 && Math.abs(neighborCost - cost) <= maxJumpCost)
+                            return (neighborCost !== null && Math.abs(neighborCost - cost) <= maxJumpCost)
                                 ? nodePoint : null;
                         }
 
@@ -117,7 +117,6 @@ export class Grid {
                 return findPathJPS_2(
                     new Point(startPoint.x, startPoint.y),
                     new Point(endPoint.x, endPoint.y),
-                    maxJumpCost,
                     gridClone
                 );
         }
