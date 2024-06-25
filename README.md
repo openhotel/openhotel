@@ -5,4 +5,16 @@
 # OpenHotel
 powered with [🌷 tulip](https://github.com/tulipjs) engine
 
-[![CC BY-NC-SA 4.0][cc-by-nc-sa-image]][cc-by-nc-sa] 
+[![CC BY-NC-SA 4.0][cc-by-nc-sa-image]][cc-by-nc-sa]
+
+## How to run the project
+### Dependencies
+- Install `deno >= 1.44`
+- Install `node >= 20`
+- Install `yarn`
+
+### Install
+- Run `deno task install`
+
+### Start project
+- Run `deno task start`
