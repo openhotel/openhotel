@@ -1,3 +1,32 @@
 {
+  "tasks": {
+    "start": "deno task start:server & deno task start:proxy & deno task start:firewall",
+    "start:base": "deno run -A --watch=./src --unstable-kv mod.ts",
+    "start:firewall": "deno task start:base --module=firewall --token=DEVELOPMENT_TOKEN --serverPort=3001 --firewallPort=3002 --proxyPort=3003",
+    "start:proxy": "deno task start:base --module=proxy --token=DEVELOPMENT_TOKEN --serverPort=3001 --firewallPort=3002 --proxyPort=3003",
+    "start:server": "deno task start:base --module=server --token=DEVELOPMENT_TOKEN --serverPort=3001 --firewallPort=3002 --proxyPort=3003",
 
+    "compile": "deno compile -A --unstable-kv --no-check --include=./src/handshake-client.worker.ts --include=./src/proxy-client.worker.ts",
+
+    "compile:windows": "deno task compile --target=x86_64-pc-windows-msvc --output ./build/server_windows ./mod.ts",
+    "compile:linux": "deno task compile --target=x86_64-unknown-linux-gnu --output ./build/server_linux ./mod.ts",
+    "compile:darwin": "deno task compile --target=x86_64-apple-darwin --output ./build/server_darwin ./mod.ts",
+
+    "build": "(deno task compile:linux) & (deno task compile:darwin) & (deno task compile:windows)"
+  },
+  "imports": {
+    "shared/": "./src/shared/",
+    "modules/": "./src/modules/",
+
+    "deno/": "https://deno.land/std@0.221.0/",
+    "loadenv": "https://deno.land/x/loadenv@v1.0.1/mod.ts",
+
+    "socket_ionic": "https://deno.land/x/socket_ionic@v1.8.2/mod.ts",
+    "worker_ionic": "https://deno.land/x/worker_ionic@v1.4.0/mod.ts"
+
+    "oak": "https://deno.land/x/oak@v12.6.0/mod.ts",
+    "oakCors": "https://deno.land/x/cors@v1.2.2/mod.ts",
+
+    "yaml": "npm:yaml@2.4.2"
+  }
 }

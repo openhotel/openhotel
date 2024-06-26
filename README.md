@@ -50,3 +50,7 @@ Please read everything before opening an issue, starting a hotel, or running cod
 
 ### Start project
 - Run `deno task start`
+
+---
+### TODO: Coding practices 
+- Enable prettier on save

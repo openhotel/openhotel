@@ -1,0 +1,20 @@
+import { container, sprite } from "@tulib/tulip";
+import { getClientSocket } from "shared/utils";
+
+export const mainComponent = async () => {
+  const $container = await container();
+
+  const $logo = await sprite({
+    texture: "logo_full.png",
+  });
+  await $logo.setPosition({ x: 8, y: 8 });
+  $container.add($logo);
+
+  const client = getClientSocket({
+    url: "localhost:2002",
+  });
+
+  await client.connect();
+
+  return $container.getComponent(mainComponent);
+};

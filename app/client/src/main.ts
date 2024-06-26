@@ -1,5 +1,5 @@
 import { application } from "@tulib/tulip";
-import {mainComponent} from "main.component";
+import { mainComponent } from "modules/main";
 
 application({
   backgroundColor: 0x030303,
@@ -9,5 +9,5 @@ application({
   //@ts-ignore
   importMetaHot: import.meta.hot,
 }).then(async ({ add }) => {
-  add(await mainComponent())
+  add(await mainComponent());
 });
