@@ -1,64 +1,94 @@
 import { ModuleProps } from "shared/types/main.ts";
 import { getClientSocket, getServerSocket } from "socket_ionic";
 import { getParentWorker } from "worker_ionic";
-import { wait } from "shared/utils/main.ts";
+import { getFreePort, getRandomString, wait } from "shared/utils/main.ts";
 
 export const load = async (args: ModuleProps) => {
   await wait(50);
   console.log(`「OH PROXY」 Hello there!`);
 
-  const serverSocket = getClientSocket({
+  const proxyClientWorkerMap: Record<string, any> = {};
+
+  let firewallClient;
+  let isServerConnected = false;
+
+  const serverClient = getClientSocket({
     url: `localhost:${args.internal.serverPort}`,
     protocols: [args.internal.token],
     silent: true,
   });
+  const firewallsServer = getServerSocket(args.internal.proxyPort);
 
-  const _getProxyWorker = (url: string) =>
-    getParentWorker({
-      url: new URL(url, import.meta.url).href,
-    });
+  serverClient.on("data", ({ event, message, userIdList }) => {});
 
-  let firewallsServerSocket;
-
-  serverSocket.on("connected", () => {
+  serverClient.on("connected", () => {
     console.log("「OH PROXY」", ">->-> Server");
+    isServerConnected = true;
+  });
+  serverClient.on("disconnected", () => {
+    console.log("「OH PROXY」", "-/ /- Server");
+    isServerConnected = false;
+  });
 
-    serverSocket.on("data", ({ event, message, userIdList }) => {});
+  firewallsServer.on(
+    "guest",
+    (clientId: string, [clientToken]) =>
+      !firewallClient && clientToken === args.internal.token,
+  );
+  firewallsServer.on("connected", (client) => {
+    console.log("「OH PROXY」", ">->-> Firewall");
+    firewallClient = client;
 
-    firewallsServerSocket = getServerSocket(args.internal.proxyPort);
+    firewallClient.on("open", async ({ username, workerId, userId }) => {
+      const workerPort = await getFreePort();
+      const workerToken = getRandomString(16);
 
-    firewallsServerSocket.on(
-      "guest",
-      (clientId: string, [clientToken]) => clientToken === args.internal.token,
-    );
-    firewallsServerSocket.on("connected", (client) => {
-      console.log("「OH PROXY」", ">->-> Firewall");
+      proxyClientWorkerMap[userId] = getParentWorker({
+        url: new URL(
+          "../../shared/workers/proxy-client.worker.ts",
+          import.meta.url,
+        ).href,
+      });
+
+      proxyClientWorkerMap[userId].on("joined", () => {
+        serverClient.emit("joined", { userId, username });
+      });
+      proxyClientWorkerMap[userId].on("disconnected", () => {
+        console.log("disconnected");
+        serverClient.emit("left", { userId, username });
+
+        proxyClientWorkerMap[userId].close();
+        delete proxyClientWorkerMap[userId];
+      });
+
+      proxyClientWorkerMap[userId].on("data", ({ event, message }) => {
+        serverClient.emit("data", { event, message, userId, username });
+      });
+
+      const data = {
+        userId,
+        workerId,
+        username,
+        port: workerPort,
+        token: workerToken,
+      };
+
+      // We start listening on the worker
+      proxyClientWorkerMap[userId].emit("start", data);
+      // We inform firewall
+      firewallClient.emit("open", data);
     });
   });
-  serverSocket.on("disconnected", () => {
-    console.log("「OH PROXY」", "-/ /- Server");
-    firewallsServerSocket.close();
+  firewallsServer.on("disconnected", (client) => {
+    console.log("「OH PROXY」", "-/ /- Firewall");
   });
 
-  // serverSocket.on("guest", () => true);
-  // serverSocket.on("connected", (client) => {
-  // 	console.log("hello there");
-  //
-  // 	const clientWorker = getParentWorker({
-  // 		url: new URL(`./workers/client.worker.ts`, import.meta.url).href,
-  // 	});
-  //
-  // 	clientWorker.on("data", ({ event, message }) => {
-  // 		client.emit("data", { event, message });
-  // 	});
-  // 	client.on("data", ({ event, message }) => {
-  // 		clientWorker.emit("data", { event, message });
-  // 	});
-  //
-  // 	client.on("disconnected", () => {
-  // 		clientWorker.close();
-  // 	});
-  // });
+  setInterval(() => {
+    const workers = Object.keys(proxyClientWorkerMap).length;
+    if (!workers) return;
 
-  await serverSocket.connect();
+    console.log("「OH PROXY」", `Current workers ${workers}/-1`);
+  }, 5_000);
+
+  await serverClient.connect();
 };

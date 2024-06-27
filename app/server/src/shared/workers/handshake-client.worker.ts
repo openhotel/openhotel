@@ -1,10 +1,11 @@
 import { getChildWorker } from "worker_ionic";
 import { getServerSocket } from "socket_ionic";
+import { getRandomString } from "shared/utils/main.ts";
 
-const worker = getChildWorker();
+const firewall = getChildWorker();
 
-worker.on("start", ({ port, token }) => {
-  console.log("<<<<", port, token);
+firewall.on("start", ({ port, token }) => {
+  console.log(`Handshake start on :${port}`);
 
   let isConnected = false;
 
@@ -14,21 +15,23 @@ worker.on("start", ({ port, token }) => {
     if (isConnected) return;
     isConnected = true;
 
+    //TODO get the real userId
+    const userId = getRandomString(16);
     //TODO go to auth Deno.env.get('AUTH_URL') to get the session
-    worker.on("welcome", async ({ port, token }) => {
-      client.emit("proxy", { port, token });
-      worker.close();
+    firewall.on("proxy", async ({ port, token, userId }) => {
+      client.emit("proxy", { port, token, userId });
+      firewall.close();
     });
     client.on("session", async ({ username }) => {
-      worker.emit("welcome", { username });
+      firewall.emit("open-proxy", { username, userId });
     });
   });
   server.on("disconnected", () => {
-    worker.close();
+    firewall.close();
   });
 });
 
 // close the worker if timeout
 setTimeout(() => {
-  worker.close();
-}, 5_000);
+  firewall.close();
+}, 30_000);
