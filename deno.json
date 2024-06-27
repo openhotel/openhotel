@@ -1,0 +1,16 @@
+{
+  "tasks": {
+    "install": "deno task install:base --frozen-lockfile & deno task install:client --frozen-lockfile",
+    "install:force": "deno task install:base & deno task install:client",
+    "install:base": "yarn install",
+    "install:client": "cd app/client && yarn install",
+
+    "start": "deno task start:client & deno task start:server",
+    "start:client": "cd app/client && yarn start",
+    "start:server": "cd app/server && deno task start",
+
+    "build": "deno task build:client & deno task build:server",
+    "build:client": "cd app/client && yarn build",
+    "build:server": "cd app/server && deno task start"
+  }
+}
