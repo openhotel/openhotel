@@ -2,7 +2,7 @@
   "type": "module",
   "scripts": {
     "start": "vite --host",
-    "start:docker": "docker-compose up --build --no-cache",
+    "start:docker": "docker-compose up --build",
 
     "build": "vite build",
 

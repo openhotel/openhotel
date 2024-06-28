@@ -7,6 +7,7 @@
     "start:server": "deno task start:base --module=server --token=DEVELOPMENT_TOKEN --serverPort=3001 --firewallPort=3002 --proxyPort=3003",
 
     "start:prod:linux": "cd build && ./server_linux",
+    "start:docker": "docker-compose up --build",
 
     "compile": "deno compile -A --unstable-kv --no-check --include=./src/shared/workers/handshake-client.worker.ts --include=./src/shared/workers/proxy-client.worker.ts",
 

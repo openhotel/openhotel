@@ -11,7 +11,7 @@ export const load = async (args: ModuleProps) => {
   await wait(0);
   initLog("SERVER");
   log("Open Hotel Started!");
-  log(`Version ${getVersion()}`);
+  log(`Version ${getVersion()}`, Deno.env.get("SOURCE_COMMIT"));
 
   const server = getServerSocket(args.internal.serverPort);
   let proxyClient;
