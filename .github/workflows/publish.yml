@@ -65,7 +65,7 @@ jobs:
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: client.zip
+          file: ./app/client/build/client.zip
           tag: ${{ github.ref }}
           overwrite: true
           file_glob: true
@@ -104,10 +104,6 @@ jobs:
       - name: Build
         working-directory: ./app/server
         run: deno task build
-
-      - name: Chmod linux
-        working-directory: ./app/server/build
-        run: chmod -R 777 server_linux
 
       - name: 'Upload linux to release'
         uses: svenstaro/upload-release-action@v2
