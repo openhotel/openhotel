@@ -57,7 +57,9 @@ jobs:
           path: './app/client/build'
 
       - name: 'Zip build'
-        run: zip -r client.zip ./app/client/build
+        run: |
+          cd ./app/client/build
+          zip -r client.zip .
 
       - name: 'Upload zip to release'
         uses: svenstaro/upload-release-action@v2
@@ -95,13 +97,17 @@ jobs:
       - name: Replace config.ts version
         uses: richardrigutins/replace-in-files@v2
         with:
-          files: 'config.ts'
+          files: './app/server/config.ts'
           search-text: '__VERSION__'
           replacement-text: ${{ steps.set_version.outputs.tag }}
 
       - name: Build
         working-directory: ./app/server
         run: deno task build
+
+      - name: Chmod linux
+        working-directory: ./app/server/build
+        run: chmod -R 777 server_linux
 
       - name: 'Upload linux to release'
         uses: svenstaro/upload-release-action@v2
