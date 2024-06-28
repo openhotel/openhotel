@@ -9,6 +9,10 @@ export default defineConfig({
   },
   plugins: [tsconfigPaths(), plugin()],
   publicDir: "assets",
+  build: {
+    outDir: "./build",
+    emptyOutDir: true, // also necessary
+  },
   define: {
     //@ts-ignore
     __APP_VERSION: JSON.stringify(process.env.npm_package_version),
