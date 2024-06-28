@@ -1,5 +1,5 @@
 import { container, sprite } from "@tulib/tulip";
-import { getClientSocket, getRandomString } from "shared/utils";
+import { getClientSocket, getRandomString, getVersion } from "shared/utils";
 
 export const mainComponent = async () => {
   const $container = await container();
@@ -42,6 +42,8 @@ export const mainComponent = async () => {
     });
     await socket.connect();
   }
+
+  console.log(getVersion());
 
   return $container.getComponent(mainComponent);
 };
