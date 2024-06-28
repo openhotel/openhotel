@@ -2,7 +2,11 @@
   "type": "module",
   "scripts": {
     "start": "vite --host",
-    "build": "vite build"
+    "start:docker": "docker-compose up --build --no-cache",
+
+    "build": "vite build",
+
+    "preview": "vite preview"
   },
   "devDependencies": {
     "@rollup/plugin-alias": "5.1.0",

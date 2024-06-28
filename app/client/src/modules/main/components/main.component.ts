@@ -4,6 +4,12 @@ import { getClientSocket, getRandomString, getVersion } from "shared/utils";
 export const mainComponent = async () => {
   const $container = await container();
 
+  let url = new URL("http://localhost:2002");
+  try {
+    url = new URL(new URLSearchParams(location.search).get("server"));
+  } catch (e) {}
+  const { protocol, hostname, port } = url;
+
   const $logo = await sprite({
     texture: "logo_full.png",
   });
@@ -11,18 +17,18 @@ export const mainComponent = async () => {
   $container.add($logo);
 
   {
-    const response = await fetch("http://localhost:2002/request").then((data) =>
-      data.json(),
-    );
+    const response = await fetch(
+      `${protocol}//${hostname}${port ? `:${port}` : ""}/request`,
+    ).then((data) => data.json());
 
     let socket = getClientSocket({
-      url: `localhost:${response.port}`,
+      url: `${hostname}:${response.port}`,
       protocols: [response.token],
       reconnect: false,
     });
     socket.on("proxy", async ({ port, token }) => {
       socket = getClientSocket({
-        url: `localhost:${port}`,
+        url: `${hostname}:${port}`,
         protocols: [token],
         reconnect: false,
       });
