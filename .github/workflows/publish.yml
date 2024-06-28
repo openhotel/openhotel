@@ -107,7 +107,7 @@ jobs:
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: ./app/server/server_linux
+          file: ./app/server/build/server_linux
           tag: ${{ github.ref }}
           overwrite: true
           file_glob: true
@@ -116,7 +116,7 @@ jobs:
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: ./app/server/server_darwin
+          file: ./app/server/build/server_darwin
           tag: ${{ github.ref }}
           overwrite: true
           file_glob: true
@@ -125,7 +125,7 @@ jobs:
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: ./app/server/server_windows.exe
+          file: ./app/server/build/server_windows.exe
           tag: ${{ github.ref }}
           overwrite: true
           file_glob: true
