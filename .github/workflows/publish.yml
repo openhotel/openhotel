@@ -111,7 +111,7 @@ jobs:
           name: client-build
           path: ./app/server/build/client
 
-      - name: Build
+      - name: Move .env file
         working-directory: ./app/server
         run: cp ./.env.defaults ./build/.env
 
@@ -120,15 +120,13 @@ jobs:
         run: deno task compile:${{ matrix.os }}
 
       - name: 'Zip build'
-        run: |
-          cd ./app/server/build
-          zip -r server_${{ matrix.os }}.zip .*
+        run: zip -r ./server_${{ matrix.os }}.zip ./app/server/build/
 
       - name: 'Upload to release'
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: ./app/server/build/server_${{ matrix.os }}.zip
+          file: ./server_${{ matrix.os }}.zip
           tag: ${{ github.ref }}
           overwrite: true
           file_glob: true
