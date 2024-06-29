@@ -1,0 +1,8 @@
+name: Open Hotel
+description: Welcome to the Hotel!
+ports:
+  client: 80
+  server: 2002
+limits:
+  players: 2
+  handshakes: 1

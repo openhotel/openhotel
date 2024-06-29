@@ -10,15 +10,23 @@ import {
 } from "shared/utils/main.ts";
 import { getClientSocket } from "socket_ionic";
 import { getParentWorker } from "worker_ionic";
-import { ModuleProps } from "shared/types/main.ts";
+import { ConfigTypes, ModuleProps } from "shared/types/main.ts";
 
-export const load = async (args: ModuleProps) => {
+export const load = async (args: ModuleProps, config: ConfigTypes) => {
   await wait(100);
   initLog();
 
+  let userList: { userId: string; username: string }[] = [];
   const handshakeClientWorkerMap: Record<string, any> = {};
 
   let isProxyConnected = false;
+
+  const printWorkers = () =>
+    log(
+      `(${Object.keys(handshakeClientWorkerMap).length}/${config.limits.handshake}) Handshakes`,
+    );
+  const printUsers = () =>
+    log(`(${userList.length}/${config.limits.players}) Players`);
 
   const proxyClient = getClientSocket({
     url: `localhost:${args.internal.proxyPort}`,
@@ -34,16 +42,16 @@ export const load = async (args: ModuleProps) => {
     isProxyConnected = false;
   });
 
-  proxyClient.on("open", ({ workerId, port, token, userId }) => {
+  proxyClient.on("open", ({ workerId, port, token, userId, username }) => {
+    userList.push({ userId, username });
     handshakeClientWorkerMap[workerId].emit("proxy", { port, token, userId });
+    printUsers();
   });
 
-  setInterval(() => {
-    const workers = Object.keys(handshakeClientWorkerMap).length;
-    if (!workers) return;
-
-    log(`Current workers ${workers}/-1`);
-  }, 5_000);
+  proxyClient.on("close", ({ userId, username }) => {
+    userList = userList.filter((user) => user.userId !== userId);
+    printUsers();
+  });
 
   //### API ############################################################################################################
 
@@ -68,6 +76,29 @@ export const load = async (args: ModuleProps) => {
     const clientVersion = new URLSearchParams(ctx.request.url.search).get(
       "version",
     );
+
+    if (userList.length >= config.limits.players) {
+      ctx.response.status = 406;
+      ctx.response.body = {
+        error: 406,
+        message: ["Hotel is full", "Please try again in a few minutes"],
+      };
+      return;
+    }
+
+    if (
+      Object.keys(handshakeClientWorkerMap).length >= config.limits.handshake
+    ) {
+      ctx.response.status = 406;
+      ctx.response.body = {
+        error: 406,
+        message: [
+          "Cannot handshake right now",
+          "Please try again in a few minutes",
+        ],
+      };
+      return;
+    }
 
     const version = getVersion();
     if (clientVersion !== version) {
@@ -94,10 +125,13 @@ export const load = async (args: ModuleProps) => {
         import.meta.url,
       ).href,
     });
+    printWorkers();
 
     handshakeClientWorkerMap[workerId].on("disconnected", () => {
       handshakeClientWorkerMap[workerId].close();
       delete handshakeClientWorkerMap[workerId];
+
+      printWorkers();
     });
     handshakeClientWorkerMap[workerId].on(
       "open-proxy",
@@ -111,10 +145,16 @@ export const load = async (args: ModuleProps) => {
       token: workerToken,
     };
 
-    handshakeClientWorkerMap[workerId].emit("start", data);
+    // Be sure handshake has started!
+    await new Promise((resolve) => {
+      handshakeClientWorkerMap[workerId].on("start", () => {
+        resolve(1);
+      });
+      handshakeClientWorkerMap[workerId].emit("start", data);
+    });
     ctx.response.body = data;
   });
-  app.listen({ port: args.apiPort });
+  app.listen({ port: config.ports.server });
 
   await proxyClient.connect();
 };

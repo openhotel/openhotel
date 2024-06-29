@@ -1,4 +1,4 @@
-import { ModuleProps } from "shared/types/main.ts";
+import { ConfigTypes, ModuleProps } from "shared/types/main.ts";
 import { getClientSocket, getServerSocket } from "socket_ionic";
 import { getParentWorker } from "worker_ionic";
 import {
@@ -9,7 +9,7 @@ import {
   wait,
 } from "shared/utils/main.ts";
 
-export const load = async (args: ModuleProps) => {
+export const load = async (args: ModuleProps, config: ConfigTypes) => {
   await wait(50);
   initLog();
 
@@ -68,8 +68,9 @@ export const load = async (args: ModuleProps) => {
         serverClient.emit("joined", { userId, username });
       });
       proxyClientWorkerMap[userId].on("disconnected", () => {
-        log("disconnected");
         serverClient.emit("left", { userId, username });
+
+        firewallClient.emit("close", { userId, username });
 
         proxyClientWorkerMap[userId].close();
         delete proxyClientWorkerMap[userId];
@@ -96,13 +97,6 @@ export const load = async (args: ModuleProps) => {
   firewallsServer.on("disconnected", (client) => {
     onDisconnected();
   });
-
-  setInterval(() => {
-    const workers = Object.keys(proxyClientWorkerMap).length;
-    if (!workers) return;
-
-    log(`Current workers ${workers}/-1`);
-  }, 5_000);
 
   await serverClient.connect();
 };
