@@ -13,7 +13,11 @@ export const mainComponent = async () => {
     if (!isNaN(targetPort)) port = targetPort;
   } catch (e) {}
   const { protocol, hostname } = location;
-  const isSecure = hostname !== "localhost";
+  const isSecure = !(
+    hostname === "localhost" ||
+    hostname.startsWith("192.") ||
+    hostname.startsWith("172.")
+  );
 
   const $logo = await sprite({
     texture: "logo_full.png",
