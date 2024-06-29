@@ -11,8 +11,7 @@ import {
 
 export const load = async (args: ModuleProps) => {
   await wait(50);
-  initLog("PROXY");
-  log(`Started!`);
+  initLog();
 
   const proxyClientWorkerMap: Record<string, any> = {};
 
@@ -26,15 +25,21 @@ export const load = async (args: ModuleProps) => {
   });
   const firewallsServer = getServerSocket(args.internal.proxyPort);
 
+  const onReady = async () => {
+    log(`Proxy started!`);
+  };
+  const onDisconnected = () => {
+    log("Disconnected! (!)");
+  };
+
   serverClient.on("data", ({ event, message, userIdList }) => {});
 
   serverClient.on("connected", () => {
-    log(">->-> Server");
     isServerConnected = true;
   });
   serverClient.on("disconnected", () => {
-    log("-/ /- Server");
     isServerConnected = false;
+    onDisconnected();
   });
 
   firewallsServer.on(
@@ -43,9 +48,9 @@ export const load = async (args: ModuleProps) => {
       !firewallClient && clientToken === args.internal.token,
   );
   firewallsServer.on("connected", (client) => {
-    log(">->-> Firewall");
     firewallClient = client;
 
+    onReady();
     serverClient.emit("ready");
 
     firewallClient.on("open", async ({ username, workerId, userId }) => {
@@ -89,7 +94,7 @@ export const load = async (args: ModuleProps) => {
     });
   });
   firewallsServer.on("disconnected", (client) => {
-    log("-/ /- Firewall");
+    onDisconnected();
   });
 
   setInterval(() => {

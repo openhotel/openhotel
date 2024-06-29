@@ -8,7 +8,6 @@ import {
   initLog,
   log,
   getTemporalUpdateFilePathname,
-  getExecPath,
 } from "shared/utils/main.ts";
 import { OS } from "shared/enums/main.ts";
 import * as path from "deno/path/mod.ts";
@@ -44,7 +43,6 @@ export const load = async (args: ModuleProps): Promise<boolean> => {
           return `${num}` === e ? num : e;
         });
 
-    log(version, latestVersion);
     const [oldMajor, oldMinor, oldPatch, oldExtra] = getSlicedVersion(version);
     const [newMajor, newMinor, newPatch, newExtra] =
       getSlicedVersion(latestVersion);
@@ -75,7 +73,6 @@ export const load = async (args: ModuleProps): Promise<boolean> => {
     const updateFilePath = getTemporalUpdateFilePathname();
     const updatedFile = path.join(dirPath, `update.zip`);
 
-    debug(updatedFile);
     log("Saving update!");
     await Deno.writeFile(
       updatedFile,
@@ -94,6 +91,12 @@ export const load = async (args: ModuleProps): Promise<boolean> => {
     `;
     const bash = `#! /bin/bash
     	unzip -o '${updatedFile}' -d '${dirPath}'`;
+
+    if (isWindows) {
+      //TODO #7 auto-updater not working on windows, because the file is already in use by this execution
+      log("Run ./updater.ps1 to apply the update and then start again!");
+      return true;
+    }
 
     log("Updating...");
     await Deno.writeTextFile(updateFilePath, isWindows ? ps1 : bash, {
