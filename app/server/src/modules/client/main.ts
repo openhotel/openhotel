@@ -1,10 +1,10 @@
 import { Application, Router, send } from "oak";
 import { oakCors } from "oakCors";
-import { ModuleProps } from "shared/types/main.ts";
+import { ConfigTypes, ModuleProps } from "shared/types/main.ts";
 import { initLog, isDevelopment, log } from "shared/utils/main.ts";
 
-export const load = async (args: ModuleProps) => {
-  initLog("CLIENT");
+export const load = async (args: ModuleProps, config: ConfigTypes) => {
+  initLog();
   if (isDevelopment()) return;
 
   const app = new Application();
@@ -35,6 +35,6 @@ export const load = async (args: ModuleProps) => {
     }
   });
 
-  log(`Started!`);
-  await app.listen({ port: args.clientPort });
+  log(`Client started!`);
+  await app.listen({ port: config.ports.client });
 };

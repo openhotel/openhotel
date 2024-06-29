@@ -84,10 +84,10 @@ jobs:
             core.setOutput('tag', tag)
             core.setOutput('version', tag.split("-")[0])
 
-      - name: Replace config.ts version
+      - name: Replace consts.ts version
         uses: richardrigutins/replace-in-files@v2
         with:
-          files: './app/server/config.ts'
+          files: './app/server/mod.ts'
           search-text: '__VERSION__'
           replacement-text: ${{ steps.set_version.outputs.tag }}
 
@@ -97,9 +97,9 @@ jobs:
           name: client-build
           path: ./app/server/build/client
 
-      - name: Move .env file
-        working-directory: ./app/server
-        run: cp ./.env.defaults ./build/.env
+#      - name: Move config.yml file
+#        working-directory: ./app/server
+#        run: cp ./config.yml ./build/config.yml
 
       - name: Compile
         working-directory: ./app/server

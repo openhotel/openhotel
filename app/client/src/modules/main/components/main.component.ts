@@ -21,7 +21,7 @@ export const mainComponent = async () => {
   await $logo.setPosition({ x: 8, y: 8 });
   $container.add($logo);
 
-  {
+  await new Promise(async (resolve) => {
     const response = await fetch(
       `${protocol}//${hostname}${port ? `:${port}` : ""}/request?version=${getVersion()}`,
     ).then((data) => data.json());
@@ -40,6 +40,7 @@ export const mainComponent = async () => {
 
       socket.on("connected", () => {
         console.log("proxy connected!");
+        resolve(1);
 
         socket.emit("data", { event: "bonjour", message: {} });
       });
@@ -52,7 +53,7 @@ export const mainComponent = async () => {
       socket.emit("session", { username: `player_${getRandomString(8)}` });
     });
     await socket.connect(isSecure);
-  }
+  });
 
   return $container.getComponent(mainComponent);
 };
