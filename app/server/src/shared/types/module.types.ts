@@ -5,6 +5,4 @@ export type ModuleProps = {
     firewallPort: number;
     proxyPort: number;
   };
-  clientPort: number;
-  apiPort: number;
 };

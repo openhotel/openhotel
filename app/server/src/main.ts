@@ -5,8 +5,8 @@ import { load as loadProxy } from "modules/proxy/main.ts";
 import { load as loadServer } from "modules/server/main.ts";
 import { load as loadClient } from "modules/client/main.ts";
 import { load as loadUpdater } from "modules/updater/main.ts";
-import { getRandomString, getFreePort } from "shared/utils/main.ts";
-import { ModuleProps } from "shared/types/main.ts";
+import { getRandomString, getFreePort, getConfig } from "shared/utils/main.ts";
+import { ConfigTypes, ModuleProps } from "shared/types/main.ts";
 
 export const load = async () => {
   const { module, token, firewallPort, proxyPort, serverPort } = parseArgs(
@@ -14,8 +14,6 @@ export const load = async () => {
   );
 
   const moduleProps: ModuleProps = {
-    clientPort: parseInt(Deno.env.get("CLIENT_PORT")),
-    apiPort: parseInt(Deno.env.get("SERVER_PORT")),
     internal: {
       token: token || getRandomString(64),
       firewallPort: firewallPort || (await getFreePort()),
@@ -24,8 +22,10 @@ export const load = async () => {
     },
   };
 
+  const config: ConfigTypes = await getConfig();
+
   if (!module) {
-    const needsToUpdate = await loadUpdater(moduleProps);
+    const needsToUpdate = await loadUpdater(moduleProps, config);
     if (needsToUpdate) return;
 
     const spawnModule = (module: Module) => {
@@ -49,19 +49,19 @@ export const load = async () => {
 
   switch (module) {
     case Module.CLIENT:
-      await loadClient(moduleProps);
+      await loadClient(moduleProps, config);
       return;
     case Module.FIREWALL:
-      await loadFirewall(moduleProps);
+      await loadFirewall(moduleProps, config);
       return;
     case Module.PROXY:
-      await loadProxy(moduleProps);
+      await loadProxy(moduleProps, config);
       return;
     case Module.SERVER:
-      await loadServer(moduleProps);
+      await loadServer(moduleProps, config);
       return;
     case Module.UPDATER:
-      await loadUpdater(moduleProps);
+      await loadUpdater(moduleProps, config);
       return;
   }
 };

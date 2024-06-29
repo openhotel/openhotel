@@ -1,6 +1,6 @@
-import { ModuleProps } from "shared/types/main.ts";
+import { ConfigTypes, ModuleProps } from "shared/types/main.ts";
 import { getServerSocket } from "socket_ionic";
-import { debug, getVersion, initLog, log, wait } from "shared/utils/main.ts";
+import { initLog, log, wait } from "shared/utils/main.ts";
 import InputLoop from "input";
 
 type User = {
@@ -8,7 +8,7 @@ type User = {
   username: string;
 };
 
-export const load = async (args: ModuleProps) => {
+export const load = async (args: ModuleProps, config: ConfigTypes) => {
   await wait(0);
   initLog();
 
@@ -26,6 +26,7 @@ export const load = async (args: ModuleProps) => {
 
   const onReady = async () => {
     log("Welcome to Open Hotel!");
+    log(`Running on :${config.ports.client}`);
 
     const input = new InputLoop({ silent: true });
     log("!help");

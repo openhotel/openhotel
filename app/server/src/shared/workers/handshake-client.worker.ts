@@ -30,6 +30,7 @@ firewall.on("start", ({ port, token }) => {
   server.on("disconnected", () => {
     firewall.close();
   });
+  firewall.emit("start");
 });
 
 // close the worker if timeout

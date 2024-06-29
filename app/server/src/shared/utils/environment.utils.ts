@@ -1,6 +1,8 @@
-import { config } from "../../../config.ts";
+let $version = "DEVELOPMENT";
+export const $setEnvironment = ({ version }) => {
+  if (version !== "__VERSION__") $version = version;
+};
 
-export const getVersion = () =>
-  config.version === "__VERSION__" ? "DEVELOPMENT" : config.version;
+export const getVersion = () => $version;
 
 export const isDevelopment = () => getVersion() === "DEVELOPMENT";

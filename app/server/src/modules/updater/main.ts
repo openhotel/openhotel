@@ -1,4 +1,4 @@
-import { ModuleProps } from "shared/types/main.ts";
+import { ConfigTypes, ModuleProps } from "shared/types/main.ts";
 import {
   debug,
   getOS,
@@ -12,8 +12,11 @@ import {
 import { OS } from "shared/enums/main.ts";
 import * as path from "deno/path/mod.ts";
 
-export const load = async (args: ModuleProps): Promise<boolean> => {
-  initLog("UPDATER");
+export const load = async (
+  args: ModuleProps,
+  config: ConfigTypes,
+): Promise<boolean> => {
+  initLog();
 
   const version = getVersion();
   const os = getOS();
