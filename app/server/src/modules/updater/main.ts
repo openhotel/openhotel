@@ -101,24 +101,14 @@ export const load = async (args: ModuleProps): Promise<boolean> => {
       create: true,
     });
 
-    if (os === OS.WINDOWS) {
-      Deno.run({
-        cmd: ["powershell", updateFilePath],
-        stdin: "null",
-        stdout: "null",
-        stderr: "null",
-        detached: true,
-      });
-    } else {
-      const updater = Deno.run({
-        cmd: ["sh", updateFilePath],
-        stdin: "null",
-        stdout: "null",
-        stderr: "null",
-        detached: true,
-      });
-      await updater.status();
-    }
+    const updater = Deno.run({
+      cmd: [isWindows ? "powershell" : "sh", updateFilePath],
+      stdin: "null",
+      stdout: "null",
+      stderr: "null",
+      detached: true,
+    });
+    await updater.status();
     log("Restart to apply the update!");
     return true;
   } catch (e) {
