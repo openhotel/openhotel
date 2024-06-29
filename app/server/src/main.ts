@@ -4,6 +4,7 @@ import { load as loadFirewall } from "modules/firewall/main.ts";
 import { load as loadProxy } from "modules/proxy/main.ts";
 import { load as loadServer } from "modules/server/main.ts";
 import { load as loadClient } from "modules/client/main.ts";
+import { load as loadUpdater } from "modules/updater/main.ts";
 import { getRandomString, getFreePort } from "shared/utils/main.ts";
 import { ModuleProps } from "shared/types/main.ts";
 
@@ -24,6 +25,9 @@ export const load = async () => {
   };
 
   if (!module) {
+    const needsToUpdate = await loadUpdater(moduleProps);
+    if (needsToUpdate) return;
+
     const spawnModule = (module: Module) => {
       const process = new Deno.Command(Deno.execPath(), {
         args: [
@@ -55,6 +59,9 @@ export const load = async () => {
       return;
     case Module.SERVER:
       await loadServer(moduleProps);
+      return;
+    case Module.UPDATER:
+      await loadUpdater(moduleProps);
       return;
   }
 };

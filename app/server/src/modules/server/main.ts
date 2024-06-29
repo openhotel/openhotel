@@ -11,8 +11,7 @@ type User = {
 export const load = async (args: ModuleProps) => {
   await wait(0);
   initLog("SERVER");
-  log("Open Hotel Started!");
-  log(`Version ${getVersion()}`);
+  log("Welcome to Open Hotel!");
 
   const server = getServerSocket(args.internal.serverPort);
   let proxyClient;
