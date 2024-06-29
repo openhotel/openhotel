@@ -1,18 +1,12 @@
-[cc-by-nc-sa]: http://creativecommons.org/licenses/by-nc-sa/4.0/
-[cc-by-nc-sa-image]: https://licensebuttons.net/l/by-nc-sa/4.0/88x31.png
-[cc-by-nc-sa-shield]: https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg
-
 # OpenHotel
 
-powered with [🌷 tulip](https://github.com/tulipjs) engine
+[![Static Badge](https://img.shields.io/badge/CC_BY--NC--SA_4.0-blue?style=for-the-badge&color=gray)](/LICENSE)
+![GitHub branch check runs](https://img.shields.io/github/check-runs/openhotel/openhotel/master?style=for-the-badge)
+[![GitHub Release](https://img.shields.io/github/v/release/openhotel/openhotel?style=for-the-badge)](https://github.com/openhotel/openhotel/releases/latest)
+[![Static Badge](https://img.shields.io/badge/powered%20by-%F0%9F%8C%B7%20tulip%20engine-red?style=for-the-badge&color=white)](https://github.com/tulipjs/tulip)
+[![Static Badge](https://img.shields.io/badge/discord-b?style=for-the-badge&logo=discord&color=white)](https://discord.gg/qBZfPdNWUj)
 
-[![CC BY-NC-SA 4.0][cc-by-nc-sa-image]][cc-by-nc-sa]
-
----
-
-Please read everything before opening an issue, starting a hotel, or running code. Thank you!
-
----
+#### Please read everything before opening an issue, starting a hotel, or running code. Thank you!
 
 ## License
 
@@ -52,5 +46,5 @@ Please read everything before opening an issue, starting a hotel, or running cod
 - Run `deno task start`
 
 ---
-### TODO: Coding practices 
+### TODO: Coding practices
 - Enable prettier on save
