@@ -93,31 +93,8 @@ export const load = async (args: ModuleProps) => {
     handshakeClientWorkerMap[workerId].emit("start", data);
     ctx.response.body = data;
   });
-  log(`Listening on :${args.port}`);
-  app.listen({ port: args.port });
-  
-  
-  {
-    const port = await getFreePort()
-    log(`PORT TEST ${port}`)
-    const app = new Application();
-    app.use(
-      oakCors({
-        origin: "*",
-      }),
-    );
-    const router2 = new Router();
-    app.use(router2.routes());
-    app.use(router2.allowedMethods());
-    
-    router2.get("/test", async (ctx: RouterContext<string, any, any>) => {
-      
-      ctx.response.body = {
-        hello: 'hallo'
-      };
-    });
-    app.listen({ port: port });
-  }
+  log(`Listening on :${args.apiPort}`);
+  app.listen({ port: args.apiPort });
 
   await proxyClient.connect();
   

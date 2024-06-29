@@ -1,7 +1,8 @@
 {
   "tasks": {
-    "start": "deno task start:server & deno task start:proxy & deno task start:firewall",
+    "start": "deno task start:client & deno task start:server & deno task start:proxy & deno task start:firewall",
     "start:base": "deno run -A --watch=./src --unstable-kv mod.ts",
+    "start:client": "deno task start:base --module=client --token=DEVELOPMENT_TOKEN --serverPort=3001 --firewallPort=3002 --proxyPort=3003",
     "start:firewall": "deno task start:base --module=firewall --token=DEVELOPMENT_TOKEN --serverPort=3001 --firewallPort=3002 --proxyPort=3003",
     "start:proxy": "deno task start:base --module=proxy --token=DEVELOPMENT_TOKEN --serverPort=3001 --firewallPort=3002 --proxyPort=3003",
     "start:server": "deno task start:base --module=server --token=DEVELOPMENT_TOKEN --serverPort=3001 --firewallPort=3002 --proxyPort=3003",

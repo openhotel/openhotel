@@ -50,30 +50,34 @@ jobs:
         working-directory: ./app/client
         run: yarn run build
 
+#      - name: 'Zip build'
+#        run: |
+#          cd ./app/client/build
+#          zip -r client.zip .
+#
+#      - name: 'Upload zip to release'
+#        uses: svenstaro/upload-release-action@v2
+#        with:
+#          repo_token: ${{ secrets.GITHUB_TOKEN }}
+#          file: ./app/client/build/client.zip
+#          tag: ${{ github.ref }}
+#          overwrite: true
+#          file_glob: true
+
       - name: 'Upload Artifact'
         uses: actions/upload-artifact@v3
         with:
           name: client-build
           path: './app/client/build'
 
-      - name: 'Zip build'
-        run: |
-          cd ./app/client/build
-          zip -r client.zip .
-
-      - name: 'Upload zip to release'
-        uses: svenstaro/upload-release-action@v2
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: ./app/client/build/client.zip
-          tag: ${{ github.ref }}
-          overwrite: true
-          file_glob: true
-
   server-build:
     name: 'Build Server'
 
+    needs: [client-build]
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [darwin, linux, windows]
 
     steps:
       - uses: actions/checkout@v3
@@ -101,33 +105,48 @@ jobs:
           search-text: '__VERSION__'
           replacement-text: ${{ steps.set_version.outputs.tag }}
 
+      - name: Download client-build artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: client-build
+          path: ./app/server/build/client
+
       - name: Build
         working-directory: ./app/server
-        run: deno task build
+        run: cp ./.env.defaults ./build/.env
 
-      - name: 'Upload linux to release'
+      - name: Compile
+        working-directory: ./app/server
+        run: deno task compile:${{ matrix.os }}
+
+      - name: 'Zip build'
+        run: |
+          cd ./build
+          zip -r server_${{ matrix.os }}.zip .
+
+      - name: 'Upload to release'
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: ./app/server/build/server_linux
+          file: ./app/server/build/server_${{ matrix.os }}.zip
           tag: ${{ github.ref }}
           overwrite: true
           file_glob: true
-
-      - name: 'Upload darwin to release'
-        uses: svenstaro/upload-release-action@v2
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: ./app/server/build/server_darwin
-          tag: ${{ github.ref }}
-          overwrite: true
-          file_glob: true
-
-      - name: 'Upload windows to release'
-        uses: svenstaro/upload-release-action@v2
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: ./app/server/build/server_windows.exe
-          tag: ${{ github.ref }}
-          overwrite: true
-          file_glob: true
+#
+#      - name: 'Upload darwin to release'
+#        uses: svenstaro/upload-release-action@v2
+#        with:
+#          repo_token: ${{ secrets.GITHUB_TOKEN }}
+#          file: ./app/server/build/server_darwin
+#          tag: ${{ github.ref }}
+#          overwrite: true
+#          file_glob: true
+#
+#      - name: 'Upload windows to release'
+#        uses: svenstaro/upload-release-action@v2
+#        with:
+#          repo_token: ${{ secrets.GITHUB_TOKEN }}
+#          file: ./app/server/build/server_windows.exe
+#          tag: ${{ github.ref }}
+#          overwrite: true
+#          file_glob: true
