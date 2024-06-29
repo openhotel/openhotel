@@ -50,20 +50,6 @@ jobs:
         working-directory: ./app/client
         run: yarn run build
 
-#      - name: 'Zip build'
-#        run: |
-#          cd ./app/client/build
-#          zip -r client.zip .
-#
-#      - name: 'Upload zip to release'
-#        uses: svenstaro/upload-release-action@v2
-#        with:
-#          repo_token: ${{ secrets.GITHUB_TOKEN }}
-#          file: ./app/client/build/client.zip
-#          tag: ${{ github.ref }}
-#          overwrite: true
-#          file_glob: true
-
       - name: 'Upload Artifact'
         uses: actions/upload-artifact@v3
         with:
@@ -120,7 +106,9 @@ jobs:
         run: deno task compile:${{ matrix.os }}
 
       - name: 'Zip build'
-        run: zip -r ./server_${{ matrix.os }}.zip ./app/server/build/
+        run: |
+          cd ./app/server/build/
+          zip -r ../../../server_${{ matrix.os }}.zip .
 
       - name: 'Upload to release'
         uses: svenstaro/upload-release-action@v2
@@ -130,21 +118,3 @@ jobs:
           tag: ${{ github.ref }}
           overwrite: true
           file_glob: true
-#
-#      - name: 'Upload darwin to release'
-#        uses: svenstaro/upload-release-action@v2
-#        with:
-#          repo_token: ${{ secrets.GITHUB_TOKEN }}
-#          file: ./app/server/build/server_darwin
-#          tag: ${{ github.ref }}
-#          overwrite: true
-#          file_glob: true
-#
-#      - name: 'Upload windows to release'
-#        uses: svenstaro/upload-release-action@v2
-#        with:
-#          repo_token: ${{ secrets.GITHUB_TOKEN }}
-#          file: ./app/server/build/server_windows.exe
-#          tag: ${{ github.ref }}
-#          overwrite: true
-#          file_glob: true
