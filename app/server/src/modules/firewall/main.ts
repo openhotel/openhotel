@@ -1,13 +1,22 @@
 import { Application, Router, RouterContext } from "oak";
 import { oakCors } from "oakCors";
-import { getRandomString, getFreePort, wait } from "shared/utils/main.ts";
+import {
+  getRandomString,
+  getFreePort,
+  wait,
+  initLog,
+  log,
+  getVersion,
+  debug,
+} from "shared/utils/main.ts";
 import { getClientSocket } from "socket_ionic";
 import { getParentWorker } from "worker_ionic";
 import { ModuleProps } from "shared/types/main.ts";
 
 export const load = async (args: ModuleProps) => {
   await wait(100);
-  console.log(`「OH FIREWALL」 Hello there!`);
+  initLog("FIREWALL");
+  log(`Started!`);
 
   const handshakeClientWorkerMap: Record<string, any> = {};
 
@@ -19,11 +28,11 @@ export const load = async (args: ModuleProps) => {
     silent: true,
   });
   proxyClient.on("connected", () => {
-    console.log("「OH FIREWALL」", ">->-> Proxy");
+    log(">->-> Proxy");
     isProxyConnected = true;
   });
   proxyClient.on("disconnected", () => {
-    console.log("「OH FIREWALL」", "-/ /- Proxy");
+    log("-/ /- Proxy");
     isProxyConnected = false;
   });
 
@@ -35,7 +44,7 @@ export const load = async (args: ModuleProps) => {
     const workers = Object.keys(handshakeClientWorkerMap).length;
     if (!workers) return;
 
-    console.log("「OH FIREWALL」", `Current workers ${workers}/-1`);
+    log(`Current workers ${workers}/-1`);
   }, 5_000);
 
   //### API ############################################################################################################
@@ -51,8 +60,29 @@ export const load = async (args: ModuleProps) => {
   app.use(router.routes());
   app.use(router.allowedMethods());
 
+  router.get("/version", async (ctx: RouterContext<string, any, any>) => {
+    ctx.response.body = {
+      version: getVersion(),
+    };
+  });
   router.get("/request", async (ctx: RouterContext<string, any, any>) => {
     const clientIPAddress: string = ctx.request.headers.get("host");
+    const clientVersion = new URLSearchParams(ctx.request.url.search).get(
+      "version",
+    );
+
+    const version = getVersion();
+    if (clientVersion !== version) {
+      ctx.response.status = 406;
+      ctx.response.body = {
+        error: 406,
+        message: [
+          "Version mismatch",
+          `Expected (${version}) != ${clientVersion}`,
+        ],
+      };
+      return;
+    }
 
     //TODO Check slots available
     //TODO Check if proxy is ready
@@ -86,8 +116,8 @@ export const load = async (args: ModuleProps) => {
     handshakeClientWorkerMap[workerId].emit("start", data);
     ctx.response.body = data;
   });
-  console.log(`「OH FIREWALL」`, `Listening on :${args.port}`);
-  app.listen({ port: args.port });
+  log(`Listening on :${args.apiPort}`);
+  app.listen({ port: args.apiPort });
 
   await proxyClient.connect();
 };
