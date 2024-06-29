@@ -5,7 +5,9 @@ import {
   getFreePort,
   wait,
   initLog,
-  log, getVersion,
+  log,
+  getVersion,
+  debug,
 } from "shared/utils/main.ts";
 import { getClientSocket } from "socket_ionic";
 import { getParentWorker } from "worker_ionic";
@@ -57,14 +59,30 @@ export const load = async (args: ModuleProps) => {
   const router = new Router();
   app.use(router.routes());
   app.use(router.allowedMethods());
-  
+
   router.get("/version", async (ctx: RouterContext<string, any, any>) => {
     ctx.response.body = {
-      version: getVersion()
+      version: getVersion(),
     };
   });
   router.get("/request", async (ctx: RouterContext<string, any, any>) => {
     const clientIPAddress: string = ctx.request.headers.get("host");
+    const clientVersion = new URLSearchParams(ctx.request.url.search).get(
+      "version",
+    );
+
+    const version = getVersion();
+    if (clientVersion !== version) {
+      ctx.response.status = 406;
+      ctx.response.body = {
+        error: 406,
+        message: [
+          "Version mismatch",
+          `Expected (${version}) != ${clientVersion}`,
+        ],
+      };
+      return;
+    }
 
     //TODO Check slots available
     //TODO Check if proxy is ready
@@ -102,5 +120,4 @@ export const load = async (args: ModuleProps) => {
   app.listen({ port: args.apiPort });
 
   await proxyClient.connect();
-  
 };

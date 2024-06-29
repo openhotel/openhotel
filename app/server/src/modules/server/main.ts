@@ -1,6 +1,6 @@
 import { ModuleProps } from "shared/types/main.ts";
 import { getServerSocket } from "socket_ionic";
-import { getVersion, initLog, log, wait } from "shared/utils/main.ts";
+import { debug, getVersion, initLog, log, wait } from "shared/utils/main.ts";
 import InputLoop from "input";
 
 type User = {
@@ -12,7 +12,7 @@ export const load = async (args: ModuleProps) => {
   await wait(0);
   initLog("SERVER");
   log("Open Hotel Started!");
-  log(`Version ${getVersion()}`, Deno.env.get("SOURCE_COMMIT"));
+  log(`Version ${getVersion()}`);
 
   const server = getServerSocket(args.internal.serverPort);
   let proxyClient;
@@ -35,6 +35,16 @@ export const load = async (args: ModuleProps) => {
     log(">->-> Proxy");
     proxyClient = client;
 
+    proxyClient.on("ready", async () => {
+      const input = new InputLoop({ silent: true });
+      debug("write !help");
+      while (!input.done) {
+        const result = await input.question("something");
+
+        log(result);
+      }
+    });
+
     proxyClient.on("joined", ({ userId, username }) => {
       log(`${username} has joined!`);
       userList.push({ userId, username });
@@ -50,16 +60,4 @@ export const load = async (args: ModuleProps) => {
   server.on("disconnected", (proxyClient) => {
     log("-/ /- Proxy");
   });
-  
-  
-  // const a = confirm('Are you sure?')
-  
-  const input = new InputLoop({ silent: true });
-  log('write !help')
-  while (!input.done) {
-    const result = await input.question('fsf');
-    
-    log(result)
-    // Business logic...
-  }
 };

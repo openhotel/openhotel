@@ -4,12 +4,16 @@ import { getClientSocket, getRandomString, getVersion } from "shared/utils";
 export const mainComponent = async () => {
   const $container = await container();
 
-  let url = new URL("http://localhost:2002");
+  let port = 2002;
   try {
-    url = new URL(new URLSearchParams(location.search).get("server"));
+    const targetPort = parseInt(
+      new URLSearchParams(location.search).get("port"),
+    );
+
+    if (!isNaN(targetPort)) port = targetPort;
   } catch (e) {}
-  const { protocol, hostname, port } = url;
-  const isSecure = hostname !== 'localhost'
+  const { protocol, hostname } = location;
+  const isSecure = hostname !== "localhost";
 
   const $logo = await sprite({
     texture: "logo_full.png",
@@ -19,7 +23,7 @@ export const mainComponent = async () => {
 
   {
     const response = await fetch(
-      `${protocol}//${hostname}${port ? `:${port}` : ""}/request`,
+      `${protocol}//${hostname}${port ? `:${port}` : ""}/request?version=${getVersion()}`,
     ).then((data) => data.json());
 
     let socket = getClientSocket({
@@ -49,8 +53,6 @@ export const mainComponent = async () => {
     });
     await socket.connect(isSecure);
   }
-
-  console.log(getVersion());
 
   return $container.getComponent(mainComponent);
 };

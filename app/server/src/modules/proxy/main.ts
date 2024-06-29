@@ -46,6 +46,8 @@ export const load = async (args: ModuleProps) => {
     log(">->-> Firewall");
     firewallClient = client;
 
+    serverClient.emit("ready");
+
     firewallClient.on("open", async ({ username, workerId, userId }) => {
       const workerPort = await getFreePort();
       const workerToken = getRandomString(16);
