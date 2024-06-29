@@ -4,7 +4,7 @@ EXPOSE 2002
 EXPOSE 50000-55000
 
 WORKDIR ../
-COPY . ./
+COPY ../ ./
 
 RUN ls -l
 RUN deno task compile:current
