@@ -39,14 +39,14 @@ export const mainComponent = async () => {
         socket.emit("data", { event: "bonjour", message: {} });
       });
 
-      await socket.connect();
+      await socket.connect(true);
     });
     socket.on("connected", () => {
       console.log("handhskae connected!");
 
       socket.emit("session", { username: `player_${getRandomString(8)}` });
     });
-    await socket.connect();
+    await socket.connect(true);
   }
 
   console.log(getVersion());
