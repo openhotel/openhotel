@@ -6,7 +6,7 @@ import {initLog, isDevelopment, log} from "shared/utils/main.ts";
 export const load = async (args: ModuleProps) => {
   initLog("CLIENT");
   log(`Started!`);
-  // if(isDevelopment()) return;
+  if(isDevelopment()) return;
   
   const app = new Application();
   app.use(

@@ -5,7 +5,7 @@ import {
   getFreePort,
   wait,
   initLog,
-  log,
+  log, getVersion,
 } from "shared/utils/main.ts";
 import { getClientSocket } from "socket_ionic";
 import { getParentWorker } from "worker_ionic";
@@ -57,7 +57,12 @@ export const load = async (args: ModuleProps) => {
   const router = new Router();
   app.use(router.routes());
   app.use(router.allowedMethods());
-
+  
+  router.get("/version", async (ctx: RouterContext<string, any, any>) => {
+    ctx.response.body = {
+      version: getVersion()
+    };
+  });
   router.get("/request", async (ctx: RouterContext<string, any, any>) => {
     const clientIPAddress: string = ctx.request.headers.get("host");
 
