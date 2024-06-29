@@ -97,9 +97,9 @@ jobs:
           name: client-build
           path: ./app/server/build/client
 
-      - name: Move config.yml file
-        working-directory: ./app/server
-        run: cp ./config.yml ./build/config.yml
+#      - name: Move config.yml file
+#        working-directory: ./app/server
+#        run: cp ./config.yml ./build/config.yml
 
       - name: Compile
         working-directory: ./app/server
