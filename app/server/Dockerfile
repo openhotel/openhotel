@@ -1,6 +1,6 @@
 FROM denoland/deno:latest as base
 
-EXPOSE 49152-65535
+EXPOSE 50000-55000
 
 WORKDIR /
 COPY . ./

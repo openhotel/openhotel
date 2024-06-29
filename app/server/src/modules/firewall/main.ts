@@ -120,4 +120,5 @@ export const load = async (args: ModuleProps) => {
   }
 
   await proxyClient.connect();
+  
 };

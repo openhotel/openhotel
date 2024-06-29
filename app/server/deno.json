@@ -30,6 +30,8 @@
     "oak": "https://deno.land/x/oak@v12.6.0/mod.ts",
     "oakCors": "https://deno.land/x/cors@v1.2.2/mod.ts",
 
-    "yaml": "npm:yaml@2.4.2"
+    "yaml": "npm:yaml@2.4.2",
+
+    "input": "https://deno.land/x/input@2.0.4/index.ts"
   }
 }
