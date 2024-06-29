@@ -6,6 +6,7 @@
     "start:firewall": "deno task start:base --module=firewall --token=DEVELOPMENT_TOKEN --serverPort=3001 --firewallPort=3002 --proxyPort=3003",
     "start:proxy": "deno task start:base --module=proxy --token=DEVELOPMENT_TOKEN --serverPort=3001 --firewallPort=3002 --proxyPort=3003",
     "start:server": "deno task start:base --module=server --token=DEVELOPMENT_TOKEN --serverPort=3001 --firewallPort=3002 --proxyPort=3003",
+    "start:updater": "deno task start:base --module=updater",
 
     "start:prod:linux": "cd build && ./server_linux",
     "start:docker": "docker-compose up --build",
@@ -34,6 +35,5 @@
 
     "yaml": "npm:yaml@2.4.2",
 
-    "input": "https://deno.land/x/input@2.0.4/index.ts"
-  }
+    "input": "https://deno.land/x/input@2.0.4/index.ts"  }
 }

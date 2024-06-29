@@ -35,4 +35,4 @@ firewall.on("start", ({ port, token }) => {
 // close the worker if timeout
 setTimeout(() => {
   firewall.close();
-}, 30_000);
+}, 10_000);

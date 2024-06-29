@@ -1,7 +1,4 @@
-import { Module } from "shared/enums/main.ts";
-
 export type ModuleProps = {
-  module: Module;
   internal: {
     token: string;
     serverPort: number;
