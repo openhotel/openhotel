@@ -51,7 +51,7 @@ export const load = async (args: ModuleProps): Promise<boolean> => {
       oldMajor >= newMajor &&
       oldMinor >= newMinor &&
       oldPatch >= newPatch &&
-      oldExtra >= newExtra
+      (oldExtra >= newExtra || oldExtra === newExtra)
     ) {
       log("Everything is up to date!");
       return false;
