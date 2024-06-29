@@ -3,6 +3,7 @@ import { parseArgs } from "deno/cli/parse_args.ts";
 import { load as loadFirewall } from "modules/firewall/main.ts";
 import { load as loadProxy } from "modules/proxy/main.ts";
 import { load as loadServer } from "modules/server/main.ts";
+import { load as loadClient } from "modules/client/main.ts";
 import { getRandomString, getFreePort } from "shared/utils/main.ts";
 import { ModuleProps } from "shared/types/main.ts";
 
@@ -12,7 +13,8 @@ export const load = async () => {
   );
 
   const moduleProps: ModuleProps = {
-    port: parseInt(Deno.env.get("PORT")),
+    clientPort: parseInt(Deno.env.get("CLIENT_PORT")),
+    apiPort: parseInt(Deno.env.get("SERVER_PORT")),
     internal: {
       token: token || getRandomString(64),
       firewallPort: firewallPort || (await getFreePort()),
@@ -34,6 +36,7 @@ export const load = async () => {
       });
       process.spawn();
     };
+    spawnModule(Module.CLIENT);
     spawnModule(Module.SERVER);
     spawnModule(Module.FIREWALL);
     spawnModule(Module.PROXY);
@@ -41,6 +44,9 @@ export const load = async () => {
   }
 
   switch (module) {
+    case Module.CLIENT:
+      await loadClient(moduleProps);
+      return;
     case Module.FIREWALL:
       await loadFirewall(moduleProps);
       return;

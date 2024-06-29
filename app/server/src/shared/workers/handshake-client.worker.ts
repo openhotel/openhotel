@@ -2,6 +2,7 @@ import { getChildWorker } from "worker_ionic";
 import { getServerSocket } from "socket_ionic";
 import { getRandomString } from "shared/utils/main.ts";
 
+console.log = () => {};
 const firewall = getChildWorker();
 
 firewall.on("start", ({ port, token }) => {

@@ -1,6 +1,7 @@
 import { getChildWorker } from "worker_ionic";
 import { getServerSocket } from "socket_ionic";
 
+console.log = () => {};
 const proxy = getChildWorker();
 
 let proxyServer;

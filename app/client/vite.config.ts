@@ -5,8 +5,16 @@ import { plugin } from "@tulib/vite-tulip-plugin";
 export default defineConfig({
   server: {
     port: 2001,
-    open: true
+    open: true,
   },
   plugins: [tsconfigPaths(), plugin()],
   publicDir: "assets",
+  build: {
+    outDir: "./build",
+    emptyOutDir: true, // also necessary
+  },
+  define: {
+    //@ts-ignore
+    __APP_VERSION: JSON.stringify(process.env.npm_package_version),
+  },
 });
