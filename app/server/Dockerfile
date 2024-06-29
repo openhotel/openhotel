@@ -5,4 +5,6 @@ EXPOSE 50000-55000
 WORKDIR /
 COPY . ./
 
-CMD ["deno", "task", "start"]
+RUN deno task compile:linux
+
+CMD ["./build/server_linux"]
