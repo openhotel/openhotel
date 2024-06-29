@@ -98,7 +98,7 @@ export const load = async (args: ModuleProps) => {
   
   
   {
-    const port = getFreePort()
+    const port = await getFreePort()
     log(`PORT TEST ${port}`)
     const app = new Application();
     app.use(
