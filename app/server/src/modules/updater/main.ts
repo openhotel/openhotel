@@ -90,7 +90,7 @@ export const load = async (args: ModuleProps): Promise<boolean> => {
 
     const ps1 = `#!/usr/bin/env pwsh
     	Start-Sleep -Milliseconds 500
-    	Expand-Archive -LiteralPath "${updatedFile}" -DestinationPath "${dirPath}"
+    	Expand-Archive -Force -LiteralPath "${updatedFile}" -DestinationPath "${dirPath}"
     `;
     const bash = `#! /bin/bash
     	unzip -o '${updatedFile}' -d '${dirPath}'`;
