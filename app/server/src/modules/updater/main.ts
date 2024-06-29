@@ -86,15 +86,16 @@ export const load = async (args: ModuleProps): Promise<boolean> => {
 
     const bash = `#! /bin/bash
     	sleep 0.5
-    	unzip -o ${updatedFile} -d ${dirPath}`;
+    	unzip -o '${updatedFile}' -d '${dirPath}'`;
 
     const ps1 = `#!/usr/bin/env pwsh
     	Start-Sleep -Milliseconds 500
-    	Expand-Archive -LiteralPath ${updatedFile} -DestinationPath ${dirPath}
+    	Expand-Archive -LiteralPath "${updatedFile}" -DestinationPath "${dirPath}"
     `;
     try {
       await Deno.remove(updateFilePath);
     } catch (e) {}
+
     await Deno.writeTextFile(updateFilePath, isWindows ? ps1 : bash, {
       mode: 0x0777,
       create: true,
