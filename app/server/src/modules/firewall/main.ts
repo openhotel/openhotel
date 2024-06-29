@@ -7,7 +7,6 @@ import {
   initLog,
   log,
   getVersion,
-  debug,
 } from "shared/utils/main.ts";
 import { getClientSocket } from "socket_ionic";
 import { getParentWorker } from "worker_ionic";
@@ -15,8 +14,7 @@ import { ModuleProps } from "shared/types/main.ts";
 
 export const load = async (args: ModuleProps) => {
   await wait(100);
-  initLog("FIREWALL");
-  log(`Started!`);
+  initLog();
 
   const handshakeClientWorkerMap: Record<string, any> = {};
 
@@ -28,11 +26,11 @@ export const load = async (args: ModuleProps) => {
     silent: true,
   });
   proxyClient.on("connected", () => {
-    log(">->-> Proxy");
+    log(`Firewall started!`);
     isProxyConnected = true;
   });
   proxyClient.on("disconnected", () => {
-    log("-/ /- Proxy");
+    log("Disconnected! (!)");
     isProxyConnected = false;
   });
 
@@ -116,7 +114,6 @@ export const load = async (args: ModuleProps) => {
     handshakeClientWorkerMap[workerId].emit("start", data);
     ctx.response.body = data;
   });
-  log(`Listening on :${args.apiPort}`);
   app.listen({ port: args.apiPort });
 
   await proxyClient.connect();

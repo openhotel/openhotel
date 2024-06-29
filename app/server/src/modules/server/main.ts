@@ -10,9 +10,7 @@ type User = {
 
 export const load = async (args: ModuleProps) => {
   await wait(0);
-  initLog("SERVER");
-  log("Open Hotel Started!");
-  log(`Version ${getVersion()}`);
+  initLog();
 
   const server = getServerSocket(args.internal.serverPort);
   let proxyClient;
@@ -26,24 +24,30 @@ export const load = async (args: ModuleProps) => {
   //   log(`Current users ${users}/-1`);
   // }, 5_000);
 
+  const onReady = async () => {
+    log("Welcome to Open Hotel!");
+
+    const input = new InputLoop({ silent: true });
+    log("!help");
+    while (!input.done) {
+      const result = await input.question("something");
+
+      log(result);
+    }
+  };
+  const onDisconnected = () => {
+    log("Disconnected! (!)");
+  };
+
   server.on(
     "guest",
     (clientId: string, [clientToken]) =>
       !proxyClient && clientToken === args.internal.token,
   );
   server.on("connected", (client) => {
-    log(">->-> Proxy");
     proxyClient = client;
 
-    proxyClient.on("ready", async () => {
-      const input = new InputLoop({ silent: true });
-      debug("write !help");
-      while (!input.done) {
-        const result = await input.question("something");
-
-        log(result);
-      }
-    });
+    proxyClient.on("ready", onReady);
 
     proxyClient.on("joined", ({ userId, username }) => {
       log(`${username} has joined!`);
@@ -58,6 +62,6 @@ export const load = async (args: ModuleProps) => {
     });
   });
   server.on("disconnected", (proxyClient) => {
-    log("-/ /- Proxy");
+    onDisconnected();
   });
 };
