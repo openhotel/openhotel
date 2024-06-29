@@ -1,5 +1,6 @@
 {
   "type": "module",
+  "license": "CC BY-NC-SA 4.0",
   "scripts": {
     "start": "vite --host",
     "start:docker": "docker-compose up --build",

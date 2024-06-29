@@ -9,6 +9,7 @@ export const mainComponent = async () => {
     url = new URL(new URLSearchParams(location.search).get("server"));
   } catch (e) {}
   const { protocol, hostname, port } = url;
+  const isSecure = hostname !== 'localhost'
 
   const $logo = await sprite({
     texture: "logo_full.png",
@@ -39,14 +40,14 @@ export const mainComponent = async () => {
         socket.emit("data", { event: "bonjour", message: {} });
       });
 
-      await socket.connect(true);
+      await socket.connect(isSecure);
     });
     socket.on("connected", () => {
       console.log("handhskae connected!");
 
       socket.emit("session", { username: `player_${getRandomString(8)}` });
     });
-    await socket.connect(true);
+    await socket.connect(isSecure);
   }
 
   console.log(getVersion());

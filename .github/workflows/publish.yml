@@ -122,7 +122,7 @@ jobs:
       - name: 'Zip build'
         run: |
           cd ./app/server/build
-          zip -r server_${{ matrix.os }}.zip .
+          zip -r server_${{ matrix.os }}.zip .*
 
       - name: 'Upload to release'
         uses: svenstaro/upload-release-action@v2
