@@ -121,7 +121,7 @@ jobs:
 
       - name: 'Zip build'
         run: |
-          cd ./build
+          cd ./app/server/build
           zip -r server_${{ matrix.os }}.zip .
 
       - name: 'Upload to release'
