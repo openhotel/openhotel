@@ -1,12 +1,13 @@
-FROM denoland/deno:latest as base
+FROM debian:latest
 
-EXPOSE 2002
-EXPOSE 50000-55000
+WORKDIR /app
 
-WORKDIR /
-COPY . ./
+# Install curl and jq
+RUN apt-get update \
+    && apt-get install -y curl jq unzip
 
-RUN ls -l
-RUN deno task compile:current
+COPY ./downloader.sh /downloader.sh
 
-CMD ["./server"]
+RUN chmod 777 /downloader.sh
+RUN ls -l /
+CMD /downloader.sh

@@ -1,6 +1,11 @@
+
 services:
     web:
+        network_mode: "host"
         build: .
-        ports:
-            - "2002:2002"
-            - "50000-55000:50000-55000"
+        volumes:
+            - openhotel-data:/app
+        restart: unless-stopped
+
+volumes:
+    openhotel-data:
