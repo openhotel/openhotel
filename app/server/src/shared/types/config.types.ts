@@ -4,6 +4,7 @@ export type ConfigTypes = {
   ports?: {
     client?: number;
     server?: number;
+    range?: [number, number];
   };
   limits?: {
     players?: number;
