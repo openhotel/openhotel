@@ -23,7 +23,6 @@ export const load = async (args: ModuleProps, config: ConfigTypes) => {
     protocols: [args.internal.token],
     silent: true,
   });
-  const firewallsServer = getServerSocket(args.internal.proxyPort);
 
   const onReady = async () => {
     log(`Proxy started!`);
@@ -41,6 +40,9 @@ export const load = async (args: ModuleProps, config: ConfigTypes) => {
     isServerConnected = false;
     onDisconnected();
   });
+
+  await serverClient.connect();
+  const firewallsServer = getServerSocket(args.internal.proxyPort);
 
   firewallsServer.on(
     "guest",
@@ -97,6 +99,4 @@ export const load = async (args: ModuleProps, config: ConfigTypes) => {
   firewallsServer.on("disconnected", (client) => {
     onDisconnected();
   });
-
-  await serverClient.connect();
 };

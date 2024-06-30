@@ -18,6 +18,7 @@ export const getConfig = async (): Promise<ConfigTypes> => {
     ports: {
       client: config?.ports?.client || CONFIG_DEFAULT.ports.client,
       server: config?.ports?.server || CONFIG_DEFAULT.ports.server,
+      range: config?.ports?.range || CONFIG_DEFAULT.ports.range,
     },
   };
   try {
