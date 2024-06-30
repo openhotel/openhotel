@@ -12,7 +12,7 @@ export const getFreePort = async (
       ports: { range },
     } = await getConfig();
     if (!min) min = range[0];
-    if (!max) min = range[1];
+    if (!max) max = range[1];
   }
   try {
     const targetPort = getRandomNumber(min, max);
