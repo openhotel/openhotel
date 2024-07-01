@@ -30,15 +30,15 @@ export const load = async (args: ModuleProps, config: ConfigTypes) => {
     log(`Running on :${config.ports.client}`);
 
     setInterval(() => {
-      console.log("Server here and alive!");
+      log("Server here and alive!");
     }, 2000);
-    // const input = new InputLoop({ silent: true });
-    // log("!help");
-    // while (!input.done) {
-    //   const result = await input.question("something");
-    //
-    //   log(result);
-    // }
+    const input = new InputLoop({ silent: true });
+    log("!help");
+    while (!input.done) {
+      const result = await input.question("something");
+
+      log(result);
+    }
   };
   const onDisconnected = () => {
     log("Server disconnected! (!)");
