@@ -12,6 +12,7 @@ import {
 
 export const load = async (args: ModuleProps, config: ConfigTypes) => {
   await wait(100);
+  log(`Proxy!`);
   // initLog();
 
   const proxyClientWorkerMap: Record<string, any> = {};

@@ -29,13 +29,16 @@ export const load = async (args: ModuleProps, config: ConfigTypes) => {
     log("Welcome to Open Hotel!");
     log(`Running on :${config.ports.client}`);
 
-    const input = new InputLoop({ silent: true });
-    log("!help");
-    while (!input.done) {
-      const result = await input.question("something");
-
-      log(result);
-    }
+    setInterval(() => {
+      console.log("Server here and alive!");
+    }, 2000);
+    // const input = new InputLoop({ silent: true });
+    // log("!help");
+    // while (!input.done) {
+    //   const result = await input.question("something");
+    //
+    //   log(result);
+    // }
   };
   const onDisconnected = () => {
     log("Server disconnected! (!)");
