@@ -90,7 +90,7 @@ export const getClientSocket = ({
   ) => {
     if (socket.readyState !== SocketReadyState.OPEN)
       throw new Error(
-        `Socket is not open (${SocketReadyState[socket.readyState]}})!`,
+        `Socket is not open (${SocketReadyState[socket.readyState]}}) {${event}:${message}}!`,
       );
 
     let responseEventId = null;
