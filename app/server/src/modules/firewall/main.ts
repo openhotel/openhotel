@@ -29,7 +29,7 @@ export const load = async (args: ModuleProps, config: ConfigTypes) => {
     log(`(${userList.length}/${config.limits.players}) Players`);
 
   const proxyClient = getClientSocket({
-    url: `172.0.0.1:${args.internal.proxyPort}`,
+    url: `localhost:${args.internal.proxyPort}`,
     protocols: [args.internal.token],
     silent: true,
   });
