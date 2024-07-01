@@ -22,7 +22,8 @@ export const load = async (args: ModuleProps, config: ConfigTypes) => {
   const serverClient = getClientSocket({
     url: `localhost:${args.internal.serverPort}`,
     protocols: [args.internal.token],
-    silent: true,
+    silent: false,
+    reconnectIntents: 100,
   });
   log(`localhost:${args.internal.serverPort}`, "proxy << serverClient");
 
