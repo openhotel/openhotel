@@ -1,6 +1,6 @@
 import { ConfigTypes, ModuleProps } from "shared/types/main.ts";
 import { getServerSocket } from "socket_ionic";
-import { initLog, log, wait } from "shared/utils/main.ts";
+import { debug, initLog, log, wait } from "shared/utils/main.ts";
 import InputLoop from "input";
 
 type User = {
@@ -44,7 +44,7 @@ export const load = async (args: ModuleProps, config: ConfigTypes) => {
   server.on(
     "guest",
     (clientId: string, [clientToken]) =>
-      true || (!proxyClient && clientToken === args.internal.token),
+      !proxyClient && clientToken === args.internal.token,
   );
   server.on("connected", (client) => {
     proxyClient = client;
@@ -62,8 +62,15 @@ export const load = async (args: ModuleProps, config: ConfigTypes) => {
     proxyClient.on("data", async ({ username, event, message }) => {
       log(username, event, message);
     });
+    proxyClient.on("error", (error) => {
+      debug("server", error);
+    });
+    proxyClient.on("disconnected", (error) => {
+      debug("server", error);
+      onDisconnected();
+    });
   });
-  server.on("disconnected", (proxyClient) => {
+  server.on("disconnected", () => {
     onDisconnected();
   });
 };

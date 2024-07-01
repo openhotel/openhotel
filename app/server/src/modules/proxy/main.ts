@@ -60,7 +60,7 @@ export const load = async (args: ModuleProps, config: ConfigTypes) => {
     firewallClient = client;
 
     onReady();
-    serverClient.emit("ready");
+    serverClient.emit("ready", {});
 
     firewallClient.on("open", async ({ username, workerId, userId }) => {
       const workerPort = await getFreePort();
