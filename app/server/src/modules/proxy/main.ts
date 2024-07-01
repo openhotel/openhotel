@@ -43,9 +43,9 @@ export const load = async (args: ModuleProps, config: ConfigTypes) => {
   });
 
   await serverClient.connect();
-  //
-  // const firewallsServer = getServerSocket(args.internal.proxyPort);
-  //
+
+  const firewallsServer = getServerSocket(args.internal.proxyPort);
+
   // firewallsServer.on(
   //   "guest",
   //   (clientId: string, [clientToken]) =>
