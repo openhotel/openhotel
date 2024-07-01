@@ -13,7 +13,7 @@ import { getParentWorker } from "worker_ionic";
 import { ConfigTypes, ModuleProps } from "shared/types/main.ts";
 
 export const load = async (args: ModuleProps, config: ConfigTypes) => {
-  await wait(100);
+  await wait(200);
   initLog();
 
   let userList: { userId: string; username: string }[] = [];

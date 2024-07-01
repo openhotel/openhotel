@@ -10,7 +10,7 @@ import {
 } from "shared/utils/main.ts";
 
 export const load = async (args: ModuleProps, config: ConfigTypes) => {
-  await wait(50);
+  await wait(100);
   initLog();
 
   const proxyClientWorkerMap: Record<string, any> = {};
@@ -27,8 +27,8 @@ export const load = async (args: ModuleProps, config: ConfigTypes) => {
   const onReady = async () => {
     log(`Proxy started!`);
   };
-  const onDisconnected = () => {
-    log("Proxy disconnected! (!)");
+  const onDisconnected = (from: string) => {
+    log(`Proxy disconnected! [${from}] (!)`);
   };
 
   serverClient.on("data", ({ event, message, userIdList }) => {});
@@ -38,14 +38,11 @@ export const load = async (args: ModuleProps, config: ConfigTypes) => {
   });
   serverClient.on("disconnected", () => {
     isServerConnected = false;
-    onDisconnected();
+    onDisconnected("server");
   });
 
-  try {
-    await serverClient.connect();
-  } catch (e) {
-    log(e);
-  }
+  await serverClient.connect();
+
   const firewallsServer = getServerSocket(args.internal.proxyPort);
 
   firewallsServer.on(
@@ -101,6 +98,6 @@ export const load = async (args: ModuleProps, config: ConfigTypes) => {
     });
   });
   firewallsServer.on("disconnected", (client) => {
-    onDisconnected();
+    onDisconnected("firewall");
   });
 };
