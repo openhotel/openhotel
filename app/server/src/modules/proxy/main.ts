@@ -20,11 +20,10 @@ export const load = async (args: ModuleProps, config: ConfigTypes) => {
   let isServerConnected = false;
 
   const serverClient = getClientSocket({
-    url: `localhost:${args.internal.serverPort}`,
+    url: `172.0.0.1:${args.internal.serverPort}`,
     protocols: [args.internal.token],
     silent: true,
   });
-  log(`localhost:${args.internal.serverPort}`, args.internal.token);
 
   const onReady = async () => {
     log(`Proxy started!`);
