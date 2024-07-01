@@ -41,7 +41,11 @@ export const load = async (args: ModuleProps, config: ConfigTypes) => {
     onDisconnected();
   });
 
-  await serverClient.connect();
+  try {
+    await serverClient.connect();
+  } catch (e) {
+    log(e);
+  }
   const firewallsServer = getServerSocket(args.internal.proxyPort);
 
   firewallsServer.on(

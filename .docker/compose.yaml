@@ -1,6 +1,7 @@
 name: openhotel
 services:
     web:
+#        network_mode: "host"
         restart: unless-stopped
         container_name: openhotel
         ports:

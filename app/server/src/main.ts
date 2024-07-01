@@ -5,7 +5,12 @@ import { load as loadProxy } from "modules/proxy/main.ts";
 import { load as loadServer } from "modules/server/main.ts";
 import { load as loadClient } from "modules/client/main.ts";
 import { load as loadUpdater } from "modules/updater/main.ts";
-import { getRandomString, getFreePort, getConfig } from "shared/utils/main.ts";
+import {
+  getRandomString,
+  getFreePort,
+  getConfig,
+  log,
+} from "shared/utils/main.ts";
 import { ConfigTypes, ModuleProps } from "shared/types/main.ts";
 
 export const load = async () => {
@@ -21,6 +26,7 @@ export const load = async () => {
       serverPort: serverPort || (await getFreePort()),
     },
   };
+  log(moduleProps);
 
   const config: ConfigTypes = await getConfig();
 
