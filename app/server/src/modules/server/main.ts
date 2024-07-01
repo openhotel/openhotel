@@ -62,11 +62,9 @@ export const load = async (args: ModuleProps, config: ConfigTypes) => {
     proxyClient.on("data", async ({ username, event, message }) => {
       log(username, event, message);
     });
-    proxyClient.on("error", (error) => {
-      debug("server", error);
-    });
     proxyClient.on("disconnected", (error) => {
-      debug("server", error);
+      proxyClient = undefined;
+      debug("server client disconnected", error);
       onDisconnected();
     });
   });

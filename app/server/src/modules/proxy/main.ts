@@ -23,7 +23,6 @@ export const load = async (args: ModuleProps, config: ConfigTypes) => {
     url: `localhost:${args.internal.serverPort}`,
     protocols: [args.internal.token],
     silent: false,
-    reconnectIntents: 100,
   });
   log(`localhost:${args.internal.serverPort}`, "proxy << serverClient");
 
@@ -40,11 +39,11 @@ export const load = async (args: ModuleProps, config: ConfigTypes) => {
     isServerConnected = true;
   });
   serverClient.on("error", (error) => {
-    debug("error", error);
+    // debug("error", error);
   });
   serverClient.on("disconnected", (error) => {
     isServerConnected = false;
-    debug("disconnected", error);
+    debug("proxy - disconnected server", error);
     onDisconnected("server");
   });
 
@@ -105,10 +104,10 @@ export const load = async (args: ModuleProps, config: ConfigTypes) => {
     });
   });
   firewallsServer.on("error", (error) => {
-    debug("error", error);
+    // debug("error", error);
   });
   firewallsServer.on("disconnected", (error) => {
-    debug("disconnected", error);
+    debug("proxy - disconnected firewall", error);
     onDisconnected("firewall");
   });
 };
