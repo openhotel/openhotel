@@ -26,7 +26,6 @@ export const load = async () => {
       serverPort: serverPort || (await getFreePort()),
     },
   };
-  log(moduleProps);
 
   const config: ConfigTypes = await getConfig();
 
