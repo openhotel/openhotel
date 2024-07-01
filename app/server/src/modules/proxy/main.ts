@@ -38,8 +38,12 @@ export const load = async (args: ModuleProps, config: ConfigTypes) => {
   serverClient.on("connected", () => {
     isServerConnected = true;
   });
-  serverClient.on("disconnected", () => {
+  serverClient.on("error", (error) => {
+    debug("error", error);
+  });
+  serverClient.on("disconnected", (error) => {
     isServerConnected = false;
+    debug("disconnected", error);
     onDisconnected("server");
   });
 
