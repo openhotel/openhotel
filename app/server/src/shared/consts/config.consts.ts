@@ -6,7 +6,7 @@ export const CONFIG_DEFAULT: ConfigTypes = {
   ports: {
     client: 9980,
     server: 2002,
-    range: [10000, 11000],
+    range: [10000, 10200],
   },
   limits: {
     players: 100,

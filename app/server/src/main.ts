@@ -7,9 +7,8 @@ import { load as loadClient } from "modules/client/main.ts";
 import { load as loadUpdater } from "modules/updater/main.ts";
 import {
   getRandomString,
-  getFreePort,
   getConfig,
-  log,
+  getInternalFreePort,
 } from "shared/utils/main.ts";
 import { ConfigTypes, ModuleProps } from "shared/types/main.ts";
 
@@ -21,9 +20,9 @@ export const load = async () => {
   const moduleProps: ModuleProps = {
     internal: {
       token: token || getRandomString(64),
-      firewallPort: firewallPort || (await getFreePort()),
-      proxyPort: proxyPort || (await getFreePort()),
-      serverPort: serverPort || (await getFreePort()),
+      firewallPort: firewallPort || (await getInternalFreePort()),
+      proxyPort: proxyPort || (await getInternalFreePort()),
+      serverPort: serverPort || (await getInternalFreePort()),
     },
   };
 

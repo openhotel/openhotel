@@ -37,7 +37,7 @@ export const load = async (args: ModuleProps, config: ConfigTypes) => {
     }
   };
   const onDisconnected = () => {
-    log("Disconnected! (!)");
+    log("Server disconnected! (!)");
   };
 
   server.on(

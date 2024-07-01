@@ -38,7 +38,7 @@ export const load = async (args: ModuleProps, config: ConfigTypes) => {
     isProxyConnected = true;
   });
   proxyClient.on("disconnected", () => {
-    log("Disconnected! (!)");
+    log("Firewall disconnected! (!)");
     isProxyConnected = false;
   });
 

@@ -28,7 +28,7 @@ export const load = async (args: ModuleProps, config: ConfigTypes) => {
     log(`Proxy started!`);
   };
   const onDisconnected = () => {
-    log("Disconnected! (!)");
+    log("Proxy disconnected! (!)");
   };
 
   serverClient.on("data", ({ event, message, userIdList }) => {});

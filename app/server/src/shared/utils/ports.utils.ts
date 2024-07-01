@@ -1,6 +1,8 @@
 import { getRandomNumber } from "./random.utils.ts";
 import { getConfig } from "shared/utils/config.utils.ts";
 
+export const getInternalFreePort = async () => getFreePort(50_000, 60_000);
+
 // min 49152
 // max 65535
 export const getFreePort = async (
