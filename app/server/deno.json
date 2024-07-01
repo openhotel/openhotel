@@ -26,7 +26,7 @@
     "deno/": "https://deno.land/std@0.221.0/",
     "loadenv": "https://deno.land/x/loadenv@v1.0.1/mod.ts",
 
-    "socket_ionic": "https://deno.land/x/socket_ionic@v1.8.5/mod.ts",
+    "socket_ionic": "https://deno.land/x/socket_ionic@v1.8.6/mod.ts",
     "worker_ionic": "https://deno.land/x/worker_ionic@v1.4.0/mod.ts",
 
     "oak": "https://deno.land/x/oak@v12.6.0/mod.ts",
