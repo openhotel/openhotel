@@ -1,21 +1,11 @@
 import { getRandomNumber } from "./random.utils.ts";
-import { getConfig } from "shared/utils/config.utils.ts";
-
-export const getInternalFreePort = async () => getFreePort(50_000, 60_000);
 
 // min 49152
 // max 65535
 export const getFreePort = async (
-  min?: number,
-  max?: number,
+  min: number = 49152,
+  max: number = 65535,
 ): Promise<number> => {
-  if (!min || !max) {
-    const {
-      ports: { range },
-    } = await getConfig();
-    if (!min) min = range[0];
-    if (!max) max = range[1];
-  }
   try {
     const targetPort = getRandomNumber(min, max);
     const listener = await Deno.listen({

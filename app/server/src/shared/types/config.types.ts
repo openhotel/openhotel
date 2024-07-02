@@ -3,8 +3,8 @@ export type ConfigTypes = {
   description?: string;
   ports?: {
     client?: number;
-    server?: number;
-    range?: [number, number];
+    firewall?: number;
+    proxy?: number;
   };
   limits?: {
     players?: number;

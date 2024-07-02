@@ -4,9 +4,9 @@ export const CONFIG_DEFAULT: ConfigTypes = {
   name: "Open Hotel",
   description: "Welcome to the Hotel!",
   ports: {
-    client: 9980,
-    server: 2002,
-    range: [10000, 10200],
+    client: 1994,
+    firewall: 2001,
+    proxy: 2005,
   },
   limits: {
     players: 100,

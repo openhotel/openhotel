@@ -1,22 +1,19 @@
-import { ConfigTypes, ModuleProps } from "shared/types/main.ts";
+import { ConfigTypes } from "shared/types/main.ts";
 import {
   debug,
   getOS,
   getOSName,
   getPath,
   getVersion,
-  initLog,
   log,
   getTemporalUpdateFilePathname,
+  isDevelopment,
 } from "shared/utils/main.ts";
 import { OS } from "shared/enums/main.ts";
 import * as path from "deno/path/mod.ts";
 
-export const load = async (
-  args: ModuleProps,
-  config: ConfigTypes,
-): Promise<boolean> => {
-  initLog();
+export const load = async (config: ConfigTypes): Promise<boolean> => {
+  if (isDevelopment()) return false;
 
   const version = getVersion();
   const os = getOS();

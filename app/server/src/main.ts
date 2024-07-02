@@ -1,71 +1,28 @@
-import { Module } from "shared/enums/main.ts";
-import { parseArgs } from "deno/cli/parse_args.ts";
-import { load as loadFirewall } from "modules/firewall/main.ts";
 import { load as loadProxy } from "modules/proxy/main.ts";
 import { load as loadServer } from "modules/server/main.ts";
 import { load as loadClient } from "modules/client/main.ts";
 import { load as loadUpdater } from "modules/updater/main.ts";
-import {
-  getRandomString,
-  getConfig,
-  getInternalFreePort,
-} from "shared/utils/main.ts";
-import { ConfigTypes, ModuleProps } from "shared/types/main.ts";
+import { getConfig, initLog, isDevelopment } from "shared/utils/main.ts";
+import { ConfigTypes } from "shared/types/main.ts";
 
 export const load = async () => {
-  const { module, token, firewallPort, proxyPort, serverPort } = parseArgs(
-    Deno.args,
-  );
+  console.clear();
 
-  const moduleProps: ModuleProps = {
-    internal: {
-      token: token || getRandomString(64),
-      firewallPort: firewallPort || (await getInternalFreePort()),
-      proxyPort: proxyPort || (await getInternalFreePort()),
-      serverPort: serverPort || (await getInternalFreePort()),
-    },
-  };
+  if (isDevelopment())
+    console.log(
+      "\n\n    ------------------\n    DEVELOPMENT SERVER\n    ------------------\n\n",
+    );
+  initLog();
 
   const config: ConfigTypes = await getConfig();
 
-  if (!module) {
-    const needsToUpdate = await loadUpdater(moduleProps, config);
-    if (needsToUpdate) return;
+  // Check for an update if true, close the server
+  if (await loadUpdater(config)) return;
 
-    const spawnModule = (module: Module) => {
-      const process = new Deno.Command(Deno.execPath(), {
-        args: [
-          `--module=${module}`,
-          `--token=${moduleProps.internal.token}`,
-          `--serverPort=${moduleProps.internal.serverPort}`,
-          `--firewallPort=${moduleProps.internal.firewallPort}`,
-          `--proxyPort=${moduleProps.internal.proxyPort}`,
-        ],
-      });
-      process.spawn();
-    };
-    spawnModule(Module.CLIENT);
-    spawnModule(Module.SERVER);
-    spawnModule(Module.FIREWALL);
-    spawnModule(Module.PROXY);
-    return;
-  }
-
-  switch (module) {
-    case Module.CLIENT:
-      await loadClient(moduleProps, config);
-      return;
-    case Module.FIREWALL:
-      await loadFirewall(moduleProps, config);
-      return;
-    case Module.PROXY:
-      await loadProxy(moduleProps, config);
-      return;
-    case Module.SERVER:
-      await loadServer(moduleProps, config);
-      return;
-    case Module.UPDATER:
-      await loadUpdater(moduleProps, config);
-      return;
-  }
+  // -> Load proxy -> load firewall
+  const { proxyWorker } = await loadProxy(config);
+  // -> Load client
+  await loadClient(config);
+  // Load server
+  await loadServer(config, proxyWorker);
 };

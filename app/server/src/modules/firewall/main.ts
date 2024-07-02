@@ -10,12 +10,9 @@ import {
 } from "shared/utils/main.ts";
 import { getClientSocket } from "socket_ionic";
 import { getParentWorker } from "worker_ionic";
-import { ConfigTypes, ModuleProps } from "shared/types/main.ts";
+import { ConfigTypes } from "shared/types/main.ts";
 
-export const load = async (args: ModuleProps, config: ConfigTypes) => {
-  await wait(200);
-  initLog();
-
+export const load = async (config: ConfigTypes) => {
   let userList: { userId: string; username: string }[] = [];
   const handshakeClientWorkerMap: Record<string, any> = {};
 
