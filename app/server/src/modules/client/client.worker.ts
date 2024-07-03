@@ -5,7 +5,7 @@ import { WorkerProps } from "shared/types/main.ts";
 initLog();
 const moduleWorker = getChildWorker();
 
-moduleWorker.on("start", async ({ config }: WorkerProps) => {
+moduleWorker.on("start", async ({ config, envs }: WorkerProps) => {
   const ROOT_DIR_PATH = "/";
 
   log(`Client started on :${config.client.port}`);
@@ -23,10 +23,9 @@ moduleWorker.on("start", async ({ config }: WorkerProps) => {
     try {
       let fileData = await Deno.readFile(targetFile);
       if (targetFile === "./client/index.html")
-        fileData = (await Deno.readTextFile(targetFile)).replace(
-          "/*__CONFIG__*/",
-          `window.__config__ = ${JSON.stringify(config)}`,
-        );
+        fileData = (await Deno.readTextFile(targetFile))
+          .replace("{/*__CONFIG__*/}", JSON.stringify(config))
+          .replace("{/*__ENVS__*/}", JSON.stringify(envs));
       return new Response(fileData, {
         headers: {
           "Content-Type": getContentType(targetFile),

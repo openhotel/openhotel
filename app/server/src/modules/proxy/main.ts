@@ -13,7 +13,7 @@ export const load = async (config: ConfigTypes, envs: Envs) => {
   const proxyWorker = getParentWorker({
     url: new URL("./proxy.worker.ts", import.meta.url).href,
   });
-  proxyWorker.emit("start", { config });
+  proxyWorker.emit("start", { config, envs });
 
   return { proxyWorker };
 

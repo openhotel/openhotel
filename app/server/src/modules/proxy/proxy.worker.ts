@@ -6,7 +6,7 @@ import { getServerSocket, ServerClient } from "socket_ionic";
 initLog();
 const moduleWorker = getChildWorker();
 
-moduleWorker.on("start", async ({ config }: WorkerProps, envs: Envs) => {
+moduleWorker.on("start", async ({ config, envs }: WorkerProps) => {
   const protocolToken = getRandomString(64);
 
   let userList: {
