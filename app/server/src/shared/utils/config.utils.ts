@@ -13,7 +13,7 @@ export const getConfig = async (): Promise<ConfigTypes> => {
     description: config?.description || CONFIG_DEFAULT.description,
     limits: {
       players: config?.limits?.players || CONFIG_DEFAULT.limits.players,
-      handshake: config?.limits?.handshake || CONFIG_DEFAULT.limits.handshake,
+      handshakes: config?.limits?.handshake || CONFIG_DEFAULT.limits.handshakes,
     },
     ports: {
       client: config?.ports?.client || CONFIG_DEFAULT.ports.client,

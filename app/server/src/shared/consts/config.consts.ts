@@ -10,6 +10,6 @@ export const CONFIG_DEFAULT: ConfigTypes = {
   },
   limits: {
     players: 100,
-    handshake: 10,
+    handshakes: 10,
   },
 };

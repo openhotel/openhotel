@@ -8,6 +8,6 @@ export type ConfigTypes = {
   };
   limits?: {
     players?: number;
-    handshake?: number;
+    handshakes?: number;
   };
 };

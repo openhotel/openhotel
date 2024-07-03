@@ -23,33 +23,34 @@ export const mainComponent = async () => {
     ).then((data) => data.json());
 
     console.log(response);
-    // let socket = getClientSocket({
-    //   url: `${firewallSocket}:${response.port}`,
-    //   protocols: [response.token],
-    //   reconnect: false,
-    // });
-    // socket.on("proxy", async ({ port, token }) => {
-    //   socket = getClientSocket({
-    //     url: `${hostname}:${port}`,
-    //     protocols: [token],
-    //     reconnect: false,
-    //   });
-    //
-    //   socket.on("connected", () => {
-    //     console.log("proxy connected!");
-    //     resolve(1);
-    //
-    //     socket.emit("data", { event: "bonjour", message: {} });
-    //   });
-    //
-    //   await socket.connect(isSecure);
-    // });
-    // socket.on("connected", () => {
-    //   console.log("handhskae connected!");
-    //
-    //   socket.emit("session", { username: `player_${getRandomString(8)}` });
-    // });
-    // await socket.connect(isSecure);
+    let socket = getClientSocket({
+      url: `localhost:2001`,
+      protocols: [response.token, response.session],
+      reconnect: false,
+    });
+    socket.on("connected", () => {
+      console.log("handhskae connected!");
+
+      socket.emit("session", { username: `player_${getRandomString(8)}` });
+    });
+    socket.on("join", async (data) => {
+      socket.close();
+      socket = getClientSocket({
+        url: `localhost:2005`,
+        protocols: [data.token, data.session],
+        reconnect: false,
+      });
+
+      socket.on("connected", () => {
+        console.log("proxy connected!");
+        resolve(1);
+
+        socket.emit("data", { event: "bonjour", message: {} });
+      });
+
+      await socket.connect();
+    });
+    await socket.connect();
   });
 
   return $container.getComponent(mainComponent);
