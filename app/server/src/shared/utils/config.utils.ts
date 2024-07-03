@@ -1,12 +1,16 @@
 import { readYaml, writeYaml } from "./yaml.utils.ts";
 import { ConfigTypes } from "shared/types/config.types.ts";
 import { CONFIG_DEFAULT } from "shared/consts/config.consts.ts";
+import { log } from "./log.utils.ts";
 
 export const getConfig = async (): Promise<ConfigTypes> => {
   let config;
   try {
     config = await readYaml<ConfigTypes>("./config.yml");
-  } catch (e) {}
+  } catch (e) {
+    log(">> error", e);
+  }
+  log(config);
 
   const defaults: ConfigTypes = {
     name: config?.name || CONFIG_DEFAULT.name,
