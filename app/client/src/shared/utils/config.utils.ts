@@ -5,7 +5,7 @@ export const getConfig = (): ConfigTypes => {
   const config = window?.__config__;
 
   // @ts-ignore
-  return config === {}
+  return Object.keys(config || {}).length
     ? config
     : {
         name: "DEVELOPMENT",
