@@ -10,7 +10,6 @@ export const getConfig = async (): Promise<ConfigTypes> => {
   } catch (e) {
     log(">> error", e);
   }
-  log(config);
 
   const defaults: ConfigTypes = {
     name: config?.name || CONFIG_DEFAULT.name,
@@ -31,6 +30,7 @@ export const getConfig = async (): Promise<ConfigTypes> => {
       url: config?.proxy?.port || CONFIG_DEFAULT.proxy.port,
     },
   };
+  log(defaults);
   try {
     await writeYaml<ConfigTypes>("./config.yml", defaults);
   } catch (e) {}
