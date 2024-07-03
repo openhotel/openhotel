@@ -23,11 +23,11 @@ export const getConfig = async (): Promise<ConfigTypes> => {
     },
     firewall: {
       port: config?.firewall?.port || CONFIG_DEFAULT.firewall.port,
-      url: config?.firewall?.port || CONFIG_DEFAULT.firewall.port,
+      url: config?.firewall?.url || CONFIG_DEFAULT.firewall.url,
     },
     proxy: {
       port: config?.proxy?.port || CONFIG_DEFAULT.proxy.port,
-      url: config?.proxy?.port || CONFIG_DEFAULT.proxy.port,
+      url: config?.proxy?.url || CONFIG_DEFAULT.proxy.url,
     },
   };
   log(defaults);
