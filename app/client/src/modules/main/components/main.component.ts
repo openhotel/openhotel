@@ -1,23 +1,23 @@
 import { container, sprite } from "@tulib/tulip";
-import { getClientSocket, getRandomString, getVersion } from "shared/utils";
+import {
+  getClientSocket,
+  getConfig,
+  getRandomString,
+  getVersion,
+  getWebSocketUrl,
+} from "shared/utils";
 
 export const mainComponent = async () => {
   const $container = await container();
 
-  let port = 2002;
-  try {
-    const targetPort = parseInt(
-      new URLSearchParams(location.search).get("port"),
-    );
+  const config = getConfig();
 
-    if (!isNaN(targetPort)) port = targetPort;
-  } catch (e) {}
-  const { protocol, hostname } = location;
-  const isSecure = !(
-    hostname === "localhost" ||
-    hostname.startsWith("192.") ||
-    hostname.startsWith("172.")
-  );
+  // const { protocol, hostname } = location;
+  // const isSecure = !(
+  //   hostname === "localhost" ||
+  //   hostname.startsWith("192.") ||
+  //   hostname.startsWith("172.")
+  // );
 
   const $logo = await sprite({
     texture: "logo_full.png",
@@ -27,19 +27,27 @@ export const mainComponent = async () => {
 
   await new Promise(async (resolve) => {
     const response = await fetch(
-      `${protocol}//${hostname}${port ? `:${port}` : ""}/request?version=${getVersion()}`,
+      `${config.firewall.url}/request?version=${getVersion()}`,
     ).then((data) => data.json());
 
     let socket = getClientSocket({
-      url: `${hostname}:${response.port}`,
-      protocols: [response.token],
+      url: getWebSocketUrl(config.firewall.url),
+      protocols: [response.token, response.session],
       reconnect: false,
+      silent: true,
     });
-    socket.on("proxy", async ({ port, token }) => {
+    socket.on("connected", () => {
+      console.log("handhskae connected!");
+
+      socket.emit("session", { username: `player_${getRandomString(8)}` });
+    });
+    socket.on("join", async (data) => {
+      socket.close();
       socket = getClientSocket({
-        url: `${hostname}:${port}`,
-        protocols: [token],
+        url: getWebSocketUrl(config.proxy.url),
+        protocols: [data.token, data.session],
         reconnect: false,
+        silent: true,
       });
 
       socket.on("connected", () => {
@@ -49,14 +57,9 @@ export const mainComponent = async () => {
         socket.emit("data", { event: "bonjour", message: {} });
       });
 
-      await socket.connect(isSecure);
+      await socket.connect();
     });
-    socket.on("connected", () => {
-      console.log("handhskae connected!");
-
-      socket.emit("session", { username: `player_${getRandomString(8)}` });
-    });
-    await socket.connect(isSecure);
+    await socket.connect();
   });
 
   return $container.getComponent(mainComponent);

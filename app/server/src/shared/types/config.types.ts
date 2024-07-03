@@ -1,13 +1,20 @@
 export type ConfigTypes = {
   name?: string;
   description?: string;
-  ports?: {
-    client?: number;
-    server?: number;
-    range?: [number, number];
-  };
   limits?: {
     players?: number;
-    handshake?: number;
+    handshakes?: number;
+  };
+
+  client?: {
+    port?: number;
+  };
+  firewall?: {
+    port?: number;
+    url?: string;
+  };
+  proxy?: {
+    port?: number;
+    url?: string;
   };
 };

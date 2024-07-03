@@ -2,7 +2,7 @@
 
 if [ ! -f ./server_linux ]; then
   echo "Checking version..."
-  VERSION=$(curl -s "https://api.github.com/repos/openhotel/openhotel/releases/latest" | jq -r '.name')
+  VERSION=$(curl -s "https://api.github.com/repos/openhotel/openhotel/releases/latest" | jq -r '.tag_name')
 
   echo "Downloading server (version $VERSION)..."
   curl -L https://github.com/openhotel/openhotel/releases/download/$VERSION/server_linux.zip > server.zip

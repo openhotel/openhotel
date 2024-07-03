@@ -1,10 +1,10 @@
 import { load } from "./src/main.ts";
 import { load as loadEnv } from "loadenv";
-import { $setEnvironment } from "shared/utils/environment.utils.ts";
+import { getProcessedEnvs } from "shared/utils/main.ts";
 
-$setEnvironment({
+const envs = getProcessedEnvs({
   version: "__VERSION__",
 });
 
 await loadEnv();
-await load();
+await load(envs);

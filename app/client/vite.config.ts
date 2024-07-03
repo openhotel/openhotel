@@ -4,7 +4,7 @@ import { plugin } from "@tulib/vite-tulip-plugin";
 
 export default defineConfig({
   server: {
-    port: 2001,
+    port: 1994,
     open: true,
   },
   plugins: [tsconfigPaths(), plugin()],
