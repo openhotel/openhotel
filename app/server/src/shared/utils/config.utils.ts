@@ -32,7 +32,7 @@ export const getConfig = async (): Promise<ConfigTypes> => {
   };
   log(defaults);
   try {
-    await writeYaml<ConfigTypes>("./config.yml", defaults);
+    await writeYaml<ConfigTypes>("./config.yml", defaults, { async: true });
   } catch (e) {}
 
   return defaults;
