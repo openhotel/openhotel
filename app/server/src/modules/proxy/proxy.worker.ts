@@ -1,20 +1,15 @@
 import { getRandomString, initLog, log } from "shared/utils/main.ts";
 import { getChildWorker, getParentWorker } from "worker_ionic";
-import { Envs, WorkerProps } from "shared/types/main.ts";
+import { User, WorkerProps } from "shared/types/main.ts";
 import { getServerSocket, ServerClient } from "socket_ionic";
 
 initLog();
-const moduleWorker = getChildWorker();
+const serverWorker = getChildWorker();
 
-moduleWorker.on("start", async ({ config, envs }: WorkerProps) => {
+serverWorker.on("start", async ({ config, envs }: WorkerProps) => {
   const protocolToken = getRandomString(64);
 
-  let userList: {
-    userId: string;
-    username: string;
-    session?: string;
-    clientId?: string;
-  }[] = [];
+  let userList: User[] = [];
 
   const firewallWorker = getParentWorker({
     url: new URL("../firewall/firewall.worker.ts", import.meta.url).href,
@@ -54,7 +49,11 @@ moduleWorker.on("start", async ({ config, envs }: WorkerProps) => {
     const foundUser = userList.find((user) => user.clientId === client.id);
     if (!foundUser) return client.close();
 
-    log(`${foundUser.username} joined!`);
+    serverWorker.emit("joined", foundUser);
+
+    client.on("data", ({ event, message }) => {
+      serverWorker.emit("data", { user: foundUser, event, message });
+    });
   });
   server.on("disconnected", (client: ServerClient) => {
     const foundUser = userList.find((user) => user.clientId === client.id);
@@ -62,7 +61,7 @@ moduleWorker.on("start", async ({ config, envs }: WorkerProps) => {
     userList = userList.filter((user) => user.clientId !== client.id);
     firewallWorker.emit("userList", { userList });
 
-    log(`${foundUser.username} left!`);
+    serverWorker.emit("left", foundUser);
   });
   log(`Proxy started on :${config.proxy.port}`);
 });
