@@ -13,16 +13,23 @@ export const getConfig = async (): Promise<ConfigTypes> => {
     description: config?.description || CONFIG_DEFAULT.description,
     limits: {
       players: config?.limits?.players || CONFIG_DEFAULT.limits.players,
-      handshake: config?.limits?.handshake || CONFIG_DEFAULT.limits.handshake,
+      handshakes:
+        config?.limits?.handshakes || CONFIG_DEFAULT.limits.handshakes,
     },
-    ports: {
-      client: config?.ports?.client || CONFIG_DEFAULT.ports.client,
-      server: config?.ports?.server || CONFIG_DEFAULT.ports.server,
-      range: config?.ports?.range || CONFIG_DEFAULT.ports.range,
+    client: {
+      port: config?.client?.port || CONFIG_DEFAULT.client.port,
+    },
+    firewall: {
+      port: config?.firewall?.port || CONFIG_DEFAULT.firewall.port,
+      url: config?.firewall?.url || CONFIG_DEFAULT.firewall.url,
+    },
+    proxy: {
+      port: config?.proxy?.port || CONFIG_DEFAULT.proxy.port,
+      url: config?.proxy?.url || CONFIG_DEFAULT.proxy.url,
     },
   };
   try {
-    await writeYaml<ConfigTypes>("./config.yml", defaults);
+    await writeYaml<ConfigTypes>("./config.yml", defaults, { async: true });
   } catch (e) {}
 
   return defaults;
