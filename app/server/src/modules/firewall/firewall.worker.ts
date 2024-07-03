@@ -19,7 +19,7 @@ proxyWorker.on("userList", (data) => {
 });
 proxyWorker.on(
   "start",
-  async ({ config, token: proxyProtocolToken }: WorkerProps) => {
+  async ({ config, envs, token: proxyProtocolToken }: WorkerProps) => {
     let handshakeList: {
       session: string;
       clientId: string;
@@ -39,7 +39,7 @@ proxyWorker.on(
 
         let response = new Response("404 Not found", { status: 404 });
         if (foundRoute) {
-          response = await foundRoute.fn(request, config, {
+          response = await foundRoute.fn(request, config, envs, {
             userList,
             handshakeList,
             protocolToken,

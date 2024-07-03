@@ -1,12 +1,12 @@
 import { getRandomString, initLog, log } from "shared/utils/main.ts";
 import { getChildWorker, getParentWorker } from "worker_ionic";
-import { WorkerProps } from "shared/types/main.ts";
+import { Envs, WorkerProps } from "shared/types/main.ts";
 import { getServerSocket, ServerClient } from "socket_ionic";
 
 initLog();
 const moduleWorker = getChildWorker();
 
-moduleWorker.on("start", async ({ config }: WorkerProps) => {
+moduleWorker.on("start", async ({ config }: WorkerProps, envs: Envs) => {
   const protocolToken = getRandomString(64);
 
   let userList: {
@@ -19,7 +19,11 @@ moduleWorker.on("start", async ({ config }: WorkerProps) => {
   const firewallWorker = getParentWorker({
     url: new URL("../firewall/firewall.worker.ts", import.meta.url).href,
   });
-  firewallWorker.emit("start", { config, token: protocolToken } as WorkerProps);
+  firewallWorker.emit("start", {
+    config,
+    envs,
+    token: protocolToken,
+  } as WorkerProps);
   firewallWorker.on("join", ({ session, userId, username }) => {
     userList.push({ session, userId, username });
     firewallWorker.emit("userList", { userList });

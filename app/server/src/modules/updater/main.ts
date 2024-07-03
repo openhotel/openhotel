@@ -1,21 +1,21 @@
-import { ConfigTypes } from "shared/types/main.ts";
+import { ConfigTypes, Envs } from "shared/types/main.ts";
 import {
   debug,
   getOS,
   getOSName,
   getPath,
-  getVersion,
   log,
   getTemporalUpdateFilePathname,
-  isDevelopment,
 } from "shared/utils/main.ts";
 import { OS } from "shared/enums/main.ts";
 import * as path from "deno/path/mod.ts";
 
-export const load = async (config: ConfigTypes): Promise<boolean> => {
-  if (isDevelopment()) return false;
+export const load = async (
+  config: ConfigTypes,
+  envs: Envs,
+): Promise<boolean> => {
+  if (envs.version === "DEVELOPMENT") return false;
 
-  const version = getVersion();
   const os = getOS();
   const osName = getOSName();
 
@@ -26,7 +26,7 @@ export const load = async (config: ConfigTypes): Promise<boolean> => {
     return false;
   }
 
-  log(`Version ${version}`);
+  log(`Version ${envs.version}`);
   log(`Checking for updates...`);
 
   try {
@@ -43,7 +43,9 @@ export const load = async (config: ConfigTypes): Promise<boolean> => {
           return `${num}` === e ? num : e;
         });
 
-    const [oldMajor, oldMinor, oldPatch, oldExtra] = getSlicedVersion(version);
+    const [oldMajor, oldMinor, oldPatch, oldExtra] = getSlicedVersion(
+      envs.version,
+    );
     const [newMajor, newMinor, newPatch, newExtra] =
       getSlicedVersion(latestVersion);
 

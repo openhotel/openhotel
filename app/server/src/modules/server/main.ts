@@ -1,4 +1,4 @@
-import { ConfigTypes } from "shared/types/main.ts";
+import { ConfigTypes, Envs } from "shared/types/main.ts";
 import { debug, initLog, log } from "shared/utils/main.ts";
 import InputLoop from "input";
 
@@ -7,7 +7,7 @@ type User = {
   username: string;
 };
 
-export const load = async (config: ConfigTypes, proxyWorker) => {
+export const load = async (config: ConfigTypes, envs: Envs, proxyWorker) => {
   log("server");
   // if(false) {
   //   let proxyClient;

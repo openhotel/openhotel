@@ -1,16 +1,15 @@
-import { ConfigTypes } from "shared/types/main.ts";
+import { ConfigTypes, Envs } from "shared/types/main.ts";
 import { getClientSocket, getServerSocket } from "socket_ionic";
 import { getParentWorker } from "worker_ionic";
 import {
   debug,
   getFreePort,
   getRandomString,
-  initLog,
   log,
   wait,
 } from "shared/utils/main.ts";
 
-export const load = async (config: ConfigTypes) => {
+export const load = async (config: ConfigTypes, envs: Envs) => {
   const proxyWorker = getParentWorker({
     url: new URL("./proxy.worker.ts", import.meta.url).href,
   });
