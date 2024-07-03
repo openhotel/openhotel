@@ -28,7 +28,7 @@ proxyWorker.on(
     const protocolToken = getRandomString(64);
 
     const server = getServerSocket(
-      config.ports.firewall,
+      config.firewall.port,
       async (request: Request) => {
         const { method, url } = request;
         const { pathname } = new URL(url);
@@ -107,6 +107,6 @@ proxyWorker.on(
       );
     });
 
-    log(`Firewall started on :${config.ports.firewall}`);
+    log(`Firewall started on :${config.firewall.port}`);
   },
 );

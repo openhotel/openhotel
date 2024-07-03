@@ -32,7 +32,7 @@ moduleWorker.on("start", async ({ config }: WorkerProps) => {
     }, 5_000);
   });
 
-  const server = getServerSocket(config.ports.proxy, (request: Request) => {
+  const server = getServerSocket(config.proxy.port, (request: Request) => {
     return new Response("404 Not found", { status: 404 });
   });
 
@@ -60,5 +60,5 @@ moduleWorker.on("start", async ({ config }: WorkerProps) => {
 
     log(`${foundUser.username} left!`);
   });
-  log(`Proxy started on :${config.ports.proxy}`);
+  log(`Proxy started on :${config.proxy.port}`);
 });

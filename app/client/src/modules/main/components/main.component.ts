@@ -1,8 +1,16 @@
 import { container, sprite } from "@tulib/tulip";
-import { getClientSocket, getRandomString, getVersion } from "shared/utils";
+import {
+  getClientSocket,
+  getConfig,
+  getRandomString,
+  getVersion,
+  getWebSocketUrl,
+} from "shared/utils";
 
 export const mainComponent = async () => {
   const $container = await container();
+
+  const config = getConfig();
 
   // const { protocol, hostname } = location;
   // const isSecure = !(
@@ -19,14 +27,14 @@ export const mainComponent = async () => {
 
   await new Promise(async (resolve) => {
     const response = await fetch(
-      `http://localhost:2001/request?version=${getVersion()}`,
+      `${config.firewall.url}/request?version=${getVersion()}`,
     ).then((data) => data.json());
 
-    console.log(response);
     let socket = getClientSocket({
-      url: `localhost:2001`,
+      url: getWebSocketUrl(config.firewall.url),
       protocols: [response.token, response.session],
       reconnect: false,
+      silent: true,
     });
     socket.on("connected", () => {
       console.log("handhskae connected!");
@@ -36,9 +44,10 @@ export const mainComponent = async () => {
     socket.on("join", async (data) => {
       socket.close();
       socket = getClientSocket({
-        url: `localhost:2005`,
+        url: getWebSocketUrl(config.proxy.url),
         protocols: [data.token, data.session],
         reconnect: false,
+        silent: true,
       });
 
       socket.on("connected", () => {

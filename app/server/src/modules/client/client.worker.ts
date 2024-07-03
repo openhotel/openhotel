@@ -8,9 +8,9 @@ const moduleWorker = getChildWorker();
 moduleWorker.on("start", async ({ config }: WorkerProps) => {
   const ROOT_DIR_PATH = "/";
 
-  log(`Client started on :${config.ports.client}`);
+  log(`Client started on :${config.client.port}`);
 
-  await Deno.serve({ port: config.ports.client }, async (request: Request) => {
+  await Deno.serve({ port: config.client.port }, async (request: Request) => {
     const { url } = request;
     const { pathname } = new URL(url);
 
@@ -21,8 +21,13 @@ moduleWorker.on("start", async ({ config }: WorkerProps) => {
     const targetFile = "./client/" + (filePath || "index.html");
 
     try {
-      const fileBuffer = await Deno.readFile(targetFile);
-      return new Response(fileBuffer, {
+      let fileText = await Deno.readTextFile(targetFile);
+      if (targetFile === "./client/index.html")
+        fileText = fileText.replace(
+          "/*__CONFIG__*/",
+          `window.__config__ = ${JSON.stringify(config)}`,
+        );
+      return new Response(fileText, {
         headers: {
           "Content-Type": getContentType(targetFile),
         },

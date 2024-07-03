@@ -13,7 +13,7 @@ export const getCORSHeaders = (): Headers => {
   for (const [key, value] of HEADERS) headers.append(key, value);
   return headers;
 };
-
+1;
 export const appendCORSHeaders = (headers: Headers) => {
   for (const [key, value] of HEADERS) headers.append(key, value);
 };

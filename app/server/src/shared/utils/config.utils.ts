@@ -15,10 +15,16 @@ export const getConfig = async (): Promise<ConfigTypes> => {
       players: config?.limits?.players || CONFIG_DEFAULT.limits.players,
       handshakes: config?.limits?.handshake || CONFIG_DEFAULT.limits.handshakes,
     },
-    ports: {
-      client: config?.ports?.client || CONFIG_DEFAULT.ports.client,
-      firewall: config?.ports?.server || CONFIG_DEFAULT.ports.firewall,
-      proxy: config?.ports?.range || CONFIG_DEFAULT.ports.proxy,
+    client: {
+      port: config?.client?.port || CONFIG_DEFAULT.client.port,
+    },
+    firewall: {
+      port: config?.firewall?.port || CONFIG_DEFAULT.firewall.port,
+      url: config?.firewall?.port || CONFIG_DEFAULT.firewall.port,
+    },
+    proxy: {
+      port: config?.proxy?.port || CONFIG_DEFAULT.proxy.port,
+      url: config?.proxy?.port || CONFIG_DEFAULT.proxy.port,
     },
   };
   try {
