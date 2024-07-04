@@ -1,16 +1,37 @@
 import { ConfigTypes, Envs, User } from "shared/types/main.ts";
-import { debug, initLog, log } from "shared/utils/main.ts";
-import InputLoop from "input";
+import { log } from "shared/utils/main.ts";
 import { Event } from "shared/enums/main.ts";
 
 export const load = async (config: ConfigTypes, envs: Envs, proxyWorker) => {
   log("server");
 
-  proxyWorker.on("joined", ({ username }: User) => {
-    log(`${username} joined!`);
+  let userList: User[] = [];
+  const logs: string[] = [];
+
+  const broadcast = (message: string) => {
+    log(message);
+    logs.push(message);
+
+    proxyWorker.emit("data", {
+      users: ["*"],
+      event: "log",
+      message: { log: message },
+    });
+  };
+
+  proxyWorker.on("joined", (user: User) => {
+    userList.push(user);
+    broadcast(`${user.username} joined!`);
+
+    proxyWorker.emit("data", {
+      users: [user.clientId],
+      event: "logs",
+      message: { logs },
+    });
   });
-  proxyWorker.on("left", ({ username }: User) => {
-    log(`${username} left!`);
+  proxyWorker.on("left", ({ username, userId }: User) => {
+    userList = userList.filter((user) => user.userId !== userId);
+    broadcast(`${username} left!`);
   });
   proxyWorker.on(
     "data",

@@ -6,10 +6,25 @@ import { getServerSocket, ServerClient } from "socket_ionic";
 initLog();
 const serverWorker = getChildWorker();
 
+let userList: User[] = [];
+let userClientMap: Record<string, ServerClient> = {};
+
+let server;
+
+type DataEvent = {
+  users: string[];
+  event: string;
+  message: object;
+};
+
+serverWorker.on("data", ({ users, event, message }: DataEvent) => {
+  // broadcast
+  if (users.includes("*")) return server.emit(event, message);
+  //
+  for (const clientId of users) userClientMap[clientId].emit(event, message);
+});
 serverWorker.on("start", async ({ config, envs }: WorkerProps) => {
   const protocolToken = getRandomString(64);
-
-  let userList: User[] = [];
 
   const firewallWorker = getParentWorker({
     url: new URL("../firewall/firewall.worker.ts", import.meta.url).href,
@@ -31,9 +46,10 @@ serverWorker.on("start", async ({ config, envs }: WorkerProps) => {
     }, 5_000);
   });
 
-  const server = getServerSocket(config.proxy.port, (request: Request) => {
-    return new Response("404 Not found", { status: 404 });
-  });
+  server = getServerSocket(
+    config.proxy.port,
+    (request: Request) => new Response("404", { status: 404 }),
+  );
 
   server.on("guest", (clientId: string, [token, session]) => {
     if (token !== protocolToken && userList.length >= config.limits.players)
@@ -49,6 +65,7 @@ serverWorker.on("start", async ({ config, envs }: WorkerProps) => {
     const foundUser = userList.find((user) => user.clientId === client.id);
     if (!foundUser) return client.close();
 
+    userClientMap[foundUser.clientId] = client;
     serverWorker.emit("joined", foundUser);
 
     client.on("data", ({ event, message }) => {
@@ -58,6 +75,7 @@ serverWorker.on("start", async ({ config, envs }: WorkerProps) => {
   server.on("disconnected", (client: ServerClient) => {
     const foundUser = userList.find((user) => user.clientId === client.id);
 
+    delete userClientMap[foundUser.clientId];
     userList = userList.filter((user) => user.clientId !== client.id);
     firewallWorker.emit("userList", { userList });
 
