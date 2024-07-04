@@ -209,20 +209,20 @@
   resolved "https://registry.yarnpkg.com/@rollup/rollup-win32-x64-msvc/-/rollup-win32-x64-msvc-4.18.0.tgz#5d694d345ce36b6ecf657349e03eb87297e68da4"
   integrity sha512-UOo5FdvOL0+eIVTgS4tIdbW+TtnBLWg1YBCcU2KWM7nuNwRz9bksDX1bekJJCpu25N1DVWaCwnT39dVQxzqS8g==
 
-"@tulib/tulip@0.2.2":
-  version "0.2.2"
-  resolved "https://registry.yarnpkg.com/@tulib/tulip/-/tulip-0.2.2.tgz#235a7ba651514c9335ec47fc5c376c155db03e56"
-  integrity sha512-N75/YGFfK/Fmvho9t/E7bXmAscNuqD5Cve9BHAU3CGHjIFYc9yLhPzm+Ydr5x3tCxMJjxF986wGs3ZCOL9FJ8g==
+"@tulib/tulip@0.3.3":
+  version "0.3.3"
+  resolved "https://registry.yarnpkg.com/@tulib/tulip/-/tulip-0.3.3.tgz#cde9907644fdaf5fa25a8464fc13a57a13455863"
+  integrity sha512-CGA6oVRbE2AqOH8Fhsa35oCFIqrUW0BlPGtGQ9Hf1FQgLbfxw6w946l/HGlVS7VsCOv6ANBwcoYKAxEL1ogNPQ==
   dependencies:
-    "@tulib/vite-tulip-plugin" "1.0.2"
+    "@tulib/vite-tulip-plugin" "1.0.7"
     howler "2.2.4"
     p2 "0.7.1"
     pixi.js "8.1.6"
 
-"@tulib/vite-tulip-plugin@1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@tulib/vite-tulip-plugin/-/vite-tulip-plugin-1.0.2.tgz#9da3da78dcdacbc294e86a2e5b9fe9988fe93b9f"
-  integrity sha512-DqGaFFGZfTYIpVH7Q81VA8jdaZ1W2OS/fXhn8KlgFP0+qm7lXHR9QDYXQTwM3C6dgkRS6VgV6v4u4cOe2u+nrQ==
+"@tulib/vite-tulip-plugin@1.0.7":
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/@tulib/vite-tulip-plugin/-/vite-tulip-plugin-1.0.7.tgz#43e143fa3503616901d2191772ab8a26ac432ede"
+  integrity sha512-7Dk75LkDrhqn5nE6InXNK3Hc7yEmBZpkv5iB3phHfdp1PIxagIS6FdcdiNq25FJa/9Dlrb0i/xXK/4UA80PsLw==
   dependencies:
     picocolors "1.0.1"
 

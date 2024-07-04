@@ -37,7 +37,7 @@ proxyWorker.on(
           (route) => route.method === method && route.pathname === pathname,
         );
 
-        let response = new Response("404 Not found", { status: 404 });
+        let response = new Response("404", { status: 404 });
         if (foundRoute) {
           response = await foundRoute.fn(request, config, envs, {
             userList,
