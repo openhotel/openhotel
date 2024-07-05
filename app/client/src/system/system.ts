@@ -11,8 +11,8 @@ export const System = (() => {
 
   let $socket;
 
-  const connect = async () =>
-    await new Promise(async (resolve) => {
+  const preConnect = async () =>
+    new Promise(async (resolve) => {
       const response = await fetch(
         `${config.firewall.url}/request?version=${getVersion()}`,
       ).then((data) => data.json());
@@ -36,15 +36,18 @@ export const System = (() => {
           reconnect: false,
           silent: true,
         });
+        resolve(1);
+      });
+      await $socket.connect();
+    });
 
-        $socket.on("connected", () => {
-          console.log("proxy connected!");
-          resolve(1);
+  const connect = async () =>
+    await new Promise(async (resolve) => {
+      $socket.on("connected", () => {
+        console.log("proxy connected!");
 
-          $socket.emit("data", { event: "bonjour", message: {} });
-        });
-
-        await $socket.connect();
+        $socket.emit("data", { event: "bonjour", message: {} });
+        resolve(1);
       });
       await $socket.connect();
     });
@@ -52,6 +55,7 @@ export const System = (() => {
   const getSocket = () => $socket;
 
   return {
+    preConnect,
     connect,
     getSocket,
   };

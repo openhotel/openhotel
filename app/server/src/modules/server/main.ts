@@ -20,6 +20,19 @@ export const load = async (config: ConfigTypes, envs: Envs, proxyWorker) => {
   };
 
   proxyWorker.on("joined", (user: User) => {
+    for (const currentUser of userList) {
+      proxyWorker.emit("data", {
+        users: [user.clientId],
+        event: "add-human",
+        message: { username: currentUser.username },
+      });
+    }
+    proxyWorker.emit("data", {
+      users: ["*"],
+      event: "add-human",
+      message: { username: user.username },
+    });
+
     userList.push(user);
     broadcast(`${user.username} joined!`);
 
@@ -32,6 +45,12 @@ export const load = async (config: ConfigTypes, envs: Envs, proxyWorker) => {
   proxyWorker.on("left", ({ username, userId }: User) => {
     userList = userList.filter((user) => user.userId !== userId);
     broadcast(`${username} left!`);
+
+    proxyWorker.emit("data", {
+      users: ["*"],
+      event: "remove-human",
+      message: { username },
+    });
   });
   proxyWorker.on(
     "data",
