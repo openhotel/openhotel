@@ -32,7 +32,7 @@ export const humanComponent: AsyncComponent<Props, Mutable> = async ({
     angle: 90,
     color: 0xff00ff,
     zIndex: -1000,
-    alpha: 0.25,
+    alpha: 0.0001,
   });
   await capsule.setPivotX(-25);
   const tagName = await text({
@@ -44,6 +44,7 @@ export const humanComponent: AsyncComponent<Props, Mutable> = async ({
       y: -16,
       x: 0,
     },
+    alpha: 0.25,
   });
   await tagName.setPivotX(tagName.getDisplayObject().getBounds().width / 2);
   $container.add(capsule, tagName);
@@ -51,6 +52,7 @@ export const humanComponent: AsyncComponent<Props, Mutable> = async ({
   const human = await sprite({
     texture: "human_dev.png",
   });
+  human.getDisplayObject().tint = 0xefcfb1;
   $container.add(human);
   const bounds = human.getDisplayObject().getBounds();
   await human.setPivotX(Math.round(bounds.width / 2));

@@ -69,6 +69,8 @@ export const roomComponent: AsyncComponent<null, Mutable> = async () => {
       });
       const pos = getIsometricPosition({ x, z, y: 0 }, 12);
       await tile.setPosition(pos);
+
+      tile.getDisplayObject().tint = (x + z) % 2 === 0 ? 0xa49f7e : 0xb2ad8e;
       $container.add(tile);
     }
   }
