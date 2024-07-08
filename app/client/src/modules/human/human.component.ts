@@ -1,11 +1,10 @@
 import {
-  AsyncComponent,
+  ContainerComponent,
   container,
-  ContainerMutable,
   graphics,
   GraphicType,
   sprite,
-  text,
+  textSprite,
 } from "@tulib/tulip";
 import { getIsometricPosition } from "shared/utils";
 import { Point3d } from "shared/types";
@@ -18,12 +17,12 @@ type Mutable = {
   setIsometricPosition: (position: Point3d) => Promise<void>;
   getIsometricPosition: () => Point3d;
   getUsername: () => string;
-} & ContainerMutable;
+};
 
-export const humanComponent: AsyncComponent<Props, Mutable> = async ({
+export const humanComponent: ContainerComponent<Props, Mutable> = async ({
   username,
 }) => {
-  const $container = await container();
+  const $container = await container<Props, Mutable>();
 
   const capsule = await graphics({
     type: GraphicType.CAPSULE,
@@ -35,16 +34,13 @@ export const humanComponent: AsyncComponent<Props, Mutable> = async ({
     alpha: 0.0001,
   });
   await capsule.setPivotX(-25);
-  const tagName = await text({
-    font: "Arial",
-    color: 0xff0000,
+  const tagName = await textSprite({
     text: username,
-    size: 12,
+    spriteSheet: "default-font.json",
     position: {
       y: -16,
       x: 0,
     },
-    alpha: 0.25,
   });
   await tagName.setPivotX(tagName.getDisplayObject().getBounds().width / 2);
   $container.add(capsule, tagName);
@@ -52,7 +48,8 @@ export const humanComponent: AsyncComponent<Props, Mutable> = async ({
   const human = await sprite({
     texture: "human_dev.png",
   });
-  human.getDisplayObject().tint = 0xefcfb1;
+  await human.setTint(0xefcfb1);
+
   $container.add(human);
   const bounds = human.getDisplayObject().getBounds();
   await human.setPivotX(Math.round(bounds.width / 2));

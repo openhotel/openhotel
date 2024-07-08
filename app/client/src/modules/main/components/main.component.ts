@@ -1,11 +1,11 @@
-import { container } from "@tulib/tulip";
+import { container, ContainerComponent } from "@tulib/tulip";
 import { logoComponent } from "./logo.component";
 import { logComponent } from "./log.component";
 import { System } from "system";
 import { roomComponent } from "modules/room";
 import { humanComponent } from "modules/human";
 
-export const mainComponent = async () => {
+export const mainComponent: ContainerComponent = async () => {
   await System.preConnect();
   const $container = await container();
 

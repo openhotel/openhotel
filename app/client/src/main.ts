@@ -4,6 +4,8 @@ import { mainComponent } from "modules/main";
 application({
   backgroundColor: 0x030303,
   scale: 2,
+  pixelPerfect: true,
+  showFPS: true,
   //@ts-ignore
   importMetaEnv: import.meta.env,
   //@ts-ignore

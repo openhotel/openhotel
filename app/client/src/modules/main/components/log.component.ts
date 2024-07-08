@@ -1,7 +1,7 @@
-import { AsyncComponent, container, text } from "@tulib/tulip";
+import { ContainerComponent, container, text } from "@tulib/tulip";
 import { System } from "system";
 
-export const logComponent: AsyncComponent<null, null> = async () => {
+export const logComponent: ContainerComponent = async () => {
   const $container = await container();
 
   const renderText = async (message: string) => {

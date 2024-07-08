@@ -1,19 +1,14 @@
-import {
-  AsyncComponent,
-  container,
-  ContainerMutable,
-  sprite,
-} from "@tulib/tulip";
+import { container, ContainerComponent, sprite } from "@tulib/tulip";
 import { getIsometricPosition, getRandomNumber } from "shared/utils";
 import { Point3d } from "shared/types";
 
 type Mutable = {
   getFreeTilePosition: () => Point3d;
   releaseTilePosition: (point: Point3d) => void;
-} & ContainerMutable;
+};
 
-export const roomComponent: AsyncComponent<null, Mutable> = async () => {
-  const $container = await container();
+export const roomComponent: ContainerComponent<{}, Mutable> = async () => {
+  const $container = await container<{}, Mutable>();
   await $container.setPosition({ x: 300, y: 100 });
 
   const roomData = [
