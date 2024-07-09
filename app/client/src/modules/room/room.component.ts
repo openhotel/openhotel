@@ -1,61 +1,26 @@
 import { container, ContainerComponent, sprite } from "@tulib/tulip";
-import { getIsometricPosition, getRandomNumber } from "shared/utils";
-import { Point3d } from "shared/types";
+import { getIsometricPosition } from "shared/utils";
+import { RoomPoint } from "shared/enums";
 
-type Mutable = {
-  getFreeTilePosition: () => Point3d;
-  releaseTilePosition: (point: Point3d) => void;
+type Props = {
+  layout: RoomPoint[][];
 };
 
-export const roomComponent: ContainerComponent<{}, Mutable> = async () => {
+type Mutable = {};
+
+export const roomComponent: ContainerComponent<Props, Mutable> = async ({
+  layout,
+}) => {
   const $container = await container<{}, Mutable>();
   await $container.setPosition({ x: 300, y: 100 });
 
-  const roomData = [
-    "   ███",
-    "██ ███",
-    "██ ███",
-    "██████",
-    "██████ ██",
-    "██████  █",
-    "█████████",
-    "     ████",
-  ];
-
-  const room = roomData.map((line) =>
-    line.split("").map((value) => value !== " "),
-  );
   const roomSize = {
-    width: room.length,
-    depth: Math.max(...room.map((line) => line.length)),
-  };
-
-  let occupiedPositions: Point3d[] = [];
-  const getFreeTilePosition = (): Point3d => {
-    try {
-      const freePoint = {
-        x: getRandomNumber(0, roomSize.width - 1),
-        z: getRandomNumber(0, roomSize.depth - 1),
-        y: 0,
-      };
-      if (
-        room[freePoint.x][freePoint.z] &&
-        !occupiedPositions.some(
-          (point) => freePoint.x === point.x && freePoint.z === point.x,
-        )
-      )
-        return freePoint;
-    } catch (e) {}
-    return getFreeTilePosition();
-  };
-  const releaseTilePosition = (currentPoint: Point3d) => {
-    occupiedPositions = occupiedPositions.filter(
-      (point) => currentPoint.x !== point.x && currentPoint.z !== point.x,
-    );
+    width: layout.length,
+    depth: Math.max(...layout.map((line) => line.length)),
   };
 
   for (let x = 0; x < roomSize.width; x++) {
-    const roomLine = room[x];
+    const roomLine = layout[x];
     for (let z = 0; z < roomSize.depth; z++) {
       if (!roomLine[z]) continue;
 
@@ -65,13 +30,16 @@ export const roomComponent: ContainerComponent<{}, Mutable> = async () => {
       const pos = getIsometricPosition({ x, z, y: 0 }, 12);
       await tile.setPosition(pos);
 
-      tile.getDisplayObject().tint = (x + z) % 2 === 0 ? 0xa49f7e : 0xb2ad8e;
+      await tile.setTint(
+        roomLine[z] === RoomPoint.SPAWN
+          ? 0x2f2f2f
+          : (x + z) % 2 === 0
+            ? 0xa49f7e
+            : 0xb2ad8e,
+      );
       $container.add(tile);
     }
   }
 
-  return $container.getComponent(roomComponent, {
-    getFreeTilePosition,
-    releaseTilePosition,
-  });
+  return $container.getComponent(roomComponent);
 };

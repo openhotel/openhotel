@@ -1,61 +1,40 @@
-import { ConfigTypes, Envs, User } from "shared/types/main.ts";
+import { Envs, ConfigTypes } from "shared/types/main.ts";
+import { WorkerParent } from "worker_ionic";
+import { proxy } from "./proxy/main.ts";
+import { users } from "./users.ts";
 import { log } from "shared/utils/main.ts";
-import { Event } from "shared/enums/main.ts";
+import { rooms } from "./rooms.ts";
 
-export const load = async (config: ConfigTypes, envs: Envs, proxyWorker) => {
-  log("server");
+export const Server = (() => {
+  let $config: ConfigTypes;
+  let $envs: Envs;
 
-  let userList: User[] = [];
-  const logs: string[] = [];
+  let $proxy = proxy();
 
-  const broadcast = (message: string) => {
-    log(message);
-    logs.push(message);
+  let $users = users();
+  let $rooms = rooms();
 
-    proxyWorker.emit("data", {
-      users: ["*"],
-      event: "log",
-      message: { log: message },
-    });
+  const load = (config: ConfigTypes, envs: Envs, proxyWorker: WorkerParent) => {
+    log("server");
+
+    $config = config;
+    $envs = envs;
+
+    $proxy.load(proxyWorker);
   };
 
-  proxyWorker.on("joined", (user: User) => {
-    for (const currentUser of userList) {
-      proxyWorker.emit("data", {
-        users: [user.clientId],
-        event: "add-human",
-        message: { username: currentUser.username },
-      });
-    }
-    proxyWorker.emit("data", {
-      users: ["*"],
-      event: "add-human",
-      message: { username: user.username },
-    });
+  const getConfig = () => $config;
+  const getEnvs = () => $envs;
 
-    userList.push(user);
-    broadcast(`${user.username} joined!`);
+  return {
+    load,
 
-    proxyWorker.emit("data", {
-      users: [user.clientId],
-      event: "logs",
-      message: { logs },
-    });
-  });
-  proxyWorker.on("left", ({ username, userId }: User) => {
-    userList = userList.filter((user) => user.userId !== userId);
-    broadcast(`${username} left!`);
+    getConfig,
+    getEnvs,
 
-    proxyWorker.emit("data", {
-      users: ["*"],
-      event: "remove-human",
-      message: { username },
-    });
-  });
-  proxyWorker.on(
-    "data",
-    ({ user, event, message }: { user: User; event: Event; message: any }) => {
-      log(user.username, event, message);
-    },
-  );
-};
+    users: $users,
+    rooms: $rooms,
+
+    proxy: $proxy,
+  };
+})();

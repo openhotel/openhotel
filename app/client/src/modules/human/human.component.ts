@@ -63,7 +63,9 @@ export const humanComponent: ContainerComponent<Props, Mutable> = async ({
     setIsometricPosition: async (position) => {
       isometricPosition = position;
       await $container.setPosition(getIsometricPosition(position, 12));
-      await $container.setZIndex(isometricPosition.x + isometricPosition.z);
+      await $container.setZIndex(
+        isometricPosition.x + isometricPosition.z + 500,
+      );
     },
     getIsometricPosition: () => isometricPosition,
     getUsername: () => username,
