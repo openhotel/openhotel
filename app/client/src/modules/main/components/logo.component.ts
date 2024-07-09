@@ -1,6 +1,6 @@
-import { sprite, AsyncComponent, SpriteMutable } from "@tulib/tulip";
+import { sprite, SpriteComponent } from "@tulib/tulip";
 
-export const logoComponent: AsyncComponent<{}, SpriteMutable> = async () => {
+export const logoComponent: SpriteComponent = async () => {
   const $logo = await sprite({
     texture: "logo_full.png",
   });
