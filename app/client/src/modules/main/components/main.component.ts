@@ -26,29 +26,31 @@ export const mainComponent: ContainerComponent = async () => {
   System.proxy.on<any>(Event.TEST, async ({ username }) => {
     console.log("hello there!", username);
   });
-  System.proxy.on<any>(Event.ADD_HUMAN, async ({ user, position }) => {
-    const human = await humanComponent({ username: user.username });
+  System.proxy.on<any>(Event.ADD_HUMAN, async ({ user, position, isOld }) => {
+    const human = await humanComponent({ user });
     await human.setIsometricPosition(position);
     humanList.push(human);
     $room.add(human);
 
-    logs.setLog(`${user.username} joined!`);
+    if (!isOld) logs.addLog(`${user.username} joined!`);
   });
   System.proxy.on<any>(Event.REMOVE_HUMAN, ({ user }) => {
     const currentHuman = humanList.find(
-      (human) => human.getUsername() === user.username,
+      (human) => human.getUser().id === user.id,
     );
     $room.remove(currentHuman);
-    humanList = humanList.filter(
-      (human) => human.getUsername() !== user.username,
-    );
-    logs.setLog(`${user.username} left!`);
+    humanList = humanList.filter((human) => human.getUser().id !== user.id);
+    logs.addLog(`${user.username} left!`);
+  });
+  System.proxy.on<any>(Event.MOVE_HUMAN, async ({ userId, position }) => {
+    const human = humanList.find((human) => human.getUser().id === userId);
+
+    human.setIsometricPosition({ ...position, y: 0 });
   });
 
   await System.proxy.connect();
 
   System.proxy.on<any>(Event.LOAD_ROOM, async ({ room }) => {
-    console.log(room);
     $room = await roomComponent({ layout: room.layout });
     $container.add($room);
 

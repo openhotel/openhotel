@@ -1,6 +1,7 @@
 import {
-  ContainerComponent,
   container,
+  ContainerComponent,
+  EventMode,
   graphics,
   GraphicType,
   sprite,
@@ -10,19 +11,20 @@ import { getIsometricPosition } from "shared/utils";
 import { Point3d } from "shared/types";
 
 type Props = {
-  username: string;
+  user: any;
 };
 
 type Mutable = {
   setIsometricPosition: (position: Point3d) => Promise<void>;
   getIsometricPosition: () => Point3d;
-  getUsername: () => string;
+  getUser: () => { id: string; username: string };
 };
 
 export const humanComponent: ContainerComponent<Props, Mutable> = async ({
-  username,
+  user,
 }) => {
   const $container = await container<Props, Mutable>();
+  await $container.setEventMode(EventMode.NONE);
 
   const capsule = await graphics({
     type: GraphicType.CAPSULE,
@@ -35,7 +37,7 @@ export const humanComponent: ContainerComponent<Props, Mutable> = async ({
   });
   await capsule.setPivotX(-25);
   const tagName = await textSprite({
-    text: username,
+    text: user.username,
     spriteSheet: "default-font.json",
     position: {
       y: -16,
@@ -68,6 +70,6 @@ export const humanComponent: ContainerComponent<Props, Mutable> = async ({
       );
     },
     getIsometricPosition: () => isometricPosition,
-    getUsername: () => username,
+    getUser: () => user,
   });
 };

@@ -6,6 +6,9 @@ export enum Event {
 
   ADD_HUMAN = "add-human",
   REMOVE_HUMAN = "remove-human",
+  MOVE_HUMAN = "move-human",
+
+  POINTER_TILE = "pointer-tile",
 
   TEST = "test",
 }
