@@ -49,13 +49,6 @@ export const rooms = () => {
     if (!roomMap[$roomId]) return;
 
     userRoomMap[$user.id] = $roomId;
-    roomUserMap[$roomId].push({
-      user: {
-        id: $user.id,
-        username: $user.username,
-      },
-      position: spawnPoint,
-    });
 
     Server.proxy.emitRoom({
       roomId: $roomId,
@@ -73,8 +66,17 @@ export const rooms = () => {
         data: {
           user,
           position,
+          isOld: true,
         },
       });
+
+    roomUserMap[$roomId].push({
+      user: {
+        id: $user.id,
+        username: $user.username,
+      },
+      position: spawnPoint,
+    });
   };
 
   const removeUser = (user: User) => {
@@ -96,6 +98,11 @@ export const rooms = () => {
 
   const getUsers = (roomId: string): RoomUser[] => roomUserMap[roomId];
   const getUserRoom = (user: User) => roomMap[userRoomMap[user.id]];
+
+  const setUserPosition = (roomId: string, user: User, position: Point) => {
+    roomUserMap[roomId].find(({ user: { id } }) => user.id === id).position =
+      position;
+  };
 
   create({
     id: "test_0",
@@ -128,5 +135,7 @@ export const rooms = () => {
     removeUser,
     getUsers,
     getUserRoom,
+
+    setUserPosition,
   };
 };

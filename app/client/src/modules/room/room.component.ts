@@ -1,6 +1,7 @@
-import { container, ContainerComponent, sprite } from "@tulib/tulip";
+import { container, ContainerComponent, EventMode, sprite } from "@tulib/tulip";
 import { getIsometricPosition } from "shared/utils";
-import { RoomPoint } from "shared/enums";
+import { Event, RoomPoint } from "shared/enums";
+import { System } from "system";
 
 type Props = {
   layout: RoomPoint[][];
@@ -29,6 +30,16 @@ export const roomComponent: ContainerComponent<Props, Mutable> = async ({
       });
       const pos = getIsometricPosition({ x, z, y: 0 }, 12);
       await tile.setPosition(pos);
+      await tile.setEventMode(EventMode.STATIC);
+
+      tile.on("pointerdown", () => {
+        System.proxy.emit(Event.POINTER_TILE, {
+          position: {
+            x,
+            z,
+          },
+        });
+      });
 
       await tile.setTint(
         roomLine[z] === RoomPoint.SPAWN
