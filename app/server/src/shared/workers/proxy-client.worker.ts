@@ -23,7 +23,7 @@ proxy.on("start", ({ port, token, userId, username }) => {
     client.on("data", ({ event, message }) => {
       proxy.emit("data", { event, message });
     });
-    proxy.emit("joined");
+    proxy.emit("$$joined");
   });
   proxyServer.on("disconnected", (client) => {
     proxy.close();

@@ -5,7 +5,7 @@ import { plugin } from "@tulib/vite-tulip-plugin";
 export default defineConfig({
   server: {
     port: 1994,
-    open: true,
+    // open: true,
   },
   plugins: [tsconfigPaths(), plugin()],
   publicDir: "assets",

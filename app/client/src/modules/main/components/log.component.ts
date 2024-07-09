@@ -1,33 +1,25 @@
-import { AsyncComponent, container, text } from "@tulib/tulip";
-import { System } from "system";
+import { container, ContainerComponent, textSprite } from "@tulib/tulip";
 
-export const logComponent: AsyncComponent<null, null> = async () => {
-  const $container = await container();
+type Mutable = {
+  setLog: (text: string) => void;
+};
 
-  const renderText = async (message: string) => {
-    const $text = await text({
-      text: message,
-      font: "Arial (sans-serif)",
-      size: 12,
-      color: 0xffffff,
-      position: {
-        x: 150,
-        y: 0,
-      },
-    });
-    $container.add($text);
-  };
+export const logComponent: ContainerComponent<{}, Mutable> = async () => {
+  const $container = await container<{}, Mutable>();
 
-  const socket = System.getSocket();
-
-  socket.on("logs", ({ logs }) => {
-    if (!logs.length) return;
-    renderText(logs.toReversed()[0]);
+  const tagName = await textSprite({
+    text: "",
+    spriteSheet: "default-font.json",
+    position: {
+      x: 20,
+      y: 100,
+    },
   });
-  socket.on("log", ({ log }) => {
-    $container.remove(...$container.getChildren());
-    renderText(log);
-  });
+  $container.add(tagName);
 
-  return $container.getComponent(logComponent);
+  return $container.getComponent(logComponent, {
+    setLog: (text) => {
+      tagName.setText(text);
+    },
+  });
 };
