@@ -1,0 +1,20 @@
+{
+  "version": "3",
+  "remote": {
+    "https://deno.land/std@0.211.0/dotenv/mod.ts": "bcfa9c102d5ce6218ec0c4a69aa0fc1009fc309a85448f98a8debaa75866a3d7",
+    "https://deno.land/std@0.211.0/dotenv/parse.ts": "ddcb04a8a7198918cfc52efbebb0d4fc51abfea913649912fcc1cf4c52bd81a2",
+    "https://deno.land/std@0.211.0/dotenv/stringify.ts": "74521a8e907adffff19f132765902a8c51743e386107b91cc934bae154031e84",
+    "https://deno.land/x/bcrypt@v0.4.1/mod.ts": "ff09bdae282583cf5f7d87efe37ddcecef7f14f6d12e8b8066a3058db8c6c2f7",
+    "https://deno.land/x/bcrypt@v0.4.1/src/bcrypt/base64.ts": "b8266450a4f1eb6960f60f2f7986afc4dde6b45bd2d7ee7ba10789e67e17b9f7",
+    "https://deno.land/x/bcrypt@v0.4.1/src/bcrypt/bcrypt.ts": "ec221648cc6453ea5e3803bc817c01157dada06aa6f7a0ba6b9f87aae32b21e2",
+    "https://deno.land/x/bcrypt@v0.4.1/src/main.ts": "08d201b289c8d9c46f8839c69cd6625b213863db29775c7a200afc3b540e64f8",
+    "https://deno.land/x/bcrypt@v0.4.1/src/worker.ts": "5a73bdfee9c9e622f47c9733d374b627dce52fb3ec1e74c8226698b3fc57ffac",
+    "https://deno.land/x/loadenv@v1.0.1/mod.ts": "287c1cc1b4bf024a1381610428d783854853aa36cca6f927e5f6dba81f350616",
+    "https://deno.land/x/loadenv@v1.0.1/src/main.ts": "216f20535f9e41be15679b0a48bba5eeb8dcf12b3ad1a1ab1971c5b0ae698e0a"
+  },
+  "workspace": {
+    "dependencies": [
+      "npm:yaml@2.4.2"
+    ]
+  }
+}

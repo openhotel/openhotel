@@ -1,0 +1,19 @@
+POST http://localhost:2024/account/register
+Content-Type: application/json
+
+{
+  "username": "pagoru",
+  "password": "123456"
+}
+
+###
+
+POST http://localhost:2024/account/login
+Content-Type: application/json
+
+{
+  "username": "pagoru",
+  "password": "123456"
+}
+
+###
