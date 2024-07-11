@@ -133,8 +133,8 @@ export const rooms = () => {
     description: "This is a description",
     layout: [
       "    s    ",
-      "█████████",
-      "█████████",
+      "█  ██████",
+      "█  ██████",
       "█████████",
       "██████",
       "██████",

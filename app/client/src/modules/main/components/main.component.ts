@@ -3,7 +3,7 @@ import { logoComponent } from "./logo.component";
 import { System } from "system";
 import { Event } from "shared/enums";
 import { roomComponent } from "modules/room";
-import { getRandomNumber } from "shared/utils";
+import { waitUntil } from "shared/utils";
 import { humanComponent } from "modules/human";
 import { logComponent } from "./log.component";
 import { chatComponent } from "./chat.component";
@@ -36,6 +36,7 @@ export const mainComponent: ContainerComponent = async () => {
     const human = await humanComponent({ user });
     await human.setIsometricPosition(position);
     humanList.push(human);
+    await waitUntil(() => $room);
     $room.add(human);
 
     if (!isOld) logs.addLog(`${user.username} joined!`);
