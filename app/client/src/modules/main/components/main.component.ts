@@ -6,6 +6,8 @@ import { roomComponent } from "modules/room";
 import { getRandomNumber } from "shared/utils";
 import { humanComponent } from "modules/human";
 import { logComponent } from "./log.component";
+import { chatComponent } from "./chat.component";
+import { messageComponent } from "./message.component";
 
 export const mainComponent: ContainerComponent = async () => {
   await System.proxy.preConnect();
@@ -18,6 +20,10 @@ export const mainComponent: ContainerComponent = async () => {
   const logs = await logComponent();
   await logs.setZIndex(1_000);
   $container.add(logs);
+
+  const chat = await chatComponent();
+  await chat.setPosition({ x: 100, y: 500 });
+  $container.add(chat);
 
   let $room;
 
@@ -61,6 +67,19 @@ export const mainComponent: ContainerComponent = async () => {
 
   System.proxy.emit(Event.JOIN_ROOM, {
     roomId: `test_${getRandomNumber(0, 1)}`,
+  });
+
+  System.proxy.on<any>(Event.MESSAGE, async ({ userId, message: text }) => {
+    const human = humanList.find((human) => human.getUser().id === userId);
+    const { x: parentX, y: parentY } = human.getFather().getPosition();
+    const { x, y } = human.getPosition();
+
+    const message = await messageComponent({
+      username: human.getUser().username,
+      message: text,
+    });
+    await message.setPosition({ x: parentX + x, y: parentY + y - 80 });
+    $container.add(message);
   });
 
   return $container.getComponent(mainComponent);
