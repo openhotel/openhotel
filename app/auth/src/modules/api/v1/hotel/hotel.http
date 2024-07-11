@@ -1,0 +1,11 @@
+# Verify Session
+POST http://localhost:2024/v1/hotel/verify-session
+Content-Type: application/json
+
+{
+  "username": "pagoru123",
+  "sessionId": "m58T8hGSKUBnv016",
+  "token": "8k0Afr58uYQi7Lv40XtcR5Bi7S99CV1BKPxrzw0nGbSDODlLUFYYFKrnjtuxnE5O"
+}
+
+###
