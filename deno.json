@@ -10,7 +10,6 @@
     "start:client:prod": "cd app/client && yarn preview",
     "start:server": "cd app/server && deno task start",
     "start:server:prod:linux": "cd app/server && deno task start:prod:linux",
-    "start:auth": "cd app/auth && deno task start",
 
     "build": "deno task build:client & deno task build:server",
     "build:client": "cd app/client && yarn build",
