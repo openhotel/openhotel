@@ -5,4 +5,5 @@ export const PROXY_CLIENT_EVENT_WHITELIST: ProxyEvent[] = [
   ProxyEvent.LEAVE_ROOM,
   ProxyEvent.TEST,
   ProxyEvent.POINTER_TILE,
+  ProxyEvent.MESSAGE,
 ];

@@ -10,5 +10,7 @@ export enum Event {
 
   POINTER_TILE = "pointer-tile",
 
+  MESSAGE = "message",
+
   TEST = "test",
 }
