@@ -23,4 +23,6 @@ export enum ProxyEvent {
   TEST = "test",
 
   POINTER_TILE = "pointer-tile",
+
+  MESSAGE = "message",
 }
