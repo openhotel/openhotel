@@ -122,6 +122,11 @@
   "workspace": {
     "dependencies": [
       "npm:yaml@2.4.2"
-    ]
+    ],
+    "packageJson": {
+      "dependencies": [
+        "npm:prettier@3.3.2"
+      ]
+    }
   }
 }

@@ -1,0 +1,6 @@
+{
+  "tasks": {
+    "build": "docker buildx build -t openhotel/openhotel-auth:latest .",
+    "push": "docker image push openhotel/openhotel-auth:latest"
+  }
+}
