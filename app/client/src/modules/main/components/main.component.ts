@@ -66,7 +66,7 @@ export const mainComponent: ContainerComponent = async () => {
   });
 
   System.proxy.emit(Event.JOIN_ROOM, {
-    roomId: `test_${getRandomNumber(0, 1)}`,
+    roomId: `test_2`,
   });
 
   System.proxy.on<any>(Event.MESSAGE, async ({ userId, message: text }) => {

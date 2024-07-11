@@ -113,7 +113,7 @@ export const rooms = () => {
       "██ ███",
       "██ ███",
       "██████",
-      "██████ ██",
+      "█████████",
       "██████  █",
       "█████████",
       "     ████",
@@ -125,6 +125,21 @@ export const rooms = () => {
     title: "Room 2",
     description: "This is a description",
     layout: [" ██████", " ███████", "s███████", " ███████"],
+  });
+
+  create({
+    id: "test_2",
+    title: "Room 3",
+    description: "This is a description",
+    layout: [
+      "    s    ",
+      "█████████",
+      "█████████",
+      "█████████",
+      "██████",
+      "██████",
+      "██████",
+    ],
   });
 
   return {
