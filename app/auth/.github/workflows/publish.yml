@@ -43,16 +43,11 @@ jobs:
         working-directory: ./
         run: deno task compile:${{ matrix.os }}
 
-      - name: 'Zip build'
-        run: |
-          cd ./build/
-          zip -r ../auth_${{ matrix.os }}.zip .
-
       - name: 'Upload to release'
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: ./auth_${{ matrix.os }}.zip
+          file: ./build/auth_${{ matrix.os }}
           tag: ${{ github.ref }}
           overwrite: true
           file_glob: true
