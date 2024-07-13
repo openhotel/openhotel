@@ -8,6 +8,7 @@
 		"noUnusedLocals": true,
 		"lib": ["ES2022", "dom"],
 		"baseUrl": "./src/",
-		"rootDir": "./src"
+		"rootDir": "./src",
+		"allowImportingTsExtensions": true
 	}
 }
