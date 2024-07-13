@@ -1,7 +1,7 @@
 import { application } from "@tulib/tulip";
 import { mainComponent } from "modules/main";
 
-application({
+const app = application({
   backgroundColor: 0x030303,
   scale: 2,
   pixelPerfect: true,
@@ -10,6 +10,8 @@ application({
   importMetaEnv: import.meta.env,
   //@ts-ignore
   importMetaHot: import.meta.hot,
-}).then(async ({ add }) => {
-  add(await mainComponent());
+});
+
+app.load(async () => {
+  app.add(await mainComponent());
 });
