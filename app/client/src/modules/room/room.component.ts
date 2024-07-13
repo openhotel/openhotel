@@ -57,19 +57,25 @@ export const roomComponent: ContainerComponent<Props, Mutable> = async ({
     depth: Math.max(...layout.map((line) => line.length)),
   };
 
-  const rayCastTile = (
-    x: number,
-    z: number,
-    subX: number,
-    subZ: number,
-  ): boolean => {
-    x -= subX;
-    z -= subZ;
+  const isWallRenderable = (x: number, z: number, isX: boolean): boolean => {
+    if (layout[x][z] === RoomPoint.SPAWN || layout[x][z] === RoomPoint.EMPTY)
+      return false;
+    if ((!isX && x === 0) || (isX && z === 0)) return true;
 
-    if (0 > x || 0 > z) return false;
-    if (layout[x] || layout[x][z]) return layout[x][z] !== RoomPoint.EMPTY;
+    if (
+      (isX && layout[x][z - 1] === RoomPoint.SPAWN) ||
+      (!isX && layout[x - 1][z] === RoomPoint.SPAWN)
+    )
+      return false;
 
-    return rayCastTile(x, z, subX, subZ);
+    for (let i = isX ? 0 : 1; i < x + 1; i++) {
+      for (let j = isX ? 1 : 0; j < z + 1; j++) {
+        const currentPoint = layout[x - i][z - j];
+        if (currentPoint === RoomPoint.TILE) return false;
+      }
+    }
+
+    return true;
   };
 
   for (let x = 0; x < roomSize.width; x++) {
@@ -83,7 +89,7 @@ export const roomComponent: ContainerComponent<Props, Mutable> = async ({
 
       //left side
       if (!isSpawn) {
-        if (!rayCastTile(x, z, 0, 1)) {
+        if (isWallRenderable(x, z, true)) {
           const wall = await sprite({
             texture: "wall_0.png",
             eventMode: EventMode.NONE,
@@ -93,11 +99,12 @@ export const roomComponent: ContainerComponent<Props, Mutable> = async ({
           await wall.setPosition(pos);
           $container.add(wall);
         }
-        if (!rayCastTile(x, z, 1, 0)) {
+        if (isWallRenderable(x, z, false)) {
           const wall = await sprite({
             texture: "wall_1.png",
           });
           await wall.setPivot({ x: -25, y: 98 });
+          await wall.setZIndex(x + z - 0.2);
           await wall.setPosition(pos);
           $container.add(wall);
         }
