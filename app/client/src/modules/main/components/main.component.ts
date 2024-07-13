@@ -3,8 +3,6 @@ import { logoComponent } from "./logo.component";
 import { System } from "system";
 import { Event } from "shared/enums";
 import { roomComponent } from "modules/room";
-import { waitUntil } from "shared/utils";
-import { humanComponent } from "modules/human";
 import { logComponent } from "./log.component";
 import { chatComponent } from "./chat.component";
 import { messageComponent } from "./message.component";
@@ -22,43 +20,20 @@ export const mainComponent: ContainerComponent = async () => {
   $container.add(logs);
 
   const chat = await chatComponent();
-  await chat.setPosition({ x: 100, y: 500 });
+  await chat.setPosition({ x: 100, y: 300 });
+  await chat.setZIndex(1_000);
   $container.add(chat);
 
   let $room;
 
-  let humanList = [];
-
   System.proxy.on<any>(Event.TEST, async ({ username }) => {
     console.log("hello there!", username);
-  });
-  System.proxy.on<any>(Event.ADD_HUMAN, async ({ user, position, isOld }) => {
-    const human = await humanComponent({ user });
-    await human.setIsometricPosition(position);
-    humanList.push(human);
-    await waitUntil(() => $room);
-    $room.add(human);
-
-    if (!isOld) logs.addLog(`${user.username} joined!`);
-  });
-  System.proxy.on<any>(Event.REMOVE_HUMAN, ({ user }) => {
-    const currentHuman = humanList.find(
-      (human) => human.getUser().id === user.id,
-    );
-    $room.remove(currentHuman);
-    humanList = humanList.filter((human) => human.getUser().id !== user.id);
-    logs.addLog(`${user.username} left!`);
-  });
-  System.proxy.on<any>(Event.MOVE_HUMAN, async ({ userId, position }) => {
-    const human = humanList.find((human) => human.getUser().id === userId);
-
-    human.setIsometricPosition({ ...position, y: 0 });
   });
 
   await System.proxy.connect();
 
   System.proxy.on<any>(Event.LOAD_ROOM, async ({ room }) => {
-    $room = await roomComponent({ layout: room.layout });
+    $room = await roomComponent({ layout: room.layout, addLog: logs.addLog });
     $container.add($room);
 
     setInterval(() => {
@@ -71,7 +46,9 @@ export const mainComponent: ContainerComponent = async () => {
   });
 
   System.proxy.on<any>(Event.MESSAGE, async ({ userId, message: text }) => {
-    const human = humanList.find((human) => human.getUser().id === userId);
+    const human = $room
+      .getHumanList()
+      .find((human) => human.getUser().id === userId);
     const { x: parentX, y: parentY } = human.getFather().getPosition();
     const { x, y } = human.getPosition();
 
