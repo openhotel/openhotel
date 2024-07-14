@@ -1,4 +1,5 @@
 import { container, ContainerComponent, textSprite } from "@tulib/tulip";
+import { SpriteSheetEnum } from "shared/enums";
 
 type Mutable = {
   addLog: (text: string) => void;
@@ -19,7 +20,7 @@ export const logComponent: ContainerComponent<{}, Mutable> = async () => {
       }
       const tagName = await textSprite({
         text,
-        spriteSheet: "default-font.json",
+        spriteSheet: SpriteSheetEnum.DEFAULT_FONT,
       });
       $container.add(tagName);
     },

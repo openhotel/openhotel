@@ -1,0 +1,50 @@
+{
+  "frames": {
+    "wall-left": {
+      "frame": { "x": 0, "y": 0, "w": 28, "h": 114 },
+      "sourceSize": { "w": 28, "h": 114 },
+      "anchor": { "x": 0, "y": 0 }
+    },
+    "wall-right": {
+      "frame": { "x": 28, "y": 0, "w": 28, "h": 114 },
+      "sourceSize": { "w": 28, "h": 114 },
+      "anchor": { "x": 0, "y": 0 }
+    },
+    "wall-front": {
+      "frame": { "x": 56, "y": 0, "w": 8, "h": 100 },
+      "sourceSize": { "w": 8, "h": 100 },
+      "anchor": { "x": 0, "y": 0 }
+    },
+    "wall-back": {
+      "frame": { "x": 64, "y": 0, "w": 6, "h": 4 },
+      "sourceSize": { "w": 6, "h": 4 },
+      "anchor": { "x": 0, "y": 0 }
+    },
+    "tile": {
+      "frame": { "x": 78, "y": 0, "w": 50, "h": 29 },
+      "sourceSize": { "w": 50, "h": 29 },
+      "anchor": { "x": 0, "y": 0 }
+    },
+    "wall-door-left": {
+      "frame": { "x": 72, "y": 30, "w": 28, "h": 40 },
+      "sourceSize": { "w": 28, "h": 40 },
+      "anchor": { "x": 0, "y": 0 }
+    },
+    "wall-door-right": {
+      "frame": { "x": 100, "y": 30, "w": 28, "h": 40 },
+      "sourceSize": { "w": 28, "h": 40 },
+      "anchor": { "x": 0, "y": 0 }
+    }
+  },
+  "animations": {},
+  "meta": {
+    "format": "RGBA8888",
+    "image": "room.png",
+    "size": {
+      "w": 128,
+      "h": 128
+    },
+    "scale": 1
+  }
+}
+
