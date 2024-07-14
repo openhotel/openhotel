@@ -7,7 +7,7 @@ import {
   sprite,
 } from "@tulib/tulip";
 import { getIsometricPosition } from "shared/utils";
-import { Event, RoomPoint } from "shared/enums";
+import { Event, RoomPoint, SpriteSheetEnum } from "shared/enums";
 import { System } from "system";
 import { humanComponent } from "modules/human";
 
@@ -24,8 +24,9 @@ export const roomComponent: ContainerComponent<Props, Mutable> = async ({
   layout,
   addLog,
 }) => {
-  const $container = await container<{}, Mutable>();
-  $container.getDisplayObject().sortableChildren = true;
+  const $container = await container<{}, Mutable>({
+    sortableChildren: true,
+  });
   await $container.setPosition({ x: 300, y: 100 });
 
   let humanList = [];
@@ -58,9 +59,9 @@ export const roomComponent: ContainerComponent<Props, Mutable> = async ({
   };
 
   const isWallRenderable = (x: number, z: number, isX: boolean): boolean => {
+    if (!layout[x]) return false;
     if (layout[x][z] === RoomPoint.SPAWN || layout[x][z] === RoomPoint.EMPTY)
       return false;
-    if ((!isX && x === 0) || (isX && z === 0)) return true;
 
     if (
       (isX && layout[x][z - 1] === RoomPoint.SPAWN) ||
@@ -89,29 +90,89 @@ export const roomComponent: ContainerComponent<Props, Mutable> = async ({
 
       //left side
       if (!isSpawn) {
-        if (isWallRenderable(x, z, true)) {
+        const isWallXRenderable = isWallRenderable(x, z, true);
+        const isWallZRenderable = isWallRenderable(x, z, false);
+
+        if (isWallXRenderable) {
           const wall = await sprite({
-            texture: "wall_0.png",
+            spriteSheet: SpriteSheetEnum.ROOM,
+            texture: "wall-left",
             eventMode: EventMode.NONE,
+            tint: 0xc4d3dd,
           });
           await wall.setPivot({ x: 3, y: 98 });
           await wall.setZIndex(x + z - 0.2);
           await wall.setPosition(pos);
           $container.add(wall);
         }
-        if (isWallRenderable(x, z, false)) {
+        if (isWallZRenderable) {
           const wall = await sprite({
-            texture: "wall_1.png",
+            spriteSheet: SpriteSheetEnum.ROOM,
+            texture: "wall-right",
+            tint: 0xc4d3dd,
           });
           await wall.setPivot({ x: -25, y: 98 });
           await wall.setZIndex(x + z - 0.2);
           await wall.setPosition(pos);
           $container.add(wall);
         }
+        if (isWallXRenderable && isWallZRenderable) {
+          const wall = await sprite({
+            spriteSheet: SpriteSheetEnum.ROOM,
+            texture: "wall-back",
+            tint: 0xc4d3dd,
+          });
+          await wall.setPivot({ x: -22, y: 100 });
+          await wall.setZIndex(x + z - 0.1);
+          await wall.setPosition(pos);
+          $container.add(wall);
+        }
+        const isWallRightXRenderable = isWallRenderable(x - 1, z, true);
+        const isWallLeftZRenderable = isWallRenderable(x, z - 1, false);
+        if (
+          isWallRightXRenderable &&
+          isWallLeftZRenderable &&
+          x !== 0 &&
+          z !== 0
+        ) {
+          const wall = await sprite({
+            spriteSheet: SpriteSheetEnum.ROOM,
+            texture: "wall-front",
+            tint: 0xc4d3dd,
+          });
+          await wall.setPivot({ x: -21, y: 100 });
+          await wall.setZIndex(x + z - 0.1);
+          await wall.setPosition(pos);
+          $container.add(wall);
+        }
+
+        if (layout[x - 1] && layout[x - 1][z] === RoomPoint.SPAWN) {
+          const wall = await sprite({
+            spriteSheet: SpriteSheetEnum.ROOM,
+            texture: "wall-door-right",
+            tint: 0xc4d3dd,
+          });
+          await wall.setPivot({ x: -25, y: 98 });
+          await wall.setZIndex(x + z - 0.1);
+          await wall.setPosition(pos);
+          $container.add(wall);
+        }
+        if (layout[x][z - 1] === RoomPoint.SPAWN) {
+          const wall = await sprite({
+            spriteSheet: SpriteSheetEnum.ROOM,
+            texture: "wall-door-left",
+            tint: 0xc4d3dd,
+          });
+          await wall.setPivot({ x: 3, y: 98 });
+          await wall.setZIndex(x + z - 0.1);
+          await wall.setPosition(pos);
+          $container.add(wall);
+        }
       }
 
       const tile = await sprite({
-        texture: "tile_v1.png",
+        spriteSheet: SpriteSheetEnum.ROOM,
+        texture: "tile",
       });
       await tile.setZIndex(x + z - 0.1);
       await tile.setPosition(pos);

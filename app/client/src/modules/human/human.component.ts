@@ -9,6 +9,7 @@ import {
 } from "@tulib/tulip";
 import { getIsometricPosition } from "shared/utils";
 import { Point3d } from "shared/types";
+import { SpriteSheetEnum } from "shared/enums";
 
 type Props = {
   user: any;
@@ -38,7 +39,7 @@ export const humanComponent: ContainerComponent<Props, Mutable> = async ({
   await capsule.setPivotX(-25);
   const tagName = await textSprite({
     text: user.username,
-    spriteSheet: "default-font.json",
+    spriteSheet: SpriteSheetEnum.DEFAULT_FONT,
     position: {
       y: -16,
       x: 0,
