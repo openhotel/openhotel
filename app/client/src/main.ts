@@ -1,11 +1,12 @@
 import { application } from "@tulib/tulip";
 import { mainComponent } from "modules/main";
+import { isDevelopment } from "shared/utils";
 
 const app = application({
   backgroundColor: 0x030303,
   scale: 2,
   pixelPerfect: true,
-  showFPS: true,
+  showFPS: isDevelopment(),
   //@ts-ignore
   importMetaEnv: import.meta.env,
   //@ts-ignore

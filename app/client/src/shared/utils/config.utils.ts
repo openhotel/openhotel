@@ -4,6 +4,8 @@ export const getConfig = (): ConfigTypes => {
   // @ts-ignore
   const config = window?.__config__;
 
+  const { hostname } = window.location;
+
   // @ts-ignore
   return Object.keys(config || {}).length
     ? config
@@ -12,11 +14,11 @@ export const getConfig = (): ConfigTypes => {
         description: "DEVELOPMENT",
         proxy: {
           port: 2005,
-          url: "http://localhost:2005",
+          url: `http://${hostname}:2005`,
         },
         firewall: {
           port: 2001,
-          url: "http://localhost:2001",
+          url: `http://${hostname}:2001`,
         },
       };
 };
