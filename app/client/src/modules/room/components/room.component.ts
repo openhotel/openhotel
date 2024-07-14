@@ -1,12 +1,15 @@
 import {
   container,
   ContainerComponent,
+  Cursor,
   DisplayObjectEvent,
   EventMode,
   global,
+  graphics,
+  GraphicType,
   sprite,
 } from "@tulib/tulip";
-import { getIsometricPosition } from "shared/utils";
+import { getIsometricPosition, getTilePolygon } from "shared/utils";
 import { Event, RoomPoint, SpriteSheetEnum } from "shared/enums";
 import { System } from "system";
 import { humanComponent } from "modules/human";
@@ -86,7 +89,8 @@ export const roomComponent: ContainerComponent<Props, Mutable> = async ({
 
       const isSpawn = roomLine[z] === RoomPoint.SPAWN;
 
-      const pos = getIsometricPosition({ x, z, y: 0 }, 12);
+      const position = getIsometricPosition({ x, z, y: 0 }, 12);
+      const zIndex = x + z;
 
       //left side
       if (!isSpawn) {
@@ -99,32 +103,34 @@ export const roomComponent: ContainerComponent<Props, Mutable> = async ({
             texture: "wall-left",
             eventMode: EventMode.NONE,
             tint: 0xc4d3dd,
+            zIndex: zIndex - 0.2,
+            pivot: { x: 3, y: 98 },
+            position,
           });
-          await wall.setPivot({ x: 3, y: 98 });
-          await wall.setZIndex(x + z - 0.2);
-          await wall.setPosition(pos);
           $container.add(wall);
         }
         if (isWallZRenderable) {
           const wall = await sprite({
             spriteSheet: SpriteSheetEnum.ROOM,
             texture: "wall-right",
+            eventMode: EventMode.NONE,
             tint: 0xc4d3dd,
+            pivot: { x: -25, y: 98 },
+            zIndex: zIndex - 0.2,
+            position,
           });
-          await wall.setPivot({ x: -25, y: 98 });
-          await wall.setZIndex(x + z - 0.2);
-          await wall.setPosition(pos);
           $container.add(wall);
         }
         if (isWallXRenderable && isWallZRenderable) {
           const wall = await sprite({
             spriteSheet: SpriteSheetEnum.ROOM,
             texture: "wall-back",
+            eventMode: EventMode.NONE,
             tint: 0xc4d3dd,
+            pivot: { x: -22, y: 100 },
+            zIndex: zIndex - 0.1,
+            position,
           });
-          await wall.setPivot({ x: -22, y: 100 });
-          await wall.setZIndex(x + z - 0.1);
-          await wall.setPosition(pos);
           $container.add(wall);
         }
         const isWallRightXRenderable = isWallRenderable(x - 1, z, true);
@@ -138,11 +144,12 @@ export const roomComponent: ContainerComponent<Props, Mutable> = async ({
           const wall = await sprite({
             spriteSheet: SpriteSheetEnum.ROOM,
             texture: "wall-front",
+            eventMode: EventMode.NONE,
             tint: 0xc4d3dd,
+            pivot: { x: -21, y: 100 },
+            zIndex: zIndex - 0.1,
+            position,
           });
-          await wall.setPivot({ x: -21, y: 100 });
-          await wall.setZIndex(x + z - 0.1);
-          await wall.setPosition(pos);
           $container.add(wall);
         }
 
@@ -150,22 +157,24 @@ export const roomComponent: ContainerComponent<Props, Mutable> = async ({
           const wall = await sprite({
             spriteSheet: SpriteSheetEnum.ROOM,
             texture: "wall-door-right",
+            eventMode: EventMode.NONE,
             tint: 0xc4d3dd,
+            pivot: { x: -25, y: 98 },
+            zIndex: zIndex - 0.1,
+            position,
           });
-          await wall.setPivot({ x: -25, y: 98 });
-          await wall.setZIndex(x + z - 0.1);
-          await wall.setPosition(pos);
           $container.add(wall);
         }
         if (layout[x][z - 1] === RoomPoint.SPAWN) {
           const wall = await sprite({
             spriteSheet: SpriteSheetEnum.ROOM,
             texture: "wall-door-left",
+            eventMode: EventMode.NONE,
             tint: 0xc4d3dd,
+            pivot: { x: 3, y: 98 },
+            zIndex: zIndex - 0.1,
+            position,
           });
-          await wall.setPivot({ x: 3, y: 98 });
-          await wall.setZIndex(x + z - 0.1);
-          await wall.setPosition(pos);
           $container.add(wall);
         }
       }
@@ -173,12 +182,28 @@ export const roomComponent: ContainerComponent<Props, Mutable> = async ({
       const tile = await sprite({
         spriteSheet: SpriteSheetEnum.ROOM,
         texture: "tile",
+        eventMode: EventMode.NONE,
+        tint: isSpawn ? 0x2f2f2f : zIndex % 2 === 0 ? 0xa49f7e : 0xb2ad8e,
+        zIndex: zIndex - 0.1,
+        position,
       });
-      await tile.setZIndex(x + z - 0.1);
-      await tile.setPosition(pos);
-      await tile.setEventMode(EventMode.STATIC);
 
-      tile.on(DisplayObjectEvent.POINTER_DOWN, () => {
+      const pol = await graphics({
+        type: GraphicType.POLYGON,
+        polygon: getTilePolygon({ width: 12, height: 12 }),
+        color: 0xff00ff,
+        zIndex: 1000,
+        eventMode: EventMode.STATIC,
+        cursor: Cursor.POINTER,
+        pivot: {
+          x: -26,
+          y: 0,
+        },
+        alpha: 0,
+        position,
+      });
+
+      pol.on(DisplayObjectEvent.POINTER_DOWN, () => {
         global.context.clear();
         System.proxy.emit(Event.POINTER_TILE, {
           position: {
@@ -187,11 +212,7 @@ export const roomComponent: ContainerComponent<Props, Mutable> = async ({
           },
         });
       });
-
-      await tile.setTint(
-        isSpawn ? 0x2f2f2f : (x + z) % 2 === 0 ? 0xa49f7e : 0xb2ad8e,
-      );
-      $container.add(tile);
+      $container.add(tile, pol);
     }
   }
 
