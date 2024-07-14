@@ -11,7 +11,7 @@ import {
   inputTextSprite,
 } from "@tulib/tulip";
 import { System } from "../../../system";
-import { Event } from "shared/enums";
+import { Event, SpriteSheetEnum } from "shared/enums";
 
 type Mutable = {};
 
@@ -29,7 +29,7 @@ export const chatComponent: ContainerComponent<{}, Mutable> = async () => {
 
   const $input = await inputTextSprite({
     color: 0,
-    spriteSheet: "default-font.json",
+    spriteSheet: SpriteSheetEnum.DEFAULT_FONT,
     eventMode: EventMode.NONE,
     withContext: true,
   });

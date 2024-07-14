@@ -1,11 +1,13 @@
 import {
-  box,
   container,
   ContainerComponent,
   DisplayObjectEvent,
+  graphics,
+  GraphicType,
   textSprite,
 } from "@tulib/tulip";
 import { getRandomColor } from "../../../shared/utils";
+import { SpriteSheetEnum } from "shared/enums";
 
 type Mutable = {};
 
@@ -17,7 +19,7 @@ export const messageComponent: ContainerComponent<
 
   const $text = await textSprite({
     color: getRandomColor(username),
-    spriteSheet: "default-font.json",
+    spriteSheet: SpriteSheetEnum.DEFAULT_FONT,
     text: `${username}: ${message}`,
   });
 
@@ -25,15 +27,14 @@ export const messageComponent: ContainerComponent<
   const boxWidth = width + 10;
   const boxHeight = height + 4;
 
-  const $box = await box({
+  const $box = await graphics({
+    type: GraphicType.RECTANGLE,
     width: boxWidth,
     height: boxHeight,
     color: 0xeeeeff,
-    mass: 0,
   });
 
-  await $box.setPivot({ x: -boxWidth / 2, y: 0 });
-  await $text.setPivot({ x: -4, y: 3 });
+  await $text.setPivot({ x: -4, y: -3 });
 
   $container.add($box, $text);
 
