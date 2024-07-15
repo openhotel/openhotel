@@ -1,6 +1,7 @@
 import { container, ContainerComponent } from "@tulib/tulip";
 import { logoComponent } from "./logo.component";
 import { System } from "system";
+import { homeComponent } from "modules/pages";
 import { sceneComponent } from "modules/scene";
 
 export const mainComponent: ContainerComponent = async () => {
@@ -11,6 +12,7 @@ export const mainComponent: ContainerComponent = async () => {
   await $logo.setPosition({ x: 8, y: 8 });
   $container.add($logo);
 
+  const $homePage = await homeComponent();
   const $scene = await sceneComponent();
   $container.add($scene);
 
