@@ -25,6 +25,11 @@
       "sourceSize": { "w": 50, "h": 29 },
       "anchor": { "x": 0, "y": 0 }
     },
+    "tile_preview": {
+      "frame": { "x": 78, "y": 99, "w": 50, "h": 29 },
+      "sourceSize": { "w": 50, "h": 29 },
+      "anchor": { "x": 0, "y": 0 }
+    },
     "wall-door-left": {
       "frame": { "x": 72, "y": 30, "w": 28, "h": 40 },
       "sourceSize": { "w": 28, "h": 40 },
