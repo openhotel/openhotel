@@ -3,9 +3,7 @@
   "license": "CC BY-NC-SA 4.0",
   "scripts": {
     "start": "vite --host",
-
     "build": "vite build",
-
     "preview": "vite preview"
   },
   "devDependencies": {

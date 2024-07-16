@@ -13,6 +13,7 @@
 `Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International`
 
 ### What does that mean?
+
 - This project is open source, you can use, mix or reuse any of the code or assets.
 - You cannot use any of the source code or assets material for commercial purposes.
 - You cannot monetize any of the work done on this repository, or all the derivative work.
@@ -20,12 +21,14 @@
 - You must preserve the `CC BY-NC-SA 4.0` license to all the derivative work.
 
 ### Exceptions:
+
 - You can add donations to maintain your own server, and give a custom badge for that (The badge cannot unlock anything more than the badge itself, and it cannot segregate or differentiate the user at any cost or from any way). Only that, no gray zone!
 - We can add exceptions for marketing/ad campaigns purposes, ONLY if explicit permission is granted.
 
 ---
 
 ## Objective of the project:
+
 - Create a virtual Open Hotel social-network/game.
 - Gain virtual credits from mini-games inside the game, never pay for anything.
 - Be able to create your own Hotel and add your own customization with plugins, configurations, rules...
@@ -34,17 +37,23 @@
 ---
 
 ## How to run the project
+
 ### Dependencies
+
 - Install `deno >= 1.44`
 - Install `node >= 20`
 - Install `yarn`
 
 ### Install
+
 - Run `deno task install`
 
 ### Start project
+
 - Run `deno task start`
 
 ---
+
 ### TODO: Coding practices
+
 - Enable prettier on save

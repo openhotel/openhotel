@@ -10,14 +10,14 @@ on:
 
 jobs:
   client-build:
-    name: 'Build Client'
+    name: "Build Client"
 
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v3
         with:
-          sparse-checkout: 'app/client'
+          sparse-checkout: "app/client"
           sparse-checkout-cone-mode: false
 
       - name: Install Node.js, NPM and Yarn
