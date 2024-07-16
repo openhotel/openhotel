@@ -61,6 +61,14 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = async ({
     depth: Math.max(...layout.map((line) => line.length)),
   };
 
+  const $tilePreview = await sprite({
+    spriteSheet: SpriteSheetEnum.ROOM,
+    texture: "tile_preview",
+    eventMode: EventMode.NONE,
+    visible: false,
+  });
+  $container.add($tilePreview);
+
   const isWallRenderable = (x: number, z: number, isX: boolean): boolean => {
     if (!layout[x]) return false;
     if (layout[x][z] === RoomPoint.SPAWN || layout[x][z] === RoomPoint.EMPTY)
@@ -188,14 +196,6 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = async ({
         position,
       });
 
-      const tilePreview = await sprite({
-        spriteSheet: SpriteSheetEnum.ROOM,
-        texture: "tile_preview",
-        eventMode: EventMode.NONE,
-        zIndex: zIndex + 1,
-        position,
-      });
-
       const pol = await graphics({
         type: GraphicType.POLYGON,
         polygon: getTilePolygon({ width: 12, height: 12 }),
@@ -220,13 +220,15 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = async ({
           },
         });
       });
-
-      pol.on(DisplayObjectEvent.POINTER_ENTER, () =>
-        $container.add(tilePreview),
-      );
+      pol.on(DisplayObjectEvent.POINTER_ENTER, () => {
+        $tilePreview.setPosition(position);
+        $tilePreview.setZIndex(zIndex + 1);
+        $tilePreview.setVisible(true);
+      });
       pol.on(DisplayObjectEvent.POINTER_LEAVE, () =>
-        $container.remove(tilePreview),
+        $tilePreview.setVisible(false),
       );
+
       $container.add(tile, pol);
     }
   }
