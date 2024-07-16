@@ -1,10 +1,9 @@
 import { container, ContainerComponent } from "@tulib/tulip";
 import { logComponent } from "modules/main/components/log.component";
-import { chatComponent } from "modules/main/components/chat.component";
 import { System } from "system";
 import { Event } from "shared/enums";
 import { roomComponent } from "modules/room";
-import { messageComponent } from "modules/main/components/message.component";
+import { bubbleChatComponent, chatComponent } from "modules/chat";
 
 export const sceneComponent: ContainerComponent = async () => {
   const $container = await container();
@@ -30,28 +29,16 @@ export const sceneComponent: ContainerComponent = async () => {
     $room = await roomComponent({ layout: room.layout, addLog: logs.addLog });
     $container.add($room);
 
-    setInterval(() => {
-      System.proxy.emit(Event.TEST, {});
-    }, 2000);
+    const bubbleChat = await bubbleChatComponent({ room: $room });
+    $container.add(bubbleChat);
+
+    // setInterval(() => {
+    //   System.proxy.emit(Event.TEST, {});
+    // }, 2000);
   });
 
   System.proxy.emit(Event.JOIN_ROOM, {
     roomId: `test_2`,
-  });
-
-  System.proxy.on<any>(Event.MESSAGE, async ({ userId, message: text }) => {
-    const human = $room
-      .getHumanList()
-      .find((human) => human.getUser().id === userId);
-    const { x: parentX, y: parentY } = human.getFather().getPosition();
-    const { x, y } = human.getPosition();
-
-    const message = await messageComponent({
-      username: human.getUser().username,
-      message: text,
-    });
-    await message.setPosition({ x: parentX + x, y: parentY + y - 80 });
-    $container.add(message);
   });
 
   return $container.getComponent(sceneComponent);

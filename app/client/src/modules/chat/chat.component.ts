@@ -10,7 +10,7 @@ import {
   GraphicType,
   inputTextSprite,
 } from "@tulib/tulip";
-import { System } from "../../../system";
+import { System } from "../../system";
 import { Event, SpriteSheetEnum } from "shared/enums";
 
 type Mutable = {};
@@ -42,10 +42,10 @@ export const chatComponent: ContainerComponent<{}, Mutable> = async () => {
     KeyEvent.KEY_UP,
     ({ key }) => {
       if (key === "Enter") {
-        const text = $input.getText();
-        if (text.length) {
+        const message = $input.getText().trim();
+        if (message.length) {
           System.proxy.emit(Event.MESSAGE, {
-            message: $input.getText(),
+            message,
           });
 
           $input.reset();

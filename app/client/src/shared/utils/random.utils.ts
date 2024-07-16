@@ -22,3 +22,13 @@ export const getRandomColor = (seed: string): number => {
 
   return hash & 0xffffff;
 };
+
+export const getRandomPastelColor = () => {
+  const gen = () => Math.floor(Math.random() * 128) + 128;
+
+  const r = gen();
+  const g = gen();
+  const b = gen();
+
+  return (r << 16) | (g << 8) | b;
+};
