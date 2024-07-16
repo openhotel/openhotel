@@ -66,6 +66,10 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = async ({
     texture: "tile_preview",
     eventMode: EventMode.NONE,
     visible: false,
+    pivot: {
+      x: -2,
+      y: 0,
+    },
   });
   $container.add($tilePreview);
 
@@ -222,7 +226,7 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = async ({
       });
       pol.on(DisplayObjectEvent.POINTER_ENTER, () => {
         $tilePreview.setPosition(position);
-        $tilePreview.setZIndex(zIndex + 1);
+        $tilePreview.setZIndex(zIndex - 0.05);
         $tilePreview.setVisible(true);
       });
       pol.on(DisplayObjectEvent.POINTER_LEAVE, () =>

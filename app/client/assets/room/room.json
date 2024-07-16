@@ -26,8 +26,8 @@
       "anchor": { "x": 0, "y": 0 }
     },
     "tile_preview": {
-      "frame": { "x": 78, "y": 99, "w": 50, "h": 29 },
-      "sourceSize": { "w": 50, "h": 29 },
+      "frame": { "x": 82, "y": 104, "w": 46, "h": 24 },
+      "sourceSize": { "w": 46, "h": 24 },
       "anchor": { "x": 0, "y": 0 }
     },
     "wall-door-left": {
