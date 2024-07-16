@@ -188,6 +188,14 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = async ({
         position,
       });
 
+      const tilePreview = await sprite({
+        spriteSheet: SpriteSheetEnum.ROOM,
+        texture: "tile_preview",
+        eventMode: EventMode.NONE,
+        zIndex: zIndex + 1,
+        position,
+      });
+
       const pol = await graphics({
         type: GraphicType.POLYGON,
         polygon: getTilePolygon({ width: 12, height: 12 }),
@@ -212,6 +220,13 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = async ({
           },
         });
       });
+
+      pol.on(DisplayObjectEvent.POINTER_ENTER, () =>
+        $container.add(tilePreview),
+      );
+      pol.on(DisplayObjectEvent.POINTER_LEAVE, () =>
+        $container.remove(tilePreview),
+      );
       $container.add(tile, pol);
     }
   }
