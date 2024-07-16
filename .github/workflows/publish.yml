@@ -2,21 +2,21 @@ name: Publish
 on:
   push:
     tags:
-      - '*'
+      - "*"
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
   client-build:
-    name: 'Build Client'
+    name: "Build Client"
 
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v3
         with:
-          sparse-checkout: 'app/client'
+          sparse-checkout: "app/client"
           sparse-checkout-cone-mode: false
 
       - name: Install Node.js, NPM and Yarn
@@ -36,7 +36,7 @@ jobs:
       - name: Add version to package.json
         uses: jaywcjlove/github-action-package@main
         with:
-          path: './app/client/package.json'
+          path: "./app/client/package.json"
           data: |
             {
               "version": "${{ steps.set_version.outputs.tag }}"
@@ -50,14 +50,14 @@ jobs:
         working-directory: ./app/client
         run: yarn run build
 
-      - name: 'Upload Artifact'
+      - name: "Upload Artifact"
         uses: actions/upload-artifact@v3
         with:
           name: client-build
-          path: './app/client/build'
+          path: "./app/client/build"
 
   server-build:
-    name: 'Build Server'
+    name: "Build Server"
 
     needs: [client-build]
     runs-on: ubuntu-latest
@@ -68,7 +68,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          sparse-checkout: 'app/server'
+          sparse-checkout: "app/server"
           sparse-checkout-cone-mode: false
 
       - uses: denoland/setup-deno@v1
@@ -87,8 +87,8 @@ jobs:
       - name: Replace consts.ts version
         uses: richardrigutins/replace-in-files@v2
         with:
-          files: './app/server/mod.ts'
-          search-text: '__VERSION__'
+          files: "./app/server/mod.ts"
+          search-text: "__VERSION__"
           replacement-text: ${{ steps.set_version.outputs.tag }}
 
       - name: Download client-build artifact
@@ -97,20 +97,20 @@ jobs:
           name: client-build
           path: ./app/server/build/client
 
-#      - name: Move config.yml file
-#        working-directory: ./app/server
-#        run: cp ./config.yml ./build/config.yml
+      #      - name: Move config.yml file
+      #        working-directory: ./app/server
+      #        run: cp ./config.yml ./build/config.yml
 
       - name: Compile
         working-directory: ./app/server
         run: deno task compile:${{ matrix.os }}
 
-      - name: 'Zip build'
+      - name: "Zip build"
         run: |
           cd ./app/server/build/
           zip -r ../../../server_${{ matrix.os }}.zip .
 
-      - name: 'Upload to release'
+      - name: "Upload to release"
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
