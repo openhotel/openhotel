@@ -19,15 +19,15 @@ type Props = {
   addLog: (log: string) => void;
 };
 
-type Mutable = {
+export type RoomMutable = {
   getHumanList: () => any[];
 };
 
-export const roomComponent: ContainerComponent<Props, Mutable> = async ({
+export const roomComponent: ContainerComponent<Props, RoomMutable> = async ({
   layout,
   addLog,
 }) => {
-  const $container = await container<{}, Mutable>({
+  const $container = await container<{}, RoomMutable>({
     sortableChildren: true,
   });
   await $container.setPosition({ x: 300, y: 100 });
