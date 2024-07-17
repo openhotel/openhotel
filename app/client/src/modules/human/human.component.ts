@@ -45,7 +45,7 @@ export const humanComponent: ContainerComponent<Props, Mutable> = async ({
       x: 0,
     },
   });
-  await tagName.setPivotX(tagName.getSize().width / 2);
+  await tagName.setPivotX(tagName.getBounds().width / 2);
   $container.add(capsule, tagName);
 
   const human = await sprite({
@@ -54,7 +54,7 @@ export const humanComponent: ContainerComponent<Props, Mutable> = async ({
   await human.setTint(0xefcfb1);
 
   $container.add(human);
-  const bounds = human.getSize();
+  const bounds = human.getBounds();
   await human.setPivotX(Math.round(bounds.width / 2));
 
   await $container.setPivotY(bounds.height - 15);

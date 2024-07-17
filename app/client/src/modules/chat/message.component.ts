@@ -21,7 +21,7 @@ export const messageComponent: ContainerComponent<
     text: `${username}: ${message}`,
   });
 
-  const { width, height } = $text.getSize();
+  const { width, height } = $text.getBounds();
   const boxWidth = width + 10;
   const boxHeight = height + 4;
 
