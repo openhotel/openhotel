@@ -1,41 +1,53 @@
-import { container, ContainerComponent } from "@tulib/tulip";
-import { logComponent } from "modules/main/components/log.component";
+import { container, ContainerComponent, textSprite } from "@tulib/tulip";
 import { System } from "system";
-import { Event } from "shared/enums";
-import { roomComponent } from "modules/room";
-import { bubbleChatComponent, chatComponent } from "modules/chat";
+import { Event, SpriteSheetEnum } from "shared/enums";
+import { getVersion, isDevelopment } from "../../../shared/utils";
+import { gameScreenComponent, offlineScreenComponent } from "../../screens";
 
 export const sceneComponent: ContainerComponent = async () => {
   const $container = await container();
 
-  const logs = await logComponent();
-  await logs.setZIndex(1_000);
-  $container.add(logs);
+  let $screen = await gameScreenComponent();
+  $container.add($screen);
 
-  const chat = await chatComponent();
-  await chat.setPosition({ x: 100, y: 300 });
-  await chat.setZIndex(1_000);
-  $container.add(chat);
-
-  let $room;
-
-  System.proxy.on<any>(Event.TEST, async ({ username }) => {
-    console.log("hello there!", username);
-  });
+  if (!isDevelopment()) {
+    let $version = await textSprite({
+      text: `v${getVersion()}-alpha`,
+      spriteSheet: SpriteSheetEnum.DEFAULT_FONT,
+      color: 0xffffff,
+      position: {
+        x: 500,
+        y: 10,
+      },
+    });
+    $container.add($version);
+  }
 
   await System.proxy.connect();
 
-  System.proxy.on<any>(Event.LOAD_ROOM, async ({ room }) => {
-    $room = await roomComponent({ layout: room.layout, addLog: logs.addLog });
-    $container.add($room);
+  const changeScreen = (screen) => {
+    $container.remove($screen);
+    $screen = screen;
+    $container.add($screen);
+  };
 
-    const bubbleChat = await bubbleChatComponent({ room: $room });
-    $container.add(bubbleChat);
+  const reconnect = async () => {
+    await System.proxy.preConnect();
+    await System.proxy.connect();
+    System.proxy.on(Event.DISCONNECTED, onDisconnected);
 
-    // setInterval(() => {
-    //   System.proxy.emit(Event.TEST, {});
-    // }, 2000);
-  });
+    changeScreen(await gameScreenComponent());
+
+    System.proxy.emit(Event.JOIN_ROOM, {
+      roomId: `test_2`,
+    });
+  };
+
+  const onDisconnected = async () => {
+    changeScreen(await offlineScreenComponent({ reconnect }));
+  };
+
+  System.proxy.on(Event.DISCONNECTED, onDisconnected);
 
   System.proxy.emit(Event.JOIN_ROOM, {
     roomId: `test_2`,
