@@ -49,14 +49,14 @@ export const bubbleChatComponent: ContainerComponent<Props, Mutable> = async ({
     moveMessages();
 
     await message.setPosition({
-      x: parentX + x - message.getWidth() / 3,
+      x: parentX + x - message.getBounds().width / 3,
       y: newY,
     });
 
     messages.push(message);
     $container.add(message);
 
-    jumpHeight = message.getHeight() + 1;
+    jumpHeight = message.getBounds().height + 1;
   });
 
   const moveMessages = () => {

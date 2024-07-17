@@ -13,4 +13,6 @@ export enum Event {
   MESSAGE = "message",
 
   TEST = "test",
+
+  DISCONNECTED = "disconnected",
 }
