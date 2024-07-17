@@ -4,8 +4,6 @@ import {
   Cursor,
   DisplayObjectEvent,
   EventMode,
-  graphics,
-  GraphicType,
   inputTextSprite,
 } from "@tulib/tulip";
 import { SpriteSheetEnum } from "shared/enums";
@@ -13,28 +11,28 @@ import { SpriteSheetEnum } from "shared/enums";
 export const inputComponent: ContainerComponent = async (props) => {
   const $container = await container(props);
 
-  const $background = await graphics({
-    type: GraphicType.RECTANGLE,
-    width: 100,
-    height: 20,
-    color: 0xff00ff,
-    withContext: true,
-    eventMode: EventMode.STATIC,
-    cursor: Cursor.TEXT,
-  });
-
   const $input = await inputTextSprite({
     spriteSheet: SpriteSheetEnum.DEFAULT_FONT,
     color: 0xffffff,
-    eventMode: EventMode.NONE,
+    eventMode: EventMode.STATIC,
+    cursor: Cursor.TEXT,
     editable: true,
     withContext: true,
+    backgroundColor: 0xff00ff,
+    backgroundAlpha: 1,
+    size: {
+      width: 100,
+      height: 7,
+    },
+    backgroundPadding: [4, 8, 3, 8],
+    placeholder: "username",
+    maxLength: 20,
   });
-  $background.on(DisplayObjectEvent.POINTER_TAP, () => {
-    console.log('"""');
+  $input.on(DisplayObjectEvent.POINTER_TAP, () => {
+    console.log($input.getText());
     $input.focus();
   });
-  $container.add($background, $input);
+  $container.add($input);
 
   return $container.getComponent(inputComponent);
 };

@@ -13,8 +13,9 @@ export const mainComponent: ContainerComponent = async () => {
   $container.add($logo);
 
   const $homePage = await homeComponent();
-  const $scene = await sceneComponent();
-  $container.add($scene);
+  $container.add($homePage);
+  // const $scene = await sceneComponent();
+  // $container.add($scene);
 
   return $container.getComponent(mainComponent);
 };
