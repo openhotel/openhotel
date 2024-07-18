@@ -18,4 +18,7 @@ export type ConfigTypes = {
     port?: number;
     url?: string;
   };
+  auth?: {
+    url?: string;
+  };
 };

@@ -1,4 +1,5 @@
 export type ConfigTypes = {
+  version: 1;
   name?: string;
   description?: string;
   limits?: {
@@ -15,6 +16,9 @@ export type ConfigTypes = {
   };
   proxy?: {
     port?: number;
+    url?: string;
+  };
+  auth?: {
     url?: string;
   };
 };
