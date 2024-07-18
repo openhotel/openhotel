@@ -24,7 +24,7 @@ moduleWorker.on("start", async ({ config, envs }: WorkerProps) => {
       let fileData = await Deno.readFile(targetFile);
       if (targetFile === "./client/index.html")
         fileData = (await Deno.readTextFile(targetFile)).replace(
-          "{/*__CONFIG__*/}",
+          /{\s*\/\*__CONFIG__\*\/\s*}/,
           JSON.stringify(config),
         );
       return new Response(fileData, {
