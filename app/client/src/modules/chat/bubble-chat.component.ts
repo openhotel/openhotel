@@ -2,6 +2,7 @@ import {
   container,
   ContainerComponent,
   DisplayObjectEvent,
+  EventMode,
 } from "@tulib/tulip";
 import { Event } from "shared/enums";
 import { System } from "../../system";
@@ -21,6 +22,7 @@ export const bubbleChatComponent: ContainerComponent<Props, Mutable> = async ({
 }) => {
   const $container = await container<{}, Mutable>({
     sortableChildren: true,
+    eventMode: EventMode.NONE,
   });
 
   let messages = [];
