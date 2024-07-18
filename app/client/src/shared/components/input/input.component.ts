@@ -4,35 +4,54 @@ import {
   Cursor,
   DisplayObjectEvent,
   EventMode,
+  HorizontalAlign,
   inputTextSprite,
 } from "@tulib/tulip";
 import { SpriteSheetEnum } from "shared/enums";
 
-export const inputComponent: ContainerComponent = async (props) => {
-  const $container = await container(props);
+type InputProps = {
+  placeholder: string;
+  horizontalAlign: HorizontalAlign;
+  maxLength: number;
+  width: number;
+  password?: boolean;
+};
+
+type InputMutable = {
+  getValue: () => string
+}
+
+export const inputComponent: ContainerComponent<InputProps, InputMutable> = async (props) => {
+  const $container = await container<InputProps, InputMutable>(props);
+
+  const { placeholder, horizontalAlign, maxLength, width, password } =
+    $container.getProps();
 
   const $input = await inputTextSprite({
     spriteSheet: SpriteSheetEnum.DEFAULT_FONT,
-    color: 0xffffff,
+    color: 0x000000,
     eventMode: EventMode.STATIC,
     cursor: Cursor.TEXT,
     editable: true,
     withContext: true,
-    backgroundColor: 0xff00ff,
+    backgroundColor: 0xffffff,
     backgroundAlpha: 1,
     size: {
-      width: 100,
+      width,
       height: 7,
     },
     backgroundPadding: [4, 8, 3, 8],
-    placeholder: "username",
-    maxLength: 20,
+    placeholder,
+    horizontalAlign,
+    maxLength,
+    passwordChar: password ? "$" : null,
   });
   $input.on(DisplayObjectEvent.POINTER_TAP, () => {
-    console.log($input.getText());
     $input.focus();
   });
   $container.add($input);
 
-  return $container.getComponent(inputComponent);
+  return $container.getComponent(inputComponent, {
+    getValue: $input.getText
+  });
 };

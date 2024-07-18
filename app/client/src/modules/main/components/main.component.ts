@@ -2,7 +2,6 @@ import { container, ContainerComponent } from "@tulib/tulip";
 import { logoComponent } from "./logo.component";
 import { System } from "system";
 import { homeComponent } from "modules/pages";
-import { sceneComponent } from "modules/scene";
 
 export const mainComponent: ContainerComponent = async () => {
   await System.proxy.preConnect();
