@@ -31,7 +31,12 @@ export const buttonComponent: ContainerComponent<InputProps> = async (
       width,
       height: 7,
     },
-    backgroundPadding: [4, 8, 3, 8],
+    backgroundPadding: {
+      top: 4,
+      right: 8,
+      bottom: 3,
+      left: 8,
+    },
     horizontalAlign: HorizontalAlign.CENTER,
     text,
   });

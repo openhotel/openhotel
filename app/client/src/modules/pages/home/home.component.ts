@@ -49,6 +49,7 @@ export const homeComponent: ContainerComponent = async () => {
     console.log($username.getValue(), $password.getValue());
   });
 
+  console.log("?");
   $container.add($username, $password, $registerButton);
 
   return $container.getComponent(homeComponent);

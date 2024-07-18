@@ -18,10 +18,13 @@ type InputProps = {
 };
 
 type InputMutable = {
-  getValue: () => string
-}
+  getValue: () => string;
+};
 
-export const inputComponent: ContainerComponent<InputProps, InputMutable> = async (props) => {
+export const inputComponent: ContainerComponent<
+  InputProps,
+  InputMutable
+> = async (props) => {
   const $container = await container<InputProps, InputMutable>(props);
 
   const { placeholder, horizontalAlign, maxLength, width, password } =
@@ -40,11 +43,17 @@ export const inputComponent: ContainerComponent<InputProps, InputMutable> = asyn
       width,
       height: 7,
     },
-    backgroundPadding: [4, 8, 3, 8],
+    backgroundPadding: {
+      top: 4,
+      right: 8,
+      bottom: 3,
+      left: 8,
+    },
     placeholder,
     horizontalAlign,
     maxLength,
     passwordChar: password ? "$" : null,
+    selectionColor: 0xdddddd,
   });
   $input.on(DisplayObjectEvent.POINTER_TAP, () => {
     $input.focus();
@@ -52,6 +61,6 @@ export const inputComponent: ContainerComponent<InputProps, InputMutable> = asyn
   $container.add($input);
 
   return $container.getComponent(inputComponent, {
-    getValue: $input.getText
+    getValue: $input.getText,
   });
 };
