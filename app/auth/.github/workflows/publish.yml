@@ -50,4 +50,3 @@ jobs:
           file: ./build/auth_${{ matrix.os }}
           tag: ${{ github.ref }}
           overwrite: true
-          file_glob: true
