@@ -4,7 +4,7 @@
 
     "start:prod:linux": "cd build && ./server_linux",
 
-    "compile": "deno compile -A --unstable-kv --no-check --include=./src/shared/workers/main.ts",
+    "compile": "deno compile -A --unstable-kv --no-check --include=./src/shared/workers.ts",
 
     "compile:windows": "deno task compile --target=x86_64-pc-windows-msvc --output ./build/server_windows ./mod.ts",
     "compile:linux": "deno task compile --target=x86_64-unknown-linux-gnu --output ./build/server_linux ./mod.ts",

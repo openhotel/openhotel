@@ -5,7 +5,7 @@ import { Event } from "shared/enums";
 import { System } from "system";
 import { roomComponent } from "modules/room";
 
-export const gameScreenComponent: ContainerComponent = async () => {
+export const gameComponent: ContainerComponent = async () => {
   const $container = await container();
 
   const logs = await logComponent();
@@ -20,23 +20,13 @@ export const gameScreenComponent: ContainerComponent = async () => {
   let $room;
   let $bubbleChat;
 
-  // System.proxy.on<any>(Event.TEST, async ({ username }) => {
-  //   console.log("hello there!", username);
-  // });
-
-  console.log("load_room???");
   System.proxy.on<any>(Event.LOAD_ROOM, async ({ room }) => {
-    console.log("room1", room);
     $room = await roomComponent({ layout: room.layout, addLog: logs.addLog });
     $container.add($room);
 
     $bubbleChat = await bubbleChatComponent({ room: $room });
     $container.add($bubbleChat);
-
-    // setInterval(() => {
-    //   System.proxy.emit(Event.TEST, {});
-    // }, 2000);
   });
 
-  return $container.getComponent(gameScreenComponent);
+  return $container.getComponent(gameComponent);
 };

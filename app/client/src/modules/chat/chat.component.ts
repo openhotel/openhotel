@@ -8,7 +8,7 @@ import {
   global,
   inputTextSprite,
 } from "@tulib/tulip";
-import { System } from "../../system";
+import { System } from "system";
 import { Event, SpriteSheetEnum } from "shared/enums";
 
 type Mutable = {};
@@ -28,6 +28,8 @@ export const chatComponent: ContainerComponent<{}, Mutable> = async () => {
     backgroundAlpha: 1,
     backgroundColor: 0xffffff,
     position: { x: 5, y: 3 },
+    selectionColor: 0xdddddd,
+    maxLength: 32,
   });
   $input.on(DisplayObjectEvent.POINTER_TAP, () => {
     $input.focus();

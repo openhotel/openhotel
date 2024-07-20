@@ -10,13 +10,15 @@ import {
 import { SpriteSheetEnum } from "shared/enums";
 
 type Props = {
+  visible: boolean;
   reconnect: () => {};
 };
 
 export const offlineScreenComponent: ContainerComponent<Props> = async ({
+  visible,
   reconnect,
 }) => {
-  const $container = await container();
+  const $container = await container({ visible });
   await $container.setPosition({ x: 300, y: 100 });
 
   const $human = await sprite({
@@ -26,7 +28,7 @@ export const offlineScreenComponent: ContainerComponent<Props> = async ({
   await $human.setTint(0xefcfb1);
 
   const $title = await textSprite({
-    text: "Te has desconectado del servidor",
+    text: "You have been disconnected from the server!",
     spriteSheet: SpriteSheetEnum.DEFAULT_FONT,
     color: 0xffffff,
     position: {
@@ -37,10 +39,10 @@ export const offlineScreenComponent: ContainerComponent<Props> = async ({
   await $title.setPivotX($title.getBounds().width / 2);
 
   const $button = await textSprite({
-    text: "Volver al hotel",
+    text: "Return to the hotel",
     spriteSheet: SpriteSheetEnum.DEFAULT_FONT,
     color: 0xffffff,
-    backgroundPadding: { top: 4, right: 4, bottom: 2, left: 2 },
+    backgroundPadding: { top: 4, right: 8, bottom: 2, left: 8 },
     backgroundColor: 0x1e1e1e,
     backgroundAlpha: 1,
     position: {

@@ -8,20 +8,26 @@ import {
 import { Event } from "shared/enums";
 import { getLoginUrl } from "shared/utils/auth.utils";
 
-type ConnectProps = { username: string; password: string };
+type ConnectProps = { username?: string; password?: string };
 
 export const proxy = () => {
   const config = getConfig();
+
+  let $lastUsername: string;
+  let $lastPassword: string;
 
   let isConnected: boolean = false;
   let $socket;
   let eventFunctionMap: Record<Event | string, Function[]> = {};
   let eventFunctionRemoveMap: Record<Event | string, Function[]> = {};
 
-  const connect = async ({ username, password }: ConnectProps) =>
+  const connect = async ({ username, password }: ConnectProps = {}) =>
     new Promise(async (resolve, reject) => {
       const headers = new Headers();
       headers.append("Content-Type", "application/json");
+
+      username && ($lastUsername = username);
+      password && ($lastPassword = password);
 
       let sessionId;
       let token;
@@ -31,8 +37,8 @@ export const proxy = () => {
           headers,
           method: "POST",
           body: JSON.stringify({
-            username,
-            password,
+            username: $lastUsername,
+            password: $lastPassword,
           }),
         }).then((data) => data.json());
 
@@ -62,7 +68,7 @@ export const proxy = () => {
       $socket.on("connected", () => {
         console.log("handhskae connected!");
 
-        $socket.emit("session", { sessionId, token, username });
+        $socket.emit("session", { sessionId, token, username: $lastUsername });
       });
       $socket.on("join", async (data) => {
         $socket.close();

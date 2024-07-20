@@ -7,8 +7,9 @@ import {
   HorizontalAlign,
   textSprite,
 } from "@tulib/tulip";
-import { loginFormComponent, registerFormComponent } from "./components";
 import { SpriteSheetEnum } from "shared/enums";
+import { registerFormComponent } from "./register-form.component";
+import { loginFormComponent } from "./login-form.component";
 
 export const homeComponent: ContainerComponent = async () => {
   const $container = await container();

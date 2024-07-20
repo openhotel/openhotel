@@ -1,9 +1,8 @@
 import { container, ContainerComponent } from "@tulib/tulip";
 import { logoComponent } from "./logo.component";
-import { homeComponent } from "modules/pages";
 import { System } from "system";
 import { Event } from "shared/enums";
-import { sceneComponent } from "modules/scene";
+import { homeComponent, sceneComponent } from "modules/pages";
 
 export const mainComponent: ContainerComponent = async () => {
   const $container = await container();
@@ -17,7 +16,6 @@ export const mainComponent: ContainerComponent = async () => {
   $container.add($homePage);
 
   const removeConnectedEvent = System.proxy.on(Event.WELCOME, async (data) => {
-    console.log("welcome", data);
     $container.remove($homePage);
 
     const $scene = await sceneComponent();
