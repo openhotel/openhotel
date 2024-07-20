@@ -16,7 +16,6 @@ import { humanComponent } from "modules/human";
 
 type Props = {
   layout: RoomPoint[][];
-  addLog: (log: string) => void;
 };
 
 export type RoomMutable = {
@@ -25,7 +24,6 @@ export type RoomMutable = {
 
 export const roomComponent: ContainerComponent<Props, RoomMutable> = async ({
   layout,
-  addLog,
 }) => {
   const $container = await container<{}, RoomMutable>({
     sortableChildren: true,
@@ -55,8 +53,6 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = async ({
         await human.setIsometricPosition(position);
         humanList.push(human);
         $container.add(human);
-
-        if (!isOld) addLog(`${user.username} joined!`);
       },
     );
     removeOnRemoveHuman = System.proxy.on<any>(
@@ -67,7 +63,6 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = async ({
         );
         $container.remove(currentHuman);
         humanList = humanList.filter((human) => human.getUser().id !== user.id);
-        addLog(`${user.username} left!`);
       },
     );
     removeOnMoveHuman = System.proxy.on<any>(
