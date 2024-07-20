@@ -5,6 +5,7 @@ export enum Event {
   LEAVE_ROOM = "leave-room",
 
   LOAD_ROOM = "load-room",
+  REMOVE_ROOM = "remove-room",
 
   ADD_HUMAN = "add-human",
   REMOVE_HUMAN = "remove-human",

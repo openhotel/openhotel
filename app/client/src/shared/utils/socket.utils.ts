@@ -52,7 +52,8 @@ export const getClientSocket = ({
   const emitEventCallback = (event: string, data?: any) => {
     if (!events[event]) return;
 
-    for (const callback of events[event]) callback?.(data);
+    for (const callback of events[event].filter((func) => func !== null))
+      callback?.(data);
   };
 
   const connect = async () =>
@@ -139,10 +140,11 @@ export const getClientSocket = ({
     if (!events[event]) events[event] = [];
 
     const index = events[event].push(callback) - 1;
-    return () =>
-      (events[event] = events[event].map((callback, $index) =>
+    return () => {
+      events[event] = events[event].map((callback, $index) =>
         index === $index ? null : callback,
-      ));
+      );
+    };
   };
 
   const close = () => {

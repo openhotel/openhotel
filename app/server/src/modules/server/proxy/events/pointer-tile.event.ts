@@ -1,5 +1,5 @@
 import { ProxyEventType } from "shared/types/main.ts";
-import { ProxyEvent } from "shared/enums/main.ts";
+import { ProxyEvent, RoomPoint } from "shared/enums/main.ts";
 import { Server } from "modules/server/main.ts";
 
 export const pointerTileEvent: ProxyEventType<any> = {
@@ -11,6 +11,17 @@ export const pointerTileEvent: ProxyEventType<any> = {
       ...position,
       y: 0,
     });
+
+    try {
+      const roomPoint = room.layout[position.x][position.z];
+      // Leave room
+      if (roomPoint === RoomPoint.SPAWN) {
+        Server.rooms.removeUser(user);
+        return;
+      }
+    } catch (e) {
+      //TODO Invalid position
+    }
 
     Server.proxy.emitRoom({
       event: ProxyEvent.MOVE_HUMAN,

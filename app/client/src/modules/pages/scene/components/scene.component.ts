@@ -1,7 +1,7 @@
 import { container, ContainerComponent, textSprite } from "@tulib/tulip";
 import { System } from "system";
 import { Event, SpriteSheetEnum } from "shared/enums";
-import { getVersion } from "shared/utils";
+import { getVersion, isDevelopment } from "shared/utils";
 import { gameComponent } from "./game.component";
 import { offlineScreenComponent } from "./offline.component";
 
@@ -31,7 +31,7 @@ export const sceneComponent: ContainerComponent = async () => {
   $container.add($game, $offline);
 
   let $version = await textSprite({
-    text: `${getVersion()}-alpha`,
+    text: isDevelopment() ? "DEVELOPMENT" : `${getVersion()}-alpha`,
     spriteSheet: SpriteSheetEnum.DEFAULT_FONT,
     color: 0xffffff,
     position: {
