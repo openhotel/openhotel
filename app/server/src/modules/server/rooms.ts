@@ -81,19 +81,21 @@ export const rooms = () => {
 
   const removeUser = (user: User) => {
     const roomId = userRoomMap[user.id];
-    roomUserMap[roomId] = roomUserMap[roomId].filter(
-      (roomUser) => user.id !== roomUser.user.id,
-    );
+    if (roomId) {
+      roomUserMap[roomId] = roomUserMap[roomId].filter(
+        (roomUser) => user.id !== roomUser.user.id,
+      );
 
-    delete userRoomMap[user.id];
+      delete userRoomMap[user.id];
 
-    Server.proxy.emit({
-      users: roomUserMap[roomId].map(({ user }) => user.id),
-      event: ProxyEvent.REMOVE_HUMAN,
-      data: {
-        user,
-      },
-    });
+      Server.proxy.emit({
+        users: roomUserMap[roomId].map(({ user }) => user.id),
+        event: ProxyEvent.REMOVE_HUMAN,
+        data: {
+          user,
+        },
+      });
+    }
   };
 
   const getUsers = (roomId: string): RoomUser[] => roomUserMap[roomId];
@@ -109,14 +111,12 @@ export const rooms = () => {
     title: "Room 1",
     description: "This is a description",
     layout: [
-      "   s   ",
-      "██ ███",
-      "██ ███",
-      "██████",
-      "█████████",
-      "██████  █",
-      "█████████",
-      "     ████",
+      " █████████",
+      " █████████",
+      " █████████",
+      "s█████████",
+      " █████████",
+      " █████████",
     ],
   });
 
@@ -124,7 +124,14 @@ export const rooms = () => {
     id: "test_1",
     title: "Room 2",
     description: "This is a description",
-    layout: [" ██████", " ███████", "s███████", " ███████"],
+    layout: [
+      " █████████",
+      " █████████",
+      " █████████",
+      "s██████",
+      " ██████",
+      " ██████",
+    ],
   });
 
   create({

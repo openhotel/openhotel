@@ -1,4 +1,4 @@
-import { getRandomString, initLog, log } from "shared/utils/main.ts";
+import { getRandomString, initLog, log, waitUntil } from "shared/utils/main.ts";
 import { getChildWorker, getParentWorker } from "worker_ionic";
 import { User, WorkerProps } from "shared/types/main.ts";
 import { getServerSocket, ServerClient } from "socket_ionic";
@@ -8,6 +8,9 @@ import { ProxyEvent } from "shared/enums/main.ts";
 initLog();
 const serverWorker = getChildWorker();
 
+// This maps client id to user id (1:1), to prevent the connection of the user multiple times
+// The userId cannot be duplicated as value, if so, it would be the same user connected twice
+let clientIdUserIdMap: Record<string, string> = {};
 let userList: User[] = [];
 let userClientMap: Record<string, ServerClient> = {};
 
@@ -26,7 +29,7 @@ serverWorker.on(ProxyEvent.$DATA, ({ users, event, message }: DataEvent) => {
   for (const user of users.map((userId) =>
     userList.find((user) => user.id === userId),
   ))
-    userClientMap[user.clientId].emit(event, message);
+    userClientMap[user?.clientId]?.emit(event, message);
 });
 
 serverWorker.on(ProxyEvent.$ADD_ROOM, ({ roomId, userId }) => {
@@ -55,8 +58,14 @@ serverWorker.on("start", async ({ config, envs }: WorkerProps) => {
     token: protocolToken,
   } as WorkerProps);
   firewallWorker.on("join", ({ session, userId, username }) => {
-    userList.push({ session, id: userId, username });
-    firewallWorker.emit("userList", { userList });
+    const foundUser = userList.find((user) => user.id === userId);
+
+    if (foundUser) {
+      foundUser.session = session;
+    } else {
+      userList.push({ session, id: userId, username });
+      firewallWorker.emit("userList", { userList });
+    }
 
     setTimeout(() => {
       userList = userList.filter(
@@ -74,16 +83,26 @@ serverWorker.on("start", async ({ config, envs }: WorkerProps) => {
   server.on("guest", (clientId: string, [token, session]) => {
     if (token !== protocolToken && userList.length >= config.limits.players)
       return false;
-    const foundUser = userList.find(
-      (user) => !user.clientId && user.session === session,
-    );
+    const foundUser = userList.find((user) => user.session === session);
     if (!foundUser) return false;
+
+    // Disconnects user if already connected
+    if (foundUser.clientId) userClientMap[foundUser.clientId]?.close();
+
+    // Assigns the new clientId
     foundUser.clientId = clientId;
     return true;
   });
-  server.on("connected", (client: ServerClient) => {
+  server.on("connected", async (client: ServerClient) => {
     const foundUser = userList.find((user) => user.clientId === client.id);
     if (!foundUser) return client.close();
+
+    // Wait if current user is connected to be disconnected
+    await waitUntil(
+      () => !Object.values(clientIdUserIdMap).includes(foundUser.id),
+    );
+    // Assign the userId to the clientId. UserId can only be once as value.
+    clientIdUserIdMap[client.id] = foundUser.id;
 
     userClientMap[foundUser.clientId] = client;
     serverWorker.emit(ProxyEvent.$JOINED, foundUser);
@@ -93,11 +112,16 @@ serverWorker.on("start", async ({ config, envs }: WorkerProps) => {
       if (!PROXY_CLIENT_EVENT_WHITELIST.includes(event)) return client.close();
       serverWorker.emit(ProxyEvent.$DATA, { user: foundUser, event, message });
     });
+    client.emit(ProxyEvent.WELCOME, { datetime: Date.now() });
   });
   server.on("disconnected", (client: ServerClient) => {
-    const foundUser = userList.find((user) => user.clientId === client.id);
+    const userId = clientIdUserIdMap[client.id];
 
-    delete userClientMap[foundUser.clientId];
+    const foundUser = userList.find((user) => user.id === userId);
+
+    delete userClientMap[client.id];
+    delete clientIdUserIdMap[client.id];
+
     userList = userList.filter((user) => user.clientId !== client.id);
     firewallWorker.emit("userList", { userList });
 
