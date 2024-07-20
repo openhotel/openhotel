@@ -47,9 +47,27 @@ export const rooms = () => {
   const addUser = ($roomId: string, $user: User) => {
     const { spawnPoint } = roomMap[$roomId];
     if (!roomMap[$roomId]) return;
+    // If user is already on a room, leave
+    removeUser($user);
 
     userRoomMap[$user.id] = $roomId;
 
+    //Add user to "room" internally
+    Server.proxy.$emit(ProxyEvent.$ADD_ROOM, {
+      userId: $user.id,
+      roomId: $roomId,
+    });
+
+    //Load room to user
+    Server.proxy.emit({
+      event: ProxyEvent.LOAD_ROOM,
+      users: $user.id,
+      data: {
+        room: roomMap[$roomId],
+      },
+    });
+
+    //Add user to room
     Server.proxy.emitRoom({
       roomId: $roomId,
       event: ProxyEvent.ADD_HUMAN,
@@ -59,6 +77,7 @@ export const rooms = () => {
       },
     });
 
+    //Send every existing user inside room to the user
     for (const { user, position } of roomUserMap[$roomId])
       Server.proxy.emit({
         users: [$user.id],
@@ -88,6 +107,18 @@ export const rooms = () => {
 
       delete userRoomMap[user.id];
 
+      //Remove user from internal "room"
+      Server.proxy.$emit(ProxyEvent.$REMOVE_ROOM, {
+        userId: user.id,
+        roomId,
+      });
+      //Disconnect user from current room
+      Server.proxy.emit({
+        users: user.id,
+        event: ProxyEvent.LEAVE_ROOM,
+        data: {},
+      });
+      //Remove user human from the room to existing users
       Server.proxy.emit({
         users: roomUserMap[roomId].map(({ user }) => user.id),
         event: ProxyEvent.REMOVE_HUMAN,

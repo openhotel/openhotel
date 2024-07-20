@@ -33,13 +33,15 @@ serverWorker.on(ProxyEvent.$DATA, ({ users, event, message }: DataEvent) => {
 });
 
 serverWorker.on(ProxyEvent.$ADD_ROOM, ({ roomId, userId }) => {
-  const { clientId } = userList.find((user) => user.id === userId);
-  server.getRoom(roomId).addClient(clientId);
+  const user = userList.find((user) => user.id === userId);
+  if (!user) return;
+  server.getRoom(roomId).addClient(user.clientId);
 });
 
 serverWorker.on(ProxyEvent.$REMOVE_ROOM, ({ roomId, userId }) => {
-  const { clientId } = userList.find((user) => user.id === userId);
-  server.getRoom(roomId).removeClient(clientId);
+  const user = userList.find((user) => user.id === userId);
+  if (!user) return;
+  server.getRoom(roomId).removeClient(user.clientId);
 });
 
 serverWorker.on(ProxyEvent.$ROOM_DATA, ({ roomId, event, message }) => {
