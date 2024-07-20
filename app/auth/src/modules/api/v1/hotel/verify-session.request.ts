@@ -31,7 +31,7 @@ export const verifySessionRequest: RequestType = {
       );
 
     // Verify session token is valid
-    const result = await bcrypt.compare(token, session.hash);
+    const result = bcrypt.compareSync(token, session.hash);
     if (!result)
       return Response.json(
         {

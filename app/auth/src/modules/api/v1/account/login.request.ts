@@ -29,7 +29,7 @@ export const loginRequest: RequestType = {
         },
       );
 
-    const result = await bcrypt.compare(password, account.hash);
+    const result = bcrypt.compareSync(password, account.hash);
 
     if (!result)
       return Response.json(
@@ -42,8 +42,8 @@ export const loginRequest: RequestType = {
     const sessionId = getRandomString(16);
     const token = getRandomString(64);
 
-    const salt = await bcrypt.genSalt(8);
-    const hash = await bcrypt.hash(token, salt);
+    const salt = bcrypt.genSaltSync(8);
+    const hash = bcrypt.hashSync(token, salt);
 
     await System.db.set(["session", sessionId], {
       hash,

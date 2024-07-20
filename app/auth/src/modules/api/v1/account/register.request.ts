@@ -19,8 +19,8 @@ export const registerRequest: RequestType = {
 
     const accountId = crypto.randomUUID();
 
-    const salt = await bcrypt.genSalt(8);
-    const hash = await bcrypt.hash(password, salt);
+    const salt = bcrypt.genSaltSync(8);
+    const hash = bcrypt.hashSync(password, salt);
 
     const { value: account } = await System.db.get(["accounts", username]);
 
