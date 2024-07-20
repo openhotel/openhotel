@@ -79,6 +79,9 @@ export const load = async (
     await Deno.writeFile(
       updatedFile,
       new Uint8Array(await buildAsset.arrayBuffer()),
+      {
+        mode: 0x777,
+      },
     );
 
     const isWindows = os === OS.WINDOWS;
