@@ -27,7 +27,7 @@ export const bubbleChatComponent: ContainerComponent<Props, Mutable> = async ({
 
   let messages = [];
   let jumpHeight = 10;
-  const jumpInterval = 30;
+  const jumpInterval = 60;
   let timeElapsed = 0;
 
   System.proxy.on<any>(

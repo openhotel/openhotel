@@ -8,7 +8,7 @@ import { ConfigTypes, Envs } from "shared/types/main.ts";
 export const load = async (envs: Envs) => {
   console.clear();
 
-  if (envs.version === "DEVELOPMENT")
+  if (envs.isDevelopment)
     console.log(
       "\n\n    ------------------\n    DEVELOPMENT SERVER\n    ------------------\n\n",
     );
