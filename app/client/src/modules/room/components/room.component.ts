@@ -80,7 +80,7 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = async ({
 
     if (
       (isX && layout[x][z - 1] === RoomPoint.SPAWN) ||
-      (!isX && layout[x - 1][z] === RoomPoint.SPAWN)
+      (!isX && layout[x - 1] && layout[x - 1][z] === RoomPoint.SPAWN)
     )
       return false;
 

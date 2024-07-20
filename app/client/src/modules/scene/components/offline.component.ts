@@ -7,7 +7,7 @@ import {
   sprite,
   textSprite,
 } from "@tulib/tulip";
-import { SpriteSheetEnum } from "../../shared/enums";
+import { SpriteSheetEnum } from "shared/enums";
 
 type Props = {
   reconnect: () => {};
@@ -40,7 +40,7 @@ export const offlineScreenComponent: ContainerComponent<Props> = async ({
     text: "Volver al hotel",
     spriteSheet: SpriteSheetEnum.DEFAULT_FONT,
     color: 0xffffff,
-    backgroundPadding: [4, 4, 2, 4],
+    backgroundPadding: { top: 4, right: 4, bottom: 2, left: 2 },
     backgroundColor: 0x1e1e1e,
     backgroundAlpha: 1,
     position: {

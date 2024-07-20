@@ -15,6 +15,7 @@ type InputProps = {
   maxLength: number;
   width: number;
   password?: boolean;
+  defaultValue?: string;
 };
 
 type InputMutable = {
@@ -27,8 +28,14 @@ export const inputComponent: ContainerComponent<
 > = async (props) => {
   const $container = await container<InputProps, InputMutable>(props);
 
-  const { placeholder, horizontalAlign, maxLength, width, password } =
-    $container.getProps();
+  const {
+    placeholder,
+    horizontalAlign,
+    maxLength,
+    width,
+    password,
+    defaultValue,
+  } = $container.getProps();
 
   const $input = await inputTextSprite({
     spriteSheet: SpriteSheetEnum.DEFAULT_FONT,
@@ -54,6 +61,7 @@ export const inputComponent: ContainerComponent<
     maxLength,
     passwordChar: password ? "$" : null,
     selectionColor: 0xdddddd,
+    defaultValue,
   });
   $input.on(DisplayObjectEvent.POINTER_TAP, () => {
     $input.focus();

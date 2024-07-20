@@ -1,32 +1,68 @@
 import {
   getClientSocket,
   getConfig,
-  getRandomString,
   getVersion,
   getWebSocketUrl,
+  isDevelopment,
 } from "shared/utils";
 import { Event } from "shared/enums";
+import { getLoginUrl } from "shared/utils/auth.utils";
+
+type ConnectProps = { username: string; password: string };
 
 export const proxy = () => {
   const config = getConfig();
-  let $socket;
 
-  const preConnect = async () =>
-    new Promise(async (resolve) => {
-      const response = await fetch(
+  let isConnected: boolean = false;
+  let $socket;
+  let eventFunctionMap: Record<Event | string, Function[]> = {};
+  let eventFunctionRemoveMap: Record<Event | string, Function[]> = {};
+
+  const connect = async ({ username, password }: ConnectProps) =>
+    new Promise(async (resolve, reject) => {
+      const headers = new Headers();
+      headers.append("Content-Type", "application/json");
+
+      let sessionId;
+      let token;
+
+      if (!isDevelopment()) {
+        const { status: loginStatus, data } = await fetch(getLoginUrl(), {
+          headers,
+          method: "POST",
+          body: JSON.stringify({
+            username,
+            password,
+          }),
+        }).then((data) => data.json());
+
+        sessionId = data?.sessionId;
+        token = data?.token;
+
+        if (loginStatus !== 200 || !sessionId || !token) {
+          reject("Incorrect username or password!");
+          return;
+        }
+      }
+      const firewall = await fetch(
         `${config.firewall.url}/request?version=${getVersion()}`,
       ).then((data) => data.json());
 
+      if (!firewall.token || !firewall.session) {
+        reject("Cannot connect right now to the server :(!");
+        return;
+      }
+
       $socket = getClientSocket({
         url: getWebSocketUrl(config.firewall.url),
-        protocols: [response.token, response.session],
+        protocols: [firewall.token, firewall.session],
         reconnect: false,
         silent: true,
       });
       $socket.on("connected", () => {
         console.log("handhskae connected!");
 
-        $socket.emit("session", { username: `player_${getRandomString(8)}` });
+        $socket.emit("session", { sessionId, token, username });
       });
       $socket.on("join", async (data) => {
         $socket.close();
@@ -36,20 +72,29 @@ export const proxy = () => {
           reconnect: false,
           silent: true,
         });
-        resolve(1);
-      });
-      await $socket.connect();
-    });
+        $socket.on("connected", () => {
+          console.log("proxy connected!");
+          isConnected = true;
 
-  const connect = async () => {
-    return await new Promise(async (resolve) => {
-      $socket.on("connected", () => {
-        console.log("proxy connected!");
-        resolve(1);
+          for (const event of Object.keys(eventFunctionMap)) {
+            eventFunctionRemoveMap[event] = [];
+            for (const eventCallback of eventFunctionMap[event])
+              eventFunctionRemoveMap[event].push(
+                $socket.on(event, eventCallback),
+              );
+          }
+
+          resolve(1);
+        });
+        $socket.on("disconnected", () => {
+          console.error("proxy disconnected!");
+          isConnected = false;
+          resolve(1);
+        });
+        await $socket.connect();
       });
       await $socket.connect();
     });
-  };
 
   const emit = <Data>(event: Event, data: Data) => {
     $socket.emit("$$data", { event, message: data });
@@ -58,10 +103,20 @@ export const proxy = () => {
   const on = <Data>(
     event: Event,
     callback: (data: Data) => void | Promise<void>,
-  ) => $socket.on(event, callback);
+  ) => {
+    if (!eventFunctionMap[event]) {
+      eventFunctionMap[event] = [];
+      eventFunctionRemoveMap[event] = [];
+    }
+
+    const index = eventFunctionMap[event].push(callback) - 1;
+    if (isConnected)
+      eventFunctionRemoveMap[event].push($socket.on(event, callback));
+
+    return () => eventFunctionRemoveMap[event][index]();
+  };
 
   return {
-    preConnect,
     connect,
     emit,
     on,

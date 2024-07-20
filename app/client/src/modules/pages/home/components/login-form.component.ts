@@ -1,14 +1,17 @@
 import {
   container,
+  ContainerComponent,
   DisplayObjectEvent,
   EventMode,
   HorizontalAlign,
 } from "@tulib/tulip";
 import { buttonComponent, inputComponent } from "shared/components";
-import { getConfig } from "shared/utils";
+import { System } from "system";
+import { getRandomString, isDevelopment } from "shared/utils";
 
-export const loginFormComponent = async () => {
+export const loginFormComponent: ContainerComponent = async (props) => {
   const $container = await container({
+    ...props,
     id: "login-form",
     position: {
       x: 250,
@@ -22,6 +25,9 @@ export const loginFormComponent = async () => {
     width: 100,
     maxLength: 16,
     password: false,
+    defaultValue: isDevelopment()
+      ? localStorage.getItem("username") || `player_${getRandomString(8)}`
+      : undefined,
   });
   const $password = await inputComponent({
     placeholder: "password",
@@ -40,30 +46,30 @@ export const loginFormComponent = async () => {
     width: 100,
     position: {
       x: 0,
-      y: 54,
+      y: 20 * 4,
     },
     eventMode: EventMode.STATIC,
   });
-
-  const loginUrl = `${getConfig().auth.url}/v1/account/login`;
-
   $loginButton.on(DisplayObjectEvent.POINTER_TAP, async () => {
-    const headers = new Headers();
-    headers.append("Content-Type", "application/json");
-
-    const response = await fetch(loginUrl, {
-      headers,
-      method: "POST",
-      body: JSON.stringify({
-        username: $username.getValue(),
-        password: $password.getValue(),
-      }),
+    // `player_${getRandomString(8)}`
+    await System.proxy.connect({
+      username: $username.getValue(),
+      password: $password.getValue(),
     });
-
-    console.log(await response.json());
   });
 
   $container.add($username, $password, $loginButton);
+
+  if (isDevelopment()) {
+    if (localStorage.getItem("auto-connect") === null)
+      localStorage.setItem("auto-connect", "true");
+
+    if (localStorage.getItem("auto-connect") === "true")
+      System.proxy.connect({
+        username: $username.getValue(),
+        password: $password.getValue(),
+      });
+  }
 
   return $container.getComponent(loginFormComponent);
 };

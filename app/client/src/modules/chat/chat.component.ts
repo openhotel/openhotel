@@ -6,8 +6,6 @@ import {
   Event as KeyEvent,
   EventMode,
   global,
-  graphics,
-  GraphicType,
   inputTextSprite,
 } from "@tulib/tulip";
 import { System } from "../../system";
@@ -18,25 +16,24 @@ type Mutable = {};
 export const chatComponent: ContainerComponent<{}, Mutable> = async () => {
   const $container = await container<{}, Mutable>({});
 
-  const $background = await graphics({
-    type: GraphicType.RECTANGLE,
-    width: 200,
-    height: 12,
-    color: 0xeeeeff,
-    eventMode: EventMode.STATIC,
-    cursor: Cursor.TEXT,
-  });
-
   const $input = await inputTextSprite({
     color: 0,
     spriteSheet: SpriteSheetEnum.DEFAULT_FONT,
-    eventMode: EventMode.NONE,
+    eventMode: EventMode.STATIC,
+    editable: true,
     withContext: true,
+    cursor: Cursor.TEXT,
+    backgroundPadding: { left: 7, bottom: 2, right: 7, top: 3 },
+    size: { width: 200, height: 7 },
+    backgroundAlpha: 1,
+    backgroundColor: 0xffffff,
+    position: { x: 5, y: 3 },
+  });
+  $input.on(DisplayObjectEvent.POINTER_TAP, () => {
+    $input.focus();
   });
 
-  await $input.setPosition({ x: 5, y: 3 });
-
-  $container.add($background, $input);
+  $container.add($input);
 
   global.events.on(
     KeyEvent.KEY_UP,
@@ -54,10 +51,6 @@ export const chatComponent: ContainerComponent<{}, Mutable> = async () => {
     },
     $container,
   );
-
-  $background.on(DisplayObjectEvent.POINTER_DOWN, () => {
-    $input.focus();
-  });
 
   return $container.getComponent(chatComponent);
 };

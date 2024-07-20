@@ -1,10 +1,11 @@
 import { container, ContainerComponent } from "@tulib/tulip";
 import { logoComponent } from "./logo.component";
-import { System } from "system";
 import { homeComponent } from "modules/pages";
+import { System } from "system";
+import { Event } from "shared/enums";
+import { sceneComponent } from "modules/scene";
 
 export const mainComponent: ContainerComponent = async () => {
-  await System.proxy.preConnect();
   const $container = await container();
 
   const $logo = await logoComponent();
@@ -12,9 +13,18 @@ export const mainComponent: ContainerComponent = async () => {
   $container.add($logo);
 
   const $homePage = await homeComponent();
+
   $container.add($homePage);
-  // const $scene = await sceneComponent();
-  // $container.add($scene);
+
+  const removeConnectedEvent = System.proxy.on(Event.WELCOME, async (data) => {
+    console.log("welcome", data);
+    $container.remove($homePage);
+
+    const $scene = await sceneComponent();
+    $container.add($scene);
+
+    removeConnectedEvent();
+  });
 
   return $container.getComponent(mainComponent);
 };

@@ -1,14 +1,16 @@
 import {
   container,
+  ContainerComponent,
   DisplayObjectEvent,
   EventMode,
   HorizontalAlign,
 } from "@tulib/tulip";
 import { buttonComponent, inputComponent } from "shared/components";
-import { getConfig } from "shared/utils";
+import { getRegisterUrl } from "shared/utils/auth.utils";
 
-export const registerFormComponent = async () => {
+export const registerFormComponent: ContainerComponent = async (props) => {
   const $container = await container({
+    ...props,
     id: "register-form",
     position: {
       x: 250,
@@ -34,24 +36,33 @@ export const registerFormComponent = async () => {
       y: 20,
     },
   });
+  const $passwordRepeat = await inputComponent({
+    placeholder: "repeat password",
+    horizontalAlign: HorizontalAlign.CENTER,
+    width: 100,
+    maxLength: 16,
+    password: true,
+    position: {
+      x: 0,
+      y: 20 * 2,
+    },
+  });
 
   const $registerButton = await buttonComponent({
     text: "Register",
     width: 100,
     position: {
       x: 0,
-      y: 54,
+      y: 20 * 4,
     },
     eventMode: EventMode.STATIC,
   });
-
-  const registerUrl = `${getConfig().auth.url}/v1/account/register`;
 
   $registerButton.on(DisplayObjectEvent.POINTER_TAP, async () => {
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
 
-    const response = await fetch(registerUrl, {
+    const response = await fetch(getRegisterUrl(), {
       headers,
       method: "POST",
       body: JSON.stringify({
@@ -63,7 +74,7 @@ export const registerFormComponent = async () => {
     console.log(await response.json());
   });
 
-  $container.add($username, $password, $registerButton);
+  $container.add($username, $password, $passwordRepeat, $registerButton);
 
   return $container.getComponent(registerFormComponent);
 };
