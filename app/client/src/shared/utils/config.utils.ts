@@ -10,6 +10,7 @@ export const getConfig = (): ConfigTypes => {
   return Object.keys(config || {}).length
     ? config
     : {
+        version: 1,
         name: "DEVELOPMENT",
         description: "DEVELOPMENT",
         proxy: {
@@ -19,6 +20,9 @@ export const getConfig = (): ConfigTypes => {
         firewall: {
           port: 2001,
           url: `http://${hostname}:2001`,
+        },
+        auth: {
+          url: `http://${hostname}:2024`,
         },
       };
 };

@@ -12,3 +12,4 @@ export * from "./config.utils.ts";
 export * from "./content-type.utils.ts";
 export * from "./cors.utils.ts";
 export * from "./envs.utils.ts";
+export * from "./color.utils.ts";

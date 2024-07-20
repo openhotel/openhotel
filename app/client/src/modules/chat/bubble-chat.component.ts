@@ -5,7 +5,7 @@ import {
   EventMode,
 } from "@tulib/tulip";
 import { Event } from "shared/enums";
-import { System } from "../../system";
+import { System } from "system";
 import { messageComponent } from "./message.component";
 import { RoomMutable } from "../room";
 
@@ -30,36 +30,40 @@ export const bubbleChatComponent: ContainerComponent<Props, Mutable> = async ({
   const jumpInterval = 30;
   let timeElapsed = 0;
 
-  System.proxy.on<any>(Event.MESSAGE, async ({ userId, message: text }) => {
-    const human = room
-      .getHumanList()
-      .find((human) => human.getUser().id === userId);
-    const { x: parentX, y: parentY } = human.getFather().getPosition();
-    const { x, y } = human.getPosition();
+  System.proxy.on<any>(
+    Event.MESSAGE,
+    async ({ userId, message: text, color }) => {
+      const human = room
+        .getHumanList()
+        .find((human) => human.getUser().id === userId);
+      const { x: parentX, y: parentY } = human.getFather().getPosition();
+      const { x, y } = human.getPosition();
 
-    const message = await messageComponent({
-      username: human.getUser().username,
-      message: text,
-    });
+      const message = await messageComponent({
+        username: human.getUser().username,
+        color,
+        message: text,
+      });
 
-    let newY = parentY + y - 100;
-    if (messages.length > 0) {
-      const lastMessage = messages[messages.length - 1];
-      const { y: lastMessageY } = lastMessage.getPosition();
-      newY = Math.max(newY, lastMessageY);
-    }
-    moveMessages();
+      let newY = parentY + y - 100;
+      if (messages.length > 0) {
+        const lastMessage = messages[messages.length - 1];
+        const { y: lastMessageY } = lastMessage.getPosition();
+        newY = Math.max(newY, lastMessageY);
+      }
+      moveMessages();
 
-    await message.setPosition({
-      x: parentX + x - message.getBounds().width / 3,
-      y: newY,
-    });
+      await message.setPosition({
+        x: parentX + x - message.getBounds().width / 3,
+        y: newY,
+      });
 
-    messages.push(message);
-    $container.add(message);
+      messages.push(message);
+      $container.add(message);
 
-    jumpHeight = message.getBounds().height + 1;
-  });
+      jumpHeight = message.getBounds().height + 1;
+    },
+  );
 
   const moveMessages = () => {
     for (let i = messages.length - 1; i >= 0; i--) {

@@ -42,12 +42,18 @@ export const getClientSocket = ({
   silent = false,
   protocols = [],
 }: Props) => {
-  const events: Record<string, any> = {};
+  const events: Record<string, Function[]> = {};
 
   let socket;
   let reconnects = 0;
   let isConnected = false;
   let isClosed = false;
+
+  const emitEventCallback = (event: string, data?: any) => {
+    if (!events[event]) return;
+
+    for (const callback of events[event]) callback?.(data);
+  };
 
   const connect = async () =>
     new Promise((resolve, reject) => {
@@ -61,30 +67,21 @@ export const getClientSocket = ({
         socket.addEventListener("open", () => {
           isConnected = true;
           !silent && console.log(`Connected to ${url}!`);
-          events.connected && events.connected();
+          emitEventCallback("connected");
           resolve(null);
           reconnects = 0;
         });
 
         // Listen for messages
         socket.addEventListener("message", async ({ data }) => {
-          const { event, message, responseEventId } = JSON.parse(data);
+          const { event, message } = JSON.parse(data);
           if (!events[event]) return;
 
-          const responseMessage = await events[event](message);
-
-          if (responseMessage)
-            socket.send(
-              JSON.stringify({
-                event: `${event}#${responseEventId}`,
-                message: responseMessage,
-              }),
-            );
+          emitEventCallback(event, message);
         });
 
-        socket.addEventListener(
-          "error",
-          (message) => events.error && events.error(message),
+        socket.addEventListener("error", (message) =>
+          emitEventCallback("error", message),
         );
 
         socket.addEventListener("close", (message) => {
@@ -106,7 +103,7 @@ export const getClientSocket = ({
             }, reconnectInterval);
             return;
           }
-          events.disconnected && events.disconnected(message);
+          emitEventCallback("disconnected", message);
           resolve(null);
         });
       } catch (e) {
@@ -138,7 +135,15 @@ export const getClientSocket = ({
   const on = (
     event: "connected" | "disconnected" | "error" | string,
     callback: (data?: any) => void,
-  ) => (events[event] = callback);
+  ) => {
+    if (!events[event]) events[event] = [];
+
+    const index = events[event].push(callback) - 1;
+    return () =>
+      (events[event] = events[event].map((callback, $index) =>
+        index === $index ? null : callback,
+      ));
+  };
 
   const close = () => {
     isClosed = true;

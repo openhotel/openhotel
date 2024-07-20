@@ -11,6 +11,8 @@ export enum ProxyEvent {
 
   //### CLIENT #######################################################################################################//
 
+  WELCOME = "welcome",
+
   JOIN_ROOM = "join-room",
   LEAVE_ROOM = "leave-room",
 

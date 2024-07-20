@@ -8,8 +8,8 @@ type Mutable = {
 export const logComponent: ContainerComponent<{}, Mutable> = async () => {
   const $container = await container<{}, Mutable>();
   await $container.setPosition({
-    x: 20,
-    y: 100,
+    x: 10,
+    y: 110,
   });
 
   return $container.getComponent(logComponent, {

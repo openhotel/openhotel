@@ -28,6 +28,9 @@ export const getConfig = async (): Promise<ConfigTypes> => {
       port: config?.proxy?.port || CONFIG_DEFAULT.proxy.port,
       url: config?.proxy?.url || CONFIG_DEFAULT.proxy.url,
     },
+    auth: {
+      url: config?.auth?.url || CONFIG_DEFAULT.auth.url,
+    },
   };
   try {
     await writeYaml<ConfigTypes>("./config.yml", defaults, { async: true });

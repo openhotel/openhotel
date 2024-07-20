@@ -82,10 +82,8 @@ proxyWorker.on(
       );
       if (!foundHandshake) return client.close();
 
-      //TODO auth.openhotel.club
-      // Check if already joined
-      client.on("session", ({ username }) => {
-        const data = {
+      client.on("session", async ({ sessionId, token, username }) => {
+        const accountData = {
           session: getRandomString(32),
           token: proxyProtocolToken,
 
@@ -93,8 +91,34 @@ proxyWorker.on(
           username,
         };
 
-        client.emit("join", data);
-        proxyWorker.emit("join", data);
+        if (!envs.isDevelopment) {
+          const headers = new Headers();
+          headers.append("Content-Type", "application/json");
+
+          const response = await fetch(
+            `${config.auth.url}/v1/hotel/verify-session`,
+            {
+              headers,
+              method: "POST",
+              body: JSON.stringify({
+                sessionId,
+                token,
+                username,
+              }),
+            },
+          );
+          const { status, data } = await response.json();
+
+          // Account.id === User.id
+          // "account" when is at auth, "user" when is at server
+          accountData.userId = data.accountId;
+
+          if (status !== 200 || !data.accountId || !data.username)
+            return client.close();
+        }
+
+        client.emit("join", accountData);
+        proxyWorker.emit("join", accountData);
       });
 
       setTimeout(() => {

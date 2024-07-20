@@ -1,4 +1,6 @@
 export enum Event {
+  WELCOME = "welcome",
+
   JOIN_ROOM = "join-room",
   LEAVE_ROOM = "leave-room",
 
@@ -14,5 +16,6 @@ export enum Event {
 
   TEST = "test",
 
+  CONNECTED = "connected",
   DISCONNECTED = "disconnected",
 }
