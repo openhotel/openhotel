@@ -31,7 +31,7 @@ export const roomComponent: ContainerComponent<Props, Mutable> = async ({
   const $container = await container<{}, Mutable>({
     sortableChildren: true,
   });
-  await $container.setPosition({ x: 300, y: 100 });
+  await $container.setPosition({ x: 230, y: 100 });
 
   let humanList: ContainerMutable<{}, HumanMutable>[] = [];
 
