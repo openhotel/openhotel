@@ -1,15 +1,26 @@
-import { container, ContainerComponent } from "@tulib/tulip";
+import { container, ContainerComponent, textSprite } from "@tulib/tulip";
 import { logoComponent } from "./logo.component";
 import { System } from "system";
-import { Event } from "shared/enums";
+import { Event, SpriteSheetEnum } from "shared/enums";
 import { homeComponent, sceneComponent } from "modules/pages";
+import { getVersion, isDevelopment } from "shared/utils";
 
 export const mainComponent: ContainerComponent = async () => {
   const $container = await container();
 
   const $logo = await logoComponent();
   await $logo.setPosition({ x: 8, y: 8 });
-  $container.add($logo);
+
+  let $version = await textSprite({
+    text: isDevelopment() ? "DEVELOPMENT" : `${getVersion()}-alpha`,
+    spriteSheet: SpriteSheetEnum.DEFAULT_FONT,
+    color: 0xffffff,
+    position: {
+      x: 45,
+      y: 85,
+    },
+  });
+  $container.add($logo, $version);
 
   const $homePage = await homeComponent();
 
