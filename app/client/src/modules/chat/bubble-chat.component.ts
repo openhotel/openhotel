@@ -64,9 +64,7 @@ export const bubbleChatComponent: ContainerComponent<Props, Mutable> = async ({
 
       let targetX = position.x - messageBounds.width / 2 + TILE_SIZE.width / 2;
 
-      const containerGlobalPosition = $container
-        .getDisplayObject({ __preventWarning: true })
-        .getGlobalPosition();
+      const containerGlobalPosition = $container.getGlobalPosition();
 
       const globalMessageXPosition = containerGlobalPosition.x + targetX;
 
@@ -95,9 +93,7 @@ export const bubbleChatComponent: ContainerComponent<Props, Mutable> = async ({
     for (let i = messages.length - 1; i >= 0; i--) {
       const message = messages[i];
 
-      const absolutePosition = message
-        .getDisplayObject({ __preventWarning: true })
-        .getGlobalPosition();
+      const absolutePosition = message.getGlobalPosition();
 
       if (0 > absolutePosition.y) {
         message.$destroy();
