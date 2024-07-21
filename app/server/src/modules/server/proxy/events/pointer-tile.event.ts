@@ -7,10 +7,12 @@ export const pointerTileEvent: ProxyEventType<any> = {
   func: ({ data: { position }, user }) => {
     const room = Server.rooms.getUserRoom(user);
 
-    Server.rooms.setUserPosition(room.id, user, {
-      ...position,
-      y: 0,
-    });
+    const foundUser = Server.rooms
+      .getUsers(room.id)
+      .find(
+        ({ position: $position }) =>
+          position.x === $position.x && position.z === $position.z,
+      );
 
     try {
       const roomPoint = room.layout[position.x][position.z];
@@ -22,6 +24,13 @@ export const pointerTileEvent: ProxyEventType<any> = {
     } catch (e) {
       //TODO Invalid position
     }
+
+    if (foundUser) return;
+
+    Server.rooms.setUserPosition(room.id, user, {
+      ...position,
+      y: 0,
+    });
 
     Server.proxy.emitRoom({
       event: ProxyEvent.MOVE_HUMAN,
