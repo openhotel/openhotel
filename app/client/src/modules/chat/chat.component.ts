@@ -29,7 +29,7 @@ export const chatComponent: ContainerComponent<{}, Mutable> = async () => {
     backgroundColor: 0xffffff,
     position: { x: 5, y: 3 },
     selectionColor: 0xdddddd,
-    maxLength: 32,
+    maxLength: 64,
   });
   $input.on(DisplayObjectEvent.POINTER_TAP, () => {
     $input.focus();
