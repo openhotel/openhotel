@@ -3,6 +3,7 @@ import {
   ContainerComponent,
   DisplayObjectEvent,
   EventMode,
+  global,
 } from "@tulib/tulip";
 import { Event } from "shared/enums";
 import { System } from "system";
@@ -49,9 +50,10 @@ export const bubbleChatComponent: ContainerComponent<Props, Mutable> = async ({
         color,
         message: text,
       });
-      jumpHeight = message.getBounds().height + 1;
+      const messageBounds = message.getBounds();
+      jumpHeight = messageBounds.height + 1;
 
-      let targetY = Math.round(position.y / jumpHeight) * jumpHeight + 1;
+      let targetY = Math.round(position.y / jumpHeight) * jumpHeight;
 
       if (messages.length > 0) {
         const lastMessage = messages[messages.length - 1];
@@ -60,8 +62,23 @@ export const bubbleChatComponent: ContainerComponent<Props, Mutable> = async ({
       }
       moveMessages();
 
+      let targetX = position.x - messageBounds.width / 2 + TILE_SIZE.width / 2;
+
+      const containerGlobalPosition = $container
+        .getDisplayObject({ __preventWarning: true })
+        .getGlobalPosition();
+
+      const globalMessageXPosition = containerGlobalPosition.x + targetX;
+
+      const overflowRightX =
+        global.getApplication().window.getBounds().width -
+        (globalMessageXPosition + messageBounds.width);
+
+      if (0 > overflowRightX) targetX += overflowRightX;
+      if (0 > globalMessageXPosition) targetX -= globalMessageXPosition;
+
       await message.setPosition({
-        x: position.x - message.getBounds().width / 2 + TILE_SIZE.width / 2,
+        x: targetX,
         y: targetY,
       });
 
