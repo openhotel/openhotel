@@ -60,7 +60,6 @@ export const bubbleChatComponent: ContainerComponent<Props, Mutable> = async ({
       }
       moveMessages();
 
-      //position.x - message.getBounds().width / 2 + TILE_SIZE.width / 2
       await message.setPosition({
         x: position.x - message.getBounds().width / 2 + TILE_SIZE.width / 2,
         y: targetY,

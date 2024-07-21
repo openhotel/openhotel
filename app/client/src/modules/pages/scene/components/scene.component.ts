@@ -1,7 +1,6 @@
-import { container, ContainerComponent, textSprite } from "@tulib/tulip";
+import { container, ContainerComponent } from "@tulib/tulip";
 import { System } from "system";
-import { Event, SpriteSheetEnum } from "shared/enums";
-import { getVersion, isDevelopment } from "shared/utils";
+import { Event } from "shared/enums";
 import { gameComponent } from "./game.component";
 import { offlineScreenComponent } from "./offline.component";
 
@@ -29,17 +28,6 @@ export const sceneComponent: ContainerComponent = async () => {
     reconnect,
   });
   $container.add($game, $offline);
-
-  let $version = await textSprite({
-    text: isDevelopment() ? "DEVELOPMENT" : `${getVersion()}-alpha`,
-    spriteSheet: SpriteSheetEnum.DEFAULT_FONT,
-    color: 0xffffff,
-    position: {
-      x: 45,
-      y: 85,
-    },
-  });
-  $container.add($version);
 
   System.proxy.on(Event.DISCONNECTED, async () => {
     console.log("DISCONNECTED");
