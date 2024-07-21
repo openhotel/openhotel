@@ -30,7 +30,7 @@ export const bubbleChatComponent: ContainerComponent<Props, Mutable> = async ({
   const jumpInterval = 60;
   let timeElapsed = 0;
 
-  System.proxy.on<any>(
+  const removeOnMessage = System.proxy.on<any>(
     Event.MESSAGE,
     async ({ userId, message: text, color }) => {
       const human = room
@@ -65,6 +65,10 @@ export const bubbleChatComponent: ContainerComponent<Props, Mutable> = async ({
     },
   );
 
+  $container.on(DisplayObjectEvent.REMOVED, () => {
+    removeOnMessage();
+  });
+
   const moveMessages = () => {
     for (let i = messages.length - 1; i >= 0; i--) {
       const message = messages[i];
@@ -81,13 +85,16 @@ export const bubbleChatComponent: ContainerComponent<Props, Mutable> = async ({
     timeElapsed = 0;
   };
 
-  $container.on(DisplayObjectEvent.TICK, ({ deltaTime }) => {
-    timeElapsed += deltaTime;
+  $container.on<{ deltaTime: number }>(
+    DisplayObjectEvent.TICK,
+    ({ deltaTime }) => {
+      timeElapsed += deltaTime;
 
-    if (timeElapsed >= jumpInterval) {
-      moveMessages();
-    }
-  });
+      if (timeElapsed >= jumpInterval) {
+        moveMessages();
+      }
+    },
+  );
 
   return $container.getComponent(bubbleChatComponent);
 };
