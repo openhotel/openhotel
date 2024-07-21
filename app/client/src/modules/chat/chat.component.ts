@@ -29,7 +29,7 @@ export const chatComponent: ContainerComponent<{}, Mutable> = async () => {
     backgroundColor: 0xffffff,
     position: { x: 5, y: 3 },
     selectionColor: 0xdddddd,
-    maxLength: 32,
+    maxLength: 64,
   });
   $input.on(DisplayObjectEvent.POINTER_TAP, () => {
     $input.focus();
@@ -37,9 +37,10 @@ export const chatComponent: ContainerComponent<{}, Mutable> = async () => {
 
   $container.add($input);
 
-  global.events.on(
+  const removeOnKeyUp = global.events.on(
     KeyEvent.KEY_UP,
     ({ key }) => {
+      if (key.toLowerCase() === "c") $input.focus();
       if (key === "Enter") {
         const message = $input.getText().trim();
         if (message.length) {
@@ -53,6 +54,10 @@ export const chatComponent: ContainerComponent<{}, Mutable> = async () => {
     },
     $container,
   );
+
+  $container.on(DisplayObjectEvent.DESTROYED, () => {
+    removeOnKeyUp();
+  });
 
   return $container.getComponent(chatComponent);
 };
