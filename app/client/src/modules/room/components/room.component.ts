@@ -8,29 +8,32 @@ import {
   graphics,
   GraphicType,
   sprite,
+  ContainerMutable,
 } from "@tulib/tulip";
 import { getIsometricPosition, getTilePolygon } from "shared/utils";
 import { Event, RoomPoint, SpriteSheetEnum } from "shared/enums";
 import { System } from "system";
-import { humanComponent } from "modules/human";
+import { humanComponent, HumanMutable } from "modules/human";
 
 type Props = {
   layout: RoomPoint[][];
 };
 
-export type RoomMutable = {
-  getHumanList: () => any[];
+type Mutable = {
+  getHumanList: () => HumanMutable[];
 };
 
-export const roomComponent: ContainerComponent<Props, RoomMutable> = async ({
+export type RoomMutable = ContainerMutable<Props, Mutable>;
+
+export const roomComponent: ContainerComponent<Props, Mutable> = async ({
   layout,
 }) => {
-  const $container = await container<{}, RoomMutable>({
+  const $container = await container<{}, Mutable>({
     sortableChildren: true,
   });
   await $container.setPosition({ x: 300, y: 100 });
 
-  let humanList = [];
+  let humanList: ContainerMutable<{}, HumanMutable>[] = [];
 
   let removeOnLeaveRoom;
   let removeOnAddHuman;

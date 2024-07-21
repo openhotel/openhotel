@@ -8,13 +8,15 @@ import { Event } from "shared/enums";
 import { System } from "system";
 import { messageComponent } from "./message.component";
 import { RoomMutable } from "../room";
+import { HumanMutable } from "modules/human";
+import { CHAT_BUBBLE_MESSAGE_INTERVAL, TILE_SIZE } from "shared/consts";
 
 type Props = {
   room: RoomMutable;
 };
 
 type Mutable = {
-  getHumanList: () => any[];
+  getHumanList: () => HumanMutable[];
 };
 
 export const bubbleChatComponent: ContainerComponent<Props, Mutable> = async ({
@@ -23,71 +25,86 @@ export const bubbleChatComponent: ContainerComponent<Props, Mutable> = async ({
   const $container = await container<{}, Mutable>({
     sortableChildren: true,
     eventMode: EventMode.NONE,
+    position: {
+      x: room.getPosition().x,
+      y: 0,
+    },
   });
 
   let messages = [];
-  let jumpHeight = 10;
-  const jumpInterval = 60;
+  let jumpHeight = 0;
+  const jumpInterval = CHAT_BUBBLE_MESSAGE_INTERVAL;
   let timeElapsed = 0;
 
-  System.proxy.on<any>(
+  const removeOnMessage = System.proxy.on<any>(
     Event.MESSAGE,
     async ({ userId, message: text, color }) => {
       const human = room
         .getHumanList()
         .find((human) => human.getUser().id === userId);
-      const { x: parentX, y: parentY } = human.getFather().getPosition();
-      const { x, y } = human.getPosition();
+      const position = human.getPosition();
 
       const message = await messageComponent({
         username: human.getUser().username,
         color,
         message: text,
       });
+      jumpHeight = message.getBounds().height + 1;
 
-      let newY = parentY + y - 100;
+      let targetY = Math.round(position.y / jumpHeight) * jumpHeight + 1;
+
       if (messages.length > 0) {
         const lastMessage = messages[messages.length - 1];
         const { y: lastMessageY } = lastMessage.getPosition();
-        newY = Math.max(newY, lastMessageY);
+        targetY = Math.max(targetY, lastMessageY);
       }
       moveMessages();
 
+      //position.x - message.getBounds().width / 2 + TILE_SIZE.width / 2
       await message.setPosition({
-        x: parentX + x - message.getBounds().width / 3,
-        y: newY,
+        x: position.x - message.getBounds().width / 2 + TILE_SIZE.width / 2,
+        y: targetY,
       });
 
       messages.push(message);
       $container.add(message);
-
-      jumpHeight = message.getBounds().height + 1;
     },
   );
+
+  $container.on(DisplayObjectEvent.REMOVED, () => {
+    removeOnMessage();
+  });
 
   const moveMessages = () => {
     for (let i = messages.length - 1; i >= 0; i--) {
       const message = messages[i];
-      const { y } = message.getPosition();
 
-      if (y < 10) {
+      const absolutePosition = message
+        .getDisplayObject({ __preventWarning: true })
+        .getGlobalPosition();
+
+      if (0 > absolutePosition.y) {
         message.$destroy();
         messages.splice(i, 1);
       } else {
-        message.setPositionY(y - jumpHeight);
+        const position = message.getPosition();
+        message.setPositionY(position.y - jumpHeight);
       }
     }
 
     timeElapsed = 0;
   };
 
-  $container.on(DisplayObjectEvent.TICK, ({ deltaTime }) => {
-    timeElapsed += deltaTime;
+  $container.on<{ deltaTime: number }>(
+    DisplayObjectEvent.TICK,
+    ({ deltaTime }) => {
+      timeElapsed += deltaTime;
 
-    if (timeElapsed >= jumpInterval) {
-      moveMessages();
-    }
-  });
+      if (timeElapsed >= jumpInterval) {
+        moveMessages();
+      }
+    },
+  );
 
   return $container.getComponent(bubbleChatComponent);
 };

@@ -13,8 +13,8 @@ import { Event, SpriteSheetEnum } from "shared/enums";
 
 type Mutable = {};
 
-export const chatComponent: ContainerComponent<{}, Mutable> = async () => {
-  const $container = await container<{}, Mutable>({});
+export const chatComponent: ContainerComponent<{}, Mutable> = async (props) => {
+  const $container = await container<{}, Mutable>(props);
 
   const $input = await inputTextSprite({
     color: 0,
@@ -34,12 +34,13 @@ export const chatComponent: ContainerComponent<{}, Mutable> = async () => {
   $input.on(DisplayObjectEvent.POINTER_TAP, () => {
     $input.focus();
   });
+  $input.focus();
 
   $container.add($input);
 
   const removeOnKeyUp = global.events.on(
     KeyEvent.KEY_UP,
-    ({ key }) => {
+    ({ key }: KeyboardEvent) => {
       if (key.toLowerCase() === "c") $input.focus();
       if (key === "Enter") {
         const message = $input.getText().trim();
