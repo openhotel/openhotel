@@ -34,6 +34,7 @@ export const chatComponent: ContainerComponent<{}, Mutable> = async (props) => {
   $input.on(DisplayObjectEvent.POINTER_TAP, () => {
     $input.focus();
   });
+  $input.focus();
 
   $container.add($input);
 
