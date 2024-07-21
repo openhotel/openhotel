@@ -1,6 +1,7 @@
 import {
   container,
   ContainerComponent,
+  ContainerMutable,
   EventMode,
   graphics,
   GraphicType,
@@ -10,6 +11,7 @@ import {
 import { getIsometricPosition } from "shared/utils";
 import { Point3d } from "shared/types";
 import { SpriteSheetEnum } from "shared/enums";
+import { TILE_SIZE } from "shared/consts";
 
 type Props = {
   user: any;
@@ -21,6 +23,8 @@ type Mutable = {
   getUser: () => { id: string; username: string };
 };
 
+export type HumanMutable = ContainerMutable<{}, Mutable>;
+
 export const humanComponent: ContainerComponent<Props, Mutable> = async ({
   user,
 }) => {
@@ -29,14 +33,14 @@ export const humanComponent: ContainerComponent<Props, Mutable> = async ({
 
   const capsule = await graphics({
     type: GraphicType.CAPSULE,
-    radius: 50 / 2,
+    radius: TILE_SIZE.width / 2,
     length: 30,
     angle: 90,
     color: 0xff00ff,
     zIndex: -1000,
     alpha: 0.0001,
   });
-  await capsule.setPivotX(-25);
+  await capsule.setPivotX(-TILE_SIZE.height);
   const tagName = await textSprite({
     text: user.username,
     spriteSheet: SpriteSheetEnum.DEFAULT_FONT,

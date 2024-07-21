@@ -1,0 +1,1 @@
+export const CHAT_BUBBLE_MESSAGE_INTERVAL = 60;

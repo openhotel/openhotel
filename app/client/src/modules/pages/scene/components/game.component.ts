@@ -8,9 +8,10 @@ import { getRandomNumber } from "shared/utils";
 export const gameComponent: ContainerComponent = async () => {
   const $container = await container();
 
-  const chat = await chatComponent();
-  await chat.setPosition({ x: 100, y: 280 });
-  await chat.setZIndex(1_000);
+  const chat = await chatComponent({
+    position: { x: 100, y: 280 },
+    zIndex: 1_000,
+  });
   $container.add(chat);
 
   let $room;
