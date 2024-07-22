@@ -1,11 +1,12 @@
 import {
   appendCORSHeaders,
   getRandomString,
+  getUsersConfig,
   initLog,
   log,
 } from "shared/utils/main.ts";
 import { getChildWorker } from "worker_ionic";
-import { WorkerProps } from "shared/types/main.ts";
+import { UsersConfig, WorkerProps } from "shared/types/main.ts";
 import { routesList } from "./router/main.ts";
 import { getServerSocket, ServerClient } from "socket_ionic";
 
@@ -83,11 +84,24 @@ proxyWorker.on(
       if (!foundHandshake) return client.close();
 
       client.on("session", async ({ sessionId, token, username }) => {
+        const usersConfig: UsersConfig = await getUsersConfig();
+        if (
+          //check if op, ignore the rest
+          !usersConfig.op.users.includes(username) &&
+          //check blacklist
+          ((usersConfig.blacklist.active &&
+            usersConfig.blacklist.users.includes(username)) ||
+            //check whitelist
+            (usersConfig.whitelist.active &&
+              !usersConfig.whitelist.users.includes(username)))
+        )
+          return client.close();
+
         const accountData = {
           session: getRandomString(32),
           token: proxyProtocolToken,
 
-          userId: getRandomString(128),
+          userId: getRandomString(16),
           username,
         };
 

@@ -14,7 +14,15 @@ export const Server = (() => {
   let $users = users();
   let $rooms = rooms();
 
-  const load = (config: ConfigTypes, envs: Envs, proxyWorker: WorkerParent) => {
+  const load = ({
+    config,
+    envs,
+    proxyWorker,
+  }: {
+    config: ConfigTypes;
+    envs: Envs;
+    proxyWorker: WorkerParent;
+  }) => {
     log("server");
 
     $config = config;

@@ -66,7 +66,7 @@ export const proxy = () => {
         silent: true,
       });
       $socket.on("connected", () => {
-        console.log("handhskae connected!");
+        console.log("handshake connected!");
 
         $socket.emit("session", { sessionId, token, username: $lastUsername });
       });
