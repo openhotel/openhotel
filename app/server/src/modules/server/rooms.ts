@@ -4,7 +4,7 @@ import { Server } from "./main.ts";
 
 export const rooms = () => {
   let roomMap: Record<string, Room> = {};
-  let roomUserMap: Record<string, RoomUser[]> = {};
+  let roomUserMap: Record<string, Record<string, RoomUser>> = {};
   let userRoomMap: Record<string, string> = {};
 
   const getRoomSpawnPoint = (layout: RoomPoint[][]): Point => {
@@ -39,7 +39,7 @@ export const rooms = () => {
       layout,
       spawnPoint: getRoomSpawnPoint(layout),
     };
-    roomUserMap[room.id] = [];
+    roomUserMap[room.id] = {};
   };
 
   const get = (roomId: string): Room => roomMap[roomId];
@@ -48,7 +48,11 @@ export const rooms = () => {
     const { spawnPoint } = roomMap[$roomId];
     if (!roomMap[$roomId]) return;
     // If user is already on a room, leave
-    removeUser($user);
+    // removeUser($user);
+    //
+    if (userRoomMap[$user.id]) {
+      userRoomMap[$user.id];
+    }
 
     userRoomMap[$user.id] = $roomId;
 
@@ -78,7 +82,7 @@ export const rooms = () => {
     });
 
     //Send every existing user inside room to the user
-    for (const { user, position } of roomUserMap[$roomId])
+    for (const { user, position } of Object.values(roomUserMap[$roomId]))
       Server.proxy.emit({
         users: [$user.id],
         event: ProxyEvent.ADD_HUMAN,
@@ -89,22 +93,20 @@ export const rooms = () => {
         },
       });
 
-    roomUserMap[$roomId].push({
+    roomUserMap[$roomId][$user.id] = {
       user: {
         id: $user.id,
         username: $user.username,
       },
       position: spawnPoint,
-    });
+      joinedAt: performance.now(),
+    };
   };
 
   const removeUser = (user: User) => {
     const roomId = userRoomMap[user.id];
     if (roomId) {
-      roomUserMap[roomId] = roomUserMap[roomId].filter(
-        (roomUser) => user.id !== roomUser.user.id,
-      );
-
+      delete roomUserMap[roomId][user.id];
       delete userRoomMap[user.id];
 
       //Remove user from internal "room"
@@ -120,7 +122,7 @@ export const rooms = () => {
       });
       //Remove user human from the room to existing users
       Server.proxy.emit({
-        users: roomUserMap[roomId].map(({ user }) => user.id),
+        users: Object.keys(roomUserMap[roomId]),
         event: ProxyEvent.REMOVE_HUMAN,
         data: {
           user,
@@ -129,12 +131,12 @@ export const rooms = () => {
     }
   };
 
-  const getUsers = (roomId: string): RoomUser[] => roomUserMap[roomId];
-  const getUserRoom = (user: User) => roomMap[userRoomMap[user.id]];
+  const getUsers = (roomId: string): RoomUser[] =>
+    Object.values(roomUserMap[roomId]);
+  const getUserRoom = (user: User): Room => roomMap[userRoomMap[user.id]];
 
   const setUserPosition = (roomId: string, user: User, position: Point) => {
-    roomUserMap[roomId].find(({ user: { id } }) => user.id === id).position =
-      position;
+    roomUserMap[roomId][user.id].position = position;
   };
 
   create({
@@ -177,6 +179,25 @@ export const rooms = () => {
       "s█████",
       " █████████",
       " ██████ ██",
+    ],
+  });
+
+  create({
+    id: "test_3",
+    title: "Room 3",
+    description: "This is a description",
+    layout: [
+      " ██████",
+      " ██████",
+      " ██████",
+      " ██████",
+      " ██████",
+      " ██████",
+      "s██████",
+      " ██████",
+      " ██████",
+      " ██████",
+      " ██████",
     ],
   });
 

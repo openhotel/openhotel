@@ -26,14 +26,15 @@ export const mainComponent: ContainerComponent = async () => {
   const $homePage = await homeComponent();
   $pageContainer.add($homePage);
 
-  const $destroyChildContainer = () => {
-    $pageContainer.remove(...$pageContainer.getChildren());
-  };
+  let $scene;
+  let $offlinePage;
 
-  System.proxy.on(Event.WELCOME, async (data) => {
-    $destroyChildContainer();
+  System.proxy.on(Event.WELCOME, async () => {
+    $homePage && $homePage.$destroy();
+    $offlinePage && $offlinePage.$destroy();
+    $scene && $scene.$destroy();
 
-    const $scene = await sceneComponent();
+    $scene = await sceneComponent();
     $pageContainer.add($scene);
   });
 
@@ -42,7 +43,7 @@ export const mainComponent: ContainerComponent = async () => {
   };
 
   System.proxy.on(Event.DISCONNECTED, async () => {
-    const $offlinePage = await offlineComponent({
+    $offlinePage = await offlineComponent({
       reconnect: connect,
     });
     $pageContainer.add($offlinePage);
