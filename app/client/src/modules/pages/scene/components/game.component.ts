@@ -36,17 +36,15 @@ export const gameComponent: ContainerComponent = async () => {
     Event.LEAVE_ROOM,
     async ({ room }) => {
       $container.remove($room, $bubbleChat);
-      $room.$destroy();
-      $bubbleChat.$destroy();
 
       System.proxy.emit(Event.JOIN_ROOM, {
-        roomId: `test_${getRandomNumber(0, 2)}`,
+        roomId: `test_${getRandomNumber(0, 3)}`,
         // roomId: `test_1`,
       });
     },
   );
 
-  $container.on(DisplayObjectEvent.REMOVED, () => {
+  $container.on(DisplayObjectEvent.DESTROYED, () => {
     removeOnLoadRoom?.();
     removeOnLeaveRoom?.();
   });
