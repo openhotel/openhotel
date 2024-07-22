@@ -6,15 +6,19 @@ import {
   getRandomNumberFromSeed,
   getUsersConfig,
 } from "shared/utils/main.ts";
+import { executeCommand } from "modules/server/commands/main.ts";
 
 export const messageEvent: ProxyEventType<{ message: string }> = {
   event: ProxyEvent.MESSAGE,
   func: async ({ user, data: { message } }) => {
-    log("message", message, "room");
     const room = Server.rooms.getUserRoom(user);
     if (!room) return;
+    log(`[${room.id}] ${user.username}: ${message}`);
 
     const isOp = (await getUsersConfig()).op.users.includes(user.username);
+
+    if (isOp && executeCommand({ message, user })) return;
+
     Server.proxy.emitRoom({
       roomId: room.id,
       event: ProxyEvent.MESSAGE,
