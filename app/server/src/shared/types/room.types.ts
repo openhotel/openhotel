@@ -5,6 +5,7 @@ import { Point } from "shared/types/main.ts";
 export type RoomUser = {
   user: User;
   position: Point;
+  joinedAt: number;
 };
 
 type BaseRoom = {
