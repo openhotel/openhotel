@@ -14,7 +14,7 @@ export const messageEvent: ProxyEventType<{ message: string }> = {
     const room = Server.rooms.getUserRoom(user);
     if (!room) return;
 
-    const isOp = (await getUsersConfig()).op.includes(user.username);
+    const isOp = (await getUsersConfig()).op.users.includes(user.username);
     Server.proxy.emitRoom({
       roomId: room.id,
       event: ProxyEvent.MESSAGE,
