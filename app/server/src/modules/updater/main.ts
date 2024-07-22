@@ -10,11 +10,8 @@ import {
 import { OS } from "shared/enums/main.ts";
 import * as path from "deno/path/mod.ts";
 
-export const load = async (
-  config: ConfigTypes,
-  envs: Envs,
-): Promise<boolean> => {
-  if (envs.version === "DEVELOPMENT") return false;
+export const load = async ({ envs }: { envs: Envs }): Promise<boolean> => {
+  if (envs.isDevelopment) return false;
 
   const os = getOS();
   const osName = getOSName();

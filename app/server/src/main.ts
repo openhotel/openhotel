@@ -17,12 +17,12 @@ export const load = async (envs: Envs) => {
   const config: ConfigTypes = await getConfig();
 
   // Check for an update if true, close the server
-  if (await loadUpdater(config, envs)) return;
+  if (await loadUpdater({ envs })) return;
 
   // -> Load proxy -> load firewall
-  const { proxyWorker } = await loadProxy(config, envs);
+  const { proxyWorker } = await loadProxy({ config, envs });
   // -> Load client
-  await loadClient(config, envs);
+  await loadClient({ config, envs });
   // Load server
-  Server.load(config, envs, proxyWorker);
+  Server.load({ config, envs, proxyWorker });
 };

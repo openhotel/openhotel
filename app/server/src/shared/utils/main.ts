@@ -13,3 +13,4 @@ export * from "./content-type.utils.ts";
 export * from "./cors.utils.ts";
 export * from "./envs.utils.ts";
 export * from "./color.utils.ts";
+export * from "./users.utils.ts";
