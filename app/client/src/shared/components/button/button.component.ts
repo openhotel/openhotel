@@ -22,10 +22,10 @@ export const buttonComponent: ContainerComponent<InputProps> = async (
 
   const $button = await textSprite({
     spriteSheet: SpriteSheetEnum.DEFAULT_FONT,
-    color: 0x000000,
+    color: 0xffffff,
     eventMode: EventMode.STATIC,
     cursor: Cursor.POINTER,
-    backgroundColor: 0xffffff,
+    backgroundColor: 0x222222,
     backgroundAlpha: 1,
     size: {
       width,

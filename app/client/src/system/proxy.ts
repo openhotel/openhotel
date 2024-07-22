@@ -119,7 +119,15 @@ export const proxy = () => {
     if (isConnected)
       eventFunctionRemoveMap[event].push($socket.on(event, callback));
 
-    return () => eventFunctionRemoveMap[event][index]();
+    return () => {
+      eventFunctionRemoveMap[event][index]();
+      eventFunctionMap[event] = eventFunctionMap[event].map(
+        (callback, $index) => ($index === index ? null : callback),
+      );
+      eventFunctionRemoveMap[event] = eventFunctionRemoveMap[event].map(
+        (callback, $index) => ($index === index ? null : callback),
+      );
+    };
   };
 
   return {

@@ -1,4 +1,8 @@
-import { container, ContainerComponent } from "@tulib/tulip";
+import {
+  container,
+  ContainerComponent,
+  DisplayObjectEvent,
+} from "@tulib/tulip";
 import { bubbleChatComponent, chatComponent } from "modules/chat";
 import { Event } from "shared/enums";
 import { System } from "system";
@@ -17,23 +21,34 @@ export const gameComponent: ContainerComponent = async () => {
   let $room;
   let $bubbleChat;
 
-  System.proxy.on<any>(Event.LOAD_ROOM, async ({ room }) => {
-    $room = await roomComponent({ layout: room.layout });
-    $container.add($room);
+  const removeOnLoadRoom = System.proxy.on<any>(
+    Event.LOAD_ROOM,
+    async ({ room }) => {
+      $room = await roomComponent({ layout: room.layout });
+      $container.add($room);
 
-    $bubbleChat = await bubbleChatComponent({ room: $room });
-    $container.add($bubbleChat);
-  });
+      $bubbleChat = await bubbleChatComponent({ room: $room });
+      $container.add($bubbleChat);
+    },
+  );
 
-  System.proxy.on<any>(Event.LEAVE_ROOM, async ({ room }) => {
-    $container.remove($room, $bubbleChat);
-    $room.$destroy();
-    $bubbleChat.$destroy();
+  const removeOnLeaveRoom = System.proxy.on<any>(
+    Event.LEAVE_ROOM,
+    async ({ room }) => {
+      $container.remove($room, $bubbleChat);
+      $room.$destroy();
+      $bubbleChat.$destroy();
 
-    System.proxy.emit(Event.JOIN_ROOM, {
-      roomId: `test_${getRandomNumber(0, 2)}`,
-      // roomId: `test_1`,
-    });
+      System.proxy.emit(Event.JOIN_ROOM, {
+        roomId: `test_${getRandomNumber(0, 2)}`,
+        // roomId: `test_1`,
+      });
+    },
+  );
+
+  $container.on(DisplayObjectEvent.REMOVED, () => {
+    removeOnLoadRoom?.();
+    removeOnLeaveRoom?.();
   });
 
   return $container.getComponent(gameComponent);
