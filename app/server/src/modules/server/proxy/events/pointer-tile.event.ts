@@ -7,6 +7,8 @@ export const pointerTileEvent: ProxyEventType<any> = {
   func: ({ data: { position }, user }) => {
     const room = Server.rooms.getUserRoom(user);
 
+    if (!room) return;
+
     const foundUser = Server.rooms
       .getUsers(room.id)
       .find(
