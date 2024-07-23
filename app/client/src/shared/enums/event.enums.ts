@@ -14,6 +14,8 @@ export enum Event {
   POINTER_TILE = "pointer-tile",
 
   MESSAGE = "message",
+  TYPING_START = "typing-start",
+  TYPING_END = "typing-end",
 
   TEST = "test",
 

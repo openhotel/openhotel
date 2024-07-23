@@ -6,4 +6,6 @@ export const PROXY_CLIENT_EVENT_WHITELIST: ProxyEvent[] = [
   ProxyEvent.TEST,
   ProxyEvent.POINTER_TILE,
   ProxyEvent.MESSAGE,
+  ProxyEvent.TYPING_START,
+  ProxyEvent.TYPING_END,
 ];

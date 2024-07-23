@@ -2,6 +2,7 @@ import {
   container,
   ContainerComponent,
   ContainerMutable,
+  DisplayObjectEvent,
   EventMode,
   graphics,
   GraphicType,
@@ -10,8 +11,10 @@ import {
 } from "@tulib/tulip";
 import { getIsometricPosition } from "shared/utils";
 import { Point3d } from "shared/types";
-import { SpriteSheetEnum } from "shared/enums";
+import { Event, SpriteSheetEnum } from "shared/enums";
 import { TILE_SIZE } from "shared/consts";
+import { System } from "../../system";
+import { typingBubbleComponent } from "../chat";
 
 type Props = {
   user: any;
@@ -65,6 +68,38 @@ export const humanComponent: ContainerComponent<Props, Mutable> = async ({
   await $container.setPivotX(-23);
 
   let isometricPosition: Point3d;
+
+  const $typingBubble = await typingBubbleComponent();
+  await $typingBubble.setPosition({
+    x: 8,
+    y: -8,
+  });
+  $container.add($typingBubble);
+
+  let removeOnTypingStart: () => void;
+  let removeOnTypingEnd: () => void;
+
+  $container.on(DisplayObjectEvent.REMOVED, () => {
+    removeOnTypingStart?.();
+    removeOnTypingEnd?.();
+  });
+  $container.on(DisplayObjectEvent.ADDED, async () => {
+    removeOnTypingStart = System.proxy.on<{ userId: string }>(
+      Event.TYPING_START,
+      ({ userId }) => {
+        if (user.id === userId) $typingBubble.setVisible(true);
+      },
+    );
+
+    removeOnTypingEnd = System.proxy.on<{ userId: string }>(
+      Event.TYPING_END,
+      ({ userId }) => {
+        if (user.id === userId) $typingBubble.setVisible(false);
+      },
+    );
+  });
+
+  $container.add($typingBubble);
 
   return $container.getComponent(humanComponent, {
     setIsometricPosition: async (position) => {
