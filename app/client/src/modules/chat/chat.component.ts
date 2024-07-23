@@ -16,6 +16,22 @@ type Mutable = {};
 export const chatComponent: ContainerComponent<{}, Mutable> = async (props) => {
   const $container = await container<{}, Mutable>(props);
 
+  let $typing = false;
+  let $typingTimeout: number;
+
+  const setTyping = () => {
+    if (!$typing) {
+      System.proxy.emit(Event.TYPING_START, {});
+    }
+
+    $typing = true;
+    clearTimeout($typingTimeout);
+    $typingTimeout = setTimeout(() => {
+      $typing = false;
+      System.proxy.emit(Event.TYPING_END, {});
+    }, 800);
+  };
+
   const $input = await inputTextSprite({
     color: 0,
     spriteSheet: SpriteSheetEnum.DEFAULT_FONT,
@@ -30,10 +46,12 @@ export const chatComponent: ContainerComponent<{}, Mutable> = async (props) => {
     position: { x: 5, y: 3 },
     selectionColor: 0xdddddd,
     maxLength: 64,
+    onTextChange: () => {
+      setTyping();
+      return true;
+    },
   });
-  $input.on(DisplayObjectEvent.POINTER_TAP, () => {
-    $input.focus();
-  });
+
   $input.focus();
 
   $container.add($input);

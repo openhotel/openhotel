@@ -2,7 +2,6 @@ import {
   container,
   ContainerComponent,
   Cursor,
-  DisplayObjectEvent,
   EventMode,
   HorizontalAlign,
   inputTextSprite,
@@ -63,9 +62,7 @@ export const inputComponent: ContainerComponent<
     selectionColor: 0xdddddd,
     defaultValue,
   });
-  $input.on(DisplayObjectEvent.POINTER_TAP, () => {
-    $input.focus();
-  });
+
   $container.add($input);
 
   return $container.getComponent(inputComponent, {
