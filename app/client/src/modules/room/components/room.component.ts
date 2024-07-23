@@ -224,7 +224,7 @@ export const roomComponent: ContainerComponent<Props, Mutable> = async ({
         const pol = await graphics({
           type: GraphicType.POLYGON,
           polygon: getTilePolygon({ width: 12, height: 12 }),
-          color: 0xff00ff,
+          tint: 0xff00ff,
           zIndex: 1000,
           eventMode: EventMode.STATIC,
           cursor: Cursor.POINTER,

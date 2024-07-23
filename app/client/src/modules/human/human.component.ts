@@ -36,7 +36,7 @@ export const humanComponent: ContainerComponent<Props, Mutable> = async ({
     radius: TILE_SIZE.width / 2,
     length: 30,
     angle: 90,
-    color: 0xff00ff,
+    tint: 0xff00ff,
     zIndex: -1000,
     alpha: 0.0001,
   });
