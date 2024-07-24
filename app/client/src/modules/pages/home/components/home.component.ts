@@ -22,7 +22,7 @@ export const homeComponent: ContainerComponent = async () => {
     spriteSheet: SpriteSheetEnum.DEFAULT_FONT,
     position: {
       x: 250,
-      y: 20 * 8,
+      y: 20 * 9,
     },
     horizontalAlign: HorizontalAlign.CENTER,
     size: {

@@ -40,12 +40,7 @@ export const captchaComponent: ContainerComponent<
 
   const { captchaId, captchaUrl } = $container.getProps();
 
-  const $captchaContainer = await container({
-    position: {
-      x: -8,
-      y: 20 * 2,
-    },
-  });
+  const $captchaContainer = await container();
   $container.add($captchaContainer);
 
   let $captchaId;

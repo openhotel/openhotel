@@ -47,13 +47,17 @@ export const loginFormComponent: ContainerComponent = async (props) => {
 
   const $captchaComponent = await getCaptchaComponent();
   $captchaComponent && $container.add($captchaComponent);
+  await $captchaComponent.setPosition({
+    x: -8,
+    y: 20 * 2,
+  });
 
   const $loginButton = await buttonComponent({
     text: "Login",
     width: 100,
     position: {
       x: 0,
-      y: 20 * 6,
+      y: 20 * 7,
     },
     eventMode: EventMode.STATIC,
   });
