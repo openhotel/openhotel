@@ -10,7 +10,7 @@ export const getConfig = (): ConfigTypes => {
   return Object.keys(config || {}).length
     ? config
     : {
-        version: 1,
+        version: "latest",
         name: "DEVELOPMENT",
         description: "DEVELOPMENT",
         proxy: {
