@@ -17,7 +17,7 @@ export const load = async (envs: Envs) => {
   const config: ConfigTypes = await getConfig();
 
   // Check for an update if true, close the server
-  if (await loadUpdater({ envs })) return;
+  if (await loadUpdater({ config, envs })) return;
 
   // -> Load proxy -> load firewall
   const { proxyWorker } = await loadProxy({ config, envs });

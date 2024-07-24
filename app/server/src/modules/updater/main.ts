@@ -10,7 +10,13 @@ import {
 import { OS } from "shared/enums/main.ts";
 import * as path from "deno/path/mod.ts";
 
-export const load = async ({ envs }: { envs: Envs }): Promise<boolean> => {
+export const load = async ({
+  config,
+  envs,
+}: {
+  config: ConfigTypes;
+  envs: Envs;
+}): Promise<boolean> => {
   if (envs.isDevelopment) return false;
 
   const os = getOS();
@@ -23,12 +29,22 @@ export const load = async ({ envs }: { envs: Envs }): Promise<boolean> => {
     return false;
   }
 
-  log(`Version ${envs.version}`);
-  log(`Checking for updates...`);
+  const targetVersion = config.version;
+  if (targetVersion === envs.version) {
+    log("Everything is up to date!");
+    return false;
+  }
+  const isLatest = targetVersion === "latest";
+
+  log(
+    isLatest
+      ? `Checking for updates...`
+      : `Checking version (${targetVersion})...`,
+  );
 
   try {
     const { tag_name: latestVersion, assets } = await fetch(
-      "https://api.github.com/repos/openhotel/openhotel/releases/latest",
+      `https://api.github.com/repos/openhotel/openhotel/releases/${isLatest ? "latest" : `tags/${targetVersion}`}`,
     ).then((data) => data.json());
 
     const getSlicedVersion = (version: string): (number | string)[] =>
@@ -46,16 +62,20 @@ export const load = async ({ envs }: { envs: Envs }): Promise<boolean> => {
     const [newMajor, newMinor, newPatch, newExtra] =
       getSlicedVersion(latestVersion);
 
-    if (
-      oldMajor >= newMajor &&
-      oldMinor >= newMinor &&
-      oldPatch >= newPatch &&
-      (oldExtra >= newExtra || oldExtra === newExtra)
-    ) {
-      log("Everything is up to date!");
-      return false;
+    if (isLatest) {
+      if (
+        oldMajor >= newMajor &&
+        oldMinor >= newMinor &&
+        oldPatch >= newPatch &&
+        (oldExtra >= newExtra || oldExtra === newExtra)
+      ) {
+        log("Everything is up to date!");
+        return false;
+      }
+      log(`New version (${latestVersion}) available!`);
+    } else {
+      log(`Version (${latestVersion}) available!`);
     }
-    log(`New version (${latestVersion}) available!`);
 
     const osAsset = assets.find(({ name }) => name.includes(osName));
 
@@ -64,15 +84,15 @@ export const load = async ({ envs }: { envs: Envs }): Promise<boolean> => {
       return false;
     }
 
-    log("Downloading update...");
+    log("Downloading update files...");
     const buildAsset = await fetch(osAsset.browser_download_url);
 
-    log("Update downloaded!");
+    log("Update files downloaded!");
     const dirPath = getPath();
     const updateFilePath = getTemporalUpdateFilePathname();
     const updatedFile = path.join(dirPath, `update.zip`);
 
-    log("Saving update!");
+    log("Saving update files!");
     await Deno.writeFile(
       updatedFile,
       new Uint8Array(await buildAsset.arrayBuffer()),
@@ -102,7 +122,7 @@ export const load = async ({ envs }: { envs: Envs }): Promise<boolean> => {
 
     log("Updating...");
     await Deno.writeTextFile(updateFilePath, isWindows ? ps1 : bash, {
-      mode: 0x0777,
+      mode: 0o0777,
       create: true,
     });
 

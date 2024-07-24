@@ -9,7 +9,7 @@ export const getConfig = async (): Promise<ConfigTypes> => {
   } catch (e) {}
 
   const defaults: ConfigTypes = {
-    version: 1,
+    version: config?.version || CONFIG_DEFAULT.version,
     name: config?.name || CONFIG_DEFAULT.name,
     description: config?.description || CONFIG_DEFAULT.description,
     limits: {

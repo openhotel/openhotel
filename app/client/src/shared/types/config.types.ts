@@ -1,5 +1,5 @@
 export type ConfigTypes = {
-  version: 1;
+  version?: string;
   name?: string;
   description?: string;
   limits?: {
