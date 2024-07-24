@@ -1,15 +1,14 @@
 import {
   container,
   ContainerComponent,
-  Cursor,
   DisplayObjectEvent,
   Event as KeyEvent,
-  EventMode,
   global,
-  inputTextSprite,
+  HorizontalAlign,
 } from "@tulib/tulip";
 import { System } from "system";
-import { Event, SpriteSheetEnum } from "shared/enums";
+import { Event } from "shared/enums";
+import { inputComponent } from "../../shared/components";
 
 type Mutable = {};
 
@@ -32,19 +31,10 @@ export const chatComponent: ContainerComponent<{}, Mutable> = async (props) => {
     }, 800);
   };
 
-  const $input = await inputTextSprite({
-    color: 0,
-    spriteSheet: SpriteSheetEnum.DEFAULT_FONT,
-    eventMode: EventMode.STATIC,
-    editable: true,
-    withContext: true,
-    cursor: Cursor.TEXT,
-    backgroundPadding: { left: 7, bottom: 2, right: 7, top: 3 },
-    size: { width: 200, height: 7 },
-    backgroundAlpha: 1,
-    backgroundColor: 0xffffff,
-    position: { x: 5, y: 3 },
-    selectionColor: 0xdddddd,
+  const $input = await inputComponent({
+    placeholder: "Click here or press 'c' to write a message",
+    horizontalAlign: HorizontalAlign.LEFT,
+    width: 200,
     maxLength: 64,
     onTextChange: () => {
       setTyping();
@@ -61,13 +51,13 @@ export const chatComponent: ContainerComponent<{}, Mutable> = async (props) => {
     ({ key }: KeyboardEvent) => {
       if (key.toLowerCase() === "c") $input.focus();
       if (key === "Enter") {
-        const message = $input.getText().trim();
+        const message = $input.getValue().trim();
         if (message.length) {
           System.proxy.emit(Event.MESSAGE, {
             message,
           });
 
-          $input.reset();
+          $input.clear();
         }
       }
     },
