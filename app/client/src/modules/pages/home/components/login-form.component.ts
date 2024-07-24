@@ -47,7 +47,7 @@ export const loginFormComponent: ContainerComponent = async (props) => {
 
   const $captchaComponent = await getCaptchaComponent();
   $captchaComponent && $container.add($captchaComponent);
-  await $captchaComponent.setPosition({
+  await $captchaComponent?.setPosition({
     x: -8,
     y: 20 * 2,
   });
