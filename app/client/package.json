@@ -12,6 +12,7 @@
     "vite-tsconfig-paths": "4.3.2"
   },
   "dependencies": {
-    "@tulib/tulip": "0.9.7"
+    "@tulib/tulip": "0.9.7",
+    "pathfinding.ts": "1.4.1"
   }
 }

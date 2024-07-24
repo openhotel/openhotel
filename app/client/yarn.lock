@@ -339,6 +339,11 @@ parse-svg-path@^0.1.2:
   resolved "https://registry.yarnpkg.com/parse-svg-path/-/parse-svg-path-0.1.2.tgz#7a7ec0d1eb06fa5325c7d3e009b859a09b5d49eb"
   integrity sha512-JyPSBnkTJ0AI8GGJLfMXvKq42cj5c006fnLz6fXy6zfoVjJizi8BNTpu8on8ziI1cKy9d9DGNuY17Ce7wuejpQ==
 
+pathfinding.ts@1.4.1:
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/pathfinding.ts/-/pathfinding.ts-1.4.1.tgz#e9ce95c5c307d0fd09634f4232993155dd31b09d"
+  integrity sha512-LRqePxGiGQ7ClcK20lG2FTXWugaOg0OtIuOhqKmtVD0sxx8wGREQ7xN+eKEWWao94/W775FpPPioqFiA2rq6hg==
+
 picocolors@1.0.1, picocolors@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/picocolors/-/picocolors-1.0.1.tgz#a8ad579b571952f0e5d25892de5445bcfe25aaa1"

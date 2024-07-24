@@ -1,6 +1,7 @@
 import {
   container,
   ContainerComponent,
+  ContainerMutable,
   Cursor,
   DisplayObjectEvent,
   EventMode,
@@ -8,12 +9,12 @@ import {
   graphics,
   GraphicType,
   sprite,
-  ContainerMutable,
 } from "@tulib/tulip";
-import { getIsometricPosition, getTilePolygon } from "shared/utils";
+import { delay, getIsometricPosition, getTilePolygon } from "shared/utils";
 import { Event, RoomPoint, SpriteSheetEnum } from "shared/enums";
 import { System } from "system";
 import { humanComponent, HumanMutable } from "modules/human";
+import { Grid } from "pathfinding.ts";
 
 type Props = {
   layout: RoomPoint[][];
@@ -73,7 +74,40 @@ export const roomComponent: ContainerComponent<Props, Mutable> = async ({
       async ({ userId, position }) => {
         const human = humanList.find((human) => human.getUser().id === userId);
 
-        human.setIsometricPosition({ ...position, y: 0 });
+        const transpose = (matrix) =>
+          matrix[0].map((_, colIndex) => matrix.map((row) => row[colIndex]));
+
+        const interpolatePath = (path) => {
+          const fullPath = [];
+          for (let i = 0; i < path.length - 1; i++) {
+            const start = path[i];
+            const end = path[i + 1];
+            const dx = end.x - start.x;
+            const dy = end.y - start.y;
+            const steps = Math.max(Math.abs(dx), Math.abs(dy));
+
+            for (let j = 0; j <= steps; j++) {
+              const x = start.x + (dx * j) / steps;
+              const y = start.y + (dy * j) / steps;
+              fullPath.push({ x, y });
+            }
+          }
+          return fullPath;
+        };
+
+        const { x, z: y } = human.getIsometricPosition();
+        const grid = new Grid(transpose(layout));
+        const path = grid.findPath(
+          { x, y },
+          { x: position.x, y: position.z },
+          1,
+        );
+        const fullPath = interpolatePath(path);
+
+        for (const step of fullPath) {
+          human.setIsometricPosition({ x: step.x, z: step.y, y: 0 });
+          await delay(100);
+        }
       },
     );
 
