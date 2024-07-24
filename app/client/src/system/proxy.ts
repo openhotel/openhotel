@@ -8,7 +8,11 @@ import {
 import { Event } from "shared/enums";
 import { getLoginUrl } from "shared/utils/auth.utils";
 
-type ConnectProps = { username?: string; password?: string };
+type ConnectProps = {
+  username?: string;
+  password?: string;
+  captchaId?: string;
+};
 
 export const proxy = () => {
   const config = getConfig();
@@ -21,7 +25,11 @@ export const proxy = () => {
   let eventFunctionMap: Record<Event | string, Function[]> = {};
   let eventFunctionRemoveMap: Record<Event | string, Function[]> = {};
 
-  const connect = async ({ username, password }: ConnectProps = {}) =>
+  const connect = async ({
+    username,
+    password,
+    captchaId,
+  }: ConnectProps = {}) =>
     new Promise(async (resolve, reject) => {
       const headers = new Headers();
       headers.append("Content-Type", "application/json");
@@ -39,6 +47,7 @@ export const proxy = () => {
           body: JSON.stringify({
             username: $lastUsername,
             password: $lastPassword,
+            captchaId,
           }),
         }).then((data) => data.json());
 

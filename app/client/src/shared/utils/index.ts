@@ -5,3 +5,4 @@ export * from "./config.utils";
 export * from "./position.utils";
 export * from "./wait.utils";
 export * from "./hit-area.utils";
+export * from "./captcha.utils";

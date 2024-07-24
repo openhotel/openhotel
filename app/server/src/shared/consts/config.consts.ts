@@ -22,4 +22,9 @@ export const CONFIG_DEFAULT: ConfigTypes = {
   auth: {
     url: "http://localhost:2024",
   },
+  captcha: {
+    enabled: false,
+    url: "",
+    id: "",
+  },
 };

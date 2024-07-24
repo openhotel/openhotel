@@ -31,6 +31,11 @@ export const getConfig = async (): Promise<ConfigTypes> => {
     auth: {
       url: config?.auth?.url || CONFIG_DEFAULT.auth.url,
     },
+    captcha: {
+      enabled: config?.captcha?.enabled ?? CONFIG_DEFAULT.captcha.enabled,
+      url: config?.captcha?.url || CONFIG_DEFAULT.captcha.url,
+      id: config?.captcha?.id || CONFIG_DEFAULT.captcha.id,
+    },
   };
   try {
     await writeYaml<ConfigTypes>("./config.yml", defaults, { async: true });
