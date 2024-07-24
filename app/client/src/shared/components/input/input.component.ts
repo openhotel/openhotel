@@ -67,6 +67,7 @@ export const inputComponent: ContainerComponent<
     defaultValue,
     verticalAlign: VerticalAlign.BOTTOM,
     onTextChange,
+    withMask: true,
   });
 
   $container.add($input);
