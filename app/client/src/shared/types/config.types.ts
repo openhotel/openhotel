@@ -1,5 +1,5 @@
 export type ConfigTypes = {
-  version: 1;
+  version?: string;
   name?: string;
   description?: string;
   limits?: {
@@ -20,5 +20,10 @@ export type ConfigTypes = {
   };
   auth?: {
     url?: string;
+  };
+  captcha?: {
+    enabled?: boolean;
+    url?: string;
+    id?: string;
   };
 };

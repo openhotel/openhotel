@@ -1,7 +1,7 @@
 import { ConfigTypes } from "shared/types/config.types.ts";
 
 export const CONFIG_DEFAULT: ConfigTypes = {
-  version: 1,
+  version: "latest",
   name: "Open Hotel",
   description: "Welcome to the Hotel!",
   client: {
@@ -21,5 +21,10 @@ export const CONFIG_DEFAULT: ConfigTypes = {
   },
   auth: {
     url: "http://localhost:2024",
+  },
+  captcha: {
+    enabled: false,
+    url: "",
+    id: "",
   },
 };

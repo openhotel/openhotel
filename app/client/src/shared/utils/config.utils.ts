@@ -10,7 +10,7 @@ export const getConfig = (): ConfigTypes => {
   return Object.keys(config || {}).length
     ? config
     : {
-        version: 1,
+        version: "latest",
         name: "DEVELOPMENT",
         description: "DEVELOPMENT",
         proxy: {
@@ -23,6 +23,13 @@ export const getConfig = (): ConfigTypes => {
         },
         auth: {
           url: `http://${hostname}:2024`,
+          // url: "https://auth.openhotel.club",
+        },
+        captcha: {
+          enabled: true,
+          id: "hwoFA5ORzPAYkHyCNElRU0F3WXAD0ZN9",
+          // url: "http://${hostname}:1960",
+          url: "https://captcha.openhotel.club",
         },
       };
 };
