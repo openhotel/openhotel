@@ -7,7 +7,11 @@ import {
 } from "@tulib/tulip";
 import { buttonComponent, inputComponent } from "shared/components";
 import { System } from "system";
-import { getRandomString, isDevelopment } from "shared/utils";
+import {
+  getCaptchaComponent,
+  getRandomString,
+  isDevelopment,
+} from "shared/utils";
 
 export const loginFormComponent: ContainerComponent = async (props) => {
   const $container = await container({
@@ -41,21 +45,29 @@ export const loginFormComponent: ContainerComponent = async (props) => {
     },
   });
 
+  const $captchaComponent = await getCaptchaComponent();
+  $captchaComponent && $container.add($captchaComponent);
+
   const $loginButton = await buttonComponent({
     text: "Login",
     width: 100,
     position: {
       x: 0,
-      y: 20 * 4,
+      y: 20 * 6,
     },
     eventMode: EventMode.STATIC,
   });
   $loginButton.on(DisplayObjectEvent.POINTER_TAP, async () => {
-    // `player_${getRandomString(8)}`
-    await System.proxy.connect({
-      username: $username.getValue(),
-      password: $password.getValue(),
-    });
+    try {
+      await System.proxy.connect({
+        username: $username.getValue(),
+        password: $password.getValue(),
+        captchaId: $captchaComponent?.getCaptchaId(),
+      });
+    } catch (e) {
+      $password.clear();
+      $captchaComponent?.refresh();
+    }
   });
 
   $container.add($username, $password, $loginButton);
@@ -66,7 +78,7 @@ export const loginFormComponent: ContainerComponent = async (props) => {
 
     if (localStorage.getItem("auto-connect") === "true")
       System.proxy.connect({
-        username: $username.getValue(),
+        username: $username.getValue() || `player_${getRandomString(8)}`,
         password: $password.getValue(),
       });
   }
