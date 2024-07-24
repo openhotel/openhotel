@@ -7,6 +7,7 @@ import {
 } from "@tulib/tulip";
 import { buttonComponent, inputComponent } from "shared/components";
 import { getRegisterUrl } from "shared/utils/auth.utils";
+import { getCaptchaComponent } from "shared/utils";
 
 export const registerFormComponent: ContainerComponent = async (props) => {
   const $container = await container({
@@ -48,12 +49,19 @@ export const registerFormComponent: ContainerComponent = async (props) => {
     },
   });
 
+  const $captchaComponent = await getCaptchaComponent();
+  $captchaComponent && $container.add($captchaComponent);
+  await $captchaComponent.setPosition({
+    x: -8,
+    y: 20 * 3,
+  });
+
   const $registerButton = await buttonComponent({
     text: "Register",
     width: 100,
     position: {
       x: 0,
-      y: 20 * 4,
+      y: 20 * 7,
     },
     eventMode: EventMode.STATIC,
   });
@@ -62,16 +70,26 @@ export const registerFormComponent: ContainerComponent = async (props) => {
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
 
-    const response = await fetch(getRegisterUrl(), {
-      headers,
-      method: "POST",
-      body: JSON.stringify({
-        username: $username.getValue(),
-        password: $password.getValue(),
-      }),
-    });
+    const $clear = () => {
+      $password.clear();
+      $captchaComponent?.refresh();
+    };
 
-    console.log(await response.json());
+    try {
+      const response = await fetch(getRegisterUrl(), {
+        headers,
+        method: "POST",
+        body: JSON.stringify({
+          username: $username.getValue(),
+          password: $password.getValue(),
+          captchaId: $captchaComponent?.getCaptchaId(),
+        }),
+      });
+      const { status } = await response.json();
+      if (status !== 200) $clear();
+    } catch (e) {
+      $clear();
+    }
   });
 
   $container.add($username, $password, $passwordRepeat, $registerButton);

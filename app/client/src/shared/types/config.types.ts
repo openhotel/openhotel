@@ -21,4 +21,9 @@ export type ConfigTypes = {
   auth?: {
     url?: string;
   };
+  captcha?: {
+    enabled?: boolean;
+    url?: string;
+    id?: string;
+  };
 };

@@ -5,6 +5,7 @@ import {
   EventMode,
   HorizontalAlign,
   inputTextSprite,
+  VerticalAlign,
 } from "@tulib/tulip";
 import { SpriteSheetEnum } from "shared/enums";
 
@@ -19,6 +20,7 @@ type InputProps = {
 
 type InputMutable = {
   getValue: () => string;
+  clear: () => void;
 };
 
 export const inputComponent: ContainerComponent<
@@ -61,11 +63,13 @@ export const inputComponent: ContainerComponent<
     passwordChar: password ? "$" : null,
     selectionColor: 0xdddddd,
     defaultValue,
+    verticalAlign: VerticalAlign.BOTTOM,
   });
 
   $container.add($input);
 
   return $container.getComponent(inputComponent, {
     getValue: $input.getText,
+    clear: () => $input.reset(),
   });
 };
