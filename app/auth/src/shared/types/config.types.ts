@@ -3,4 +3,10 @@ export type ConfigTypes = {
   database: {
     filename: string;
   };
+  captcha: {
+    enabled: boolean;
+    url: string;
+    id: string;
+    token: string;
+  };
 };

@@ -7,15 +7,17 @@ export const registerRequest: RequestType = {
   method: RequestMethod.POST,
   pathname: "/register",
   func: async (request, url) => {
-    const { username, password } = await request.json();
+    const { username, password, captchaId } = await request.json();
 
-    if (!username || !password)
+    if (!username || !password || !(await System.captcha.verify(captchaId)))
       return Response.json(
         { status: 403 },
         {
           status: 403,
         },
       );
+
+    //verify captcha
 
     const accountId = crypto.randomUUID();
 
