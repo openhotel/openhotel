@@ -76,9 +76,10 @@ export const load = async (envs: Envs): Promise<boolean> => {
       updateFile,
       new Uint8Array(await buildAsset.arrayBuffer()),
       {
-        mode: 0x777,
+        mode: 0o777,
       },
     );
+    await Deno.chmod(updateFile, 0o777);
 
     const isWindows = os === OS.WINDOWS;
 

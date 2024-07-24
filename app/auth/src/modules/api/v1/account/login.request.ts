@@ -10,7 +10,7 @@ export const loginRequest: RequestType = {
   func: async (request, url) => {
     const { username, password, captchaId } = await request.json();
 
-    if (!username || !password || !(await System.captcha.verify(captchaId)))
+    if (!(await System.captcha.verify(captchaId)) || !username || !password)
       return Response.json(
         { status: 403 },
         {
