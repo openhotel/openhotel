@@ -133,6 +133,10 @@ export const rooms = () => {
 
   const getUsers = (roomId: string): RoomUser[] =>
     Object.values(roomUserMap[roomId]);
+
+  const getUser = (roomId: string, userId: string): RoomUser =>
+    roomUserMap[roomId][userId];
+
   const getUserRoom = (user: User): Room => roomMap[userRoomMap[user.id]];
 
   const setUserPosition = (roomId: string, user: User, position: Point) => {
@@ -208,6 +212,7 @@ export const rooms = () => {
     addUser,
     removeUser,
     getUsers,
+    getUser,
     getUserRoom,
 
     setUserPosition,

@@ -1,6 +1,7 @@
 import {
   container,
   ContainerComponent,
+  ContainerMutable,
   Cursor,
   DisplayObjectEvent,
   EventMode,
@@ -8,9 +9,15 @@ import {
   graphics,
   GraphicType,
   sprite,
-  ContainerMutable,
+  textSprite,
 } from "@tulib/tulip";
-import { getIsometricPosition, getTilePolygon } from "shared/utils";
+import {
+  delay,
+  getIsometricPosition,
+  getTilePolygon,
+  interpolatePath,
+  isDevelopment,
+} from "shared/utils";
 import { Event, RoomPoint, SpriteSheetEnum } from "shared/enums";
 import { System } from "system";
 import { humanComponent, HumanMutable } from "modules/human";
@@ -70,10 +77,13 @@ export const roomComponent: ContainerComponent<Props, Mutable> = async ({
     );
     removeOnMoveHuman = System.proxy.on<any>(
       Event.MOVE_HUMAN,
-      async ({ userId, position }) => {
+      async ({ userId, path }) => {
         const human = humanList.find((human) => human.getUser().id === userId);
-
-        human.setIsometricPosition({ ...position, y: 0 });
+        const fullPath = interpolatePath(path);
+        for (const step of fullPath) {
+          await human.setIsometricPosition({ x: step.x, z: step.y, y: 0 });
+          await delay(150);
+        }
       },
     );
 
@@ -258,6 +268,63 @@ export const roomComponent: ContainerComponent<Props, Mutable> = async ({
       }
     }
   });
+
+  // TODO: remove
+  if (isDevelopment()) {
+    const $textX = await textSprite({
+      text: "< X",
+      spriteSheet: SpriteSheetEnum.DEFAULT_FONT,
+      color: 0xff0000,
+      position: {
+        x: 215,
+        y: 180,
+      },
+      angle: -33,
+    });
+    const $lineX = await graphics({
+      type: GraphicType.RECTANGLE,
+      width: 5,
+      height: 80,
+      tint: 0xff0000,
+      position: {
+        x: 200,
+        y: 200,
+      },
+      angle: 60,
+      pivot: {
+        x: 2,
+        y: 40,
+      },
+    });
+
+    const $textZ = await textSprite({
+      text: "Z >",
+      spriteSheet: SpriteSheetEnum.DEFAULT_FONT,
+      color: 0x00ff00,
+      position: {
+        x: 175,
+        y: 175,
+      },
+      angle: 33,
+    });
+    const $lineZ = await graphics({
+      type: GraphicType.RECTANGLE,
+      width: 5,
+      height: 80,
+      tint: 0x00ff00,
+      position: {
+        x: 200,
+        y: 200,
+      },
+      angle: 120,
+      pivot: {
+        x: 2,
+        y: 40,
+      },
+    });
+
+    $container.add($lineX, $textX, $lineZ, $textZ);
+  }
 
   return $container.getComponent(roomComponent, {
     getHumanList: () => humanList,

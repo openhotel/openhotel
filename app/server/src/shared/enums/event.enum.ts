@@ -22,6 +22,7 @@ export enum ProxyEvent {
   ADD_HUMAN = "add-human",
   REMOVE_HUMAN = "remove-human",
   MOVE_HUMAN = "move-human",
+  MOVE_STOP_HUMAN = "move-stop-human",
 
   TEST = "test",
 
