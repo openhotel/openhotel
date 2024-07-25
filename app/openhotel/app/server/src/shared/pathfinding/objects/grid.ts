@@ -91,18 +91,18 @@ export class Grid {
     return new Grid(this._matrix);
   }
 
-  get width() {
+  get width(): number {
     return this._matrix[0].length;
   }
 
-  get height() {
+  get height(): number {
     return this._matrix.length;
   }
 
   public findPath(
     startPoint: PointInterface,
     endPoint: PointInterface,
-    maxJumpCost: number = 5,
+    maxJumpCost = 5,
     finderEnum: FinderEnum = FinderEnum.JUMP_POINT,
   ): PointInterface[] {
     const gridClone = this.clone();
