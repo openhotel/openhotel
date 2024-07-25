@@ -9,12 +9,18 @@ import {
   graphics,
   GraphicType,
   sprite,
+  textSprite,
 } from "@tulib/tulip";
-import { delay, getIsometricPosition, getTilePolygon } from "shared/utils";
+import {
+  delay,
+  getIsometricPosition,
+  getTilePolygon,
+  isDevelopment,
+} from "shared/utils";
 import { Event, RoomPoint, SpriteSheetEnum } from "shared/enums";
 import { System } from "system";
 import { humanComponent, HumanMutable } from "modules/human";
-import { Grid } from "pathfinding.ts";
+import { Grid, transpose } from "@oh/pathfinding";
 
 type Props = {
   layout: RoomPoint[][];
@@ -74,10 +80,8 @@ export const roomComponent: ContainerComponent<Props, Mutable> = async ({
       async ({ userId, position }) => {
         const human = humanList.find((human) => human.getUser().id === userId);
 
-        const transpose = (matrix) =>
-          matrix[0].map((_, colIndex) => matrix.map((row) => row[colIndex]));
-
         const interpolatePath = (path) => {
+          if (!path) return [];
           const fullPath = [];
           for (let i = 0; i < path.length - 1; i++) {
             const start = path[i];
@@ -95,18 +99,18 @@ export const roomComponent: ContainerComponent<Props, Mutable> = async ({
           return fullPath;
         };
 
-        const { x, z: y } = human.getIsometricPosition();
-        const grid = new Grid(transpose(layout));
-        const path = grid.findPath(
-          { x, y },
-          { x: position.x, y: position.z },
-          1,
-        );
+        const { x, z } = human.getIsometricPosition();
+
+        const start = { x, y: z };
+        const end = { x: position.x, y: position.z };
+        const newGrid = transpose(layout);
+        const grid = new Grid(newGrid);
+        const path = grid.findPath(start, end, 1);
         const fullPath = interpolatePath(path);
 
         for (const step of fullPath) {
-          human.setIsometricPosition({ x: step.x, z: step.y, y: 0 });
-          await delay(100);
+          await human.setIsometricPosition({ x: step.x, z: step.y, y: 0 });
+          await delay(150);
         }
       },
     );
@@ -292,6 +296,63 @@ export const roomComponent: ContainerComponent<Props, Mutable> = async ({
       }
     }
   });
+
+  // TODO: remove
+  if (isDevelopment()) {
+    const $textX = await textSprite({
+      text: "< X",
+      spriteSheet: SpriteSheetEnum.DEFAULT_FONT,
+      color: 0xff0000,
+      position: {
+        x: 215,
+        y: 180,
+      },
+      angle: -33,
+    });
+    const $lineX = await graphics({
+      type: GraphicType.RECTANGLE,
+      width: 5,
+      height: 80,
+      tint: 0xff0000,
+      position: {
+        x: 200,
+        y: 200,
+      },
+      angle: 60,
+      pivot: {
+        x: 2,
+        y: 40,
+      },
+    });
+
+    const $textZ = await textSprite({
+      text: "Z >",
+      spriteSheet: SpriteSheetEnum.DEFAULT_FONT,
+      color: 0x00ff00,
+      position: {
+        x: 175,
+        y: 175,
+      },
+      angle: 33,
+    });
+    const $lineZ = await graphics({
+      type: GraphicType.RECTANGLE,
+      width: 5,
+      height: 80,
+      tint: 0x00ff00,
+      position: {
+        x: 200,
+        y: 200,
+      },
+      angle: 120,
+      pivot: {
+        x: 2,
+        y: 40,
+      },
+    });
+
+    $container.add($lineX, $textX, $lineZ, $textZ);
+  }
 
   return $container.getComponent(roomComponent, {
     getHumanList: () => humanList,
