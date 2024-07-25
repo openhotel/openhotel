@@ -2,7 +2,13 @@
   "version": "3",
   "packages": {
     "specifiers": {
+      "jsr:@oh/pathfinding@1.0.2": "jsr:@oh/pathfinding@1.0.2",
       "npm:yaml@2.4.2": "npm:yaml@2.4.2"
+    },
+    "jsr": {
+      "@oh/pathfinding@1.0.2": {
+        "integrity": "ddceab3b203a3485d421746fda49f7f5f88be0cd713e9130c2f5eece6df9960f"
+      }
     },
     "npm": {
       "yaml@2.4.2": {
@@ -364,6 +370,7 @@
   },
   "workspace": {
     "dependencies": [
+      "jsr:@oh/pathfinding@1.0.2",
       "npm:yaml@2.4.2"
     ]
   }

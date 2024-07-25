@@ -27,6 +27,8 @@
 
     "input": "https://deno.land/x/input@2.0.4/index.ts",
 
-    "dayjs": "https://deno.land/x/deno_dayjs@v0.5.0/mod.ts"
+    "dayjs": "https://deno.land/x/deno_dayjs@v0.5.0/mod.ts",
+
+    "@oh/pathfinding": "jsr:@oh/pathfinding@1.0.2"
   }
 }
