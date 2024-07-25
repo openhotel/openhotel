@@ -15,12 +15,12 @@ import {
   delay,
   getIsometricPosition,
   getTilePolygon,
+  interpolatePath,
   isDevelopment,
 } from "shared/utils";
 import { Event, RoomPoint, SpriteSheetEnum } from "shared/enums";
 import { System } from "system";
 import { humanComponent, HumanMutable } from "modules/human";
-import { Grid, transpose } from "@oh/pathfinding";
 
 type Props = {
   layout: RoomPoint[][];
@@ -77,37 +77,9 @@ export const roomComponent: ContainerComponent<Props, Mutable> = async ({
     );
     removeOnMoveHuman = System.proxy.on<any>(
       Event.MOVE_HUMAN,
-      async ({ userId, position }) => {
+      async ({ userId, path }) => {
         const human = humanList.find((human) => human.getUser().id === userId);
-
-        const interpolatePath = (path) => {
-          if (!path) return [];
-          const fullPath = [];
-          for (let i = 0; i < path.length - 1; i++) {
-            const start = path[i];
-            const end = path[i + 1];
-            const dx = end.x - start.x;
-            const dy = end.y - start.y;
-            const steps = Math.max(Math.abs(dx), Math.abs(dy));
-
-            for (let j = 0; j <= steps; j++) {
-              const x = start.x + (dx * j) / steps;
-              const y = start.y + (dy * j) / steps;
-              fullPath.push({ x, y });
-            }
-          }
-          return fullPath;
-        };
-
-        const { x, z } = human.getIsometricPosition();
-
-        const start = { x, y: z };
-        const end = { x: position.x, y: position.z };
-        const newGrid = transpose(layout);
-        const grid = new Grid(newGrid);
-        const path = grid.findPath(start, end, 1);
         const fullPath = interpolatePath(path);
-
         for (const step of fullPath) {
           await human.setIsometricPosition({ x: step.x, z: step.y, y: 0 });
           await delay(150);
