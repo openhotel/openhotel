@@ -10,7 +10,9 @@ import { System } from "system";
 import { Event } from "shared/enums";
 import { inputComponent } from "../../shared/components";
 
-type Mutable = {};
+type Mutable = {
+  setInputWidth: (width: number) => Promise<void>;
+};
 
 export const chatComponent: ContainerComponent<{}, Mutable> = async (props) => {
   const $container = await container<{}, Mutable>(props);
@@ -34,8 +36,9 @@ export const chatComponent: ContainerComponent<{}, Mutable> = async (props) => {
   const $input = await inputComponent({
     placeholder: "Click here or press 'c' to write a message",
     horizontalAlign: HorizontalAlign.LEFT,
-    width: 200,
+    width: 100,
     maxLength: 64,
+
     onTextChange: () => {
       setTyping();
       return true;
@@ -43,6 +46,8 @@ export const chatComponent: ContainerComponent<{}, Mutable> = async (props) => {
   });
 
   $input.focus();
+
+  const setInputWidth = (width: number) => $input.setSize({ width, height: 7 });
 
   $container.add($input);
 
@@ -68,5 +73,7 @@ export const chatComponent: ContainerComponent<{}, Mutable> = async (props) => {
     removeOnKeyUp();
   });
 
-  return $container.getComponent(chatComponent);
+  return $container.getComponent(chatComponent, {
+    setInputWidth,
+  });
 };
