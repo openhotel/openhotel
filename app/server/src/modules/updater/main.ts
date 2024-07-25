@@ -100,6 +100,7 @@ export const load = async ({
         mode: 0x777,
       },
     );
+    await Deno.chmod(updatedFile, 0o777);
 
     const isWindows = os === OS.WINDOWS;
 
@@ -112,7 +113,9 @@ export const load = async ({
     	Expand-Archive -Force -LiteralPath "${updatedFile}" -DestinationPath "${dirPath}"
     `;
     const bash = `#! /bin/bash
-    	unzip -o '${updatedFile}' -d '${dirPath}'`;
+    	unzip -o '${updatedFile}' -d '${dirPath}'
+      chmod -R 777 ${dirPath}
+    `;
 
     if (isWindows) {
       //TODO #7 auto-updater not working on windows, because the file is already in use by this execution
