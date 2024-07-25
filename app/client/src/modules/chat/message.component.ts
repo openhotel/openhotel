@@ -6,6 +6,7 @@ import {
   textSprite,
 } from "@tulib/tulip";
 import { SpriteSheetEnum } from "shared/enums";
+import { TextureEnum } from "shared/enums/texture.enum";
 
 type Mutable = {};
 
@@ -31,7 +32,7 @@ export const messageComponent: ContainerComponent<
   const height = 13;
 
   const $bubbleBackground = await sliceSprite({
-    texture: "chat/bubble-background.png",
+    texture: TextureEnum.CHAT_BUBBLE_BACKGROUND,
     leftWidth: 6,
     topHeight: 6,
     rightWidth: 6,
@@ -40,7 +41,7 @@ export const messageComponent: ContainerComponent<
     height,
   });
   const $bubbleOver = await sliceSprite({
-    texture: "chat/bubble-over.png",
+    texture: TextureEnum.CHAT_BUBBLE_OVER,
     leftWidth: 6,
     topHeight: 6,
     rightWidth: 6,

@@ -7,30 +7,32 @@ import {
   VerticalAlign,
 } from "@tulib/tulip";
 import { SpriteSheetEnum } from "shared/enums";
+import { TextureEnum } from "shared/enums/texture.enum";
 
-export const typingBubbleComponent: ContainerComponent = async () => {
+export const typingBubbleComponent: ContainerComponent = async (props) => {
   const $container = await container({
+    ...props,
     visible: false,
   });
 
-  const height = 14;
-  const width = 20;
+  const width = 13;
+  const height = 10;
 
   const $bubbleBackground = await sliceSprite({
-    texture: "chat/bubble-background.png",
-    leftWidth: 6,
-    topHeight: 6,
-    rightWidth: 6,
-    bottomHeight: 6,
+    texture: TextureEnum.CHAT_ACTION_BACKGROUND,
+    leftWidth: 8,
+    topHeight: 3,
+    rightWidth: 3,
+    bottomHeight: 5,
     width,
     height,
   });
   const $bubbleOver = await sliceSprite({
-    texture: "chat/bubble-over.png",
-    leftWidth: 6,
-    topHeight: 6,
-    rightWidth: 6,
-    bottomHeight: 6,
+    texture: TextureEnum.CHAT_ACTION_OVER,
+    leftWidth: 8,
+    topHeight: 3,
+    rightWidth: 3,
+    bottomHeight: 5,
     width,
     height,
     tint: 0x000000,
@@ -42,6 +44,10 @@ export const typingBubbleComponent: ContainerComponent = async () => {
     size: {
       width,
       height,
+    },
+    position: {
+      x: 0,
+      y: -1,
     },
     horizontalAlign: HorizontalAlign.CENTER,
     verticalAlign: VerticalAlign.MIDDLE,

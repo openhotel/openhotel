@@ -15,6 +15,7 @@ import { Event, SpriteSheetEnum } from "shared/enums";
 import { TILE_SIZE } from "shared/consts";
 import { System } from "../../system";
 import { typingBubbleComponent } from "../chat";
+import { TextureEnum } from "shared/enums/texture.enum";
 
 type Props = {
   user: any;
@@ -56,7 +57,7 @@ export const humanComponent: ContainerComponent<Props, Mutable> = async ({
   $container.add(capsule, tagName);
 
   const human = await sprite({
-    texture: "human_dev.png",
+    texture: TextureEnum.HUMAN_DEV,
   });
   await human.setTint(0xefcfb1);
 
@@ -69,10 +70,11 @@ export const humanComponent: ContainerComponent<Props, Mutable> = async ({
 
   let isometricPosition: Point3d;
 
-  const $typingBubble = await typingBubbleComponent();
-  await $typingBubble.setPosition({
-    x: 8,
-    y: -8,
+  const $typingBubble = await typingBubbleComponent({
+    position: {
+      x: 7,
+      y: -8,
+    },
   });
   $container.add($typingBubble);
 

@@ -13,6 +13,7 @@ import {
 import { SpriteSheetEnum } from "shared/enums";
 import { buttonComponent } from "shared/components";
 import { Size } from "shared/types";
+import { TextureEnum } from "shared/enums/texture.enum";
 
 type Props = {
   reconnect: () => {};
@@ -53,7 +54,7 @@ export const offlineComponent: ContainerComponent<Props> = async ({
     $container.add($card);
 
     const $human = await sprite({
-      texture: "human_dev.png",
+      texture: TextureEnum.HUMAN_DEV,
     });
     await $human.setPivotX($human.getBounds().width);
     await $human.setTint(0xefcfb1);
