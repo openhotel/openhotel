@@ -8,6 +8,7 @@ import {
   VerticalAlign,
 } from "@tulib/tulip";
 import { SpriteSheetEnum } from "shared/enums";
+import { Size } from "shared/types";
 
 type InputProps = {
   placeholder: string;
@@ -23,6 +24,7 @@ type InputMutable = {
   getValue: () => string;
   clear: () => void;
   focus: () => void;
+  setSize: (size: Size) => Promise<void>;
 };
 
 export const inputComponent: ContainerComponent<
@@ -76,5 +78,6 @@ export const inputComponent: ContainerComponent<
     getValue: $input.getText,
     clear: () => $input.reset(),
     focus: $input.focus,
+    setSize: $input.setSize,
   });
 };
