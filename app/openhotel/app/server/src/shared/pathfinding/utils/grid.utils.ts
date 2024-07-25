@@ -34,7 +34,7 @@ export const drawLayout = (
   console.log(mapString);
 };
 
-export const transpose = (matrix: number[][]) => {
+export const transpose = (matrix: number[][]): number[][] => {
   const maxCols = Math.max(...matrix.map((row) => row.length));
   const transposed: number[][] = Array.from({ length: maxCols }, () =>
     Array(matrix.length).fill(null),
