@@ -6,8 +6,9 @@ export const System = (() => {
   const $proxy = proxy();
 
   global.events.on(Event.KEY_DOWN, ({ ctrlKey, key }) => {
+    const lowerCaseKey = key.toLowerCase();
     if (isDevelopment()) {
-      switch (key.toLowerCase()) {
+      switch (lowerCaseKey) {
         case "f5":
           window.location.reload();
           break;
@@ -15,6 +16,11 @@ export const System = (() => {
           if (ctrlKey) window.location.reload();
           break;
       }
+    }
+    switch (lowerCaseKey) {
+      case "f11":
+        document.body.requestFullscreen();
+        break;
     }
   });
 
