@@ -1,6 +1,7 @@
 name: openhotel-auth
 services:
     web:
+        platform: linux/amd64
         restart: unless-stopped
         container_name: openhotel-auth
         ports:

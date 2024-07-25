@@ -96,7 +96,9 @@ export const load = async (envs: Envs): Promise<boolean> => {
     `;
     const bash = `#! /bin/bash
       touch '${updatedFile}' && rm '${updatedFile}'
-    	mv '${updateFile}' '${updatedFile}'`;
+    	mv '${updateFile}' '${updatedFile}'
+    	chmod -R 777 ${updatedFile}
+    `;
 
     if (isWindows) {
       //TODO #7 auto-updater not working on windows, because the file is already in use by this execution
