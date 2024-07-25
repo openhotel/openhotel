@@ -1,19 +1,21 @@
-import {Grid} from "./objects/grid";
-// @ts-ignore
-import {smallGrid} from "../__tests__/test-data/small-grid";
-import {FinderEnum} from "./finders/finder.enum";
+import { Grid } from "./objects/grid";
+import { FinderEnum } from "./finders/finder.enum";
+import { drawLayout } from "./utils/grid.utils";
 
-const a = [
-    [null, null, null, null, null],
-    [null, null, null, null, null],
-    [null, null, 0, 0, null],
-    [4, 2, 0, -2, -4],
-    [0, null, null, null, null]
+const layout = [
+  [1, 1, 1, 1, null],
+  [1, null, null, 1, 1, 1, 1],
+  [1, null, 1, 1, 1],
+  [1, null, 1, 1, 1, 1, 1, 1],
+  [1, null, 1, 1, 1, 1, 1, 1],
 ] as number[][];
 
+const grid = new Grid(layout);
+const start = { x: 6, y: 3 };
+const end = { x: 6, y: 1 };
 
-const grid = new Grid(a);
+console.log(start, "->", end);
+const path = grid.findPath(start, end, 1, FinderEnum.JUMP_POINT);
+console.log(path);
 
-console.log(
-    grid.findPath({ x: 0, y: 3 }, { x: 4, y: 3 }, 5)
-);
+drawLayout(layout, path);

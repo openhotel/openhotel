@@ -1,196 +1,113 @@
-import {Grid} from "../objects/grid";
-import {Point} from "../objects/point/point";
-import {OpenList} from "../objects/openList";
-import {Node} from "../objects/nodes/node";
-import {HeuristicUtils} from "../utils/heuristic.utils";
-import {PointInterface} from "../objects/point/point.interface";
+import { Grid } from "../objects/grid";
+import { Point } from "../objects/point/point";
+import { PointInterface } from "../objects/point/point.interface";
+import { DirectionNode } from "../objects/nodes/directionNode";
+import { DirectionEnum } from "../objects/nodes/direction.enum";
+
+const possibleDirections: DirectionEnum[] = [
+  DirectionEnum.NORTH,
+  DirectionEnum.EAST,
+  DirectionEnum.SOUTH,
+  DirectionEnum.WEST,
+  DirectionEnum.NORTH_WEST,
+  DirectionEnum.NORTH_EAST,
+  DirectionEnum.SOUTH_WEST,
+  DirectionEnum.SOUTH_EAST,
+];
 
 export const findPath = (
-    startPoint: Point,
-    endPoint: Point,
-    maxJumpCost: number,
-    grid: Grid
+  startPoint: Point,
+  endPoint: Point,
+  grid: Grid,
 ): PointInterface[] => {
+  const startNode: DirectionNode | null = grid.getNode(
+    startPoint,
+  ) as DirectionNode;
+  const endNode: DirectionNode | null = grid.getNode(endPoint) as DirectionNode;
 
-    const openList: OpenList<Node> = new OpenList<Node>(
-        (nodeA, nodeB) => nodeA.totalCost - nodeB.totalCost);
-    const startNode: Node | null = grid.getNode(startPoint) as Node;
-    const endNode: Node | null = grid.getNode(endPoint) as Node;
+  if (startNode === null)
+    throw new Error("startNode does not exist in the grid");
 
-    if (startNode === null)
-        throw new Error('startNode does not exist in the grid');
+  if (endNode === null) throw new Error("endNode does not exist in the grid");
 
-    if (endNode === null)
-        throw new Error('endNode does not exist in the grid');
+  const getChildren = (
+    nodes: DirectionNode[][],
+    node: PointInterface,
+    addedNodes: boolean[][],
+  ) => {
+    const neighbor: DirectionNode = nodes[node.y][node.x];
+    let children = [] as PointInterface[];
+    if (neighbor === null || neighbor === undefined) return children;
 
-    startNode.opened = true;
-    openList.push(startNode);
+    possibleDirections.forEach((direction) => {
+      let newNeighbor: Point | null = neighbor?.getNeighbor(direction) as Point;
+      if (newNeighbor === null) return;
 
-    const jump = (neighbor: Node | null, node: Node): Node | null => {
-        if(!neighbor || neighbor.cost === 0)
-            return null;
+      if (!addedNodes[newNeighbor.y][newNeighbor.x]) {
+        children.push(newNeighbor);
+        addedNodes[newNeighbor.y][newNeighbor.x] = true;
+      }
 
-        if(neighbor.point.equal(endNode.point))
-            return neighbor;
-
-        const { point: neighborPoint } = neighbor;
-        const { point: nodePoint } = node;
-
-        const correctedPoint = new Point(
-            neighborPoint.x - nodePoint.x,
-            neighborPoint.y - nodePoint.y,
-        );
-
-        const getNode = (x: number, y: number): Node => grid.getNode(neighborPoint.copy(x, y)) as Node;
-        const hasPositiveCost = (cost?: number) => cost ?? -Infinity > 0;
-
-        if(correctedPoint.x !== 0 && (
-            (hasPositiveCost(getNode(0, -1)?.cost) && getNode(- correctedPoint.x, -1)?.cost === 0)
-            || (hasPositiveCost(getNode(0, 1)?.cost) && getNode(- correctedPoint.x, 1)?.cost === 0)
-        )) return neighbor;
-
-        else if(correctedPoint.y !== 0) {
-            if(
-                (hasPositiveCost(getNode(-1, 0)?.cost) > 0 && getNode(- 1, - correctedPoint.y)?.cost === 0)
-                || (hasPositiveCost(getNode(1, 0)?.cost) && getNode(1, - correctedPoint.y)?.cost === 0)
-            ) return neighbor;
-
-            if(jump(getNode(1, 0), neighbor) || jump(getNode(-1, 0), neighbor))
-                return neighbor;
+      // The rest
+      while (
+        newNeighbor &&
+        nodes[newNeighbor.y][newNeighbor.x]!.getNeighbor(direction)
+      ) {
+        newNeighbor =
+          nodes[newNeighbor.y][newNeighbor.x]!.getNeighbor(direction);
+        if (newNeighbor && !addedNodes[newNeighbor.y][newNeighbor.x]) {
+          children.push(newNeighbor);
+          addedNodes[newNeighbor.y][newNeighbor.x] = true;
         }
-        return jump(getNode(correctedPoint.x, correctedPoint.y), neighbor);
+      }
+    });
+
+    return children;
+  };
+
+  const { width, height } = grid;
+
+  let done = false;
+
+  const getEmptyArrayFromSize = (fill: any) =>
+    Array(height)
+      .fill(0)
+      .map(() => Array(width).fill(fill));
+
+  const addedNodes = getEmptyArrayFromSize(false) as boolean[][];
+  const visitedNodes = getEmptyArrayFromSize(false) as boolean[][];
+  const parents = getEmptyArrayFromSize(null) as (PointInterface | null)[][];
+
+  let queue = [startPoint] as PointInterface[];
+  addedNodes[startPoint.y][startPoint.x] = true;
+
+  while (!done && queue.length > 0) {
+    const currentNode = queue.shift() as PointInterface;
+    visitedNodes[currentNode.y][currentNode.x] = true;
+
+    const children = getChildren(
+      grid.nodes as DirectionNode[][],
+      currentNode,
+      addedNodes,
+    ) as PointInterface[];
+    for (const { x, y } of children) {
+      parents[y][x] = currentNode;
+
+      if (x === endPoint.x && y === endPoint.y) done = true;
     }
 
-    const identifySuccessors = (node: Node) => {
-        findNeighbors(node).map(neighbor => {
-            const jumpNode = jump(neighbor, node);
-            if(!jumpNode) return;
+    queue = [...queue, ...children];
+  }
 
-            if(jumpNode.closed) return;
+  if (!done) return [];
 
-            const { point: nodePoint } = node;
-            const { point: jumpNodePoint } = jumpNode;
+  // We basically get the path backwards once we create found the node
 
-            const jumpPoint = {
-                x: jumpNodePoint.x - nodePoint.x,
-                y: jumpNodePoint.y - nodePoint.y
-            }
-            const absoluteJumpPoint = {
-                x: Math.abs(jumpPoint.x),
-                y: Math.abs(jumpPoint.y)
-            }
-            const distance = HeuristicUtils.Octile(absoluteJumpPoint.x, absoluteJumpPoint.y);
-
-            // to expensive to jump
-            const currentJumpCost = Math.abs(node.cost - jumpNode.cost);
-            const jumpAverageCost = currentJumpCost / distance;
-            if(jumpAverageCost > maxJumpCost)
-                return;
-
-            const estimatedDistance = (node.distanceFromStart + distance) * neighbor.cost;
-
-            if(jumpNode.opened && estimatedDistance >= jumpNode.distanceFromStart) return;
-
-            const { point: endNodePoint } = endNode;
-
-            jumpNode.distanceFromStart = estimatedDistance;
-            jumpNode.heuristicDistance = jumpNode.heuristicDistance || HeuristicUtils.DrManhattan(
-                Math.abs(jumpNodePoint.x - endNodePoint.x),
-                Math.abs(jumpNodePoint.y - endNodePoint.y)
-            );
-            jumpNode.totalCost = jumpNode.distanceFromStart + jumpNode.heuristicDistance;
-            jumpNode.parent = node;
-
-            if(!jumpNode.opened) {
-                jumpNode.opened = true;
-                openList.push(jumpNode);
-                return;
-            }
-        });
-    }
-
-    type Direction = [number, number];
-    const getNeighborsByDirection = (
-        directions: Direction[],
-        reference: Point,
-        grid: Grid
-    ) => {
-        return directions.reduce((acc: Node[], direction: [number, number]) => {
-            const node: Node = grid.getNode(reference.copy(...direction)) as Node;
-            return (node && node.cost > 0) ? [...acc, node] : acc;
-        }, []);
-    };
-    const findNeighbors = (node: Node): Node[] => {
-
-        const { parent, point: nodePoint } = node;
-
-        if(!parent) return getNeighbors(node);
-
-        const { point: parentPoint } = parent;
-
-        const getNormalizedNumber = (no: number, pa: number) =>
-            (no - pa) / Math.max(Math.abs(no - pa), 1);
-
-        const normalizedPoint = new Point(
-            getNormalizedNumber(nodePoint.x, parentPoint.x),
-            getNormalizedNumber(nodePoint.y, parentPoint.y)
-        );
-
-        if(normalizedPoint.x !== 0) {
-            const xDirections = [
-                [0, -1],
-                [0, 1],
-                [normalizedPoint.x, 0],
-            ] as Direction[];
-
-            return getNeighborsByDirection(xDirections, nodePoint, grid);
-        }
-
-        if(normalizedPoint.y !== 0) {
-            const xDirections = [
-                [-1, 0],
-                [1, 0],
-                [0, normalizedPoint.y],
-            ] as Direction[];
-
-            return getNeighborsByDirection(xDirections, nodePoint, grid);
-        }
-
-        return []
-    }
-
-    const getNeighbors = (node: Node): Node[] => {
-        const nodePoint = node.point;
-
-        const xDirections = [
-            [0, -1],
-            [1, 0],
-            [0, 1],
-            [-1, 0],
-        ] as Direction[];
-
-        return getNeighborsByDirection(xDirections, nodePoint, grid);
-    }
-
-    while (!openList.empty()) {
-
-        const node = openList.pop();
-        if(!node) continue;
-
-        node.closed = true;
-
-        if (node === endNode) {
-            const getParentPoint = (_node: Node, pointList: Point[] = []): Point[] =>
-                _node.parent
-                    ? getParentPoint(_node.parent, [...pointList, _node.point])
-                    : [...pointList, _node.point];
-            return getParentPoint(node)
-                .reverse()
-                .map(point => ({ x: point.x, y: point.y }));
-        }
-
-        identifySuccessors(node)
-    }
-    return [];
-
-}
+  let end: PointInterface = endPoint.copy(0, 0);
+  const steps = [] as PointInterface[];
+  while (end.x !== startPoint.x || end.y !== startPoint.y) {
+    steps.push(end);
+    end = parents[end.y][end.x]!;
+  }
+  return [...steps, startPoint].reverse();
+};

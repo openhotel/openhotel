@@ -1,57 +1,41 @@
-import {CompFn, ListNode} from "./openList.types";
+import { CompFn, ListNode } from "./openList.types";
 
 export class OpenList<T> {
+  private start: ListNode<T> | null;
+  private readonly comparator: CompFn<T>;
 
-    private start: ListNode<T> | null;
+  constructor(comparator: CompFn<T>) {
+    this.start = null;
+    this.comparator = comparator;
+  }
 
-    private readonly comparator: CompFn<T>;
-
-    constructor(comparator: CompFn<T>) {
-        this.start = null;
-        this.comparator = comparator;
+  push(value: T) {
+    if (this.start === null) {
+      this.start = { value, next: null };
+      return;
     }
 
-    push(value: T) {
-        if (this.start === null) {
-            // List is empty
-            this.start = {
-                value,
-                next: null
-            };
-            return;
-        }
- 
-        if (this.comparator(value, this.start.value) < 0) {
-            // Inserting at the beginning
-            this.start = {
-                value,
-                next: this.start
-            }
-            return
-        }
-
-        // Find the position to insert into
-        let aux: ListNode<T> = this.start;
-        while (aux.next !== null && this.comparator(value, aux.next.value) > 0) {
-            aux = aux.next;
-        }
-
-        aux.next = {
-            value,
-            next: aux.next
-        };
+    if (this.comparator(value, this.start.value) < 0) {
+      this.start = { value, next: this.start };
+      return;
     }
 
-    pop(): T {
-        if (this.start === null)
-            throw new Error("popping from an empty list");
-        const popped = this.start;
-        this.start = popped.next;
-        return popped.value;
+    let aux: ListNode<T> = this.start;
+    while (aux.next !== null && this.comparator(value, aux.next.value) > 0) {
+      aux = aux.next;
     }
 
-    empty(): boolean {
-        return this.start === null;
-    }
+    aux.next = { value, next: aux.next };
+  }
 
+  pop(): T {
+    if (this.start === null) throw new Error("popping from an empty list");
+    const popped = this.start;
+    this.start = popped.next;
+    return popped.value;
+  }
+
+  empty(): boolean {
+    return this.start === null;
+  }
 }
