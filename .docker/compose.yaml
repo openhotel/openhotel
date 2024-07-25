@@ -1,6 +1,7 @@
 name: openhotel
 services:
   web:
+    platform: linux/amd64
     restart: unless-stopped
     container_name: openhotel
     ports:
