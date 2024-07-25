@@ -1,4 +1,4 @@
-import { Point } from "../point/point";
+import { Point } from "../point/point.ts";
 
 // Based on A* Node
 export class Node {

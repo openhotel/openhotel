@@ -1,4 +1,4 @@
-import { PointInterface } from "./point.interface";
+import { PointInterface } from "./point.interface.ts";
 
 export class Point implements PointInterface {
   public x: number;

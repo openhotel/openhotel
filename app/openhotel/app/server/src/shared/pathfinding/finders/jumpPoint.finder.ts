@@ -1,8 +1,8 @@
-import { Grid } from "../objects/grid";
-import { Point } from "../objects/point/point";
-import { PointInterface } from "../objects/point/point.interface";
-import { DirectionNode } from "../objects/nodes/directionNode";
-import { DirectionEnum } from "../objects/nodes/direction.enum";
+import { Grid } from "../objects/grid.ts";
+import { Point } from "../objects/point/point.ts";
+import { PointInterface } from "../objects/point/point.interface.ts";
+import { DirectionNode } from "../objects/nodes/directionNode.ts";
+import { DirectionEnum } from "../objects/nodes/direction.enum.ts";
 
 const possibleDirections: DirectionEnum[] = [
   DirectionEnum.NORTH,

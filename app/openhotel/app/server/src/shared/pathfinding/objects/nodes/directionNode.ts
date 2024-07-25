@@ -1,5 +1,5 @@
-import { Point } from "../point/point";
-import { DirectionEnum } from "./direction.enum";
+import { Point } from "../point/point.ts";
+import { DirectionEnum } from "./direction.enum.ts";
 
 export class DirectionNode {
   public readonly point: Point;

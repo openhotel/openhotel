@@ -1,10 +1,10 @@
-import { Node } from "./nodes/node";
-import { Point } from "./point/point";
-import { findPath } from "../finders/jumpPoint.finder";
-import { PointInterface } from "./point/point.interface";
-import { FinderEnum } from "../finders/finder.enum";
-import { DirectionNode } from "./nodes/directionNode";
-import { makeSquare } from "../utils/grid.utils";
+import { Node } from "./nodes/node.ts";
+import { Point } from "./point/point.ts";
+import { findPath } from "../finders/jumpPoint.finder.ts";
+import { PointInterface } from "./point/point.interface.ts";
+import { FinderEnum } from "../finders/finder.enum.ts";
+import { DirectionNode } from "./nodes/directionNode.ts";
+import { makeSquare } from "../utils/grid.utils.ts";
 
 export class Grid {
   private readonly _matrix: number[][];

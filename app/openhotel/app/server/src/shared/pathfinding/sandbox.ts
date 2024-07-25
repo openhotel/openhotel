@@ -1,6 +1,6 @@
-import { Grid } from "./objects/grid";
-import { FinderEnum } from "./finders/finder.enum";
-import { drawLayout } from "./utils/grid.utils";
+import { Grid } from "./objects/grid.ts";
+import { FinderEnum } from "./finders/finder.enum.ts";
+import { drawLayout } from "./utils/grid.utils.ts";
 
 const layout = [
   [1, 1, 1, 1, null],
