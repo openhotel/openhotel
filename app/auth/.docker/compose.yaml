@@ -7,6 +7,6 @@ services:
             - '2024:2024'
         volumes:
             - 'openhotel-auth:/app'
-        image: 'openhotel/openhotel-auth:latest'
+        image: 'openhotel/auth:latest'
 volumes:
     openhotel-auth: null
