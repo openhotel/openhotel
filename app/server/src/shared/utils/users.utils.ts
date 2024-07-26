@@ -20,9 +20,14 @@ export const getUsersConfig = async (): Promise<UsersConfig> => {
       users: usersConfig?.blacklist?.users || [],
     },
   };
-  try {
-    await writeYaml<UsersConfig>("./users.yml", defaults, { async: true });
-  } catch (e) {}
+
+  await writeUserConfig(defaults);
 
   return defaults;
+};
+
+export const writeUserConfig = async (config: UsersConfig) => {
+  try {
+    await writeYaml<UsersConfig>("./users.yml", config, { async: true });
+  } catch (e) {}
 };
