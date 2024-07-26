@@ -63,7 +63,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        os: [darwin, linux, windows]
+        os: [darwin, linux, linux_aarch64, windows]
 
     steps:
       - uses: actions/checkout@v3

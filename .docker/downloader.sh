@@ -1,19 +1,29 @@
 #!/bin/bash
 
-if [ ! -f ./server_linux ]; then
+FILE_NAME='server_linux'
+
+# Detect architecture
+ARCH=$(arch)
+echo "arch: ($ARCH)"
+
+if [ "$ARCH" = "aarch64" ]; then
+  FILE_NAME="${FILE_NAME}_${ARCH}"
+fi
+
+if [ ! -f ./$FILE_NAME ]; then
   echo "Checking version..."
   VERSION=$(curl -s "https://api.github.com/repos/openhotel/openhotel/releases/latest" | jq -r '.tag_name')
 
   echo "Downloading server (version $VERSION)..."
-  curl -L https://github.com/openhotel/openhotel/releases/download/$VERSION/server_linux.zip > server.zip
+  curl -L https://github.com/openhotel/openhotel/releases/download/$VERSION/$FILE_NAME.zip -o $FILE_NAME.zip
 
   echo "Server downloaded!"
 
   echo "Decompressing server..."
-  unzip -o server.zip
+  unzip -o $FILE_NAME.zip
   echo "Server decompressed!"
 
-  chmod 777 server_linux
+  chmod 777 $FILE_NAME
 fi
 
-./server_linux
+./$FILE_NAME
