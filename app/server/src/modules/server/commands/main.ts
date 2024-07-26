@@ -3,8 +3,10 @@ import { User } from "shared/types/user.types.ts";
 import { log } from "shared/utils/log.utils.ts";
 
 import { stopCommand } from "./stop.command.ts";
+import { opCommand } from "./op.command.ts";
+import { deopCommand } from "./deop.command.ts";
 
-const commandList = [stopCommand];
+const commandList = [stopCommand, opCommand, deopCommand];
 
 export const executeCommand = ({
   message,
@@ -21,7 +23,8 @@ export const executeCommand = ({
   if (!foundCommand) return true;
 
   log(`Command /${foundCommand.command} executed by ${user.username}!`);
-  foundCommand.func({ user });
+  _.shift();
+  foundCommand.func({ user, args: _ });
 
   return true;
 };
