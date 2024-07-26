@@ -16,4 +16,8 @@ export class Point implements PointInterface {
   equal(point: Point): boolean {
     return this.x === point.x && this.y === point.y;
   }
+
+  toString(): string {
+    return `(${this.x}, ${this.y})`;
+  }
 }

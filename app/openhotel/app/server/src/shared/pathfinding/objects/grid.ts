@@ -1,120 +1,131 @@
-import { Node } from "./nodes/node.ts";
 import { Point } from "./point/point.ts";
-import { findPath } from "../finders/jumpPoint.finder.ts";
+import { findPath as jumpPointFindPath } from "../finders/jumpPoint.finder.ts";
+import { findPath as customFindPath } from "../finders/custom.finder.ts";
 import { PointInterface } from "./point/point.interface.ts";
 import { FinderEnum } from "../finders/finder.enum.ts";
-import { DirectionNode } from "./nodes/directionNode.ts";
 import { makeSquare } from "../utils/grid.utils.ts";
+import { FindPathConfig } from "../finders/finder.types.ts";
+
+const NON_WALKABLE_HEIGHT = 0;
 
 export class Grid {
-  private readonly _matrix: number[][];
-  public nodes: Node[][] | (DirectionNode | null)[][];
+  public readonly width: number;
+  public readonly height: number;
+  private readonly heightMatrix: Float32Array;
 
-  constructor(matrix: number[][]) {
-    this._matrix = makeSquare(matrix);
+  constructor(width: number, height: number, costMatrix: Float32Array) {
+    this.width = width;
+    this.height = height;
+    this.heightMatrix = costMatrix;
 
-    if (this._matrix[0] === undefined || this._matrix[0][0] === undefined)
+    if (width !== height) throw new Error("grid matrix must be square");
+
+    if (costMatrix.length !== width * height)
+      throw new Error("cost matrix must have the same dimensions as the grid");
+  }
+
+  public static from(matrix: number[][]): Grid {
+    if (matrix[0] === undefined || matrix[0][0] === undefined)
       throw new Error("grid matrix cannot be empty");
 
-    this.nodes = [];
+    const mat = makeSquare(matrix);
+    const height = mat.length;
+    const width = mat[0].length;
+
+    if (height !== width) throw new Error("grid matrix must be square");
+
+    const costMatrix = new Float32Array(height * width);
+    mat.forEach((row, y) => {
+      row.forEach((cost, x) => {
+        costMatrix[y * width + x] = cost;
+      });
+    });
+
+    return new Grid(width, height, costMatrix);
   }
 
-  private buildNodes(maxJumpCost: number) {
-    this.nodes = this._matrix.map((arrY, y) =>
-      arrY.map((cost, x) => {
-        if (cost === null) return null;
-
-        const directionNode = new DirectionNode(new Point(x, y));
-
-        const assignDirectionNodeIf = (comparison: boolean, point: Point) => {
-          if (!comparison) return null;
-          const nodePoint = directionNode.point.copy(point.x, point.y);
-          const neighborCost = this.getMatrixCost(nodePoint);
-
-          return neighborCost !== null &&
-            Math.abs(neighborCost - cost) <= maxJumpCost
-            ? nodePoint
-            : null;
-        };
-
-        directionNode.northNode = assignDirectionNodeIf(
-          y - 1 >= 0 && y - 1 < this.height,
-          new Point(0, -1),
-        );
-        directionNode.southNode = assignDirectionNodeIf(
-          y + 1 >= 0 && y + 1 < this.height,
-          new Point(0, 1),
-        );
-        directionNode.westNode = assignDirectionNodeIf(
-          x - 1 >= 0 && x - 1 < this.width,
-          new Point(-1, 0),
-        );
-        directionNode.eastNode = assignDirectionNodeIf(
-          x + 1 >= 0 && x + 1 < this.width,
-          new Point(1, 0),
-        );
-
-        // Add diagonals
-        directionNode.northWestNode = assignDirectionNodeIf(
-          y - 1 >= 0 && x - 1 >= 0,
-          new Point(-1, -1),
-        );
-        directionNode.northEastNode = assignDirectionNodeIf(
-          y - 1 >= 0 && x + 1 < this.width,
-          new Point(1, -1),
-        );
-        directionNode.southWestNode = assignDirectionNodeIf(
-          y + 1 < this.height && x - 1 >= 0,
-          new Point(-1, 1),
-        );
-        directionNode.southEastNode = assignDirectionNodeIf(
-          y + 1 < this.height && x + 1 < this.width,
-          new Point(1, 1),
-        );
-
-        return directionNode;
-      }),
-    );
+  public getHeightAt(point: PointInterface): number | null {
+    if (!this.inBounds(point)) return null;
+    const cost = this.heightMatrix[this.index(point)];
+    return cost === NON_WALKABLE_HEIGHT ? null : cost;
   }
 
-  public getNode(point: Point): Node | DirectionNode | null {
-    if (this.nodes[point.y] === undefined) return null;
-    return this.nodes[point.y][point.x];
+  public distance(a: PointInterface, b: PointInterface): number {
+    // return Math.abs(a.x - b.x) + Math.abs(a.y - b.y);
+    return Math.sqrt((a.x - b.x) ** 2 + (a.y - b.y) ** 2);
   }
 
-  public getMatrixCost(point: Point): number | null {
-    if (this._matrix[point.y] === undefined) return null;
-    return this._matrix[point.y][point.x];
+  public index(point: PointInterface): number {
+    return point.y * this.height + point.x;
   }
 
   private clone(): Grid {
-    return new Grid(this._matrix);
+    return new Grid(
+      this.width,
+      this.height,
+      new Float32Array(this.heightMatrix),
+    );
   }
 
-  get width(): number {
-    return this._matrix[0].length;
+  public inBounds(point: PointInterface): boolean {
+    return (
+      point.x >= 0 &&
+      point.x < this.width &&
+      point.y >= 0 &&
+      point.y < this.height
+    );
   }
 
-  get height(): number {
-    return this._matrix.length;
+  public isWalkable(point: PointInterface): boolean {
+    const heightAt = this.getHeightAt(point);
+    return (
+      this.inBounds(point) &&
+      heightAt !== null &&
+      heightAt !== NON_WALKABLE_HEIGHT
+    );
+  }
+
+  public walkMatrix(
+    callback: (x: number, y: number, cost: number | null) => void,
+  ) {
+    for (let y = 0; y < this.height; y++) {
+      for (let x = 0; x < this.width; x++) {
+        callback(x, y, this.heightMatrix[y * this.height + x]);
+      }
+    }
+  }
+
+  public mapMatrix<T>(
+    callback: (x: number, y: number, cost: number | null) => T,
+  ): T[][] {
+    const matrix: T[][] = [];
+
+    for (let y = 0; y < this.height; y++) {
+      const row: T[] = [];
+      for (let x = 0; x < this.width; x++) {
+        const value: T = callback(x, y, this.heightMatrix[y * this.height + x]);
+        row.push(value);
+      }
+      matrix.push(row);
+    }
+
+    return matrix;
   }
 
   public findPath(
     startPoint: PointInterface,
     endPoint: PointInterface,
-    maxJumpCost = 5,
-    finderEnum: FinderEnum = FinderEnum.JUMP_POINT,
+    config: FindPathConfig = {
+      finder: FinderEnum.CUSTOM,
+      maxJumpCost: 5,
+      travelCosts: undefined,
+    },
   ): PointInterface[] {
-    const gridClone = this.clone();
-    gridClone.buildNodes(maxJumpCost);
-
-    switch (finderEnum) {
+    switch (config.finder) {
       case FinderEnum.JUMP_POINT:
-        return findPath(
-          new Point(startPoint.x, startPoint.y),
-          new Point(endPoint.x, endPoint.y),
-          gridClone,
-        );
+        return jumpPointFindPath(startPoint, endPoint, this, config);
+      case FinderEnum.CUSTOM:
+        return customFindPath(startPoint, endPoint, this, config);
     }
   }
 }

@@ -14,12 +14,15 @@ const original = [
 
 const layout = transpose(original); // (original);
 
-const grid = new Grid(layout);
+const grid = Grid.from(layout);
 const start = { x: 2, y: 6 };
 const end = { x: 5, y: 9 };
 
 console.log(start, "->", end);
-const path = grid.findPath(start, end, 1, FinderEnum.JUMP_POINT);
+const path = grid.findPath(start, end, {
+  finder: FinderEnum.JUMP_POINT,
+  maxJumpCost: 1,
+});
 console.log(path);
 
 drawLayout(layout, path, start, end);
