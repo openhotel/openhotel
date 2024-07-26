@@ -1,10 +1,6 @@
-import { Point } from "./point/point.ts";
-import { findPath as jumpPointFindPath } from "../finders/jumpPoint.finder.ts";
-import { findPath as customFindPath } from "../finders/custom.finder.ts";
-import { PointInterface } from "./point/point.interface.ts";
-import { FinderEnum } from "../finders/finder.enum.ts";
 import { makeSquare } from "../utils/grid.utils.ts";
-import { FindPathConfig } from "../finders/finder.types.ts";
+import { FindPathConfig, Point } from "../types/main.ts";
+import { findPath } from "./finder.ts";
 
 const NON_WALKABLE_HEIGHT = 0;
 
@@ -44,18 +40,18 @@ export class Grid {
     return new Grid(width, height, costMatrix);
   }
 
-  public getHeightAt(point: PointInterface): number | null {
+  public getHeightAt(point: Point): number | null {
     if (!this.inBounds(point)) return null;
     const cost = this.heightMatrix[this.index(point)];
     return cost === NON_WALKABLE_HEIGHT ? null : cost;
   }
 
-  public distance(a: PointInterface, b: PointInterface): number {
+  public distance(a: Point, b: Point): number {
     // return Math.abs(a.x - b.x) + Math.abs(a.y - b.y);
     return Math.sqrt((a.x - b.x) ** 2 + (a.y - b.y) ** 2);
   }
 
-  public index(point: PointInterface): number {
+  public index(point: Point): number {
     return point.y * this.height + point.x;
   }
 
@@ -67,7 +63,7 @@ export class Grid {
     );
   }
 
-  public inBounds(point: PointInterface): boolean {
+  public inBounds(point: Point): boolean {
     return (
       point.x >= 0 &&
       point.x < this.width &&
@@ -76,7 +72,7 @@ export class Grid {
     );
   }
 
-  public isWalkable(point: PointInterface): boolean {
+  public isWalkable(point: Point): boolean {
     const heightAt = this.getHeightAt(point);
     return (
       this.inBounds(point) &&
@@ -113,19 +109,13 @@ export class Grid {
   }
 
   public findPath(
-    startPoint: PointInterface,
-    endPoint: PointInterface,
+    startPoint: Point,
+    endPoint: Point,
     config: FindPathConfig = {
-      finder: FinderEnum.CUSTOM,
       maxJumpCost: 5,
       travelCosts: undefined,
     },
-  ): PointInterface[] {
-    switch (config.finder) {
-      case FinderEnum.JUMP_POINT:
-        return jumpPointFindPath(startPoint, endPoint, this, config);
-      case FinderEnum.CUSTOM:
-        return customFindPath(startPoint, endPoint, this, config);
-    }
+  ): Point[] {
+    return findPath(startPoint, endPoint, this, config);
   }
 }

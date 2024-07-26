@@ -1,4 +1,4 @@
-import { CompFn, ListNode } from "./openList.types.ts";
+import { CompFn, ListNode } from "../types/main.ts";
 
 export class OpenList<T> {
   private start: ListNode<T> | null;

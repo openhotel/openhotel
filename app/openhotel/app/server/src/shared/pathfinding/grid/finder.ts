@@ -1,20 +1,18 @@
-import { Point } from "../objects/point/point.ts";
-import { Grid } from "../objects/grid.ts";
-import { PointInterface } from "../objects/point/point.interface.ts";
-import { OpenList } from "../objects/openList.ts";
-import { FindPathConfig } from "./finder.types.ts";
+import { Point, FindPathConfig } from "../types/main.ts";
+import { Grid } from "./grid.ts";
+import { OpenList } from "./openList.ts";
 
 const NOT_REACHED_COST: number = 999999;
 const MAX_JUMP_HEIGHT: number = 5;
 
 class PathNode {
   public from: PathNode | null;
-  public point: PointInterface;
+  public point: Point;
   public cost: number;
   public heuristicValue: number;
 
   constructor(
-    point: PointInterface,
+    point: Point,
     from: PathNode | null,
     cost: number,
     heuristicValue: number,
@@ -31,24 +29,21 @@ class PathNode {
 }
 
 export const findPath = (
-  startPoint: PointInterface,
-  endPoint: PointInterface,
+  startPoint: Point,
+  endPoint: Point,
   grid: Grid,
   config: FindPathConfig,
-): PointInterface[] => {
+): Point[] => {
   const diagonalCostMultiplier = config.diagonalCostMultiplier ?? 1;
   const orthogonalCostMultiplier = config.orthogonalCostMultiplier ?? 1;
   const maxJumpCost = config.maxJumpCost ?? 5;
   const maxIterations = config.maxIterations ?? 99999;
 
-  const index = (point: PointInterface): number => {
+  const index = (point: Point): number => {
     return point.y * grid.height + point.x;
   };
 
-  const getMoveCostAt = (
-    src: PointInterface,
-    dst: PointInterface,
-  ): number | null => {
+  const getMoveCostAt = (src: Point, dst: Point): number | null => {
     if (!grid.inBounds(src) || !grid.inBounds(dst)) return null;
 
     // Difference in height
@@ -64,7 +59,7 @@ export const findPath = (
   // Orthogonal jumps from JumpPoint
   const addOrthogonalJumps = (
     prevNode: PathNode,
-    src: PointInterface,
+    src: Point,
     srcCost: number,
     dirX: number,
     dirY: number,
@@ -74,10 +69,10 @@ export const findPath = (
     let prevPoint = src;
 
     while (true) {
-      const target = new Point(
-        src.x + dirX * jumpDistance,
-        src.y + dirY * jumpDistance,
-      );
+      const target: Point = {
+        x: src.x + dirX * jumpDistance,
+        y: src.y + dirY * jumpDistance,
+      };
 
       if (!grid.isWalkable(target)) {
         break;
@@ -110,18 +105,18 @@ export const findPath = (
   // Diagonal movements with filter for adjacent walkable tiles in the same floor height
   const addDiagonal = (
     prevNode: PathNode,
-    src: PointInterface,
+    src: Point,
     srcCost: number,
     dirX: number,
     dirY: number,
   ) => {
-    const target = new Point(src.x + dirX, src.y + dirY);
+    const target: Point = { x: src.x + dirX, y: src.y + dirY };
     const moveCost =
       srcCost +
       (getMoveCostAt(src, target) ?? NOT_REACHED_COST) * diagonalCostMultiplier;
     const targetHeight = grid.getHeightAt(target);
-    const aux1 = new Point(src.x, src.y + dirY);
-    const aux2 = new Point(src.x + dirX, src.y);
+    const aux1: Point = { x: src.x, y: src.y + dirY };
+    const aux2: Point = { x: src.x + dirX, y: src.y };
     const targetIndex = index(target);
 
     if (
@@ -150,14 +145,11 @@ export const findPath = (
   travelHeuristic.fill(NOT_REACHED_COST);
 
   grid.walkMatrix((x, y) => {
-    travelHeuristic[y * grid.height + x] = grid.distance(
-      new Point(x, y),
-      endPoint,
-    );
+    travelHeuristic[y * grid.height + x] = grid.distance({ x, y }, endPoint);
   });
   config.travelHeuristic = travelHeuristic;
 
-  const heuristic = (a: PointInterface): number => {
+  const heuristic = (a: Point): number => {
     return travelHeuristic[index(a)];
   };
 
@@ -200,8 +192,8 @@ export const findPath = (
   return [];
 };
 
-const pathFromNode = (lastNode: PathNode): PointInterface[] => {
-  const path: PointInterface[] = [];
+const pathFromNode = (lastNode: PathNode): Point[] => {
+  const path: Point[] = [];
   let node: PathNode | null = lastNode;
   while (node) {
     path.push(node.point);

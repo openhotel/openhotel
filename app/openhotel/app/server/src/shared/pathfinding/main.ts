@@ -1,3 +1,3 @@
-export * from "./objects/grid.ts";
-export * from "./finders/finder.enum.ts";
-export { transpose } from "./utils/grid.utils.ts";
+export * from "./grid/grid.ts";
+export * from "./types/finder.types.ts";
+export * from "./utils/grid.utils.ts";

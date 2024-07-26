@@ -1,5 +1,3 @@
-import { PointInterface } from "../objects/point/point.interface.ts";
-
 export const makeSquare = (layout: number[][]): number[][] => {
   const maxLength = Math.max(layout.length, ...layout.map((row) => row.length));
   const squareLayout = Array.from({ length: maxLength }, () =>
@@ -13,25 +11,6 @@ export const makeSquare = (layout: number[][]): number[][] => {
   }
 
   return squareLayout;
-};
-
-export const drawLayout = (
-  layout: number[][],
-  path: PointInterface[],
-  start?: PointInterface,
-  end?: PointInterface,
-) => {
-  const map: any[] = layout.map((row) => row.map((cell) => (cell ? "." : "#")));
-
-  path.forEach((point) => {
-    map[point.y][point.x] = "P";
-  });
-
-  if (start) map[start.y][start.x] = "S";
-  if (end) map[end.y][end.x] = "X";
-
-  const mapString = map.map((row) => row.join(" ")).join("\n");
-  console.log(mapString);
 };
 
 export const transpose = (matrix: number[][]): number[][] => {
