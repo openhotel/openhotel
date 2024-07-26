@@ -21,8 +21,10 @@ export const load = async ({
 
   const os = getOS();
   const osName = getOSName();
+  let arch = Deno.build.arch;
 
   log(`OS ${osName}`);
+  log(`Arch ${arch}`);
 
   if (os === OS.UNKNOWN) {
     log(`Unknown OS (${Deno.build.os}) cannot be updated!`);
@@ -77,7 +79,12 @@ export const load = async ({
       log(`Version (${latestVersion}) available!`);
     }
 
-    const osAsset = assets.find(({ name }) => name.includes(osName));
+    if (arch !== "aarch64") arch = null;
+
+    const osAsset = assets.find(
+      ({ name }) =>
+        name.includes(osName) && (arch === null || name.includes(arch)),
+    );
 
     if (!osAsset) {
       log(`No file found to update on (${osName})!`);
