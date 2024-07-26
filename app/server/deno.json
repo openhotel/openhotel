@@ -8,10 +8,11 @@
 
     "compile:windows": "deno task compile --target=x86_64-pc-windows-msvc --output ./build/server_windows ./mod.ts",
     "compile:linux": "deno task compile --target=x86_64-unknown-linux-gnu --output ./build/server_linux ./mod.ts",
+    "compile:linux_aarch64": "deno task compile --target=aarch64-unknown-linux-gnu --output ./build/server_linux_aarch64 ./mod.ts",
     "compile:darwin": "deno task compile --target=x86_64-apple-darwin --output ./build/server_darwin ./mod.ts",
     "compile:current": "deno task compile --output ./server ./mod.ts",
 
-    "build": "(deno task compile:linux) & (deno task compile:darwin) & (deno task compile:windows)"
+    "build": "(deno task compile:linux) & (deno task compile:linux:aarch64) & (deno task compile:darwin) & (deno task compile:windows)"
   },
   "imports": {
     "shared/": "./src/shared/",
