@@ -12,9 +12,11 @@ export const load = async (envs: Envs): Promise<boolean> => {
   if (envs.version === "DEVELOPMENT") return false;
 
   const os = getOS();
-  const osName = getOSName();
+  const osName = getOSName() as string;
+  let arch: string | null = Deno.build.arch;
 
   console.log(`OS ${osName}`);
+  console.log(`Arch ${arch}`);
 
   if (os === OS.UNKNOWN) {
     console.log(`Unknown OS (${Deno.build.os}) cannot be updated!`);
@@ -55,7 +57,12 @@ export const load = async (envs: Envs): Promise<boolean> => {
     }
     console.log(`New version (${latestVersion}) available!`);
 
-    const osAsset = assets.find(({ name }) => name.includes(osName));
+    if (arch !== "aarch64") arch = null;
+
+    const osAsset = assets.find(
+      ({ name }: { name: string }) =>
+        name.includes(osName) && (arch === null || name.includes(arch)),
+    );
 
     if (!osAsset) {
       console.log(`No file found to update on (${osName})!`);
