@@ -3,6 +3,10 @@ import { RequestMethod } from "shared/enums/main.ts";
 import { System } from "system/main.ts";
 import * as bcrypt from "bcrypt";
 import { getRandomString } from "shared/utils/main.ts";
+import {
+  REFRESH_TOKEN_EXPIRE_TIME,
+  SESSION_EXPIRE_TIME,
+} from "shared/consts/main.ts";
 
 export const loginRequest: RequestType = {
   method: RequestMethod.POST,
@@ -20,7 +24,6 @@ export const loginRequest: RequestType = {
 
     const { value: account } = await System.db.get(["accounts", username]);
 
-    console.log(account);
     if (!account)
       return Response.json(
         { status: 403 },
@@ -40,15 +43,39 @@ export const loginRequest: RequestType = {
       );
 
     const sessionId = getRandomString(16);
+
     const token = getRandomString(64);
+    const hash = bcrypt.hashSync(token, bcrypt.genSaltSync(8));
 
-    const salt = bcrypt.genSaltSync(8);
-    const hash = bcrypt.hashSync(token, salt);
+    const refreshToken = getRandomString(128);
+    const refreshHash = bcrypt.hashSync(refreshToken, bcrypt.genSaltSync(8));
 
-    await System.db.set(["session", sessionId], {
-      hash,
-      accountId: account.accountId,
-      expireIn: 1000 * 60 * 5,
+    if (account.sessionId) {
+      await System.db.delete(["session", account.sessionId]);
+      await System.db.delete(["refresh-session", account.sessionId]);
+    }
+
+    await System.db.set(
+      ["session", sessionId],
+      {
+        hash,
+        accountId: account.accountId,
+      },
+      { expireIn: SESSION_EXPIRE_TIME },
+    );
+    await System.db.set(
+      ["refresh-session", sessionId],
+      {
+        hash: refreshHash,
+        accountId: account.accountId,
+        username,
+      },
+      { expireIn: REFRESH_TOKEN_EXPIRE_TIME },
+    );
+
+    await System.db.set(["accounts", username], {
+      ...account,
+      sessionId,
     });
 
     return Response.json(
@@ -57,6 +84,7 @@ export const loginRequest: RequestType = {
         data: {
           sessionId,
           token,
+          refreshToken,
           username,
         },
       },

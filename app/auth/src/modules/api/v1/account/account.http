@@ -4,7 +4,8 @@ Content-Type: application/json
 
 {
   "username": "pagoru123",
-  "password": "123456"
+  "password": "123456",
+  "captchaId": ""
 }
 
 ###
@@ -15,7 +16,19 @@ Content-Type: application/json
 
 {
   "username": "pagoru123",
-  "password": "123456"
+  "password": "123456",
+  "captchaId": ""
+}
+
+###
+
+# Login
+POST http://localhost:2024/v1/account/refresh-session
+Content-Type: application/json
+
+{
+  "sessionId": "iZyHMLpYMUFVutkH",
+  "refreshToken": "bMjnGYbydaMUUM89Qbovx91fCR1H1LXAYvHzPbPrPf5GiuGePWbBhMd9dTSiGIdNY7nfeqhV6nTwEu22UTO4IuZJ680faXRgumnxKnIYvmJORFvkAj4ctRTKafuNe1QW"
 }
 
 ###

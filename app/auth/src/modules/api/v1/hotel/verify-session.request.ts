@@ -54,6 +54,14 @@ export const verifySessionRequest: RequestType = {
 
     // Delete current session
     await System.db.delete(["session", sessionId]);
+    // Check if session is current
+    if (account.sessionId !== sessionId)
+      return Response.json(
+        {
+          status: 403,
+        },
+        { status: 403 },
+      );
 
     return Response.json(
       {

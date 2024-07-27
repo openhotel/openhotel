@@ -1,6 +1,7 @@
 {
   "tasks": {
     "start": "deno run -A --watch=./src --unstable-kv mod.ts",
+    "start:nowatch": "deno run -A --unstable-kv mod.ts",
 
     "compile": "deno compile -A --unstable-kv --no-check",
 
