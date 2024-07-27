@@ -1,6 +1,8 @@
 import { getBeautyDate } from "./date.utils.ts";
+import { Envs } from "shared/types/envs.types.ts";
 
-export const initLog = () => {
+export const initLog = (envs: Envs) => {
+  if (envs.isDevelopment) return;
   console.log = () => {};
 };
 

@@ -2,10 +2,10 @@ import { getContentType, initLog, log } from "shared/utils/main.ts";
 import { getChildWorker } from "worker_ionic";
 import { WorkerProps } from "shared/types/main.ts";
 
-initLog();
 const moduleWorker = getChildWorker();
 
 moduleWorker.on("start", async ({ config, envs }: WorkerProps) => {
+  initLog(envs);
   const ROOT_DIR_PATH = "/";
 
   log(`Client started on :${config.client.port}`);
