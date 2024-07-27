@@ -29,9 +29,13 @@ export const loginFormComponent: ContainerComponent = async (props) => {
     width: 100,
     maxLength: 16,
     password: false,
-    defaultValue: isDevelopment()
-      ? localStorage.getItem("username") || `player_${getRandomString(8)}`
-      : undefined,
+    defaultValue:
+      localStorage.getItem("username") ||
+      (isDevelopment() ? `player_${getRandomString(8)}` : ""),
+    onTextChange: (username) => {
+      localStorage.setItem("username", username);
+      return true;
+    },
   });
   const $password = await inputComponent({
     placeholder: "password",

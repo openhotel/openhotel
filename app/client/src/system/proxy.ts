@@ -6,7 +6,7 @@ import {
   isDevelopment,
 } from "shared/utils";
 import { Event } from "shared/enums";
-import { getLoginUrl } from "shared/utils/auth.utils";
+import { getLoginUrl, getRefreshSessionUrl } from "shared/utils/auth.utils";
 
 type ConnectProps = {
   username?: string;
@@ -17,6 +17,10 @@ type ConnectProps = {
 export const proxy = () => {
   const config = getConfig();
 
+  let $sessionId;
+
+  let $lastToken;
+
   let $lastUsername: string;
   let $lastPassword: string;
 
@@ -25,40 +29,23 @@ export const proxy = () => {
   let eventFunctionMap: Record<Event | string, Function[]> = {};
   let eventFunctionRemoveMap: Record<Event | string, Function[]> = {};
 
-  const connect = async ({
-    username,
-    password,
-    captchaId,
-  }: ConnectProps = {}) =>
+  const headers = new Headers();
+  headers.append("Content-Type", "application/json");
+
+  const setRefreshSession = (sessionId: string, refreshToken: string) => {
+    $sessionId = sessionId;
+
+    localStorage.setItem(
+      "session-refresh",
+      btoa(JSON.stringify({ sessionId, refreshToken })),
+    );
+  };
+
+  const getRefreshSession = () =>
+    JSON.parse(atob(localStorage.getItem("session-refresh")));
+
+  const $connect = async () =>
     new Promise(async (resolve, reject) => {
-      const headers = new Headers();
-      headers.append("Content-Type", "application/json");
-
-      username && ($lastUsername = username);
-      password && ($lastPassword = password);
-
-      let sessionId;
-      let token;
-
-      if (!isDevelopment()) {
-        const { status: loginStatus, data } = await fetch(getLoginUrl(), {
-          headers,
-          method: "POST",
-          body: JSON.stringify({
-            username: $lastUsername,
-            password: $lastPassword,
-            captchaId,
-          }),
-        }).then((data) => data.json());
-
-        sessionId = data?.sessionId;
-        token = data?.token;
-
-        if (loginStatus !== 200 || !sessionId || !token) {
-          reject("Incorrect username or password!");
-          return;
-        }
-      }
       const firewall = await fetch(
         `${config.firewall.url}/request?version=${getVersion()}`,
       ).then((data) => data.json());
@@ -77,7 +64,11 @@ export const proxy = () => {
       $socket.on("connected", () => {
         console.log("handshake connected!");
 
-        $socket.emit("session", { sessionId, token, username: $lastUsername });
+        $socket.emit("session", {
+          sessionId: $sessionId,
+          token: $lastToken,
+          username: $lastUsername,
+        });
       });
       $socket.on("join", async (data) => {
         $socket.close();
@@ -111,6 +102,76 @@ export const proxy = () => {
       await $socket.connect();
     });
 
+  const refreshSession = async () =>
+    new Promise(async (resolve, reject) => {
+      try {
+        const { sessionId, refreshToken } = getRefreshSession();
+        if (!isDevelopment()) {
+          const { status: loginStatus, data } = await fetch(
+            getRefreshSessionUrl(),
+            {
+              headers,
+              method: "POST",
+              body: JSON.stringify({
+                sessionId,
+                refreshToken,
+              }),
+            },
+          ).then((data) => data.json());
+
+          $lastToken = data?.token;
+          $lastUsername = data?.username;
+          setRefreshSession(sessionId, data?.refreshToken);
+
+          if (loginStatus !== 200 || !$sessionId || !$lastToken) {
+            reject("Incorrect username or password!");
+            localStorage.removeItem("session-refresh");
+            return;
+          }
+        }
+        resolve(await $connect());
+      } catch (e) {
+        reject(e);
+        localStorage.removeItem("session-refresh");
+      }
+    });
+
+  const connect = async ({
+    username,
+    password,
+    captchaId,
+  }: ConnectProps = {}) =>
+    new Promise(async (resolve, reject) => {
+      username && ($lastUsername = username);
+      password && ($lastPassword = password);
+
+      if (!isDevelopment()) {
+        const { status: loginStatus, data } = await fetch(getLoginUrl(), {
+          headers,
+          method: "POST",
+          body: JSON.stringify({
+            username: $lastUsername,
+            password: $lastPassword,
+            captchaId,
+          }),
+        }).then((data) => data.json());
+
+        $lastToken = data?.token;
+        setRefreshSession(data?.sessionId, data?.refreshToken);
+
+        if (loginStatus !== 200 || !$sessionId || !$lastToken) {
+          reject("Incorrect username or password!");
+          return;
+        }
+      }
+
+      try {
+        resolve(await $connect());
+      } catch (e) {
+        reject(e);
+      }
+    });
+
   const emit = <Data>(event: Event, data: Data) => {
     $socket.emit("$$user-data", { event, message: data });
   };
@@ -141,8 +202,10 @@ export const proxy = () => {
 
   return {
     connect,
+    refreshSession,
+    getRefreshSession,
+
     emit,
     on,
-    // getSocket,
   };
 };
