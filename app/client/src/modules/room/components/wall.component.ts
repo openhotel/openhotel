@@ -29,7 +29,6 @@ export const wallComponent: ContainerComponent<Props> = async (props) => {
     tint,
     pivot: { x: 0, y: -topHeight },
   });
-  console.log($wallHeight);
   mid.getDisplayObject({ __preventWarning: true }).bounds.maxY = $wallHeight;
 
   const bottom = await sprite({
