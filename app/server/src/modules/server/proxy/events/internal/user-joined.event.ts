@@ -3,12 +3,10 @@ import { ProxyEvent } from "shared/enums/main.ts";
 import { Server } from "modules/server/main.ts";
 import { log } from "shared/utils/main.ts";
 
-export const leftEvent: ProxyEventType<{ user: User }> = {
-  event: ProxyEvent.$LEFT,
+export const userJoinedEvent: ProxyEventType<{ user: User }> = {
+  event: ProxyEvent.$USER_JOINED,
   func: ({ user }) => {
-    Server.rooms.removeUser(user);
-    Server.users.remove(user);
-
-    log(`${user.username} left!`);
+    Server.users.add(user);
+    log(`${user.username} joined!`);
   },
 };

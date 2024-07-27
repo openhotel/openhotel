@@ -10,7 +10,6 @@ import { UsersConfig, WorkerProps } from "shared/types/main.ts";
 import { routesList } from "./router/main.ts";
 import { getServerSocket, ServerClient } from "socket_ionic";
 
-initLog();
 const proxyWorker = getChildWorker();
 
 let userList = [];
@@ -25,6 +24,7 @@ proxyWorker.on(
       session: string;
       clientId: string;
     }[] = [];
+    initLog(envs);
 
     const protocolToken = getRandomString(64);
 

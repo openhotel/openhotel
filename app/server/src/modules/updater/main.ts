@@ -10,6 +10,8 @@ import {
 import { OS } from "shared/enums/main.ts";
 import * as path from "deno/path/mod.ts";
 
+let isUpdating = false;
+
 export const load = async ({
   config,
   envs,
@@ -17,7 +19,8 @@ export const load = async ({
   config: ConfigTypes;
   envs: Envs;
 }): Promise<boolean> => {
-  if (envs.isDevelopment) return false;
+  if (envs.isDevelopment || isUpdating) return false;
+  isUpdating = true;
 
   const os = getOS();
   const osName = getOSName();
@@ -28,12 +31,14 @@ export const load = async ({
 
   if (os === OS.UNKNOWN) {
     log(`Unknown OS (${Deno.build.os}) cannot be updated!`);
+    isUpdating = false;
     return false;
   }
 
   const targetVersion = config.version;
   if (targetVersion === envs.version) {
     log("Everything is up to date!");
+    isUpdating = false;
     return false;
   }
   const isLatest = targetVersion === "latest";
@@ -72,6 +77,7 @@ export const load = async ({
         (oldExtra >= newExtra || oldExtra === newExtra)
       ) {
         log("Everything is up to date!");
+        isUpdating = false;
         return false;
       }
       log(`New version (${latestVersion}) available!`);
@@ -88,6 +94,7 @@ export const load = async ({
 
     if (!osAsset) {
       log(`No file found to update on (${osName})!`);
+      isUpdating = false;
       return false;
     }
 
@@ -127,6 +134,7 @@ export const load = async ({
     if (isWindows) {
       //TODO #7 auto-updater not working on windows, because the file is already in use by this execution
       log("Run ./updater.ps1 to apply the update and then start again!");
+      isUpdating = false;
       return true;
     }
 
@@ -145,10 +153,12 @@ export const load = async ({
     });
     await updater.status();
     log("Restart to apply the update!");
+    isUpdating = false;
     return true;
   } catch (e) {
     debug(e);
     log("Something went wrong checking for update.");
   }
+  isUpdating = false;
   return false;
 };
