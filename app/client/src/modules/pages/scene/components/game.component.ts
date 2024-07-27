@@ -43,6 +43,7 @@ export const gameComponent: ContainerComponent = async () => {
   const removeOnLoadRoom = System.proxy.on<any>(
     Event.LOAD_ROOM,
     async ({ room }) => {
+      System.game.rooms.set(room);
       $room = await roomComponent({ layout: room.layout });
       $container.add($room);
 

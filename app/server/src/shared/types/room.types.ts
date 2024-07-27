@@ -1,6 +1,6 @@
-import { RoomPoint } from "../enums/room.enum.ts";
 import { User } from "./user.types.ts";
 import { Point } from "shared/types/main.ts";
+import { RoomPointEnum } from "shared/enums/main.ts";
 
 export type RoomUser = {
   user: User;
@@ -22,3 +22,5 @@ export type Room = BaseRoom & {
   layout: RoomPoint[][];
   spawnPoint: Point;
 };
+
+export type RoomPoint = number | RoomPointEnum;

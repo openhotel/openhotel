@@ -1,5 +1,4 @@
-export enum RoomPoint {
-  EMPTY,
-  TILE,
-  SPAWN,
+export enum RoomPointEnum {
+  EMPTY = "x",
+  SPAWN = "s",
 }

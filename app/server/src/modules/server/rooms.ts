@@ -1,6 +1,14 @@
-import { Point, RawRoom, Room, RoomUser, User } from "shared/types/main.ts";
-import { ProxyEvent, RoomPoint } from "shared/enums/main.ts";
+import {
+  Point,
+  RawRoom,
+  Room,
+  RoomUser,
+  User,
+  RoomPoint,
+} from "shared/types/main.ts";
+import { ProxyEvent, RoomPointEnum } from "shared/enums/main.ts";
 import { Server } from "./main.ts";
+import { transpose, Grid } from "@oh/pathfinding";
 
 export const rooms = () => {
   let roomMap: Record<string, Room> = {};
@@ -16,23 +24,42 @@ export const rooms = () => {
     for (let x = 0; x < roomSize.width; x++) {
       const roomLine = layout[x];
       for (let z = 0; z < roomSize.depth; z++) {
-        if (roomLine[z] === RoomPoint.SPAWN) return { x, y: 0, z };
+        if (roomLine[z] === RoomPointEnum.SPAWN) return { x, y: 0, z };
       }
     }
     return undefined;
   };
 
+  const getGridLayout = (layout: RoomPoint[][]) => {
+    let grid: number[][] = [];
+    for (let x = 0; x < layout.length; x++) {
+      grid[x] = [];
+      for (let z = 0; z < layout[x].length; z++) {
+        let point = layout[x][z];
+        switch (point) {
+          case RoomPointEnum.SPAWN:
+            point = 4;
+            break;
+          case RoomPointEnum.EMPTY:
+            point = 0;
+            break;
+          default:
+            point *= 4;
+            break;
+        }
+        grid[x][z] = point;
+      }
+    }
+    return Grid.from(transpose(grid));
+  };
+
   const create = (room: RawRoom) => {
     const layout: RoomPoint[][] = room.layout.map((line) =>
-      line.split("").map((value) => {
-        switch (value) {
-          case "█":
-            return RoomPoint.TILE;
-          case "s":
-            return RoomPoint.SPAWN;
-        }
-        return RoomPoint.EMPTY;
-      }),
+      line
+        .split("")
+        .map((value) =>
+          parseInt(value) ? parseInt(value) : (value as RoomPointEnum),
+        ),
     );
     roomMap[room.id] = {
       ...room,
@@ -148,12 +175,12 @@ export const rooms = () => {
     title: "Room 1",
     description: "This is a description",
     layout: [
-      " █████████",
-      " █████████",
-      " █████████",
-      "s█████████",
-      " █████████",
-      " █████████",
+      "x111111111",
+      "xx11111111",
+      "x111111111",
+      "s111111111",
+      "x111111111",
+      "x111111111",
     ],
   });
 
@@ -162,12 +189,12 @@ export const rooms = () => {
     title: "Room 2",
     description: "This is a description",
     layout: [
-      " █████████",
-      " █████████",
-      " █████████",
-      "s██████",
-      " ██████",
-      " ██████",
+      "x111111133",
+      "x111111233",
+      "x111111133",
+      "s111111",
+      "x111111",
+      "x111111",
     ],
   });
 
@@ -176,13 +203,12 @@ export const rooms = () => {
     title: "Room 3",
     description: "This is a description",
     layout: [
-      "   s     ",
-      "  ████ ██",
-      " ████████",
-      " ████████",
-      "s█████",
-      " █████████",
-      " ██████ ██",
+      "xx1111x111",
+      "x111111111",
+      "x111111111",
+      "s111111233",
+      "x111811233",
+      "x111765433",
     ],
   });
 
@@ -191,23 +217,25 @@ export const rooms = () => {
     title: "Room 3",
     description: "This is a description",
     layout: [
-      " ██████",
-      " ██████",
-      " ██████",
-      " ██████",
-      " ██████",
-      " ██████",
-      "s██████",
-      " ██████",
-      " ██████",
-      " ██████",
-      " ██████",
+      "x111111",
+      "x111111",
+      "x111111",
+      "x111111",
+      "x111111",
+      "x111111",
+      "s111111",
+      "x111111",
+      "x112211",
+      "x333333",
+      "x333333",
     ],
   });
 
   return {
     create,
     get,
+
+    getGridLayout,
 
     addUser,
     removeUser,

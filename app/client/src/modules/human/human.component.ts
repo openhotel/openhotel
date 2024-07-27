@@ -103,12 +103,18 @@ export const humanComponent: ContainerComponent<Props, Mutable> = async ({
 
   $container.add($typingBubble);
 
+  const setIsometricPosition = async (position: Point3d) => {
+    isometricPosition = position;
+
+    //get y from current room
+    position.y = System.game.rooms.getYFromPoint(position);
+
+    await $container.setPosition(getIsometricPosition(position, 12));
+    await $container.setZIndex(isometricPosition.x + isometricPosition.z);
+  };
+
   return $container.getComponent(humanComponent, {
-    setIsometricPosition: async (position) => {
-      isometricPosition = position;
-      await $container.setPosition(getIsometricPosition(position, 12));
-      await $container.setZIndex(isometricPosition.x + isometricPosition.z);
-    },
+    setIsometricPosition,
     getIsometricPosition: () => isometricPosition,
     getUser: () => user,
   });
