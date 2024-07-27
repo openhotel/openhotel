@@ -19,7 +19,8 @@ export const load = async ({
   config: ConfigTypes;
   envs: Envs;
 }): Promise<boolean> => {
-  if (envs.isDevelopment || isUpdating) return false;
+  if (envs.isDevelopment || isUpdating || config.version === "development")
+    return false;
   isUpdating = true;
 
   const os = getOS();
