@@ -53,7 +53,7 @@ export const findPath = (
     // Max jump
     if (Math.abs(srcHeight - dstHeight) > MAX_JUMP_HEIGHT) return null;
 
-    return 1 + Math.abs(srcHeight - dstHeight);
+    return 1;
   };
 
   // Orthogonal jumps from JumpPoint
