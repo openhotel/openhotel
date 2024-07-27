@@ -8,7 +8,7 @@ export const load = async ({
   config: ConfigTypes;
   envs: Envs;
 }) => {
-  if (envs.isDevelopment) return;
+  if (envs.isDevelopment || config.version === "development") return;
 
   const clientWorker = getParentWorker({
     url: new URL("./client.worker.ts", import.meta.url).href,

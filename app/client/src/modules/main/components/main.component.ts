@@ -38,16 +38,19 @@ export const mainComponent: ContainerComponent = async () => {
     $pageContainer.add($scene);
   });
 
-  const connect = async () => {
-    await System.proxy.connect();
-  };
+  const reconnect = () => System.proxy.refreshSession();
 
   System.proxy.on(Event.DISCONNECTED, async () => {
     $offlinePage = await offlineComponent({
-      reconnect: connect,
+      reconnect,
     });
     $pageContainer.add($offlinePage);
   });
 
+  try {
+    await reconnect();
+  } catch (e) {
+    console.warn("Cannot refresh session, you need to log in!");
+  }
   return $container.getComponent(mainComponent);
 };
