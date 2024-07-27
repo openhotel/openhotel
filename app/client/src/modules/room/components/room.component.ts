@@ -20,7 +20,12 @@ import { Event, RoomPointEnum, SpriteSheetEnum } from "shared/enums";
 import { RoomPoint } from "shared/types";
 import { System } from "system";
 import { humanComponent, HumanMutable } from "modules/human";
-import { TILE_Y_HEIGHT, WALL_DOOR_HEIGHT, WALL_HEIGHT } from "shared/consts";
+import {
+  TILE_WIDTH,
+  TILE_Y_HEIGHT,
+  WALL_DOOR_HEIGHT,
+  WALL_HEIGHT,
+} from "shared/consts";
 import { wallComponent } from "modules/room/components/wall.component";
 
 type Props = {
@@ -138,11 +143,16 @@ export const roomComponent: ContainerComponent<Props, Mutable> = async ({
         const isSpawn = roomLine[z] === RoomPointEnum.SPAWN;
 
         const y = System.game.rooms.getYFromPoint({ x, z });
-        const position = getIsometricPosition({ x, z, y }, TILE_Y_HEIGHT);
-        const wallPosition = getIsometricPosition(
-          { x, z, y: 0 },
-          TILE_Y_HEIGHT,
+
+        const previewY = System.game.rooms.getYFromPoint({ x, z }, true);
+        const previewPosition = getIsometricPosition(
+          { x, z, y: previewY },
+          TILE_WIDTH,
         );
+
+        const position = getIsometricPosition({ x, z, y }, TILE_WIDTH);
+        const wallPosition = getIsometricPosition({ x, z, y: 0 }, TILE_WIDTH);
+
         const wallHeight = WALL_HEIGHT - y * 2;
         const zIndex = x + z;
 
@@ -251,7 +261,7 @@ export const roomComponent: ContainerComponent<Props, Mutable> = async ({
             y: 0,
           },
           alpha: 0,
-          position,
+          position: previewPosition,
         });
 
         pol.on(DisplayObjectEvent.POINTER_UP, () => {
@@ -264,7 +274,7 @@ export const roomComponent: ContainerComponent<Props, Mutable> = async ({
           });
         });
         pol.on(DisplayObjectEvent.POINTER_ENTER, () => {
-          $tilePreview.setPosition(position);
+          $tilePreview.setPosition(previewPosition);
           $tilePreview.setZIndex(zIndex - 0.05);
           $tilePreview.setVisible(true);
         });
