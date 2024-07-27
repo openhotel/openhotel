@@ -9,6 +9,8 @@ export enum ProxyEvent {
   $REMOVE_ROOM = "$$remove-room",
   $ROOM_DATA = "$$room-data",
 
+  $DISCONNECT = "$$disconnect",
+
   //### CLIENT #######################################################################################################//
 
   WELCOME = "welcome",
