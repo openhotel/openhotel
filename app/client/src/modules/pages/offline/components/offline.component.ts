@@ -14,6 +14,7 @@ import { SpriteSheetEnum } from "shared/enums";
 import { buttonComponent } from "shared/components";
 import { Size } from "shared/types";
 import { TextureEnum } from "shared/enums/texture.enum";
+import { isDevelopment } from "shared/utils";
 
 type Props = {
   reconnect: () => {};
@@ -80,6 +81,14 @@ export const offlineComponent: ContainerComponent<Props> = async ({
       eventMode: EventMode.STATIC,
     });
     await $button.setPivotX($button.getBounds().width / 2);
+
+    if (isDevelopment()) {
+      const interval = setInterval(reconnect, 1000);
+
+      $container.on(DisplayObjectEvent.DESTROYED, () => {
+        clearInterval(interval);
+      });
+    }
 
     $button.on(DisplayObjectEvent.POINTER_TAP, () => {
       reconnect();

@@ -171,30 +171,40 @@ export const rooms = () => {
   };
 
   create({
-    id: "test_0",
+    id: "test_1",
     title: "Room 1",
     description: "This is a description",
     layout: [
-      "x111111111",
-      "xx11111111",
-      "x111111111",
-      "s111111111",
-      "x111111111",
-      "x111111111",
+      "xxxxxx2222",
+      "xxxxxx2222",
+      "xxxxxx2222",
+      "x111122222",
+      "x111122222",
+      "s111122222",
+      "x111122222",
+      "x111122222",
+      "xxxxxx2222",
+      "xxxxxx2222",
     ],
   });
 
   create({
-    id: "test_1",
+    id: "test_0",
     title: "Room 2",
     description: "This is a description",
     layout: [
-      "x111111133",
-      "x111111233",
-      "x111111133",
-      "s111111",
-      "x111111",
-      "x111111",
+      "xxxxsxxxxx",
+      "xxx111x222",
+      "sx11112222",
+      "x11111x222",
+      "x11111x222",
+      "x22222x333",
+      "x33333x333",
+      "x333333333",
+      "x333333333",
+      "x333333333",
+      "x333333333",
+      "x333333333",
     ],
   });
 
@@ -202,19 +212,12 @@ export const rooms = () => {
     id: "test_2",
     title: "Room 3",
     description: "This is a description",
-    layout: [
-      "xx1111x111",
-      "x111111111",
-      "x111111111",
-      "s111111233",
-      "x111811233",
-      "x111765433",
-    ],
+    layout: ["x111111", "x111111", "s111111", "x111111", "x111111", "x111111"],
   });
 
   create({
     id: "test_3",
-    title: "Room 3",
+    title: "Room 4",
     description: "This is a description",
     layout: [
       "x111111",
@@ -225,9 +228,10 @@ export const rooms = () => {
       "x111111",
       "s111111",
       "x111111",
-      "x112211",
-      "x333333",
-      "x333333",
+      "x111111",
+      "x111111",
+      "x111111",
+      "x111111",
     ],
   });
 
