@@ -13,5 +13,5 @@ export const load = async ({
   const clientWorker = getParentWorker({
     url: new URL("./client.worker.ts", import.meta.url).href,
   });
-  clientWorker.emit("start", { config });
+  clientWorker.emit("start", { config, envs });
 };
