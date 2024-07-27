@@ -10,6 +10,8 @@ export const kickCommand = {
     const user = Server.users.get({ username });
     if (!user) return;
 
-    Server.proxy.$emit(ProxyEvent.$DISCONNECT, { clientId: user.clientId });
+    Server.proxy.$emit(ProxyEvent.$DISCONNECT_USER, {
+      clientId: user.clientId,
+    });
   },
 };

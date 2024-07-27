@@ -6,8 +6,15 @@ import { stopCommand } from "./stop.command.ts";
 import { opCommand } from "./op.command.ts";
 import { deopCommand } from "./deop.command.ts";
 import { kickCommand } from "./kick.command.ts";
+import { updateCommand } from "./update.command.ts";
 
-const commandList = [stopCommand, opCommand, deopCommand, kickCommand];
+const commandList = [
+  stopCommand,
+  opCommand,
+  deopCommand,
+  kickCommand,
+  updateCommand,
+];
 
 export const executeCommand = ({
   message,

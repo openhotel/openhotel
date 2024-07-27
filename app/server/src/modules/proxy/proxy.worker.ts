@@ -1,11 +1,11 @@
 import { getRandomString, initLog, log, waitUntil } from "shared/utils/main.ts";
 import { getChildWorker, getParentWorker } from "worker_ionic";
-import { User, WorkerProps } from "shared/types/main.ts";
+import { ConfigTypes, Envs, User, WorkerProps } from "shared/types/main.ts";
 import { getServerSocket, ServerClient } from "socket_ionic";
 import { PROXY_CLIENT_EVENT_WHITELIST } from "shared/consts/main.ts";
 import { ProxyEvent } from "shared/enums/main.ts";
+import { load as loadUpdater } from "modules/updater/main.ts";
 
-initLog();
 const serverWorker = getChildWorker();
 
 // This maps client id to user id (1:1), to prevent the connection of the user multiple times
@@ -15,6 +15,8 @@ let userList: User[] = [];
 let userClientMap: Record<string, ServerClient> = {};
 
 let server;
+let $config: ConfigTypes;
+let $envs: Envs;
 
 type DataEvent = {
   users: string[];
@@ -22,15 +24,18 @@ type DataEvent = {
   message: object;
 };
 
-serverWorker.on(ProxyEvent.$DATA, ({ users, event, message }: DataEvent) => {
-  // broadcast
-  if (users.includes("*")) return server.emit(event, message);
-  //
-  for (const user of users.map((userId) =>
-    userList.find((user) => user.id === userId),
-  ))
-    userClientMap[user?.clientId]?.emit(event, message);
-});
+serverWorker.on(
+  ProxyEvent.$USER_DATA,
+  ({ users, event, message }: DataEvent) => {
+    // broadcast
+    if (users.includes("*")) return server.emit(event, message);
+    //
+    for (const user of users.map((userId) =>
+      userList.find((user) => user.id === userId),
+    ))
+      userClientMap[user?.clientId]?.emit(event, message);
+  },
+);
 
 serverWorker.on(ProxyEvent.$ADD_ROOM, ({ roomId, userId }) => {
   const user = userList.find((user) => user.id === userId);
@@ -47,11 +52,21 @@ serverWorker.on(ProxyEvent.$REMOVE_ROOM, ({ roomId, userId }) => {
 serverWorker.on(ProxyEvent.$ROOM_DATA, ({ roomId, event, message }) => {
   server.getRoom(roomId).emit(event, message);
 });
-serverWorker.on(ProxyEvent.$DISCONNECT, ({ clientId }) => {
+serverWorker.on(ProxyEvent.$DISCONNECT_USER, ({ clientId }) => {
   userClientMap[clientId]?.close();
+});
+serverWorker.on(ProxyEvent.$UPDATE, async () => {
+  const canUpdate = await loadUpdater({ config: $config, envs: $envs });
+
+  console.log(canUpdate);
+  if (canUpdate) serverWorker.emit(ProxyEvent.$STOP);
 });
 
 serverWorker.on("start", async ({ config, envs }: WorkerProps) => {
+  $config = config;
+  $envs = envs;
+  initLog(envs);
+
   const protocolToken = getRandomString(64);
 
   const firewallWorker = getParentWorker({
@@ -110,12 +125,16 @@ serverWorker.on("start", async ({ config, envs }: WorkerProps) => {
     clientIdUserIdMap[client.id] = foundUser.id;
 
     userClientMap[foundUser.clientId] = client;
-    serverWorker.emit(ProxyEvent.$JOINED, foundUser);
+    serverWorker.emit(ProxyEvent.$USER_JOINED, { user: foundUser });
 
-    client.on(ProxyEvent.$DATA, ({ event, message }) => {
+    client.on(ProxyEvent.$USER_DATA, ({ event, message }) => {
       // Disconnect client if tries to send events outside the whitelist
       if (!PROXY_CLIENT_EVENT_WHITELIST.includes(event)) return client.close();
-      serverWorker.emit(ProxyEvent.$DATA, { user: foundUser, event, message });
+      serverWorker.emit(ProxyEvent.$USER_DATA, {
+        user: foundUser,
+        event,
+        message,
+      });
     });
     client.emit(ProxyEvent.WELCOME, { datetime: Date.now() });
   });
@@ -130,7 +149,7 @@ serverWorker.on("start", async ({ config, envs }: WorkerProps) => {
     userList = userList.filter((user) => user.clientId !== client.id);
     firewallWorker.emit("userList", { userList });
 
-    serverWorker.emit(ProxyEvent.$LEFT, foundUser);
+    serverWorker.emit(ProxyEvent.$USER_LEFT, { user: foundUser });
   });
   log(`Proxy started on :${config.proxy.port}`);
 });

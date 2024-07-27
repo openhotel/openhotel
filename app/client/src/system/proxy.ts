@@ -112,7 +112,7 @@ export const proxy = () => {
     });
 
   const emit = <Data>(event: Event, data: Data) => {
-    $socket.emit("$$data", { event, message: data });
+    $socket.emit("$$user-data", { event, message: data });
   };
 
   const on = <Data>(

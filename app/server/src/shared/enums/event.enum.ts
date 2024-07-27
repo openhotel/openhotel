@@ -1,15 +1,18 @@
 export enum ProxyEvent {
   //### INTERNAL #####################################################################################################//
 
-  $JOINED = "$$joined",
-  $LEFT = "$$left",
-  $DATA = "$$data",
+  $USER_JOINED = "$$user-joined",
+  $USER_LEFT = "$$user-left",
+  $USER_DATA = "$$user-data",
 
   $ADD_ROOM = "$$add-room",
   $REMOVE_ROOM = "$$remove-room",
   $ROOM_DATA = "$$room-data",
 
-  $DISCONNECT = "$$disconnect",
+  $DISCONNECT_USER = "$$disconnect-user",
+
+  $UPDATE = "$$update",
+  $STOP = "$$stop",
 
   //### CLIENT #######################################################################################################//
 

@@ -1,6 +1,6 @@
 import { WorkerParent } from "worker_ionic";
 import { User } from "shared/types/main.ts";
-import { leftEvent, joinedEvent, eventList } from "./events/main.ts";
+import { loadInternalEvents, eventList } from "./events/main.ts";
 import { ProxyEvent } from "shared/enums/main.ts";
 import { log } from "shared/utils/main.ts";
 
@@ -28,39 +28,30 @@ export const proxy = () => {
   const load = (worker: WorkerParent) => {
     $worker = worker;
 
-    $worker.on(ProxyEvent.$JOINED, (user: User) => {
-      try {
-        joinedEvent.func({ user });
-      } catch (e) {
-        log(e);
-      }
-    });
-    $worker.on(ProxyEvent.$LEFT, (user: User) => {
-      try {
-        leftEvent.func({ user });
-      } catch (e) {
-        log(e);
-      }
-    });
-    $worker.on(ProxyEvent.$DATA, ({ user, event, message }: WorkerProps) => {
-      try {
-        const foundEvent = eventList.find(
-          (proxyEvent) => proxyEvent.event === (event as unknown),
-        );
-        if (!foundEvent) return;
+    loadInternalEvents($worker);
 
-        foundEvent.func({ user, data: message });
-      } catch (e) {
-        log(e);
-      }
-    });
+    $worker.on(
+      ProxyEvent.$USER_DATA,
+      ({ user, event, message }: WorkerProps) => {
+        try {
+          const foundEvent = eventList.find(
+            (proxyEvent) => proxyEvent.event === (event as unknown),
+          );
+          if (!foundEvent) return;
+
+          foundEvent.func({ user, data: message });
+        } catch (e) {
+          log(e);
+        }
+      },
+    );
   };
 
-  const $emit = <Data = any>(event: ProxyEvent, data: Data) =>
+  const $emit = <Data = any>(event: ProxyEvent, data: Data = {} as Data) =>
     $worker.emit(event, data);
 
   const emit = <Data = any>({ users, event, data }: EmitProps<Data>) => {
-    $emit(ProxyEvent.$DATA, {
+    $emit(ProxyEvent.$USER_DATA, {
       users: users ? [users].flat() : ["*"],
       event,
       message: data,
