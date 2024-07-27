@@ -1,7 +1,6 @@
 import { ProxyEventType } from "shared/types/main.ts";
-import { ProxyEvent, RoomPoint } from "shared/enums/main.ts";
+import { ProxyEvent, RoomPointEnum } from "shared/enums/main.ts";
 import { Server } from "modules/server/main.ts";
-import { Grid, transpose } from "@oh/pathfinding";
 
 export const pointerTileEvent: ProxyEventType<any> = {
   event: ProxyEvent.POINTER_TILE,
@@ -11,17 +10,13 @@ export const pointerTileEvent: ProxyEventType<any> = {
 
     if (!room) return;
 
-    const foundUser = Server.rooms
-      .getUsers(room.id)
-      .find(
-        ({ position: $position }) =>
-          position.x === $position.x && position.z === $position.z,
-      );
+    const roomLayout = structuredClone(room.layout);
 
+    //when click on the outside, leave the room
     try {
-      const roomPoint = room.layout[position.x][position.z];
+      const roomPoint = roomLayout[position.x][position.z];
       // Leave room
-      if (roomPoint === RoomPoint.SPAWN) {
+      if (roomPoint === RoomPointEnum.SPAWN) {
         Server.rooms.removeUser(user);
         return;
       }
@@ -29,12 +24,30 @@ export const pointerTileEvent: ProxyEventType<any> = {
       //TODO Invalid position
     }
 
+    const roomUsers = Server.rooms
+      .getUsers(room.id)
+      .filter(({ user: $user }) => user.id !== $user.id);
+    const foundUser = roomUsers.find(
+      ({ position: $position }) =>
+        position.x === $position.x && position.z === $position.z,
+    );
+
+    // Cannot go to the same spot
     if (foundUser) return;
 
+    //remove from the roomLayout the users
+    for (const { position } of roomUsers) {
+      //if spawn, ignore
+      if (roomLayout[position.x][position.z] === RoomPointEnum.SPAWN) continue;
+      //if is occupied, set as empty
+      roomLayout[position.x][position.z] = RoomPointEnum.EMPTY;
+    }
+    //TODO remove from the roomLayout the objects
+
     try {
-      const roomPoint = room.layout[position.x][position.z];
+      const roomPoint = roomLayout[position.x][position.z];
       // Leave room
-      if (roomPoint === RoomPoint.SPAWN) {
+      if (roomPoint === RoomPointEnum.SPAWN) {
         Server.rooms.removeUser(user);
         return;
       }
@@ -45,12 +58,16 @@ export const pointerTileEvent: ProxyEventType<any> = {
     // TODO: change when server loop https://github.com/openhotel/openhotel/issues/35
     // TODO: reserve path positions
     const userRoom = Server.rooms.getUser(room.id, user.id);
-    const grid = new Grid(transpose(room.layout));
-    const path = grid.findPath(
+    const path = Server.rooms.getGridLayout(roomLayout).findPath(
       { x: userRoom.position.x, y: userRoom.position.z },
       { x: position.x, y: position.z },
-      1,
+      {
+        maxJumpCost: 5,
+      },
     );
+
+    //Path is not possible
+    if (!path.length) return;
 
     Server.rooms.setUserPosition(room.id, user, {
       ...position,

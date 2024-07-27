@@ -12,7 +12,7 @@ export const load = async (envs: Envs) => {
     console.log(
       "\n\n    ------------------\n    DEVELOPMENT SERVER\n    ------------------\n\n",
     );
-  initLog();
+  else initLog();
 
   const config: ConfigTypes = await getConfig();
 

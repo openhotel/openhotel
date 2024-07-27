@@ -1,7 +1,4 @@
-import {
-  getUsersConfig,
-  writeUserConfig,
-} from "../../../shared/utils/users.utils.ts";
+import { getUsersConfig, writeUserConfig } from "shared/utils/users.utils.ts";
 
 export const deopCommand = {
   command: "deop",

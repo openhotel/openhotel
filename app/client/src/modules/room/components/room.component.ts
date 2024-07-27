@@ -9,16 +9,15 @@ import {
   graphics,
   GraphicType,
   sprite,
-  textSprite,
 } from "@tulib/tulip";
 import {
   delay,
   getIsometricPosition,
   getTilePolygon,
   interpolatePath,
-  isDevelopment,
 } from "shared/utils";
-import { Event, RoomPoint, SpriteSheetEnum } from "shared/enums";
+import { Event, RoomPointEnum, SpriteSheetEnum } from "shared/enums";
+import { RoomPoint } from "shared/types";
 import { System } from "system";
 import { humanComponent, HumanMutable } from "modules/human";
 
@@ -82,6 +81,7 @@ export const roomComponent: ContainerComponent<Props, Mutable> = async ({
         const fullPath = interpolatePath(path);
         for (const step of fullPath) {
           await human.setIsometricPosition({ x: step.x, z: step.y, y: 0 });
+          //TODO Implement loop
           await delay(150);
         }
       },
@@ -106,19 +106,22 @@ export const roomComponent: ContainerComponent<Props, Mutable> = async ({
 
     const isWallRenderable = (x: number, z: number, isX: boolean): boolean => {
       if (!layout[x]) return false;
-      if (layout[x][z] === RoomPoint.SPAWN || layout[x][z] === RoomPoint.EMPTY)
+      if (
+        layout[x][z] === RoomPointEnum.SPAWN ||
+        layout[x][z] === RoomPointEnum.EMPTY
+      )
         return false;
 
       if (
-        (isX && layout[x][z - 1] === RoomPoint.SPAWN) ||
-        (!isX && layout[x - 1] && layout[x - 1][z] === RoomPoint.SPAWN)
+        (isX && layout[x][z - 1] === RoomPointEnum.SPAWN) ||
+        (!isX && layout[x - 1] && layout[x - 1][z] === RoomPointEnum.SPAWN)
       )
         return false;
 
       for (let i = isX ? 0 : 1; i < x + 1; i++) {
         for (let j = isX ? 1 : 0; j < z + 1; j++) {
           const currentPoint = layout[x - i][z - j];
-          if (currentPoint === RoomPoint.TILE) return false;
+          if (!isNaN(parseInt(currentPoint))) return false;
         }
       }
 
@@ -128,11 +131,12 @@ export const roomComponent: ContainerComponent<Props, Mutable> = async ({
     for (let x = 0; x < roomSize.width; x++) {
       const roomLine = layout[x];
       for (let z = 0; z < roomSize.depth; z++) {
-        if (!roomLine[z]) continue;
+        if (roomLine[z] === RoomPointEnum.EMPTY) continue;
 
-        const isSpawn = roomLine[z] === RoomPoint.SPAWN;
+        const isSpawn = roomLine[z] === RoomPointEnum.SPAWN;
 
-        const position = getIsometricPosition({ x, z, y: 0 }, 12);
+        const y = System.game.rooms.getYFromPoint({ x, z });
+        const position = getIsometricPosition({ x, z, y }, 12);
         const zIndex = x + z;
 
         //left side
@@ -196,7 +200,7 @@ export const roomComponent: ContainerComponent<Props, Mutable> = async ({
             $container.add(wall);
           }
 
-          if (layout[x - 1] && layout[x - 1][z] === RoomPoint.SPAWN) {
+          if (layout[x - 1] && layout[x - 1][z] === RoomPointEnum.SPAWN) {
             const wall = await sprite({
               spriteSheet: SpriteSheetEnum.ROOM,
               texture: "wall-door-right",
@@ -208,7 +212,7 @@ export const roomComponent: ContainerComponent<Props, Mutable> = async ({
             });
             $container.add(wall);
           }
-          if (layout[x][z - 1] === RoomPoint.SPAWN) {
+          if (layout[x][z - 1] === RoomPointEnum.SPAWN) {
             const wall = await sprite({
               spriteSheet: SpriteSheetEnum.ROOM,
               texture: "wall-door-left",
@@ -268,63 +272,6 @@ export const roomComponent: ContainerComponent<Props, Mutable> = async ({
       }
     }
   });
-
-  // TODO: remove
-  if (isDevelopment()) {
-    const $textX = await textSprite({
-      text: "< X",
-      spriteSheet: SpriteSheetEnum.DEFAULT_FONT,
-      color: 0xff0000,
-      position: {
-        x: 215,
-        y: 180,
-      },
-      angle: -33,
-    });
-    const $lineX = await graphics({
-      type: GraphicType.RECTANGLE,
-      width: 5,
-      height: 80,
-      tint: 0xff0000,
-      position: {
-        x: 200,
-        y: 200,
-      },
-      angle: 60,
-      pivot: {
-        x: 2,
-        y: 40,
-      },
-    });
-
-    const $textZ = await textSprite({
-      text: "Z >",
-      spriteSheet: SpriteSheetEnum.DEFAULT_FONT,
-      color: 0x00ff00,
-      position: {
-        x: 175,
-        y: 175,
-      },
-      angle: 33,
-    });
-    const $lineZ = await graphics({
-      type: GraphicType.RECTANGLE,
-      width: 5,
-      height: 80,
-      tint: 0x00ff00,
-      position: {
-        x: 200,
-        y: 200,
-      },
-      angle: 120,
-      pivot: {
-        x: 2,
-        y: 40,
-      },
-    });
-
-    $container.add($lineX, $textX, $lineZ, $textZ);
-  }
 
   return $container.getComponent(roomComponent, {
     getHumanList: () => humanList,

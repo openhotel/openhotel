@@ -1,9 +1,11 @@
 import { proxy } from "system/proxy";
 import { Event, global } from "@tulib/tulip";
 import { isDevelopment } from "shared/utils";
+import { game } from "system/game";
 
 export const System = (() => {
   const $proxy = proxy();
+  const $game = game();
 
   global.events.on(Event.KEY_DOWN, ({ ctrlKey, key }) => {
     const lowerCaseKey = key.toLowerCase();
@@ -26,5 +28,6 @@ export const System = (() => {
 
   return {
     proxy: $proxy,
+    game: $game,
   };
 })();

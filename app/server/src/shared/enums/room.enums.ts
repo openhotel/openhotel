@@ -1,4 +1,4 @@
 export enum RoomPointEnum {
-  EMPTY = "x",
   SPAWN = "s",
+  EMPTY = "x",
 }
