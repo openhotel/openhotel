@@ -107,7 +107,7 @@ export const humanComponent: ContainerComponent<Props, Mutable> = async ({
     isometricPosition = position;
 
     //get y from current room
-    position.y = System.game.rooms.getYFromPoint(position);
+    position.y = System.game.rooms.getYFromPoint(position, true);
 
     await $container.setPosition(getIsometricPosition(position, 12));
     await $container.setZIndex(isometricPosition.x + isometricPosition.z);

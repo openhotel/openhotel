@@ -6,7 +6,6 @@ export const pointerTileEvent: ProxyEventType<any> = {
   event: ProxyEvent.POINTER_TILE,
   func: ({ data: { position }, user }) => {
     const room = Server.rooms.getUserRoom(user);
-    console.debug("tile", room.id, user.id);
 
     if (!room) return;
 

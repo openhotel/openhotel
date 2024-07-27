@@ -20,6 +20,13 @@ import { Event, RoomPointEnum, SpriteSheetEnum } from "shared/enums";
 import { RoomPoint } from "shared/types";
 import { System } from "system";
 import { humanComponent, HumanMutable } from "modules/human";
+import {
+  TILE_WIDTH,
+  TILE_Y_HEIGHT,
+  WALL_DOOR_HEIGHT,
+  WALL_HEIGHT,
+} from "shared/consts";
+import { wallComponent } from "modules/room/components/wall.component";
 
 type Props = {
   layout: RoomPoint[][];
@@ -136,7 +143,17 @@ export const roomComponent: ContainerComponent<Props, Mutable> = async ({
         const isSpawn = roomLine[z] === RoomPointEnum.SPAWN;
 
         const y = System.game.rooms.getYFromPoint({ x, z });
-        const position = getIsometricPosition({ x, z, y }, 12);
+
+        const previewY = System.game.rooms.getYFromPoint({ x, z }, true);
+        const previewPosition = getIsometricPosition(
+          { x, z, y: previewY },
+          TILE_WIDTH,
+        );
+
+        const position = getIsometricPosition({ x, z, y }, TILE_WIDTH);
+        const wallPosition = getIsometricPosition({ x, z, y: 0 }, TILE_WIDTH);
+
+        const wallHeight = WALL_HEIGHT - y * 2;
         const zIndex = x + z;
 
         //left side
@@ -145,95 +162,92 @@ export const roomComponent: ContainerComponent<Props, Mutable> = async ({
           const isWallZRenderable = isWallRenderable(x, z, false);
 
           if (isWallXRenderable) {
-            const wall = await sprite({
-              spriteSheet: SpriteSheetEnum.ROOM,
-              texture: "wall-left",
-              eventMode: EventMode.NONE,
-              tint: 0xc4d3dd,
+            const wall = await wallComponent({
+              axis: "x",
               zIndex: zIndex - 0.2,
-              pivot: { x: 3, y: 98 },
-              position,
+              pivot: { x: 5, y: 99 },
+              position: wallPosition,
+              tint: 0xc4d3dd,
+              height: wallHeight,
             });
             $container.add(wall);
           }
           if (isWallZRenderable) {
-            const wall = await sprite({
-              spriteSheet: SpriteSheetEnum.ROOM,
-              texture: "wall-right",
-              eventMode: EventMode.NONE,
-              tint: 0xc4d3dd,
-              pivot: { x: -25, y: 98 },
+            const wall = await wallComponent({
+              axis: "z",
               zIndex: zIndex - 0.2,
-              position,
+              pivot: { x: -25, y: 99 },
+              position: wallPosition,
+              tint: 0xc4d3dd,
+              height: wallHeight,
             });
             $container.add(wall);
           }
           if (isWallXRenderable && isWallZRenderable) {
             const wall = await sprite({
               spriteSheet: SpriteSheetEnum.ROOM,
-              texture: "wall-back",
+              texture: "wall-b",
               eventMode: EventMode.NONE,
               tint: 0xc4d3dd,
-              pivot: { x: -22, y: 100 },
+              pivot: { x: -20, y: 102 },
               zIndex: zIndex - 0.1,
-              position,
-            });
-            $container.add(wall);
-          }
-          const isWallRightXRenderable = isWallRenderable(x - 1, z, true);
-          const isWallLeftZRenderable = isWallRenderable(x, z - 1, false);
-          if (
-            isWallRightXRenderable &&
-            isWallLeftZRenderable &&
-            x !== 0 &&
-            z !== 0
-          ) {
-            const wall = await sprite({
-              spriteSheet: SpriteSheetEnum.ROOM,
-              texture: "wall-front",
-              eventMode: EventMode.NONE,
-              tint: 0xc4d3dd,
-              pivot: { x: -21, y: 100 },
-              zIndex: zIndex - 0.1,
-              position,
+              position: wallPosition,
             });
             $container.add(wall);
           }
 
           if (layout[x - 1] && layout[x - 1][z] === RoomPointEnum.SPAWN) {
-            const wall = await sprite({
-              spriteSheet: SpriteSheetEnum.ROOM,
-              texture: "wall-door-right",
-              eventMode: EventMode.NONE,
-              tint: 0xc4d3dd,
-              pivot: { x: -25, y: 98 },
+            const wall = await wallComponent({
+              axis: "z",
               zIndex: zIndex - 0.1,
+              pivot: { x: -25, y: 99 },
               position,
+              tint: 0xc4d3dd,
+              height: WALL_DOOR_HEIGHT,
             });
             $container.add(wall);
           }
           if (layout[x][z - 1] === RoomPointEnum.SPAWN) {
-            const wall = await sprite({
-              spriteSheet: SpriteSheetEnum.ROOM,
-              texture: "wall-door-left",
-              eventMode: EventMode.NONE,
-              tint: 0xc4d3dd,
-              pivot: { x: 3, y: 98 },
+            const wall = await wallComponent({
+              axis: "x",
               zIndex: zIndex - 0.1,
+              pivot: { x: 5, y: 99 },
               position,
+              tint: 0xc4d3dd,
+              height: WALL_DOOR_HEIGHT,
             });
             $container.add(wall);
           }
         }
 
-        const tile = await sprite({
-          spriteSheet: SpriteSheetEnum.ROOM,
-          texture: "tile",
-          eventMode: EventMode.NONE,
-          tint: isSpawn ? 0x2f2f2f : zIndex % 2 === 0 ? 0xa49f7e : 0xb2ad8e,
-          zIndex: zIndex - 0.1,
-          position,
-        });
+        //detect stairs
+        const isXStairs = roomLine[z] > roomLine[z - 1];
+        const isZStairs = roomLine[z] > layout[x - 1]?.[z];
+        if (isXStairs || isZStairs) {
+          const stairs = await sprite({
+            spriteSheet: SpriteSheetEnum.ROOM,
+            texture: `stairs-${isXStairs ? "x" : "z"}`,
+            eventMode: EventMode.NONE,
+            tint: isSpawn ? 0x2f2f2f : zIndex % 2 === 0 ? 0xa49f7e : 0xb2ad8e,
+            zIndex: zIndex - 0.1,
+            position,
+            pivot: {
+              x: 0,
+              y: TILE_Y_HEIGHT * 2 - 6,
+            },
+          });
+          $container.add(stairs);
+        } else {
+          const tile = await sprite({
+            spriteSheet: SpriteSheetEnum.ROOM,
+            texture: "tile",
+            eventMode: EventMode.NONE,
+            tint: isSpawn ? 0x2f2f2f : zIndex % 2 === 0 ? 0xa49f7e : 0xb2ad8e,
+            zIndex: zIndex - 0.1,
+            position,
+          });
+          $container.add(tile);
+        }
 
         const pol = await graphics({
           type: GraphicType.POLYGON,
@@ -247,7 +261,7 @@ export const roomComponent: ContainerComponent<Props, Mutable> = async ({
             y: 0,
           },
           alpha: 0,
-          position,
+          position: previewPosition,
         });
 
         pol.on(DisplayObjectEvent.POINTER_UP, () => {
@@ -260,7 +274,7 @@ export const roomComponent: ContainerComponent<Props, Mutable> = async ({
           });
         });
         pol.on(DisplayObjectEvent.POINTER_ENTER, () => {
-          $tilePreview.setPosition(position);
+          $tilePreview.setPosition(previewPosition);
           $tilePreview.setZIndex(zIndex - 0.05);
           $tilePreview.setVisible(true);
         });
@@ -268,7 +282,7 @@ export const roomComponent: ContainerComponent<Props, Mutable> = async ({
           $tilePreview.setVisible(false),
         );
 
-        $container.add(tile, pol);
+        $container.add(pol);
       }
     }
   });

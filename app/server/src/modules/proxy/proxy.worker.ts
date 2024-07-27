@@ -58,7 +58,6 @@ serverWorker.on(ProxyEvent.$DISCONNECT_USER, ({ clientId }) => {
 serverWorker.on(ProxyEvent.$UPDATE, async () => {
   const canUpdate = await loadUpdater({ config: $config, envs: $envs });
 
-  console.log(canUpdate);
   if (canUpdate) serverWorker.emit(ProxyEvent.$STOP);
 });
 
