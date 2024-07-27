@@ -1,43 +1,73 @@
 {
   "frames": {
-    "wall-left": {
-      "frame": { "x": 0, "y": 0, "w": 28, "h": 114 },
-      "sourceSize": { "w": 28, "h": 114 },
+    "wall-x-top": {
+      "frame": { "x": 0, "y": 0, "w": 30, "h": 15 },
+      "sourceSize": { "w": 30, "h": 15 },
       "anchor": { "x": 0, "y": 0 }
     },
-    "wall-right": {
-      "frame": { "x": 28, "y": 0, "w": 28, "h": 114 },
-      "sourceSize": { "w": 28, "h": 114 },
+    "wall-x-mid": {
+      "frame": { "x": 0, "y": 16, "w": 30, "h": 3 },
+      "sourceSize": { "w": 30, "h": 3 },
       "anchor": { "x": 0, "y": 0 }
     },
-    "wall-front": {
-      "frame": { "x": 56, "y": 0, "w": 8, "h": 100 },
-      "sourceSize": { "w": 8, "h": 100 },
+    "wall-x-bottom": {
+      "frame": { "x": 0, "y": 20, "w": 30, "h": 13 },
+      "sourceSize": { "w": 30, "h": 13 },
       "anchor": { "x": 0, "y": 0 }
     },
-    "wall-back": {
-      "frame": { "x": 64, "y": 0, "w": 6, "h": 4 },
-      "sourceSize": { "w": 6, "h": 4 },
+    "wall-z-top": {
+      "frame": { "x": 30, "y": 0, "w": 30, "h": 15 },
+      "sourceSize": { "w": 30, "h": 15 },
+      "anchor": { "x": 0, "y": 0 }
+    },
+    "wall-z-mid": {
+      "frame": { "x": 30, "y": 16, "w": 30, "h": 3 },
+      "sourceSize": { "w": 30, "h": 3 },
+      "anchor": { "x": 0, "y": 0 }
+    },
+    "wall-z-bottom": {
+      "frame": { "x": 30, "y": 20, "w": 30, "h": 13 },
+      "sourceSize": { "w": 30, "h": 13 },
+      "anchor": { "x": 0, "y": 0 }
+    },
+    "wall-f-top": {
+      "frame": { "x": 60, "y": 0, "w": 12, "h": 6 },
+      "sourceSize": { "w": 12, "h": 6 },
+      "anchor": { "x": 0, "y": 0 }
+    },
+    "wall-f-mid": {
+      "frame": { "x": 60, "y": 7, "w": 12, "h": 3 },
+      "sourceSize": { "w": 12, "h": 3 },
+      "anchor": { "x": 0, "y": 0 }
+    },
+    "wall-f-bottom": {
+      "frame": { "x": 60, "y": 11, "w": 12, "h": 4 },
+      "sourceSize": { "w": 12, "h": 4 },
+      "anchor": { "x": 0, "y": 0 }
+    },
+    "wall-b": {
+      "frame": { "x": 72, "y": 0, "w": 10, "h": 6 },
+      "sourceSize": { "w": 10, "h": 6 },
       "anchor": { "x": 0, "y": 0 }
     },
     "tile": {
-      "frame": { "x": 78, "y": 0, "w": 50, "h": 29 },
-      "sourceSize": { "w": 50, "h": 29 },
+      "frame": { "x": 72, "y": 6, "w": 50, "h": 30 },
+      "sourceSize": { "w": 50, "h": 30 },
       "anchor": { "x": 0, "y": 0 }
     },
     "tile_preview": {
-      "frame": { "x": 82, "y": 104, "w": 46, "h": 24 },
+      "frame": { "x": 0, "y": 81, "w": 46, "h": 24 },
       "sourceSize": { "w": 46, "h": 24 },
       "anchor": { "x": 0, "y": 0 }
     },
-    "wall-door-left": {
-      "frame": { "x": 72, "y": 30, "w": 28, "h": 40 },
-      "sourceSize": { "w": 28, "h": 40 },
+    "stairs-x": {
+      "frame": { "x": 0, "y": 33, "w": 50, "h": 48 },
+      "sourceSize": { "w": 50, "h": 48 },
       "anchor": { "x": 0, "y": 0 }
     },
-    "wall-door-right": {
-      "frame": { "x": 100, "y": 30, "w": 28, "h": 40 },
-      "sourceSize": { "w": 28, "h": 40 },
+    "stairs-z": {
+      "frame": { "x": 50, "y": 36, "w": 50, "h": 48 },
+      "sourceSize": { "w": 50, "h": 48 },
       "anchor": { "x": 0, "y": 0 }
     }
   },
@@ -52,3 +82,4 @@
     "scale": 1
   }
 }
+

@@ -5,4 +5,4 @@ export const TILE_SIZE: Size = {
   height: 25,
 };
 
-export const TILE_Y_HEIGHT = 2;
+export const TILE_Y_HEIGHT = 12;
