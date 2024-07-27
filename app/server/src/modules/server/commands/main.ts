@@ -5,8 +5,9 @@ import { log } from "shared/utils/log.utils.ts";
 import { stopCommand } from "./stop.command.ts";
 import { opCommand } from "./op.command.ts";
 import { deopCommand } from "./deop.command.ts";
+import { kickCommand } from "./kick.command.ts";
 
-const commandList = [stopCommand, opCommand, deopCommand];
+const commandList = [stopCommand, opCommand, deopCommand, kickCommand];
 
 export const executeCommand = ({
   message,

@@ -47,6 +47,9 @@ serverWorker.on(ProxyEvent.$REMOVE_ROOM, ({ roomId, userId }) => {
 serverWorker.on(ProxyEvent.$ROOM_DATA, ({ roomId, event, message }) => {
   server.getRoom(roomId).emit(event, message);
 });
+serverWorker.on(ProxyEvent.$DISCONNECT, ({ clientId }) => {
+  userClientMap[clientId]?.close();
+});
 
 serverWorker.on("start", async ({ config, envs }: WorkerProps) => {
   const protocolToken = getRandomString(64);
