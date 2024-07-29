@@ -5,13 +5,25 @@ import { log } from "shared/utils/log.utils.ts";
 import { stopCommand } from "./stop.command.ts";
 import { opCommand } from "./op.command.ts";
 import { deopCommand } from "./deop.command.ts";
+import { banCommand } from "./ban.command.ts";
+import { unbanCommand } from "./unban.command.ts";
+import { blacklistCommand } from "./blacklist.command.ts";
+import { whitelistCommand } from "./whitelist.command.ts";
 import { kickCommand } from "./kick.command.ts";
 import { updateCommand } from "./update.command.ts";
 
 const commandList = [
   stopCommand,
+
   opCommand,
   deopCommand,
+
+  banCommand,
+  unbanCommand,
+
+  blacklistCommand,
+  whitelistCommand,
+
   kickCommand,
   updateCommand,
 ];

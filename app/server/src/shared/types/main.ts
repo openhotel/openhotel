@@ -6,3 +6,4 @@ export * from "./user.types.ts";
 export * from "./event.types.ts";
 export * from "./room.types.ts";
 export * from "./point.types.ts";
+export * from "./commands.types.ts";
