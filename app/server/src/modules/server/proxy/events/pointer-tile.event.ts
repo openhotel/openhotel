@@ -1,5 +1,5 @@
 import { ProxyEventType } from "shared/types/main.ts";
-import { ProxyEvent } from "shared/enums/main.ts";
+import { ProxyEvent, RoomPointEnum } from "shared/enums/main.ts";
 import { Server } from "modules/server/main.ts";
 import { isPoint3dEqual, wait, waitUntil } from "shared/utils/main.ts";
 import { MOVEMENT_BETWEEN_TILES_DURATION } from "shared/consts/tiles.consts.ts";
@@ -11,8 +11,16 @@ export const pointerTileEvent: ProxyEventType<any> = {
 
     if (!$room) return;
 
-    //same position
-    if (isPoint3dEqual(user.getPosition(), position)) return;
+    //check if position is spawn, and leave room
+    if ($room.getPoint(position) === RoomPointEnum.SPAWN) {
+      const userObject = user.getObject();
+      $room.removeUser(userObject);
+      return;
+    }
+
+    if (isPoint3dEqual(user.getPosition(), position))
+      //same position
+      return;
 
     const currentPath = user.getPathfinding();
     if (currentPath?.length) {

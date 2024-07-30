@@ -8,8 +8,8 @@ import {
 } from "@tulib/tulip";
 import { System } from "system";
 import { Event } from "shared/enums";
-import { inputComponent } from "../../shared/components";
-import { MAX_MESSAGES_HISTORY } from "../../shared/consts";
+import { inputComponent } from "shared/components";
+import { MAX_MESSAGES_HISTORY } from "shared/consts";
 
 type Mutable = {
   setInputWidth: (width: number) => Promise<void>;

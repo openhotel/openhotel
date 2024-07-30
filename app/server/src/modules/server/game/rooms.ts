@@ -10,6 +10,7 @@ import { ProxyEvent, RoomPointEnum } from "shared/enums/main.ts";
 import { Grid } from "@oh/pathfinding";
 import { Server } from "modules/server/main.ts";
 import { getInterpolatedPath } from "shared/utils/pathfinding.utils.ts";
+import { getRandomNumber } from "shared/utils/random.utils.ts";
 
 export const rooms = () => {
   let roomMap: Record<string, Room> = {};
@@ -58,8 +59,7 @@ export const rooms = () => {
 
       const $userId = $user.getId();
 
-      $user.setRoom(null);
-      $user.setPosition(null);
+      $user.removeRoom();
 
       roomUserMap[room.id] = roomUserMap[room.id].filter(
         (userId) => userId !== $userId,
@@ -197,6 +197,12 @@ export const rooms = () => {
 
   const get = (roomId: string): RoomMutable | null => $getRoom(roomMap[roomId]);
 
+  const getRandom = (): RoomMutable => {
+    const roomList = Object.values(roomMap);
+    const roomIndex = getRandomNumber(0, roomList.length - 1);
+    return $getRoom(roomList[roomIndex]);
+  };
+
   create({
     id: "test_1",
     title: "Room 1",
@@ -265,5 +271,7 @@ export const rooms = () => {
   return {
     create,
     get,
+
+    getRandom,
   };
 };
