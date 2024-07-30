@@ -7,7 +7,6 @@ export const userLeftEvent: ProxyEventType<{ user: PrivateUser }> = {
   event: ProxyEvent.$USER_LEFT,
   func: ({ data: { user } }) => {
     if (!user) return;
-    console.log(user);
     Server.game.users.remove(user);
 
     log(`${user.username} left!`);
