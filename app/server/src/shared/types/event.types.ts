@@ -1,8 +1,8 @@
-import { User } from "shared/types/main.ts";
+import { UserMutable } from "shared/types/main.ts";
 
 type FuncProps<Data> = {
   data?: Data;
-  user?: User;
+  user?: UserMutable;
 };
 
 export type ProxyEventType<Data = {}> = {

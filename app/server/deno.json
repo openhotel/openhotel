@@ -15,21 +15,16 @@
     "build": "(deno task compile:linux) & (deno task compile:linux_aarch64) & (deno task compile:darwin) & (deno task compile:windows)"
   },
   "imports": {
-    "shared/": "./src/shared/",
-    "modules/": "./src/modules/",
-
+    "@oh/pathfinding": "jsr:@oh/pathfinding@2.0.2",
+    "@oh/queue": "jsr:@oh/queue@1.1.0",
+    "dayjs": "https://deno.land/x/deno_dayjs@v0.5.0/mod.ts",
     "deno/": "https://deno.land/std@0.221.0/",
+    "input": "https://deno.land/x/input@2.0.4/index.ts",
     "loadenv": "https://deno.land/x/loadenv@v1.0.1/mod.ts",
-
+    "modules/": "./src/modules/",
+    "shared/": "./src/shared/",
     "socket_ionic": "https://deno.land/x/socket_ionic@v1.9.0/mod.ts",
     "worker_ionic": "https://deno.land/x/worker_ionic@v1.4.2/mod.ts",
-
-    "yaml": "npm:yaml@2.4.2",
-
-    "input": "https://deno.land/x/input@2.0.4/index.ts",
-
-    "dayjs": "https://deno.land/x/deno_dayjs@v0.5.0/mod.ts",
-
-    "@oh/pathfinding": "jsr:@oh/pathfinding@2.0.2"
+    "yaml": "npm:yaml@2.4.2"
   }
 }

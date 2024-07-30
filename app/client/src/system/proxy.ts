@@ -1,6 +1,7 @@
 import {
   getClientSocket,
   getConfig,
+  getRandomString,
   getVersion,
   getWebSocketUrl,
   isDevelopment,
@@ -41,8 +42,13 @@ export const proxy = () => {
     );
   };
 
-  const getRefreshSession = () =>
-    JSON.parse(atob(localStorage.getItem("session-refresh")));
+  const getRefreshSession = () => {
+    try {
+      return JSON.parse(atob(localStorage.getItem("session-refresh")));
+    } catch (e) {
+      return null;
+    }
+  };
 
   const $connect = async () =>
     new Promise(async (resolve, reject) => {
@@ -105,8 +111,8 @@ export const proxy = () => {
   const refreshSession = async () =>
     new Promise(async (resolve, reject) => {
       try {
-        const { sessionId, refreshToken } = getRefreshSession();
         if (!isDevelopment()) {
+          const { sessionId, refreshToken } = getRefreshSession();
           const { status: loginStatus, data } = await fetch(
             getRefreshSessionUrl(),
             {
@@ -128,6 +134,12 @@ export const proxy = () => {
             localStorage.removeItem("session-refresh");
             return;
           }
+        } else {
+          if (localStorage.getItem("auto-connect") === "false") reject();
+          localStorage.setItem("auto-connect", "true");
+
+          $lastUsername =
+            localStorage.getItem("username") || `player_${getRandomString(8)}`;
         }
         resolve(await $connect());
       } catch (e) {

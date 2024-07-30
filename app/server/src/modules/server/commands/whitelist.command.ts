@@ -1,8 +1,5 @@
-import {
-  getUsersConfig,
-  writeUserConfig,
-} from "../../../shared/utils/users.utils.ts";
-import { ListActions, UsersConfig } from "../../../shared/types/main.ts";
+import { getUsersConfig, writeUserConfig } from "shared/utils/users.utils.ts";
+import { ListActions, UsersConfig } from "shared/types/main.ts";
 
 const on = (config: UsersConfig) => {
   config.whitelist.active = true;

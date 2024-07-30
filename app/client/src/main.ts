@@ -1,6 +1,7 @@
 import { application } from "@tulib/tulip";
 import { mainComponent } from "modules/main";
 import { isDevelopment } from "shared/utils";
+import { System } from "system";
 
 const app = application({
   backgroundColor: 0x030303,
@@ -13,6 +14,7 @@ const app = application({
   importMetaHot: import.meta.hot,
 });
 
+System.load();
 app.load(async () => {
   app.add(await mainComponent());
 });

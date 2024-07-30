@@ -9,21 +9,29 @@ import {
   sprite,
   textSprite,
 } from "@tulib/tulip";
-import { getIsometricPosition } from "shared/utils";
-import { Point3d } from "shared/types";
-import { Event, SpriteSheetEnum } from "shared/enums";
-import { TILE_SIZE } from "shared/consts";
+import { getPositionFromIsometricPosition } from "shared/utils";
+import { Point3d, User } from "shared/types";
+import { Direction, Event, SpriteSheetEnum } from "shared/enums";
+import {
+  MOVEMENT_BETWEEN_TILES_DURATION,
+  TILE_SIZE,
+  TILE_WIDTH,
+  TILE_Y_HEIGHT,
+} from "shared/consts";
 import { System } from "../../system";
 import { typingBubbleComponent } from "../chat";
 import { TextureEnum } from "shared/enums/texture.enum";
+import { TickerQueue } from "@oh/queue";
 
 type Props = {
-  user: any;
+  user: User;
 };
 
 type Mutable = {
   setIsometricPosition: (position: Point3d) => Promise<void>;
   getIsometricPosition: () => Point3d;
+  moveTo: (direction: Direction) => Promise<void>;
+  cancelMovement: () => void;
   getUser: () => { id: string; username: string };
 };
 
@@ -34,6 +42,8 @@ export const humanComponent: ContainerComponent<Props, Mutable> = async ({
 }) => {
   const $container = await container<Props, Mutable>();
   await $container.setEventMode(EventMode.NONE);
+
+  const $isCurrent = System.game.users.getCurrentUser().id === user.id;
 
   const capsule = await graphics({
     type: GraphicType.CAPSULE,
@@ -68,7 +78,8 @@ export const humanComponent: ContainerComponent<Props, Mutable> = async ({
   await $container.setPivotY(bounds.height - 15);
   await $container.setPivotX(-23);
 
-  let isometricPosition: Point3d;
+  let $isometricPosition: Point3d;
+  let $direction: Direction;
 
   const $typingBubble = await typingBubbleComponent({
     position: {
@@ -104,18 +115,157 @@ export const humanComponent: ContainerComponent<Props, Mutable> = async ({
   $container.add($typingBubble);
 
   const setIsometricPosition = async (position: Point3d) => {
-    isometricPosition = position;
+    $isometricPosition = position;
 
-    //get y from current room
-    position.y = System.game.rooms.getYFromPoint(position, true);
+    $isometricPosition.y = System.game.rooms.getYFromPoint(
+      $isometricPosition,
+      true,
+    );
+    await $container.setPosition(
+      getPositionFromIsometricPosition($isometricPosition),
+    );
+    await $container.setZIndex(
+      Math.ceil($isometricPosition.x) +
+        Math.ceil($isometricPosition.z) -
+        $isometricPosition.y,
+    );
+  };
 
-    await $container.setPosition(getIsometricPosition(position, 12));
-    await $container.setZIndex(isometricPosition.x + isometricPosition.z);
+  let lastMovementAnimationId;
+  //TODO Move this to a util
+  const moveTo = async (direction: Direction) => {
+    return new Promise<void>(async (resolve, reject) => {
+      let positionXFunc: (x: number) => number = (x) => x;
+      let positionYFunc: (y: number) => number = (y) => y;
+
+      let incrementX = 0;
+      let incrementZ = 0;
+      let forceZIndex = 0;
+
+      $direction = direction;
+      switch (direction) {
+        case Direction.NORTH:
+          positionXFunc = (x) => x - 2;
+          positionYFunc = (y) => y - 1;
+          incrementX--;
+          break;
+        case Direction.NORTH_EAST:
+          positionYFunc = (y) => y - 2;
+          incrementX -= 1;
+          incrementZ -= 1;
+          break;
+        case Direction.EAST:
+          positionXFunc = (x) => x + 2;
+          positionYFunc = (y) => y - 1;
+          incrementZ--;
+          break;
+        case Direction.SOUTH_EAST:
+          positionXFunc = (x) => x + 4;
+          incrementX += 1;
+          incrementZ -= 1;
+          // fixes passing below tile
+          forceZIndex = 1;
+          break;
+        case Direction.SOUTH:
+          positionXFunc = (x) => x + 2;
+          positionYFunc = (y) => y + 1;
+          incrementX++;
+          break;
+        case Direction.SOUTH_WEST:
+          positionYFunc = (y) => y + 2;
+          incrementX += 1;
+          incrementZ += 1;
+          break;
+        case Direction.WEST:
+          positionXFunc = (x) => x - 2;
+          positionYFunc = (y) => y + 1;
+          incrementZ++;
+          break;
+        case Direction.NORTH_WEST:
+          positionXFunc = (x) => x - 4;
+          incrementX -= 1;
+          incrementZ += 1;
+          // fixes passing below tile
+          forceZIndex = 1;
+          break;
+        default:
+          return resolve();
+      }
+
+      // If zIndex is positive, change before update
+      if (incrementX + incrementZ > 0 || forceZIndex)
+        await $container.setZIndex(
+          $isometricPosition.x +
+            $isometricPosition.z +
+            incrementX +
+            incrementZ +
+            forceZIndex,
+        );
+
+      let repeatIndex = 0;
+      const repeatEvery = MOVEMENT_BETWEEN_TILES_DURATION / TILE_WIDTH;
+
+      //Check if animation is rejected
+      const rejectInterval = setInterval(() => {
+        if (lastMovementAnimationId === null) reject();
+      }, repeatEvery);
+
+      lastMovementAnimationId = System.tasks.add({
+        type: TickerQueue.REPEAT,
+        repeatEvery,
+        repeats: TILE_WIDTH,
+        onFunc: () => {
+          $container.setPositionX(positionXFunc);
+
+          let targetY = 0;
+          //Check if it's at the middle of the index to change to the nex Y
+          if (repeatIndex === TILE_WIDTH / 2) {
+            targetY =
+              System.game.rooms.getYFromPoint(
+                {
+                  x: $isometricPosition.x + incrementX,
+                  z: $isometricPosition.z + incrementZ,
+                },
+                true,
+              ) - $isometricPosition.y;
+          }
+          $container.setPositionY(
+            (y) => positionYFunc(y) - targetY * TILE_Y_HEIGHT,
+          );
+
+          repeatIndex++;
+        },
+        onDone: async () => {
+          clearInterval(rejectInterval);
+
+          const position = {
+            ...$isometricPosition,
+            x: $isometricPosition.x + incrementX,
+            z: $isometricPosition.z + incrementZ,
+          };
+
+          if ($isCurrent)
+            System.proxy.emit(Event.NEXT_PATH_TILE, {
+              position,
+            });
+          await setIsometricPosition(position);
+          resolve();
+        },
+      });
+    });
+  };
+
+  const cancelMovement = () => {
+    console.log("cancelMovement");
+    System.tasks.remove(lastMovementAnimationId);
+    lastMovementAnimationId = null;
   };
 
   return $container.getComponent(humanComponent, {
     setIsometricPosition,
-    getIsometricPosition: () => isometricPosition,
+    getIsometricPosition: () => $isometricPosition,
+    moveTo,
+    cancelMovement,
     getUser: () => user,
   });
 };
