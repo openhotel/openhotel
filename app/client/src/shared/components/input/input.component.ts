@@ -22,6 +22,7 @@ type InputProps = {
 
 type InputMutable = {
   getValue: () => string;
+  setValue: (text: string) => Promise<void>;
   clear: () => void;
   focus: () => void;
   setSize: (size: Size) => Promise<void>;
@@ -76,7 +77,8 @@ export const inputComponent: ContainerComponent<
 
   return $container.getComponent(inputComponent, {
     getValue: $input.getText,
-    clear: () => $input.reset(),
+    setValue: $input.setText,
+    clear: () => $input.clear(),
     focus: $input.focus,
     setSize: $input.setSize,
   });
