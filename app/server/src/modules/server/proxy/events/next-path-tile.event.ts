@@ -19,7 +19,7 @@ export const nextPathTileEvent: ProxyEventType<any> = {
 
     const positionUpdateInterval =
       performance.now() - user.getPositionUpdatedAt();
-    //TODO check if time makes sense
+    //check if time makes sense
     if (MOVEMENT_BETWEEN_TILES_DURATION > positionUpdateInterval) return;
 
     const nextPosition = pathfinding.shift();
