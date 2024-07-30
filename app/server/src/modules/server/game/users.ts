@@ -24,8 +24,13 @@ export const users = () => {
 
     const setRoom = (roomId: string) => {
       $userMap[user.id].roomId = roomId;
+      setPathfinding([]);
     };
     const getRoom = (): string => $userMap[user.id].roomId;
+    const removeRoom = () => {
+      setRoom(null);
+      setPosition(null);
+    };
 
     const setPathfinding = (path: Point3d[]) => {
       $userPathfindingMap[user.id] = path;
@@ -59,6 +64,7 @@ export const users = () => {
 
       setRoom,
       getRoom,
+      removeRoom,
 
       setPathfinding,
       getPathfinding,
