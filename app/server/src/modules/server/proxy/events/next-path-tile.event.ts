@@ -10,6 +10,9 @@ export const nextPathTileEvent: ProxyEventType<any> = {
     const $room = Server.game.rooms.get(user.getRoom());
 
     if (!$room) return;
+    const pathfinding = user.getPathfinding();
+
+    if (!pathfinding.length) return;
 
     //cannot be like the last one
     if (isPoint3dEqual(user.getPosition(), position)) return;
@@ -17,17 +20,12 @@ export const nextPathTileEvent: ProxyEventType<any> = {
     const positionUpdateInterval =
       performance.now() - user.getPositionUpdatedAt();
     //TODO check if time makes sense
-    if (MOVEMENT_BETWEEN_TILES_DURATION > positionUpdateInterval) {
-      //cheating 99%
-      console.log("CHEATER!");
-      return user.disconnect();
-    }
+    if (MOVEMENT_BETWEEN_TILES_DURATION > positionUpdateInterval) return;
 
-    const pathfinding = user.getPathfinding();
     const nextPosition = pathfinding.shift();
 
     //check if next position is the targeted one
-    if (!isPoint3dEqual(nextPosition, position)) return user.disconnect();
+    if (!isPoint3dEqual(nextPosition, position)) return;
 
     user.setPosition(nextPosition);
   },

@@ -42,6 +42,7 @@ export type UserMutable = {
 
   setRoom: (roomId: string) => void;
   getRoom: () => string | null;
+  removeRoom: () => void;
 
   setPathfinding: (path: Point3d[]) => void;
   getPathfinding: () => Point3d[];
