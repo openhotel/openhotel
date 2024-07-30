@@ -9,8 +9,8 @@ import { buttonComponent, inputComponent } from "shared/components";
 import { getRegisterUrl } from "shared/utils/auth.utils";
 import { getCaptchaComponent } from "shared/utils";
 
-export const registerFormComponent: ContainerComponent = async (props) => {
-  const $container = await container({
+export const registerFormComponent: ContainerComponent = (props) => {
+  const $container = container({
     ...props,
     id: "register-form",
     position: {
@@ -19,14 +19,14 @@ export const registerFormComponent: ContainerComponent = async (props) => {
     },
   });
 
-  const $username = await inputComponent({
+  const $username = inputComponent({
     placeholder: "username",
     horizontalAlign: HorizontalAlign.CENTER,
     width: 100,
     maxLength: 16,
     password: false,
   });
-  const $password = await inputComponent({
+  const $password = inputComponent({
     placeholder: "password",
     horizontalAlign: HorizontalAlign.CENTER,
     width: 100,
@@ -37,7 +37,7 @@ export const registerFormComponent: ContainerComponent = async (props) => {
       y: 20,
     },
   });
-  const $passwordRepeat = await inputComponent({
+  const $passwordRepeat = inputComponent({
     placeholder: "repeat password",
     horizontalAlign: HorizontalAlign.CENTER,
     width: 100,
@@ -49,14 +49,14 @@ export const registerFormComponent: ContainerComponent = async (props) => {
     },
   });
 
-  const $captchaComponent = await getCaptchaComponent();
+  const $captchaComponent = getCaptchaComponent();
   $captchaComponent && $container.add($captchaComponent);
-  await $captchaComponent?.setPosition({
+  $captchaComponent?.setPosition({
     x: -8,
     y: 20 * 3,
   });
 
-  const $registerButton = await buttonComponent({
+  const $registerButton = buttonComponent({
     text: "Register",
     width: 100,
     position: {

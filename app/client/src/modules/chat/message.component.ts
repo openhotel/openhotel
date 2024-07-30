@@ -1,6 +1,7 @@
 import {
   container,
   ContainerComponent,
+  DisplayObjectEvent,
   HorizontalAlign,
   sliceSprite,
   textSprite,
@@ -13,10 +14,12 @@ type Mutable = {};
 export const messageComponent: ContainerComponent<
   { username: string; color: number; message: string },
   Mutable
-> = async ({ username, color, message }) => {
-  const $container = await container<{}, Mutable>();
+> = ({ username, color, message }) => {
+  const $container = container<{}, Mutable>({
+    sortableChildren: true,
+  });
 
-  const $text = await textSprite({
+  const $text = textSprite({
     color: 0x000000,
     spriteSheet: SpriteSheetEnum.DEFAULT_FONT,
     text: `${username}: ${message}`,
@@ -25,35 +28,48 @@ export const messageComponent: ContainerComponent<
       y: 1,
     },
     horizontalAlign: HorizontalAlign.CENTER,
+    pivot: { x: -5, y: -3 },
   });
 
-  const bounds = $text.getBounds();
-  const width = bounds.width + 32;
-  const height = 13;
+  $text.on(DisplayObjectEvent.LOADED, () => {
+    const bounds = $text.getBounds();
+    const width = bounds.width + 32;
+    const height = 13;
 
-  const $bubbleBackground = await sliceSprite({
-    texture: TextureEnum.CHAT_BUBBLE_BACKGROUND,
-    leftWidth: 6,
-    topHeight: 6,
-    rightWidth: 6,
-    bottomHeight: 6,
-    width,
-    height,
+    const $bubbleBackground = sliceSprite({
+      texture: TextureEnum.CHAT_BUBBLE_BACKGROUND,
+      leftWidth: 6,
+      topHeight: 6,
+      rightWidth: 6,
+      bottomHeight: 6,
+      width,
+      height,
+      zIndex: -2,
+    });
+    $container.add($bubbleBackground);
+
+    //TODO fix callback hell
+    $bubbleBackground.on(DisplayObjectEvent.LOADED, () => {
+      const $bubbleOver = sliceSprite({
+        texture: TextureEnum.CHAT_BUBBLE_OVER,
+        leftWidth: 6,
+        topHeight: 6,
+        rightWidth: 6,
+        bottomHeight: 6,
+        width,
+        height,
+        tint: color,
+        zIndex: -1,
+      });
+      $container.add($bubbleOver);
+
+      $bubbleOver.on(DisplayObjectEvent.LOADED, () => {
+        $container.$emit(DisplayObjectEvent.LOADED, {});
+      });
+    });
   });
-  const $bubbleOver = await sliceSprite({
-    texture: TextureEnum.CHAT_BUBBLE_OVER,
-    leftWidth: 6,
-    topHeight: 6,
-    rightWidth: 6,
-    bottomHeight: 6,
-    width,
-    height,
-    tint: color,
-  });
 
-  await $text.setPivot({ x: -5, y: -3 });
-
-  $container.add($bubbleBackground, $bubbleOver, $text);
+  $container.add($text);
 
   return $container.getComponent(messageComponent);
 };

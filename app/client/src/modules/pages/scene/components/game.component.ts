@@ -2,8 +2,8 @@ import {
   container,
   ContainerComponent,
   DisplayObjectEvent,
-  global,
   Event as TulipEvent,
+  global,
 } from "@tulib/tulip";
 import { bubbleChatComponent, chatComponent } from "modules/chat";
 import { Event } from "shared/enums";
@@ -17,12 +17,12 @@ const CHAT_PADDING = {
   y: 15,
 };
 
-export const gameComponent: ContainerComponent = async () => {
-  const $container = await container();
+export const gameComponent: ContainerComponent = () => {
+  const $container = container();
 
   const windowBounds = global.getApplication().window.getBounds();
 
-  const chat = await chatComponent({
+  const chat = chatComponent({
     position: {
       x: CHAT_PADDING.x,
       y: windowBounds.height - CHAT_PADDING.y,
@@ -30,31 +30,30 @@ export const gameComponent: ContainerComponent = async () => {
     zIndex: 1_000,
   });
   $container.add(chat);
-  await chat.setInputWidth(windowBounds.width - CHAT_PADDING.x * 2);
+  chat.on(DisplayObjectEvent.LOADED, () => {
+    chat.setInputWidth(windowBounds.width - CHAT_PADDING.x * 2);
+  });
 
-  global.events.on(TulipEvent.RESIZE, async (size: Size) => {
-    await chat.setPositionY(size.height - 15);
-    await chat.setInputWidth(size.width - 24);
+  global.events.on(TulipEvent.RESIZE, (size: Size) => {
+    chat.setPositionY(size.height - 15);
+    chat.setInputWidth(size.width - 24);
   });
 
   let $room;
   let $bubbleChat;
 
-  const removeOnLoadRoom = System.proxy.on<any>(
-    Event.LOAD_ROOM,
-    async ({ room }) => {
-      System.game.rooms.set(room);
-      $room = await roomComponent({ layout: room.layout });
-      $container.add($room);
+  const removeOnLoadRoom = System.proxy.on<any>(Event.LOAD_ROOM, ({ room }) => {
+    System.game.rooms.set(room);
+    $room = roomComponent({ layout: room.layout });
+    $container.add($room);
 
-      $bubbleChat = await bubbleChatComponent({ room: $room });
-      $container.add($bubbleChat);
-    },
-  );
+    $bubbleChat = bubbleChatComponent({ room: $room });
+    $container.add($bubbleChat);
+  });
 
   const removeOnLeaveRoom = System.proxy.on<any>(
     Event.LEAVE_ROOM,
-    async ({ room }) => {
+    ({ room }) => {
       $container.remove($room, $bubbleChat);
 
       System.proxy.emit(Event.JOIN_ROOM, {

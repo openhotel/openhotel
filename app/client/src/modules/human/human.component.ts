@@ -28,7 +28,7 @@ type Props = {
 };
 
 type Mutable = {
-  setIsometricPosition: (position: Point3d) => Promise<void>;
+  setIsometricPosition: (position: Point3d) => void;
   getIsometricPosition: () => Point3d;
   moveTo: (direction: Direction) => Promise<void>;
   cancelMovement: () => void;
@@ -37,15 +37,16 @@ type Mutable = {
 
 export type HumanMutable = ContainerMutable<{}, Mutable>;
 
-export const humanComponent: ContainerComponent<Props, Mutable> = async ({
+export const humanComponent: ContainerComponent<Props, Mutable> = ({
   user,
 }) => {
-  const $container = await container<Props, Mutable>();
-  await $container.setEventMode(EventMode.NONE);
+  const $container = container<Props, Mutable>();
+  $container.setEventMode(EventMode.NONE);
 
+  //@ts-ignore
   const $isCurrent = System.game.users.getCurrentUser().id === user.id;
 
-  const capsule = await graphics({
+  const capsule = graphics({
     type: GraphicType.CAPSULE,
     radius: TILE_SIZE.width / 2,
     length: 30,
@@ -54,8 +55,8 @@ export const humanComponent: ContainerComponent<Props, Mutable> = async ({
     zIndex: -1000,
     alpha: 0.0001,
   });
-  await capsule.setPivotX(-TILE_SIZE.height);
-  const tagName = await textSprite({
+  capsule.setPivotX(-TILE_SIZE.height);
+  const tagName = textSprite({
     text: user.username,
     spriteSheet: SpriteSheetEnum.DEFAULT_FONT,
     position: {
@@ -63,25 +64,29 @@ export const humanComponent: ContainerComponent<Props, Mutable> = async ({
       x: 0,
     },
   });
-  await tagName.setPivotX(tagName.getBounds().width / 2);
+  tagName.setPivotX(tagName.getBounds().width / 2);
   $container.add(capsule, tagName);
 
-  const human = await sprite({
+  const human = sprite({
     texture: TextureEnum.HUMAN_DEV,
   });
-  await human.setTint(0xefcfb1);
 
-  $container.add(human);
-  const bounds = human.getBounds();
-  await human.setPivotX(Math.round(bounds.width / 2));
+  human.on(DisplayObjectEvent.LOADED, () => {
+    human.setTint(0xefcfb1);
 
-  await $container.setPivotY(bounds.height - 15);
-  await $container.setPivotX(-23);
+    $container.add(human);
+    const bounds = human.getBounds();
+    human.setPivotX(Math.round(bounds.width / 2));
+
+    $container.setPivotY(bounds.height - 15);
+    $container.setPivotX(-23);
+  });
 
   let $isometricPosition: Point3d;
+  //@ts-ignore
   let $direction: Direction;
 
-  const $typingBubble = await typingBubbleComponent({
+  const $typingBubble = typingBubbleComponent({
     position: {
       x: 7,
       y: -8,
@@ -96,7 +101,7 @@ export const humanComponent: ContainerComponent<Props, Mutable> = async ({
     removeOnTypingStart?.();
     removeOnTypingEnd?.();
   });
-  $container.on(DisplayObjectEvent.ADDED, async () => {
+  $container.on(DisplayObjectEvent.ADDED, () => {
     removeOnTypingStart = System.proxy.on<{ userId: string }>(
       Event.TYPING_START,
       ({ userId }) => {
@@ -114,17 +119,17 @@ export const humanComponent: ContainerComponent<Props, Mutable> = async ({
 
   $container.add($typingBubble);
 
-  const setIsometricPosition = async (position: Point3d) => {
+  const setIsometricPosition = (position: Point3d) => {
     $isometricPosition = position;
 
     $isometricPosition.y = System.game.rooms.getYFromPoint(
       $isometricPosition,
       true,
     );
-    await $container.setPosition(
+    $container.setPosition(
       getPositionFromIsometricPosition($isometricPosition),
     );
-    await $container.setZIndex(
+    $container.setZIndex(
       Math.ceil($isometricPosition.x) +
         Math.ceil($isometricPosition.z) -
         $isometricPosition.y,
@@ -133,13 +138,14 @@ export const humanComponent: ContainerComponent<Props, Mutable> = async ({
 
   let lastMovementAnimationId;
   //TODO Move this to a util
-  const moveTo = async (direction: Direction) => {
+  const moveTo = (direction: Direction) => {
     return new Promise<void>(async (resolve, reject) => {
       let positionXFunc: (x: number) => number = (x) => x;
       let positionYFunc: (y: number) => number = (y) => y;
 
       let incrementX = 0;
       let incrementZ = 0;
+      //@ts-ignore
       let forceZIndex = 0;
 
       $direction = direction;
@@ -198,7 +204,7 @@ export const humanComponent: ContainerComponent<Props, Mutable> = async ({
         z: $isometricPosition.z + incrementZ,
       };
 
-      await setIsometricPosition(position);
+      setIsometricPosition(position);
 
       let repeatIndex = 0;
       const repeatEvery = MOVEMENT_BETWEEN_TILES_DURATION / TILE_WIDTH;
@@ -236,7 +242,7 @@ export const humanComponent: ContainerComponent<Props, Mutable> = async ({
 
           repeatIndex++;
         },
-        onDone: async () => {
+        onDone: () => {
           console.log(performance.now() - a, accDelta);
           resolve();
         },

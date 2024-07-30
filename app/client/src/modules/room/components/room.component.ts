@@ -30,15 +30,15 @@ type Mutable = {
 
 export type RoomMutable = ContainerMutable<Props, Mutable>;
 
-export const roomComponent: ContainerComponent<Props, Mutable> = async ({
+export const roomComponent: ContainerComponent<Props, Mutable> = ({
   layout,
 }) => {
-  const $container = await container<{}, Mutable>({
+  const $container = container<{}, Mutable>({
     sortableChildren: true,
   });
-  await $container.setPosition({ x: 230, y: 100 });
+  $container.setPosition({ x: 230, y: 100 });
 
-  const $coords = await textSprite({
+  const $coords = textSprite({
     spriteSheet: SpriteSheetEnum.DEFAULT_FONT,
     text: "0.0",
     position: {
@@ -65,16 +65,13 @@ export const roomComponent: ContainerComponent<Props, Mutable> = async ({
   };
 
   $container.on(DisplayObjectEvent.REMOVED, onRemove);
-  $container.on(DisplayObjectEvent.ADDED, async () => {
-    removeOnAddHuman = System.proxy.on<any>(
-      Event.ADD_HUMAN,
-      async ({ user }) => {
-        const human = await humanComponent({ user });
-        await human.setIsometricPosition(user.position);
-        humanList.push(human);
-        $container.add(human);
-      },
-    );
+  $container.on(DisplayObjectEvent.ADDED, () => {
+    removeOnAddHuman = System.proxy.on<any>(Event.ADD_HUMAN, ({ user }) => {
+      const human = humanComponent({ user });
+      human.setIsometricPosition(user.position);
+      humanList.push(human);
+      $container.add(human);
+    });
     removeOnRemoveHuman = System.proxy.on<any>(
       Event.REMOVE_HUMAN,
       ({ userId }) => {
@@ -87,7 +84,7 @@ export const roomComponent: ContainerComponent<Props, Mutable> = async ({
     );
     removeOnMoveHuman = System.proxy.on<any>(
       Event.MOVE_HUMAN,
-      async ({ userId, position }) => {
+      ({ userId, position }) => {
         const human = humanList.find((human) => human.getUser().id === userId);
 
         const direction = getDirection(human.getIsometricPosition(), position);
@@ -96,7 +93,7 @@ export const roomComponent: ContainerComponent<Props, Mutable> = async ({
           position,
           Direction[direction],
         );
-        await human.moveTo(direction);
+        human.moveTo(direction);
       },
     );
     removeOnStopHuman = System.proxy.on<any>(
@@ -109,7 +106,7 @@ export const roomComponent: ContainerComponent<Props, Mutable> = async ({
       depth: layout.length,
     };
 
-    const $tilePreview = await sprite({
+    const $tilePreview = sprite({
       spriteSheet: SpriteSheetEnum.ROOM,
       texture: "tile_preview",
       eventMode: EventMode.NONE,
@@ -173,7 +170,7 @@ export const roomComponent: ContainerComponent<Props, Mutable> = async ({
           const isWallZRenderable = isWallRenderable(x, z, true);
 
           if (isWallXRenderable) {
-            const wall = await wallComponent({
+            const wall = wallComponent({
               axis: "x",
               zIndex: zIndex - 0.2,
               pivot: { x: 5, y: 99 },
@@ -184,7 +181,7 @@ export const roomComponent: ContainerComponent<Props, Mutable> = async ({
             $container.add(wall);
           }
           if (isWallZRenderable) {
-            const wall = await wallComponent({
+            const wall = wallComponent({
               axis: "z",
               zIndex: zIndex - 0.2,
               pivot: { x: -25, y: 99 },
@@ -195,7 +192,7 @@ export const roomComponent: ContainerComponent<Props, Mutable> = async ({
             $container.add(wall);
           }
           if (isWallXRenderable && isWallZRenderable) {
-            const wall = await sprite({
+            const wall = sprite({
               spriteSheet: SpriteSheetEnum.ROOM,
               texture: "wall-b",
               eventMode: EventMode.NONE,
@@ -208,7 +205,7 @@ export const roomComponent: ContainerComponent<Props, Mutable> = async ({
           }
 
           if (layout[z][x - 1] === RoomPointEnum.SPAWN) {
-            const wall = await wallComponent({
+            const wall = wallComponent({
               axis: "x",
               zIndex: zIndex - 0.1,
               pivot: { x: 5, y: 99 },
@@ -219,7 +216,7 @@ export const roomComponent: ContainerComponent<Props, Mutable> = async ({
             $container.add(wall);
           }
           if (layout[z - 1] && layout[z - 1][x] === RoomPointEnum.SPAWN) {
-            const wall = await wallComponent({
+            const wall = wallComponent({
               axis: "z",
               zIndex: zIndex - 0.1,
               pivot: { x: -25, y: 99 },
@@ -235,7 +232,7 @@ export const roomComponent: ContainerComponent<Props, Mutable> = async ({
         const isXStairs = roomLine[x] > roomLine[x - 1];
         const isZStairs = roomLine[x] > layout[z - 1]?.[x];
         if (isXStairs || isZStairs) {
-          const stairs = await sprite({
+          const stairs = sprite({
             spriteSheet: SpriteSheetEnum.ROOM,
             texture: `stairs-${isXStairs ? "x" : "z"}`,
             eventMode: EventMode.NONE,
@@ -249,7 +246,7 @@ export const roomComponent: ContainerComponent<Props, Mutable> = async ({
           });
           $container.add(stairs);
         } else {
-          const tile = await sprite({
+          const tile = sprite({
             spriteSheet: SpriteSheetEnum.ROOM,
             texture: "tile",
             eventMode: EventMode.NONE,
@@ -260,7 +257,7 @@ export const roomComponent: ContainerComponent<Props, Mutable> = async ({
           $container.add(tile);
         }
 
-        const pol = await graphics({
+        const pol = graphics({
           type: GraphicType.POLYGON,
           polygon: getTilePolygon({ width: 12, height: 12 }),
           tint: 0xff00ff,

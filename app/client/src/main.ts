@@ -16,5 +16,5 @@ const app = application({
 
 System.load();
 app.load(async () => {
-  app.add(await mainComponent());
+  app.add(mainComponent());
 });

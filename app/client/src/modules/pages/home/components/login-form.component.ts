@@ -13,8 +13,8 @@ import {
   isDevelopment,
 } from "shared/utils";
 
-export const loginFormComponent: ContainerComponent = async (props) => {
-  const $container = await container({
+export const loginFormComponent: ContainerComponent = (props) => {
+  const $container = container({
     ...props,
     id: "login-form",
     position: {
@@ -23,7 +23,7 @@ export const loginFormComponent: ContainerComponent = async (props) => {
     },
   });
 
-  const $username = await inputComponent({
+  const $username = inputComponent({
     placeholder: "username",
     horizontalAlign: HorizontalAlign.CENTER,
     width: 100,
@@ -37,7 +37,7 @@ export const loginFormComponent: ContainerComponent = async (props) => {
       return true;
     },
   });
-  const $password = await inputComponent({
+  const $password = inputComponent({
     placeholder: "password",
     horizontalAlign: HorizontalAlign.CENTER,
     width: 100,
@@ -49,14 +49,14 @@ export const loginFormComponent: ContainerComponent = async (props) => {
     },
   });
 
-  const $captchaComponent = await getCaptchaComponent();
+  const $captchaComponent = getCaptchaComponent();
   $captchaComponent && $container.add($captchaComponent);
-  await $captchaComponent?.setPosition({
+  $captchaComponent?.setPosition({
     x: -8,
     y: 20 * 2,
   });
 
-  const $loginButton = await buttonComponent({
+  const $loginButton = buttonComponent({
     text: "Login",
     width: 100,
     position: {
