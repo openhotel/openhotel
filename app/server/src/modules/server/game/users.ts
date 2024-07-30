@@ -7,6 +7,7 @@ export const users = () => {
   let $userMap: Record<string, User> = {};
 
   let $userPathfindingMap: Record<string, Point3d[]> = {};
+  let $userLastMessageMap: Record<string, string> = {};
 
   const $getUser = (user: User): UserMutable => {
     if (!user) return null;
@@ -36,6 +37,11 @@ export const users = () => {
       $userPathfindingMap[user.id] = path;
     };
     const getPathfinding = (): Point3d[] => $userPathfindingMap[user.id];
+
+    const setLastMessage = (message: string) => {
+      $userLastMessageMap[user.id] = message;
+    };
+    const getLastMessage = (): string => $userLastMessageMap[user.id];
 
     const getObject = (): User => $userMap[user.id];
 
@@ -68,6 +74,9 @@ export const users = () => {
 
       setPathfinding,
       getPathfinding,
+
+      setLastMessage,
+      getLastMessage,
 
       getObject,
 
