@@ -1,5 +1,5 @@
 import { parseArgs } from "deno/cli/parse_args.ts";
-import { User } from "shared/types/user.types.ts";
+import { UserMutable } from "shared/types/user.types.ts";
 import { log } from "shared/utils/log.utils.ts";
 
 import { stopCommand } from "./stop.command.ts";
@@ -33,7 +33,7 @@ export const executeCommand = ({
   user,
 }: {
   message: string;
-  user: User;
+  user: UserMutable;
 }) => {
   if (!message.startsWith("/")) return false;
 
@@ -42,9 +42,9 @@ export const executeCommand = ({
   const foundCommand = commandList.find(({ command }) => _[0] === command);
   if (!foundCommand) return true;
 
-  log(`Command /${foundCommand.command} executed by ${user.username}!`);
+  log(`Command /${foundCommand.command} executed by ${user.getUsername()}!`);
   _.shift();
-  foundCommand.func({ user, args: _ });
+  foundCommand.func({ user, args: _ } as any);
 
   return true;
 };

@@ -9,24 +9,16 @@ import {
   graphics,
   GraphicType,
   sprite,
+  textSprite,
 } from "@tulib/tulip";
-import {
-  delay,
-  getIsometricPosition,
-  getTilePolygon,
-  interpolatePath,
-} from "shared/utils";
+import { getPositionFromIsometricPosition, getTilePolygon } from "shared/utils";
 import { Event, RoomPointEnum, SpriteSheetEnum } from "shared/enums";
-import { RoomPoint } from "shared/types";
+import { Point3d, RoomPoint } from "shared/types";
 import { System } from "system";
 import { humanComponent, HumanMutable } from "modules/human";
-import {
-  TILE_WIDTH,
-  TILE_Y_HEIGHT,
-  WALL_DOOR_HEIGHT,
-  WALL_HEIGHT,
-} from "shared/consts";
+import { TILE_Y_HEIGHT, WALL_DOOR_HEIGHT, WALL_HEIGHT } from "shared/consts";
 import { wallComponent } from "modules/room/components/wall.component";
+import { getDirection } from "shared/utils/direction.utils";
 
 type Props = {
   layout: RoomPoint[][];
@@ -46,57 +38,90 @@ export const roomComponent: ContainerComponent<Props, Mutable> = async ({
   });
   await $container.setPosition({ x: 230, y: 100 });
 
+  const $coords = await textSprite({
+    spriteSheet: SpriteSheetEnum.DEFAULT_FONT,
+    text: "0.0",
+    position: {
+      x: 180,
+      y: 300,
+    },
+  });
+  $container.add($coords);
+
   let humanList: ContainerMutable<{}, HumanMutable>[] = [];
 
   let removeOnLeaveRoom;
   let removeOnAddHuman;
   let removeOnRemoveHuman;
   let removeOnMoveHuman;
+  let removeOnStopHuman;
 
   const onRemove = () => {
     removeOnAddHuman?.();
     removeOnRemoveHuman?.();
     removeOnMoveHuman?.();
     removeOnLeaveRoom?.();
+    removeOnStopHuman?.();
   };
 
   $container.on(DisplayObjectEvent.REMOVED, onRemove);
   $container.on(DisplayObjectEvent.ADDED, async () => {
     removeOnAddHuman = System.proxy.on<any>(
       Event.ADD_HUMAN,
-      async ({ user, position, isOld }) => {
+      async ({ user }) => {
         const human = await humanComponent({ user });
-        await human.setIsometricPosition(position);
+        await human.setIsometricPosition(user.position);
         humanList.push(human);
         $container.add(human);
       },
     );
     removeOnRemoveHuman = System.proxy.on<any>(
       Event.REMOVE_HUMAN,
-      ({ user }) => {
+      ({ userId }) => {
         const currentHuman = humanList.find(
-          (human) => human.getUser().id === user.id,
+          (human) => human.getUser().id === userId,
         );
         $container.remove(currentHuman);
-        humanList = humanList.filter((human) => human.getUser().id !== user.id);
+        humanList = humanList.filter((human) => human.getUser().id !== userId);
       },
     );
+    let currentHumanPathMap: Record<string, Point3d[]> = {};
     removeOnMoveHuman = System.proxy.on<any>(
       Event.MOVE_HUMAN,
       async ({ userId, path }) => {
         const human = humanList.find((human) => human.getUser().id === userId);
-        const fullPath = interpolatePath(path);
-        for (const step of fullPath) {
-          await human.setIsometricPosition({ x: step.x, z: step.y, y: 0 });
-          //TODO Implement loop
-          await delay(150);
-        }
+        human.cancelMovement();
+        currentHumanPathMap[userId] = path;
+
+        let currentStep = currentHumanPathMap[userId].shift();
+        await human.setIsometricPosition(currentStep);
+
+        const takeStep = async () => {
+          const nextStep = currentHumanPathMap[userId].shift();
+          if (!nextStep) return;
+
+          const direction = getDirection(currentStep, nextStep);
+          currentStep = nextStep;
+          try {
+            await human.moveTo(direction);
+            await takeStep();
+          } catch (e) {
+            console.warn(e);
+          }
+        };
+        await takeStep();
+      },
+    );
+    removeOnStopHuman = System.proxy.on<any>(
+      Event.STOP_HUMAN,
+      async ({ userId }) => {
+        currentHumanPathMap[userId] = [];
       },
     );
 
     const roomSize = {
-      width: layout.length,
-      depth: Math.max(...layout.map((line) => line.length)),
+      width: Math.max(...layout.map((line) => line.length)),
+      depth: layout.length,
     };
 
     const $tilePreview = await sprite({
@@ -112,22 +137,22 @@ export const roomComponent: ContainerComponent<Props, Mutable> = async ({
     $container.add($tilePreview);
 
     const isWallRenderable = (x: number, z: number, isX: boolean): boolean => {
-      if (!layout[x]) return false;
+      if (!layout[z]) return false;
       if (
-        layout[x][z] === RoomPointEnum.SPAWN ||
-        layout[x][z] === RoomPointEnum.EMPTY
+        layout[z][x] === RoomPointEnum.SPAWN ||
+        layout[z][x] === RoomPointEnum.EMPTY
       )
         return false;
 
       if (
-        (isX && layout[x][z - 1] === RoomPointEnum.SPAWN) ||
-        (!isX && layout[x - 1] && layout[x - 1][z] === RoomPointEnum.SPAWN)
+        (!isX && layout[z][x - 1] === RoomPointEnum.SPAWN) ||
+        (isX && layout[z - 1] && layout[z - 1][x] === RoomPointEnum.SPAWN)
       )
         return false;
 
-      for (let i = isX ? 0 : 1; i < x + 1; i++) {
-        for (let j = isX ? 1 : 0; j < z + 1; j++) {
-          const currentPoint = layout[x - i][z - j];
+      for (let j = isX ? 1 : 0; j < z + 1; j++) {
+        for (let i = isX ? 0 : 1; i < x + 1; i++) {
+          const currentPoint = layout[z - j][x - i];
           if (!isNaN(parseInt(currentPoint))) return false;
         }
       }
@@ -135,31 +160,32 @@ export const roomComponent: ContainerComponent<Props, Mutable> = async ({
       return true;
     };
 
-    for (let x = 0; x < roomSize.width; x++) {
-      const roomLine = layout[x];
-      for (let z = 0; z < roomSize.depth; z++) {
-        if (roomLine[z] === RoomPointEnum.EMPTY) continue;
+    for (let z = 0; z < roomSize.depth; z++) {
+      const roomLine = layout[z];
+      for (let x = 0; x < roomSize.width; x++) {
+        if (roomLine[x] === RoomPointEnum.EMPTY) continue;
 
-        const isSpawn = roomLine[z] === RoomPointEnum.SPAWN;
+        const isSpawn = roomLine[x] === RoomPointEnum.SPAWN;
 
         const y = System.game.rooms.getYFromPoint({ x, z });
 
         const previewY = System.game.rooms.getYFromPoint({ x, z }, true);
-        const previewPosition = getIsometricPosition(
-          { x, z, y: previewY },
-          TILE_WIDTH,
-        );
+        const previewPosition = getPositionFromIsometricPosition({
+          x,
+          z,
+          y: previewY,
+        });
 
-        const position = getIsometricPosition({ x, z, y }, TILE_WIDTH);
-        const wallPosition = getIsometricPosition({ x, z, y: 0 }, TILE_WIDTH);
+        const position = getPositionFromIsometricPosition({ x, z, y });
+        const wallPosition = getPositionFromIsometricPosition({ x, z, y: 0 });
 
-        const wallHeight = WALL_HEIGHT - y * 2;
+        const wallHeight = WALL_HEIGHT - y * TILE_Y_HEIGHT;
         const zIndex = x + z;
 
         //left side
         if (!isSpawn) {
-          const isWallXRenderable = isWallRenderable(x, z, true);
-          const isWallZRenderable = isWallRenderable(x, z, false);
+          const isWallXRenderable = isWallRenderable(x, z, false);
+          const isWallZRenderable = isWallRenderable(x, z, true);
 
           if (isWallXRenderable) {
             const wall = await wallComponent({
@@ -196,18 +222,7 @@ export const roomComponent: ContainerComponent<Props, Mutable> = async ({
             $container.add(wall);
           }
 
-          if (layout[x - 1] && layout[x - 1][z] === RoomPointEnum.SPAWN) {
-            const wall = await wallComponent({
-              axis: "z",
-              zIndex: zIndex - 0.1,
-              pivot: { x: -25, y: 99 },
-              position,
-              tint: 0xc4d3dd,
-              height: WALL_DOOR_HEIGHT,
-            });
-            $container.add(wall);
-          }
-          if (layout[x][z - 1] === RoomPointEnum.SPAWN) {
+          if (layout[z][x - 1] === RoomPointEnum.SPAWN) {
             const wall = await wallComponent({
               axis: "x",
               zIndex: zIndex - 0.1,
@@ -218,11 +233,22 @@ export const roomComponent: ContainerComponent<Props, Mutable> = async ({
             });
             $container.add(wall);
           }
+          if (layout[z - 1] && layout[z - 1][x] === RoomPointEnum.SPAWN) {
+            const wall = await wallComponent({
+              axis: "z",
+              zIndex: zIndex - 0.1,
+              pivot: { x: -25, y: 99 },
+              position,
+              tint: 0xc4d3dd,
+              height: WALL_DOOR_HEIGHT,
+            });
+            $container.add(wall);
+          }
         }
 
         //detect stairs
-        const isXStairs = roomLine[z] > roomLine[z - 1];
-        const isZStairs = roomLine[z] > layout[x - 1]?.[z];
+        const isXStairs = roomLine[x] > roomLine[x - 1];
+        const isZStairs = roomLine[x] > layout[z - 1]?.[x];
         if (isXStairs || isZStairs) {
           const stairs = await sprite({
             spriteSheet: SpriteSheetEnum.ROOM,
@@ -233,7 +259,7 @@ export const roomComponent: ContainerComponent<Props, Mutable> = async ({
             position,
             pivot: {
               x: 0,
-              y: TILE_Y_HEIGHT * 2 - 6,
+              y: TILE_Y_HEIGHT,
             },
           });
           $container.add(stairs);
@@ -277,6 +303,7 @@ export const roomComponent: ContainerComponent<Props, Mutable> = async ({
           $tilePreview.setPosition(previewPosition);
           $tilePreview.setZIndex(zIndex - 0.05);
           $tilePreview.setVisible(true);
+          $coords.setText(`${x}.${z}`);
         });
         pol.on(DisplayObjectEvent.POINTER_LEAVE, () =>
           $tilePreview.setVisible(false),

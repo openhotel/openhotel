@@ -5,15 +5,9 @@ import { Server } from "modules/server/main.ts";
 export const typingEndEvent: ProxyEventType = {
   event: ProxyEvent.TYPING_END,
   func: async ({ user }) => {
-    const room = Server.rooms.getUserRoom(user);
+    const room = Server.game.rooms.get(user.getRoom());
     if (!room) return;
 
-    Server.proxy.emitRoom({
-      roomId: room.id,
-      event: ProxyEvent.TYPING_END,
-      data: {
-        userId: user.id,
-      },
-    });
+    room.emit(ProxyEvent.TYPING_END, { userId: user.getId() });
   },
 };

@@ -27,11 +27,10 @@ export enum ProxyEvent {
   ADD_HUMAN = "add-human",
   REMOVE_HUMAN = "remove-human",
   MOVE_HUMAN = "move-human",
-  MOVE_STOP_HUMAN = "move-stop-human",
-
-  TEST = "test",
+  STOP_HUMAN = "stop-human",
 
   POINTER_TILE = "pointer-tile",
+  NEXT_PATH_TILE = "next-path-tile",
 
   MESSAGE = "message",
   TYPING_START = "typing-start",
