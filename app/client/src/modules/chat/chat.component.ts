@@ -37,11 +37,12 @@ export const chatComponent: ContainerComponent<{}, Mutable> = async (props) => {
     }, 800);
   };
 
+  const MAX_LENGTH = 64;
   const $input = await inputComponent({
     placeholder: "Click here or press 'c' to write a message",
     horizontalAlign: HorizontalAlign.LEFT,
     width: 100,
-    maxLength: 64,
+    maxLength: MAX_LENGTH,
 
     onTextChange: () => {
       setTyping();
@@ -55,24 +56,33 @@ export const chatComponent: ContainerComponent<{}, Mutable> = async (props) => {
 
   $container.add($input);
 
-  const addMessage = (message: string) => {
-    $historyIndex = -1;
-    if ($history.indexOf(message) === -1) {
-      $history.unshift(message);
-      if ($history.length > MAX_MESSAGES_HISTORY) {
-        $history.pop();
+  const $sendMessage = () => {
+    const message = $input.getValue().trim();
+    $input.clear();
+    if (message.length) {
+      $historyIndex = -1;
+      if ($history.indexOf(message) === -1) {
+        $history.unshift(message);
+        if ($history.length > MAX_MESSAGES_HISTORY) {
+          $history.pop();
+        }
       }
+
+      System.proxy.emit(Event.MESSAGE, {
+        message,
+      });
     }
   };
 
   const removeOnKeyUp = global.events.on(
     KeyEvent.KEY_UP,
     ({ key }: KeyboardEvent) => {
-      if (key.toLowerCase() === "c") $input.focus();
+      if (key.toLowerCase() === "c") return $input.focus();
 
       if (key === "ArrowUp" && $history.length > 0) {
         $historyIndex = Math.min($history.length - 1, $historyIndex + 1);
         $input.setValue($history[$historyIndex]);
+        return;
       }
       if (key === "ArrowDown" && $history.length > 0) {
         $historyIndex = Math.max(-1, $historyIndex - 1);
@@ -81,19 +91,12 @@ export const chatComponent: ContainerComponent<{}, Mutable> = async (props) => {
         } else {
           $input.clear();
         }
+        return;
       }
 
-      if (key === "Enter") {
-        const message = $input.getValue().trim();
-        if (message.length) {
-          addMessage(message);
-          System.proxy.emit(Event.MESSAGE, {
-            message,
-          });
+      if (key === "Enter") return $sendMessage();
 
-          $input.clear();
-        }
-      }
+      if ($input.getValue().length === MAX_LENGTH) $sendMessage();
     },
     $container,
   );
