@@ -1,6 +1,11 @@
 import { getRandomString, initLog, log, waitUntil } from "shared/utils/main.ts";
 import { getChildWorker, getParentWorker } from "worker_ionic";
-import { ConfigTypes, Envs, User, WorkerProps } from "shared/types/main.ts";
+import {
+  ConfigTypes,
+  Envs,
+  PrivateUser,
+  WorkerProps,
+} from "shared/types/main.ts";
 import { getServerSocket, ServerClient } from "socket_ionic";
 import { PROXY_CLIENT_EVENT_WHITELIST } from "shared/consts/main.ts";
 import { ProxyEvent } from "shared/enums/main.ts";
@@ -11,7 +16,7 @@ const serverWorker = getChildWorker();
 // This maps client id to user id (1:1), to prevent the connection of the user multiple times
 // The userId cannot be duplicated as value, if so, it would be the same user connected twice
 let clientIdUserIdMap: Record<string, string> = {};
-let userList: User[] = [];
+let userList: PrivateUser[] = [];
 let userClientMap: Record<string, ServerClient> = {};
 
 let server;
@@ -124,7 +129,9 @@ serverWorker.on("start", async ({ config, envs }: WorkerProps) => {
     clientIdUserIdMap[client.id] = foundUser.id;
 
     userClientMap[foundUser.clientId] = client;
-    serverWorker.emit(ProxyEvent.$USER_JOINED, { user: foundUser });
+    serverWorker.emit(ProxyEvent.$USER_JOINED, {
+      data: { user: foundUser },
+    });
 
     client.on(ProxyEvent.$USER_DATA, ({ event, message }) => {
       // Disconnect client if tries to send events outside the whitelist
@@ -135,7 +142,10 @@ serverWorker.on("start", async ({ config, envs }: WorkerProps) => {
         message,
       });
     });
-    client.emit(ProxyEvent.WELCOME, { datetime: Date.now() });
+    client.emit(ProxyEvent.WELCOME, {
+      datetime: Date.now(),
+      user: foundUser,
+    });
   });
   server.on("disconnected", (client: ServerClient) => {
     const userId = clientIdUserIdMap[client.id];
@@ -148,7 +158,7 @@ serverWorker.on("start", async ({ config, envs }: WorkerProps) => {
     userList = userList.filter((user) => user.clientId !== client.id);
     firewallWorker.emit("userList", { userList });
 
-    serverWorker.emit(ProxyEvent.$USER_LEFT, { user: foundUser });
+    serverWorker.emit(ProxyEvent.$USER_LEFT, { data: { user: foundUser } });
   });
   log(`Proxy started on :${config.proxy.port}`);
 });

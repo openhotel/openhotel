@@ -14,3 +14,5 @@ export * from "./cors.utils.ts";
 export * from "./envs.utils.ts";
 export * from "./color.utils.ts";
 export * from "./users.utils.ts";
+export * from "./pathfinding.utils.ts";
+export * from "./point.utils.ts";

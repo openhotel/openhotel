@@ -1,5 +1,5 @@
-import { rooms } from "./rooms";
-import { users } from "./users";
+import { rooms } from "./rooms.ts";
+import { users } from "./users.ts";
 
 export const game = () => {
   return {

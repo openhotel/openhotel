@@ -1,11 +1,12 @@
 import { WorkerParent } from "worker_ionic";
-import { User } from "shared/types/main.ts";
+import { PrivateUser } from "shared/types/main.ts";
 import { loadInternalEvents, eventList } from "./events/main.ts";
 import { ProxyEvent } from "shared/enums/main.ts";
 import { log } from "shared/utils/main.ts";
+import { Server } from "modules/server/main.ts";
 
 type WorkerProps = {
-  user: User;
+  user: PrivateUser;
   event: ProxyEvent;
   message: any;
 };
@@ -39,7 +40,10 @@ export const proxy = () => {
           );
           if (!foundEvent) return;
 
-          foundEvent.func({ user, data: message });
+          foundEvent.func({
+            user: Server.game.users.get({ id: user.id }),
+            data: message,
+          });
         } catch (e) {
           log(e);
         }

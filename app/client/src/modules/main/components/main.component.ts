@@ -29,7 +29,9 @@ export const mainComponent: ContainerComponent = async () => {
   let $scene;
   let $offlinePage;
 
-  System.proxy.on(Event.WELCOME, async () => {
+  System.proxy.on(Event.WELCOME, async ({ user }) => {
+    System.game.users.setCurrentUser(user);
+
     $homePage && $homePage.$destroy();
     $offlinePage && $offlinePage.$destroy();
     $scene && $scene.$destroy();

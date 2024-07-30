@@ -84,7 +84,8 @@ proxyWorker.on(
       if (!foundHandshake) return client.close();
 
       client.on("session", async ({ sessionId, token, username }) => {
-        if (!sessionId || !token || !username) return client.close();
+        if (((!sessionId || !token) && !envs.isDevelopment) || !username)
+          return client.close();
 
         const usersConfig: UsersConfig = await getUsersConfig();
         if (

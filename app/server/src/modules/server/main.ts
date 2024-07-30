@@ -1,18 +1,16 @@
 import { Envs, ConfigTypes } from "shared/types/main.ts";
 import { WorkerParent } from "worker_ionic";
 import { proxy } from "./proxy/main.ts";
-import { users } from "./users.ts";
+import { game } from "./game/main.ts";
 import { log } from "shared/utils/main.ts";
-import { rooms } from "./rooms.ts";
+import { tasks } from "./tasks.ts";
 
 export const Server = (() => {
   let $config: ConfigTypes;
   let $envs: Envs;
 
   let $proxy = proxy();
-
-  let $users = users();
-  let $rooms = rooms();
+  let $tasks = tasks();
 
   const load = ({
     config,
@@ -29,6 +27,7 @@ export const Server = (() => {
     $envs = envs;
 
     $proxy.load(proxyWorker);
+    $tasks.load();
   };
 
   const getConfig = () => $config;
@@ -40,9 +39,10 @@ export const Server = (() => {
     getConfig,
     getEnvs,
 
-    users: $users,
-    rooms: $rooms,
+    game: game(),
 
     proxy: $proxy,
+
+    tasks: $tasks,
   };
 })();
