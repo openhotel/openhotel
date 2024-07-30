@@ -14,12 +14,16 @@ export const messageEvent: ProxyEventType<{ message: string }> = {
     const room = Server.game.rooms.get(user.getRoom());
     if (!room) return;
 
+    //Prevent spam the same message
+    if (user.getLastMessage() === message) return;
+
     log(`[${room.getId()}] ${user.getUsername()}: ${message}`);
 
     const isOp = (await getUsersConfig()).op.users.includes(user.getUsername());
 
     if (isOp && executeCommand({ message, user })) return;
 
+    user.setLastMessage(message);
     room.emit(ProxyEvent.MESSAGE, {
       userId: user.getId(),
       message,
