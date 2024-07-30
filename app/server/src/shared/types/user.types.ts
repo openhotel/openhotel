@@ -47,6 +47,9 @@ export type UserMutable = {
   setPathfinding: (path: Point3d[]) => void;
   getPathfinding: () => Point3d[];
 
+  setLastMessage: (message: string) => void;
+  getLastMessage: () => string;
+
   getObject: () => User;
 
   disconnect: () => void;
