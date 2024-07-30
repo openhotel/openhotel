@@ -192,29 +192,30 @@ export const humanComponent: ContainerComponent<Props, Mutable> = async ({
           return resolve();
       }
 
-      // If zIndex is positive, change before update
-      if (incrementX + incrementZ > 0 || forceZIndex)
-        await $container.setZIndex(
-          $isometricPosition.x +
-            $isometricPosition.z +
-            incrementX +
-            incrementZ +
-            forceZIndex,
-        );
+      const position = {
+        ...$isometricPosition,
+        x: $isometricPosition.x + incrementX,
+        z: $isometricPosition.z + incrementZ,
+      };
+
+      await setIsometricPosition(position);
 
       let repeatIndex = 0;
       const repeatEvery = MOVEMENT_BETWEEN_TILES_DURATION / TILE_WIDTH;
 
       //Check if animation is rejected
-      const rejectInterval = setInterval(() => {
-        if (lastMovementAnimationId === null) reject();
-      }, repeatEvery);
 
+      let accDelta = 0;
+      let a = performance.now();
       lastMovementAnimationId = System.tasks.add({
-        type: TickerQueue.REPEAT,
-        repeatEvery,
-        repeats: TILE_WIDTH,
-        onFunc: () => {
+        type: TickerQueue.DURATION,
+        duration: MOVEMENT_BETWEEN_TILES_DURATION,
+        onFunc: (delta) => {
+          accDelta += delta;
+
+          if (accDelta < repeatEvery) return;
+          accDelta -= repeatEvery;
+
           $container.setPositionX(positionXFunc);
 
           let targetY = 0;
@@ -236,19 +237,7 @@ export const humanComponent: ContainerComponent<Props, Mutable> = async ({
           repeatIndex++;
         },
         onDone: async () => {
-          clearInterval(rejectInterval);
-
-          const position = {
-            ...$isometricPosition,
-            x: $isometricPosition.x + incrementX,
-            z: $isometricPosition.z + incrementZ,
-          };
-
-          if ($isCurrent)
-            System.proxy.emit(Event.NEXT_PATH_TILE, {
-              position,
-            });
-          await setIsometricPosition(position);
+          console.log(performance.now() - a, accDelta);
           resolve();
         },
       });

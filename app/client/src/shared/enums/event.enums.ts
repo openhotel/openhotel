@@ -13,7 +13,6 @@ export enum Event {
   STOP_HUMAN = "stop-human",
 
   POINTER_TILE = "pointer-tile",
-  NEXT_PATH_TILE = "next-path-tile",
 
   MESSAGE = "message",
   TYPING_START = "typing-start",

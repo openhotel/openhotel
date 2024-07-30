@@ -12,8 +12,8 @@ import {
   textSprite,
 } from "@tulib/tulip";
 import { getPositionFromIsometricPosition, getTilePolygon } from "shared/utils";
-import { Event, RoomPointEnum, SpriteSheetEnum } from "shared/enums";
-import { Point3d, RoomPoint } from "shared/types";
+import { Direction, Event, RoomPointEnum, SpriteSheetEnum } from "shared/enums";
+import { RoomPoint } from "shared/types";
 import { System } from "system";
 import { humanComponent, HumanMutable } from "modules/human";
 import { TILE_Y_HEIGHT, WALL_DOOR_HEIGHT, WALL_HEIGHT } from "shared/consts";
@@ -85,38 +85,23 @@ export const roomComponent: ContainerComponent<Props, Mutable> = async ({
         humanList = humanList.filter((human) => human.getUser().id !== userId);
       },
     );
-    let currentHumanPathMap: Record<string, Point3d[]> = {};
     removeOnMoveHuman = System.proxy.on<any>(
       Event.MOVE_HUMAN,
-      async ({ userId, path }) => {
+      async ({ userId, position }) => {
         const human = humanList.find((human) => human.getUser().id === userId);
-        human.cancelMovement();
-        currentHumanPathMap[userId] = path;
 
-        let currentStep = currentHumanPathMap[userId].shift();
-        await human.setIsometricPosition(currentStep);
-
-        const takeStep = async () => {
-          const nextStep = currentHumanPathMap[userId].shift();
-          if (!nextStep) return;
-
-          const direction = getDirection(currentStep, nextStep);
-          currentStep = nextStep;
-          try {
-            await human.moveTo(direction);
-            await takeStep();
-          } catch (e) {
-            console.warn(e);
-          }
-        };
-        await takeStep();
+        const direction = getDirection(human.getIsometricPosition(), position);
+        console.log(
+          human.getIsometricPosition(),
+          position,
+          Direction[direction],
+        );
+        await human.moveTo(direction);
       },
     );
     removeOnStopHuman = System.proxy.on<any>(
       Event.STOP_HUMAN,
-      async ({ userId }) => {
-        currentHumanPathMap[userId] = [];
-      },
+      async ({ userId }) => {},
     );
 
     const roomSize = {
