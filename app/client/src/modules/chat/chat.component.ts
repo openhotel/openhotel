@@ -24,7 +24,8 @@ export const chatComponent: ContainerComponent<{}, Mutable> = async (props) => {
   let $history: string[] = [];
   let $historyIndex = -1;
 
-  const setTyping = () => {
+  const setTyping = (text: string) => {
+    if (text.startsWith("/")) return;
     if (!$typing) {
       System.proxy.emit(Event.TYPING_START, {});
     }
@@ -44,8 +45,8 @@ export const chatComponent: ContainerComponent<{}, Mutable> = async (props) => {
     width: 100,
     maxLength: MAX_LENGTH,
 
-    onTextChange: () => {
-      setTyping();
+    onTextChange: (_, postText) => {
+      setTyping(postText);
       return true;
     },
   });
