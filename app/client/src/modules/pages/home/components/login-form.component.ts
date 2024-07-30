@@ -32,7 +32,7 @@ export const loginFormComponent: ContainerComponent = async (props) => {
     defaultValue:
       localStorage.getItem("username") ||
       (isDevelopment() ? `player_${getRandomString(8)}` : ""),
-    onTextChange: (username) => {
+    onTextChange: (_, username) => {
       localStorage.setItem("username", username);
       return true;
     },
