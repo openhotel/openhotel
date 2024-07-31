@@ -36,10 +36,11 @@ export const gameComponent: ContainerComponent = () => {
   });
   $container.add(chat);
 
-  const $preview = previewComponent();
-  $preview.setPosition({ // TODO: props
-    x: windowBounds.width - PREVIEW_PADDING.x,
-    y: windowBounds.height - PREVIEW_PADDING.y,
+  const $preview = previewComponent({
+    position: {
+      x: windowBounds.width - PREVIEW_PADDING.x,
+      y: windowBounds.height - PREVIEW_PADDING.y,
+    },
   });
   $container.add($preview);
 

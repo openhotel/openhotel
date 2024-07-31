@@ -18,13 +18,14 @@ type Action = {
   action: () => void;
 };
 
-export const previewComponent: ContainerComponent = async () => {
-  const $container = await container({
+export const previewComponent: ContainerComponent = (props) => {
+  const $container = container({
     visible: false,
     zIndex: 1_000,
+    ...props,
   });
 
-  const $name = await textSprite({
+  const $name = textSprite({
     spriteSheet: SpriteSheetEnum.DEFAULT_FONT,
     text: "",
     verticalAlign: VerticalAlign.MIDDLE,
@@ -47,7 +48,7 @@ export const previewComponent: ContainerComponent = async () => {
     },
   });
 
-  const $tile = await sprite({
+  const $tile = sprite({
     spriteSheet: SpriteSheetEnum.ROOM,
     texture: "tile",
     eventMode: EventMode.NONE,
@@ -62,7 +63,7 @@ export const previewComponent: ContainerComponent = async () => {
     tint: 0x1e1e1e,
   });
 
-  let $sprite = await sprite({
+  let $sprite = sprite({
     texture: null,
     eventMode: EventMode.NONE,
     position: {
@@ -73,7 +74,7 @@ export const previewComponent: ContainerComponent = async () => {
 
   $container.add($name, $tile, $sprite);
 
-  const $actions = await container();
+  const $actions = container();
 
   // TODO: actions by type
   // Test actions
@@ -112,12 +113,12 @@ export const previewComponent: ContainerComponent = async () => {
     },
   ];
 
-  const $renderButtons = async (actions: Action[]) => {
+  const $renderButtons = (actions: Action[]) => {
     $actions.remove(...$actions.getChildren());
 
     for (let action of actions) {
       const index = actions.indexOf(action);
-      const $button = await buttonComponent({
+      const $button = buttonComponent({
         text: action.name,
         width: 25,
         position: {
@@ -139,7 +140,7 @@ export const previewComponent: ContainerComponent = async () => {
   $container.on(DisplayObjectEvent.ADDED, () => {
     removeOnShowPreview = System.events.on(
       SystemEvent.SHOW_PREVIEW,
-      async ({
+      ({
         type,
         texture,
         name,
@@ -149,16 +150,14 @@ export const previewComponent: ContainerComponent = async () => {
         name: string;
       }) => {
         // if (data?.spriteSheet) await $sprite.setSpriteSheet(data.spriteSheet);
-        await $sprite.setTexture(texture);
-        await $name.setText(name);
+        $sprite.setTexture(texture);
+        $name.setText(name);
 
-        await $sprite.setTint(type === "human" ? 0xefcfb1 : null);
+        $sprite.setTint(type === "human" ? 0xefcfb1 : null);
 
-        await $renderButtons(
-          type === "furniture" ? furnitureActions : humanActions,
-        );
+        $renderButtons(type === "furniture" ? furnitureActions : humanActions);
 
-        await $container.setVisible(true);
+        $container.setVisible(true);
       },
     );
 
