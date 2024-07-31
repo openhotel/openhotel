@@ -3,7 +3,7 @@ import { getConfig } from "shared/utils/config.utils";
 
 export const getCaptchaComponent = (
   onComplete?: (captchaId: string) => void,
-): Promise<CaptchaMutable | null> => {
+): CaptchaMutable | null => {
   const { enabled, id: captchaId, url: captchaUrl } = getConfig().captcha;
   return enabled && captchaId && captchaUrl
     ? captchaComponent({ captchaId, captchaUrl, onComplete })

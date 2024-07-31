@@ -9,8 +9,9 @@ export const Server = (() => {
   let $config: ConfigTypes;
   let $envs: Envs;
 
-  let $proxy = proxy();
-  let $tasks = tasks();
+  const $proxy = proxy();
+  const $tasks = tasks();
+  const $game = game();
 
   const load = ({
     config,
@@ -28,6 +29,7 @@ export const Server = (() => {
 
     $proxy.load(proxyWorker);
     $tasks.load();
+    $game.load();
   };
 
   const getConfig = () => $config;
@@ -39,7 +41,7 @@ export const Server = (() => {
     getConfig,
     getEnvs,
 
-    game: game(),
+    game: $game,
 
     proxy: $proxy,
 

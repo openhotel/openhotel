@@ -6,7 +6,7 @@ export const tasks = () => {
 
   const load = () => {
     $ticker.onTick(({ delta }) => $queue.tick(delta));
-    $ticker.load({ ticks: 60 });
+    $ticker.load({ ticks: 20 });
     $ticker.start();
   };
 

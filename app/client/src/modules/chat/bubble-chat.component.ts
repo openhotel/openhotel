@@ -20,10 +20,10 @@ type Mutable = {
   getHumanList: () => HumanMutable[];
 };
 
-export const bubbleChatComponent: ContainerComponent<Props, Mutable> = async ({
+export const bubbleChatComponent: ContainerComponent<Props, Mutable> = ({
   room,
 }) => {
-  const $container = await container<{}, Mutable>({
+  const $container = container<{}, Mutable>({
     sortableChildren: true,
     eventMode: EventMode.NONE,
     position: {
@@ -39,48 +39,50 @@ export const bubbleChatComponent: ContainerComponent<Props, Mutable> = async ({
 
   const removeOnMessage = System.proxy.on<any>(
     Event.MESSAGE,
-    async ({ userId, message: text, color }) => {
+    ({ userId, message: text, color }) => {
       const human = room
         .getHumanList()
         .find((human) => human.getUser().id === userId);
       const position = human.getPosition();
 
-      const message = await messageComponent({
+      const message = messageComponent({
         username: human.getUser().username,
         color,
         message: text,
       });
-      const messageBounds = message.getBounds();
-      jumpHeight = messageBounds.height + 1;
+      message.on(DisplayObjectEvent.LOADED, () => {
+        const messageBounds = message.getBounds();
+        jumpHeight = messageBounds.height + 1;
 
-      let targetY = Math.round(position.y / jumpHeight) * jumpHeight;
+        let targetY = Math.round(position.y / jumpHeight) * jumpHeight;
 
-      if (messages.length > 0) {
-        const lastMessage = messages[messages.length - 1];
-        const { y: lastMessageY } = lastMessage.getPosition();
-        targetY = Math.max(targetY, lastMessageY);
-      }
-      moveMessages();
+        if (messages.length > 0) {
+          const lastMessage = messages[messages.length - 1];
+          const { y: lastMessageY } = lastMessage.getPosition();
+          targetY = Math.max(targetY, lastMessageY);
+        }
+        moveMessages();
 
-      let targetX = position.x - messageBounds.width / 2 + TILE_SIZE.width / 2;
+        let targetX =
+          position.x - messageBounds.width / 2 + TILE_SIZE.width / 2;
 
-      const containerGlobalPosition = $container.getGlobalPosition();
+        const containerGlobalPosition = $container.getGlobalPosition();
 
-      const globalMessageXPosition = containerGlobalPosition.x + targetX;
+        const globalMessageXPosition = containerGlobalPosition.x + targetX;
 
-      const overflowRightX =
-        global.getApplication().window.getBounds().width -
-        (globalMessageXPosition + messageBounds.width);
+        const overflowRightX =
+          global.getApplication().window.getBounds().width -
+          (globalMessageXPosition + messageBounds.width);
 
-      if (0 > overflowRightX) targetX += overflowRightX;
-      if (0 > globalMessageXPosition) targetX -= globalMessageXPosition;
+        if (0 > overflowRightX) targetX += overflowRightX;
+        if (0 > globalMessageXPosition) targetX -= globalMessageXPosition;
 
-      await message.setPosition({
-        x: targetX,
-        y: targetY,
+        message.setPosition({
+          x: targetX,
+          y: targetY,
+        });
+        messages.push(message);
       });
-
-      messages.push(message);
       $container.add(message);
     },
   );

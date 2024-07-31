@@ -117,10 +117,10 @@
   resolved "https://registry.yarnpkg.com/@esbuild/win32-x64/-/win32-x64-0.20.2.tgz#9c907b21e30a52db959ba4f80bb01a0cc403d5cc"
   integrity sha512-N49X4lJX27+l9jbLKSqZ6bKNjzQvHaT8IIFUy+YIqmXQdjYCToGWwOItDrfby14c78aDd5NHQl29xingXfCdLQ==
 
-"@oh/queue@npm:@jsr/oh__queue@1.1.0":
-  version "1.1.0"
-  resolved "https://npm.jsr.io/~/11/@jsr/oh__queue/1.1.0.tgz#C88933BB3BDAB3E57E60B2408B2F4362FF207555"
-  integrity sha512-tUELQMGtYFN1etAxKd8XL83GX5yZZVMc/i6tE3k9/pXVNoIMqgzmtp4yAb5KmWT4bu1Pi+2n0flOOOt9qXXxlg==
+"@oh/queue@npm:@jsr/oh__queue@1.1.1":
+  version "1.1.1"
+  resolved "https://npm.jsr.io/~/11/@jsr/oh__queue/1.1.1.tgz#21717C8844623F337C8A8DC8DD4989C4476EDBA2"
+  integrity sha512-SDf3Qa+GXDTIeCHV1uMdzTt79clsIGC44Uf3SiDI846WrYqTXC3QcSMfFcOupQksCsWTrBPk/NXKHfRkYZvOhQ==
 
 "@pixi/colord@^2.9.6":
   version "2.9.6"
@@ -214,10 +214,10 @@
   resolved "https://registry.yarnpkg.com/@rollup/rollup-win32-x64-msvc/-/rollup-win32-x64-msvc-4.18.0.tgz#5d694d345ce36b6ecf657349e03eb87297e68da4"
   integrity sha512-UOo5FdvOL0+eIVTgS4tIdbW+TtnBLWg1YBCcU2KWM7nuNwRz9bksDX1bekJJCpu25N1DVWaCwnT39dVQxzqS8g==
 
-"@tulib/tulip@0.9.13":
-  version "0.9.13"
-  resolved "https://registry.yarnpkg.com/@tulib/tulip/-/tulip-0.9.13.tgz#6020b1771ae5ef9be8d589071fd679660dfe05c0"
-  integrity sha512-Zlu5UppYyzlMmyTSCm1Jcn6tqkN5kVQhDVzO5bQ5tRXNwhm77T/y19WLeLIJ73ooF/7QLHXunhqNvoUwW8zXpA==
+"@tulib/tulip@0.10.0":
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/@tulib/tulip/-/tulip-0.10.0.tgz#bdbe4efecad4bf5bba8d8d1ea1fb24f2fb0fdab8"
+  integrity sha512-rYUIaQ4NCcqlaP8+7XX+mxdG00aqOReOYLwWa72pvfhqIMyyX2KeMs4UbL3sXwtEBeFyWcwH/Fhupq6xFyIN0g==
   dependencies:
     "@tulib/vite-tulip-plugin" "1.0.8"
     howler "2.2.4"

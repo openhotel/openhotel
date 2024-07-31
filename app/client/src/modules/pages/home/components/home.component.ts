@@ -11,13 +11,13 @@ import { SpriteSheetEnum } from "shared/enums";
 import { registerFormComponent } from "./register-form.component";
 import { loginFormComponent } from "./login-form.component";
 
-export const homeComponent: ContainerComponent = async () => {
-  const $container = await container();
+export const homeComponent: ContainerComponent = () => {
+  const $container = container();
 
-  const $registerForm = await registerFormComponent({ visible: false });
-  const $loginForm = await loginFormComponent();
+  const $registerForm = registerFormComponent({ visible: false });
+  const $loginForm = loginFormComponent();
 
-  const $switchText = await textSprite({
+  const $switchText = textSprite({
     text: "Register instead",
     spriteSheet: SpriteSheetEnum.DEFAULT_FONT,
     position: {

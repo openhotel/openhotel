@@ -20,12 +20,10 @@ type Props = {
   reconnect: () => {};
 };
 
-export const offlineComponent: ContainerComponent<Props> = async ({
-  reconnect,
-}) => {
-  const $container = await container({});
+export const offlineComponent: ContainerComponent<Props> = ({ reconnect }) => {
+  const $container = container({});
 
-  const $background = await graphics({
+  const $background = graphics({
     type: GraphicType.RECTANGLE,
     width: 0,
     height: 0,
@@ -46,7 +44,7 @@ export const offlineComponent: ContainerComponent<Props> = async ({
   renderBackground();
 
   {
-    const $card = await container({
+    const $card = container({
       position: {
         x: 300,
         y: 100,
@@ -54,13 +52,14 @@ export const offlineComponent: ContainerComponent<Props> = async ({
     });
     $container.add($card);
 
-    const $human = await sprite({
+    const $human = sprite({
       texture: TextureEnum.HUMAN_DEV,
     });
-    await $human.setPivotX($human.getBounds().width);
-    await $human.setTint(0xefcfb1);
-
-    const $title = await textSprite({
+    $human.on(DisplayObjectEvent.LOADED, () => {
+      $human.setPivotX($human.getBounds().width);
+      $human.setTint(0xefcfb1);
+    });
+    const $title = textSprite({
       text: "You have been disconnected from the server!",
       spriteSheet: SpriteSheetEnum.DEFAULT_FONT,
       color: 0xffffff,
@@ -69,9 +68,11 @@ export const offlineComponent: ContainerComponent<Props> = async ({
         y: 80,
       },
     });
-    await $title.setPivotX($title.getBounds().width / 2);
+    $title.on(DisplayObjectEvent.LOADED, () => {
+      $title.setPivotX($title.getBounds().width / 2);
+    });
 
-    const $button = await buttonComponent({
+    const $button = buttonComponent({
       text: "Return to the hotel",
       width: 100,
       position: {
@@ -80,7 +81,7 @@ export const offlineComponent: ContainerComponent<Props> = async ({
       },
       eventMode: EventMode.STATIC,
     });
-    await $button.setPivotX($button.getBounds().width / 2);
+    $button.setPivotX($button.getBounds().width / 2);
 
     if (isDevelopment()) {
       const interval = setInterval(reconnect, 1000);

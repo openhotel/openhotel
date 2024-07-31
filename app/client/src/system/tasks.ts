@@ -1,7 +1,7 @@
-import { queue, windowTicker, QueueItemProps } from "@oh/queue";
+import { queue, ticker, QueueItemProps } from "@oh/queue";
 
 export const tasks = () => {
-  const $ticker = windowTicker();
+  const $ticker = ticker();
   const $queue = queue({
     onPause: $ticker.pause,
     onResume: $ticker.start,

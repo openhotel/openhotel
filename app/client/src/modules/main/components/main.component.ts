@@ -5,14 +5,14 @@ import { Event, SpriteSheetEnum } from "shared/enums";
 import { homeComponent, offlineComponent, sceneComponent } from "modules/pages";
 import { getVersion, isDevelopment } from "shared/utils";
 
-export const mainComponent: ContainerComponent = async () => {
-  const $container = await container();
+export const mainComponent: ContainerComponent = () => {
+  const $container = container();
 
-  const $pageContainer = await container();
-  const $logo = await logoComponent();
-  await $logo.setPosition({ x: 8, y: 8 });
+  const $pageContainer = container();
+  const $logo = logoComponent();
+  $logo.setPosition({ x: 8, y: 8 });
 
-  let $version = await textSprite({
+  let $version = textSprite({
     text: isDevelopment() ? "DEVELOPMENT" : `${getVersion()}-alpha`,
     spriteSheet: SpriteSheetEnum.DEFAULT_FONT,
     color: 0xffffff,
@@ -23,7 +23,7 @@ export const mainComponent: ContainerComponent = async () => {
   });
   $container.add($logo, $version, $pageContainer);
 
-  const $homePage = await homeComponent();
+  const $homePage = homeComponent();
   $pageContainer.add($homePage);
 
   let $scene;
@@ -36,21 +36,21 @@ export const mainComponent: ContainerComponent = async () => {
     $offlinePage && $offlinePage.$destroy();
     $scene && $scene.$destroy();
 
-    $scene = await sceneComponent();
+    $scene = sceneComponent();
     $pageContainer.add($scene);
   });
 
   const reconnect = () => System.proxy.refreshSession();
 
-  System.proxy.on(Event.DISCONNECTED, async () => {
-    $offlinePage = await offlineComponent({
+  System.proxy.on(Event.DISCONNECTED, () => {
+    $offlinePage = offlineComponent({
       reconnect,
     });
     $pageContainer.add($offlinePage);
   });
 
   try {
-    await reconnect();
+    reconnect();
   } catch (e) {
     console.warn("Cannot refresh session, you need to log in!");
   }

@@ -3,10 +3,10 @@ import { System } from "system";
 import { Event } from "shared/enums";
 import { gameComponent } from "./game.component";
 
-export const sceneComponent: ContainerComponent = async () => {
-  const $container = await container();
+export const sceneComponent: ContainerComponent = () => {
+  const $container = container();
 
-  let $game = await gameComponent();
+  let $game = gameComponent();
   $container.add($game);
 
   System.proxy.emit(Event.JOIN_ROOM, {
