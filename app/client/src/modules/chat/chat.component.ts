@@ -12,11 +12,11 @@ import { inputComponent } from "shared/components";
 import { MAX_MESSAGES_HISTORY } from "shared/consts";
 
 type Mutable = {
-  setInputWidth: (width: number) => Promise<void>;
+  setInputWidth: (width: number) => void;
 };
 
-export const chatComponent: ContainerComponent<{}, Mutable> = async (props) => {
-  const $container = await container<{}, Mutable>(props);
+export const chatComponent: ContainerComponent<{}, Mutable> = (props) => {
+  const $container = container<{}, Mutable>(props);
 
   let $typing = false;
   let $typingTimeout: number;
@@ -39,7 +39,7 @@ export const chatComponent: ContainerComponent<{}, Mutable> = async (props) => {
   };
 
   const MAX_LENGTH = 64;
-  const $input = await inputComponent({
+  const $input = inputComponent({
     placeholder: "Click here or press 'c' to write a message",
     horizontalAlign: HorizontalAlign.LEFT,
     width: 100,
@@ -50,8 +50,10 @@ export const chatComponent: ContainerComponent<{}, Mutable> = async (props) => {
       return true;
     },
   });
-
-  $input.focus();
+  $input.on(DisplayObjectEvent.LOADED, () => {
+    $input.focus();
+    $container.$emit(DisplayObjectEvent.LOADED, {});
+  });
 
   const setInputWidth = (width: number) => $input.setSize({ width, height: 7 });
 
@@ -96,14 +98,19 @@ export const chatComponent: ContainerComponent<{}, Mutable> = async (props) => {
       }
 
       if (key === "Enter") return $sendMessage();
-
-      if ($input.getValue().length === MAX_LENGTH) $sendMessage();
     },
     $container,
+  );
+  const removeOnKeyDown = global.events.on(
+    KeyEvent.KEY_DOWN,
+    ({ key }: KeyboardEvent) => {
+      if ($input.getValue().length === MAX_LENGTH) $sendMessage();
+    },
   );
 
   $container.on(DisplayObjectEvent.DESTROYED, () => {
     removeOnKeyUp();
+    removeOnKeyDown();
   });
 
   return $container.getComponent(chatComponent, {

@@ -8,8 +8,8 @@ import {
 } from "@tulib/tulip";
 import { SpriteSheetEnum, TextureEnum } from "shared/enums";
 
-export const typingBubbleComponent: ContainerComponent = async (props) => {
-  const $container = await container({
+export const typingBubbleComponent: ContainerComponent = (props) => {
+  const $container = container({
     ...props,
     visible: false,
   });
@@ -17,7 +17,7 @@ export const typingBubbleComponent: ContainerComponent = async (props) => {
   const width = 13;
   const height = 10;
 
-  const $bubbleBackground = await sliceSprite({
+  const $bubbleBackground = sliceSprite({
     texture: TextureEnum.CHAT_ACTION_BACKGROUND,
     leftWidth: 8,
     topHeight: 3,
@@ -26,7 +26,7 @@ export const typingBubbleComponent: ContainerComponent = async (props) => {
     width,
     height,
   });
-  const $bubbleOver = await sliceSprite({
+  const $bubbleOver = sliceSprite({
     texture: TextureEnum.CHAT_ACTION_OVER,
     leftWidth: 8,
     topHeight: 3,
@@ -36,7 +36,7 @@ export const typingBubbleComponent: ContainerComponent = async (props) => {
     height,
     tint: 0x000000,
   });
-  const $text = await textSprite({
+  const $text = textSprite({
     color: 0x000000,
     spriteSheet: SpriteSheetEnum.DEFAULT_FONT,
     text: "...",

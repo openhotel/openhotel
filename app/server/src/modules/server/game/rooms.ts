@@ -11,6 +11,7 @@ import { Grid } from "@oh/pathfinding";
 import { Server } from "modules/server/main.ts";
 import { getInterpolatedPath } from "shared/utils/pathfinding.utils.ts";
 import { getRandomNumber } from "shared/utils/random.utils.ts";
+import { isPoint3dEqual } from "shared/utils/point.utils.ts";
 
 export const rooms = () => {
   let roomMap: Record<string, Room> = {};
@@ -79,6 +80,20 @@ export const rooms = () => {
 
     const getPoint = (position: Point3d) => room.layout[position.z][position.x];
 
+    const isPointFree = (position: Point3d, userId?: string) => {
+      if (room.layout[position.z][position.x] === RoomPointEnum.EMPTY)
+        return false;
+      if (room.layout[position.z][position.x] === RoomPointEnum.SPAWN)
+        return true;
+
+      return Boolean(
+        !getUsers()
+          .filter(($userId) => !userId || $userId !== userId)
+          .map(($userId) => Server.game.users.get({ id: $userId }))
+          .find((user) => isPoint3dEqual(user.getPosition(), position)),
+      );
+    };
+
     const findPath = (start: Point3d, end: Point3d, userId?: string) => {
       const roomLayout = structuredClone(room.layout);
       const roomUsers = getUsers().map((userId) =>
@@ -92,6 +107,7 @@ export const rooms = () => {
         const position = user.getPosition();
         //if spawn, ignore
         if (getPoint(position) === RoomPointEnum.SPAWN) continue;
+
         //if is occupied, set as empty
         roomLayout[position.z][position.x] = RoomPointEnum.EMPTY;
       }
@@ -104,7 +120,7 @@ export const rooms = () => {
         .findPath(
           { x: start.x, y: start.z },
           { x: end.x, y: end.z },
-          { maxJumpCost: 5 },
+          { maxJumpCost: 5, jumpBlockedDiagonals: true },
         )
         .map(({ x, y }) => ({ x, y: 0, z: y }));
       return getInterpolatedPath(path);
@@ -132,6 +148,7 @@ export const rooms = () => {
       getUsers,
 
       getPoint,
+      isPointFree,
       findPath,
 
       getObject,
