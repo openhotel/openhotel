@@ -3,10 +3,12 @@ import { Event, global } from "@tulib/tulip";
 import { isDevelopment } from "shared/utils";
 import { game } from "system/game";
 import { tasks } from "system/tasks";
+import { events } from "./events";
 
 export const System = (() => {
   const $proxy = proxy();
   const $game = game();
+  const $events = events();
 
   const $tasks = tasks();
 
@@ -37,6 +39,7 @@ export const System = (() => {
     proxy: $proxy,
     game: $game,
     tasks: $tasks,
+    events: $events,
 
     load,
   };

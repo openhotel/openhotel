@@ -1,5 +1,5 @@
 import { sprite, SpriteComponent } from "@tulib/tulip";
-import { TextureEnum } from "shared/enums/texture.enum";
+import { TextureEnum } from "shared/enums";
 
 export const logoComponent: SpriteComponent = () => {
   const $logo = sprite({

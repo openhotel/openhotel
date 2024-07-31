@@ -13,7 +13,7 @@ import {
 import { SpriteSheetEnum } from "shared/enums";
 import { buttonComponent } from "shared/components";
 import { Size } from "shared/types";
-import { TextureEnum } from "shared/enums/texture.enum";
+import { TextureEnum } from "shared/enums";
 import { isDevelopment } from "shared/utils";
 
 type Props = {
