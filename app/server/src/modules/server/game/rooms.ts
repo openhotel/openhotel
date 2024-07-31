@@ -120,7 +120,7 @@ export const rooms = () => {
         .findPath(
           { x: start.x, y: start.z },
           { x: end.x, y: end.z },
-          { maxJumpCost: 5 },
+          { maxJumpCost: 5, jumpBlockedDiagonals: true },
         )
         .map(({ x, y }) => ({ x, y: 0, z: y }));
       return getInterpolatedPath(path);
