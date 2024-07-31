@@ -5,4 +5,5 @@ export type FindPathConfig = {
   maxIterations?: number;
   travelCosts?: Float32Array;
   travelHeuristic?: Float32Array;
+  jumpBlockedDiagonals?: boolean;
 };
