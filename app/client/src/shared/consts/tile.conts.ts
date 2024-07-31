@@ -7,4 +7,4 @@ export const TILE_SIZE: Size = {
 
 export const TILE_WIDTH = 12;
 export const TILE_Y_HEIGHT = TILE_WIDTH * 1.5;
-export const MOVEMENT_BETWEEN_TILES_DURATION = 400;
+export const MOVEMENT_BETWEEN_TILES_DURATION = 500;

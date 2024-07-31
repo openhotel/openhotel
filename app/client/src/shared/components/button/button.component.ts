@@ -13,14 +13,12 @@ type InputProps = {
   text: string;
 };
 
-export const buttonComponent: ContainerComponent<InputProps> = async (
-  props,
-) => {
-  const $container = await container<InputProps>(props);
+export const buttonComponent: ContainerComponent<InputProps> = (props) => {
+  const $container = container<InputProps>(props);
 
   const { text, width } = $container.getProps();
 
-  const $button = await textSprite({
+  const $button = textSprite({
     spriteSheet: SpriteSheetEnum.DEFAULT_FONT,
     color: 0xffffff,
     eventMode: EventMode.STATIC,

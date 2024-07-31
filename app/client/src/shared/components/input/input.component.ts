@@ -2,6 +2,7 @@ import {
   container,
   ContainerComponent,
   Cursor,
+  DisplayObjectEvent,
   EventMode,
   HorizontalAlign,
   inputTextSprite,
@@ -22,17 +23,17 @@ type InputProps = {
 
 type InputMutable = {
   getValue: () => string;
-  setValue: (text: string) => Promise<void>;
+  setValue: (text: string) => void;
   clear: () => void;
   focus: () => void;
-  setSize: (size: Size) => Promise<void>;
+  setSize: (size: Size) => void;
 };
 
-export const inputComponent: ContainerComponent<
-  InputProps,
-  InputMutable
-> = async ({ onTextChange, ...props }) => {
-  const $container = await container<InputProps, InputMutable>(props);
+export const inputComponent: ContainerComponent<InputProps, InputMutable> = ({
+  onTextChange,
+  ...props
+}) => {
+  const $container = container<InputProps, InputMutable>(props);
 
   const {
     placeholder,
@@ -43,7 +44,7 @@ export const inputComponent: ContainerComponent<
     defaultValue,
   } = $container.getProps();
 
-  const $input = await inputTextSprite({
+  const $input = inputTextSprite({
     spriteSheet: SpriteSheetEnum.DEFAULT_FONT,
     color: 0x000000,
     eventMode: EventMode.STATIC,
@@ -71,6 +72,10 @@ export const inputComponent: ContainerComponent<
     verticalAlign: VerticalAlign.BOTTOM,
     onTextChange,
     withMask: true,
+  });
+
+  $input.on(DisplayObjectEvent.LOADED, () => {
+    $container.$emit(DisplayObjectEvent.LOADED, {});
   });
 
   $container.add($input);

@@ -1,6 +1,8 @@
 import { Point3d, PrivateUser, User, UserMutable } from "shared/types/main.ts";
 import { Server } from "modules/server/main.ts";
 import { ProxyEvent } from "shared/enums/event.enum.ts";
+import { MOVEMENT_BETWEEN_TILES_DURATION } from "shared/consts/tiles.consts.ts";
+import { TickerQueue } from "@oh/queue";
 
 export const users = () => {
   let $privateUserMap: Record<string, PrivateUser> = {};
@@ -8,6 +10,62 @@ export const users = () => {
 
   let $userPathfindingMap: Record<string, Point3d[]> = {};
   let $userLastMessageMap: Record<string, string> = {};
+
+  const load = () => {
+    Server.tasks.add({
+      type: TickerQueue.REPEAT,
+      repeatEvery: MOVEMENT_BETWEEN_TILES_DURATION,
+      onFunc: () => {
+        for (const userId of Object.keys($userPathfindingMap)) {
+          const user = get({ id: userId });
+          const room = Server.game.rooms.get(user.getRoom());
+
+          let nextPosition = $userPathfindingMap[userId].shift();
+          if (!nextPosition) return;
+          const targetPosition =
+            $userPathfindingMap[userId][$userPathfindingMap[userId].length - 1];
+
+          //check if targetPosition exists and if it's not free
+          if (targetPosition && !room.isPointFree(nextPosition, user.getId())) {
+            //calc new pathfinding
+            const pathfinding = room.findPath(
+              user.getPosition(),
+              targetPosition,
+              user.getId(),
+            );
+            //discard first (current position)
+            pathfinding.shift();
+
+            //Path is not possible
+            if (!pathfinding.length) {
+              delete $userPathfindingMap[userId];
+              return;
+            }
+
+            //set new pathfinding and next position
+            $userPathfindingMap[userId] = pathfinding;
+            nextPosition = $userPathfindingMap[userId].shift();
+          }
+
+          //check if next position is free
+          if (!room.isPointFree(nextPosition, user.getId())) {
+            delete $userPathfindingMap[userId];
+            return;
+          }
+
+          //set next position (reserve it)
+          user.setPosition(nextPosition);
+          room.emit(ProxyEvent.MOVE_HUMAN, {
+            userId: user.getId(),
+            position: nextPosition,
+          });
+
+          //check if there's no more pathfinding
+          if (!targetPosition) delete $userPathfindingMap[userId];
+        }
+      },
+    });
+  };
 
   const $getUser = (user: User): UserMutable => {
     if (!user) return null;
@@ -35,8 +93,9 @@ export const users = () => {
 
     const setPathfinding = (path: Point3d[]) => {
       $userPathfindingMap[user.id] = path;
+      if (!path.length) delete $userPathfindingMap[user.id];
     };
-    const getPathfinding = (): Point3d[] => $userPathfindingMap[user.id];
+    const getPathfinding = (): Point3d[] => $userPathfindingMap[user.id] || [];
 
     const setLastMessage = (message: string) => {
       $userLastMessageMap[user.id] = message;
@@ -116,6 +175,7 @@ export const users = () => {
   const getAll = () => Object.values($userMap).map($getUser);
 
   return {
+    load,
     add,
     remove,
     get,
