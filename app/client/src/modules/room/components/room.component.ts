@@ -87,13 +87,7 @@ export const roomComponent: ContainerComponent<Props, Mutable> = ({
       ({ userId, position }) => {
         const human = humanList.find((human) => human.getUser().id === userId);
 
-        const direction = getDirection(human.getIsometricPosition(), position);
-        console.log(
-          human.getIsometricPosition(),
-          position,
-          Direction[direction],
-        );
-        human.moveTo(direction);
+        human.moveTo(position);
       },
     );
     removeOnStopHuman = System.proxy.on<any>(

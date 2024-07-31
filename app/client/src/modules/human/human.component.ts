@@ -9,7 +9,10 @@ import {
   sprite,
   textSprite,
 } from "@tulib/tulip";
-import { getPositionFromIsometricPosition } from "shared/utils";
+import {
+  getPositionFromIsometricPosition,
+  isDirectionToFront,
+} from "shared/utils";
 import { Point3d, User } from "shared/types";
 import { Direction, Event, SpriteSheetEnum } from "shared/enums";
 import {
@@ -22,6 +25,7 @@ import { System } from "../../system";
 import { typingBubbleComponent } from "../chat";
 import { TextureEnum } from "shared/enums/texture.enum";
 import { TickerQueue } from "@oh/queue";
+import { getDirection } from "shared/utils/direction.utils";
 
 type Props = {
   user: User;
@@ -30,7 +34,7 @@ type Props = {
 type Mutable = {
   setIsometricPosition: (position: Point3d) => void;
   getIsometricPosition: () => Point3d;
-  moveTo: (direction: Direction) => Promise<void>;
+  moveTo: (position: Point3d) => Promise<void>;
   cancelMovement: () => void;
   getUser: () => { id: string; username: string };
 };
@@ -119,16 +123,13 @@ export const humanComponent: ContainerComponent<Props, Mutable> = ({
 
   $container.add($typingBubble);
 
-  const setIsometricPosition = (position: Point3d) => {
-    $isometricPosition = position;
-
-    $isometricPosition.y = System.game.rooms.getYFromPoint(
-      $isometricPosition,
-      true,
-    );
+  const $calcIsometricPosition = () => {
     $container.setPosition(
       getPositionFromIsometricPosition($isometricPosition),
     );
+    $calcZIndex();
+  };
+  const $calcZIndex = () => {
     $container.setZIndex(
       Math.ceil($isometricPosition.x) +
         Math.ceil($isometricPosition.z) -
@@ -136,131 +137,122 @@ export const humanComponent: ContainerComponent<Props, Mutable> = ({
     );
   };
 
+  const setIsometricPosition = (position: Point3d) => {
+    $isometricPosition = position;
+
+    $calcIsometricPosition();
+  };
+  const getIsometricPosition = () => $isometricPosition;
+
   let lastMovementAnimationId;
   //TODO Move this to a util
-  const moveTo = (direction: Direction) => {
+  const moveTo = (point: Point3d) => {
+    System.tasks.remove(lastMovementAnimationId);
+
+    const direction = getDirection(getIsometricPosition(), point);
+
+    let positionXFunc: (x: number) => number = (x) => x;
+    let positionYFunc: (y: number) => number = (y) => y;
+
+    let incrementX = 0;
+    let incrementZ = 0;
+    //@ts-ignore
+    let forceZIndex = 0;
+
+    $direction = direction;
+    switch (direction) {
+      case Direction.NORTH:
+        positionXFunc = (x) => x - 2;
+        positionYFunc = (y) => y - 1;
+        incrementX--;
+        break;
+      case Direction.NORTH_EAST:
+        positionYFunc = (y) => y - 2;
+        incrementX -= 1;
+        incrementZ -= 1;
+        break;
+      case Direction.EAST:
+        positionXFunc = (x) => x + 2;
+        positionYFunc = (y) => y - 1;
+        incrementZ--;
+        break;
+      case Direction.SOUTH_EAST:
+        positionXFunc = (x) => x + 4;
+        incrementX += 1;
+        incrementZ -= 1;
+        // fixes passing below tile
+        forceZIndex = 1;
+        break;
+      case Direction.SOUTH:
+        positionXFunc = (x) => x + 2;
+        positionYFunc = (y) => y + 1;
+        incrementX++;
+        break;
+      case Direction.SOUTH_WEST:
+        positionYFunc = (y) => y + 2;
+        incrementX += 1;
+        incrementZ += 1;
+        break;
+      case Direction.WEST:
+        positionXFunc = (x) => x - 2;
+        positionYFunc = (y) => y + 1;
+        incrementZ++;
+        break;
+      case Direction.NORTH_WEST:
+        positionXFunc = (x) => x - 4;
+        incrementX -= 1;
+        incrementZ += 1;
+        // fixes passing below tile
+        forceZIndex = 1;
+        break;
+    }
+
+    let repeatIndex = 0;
+    const repeatEvery = MOVEMENT_BETWEEN_TILES_DURATION / TILE_WIDTH;
+
+    let targetIsometricPosition = {
+      x: $isometricPosition.x + incrementX,
+      z: $isometricPosition.z + incrementZ,
+      y: 0,
+    };
+    targetIsometricPosition.y = System.game.rooms.getYFromPoint(
+      targetIsometricPosition,
+      true,
+    );
+    const lastY = $isometricPosition.y;
+    $isometricPosition = targetIsometricPosition;
+
+    if (isDirectionToFront(direction)) $calcZIndex();
+
     return new Promise<void>(async (resolve, reject) => {
-      let positionXFunc: (x: number) => number = (x) => x;
-      let positionYFunc: (y: number) => number = (y) => y;
-
-      let incrementX = 0;
-      let incrementZ = 0;
-      //@ts-ignore
-      let forceZIndex = 0;
-
-      $direction = direction;
-      switch (direction) {
-        case Direction.NORTH:
-          positionXFunc = (x) => x - 2;
-          positionYFunc = (y) => y - 1;
-          incrementX--;
-          break;
-        case Direction.NORTH_EAST:
-          positionYFunc = (y) => y - 2;
-          incrementX -= 1;
-          incrementZ -= 1;
-          break;
-        case Direction.EAST:
-          positionXFunc = (x) => x + 2;
-          positionYFunc = (y) => y - 1;
-          incrementZ--;
-          break;
-        case Direction.SOUTH_EAST:
-          positionXFunc = (x) => x + 4;
-          incrementX += 1;
-          incrementZ -= 1;
-          // fixes passing below tile
-          forceZIndex = 1;
-          break;
-        case Direction.SOUTH:
-          positionXFunc = (x) => x + 2;
-          positionYFunc = (y) => y + 1;
-          incrementX++;
-          break;
-        case Direction.SOUTH_WEST:
-          positionYFunc = (y) => y + 2;
-          incrementX += 1;
-          incrementZ += 1;
-          break;
-        case Direction.WEST:
-          positionXFunc = (x) => x - 2;
-          positionYFunc = (y) => y + 1;
-          incrementZ++;
-          break;
-        case Direction.NORTH_WEST:
-          positionXFunc = (x) => x - 4;
-          incrementX -= 1;
-          incrementZ += 1;
-          // fixes passing below tile
-          forceZIndex = 1;
-          break;
-        default:
-          return resolve();
-      }
-
-      const position = {
-        ...$isometricPosition,
-        x: $isometricPosition.x + incrementX,
-        z: $isometricPosition.z + incrementZ,
-      };
-
-      setIsometricPosition(position);
-
-      let repeatIndex = 0;
-      const repeatEvery = MOVEMENT_BETWEEN_TILES_DURATION / TILE_WIDTH;
-
-      //Check if animation is rejected
-
-      let accDelta = 0;
-      let a = performance.now();
       lastMovementAnimationId = System.tasks.add({
-        type: TickerQueue.DURATION,
-        duration: MOVEMENT_BETWEEN_TILES_DURATION,
+        type: TickerQueue.REPEAT,
+        repeatEvery: repeatEvery,
+        repeats: TILE_WIDTH,
         onFunc: (delta) => {
-          accDelta += delta;
-
-          if (accDelta < repeatEvery) return;
-          accDelta -= repeatEvery;
-
-          $container.setPositionX(positionXFunc);
-
           let targetY = 0;
           //Check if it's at the middle of the index to change to the nex Y
-          if (repeatIndex === TILE_WIDTH / 2) {
-            targetY =
-              System.game.rooms.getYFromPoint(
-                {
-                  x: $isometricPosition.x + incrementX,
-                  z: $isometricPosition.z + incrementZ,
-                },
-                true,
-              ) - $isometricPosition.y;
-          }
+          if (repeatIndex === TILE_WIDTH / 2)
+            targetY = targetIsometricPosition.y - lastY;
+
+          $container.setPositionX(positionXFunc);
           $container.setPositionY(
             (y) => positionYFunc(y) - targetY * TILE_Y_HEIGHT,
           );
-
           repeatIndex++;
         },
         onDone: () => {
-          console.log(performance.now() - a, accDelta);
+          $calcIsometricPosition();
           resolve();
         },
       });
     });
   };
 
-  const cancelMovement = () => {
-    console.log("cancelMovement");
-    System.tasks.remove(lastMovementAnimationId);
-    lastMovementAnimationId = null;
-  };
-
   return $container.getComponent(humanComponent, {
     setIsometricPosition,
-    getIsometricPosition: () => $isometricPosition,
+    getIsometricPosition,
     moveTo,
-    cancelMovement,
     getUser: () => user,
   });
 };

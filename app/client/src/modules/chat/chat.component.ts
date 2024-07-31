@@ -98,14 +98,19 @@ export const chatComponent: ContainerComponent<{}, Mutable> = (props) => {
       }
 
       if (key === "Enter") return $sendMessage();
-
-      if ($input.getValue().length === MAX_LENGTH) $sendMessage();
     },
     $container,
+  );
+  const removeOnKeyDown = global.events.on(
+    KeyEvent.KEY_DOWN,
+    ({ key }: KeyboardEvent) => {
+      if ($input.getValue().length === MAX_LENGTH) $sendMessage();
+    },
   );
 
   $container.on(DisplayObjectEvent.DESTROYED, () => {
     removeOnKeyUp();
+    removeOnKeyDown();
   });
 
   return $container.getComponent(chatComponent, {

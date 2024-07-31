@@ -26,9 +26,9 @@ export type RoomMutable = {
   addUser: (user: User) => void;
   removeUser: (user: User) => void;
   getUsers: () => string[];
-  setUserLockedPoints: (userId: string, points: Point3d[]) => void;
 
   getPoint: (point: Point3d) => RoomPoint;
+  isPointFree: (point: Point3d, userId?: string) => boolean;
   findPath: (start: Point3d, endPoint: Point3d, userId?: string) => Point3d[];
 
   getObject: () => Room;

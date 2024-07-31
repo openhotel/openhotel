@@ -11,11 +11,11 @@ import { Grid } from "@oh/pathfinding";
 import { Server } from "modules/server/main.ts";
 import { getInterpolatedPath } from "shared/utils/pathfinding.utils.ts";
 import { getRandomNumber } from "shared/utils/random.utils.ts";
+import { isPoint3dEqual } from "shared/utils/point.utils.ts";
 
 export const rooms = () => {
   let roomMap: Record<string, Room> = {};
   let roomUserMap: Record<string, string[]> = {};
-  let roomUserLockedPointsMap: Record<string, Record<string, Point3d[]>> = {};
 
   const $getRoom = (room: Room): RoomMutable => {
     const getId = () => room.id;
@@ -53,7 +53,6 @@ export const rooms = () => {
       }
 
       roomUserMap[room.id].push($user.getId());
-      roomUserLockedPointsMap[room.id][user.id] = [];
     };
     const removeUser = (user: User) => {
       const $user = Server.game.users.get({ id: user.id });
@@ -66,7 +65,6 @@ export const rooms = () => {
       roomUserMap[room.id] = roomUserMap[room.id].filter(
         (userId) => userId !== $userId,
       );
-      delete roomUserLockedPointsMap[room.id][$userId];
 
       //Remove user from internal "room"
       Server.proxy.$emit(ProxyEvent.$REMOVE_ROOM, {
@@ -79,11 +77,22 @@ export const rooms = () => {
       emit(ProxyEvent.REMOVE_HUMAN, { userId: $user.getId() });
     };
     const getUsers = () => roomUserMap[room.id];
-    const setUserLockedPoints = (userId: string, points: Point3d[]) => {
-      roomUserLockedPointsMap[room.id][userId] = points;
-    };
 
     const getPoint = (position: Point3d) => room.layout[position.z][position.x];
+
+    const isPointFree = (position: Point3d, userId?: string) => {
+      if (room.layout[position.z][position.x] === RoomPointEnum.EMPTY)
+        return false;
+      if (room.layout[position.z][position.x] === RoomPointEnum.SPAWN)
+        return true;
+
+      return Boolean(
+        !getUsers()
+          .filter(($userId) => !userId || $userId !== userId)
+          .map(($userId) => Server.game.users.get({ id: $userId }))
+          .find((user) => isPoint3dEqual(user.getPosition(), position)),
+      );
+    };
 
     const findPath = (start: Point3d, end: Point3d, userId?: string) => {
       const roomLayout = structuredClone(room.layout);
@@ -99,10 +108,6 @@ export const rooms = () => {
         //if spawn, ignore
         if (getPoint(position) === RoomPointEnum.SPAWN) continue;
 
-        // set as empty the locked points too
-        const userLockedPoints = roomUserLockedPointsMap[room.id][userId] || [];
-        for (const lockedPoint of userLockedPoints)
-          roomLayout[lockedPoint.z][lockedPoint.x] = RoomPointEnum.EMPTY;
         //if is occupied, set as empty
         roomLayout[position.z][position.x] = RoomPointEnum.EMPTY;
       }
@@ -141,9 +146,9 @@ export const rooms = () => {
       addUser,
       removeUser,
       getUsers,
-      setUserLockedPoints,
 
       getPoint,
+      isPointFree,
       findPath,
 
       getObject,
@@ -205,7 +210,6 @@ export const rooms = () => {
       spawnPoint: $getRoomSpawnPoint(layout),
     };
     roomUserMap[room.id] = [];
-    roomUserLockedPointsMap[room.id] = {};
   };
 
   const get = (roomId: string): RoomMutable | null => $getRoom(roomMap[roomId]);

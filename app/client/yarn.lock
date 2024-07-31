@@ -117,10 +117,10 @@
   resolved "https://registry.yarnpkg.com/@esbuild/win32-x64/-/win32-x64-0.20.2.tgz#9c907b21e30a52db959ba4f80bb01a0cc403d5cc"
   integrity sha512-N49X4lJX27+l9jbLKSqZ6bKNjzQvHaT8IIFUy+YIqmXQdjYCToGWwOItDrfby14c78aDd5NHQl29xingXfCdLQ==
 
-"@oh/queue@npm:@jsr/oh__queue@1.1.0":
-  version "1.1.0"
-  resolved "https://npm.jsr.io/~/11/@jsr/oh__queue/1.1.0.tgz#C88933BB3BDAB3E57E60B2408B2F4362FF207555"
-  integrity sha512-tUELQMGtYFN1etAxKd8XL83GX5yZZVMc/i6tE3k9/pXVNoIMqgzmtp4yAb5KmWT4bu1Pi+2n0flOOOt9qXXxlg==
+"@oh/queue@npm:@jsr/oh__queue@1.1.1":
+  version "1.1.1"
+  resolved "https://npm.jsr.io/~/11/@jsr/oh__queue/1.1.1.tgz#21717C8844623F337C8A8DC8DD4989C4476EDBA2"
+  integrity sha512-SDf3Qa+GXDTIeCHV1uMdzTt79clsIGC44Uf3SiDI846WrYqTXC3QcSMfFcOupQksCsWTrBPk/NXKHfRkYZvOhQ==
 
 "@pixi/colord@^2.9.6":
   version "2.9.6"
