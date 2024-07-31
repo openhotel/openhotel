@@ -12,8 +12,14 @@ import {
   textSprite,
 } from "@tulib/tulip";
 import { getPositionFromIsometricPosition, getTilePolygon } from "shared/utils";
-import { Event, RoomPointEnum, SpriteSheetEnum } from "shared/enums";
-import { RoomPoint } from "shared/types";
+import {
+  Event,
+  RoomPointEnum,
+  SpriteSheetEnum,
+  SystemEvent,
+  TextureEnum,
+} from "shared/enums";
+import { Point3d, RoomPoint } from "shared/types";
 import { System } from "system";
 import { humanComponent, HumanMutable } from "modules/human";
 import { TILE_Y_HEIGHT, WALL_DOOR_HEIGHT, WALL_HEIGHT } from "shared/consts";
@@ -283,6 +289,27 @@ export const roomComponent: ContainerComponent<Props, Mutable> = ({
         $container.add(pol);
       }
     }
+
+    // todo: remove test
+    const $test = sprite({
+      texture: TextureEnum.FRAME_P,
+      eventMode: EventMode.STATIC,
+      position: getPositionFromIsometricPosition({ x: 1, y: 3, z: 7 }),
+      zIndex: 2000,
+      withContext: true,
+    });
+    global.context.onNoContext(() =>
+      System.events.emit(SystemEvent.HIDE_PREVIEW, {}),
+    );
+    $test.on(DisplayObjectEvent.POINTER_TAP, () => {
+      System.events.emit(SystemEvent.SHOW_PREVIEW, {
+        type: "furniture",
+        texture: TextureEnum.FRAME_P,
+        name: "P.24",
+      });
+    });
+    $container.add($test);
+    // ---
   });
 
   return $container.getComponent(roomComponent, {

@@ -14,16 +14,21 @@ import {
   isDirectionToFront,
 } from "shared/utils";
 import { Point3d, User } from "shared/types";
-import { Direction, Event, SpriteSheetEnum } from "shared/enums";
+import {
+  Direction,
+  Event,
+  SpriteSheetEnum,
+  SystemEvent,
+  TextureEnum,
+} from "shared/enums";
 import {
   MOVEMENT_BETWEEN_TILES_DURATION,
   TILE_SIZE,
   TILE_WIDTH,
   TILE_Y_HEIGHT,
 } from "shared/consts";
-import { System } from "../../system";
+import { System } from "system";
 import { typingBubbleComponent } from "../chat";
-import { TextureEnum } from "shared/enums/texture.enum";
 import { TickerQueue } from "@oh/queue";
 import { getDirection } from "shared/utils/direction.utils";
 
@@ -45,7 +50,7 @@ export const humanComponent: ContainerComponent<Props, Mutable> = ({
   user,
 }) => {
   const $container = container<Props, Mutable>();
-  $container.setEventMode(EventMode.NONE);
+  $container.setEventMode(EventMode.STATIC);
 
   //@ts-ignore
   const $isCurrent = System.game.users.getCurrentUser().id === user.id;
@@ -251,6 +256,14 @@ export const humanComponent: ContainerComponent<Props, Mutable> = ({
       });
     });
   };
+
+  $container.on(DisplayObjectEvent.POINTER_TAP, () => {
+    System.events.emit(SystemEvent.SHOW_PREVIEW, {
+      type: "human",
+      texture: TextureEnum.HUMAN_DEV,
+      name: user.username,
+    });
+  });
 
   return $container.getComponent(humanComponent, {
     setIsometricPosition,
