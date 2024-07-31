@@ -139,7 +139,10 @@ export const humanComponent: ContainerComponent<Props, Mutable> = ({
 
   const setIsometricPosition = (position: Point3d) => {
     $isometricPosition = position;
-
+    $isometricPosition.y = System.game.rooms.getYFromPoint(
+      $isometricPosition,
+      true,
+    );
     $calcIsometricPosition();
   };
   const getIsometricPosition = () => $isometricPosition;

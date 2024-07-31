@@ -12,13 +12,12 @@ import {
   textSprite,
 } from "@tulib/tulip";
 import { getPositionFromIsometricPosition, getTilePolygon } from "shared/utils";
-import { Direction, Event, RoomPointEnum, SpriteSheetEnum } from "shared/enums";
+import { Event, RoomPointEnum, SpriteSheetEnum } from "shared/enums";
 import { RoomPoint } from "shared/types";
 import { System } from "system";
 import { humanComponent, HumanMutable } from "modules/human";
 import { TILE_Y_HEIGHT, WALL_DOOR_HEIGHT, WALL_HEIGHT } from "shared/consts";
 import { wallComponent } from "modules/room/components/wall.component";
-import { getDirection } from "shared/utils/direction.utils";
 
 type Props = {
   layout: RoomPoint[][];
@@ -89,10 +88,6 @@ export const roomComponent: ContainerComponent<Props, Mutable> = ({
 
         human.moveTo(position);
       },
-    );
-    removeOnStopHuman = System.proxy.on<any>(
-      Event.STOP_HUMAN,
-      async ({ userId }) => {},
     );
 
     const roomSize = {
