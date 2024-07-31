@@ -11,7 +11,7 @@ import {
 } from "@tulib/tulip";
 import { getPositionFromIsometricPosition } from "shared/utils";
 import { Point3d, User } from "shared/types";
-import { Direction, Event, SpriteSheetEnum } from "shared/enums";
+import { Direction, Event, SpriteSheetEnum, SystemEvent } from "shared/enums";
 import {
   MOVEMENT_BETWEEN_TILES_DURATION,
   TILE_SIZE,
@@ -20,7 +20,7 @@ import {
 } from "shared/consts";
 import { System } from "../../system";
 import { typingBubbleComponent } from "../chat";
-import { TextureEnum } from "shared/enums/texture.enum";
+import { TextureEnum } from "shared/enums";
 import { TickerQueue } from "@oh/queue";
 
 type Props = {
@@ -41,7 +41,7 @@ export const humanComponent: ContainerComponent<Props, Mutable> = async ({
   user,
 }) => {
   const $container = await container<Props, Mutable>();
-  await $container.setEventMode(EventMode.NONE);
+  await $container.setEventMode(EventMode.STATIC);
 
   const $isCurrent = System.game.users.getCurrentUser().id === user.id;
 
@@ -260,6 +260,14 @@ export const humanComponent: ContainerComponent<Props, Mutable> = async ({
     System.tasks.remove(lastMovementAnimationId);
     lastMovementAnimationId = null;
   };
+
+  $container.on(DisplayObjectEvent.POINTER_TAP, () => {
+    System.events.emit(SystemEvent.SHOW_PREVIEW, {
+      type: "human",
+      texture: TextureEnum.HUMAN_DEV,
+      name: user.username,
+    });
+  });
 
   return $container.getComponent(humanComponent, {
     setIsometricPosition,

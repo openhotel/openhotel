@@ -6,8 +6,7 @@ import {
   textSprite,
   VerticalAlign,
 } from "@tulib/tulip";
-import { SpriteSheetEnum } from "shared/enums";
-import { TextureEnum } from "shared/enums/texture.enum";
+import { SpriteSheetEnum, TextureEnum } from "shared/enums";
 
 export const typingBubbleComponent: ContainerComponent = async (props) => {
   const $container = await container({

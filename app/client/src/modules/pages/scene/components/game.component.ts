@@ -8,13 +8,18 @@ import {
 import { bubbleChatComponent, chatComponent } from "modules/chat";
 import { Event } from "shared/enums";
 import { System } from "system";
-import { roomComponent } from "modules/room";
+import { roomComponent, previewComponent } from "modules/room";
 import { getRandomNumber } from "shared/utils";
 import { Size } from "shared/types";
 
 const CHAT_PADDING = {
   x: 12,
   y: 15,
+};
+
+const PREVIEW_PADDING = {
+  x: 80,
+  y: 180,
 };
 
 export const gameComponent: ContainerComponent = async () => {
@@ -32,9 +37,21 @@ export const gameComponent: ContainerComponent = async () => {
   $container.add(chat);
   await chat.setInputWidth(windowBounds.width - CHAT_PADDING.x * 2);
 
+  const $preview = await previewComponent();
+  await $preview.setPosition({
+    x: windowBounds.width - PREVIEW_PADDING.x,
+    y: windowBounds.height - PREVIEW_PADDING.y,
+  });
+  $container.add($preview);
+
   global.events.on(TulipEvent.RESIZE, async (size: Size) => {
-    await chat.setPositionY(size.height - 15);
-    await chat.setInputWidth(size.width - 24);
+    await chat.setPositionY(size.height - CHAT_PADDING.y);
+    await chat.setInputWidth(size.width - CHAT_PADDING.x * 2);
+
+    await $preview.setPosition({
+      x: size.width - PREVIEW_PADDING.x,
+      y: size.height - PREVIEW_PADDING.y,
+    });
   });
 
   let $room;
