@@ -8,15 +8,11 @@ import {
   textSprite,
   VerticalAlign,
 } from "@tulib/tulip";
-import { SpriteSheetEnum, SystemEvent } from "../../../shared/enums";
-import { System } from "../../../system";
-import { buttonComponent } from "../../../shared/components";
-
-type Action = {
-  name: string;
-  icon?: unknown;
-  action: () => void;
-};
+import { SpriteSheetEnum, SystemEvent } from "shared/enums";
+import { System } from "system";
+import { buttonComponent } from "shared/components";
+import { Preview, PreviewAction } from "shared/types";
+import { PREVIEW_ACTIONS } from "shared/consts";
 
 export const previewComponent: ContainerComponent = (props) => {
   const $container = container({
@@ -76,60 +72,24 @@ export const previewComponent: ContainerComponent = (props) => {
 
   const $actions = container();
 
-  // TODO: actions by type
-  // Test actions
-  const humanActions: Action[] = [
-    {
-      name: "+ Friend",
-      icon: null,
-      action: () => console.log("+ Friend"),
-    },
-    {
-      name: "Dance",
-      icon: null,
-      action: () => console.log("Dance"),
-    },
-  ];
-  const furnitureActions: Action[] = [
-    {
-      name: "Move",
-      icon: null,
-      action: () => console.log("move"),
-    },
-    {
-      name: "Rotate",
-      icon: null,
-      action: () => console.log("Rotate"),
-    },
-    {
-      name: "Pick up",
-      icon: null,
-      action: () => console.log("Pick up"),
-    },
-    {
-      name: "Use",
-      icon: null,
-      action: () => console.log("Use"),
-    },
-  ];
-
-  const $renderButtons = (actions: Action[]) => {
+  const $renderButtons = (actions: PreviewAction[]) => {
     $actions.remove(...$actions.getChildren());
 
-    for (let action of actions) {
-      const index = actions.indexOf(action);
-      const $button = buttonComponent({
-        text: action.name,
-        width: 25,
-        position: {
-          x: 35 - 45 * index,
-          y: 125,
-        },
-        eventMode: EventMode.STATIC,
-      });
-      $button.on(DisplayObjectEvent.POINTER_TAP, action.action);
-      $actions.add($button);
-    }
+    $actions.add(
+      ...actions.map((action, index) => {
+        const $button = buttonComponent({
+          text: action.name,
+          width: 25,
+          position: {
+            x: 35 - 45 * index,
+            y: 125,
+          },
+          eventMode: EventMode.STATIC,
+        });
+        $button.on(DisplayObjectEvent.POINTER_TAP, action.action);
+        return $button;
+      }),
+    );
   };
 
   $container.add($actions);
@@ -140,22 +100,14 @@ export const previewComponent: ContainerComponent = (props) => {
   $container.on(DisplayObjectEvent.ADDED, () => {
     removeOnShowPreview = System.events.on(
       SystemEvent.SHOW_PREVIEW,
-      ({
-        type,
-        texture,
-        name,
-      }: {
-        type: "furniture" | "human";
-        texture: string;
-        name: string;
-      }) => {
-        // if (data?.spriteSheet) await $sprite.setSpriteSheet(data.spriteSheet);
-        $sprite.setTexture(texture);
+      async ({ type, texture, spriteSheet, name }: Preview) => {
+        if (spriteSheet) await $sprite.setSpriteSheet(spriteSheet);
+        await $sprite.setTexture(texture);
         $name.setText(name);
 
         $sprite.setTint(type === "human" ? 0xefcfb1 : null);
 
-        $renderButtons(type === "furniture" ? furnitureActions : humanActions);
+        $renderButtons(PREVIEW_ACTIONS[type]);
 
         $container.setVisible(true);
       },

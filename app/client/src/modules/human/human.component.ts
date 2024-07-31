@@ -14,14 +14,20 @@ import {
   isDirectionToFront,
 } from "shared/utils";
 import { Point3d, User } from "shared/types";
-import { Direction, Event, SpriteSheetEnum, SystemEvent, TextureEnum } from "shared/enums";
+import {
+  Direction,
+  Event,
+  SpriteSheetEnum,
+  SystemEvent,
+  TextureEnum,
+} from "shared/enums";
 import {
   MOVEMENT_BETWEEN_TILES_DURATION,
   TILE_SIZE,
   TILE_WIDTH,
   TILE_Y_HEIGHT,
 } from "shared/consts";
-import { System } from "../../system";
+import { System } from "system";
 import { typingBubbleComponent } from "../chat";
 import { TickerQueue } from "@oh/queue";
 import { getDirection } from "shared/utils/direction.utils";

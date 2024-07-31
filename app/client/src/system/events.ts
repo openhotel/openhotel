@@ -1,4 +1,4 @@
-import { SystemEvent } from "../shared/enums";
+import { SystemEvent } from "shared/enums";
 
 export const events = () => {
   let eventFunctionMap: Record<SystemEvent | string, Function[]> = {};
