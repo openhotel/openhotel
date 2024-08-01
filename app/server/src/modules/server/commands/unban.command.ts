@@ -1,9 +1,10 @@
 import { getUsersConfig, writeUserConfig } from "shared/utils/users.utils.ts";
+import { Command } from "shared/types/main.ts";
 
-export const unbanCommand = {
+export const unbanCommand: Command = {
   command: "unban",
   func: async ({ args }) => {
-    const user = args[0];
+    const user = args[0] as string;
     if (!user) return;
 
     const config = await getUsersConfig();

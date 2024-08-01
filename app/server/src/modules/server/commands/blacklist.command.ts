@@ -1,5 +1,5 @@
 import { getUsersConfig, writeUserConfig } from "shared/utils/users.utils.ts";
-import { ListActions, UsersConfig } from "shared/types/main.ts";
+import { Command, ListActions, UsersConfig } from "shared/types/main.ts";
 
 const on = (config: UsersConfig) => {
   config.blacklist.active = true;
@@ -20,10 +20,10 @@ const remove = (config: UsersConfig, args: string) => {
   return config;
 };
 
-export const blacklistCommand = {
+export const blacklistCommand: Command = {
   command: "blacklist",
   func: async ({ args }) => {
-    const action: ListActions = args[0];
+    const action = args[0] as ListActions;
     if (!action) return;
 
     const command = {
