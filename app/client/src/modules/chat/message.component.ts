@@ -6,8 +6,7 @@ import {
   sliceSprite,
   textSprite,
 } from "@tulib/tulip";
-import { SpriteSheetEnum } from "shared/enums";
-import { TextureEnum } from "shared/enums";
+import { SpriteSheetEnum, TextureEnum } from "shared/enums";
 
 type Mutable = {};
 
