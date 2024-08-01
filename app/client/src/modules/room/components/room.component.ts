@@ -22,7 +22,12 @@ import {
 import { RoomPoint } from "shared/types";
 import { System } from "system";
 import { humanComponent, HumanMutable } from "modules/human";
-import { TILE_Y_HEIGHT, WALL_DOOR_HEIGHT, WALL_HEIGHT } from "shared/consts";
+import {
+  STEP_TILE_HEIGHT,
+  TILE_Y_HEIGHT,
+  WALL_DOOR_HEIGHT,
+  WALL_HEIGHT,
+} from "shared/consts";
 import { wallComponent } from "modules/room/components/wall.component";
 
 type Props = {
@@ -236,7 +241,7 @@ export const roomComponent: ContainerComponent<Props, Mutable> = ({
             position,
             pivot: {
               x: 0,
-              y: TILE_Y_HEIGHT,
+              y: TILE_Y_HEIGHT - STEP_TILE_HEIGHT,
             },
           });
           $container.add(stairs);

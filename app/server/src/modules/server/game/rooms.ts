@@ -225,7 +225,7 @@ export const rooms = () => {
   };
 
   create({
-    id: "test_1",
+    id: "test_2",
     title: "Room 1",
     description: "This is a description",
     layout: [
@@ -243,7 +243,7 @@ export const rooms = () => {
   });
 
   create({
-    id: "test_0",
+    id: "test_1",
     title: "Room 2",
     description: "This is a description",
     layout: [
