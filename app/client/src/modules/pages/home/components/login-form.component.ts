@@ -82,6 +82,7 @@ export const loginFormComponent: ContainerComponent = (props) => {
 
   if (isDevelopment()) {
     try {
+      console.log(localStorage.getItem("auto-connect"));
       if (localStorage.getItem("auto-connect") === null)
         localStorage.setItem("auto-connect", "true");
 

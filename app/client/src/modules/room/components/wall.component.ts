@@ -25,34 +25,26 @@ export const wallComponent: ContainerComponent<Props> = (props) => {
     tint,
     pivot: { x: 0, y: 0 },
   });
-  top.on(DisplayObjectEvent.LOADED, () => {
-    const topHeight = top.getBounds().height;
-    const $wallHeight = height - topHeight + 2;
+  const topHeight = top.getBounds().height;
+  const $wallHeight = height - topHeight + 2;
 
-    const mid = sprite({
-      spriteSheet: SpriteSheetEnum.ROOM,
-      texture: `wall-${axis}-mid`,
-      eventMode: EventMode.NONE,
-      tint,
-      pivot: { x: 0, y: -topHeight },
-    });
-    mid.on(DisplayObjectEvent.LOADED, () => {
-      mid.getDisplayObject({ __preventWarning: true }).bounds.maxY =
-        $wallHeight;
-
-      const bottom = sprite({
-        spriteSheet: SpriteSheetEnum.ROOM,
-        texture: `wall-${axis}-bottom`,
-        eventMode: EventMode.NONE,
-        tint,
-        pivot: { x: 0, y: -topHeight - $wallHeight },
-      });
-      $container.add(bottom);
-    });
-    $container.add(mid);
+  const mid = sprite({
+    spriteSheet: SpriteSheetEnum.ROOM,
+    texture: `wall-${axis}-mid`,
+    eventMode: EventMode.NONE,
+    tint,
+    pivot: { x: 0, y: -topHeight },
   });
+  mid.getDisplayObject({ __preventWarning: true }).bounds.maxY = $wallHeight;
 
-  $container.add(top);
+  const bottom = sprite({
+    spriteSheet: SpriteSheetEnum.ROOM,
+    texture: `wall-${axis}-bottom`,
+    eventMode: EventMode.NONE,
+    tint,
+    pivot: { x: 0, y: -topHeight - $wallHeight },
+  });
+  $container.add(top, mid, bottom);
 
   return $container.getComponent(wallComponent);
 };

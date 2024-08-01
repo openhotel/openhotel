@@ -44,9 +44,7 @@ export const gameComponent: ContainerComponent = () => {
   });
   $container.add($preview);
 
-  chat.on(DisplayObjectEvent.LOADED, () => {
-    chat.setInputWidth(windowBounds.width - CHAT_PADDING.x * 2);
-  });
+  chat.setInputWidth(windowBounds.width - CHAT_PADDING.x * 2);
 
   global.events.on(TulipEvent.RESIZE, (size: Size) => {
     chat.setPositionY(size.height - CHAT_PADDING.y);
