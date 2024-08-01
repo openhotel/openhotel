@@ -19,7 +19,7 @@ import {
   SystemEvent,
   TextureEnum,
 } from "shared/enums";
-import { Point3d, RoomPoint } from "shared/types";
+import { RoomPoint } from "shared/types";
 import { System } from "system";
 import { humanComponent, HumanMutable } from "modules/human";
 import { TILE_Y_HEIGHT, WALL_DOOR_HEIGHT, WALL_HEIGHT } from "shared/consts";

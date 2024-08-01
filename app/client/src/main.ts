@@ -16,5 +16,11 @@ const app = application({
 
 System.load();
 app.load(async () => {
+  // TODO: load spritesheets & textures https://github.com/openhotel/openhotel/issues/191
+  // const spriteSheets = Object.values(SpriteSheetEnum);
+  // const textures = Object.values(TextureEnum);
+  // await global.spriteSheets.load(...spriteSheets);
+  // await global.textures.load(...textures);
+
   app.add(mainComponent());
 });
