@@ -80,16 +80,14 @@ export const humanComponent: ContainerComponent<Props, Mutable> = ({
     texture: TextureEnum.HUMAN_DEV,
   });
 
-  human.on(DisplayObjectEvent.LOADED, () => {
-    human.setTint(0xefcfb1);
+  human.setTint(0xefcfb1);
 
-    $container.add(human);
-    const bounds = human.getBounds();
-    human.setPivotX(Math.round(bounds.width / 2));
+  $container.add(human);
+  const bounds = human.getBounds();
+  human.setPivotX(Math.round(bounds.width / 2));
 
-    $container.setPivotY(bounds.height - 15);
-    $container.setPivotX(-23);
-  });
+  $container.setPivotY(bounds.height - 15);
+  $container.setPivotX(-23);
 
   let $isometricPosition: Point3d;
   //@ts-ignore

@@ -135,7 +135,7 @@ export const proxy = () => {
             return;
           }
         } else {
-          if (localStorage.getItem("auto-connect") === "false") reject();
+          if (localStorage.getItem("auto-connect") === "false") return reject();
           localStorage.setItem("auto-connect", "true");
 
           $lastUsername =

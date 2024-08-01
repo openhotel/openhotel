@@ -52,67 +52,66 @@ export const captchaComponent: ContainerComponent<
 
     $captchaId = sessionId;
 
+    await global.textures.loadRaw(sessionId, image);
     const $imageSprite = sprite({
-      texture: image,
+      texture: sessionId,
       eventMode: EventMode.STATIC,
       cursor: Cursor.CROSSHAIR,
     });
-    $imageSprite.on(DisplayObjectEvent.LOADED, () => {
-      const { width, height } = $imageSprite.getBounds();
+    const { width, height } = $imageSprite.getBounds();
 
-      const $background = graphics({
-        type: GraphicType.RECTANGLE,
-        width,
-        height,
-        tint: 0x333333,
-      });
-      const $textQuestion = textSprite({
-        spriteSheet: SpriteSheetEnum.DEFAULT_FONT,
-        text: question,
-        withMask: false,
-        size: {
-          height: 10,
-          width: 116,
-        },
-        position: {
-          x: 0,
-          y: height + 8,
-        },
-        horizontalAlign: HorizontalAlign.CENTER,
-      });
-      $captchaContainer.add($background, $textQuestion, $imageSprite);
-
-      $imageSprite.on(
-        DisplayObjectEvent.POINTER_TAP,
-        async (data: PointerEvent) => {
-          const scale = global.getApplication().getScale();
-          const globalPosition = $imageSprite.getGlobalPosition();
-          const point = {
-            x: Math.trunc(data.x / scale) - globalPosition.x,
-            y: Math.trunc(data.y / scale) - globalPosition.y,
-          };
-          const captchaResponse = await fetch(
-            `${captchaUrl}/v1/captcha/response`,
-            {
-              method: "POST",
-              body: JSON.stringify({
-                id: captchaId,
-                sessionId,
-                data: {
-                  point,
-                },
-              }),
-            },
-          ).then((response) => response.json());
-
-          if (captchaResponse !== 200) return refresh();
-
-          $textQuestion.setText("Captcha done!");
-          $imageSprite.setVisible(false);
-          onComplete?.(sessionId);
-        },
-      );
+    const $background = graphics({
+      type: GraphicType.RECTANGLE,
+      width,
+      height,
+      tint: 0x333333,
     });
+    const $textQuestion = textSprite({
+      spriteSheet: SpriteSheetEnum.DEFAULT_FONT,
+      text: question,
+      withMask: false,
+      size: {
+        height: 10,
+        width: 116,
+      },
+      position: {
+        x: 0,
+        y: height + 8,
+      },
+      horizontalAlign: HorizontalAlign.CENTER,
+    });
+    $captchaContainer.add($background, $textQuestion, $imageSprite);
+
+    $imageSprite.on(
+      DisplayObjectEvent.POINTER_TAP,
+      async (data: PointerEvent) => {
+        const scale = global.getApplication().getScale();
+        const globalPosition = $imageSprite.getGlobalPosition();
+        const point = {
+          x: Math.trunc(data.x / scale) - globalPosition.x,
+          y: Math.trunc(data.y / scale) - globalPosition.y,
+        };
+        const captchaResponse = await fetch(
+          `${captchaUrl}/v1/captcha/response`,
+          {
+            method: "POST",
+            body: JSON.stringify({
+              id: captchaId,
+              sessionId,
+              data: {
+                point,
+              },
+            }),
+          },
+        ).then((response) => response.json());
+
+        if (captchaResponse !== 200) return refresh();
+
+        $textQuestion.setText("Captcha done!");
+        $imageSprite.setVisible(false);
+        onComplete?.(sessionId);
+      },
+    );
   };
   refresh();
 

@@ -50,10 +50,7 @@ export const chatComponent: ContainerComponent<{}, Mutable> = (props) => {
       return true;
     },
   });
-  $input.on(DisplayObjectEvent.LOADED, () => {
-    $input.focus();
-    $container.$emit(DisplayObjectEvent.LOADED, {});
-  });
+  $input.focus();
 
   const setInputWidth = (width: number) => $input.setSize({ width, height: 7 });
 

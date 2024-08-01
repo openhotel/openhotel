@@ -2,7 +2,6 @@ import {
   container,
   ContainerComponent,
   Cursor,
-  DisplayObjectEvent,
   EventMode,
   HorizontalAlign,
   inputTextSprite,
@@ -72,10 +71,6 @@ export const inputComponent: ContainerComponent<InputProps, InputMutable> = ({
     verticalAlign: VerticalAlign.BOTTOM,
     onTextChange,
     withMask: true,
-  });
-
-  $input.on(DisplayObjectEvent.LOADED, () => {
-    $container.$emit(DisplayObjectEvent.LOADED, {});
   });
 
   $container.add($input);
