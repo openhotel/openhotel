@@ -10,6 +10,7 @@ import {
 import { SpriteSheetEnum } from "shared/enums";
 import { registerFormComponent } from "./register-form.component";
 import { loginFormComponent } from "./login-form.component";
+import { __ } from "shared/utils";
 
 export const homeComponent: ContainerComponent = () => {
   const $container = container();
@@ -18,7 +19,7 @@ export const homeComponent: ContainerComponent = () => {
   const $loginForm = loginFormComponent();
 
   const $switchText = textSprite({
-    text: "Register instead",
+    text: __("Register instead"),
     spriteSheet: SpriteSheetEnum.DEFAULT_FONT,
     position: {
       x: 250,
@@ -36,7 +37,9 @@ export const homeComponent: ContainerComponent = () => {
     const isRegister = $registerForm.getVisible();
     $registerForm.setVisible(!isRegister);
     $loginForm.setVisible(isRegister);
-    $switchText.setText(!isRegister ? "Login instead" : "Register instead");
+    $switchText.setText(
+      !isRegister ? __("Login instead") : __("Register instead"),
+    );
   });
 
   $container.add($switchText, $registerForm, $loginForm);
