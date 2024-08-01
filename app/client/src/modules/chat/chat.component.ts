@@ -10,6 +10,7 @@ import { System } from "system";
 import { Event } from "shared/enums";
 import { inputComponent } from "shared/components";
 import { MAX_MESSAGES_HISTORY } from "shared/consts";
+import { __ } from "shared/utils";
 
 type Mutable = {
   setInputWidth: (width: number) => void;
@@ -40,7 +41,7 @@ export const chatComponent: ContainerComponent<{}, Mutable> = (props) => {
 
   const MAX_LENGTH = 64;
   const $input = inputComponent({
-    placeholder: "Click here or press 'c' to write a message",
+    placeholder: __("Click here or press 'c' to write a message"),
     horizontalAlign: HorizontalAlign.LEFT,
     width: 100,
     maxLength: MAX_LENGTH,

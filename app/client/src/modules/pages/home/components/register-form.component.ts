@@ -11,7 +11,7 @@ import {
   loaderComponent,
 } from "shared/components";
 import { getRegisterUrl } from "shared/utils/auth.utils";
-import { getCaptchaComponent } from "shared/utils";
+import { __, getCaptchaComponent } from "shared/utils";
 
 export const registerFormComponent: ContainerComponent = (props) => {
   const $container = container({
@@ -24,14 +24,14 @@ export const registerFormComponent: ContainerComponent = (props) => {
   });
 
   const $username = inputComponent({
-    placeholder: "username",
+    placeholder: __("username"),
     horizontalAlign: HorizontalAlign.CENTER,
     width: 100,
     maxLength: 16,
     password: false,
   });
   const $password = inputComponent({
-    placeholder: "password",
+    placeholder: __("password"),
     horizontalAlign: HorizontalAlign.CENTER,
     width: 100,
     maxLength: 16,
@@ -42,7 +42,7 @@ export const registerFormComponent: ContainerComponent = (props) => {
     },
   });
   const $passwordRepeat = inputComponent({
-    placeholder: "repeat password",
+    placeholder: __("repeat password"),
     horizontalAlign: HorizontalAlign.CENTER,
     width: 100,
     maxLength: 16,
@@ -61,7 +61,7 @@ export const registerFormComponent: ContainerComponent = (props) => {
   });
 
   const $registerButton = buttonComponent({
-    text: "Register",
+    text: __("Register"),
     width: 100,
     position: {
       x: 0,

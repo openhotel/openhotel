@@ -14,7 +14,7 @@ import { SpriteSheetEnum } from "shared/enums";
 import { buttonComponent } from "shared/components";
 import { Size } from "shared/types";
 import { TextureEnum } from "shared/enums";
-import { isDevelopment } from "shared/utils";
+import { __, isDevelopment } from "shared/utils";
 
 type Props = {
   reconnect: () => {};
@@ -59,7 +59,7 @@ export const offlineComponent: ContainerComponent<Props> = ({ reconnect }) => {
     $human.setTint(0xefcfb1);
 
     const $title = textSprite({
-      text: "You have been disconnected from the server!",
+      text: __("You have been disconnected from the server!"),
       spriteSheet: SpriteSheetEnum.DEFAULT_FONT,
       color: 0xffffff,
       position: {
@@ -70,7 +70,7 @@ export const offlineComponent: ContainerComponent<Props> = ({ reconnect }) => {
     $title.setPivotX($title.getBounds().width / 2);
 
     const $button = buttonComponent({
-      text: "Return to the hotel",
+      text: __("Return to the hotel"),
       width: 100,
       position: {
         x: 0,

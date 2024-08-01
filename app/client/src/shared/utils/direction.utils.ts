@@ -19,3 +19,6 @@ export const getDirection = (
 
   return Direction.NONE;
 };
+
+export const isDirectionToFront = (direction: Direction): boolean =>
+  [Direction.SOUTH, Direction.SOUTH_WEST, Direction.WEST].includes(direction);
