@@ -123,7 +123,11 @@ export const rooms = () => {
           { maxJumpCost: 5, jumpBlockedDiagonals: true },
         )
         .map(({ x, y }) => ({ x, y: 0, z: y }));
-      return getInterpolatedPath(path);
+
+      const pathfinding = getInterpolatedPath(path);
+      //discard first (current position)
+      pathfinding.shift();
+      return pathfinding;
     };
 
     const getObject = () => roomMap[room.id];
