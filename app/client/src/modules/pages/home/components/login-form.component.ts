@@ -12,6 +12,7 @@ import {
 } from "shared/components";
 import { System } from "system";
 import {
+  __,
   getCaptchaComponent,
   getRandomString,
   isDevelopment,
@@ -28,7 +29,7 @@ export const loginFormComponent: ContainerComponent = (props) => {
   });
 
   const $username = inputComponent({
-    placeholder: "username",
+    placeholder: __("username"),
     horizontalAlign: HorizontalAlign.CENTER,
     width: 100,
     maxLength: 16,
@@ -42,7 +43,7 @@ export const loginFormComponent: ContainerComponent = (props) => {
     },
   });
   const $password = inputComponent({
-    placeholder: "password",
+    placeholder: __("password"),
     horizontalAlign: HorizontalAlign.CENTER,
     width: 100,
     maxLength: 16,
@@ -61,7 +62,7 @@ export const loginFormComponent: ContainerComponent = (props) => {
   });
 
   const $loginButton = buttonComponent({
-    text: "Login",
+    text: __("Login"),
     width: 100,
     position: {
       x: 0,

@@ -1,6 +1,6 @@
 import { application, global } from "@tulib/tulip";
 import { mainComponent } from "modules/main";
-import { isDevelopment } from "shared/utils";
+import { isDevelopment, loadLocale } from "shared/utils";
 import { System } from "system";
 import { SpriteSheetEnum, TextureEnum } from "shared/enums";
 
@@ -21,6 +21,7 @@ app.load(async () => {
   const textures = Object.values(TextureEnum);
   await global.spriteSheets.load(...spriteSheets);
   await global.textures.load(...textures);
+  await loadLocale();
 
   app.add(mainComponent());
 });
