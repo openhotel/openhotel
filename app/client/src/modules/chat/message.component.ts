@@ -30,43 +30,33 @@ export const messageComponent: ContainerComponent<
     pivot: { x: -5, y: -3 },
   });
 
-  $text.on(DisplayObjectEvent.LOADED, () => {
-    const bounds = $text.getBounds();
-    const width = bounds.width + 32;
-    const height = 13;
+  const bounds = $text.getBounds();
+  const width = bounds.width + 32;
+  const height = 13;
 
-    const $bubbleBackground = sliceSprite({
-      texture: TextureEnum.CHAT_BUBBLE_BACKGROUND,
-      leftWidth: 6,
-      topHeight: 6,
-      rightWidth: 6,
-      bottomHeight: 6,
-      width,
-      height,
-      zIndex: -2,
-    });
-    $container.add($bubbleBackground);
-
-    //TODO fix callback hell
-    $bubbleBackground.on(DisplayObjectEvent.LOADED, () => {
-      const $bubbleOver = sliceSprite({
-        texture: TextureEnum.CHAT_BUBBLE_OVER,
-        leftWidth: 6,
-        topHeight: 6,
-        rightWidth: 6,
-        bottomHeight: 6,
-        width,
-        height,
-        tint: color,
-        zIndex: -1,
-      });
-      $container.add($bubbleOver);
-
-      $bubbleOver.on(DisplayObjectEvent.LOADED, () => {
-        $container.$emit(DisplayObjectEvent.LOADED, {});
-      });
-    });
+  const $bubbleBackground = sliceSprite({
+    texture: TextureEnum.CHAT_BUBBLE_BACKGROUND,
+    leftWidth: 6,
+    topHeight: 6,
+    rightWidth: 6,
+    bottomHeight: 6,
+    width,
+    height,
+    zIndex: -2,
   });
+  $container.add($bubbleBackground);
+  const $bubbleOver = sliceSprite({
+    texture: TextureEnum.CHAT_BUBBLE_OVER,
+    leftWidth: 6,
+    topHeight: 6,
+    rightWidth: 6,
+    bottomHeight: 6,
+    width,
+    height,
+    tint: color,
+    zIndex: -1,
+  });
+  $container.add($bubbleOver);
 
   $container.add($text);
 

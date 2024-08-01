@@ -50,40 +50,38 @@ export const bubbleChatComponent: ContainerComponent<Props, Mutable> = ({
         color,
         message: text,
       });
-      message.on(DisplayObjectEvent.LOADED, () => {
-        const messageBounds = message.getBounds();
-        jumpHeight = messageBounds.height + 1;
-
-        let targetY = Math.round(position.y / jumpHeight) * jumpHeight;
-
-        if (messages.length > 0) {
-          const lastMessage = messages[messages.length - 1];
-          const { y: lastMessageY } = lastMessage.getPosition();
-          targetY = Math.max(targetY, lastMessageY);
-        }
-        moveMessages();
-
-        let targetX =
-          position.x - messageBounds.width / 2 + TILE_SIZE.width / 2;
-
-        const containerGlobalPosition = $container.getGlobalPosition();
-
-        const globalMessageXPosition = containerGlobalPosition.x + targetX;
-
-        const overflowRightX =
-          global.getApplication().window.getBounds().width -
-          (globalMessageXPosition + messageBounds.width);
-
-        if (0 > overflowRightX) targetX += overflowRightX;
-        if (0 > globalMessageXPosition) targetX -= globalMessageXPosition;
-
-        message.setPosition({
-          x: targetX,
-          y: targetY,
-        });
-        messages.push(message);
-      });
       $container.add(message);
+
+      const messageBounds = message.getBounds();
+      jumpHeight = messageBounds.height + 1;
+
+      let targetY = Math.round(position.y / jumpHeight) * jumpHeight;
+
+      if (messages.length > 0) {
+        const lastMessage = messages[messages.length - 1];
+        const { y: lastMessageY } = lastMessage.getPosition();
+        targetY = Math.max(targetY, lastMessageY);
+      }
+      moveMessages();
+
+      let targetX = position.x - messageBounds.width / 2 + TILE_SIZE.width / 2;
+
+      const containerGlobalPosition = $container.getGlobalPosition();
+
+      const globalMessageXPosition = containerGlobalPosition.x + targetX;
+
+      const overflowRightX =
+        global.getApplication().window.getBounds().width -
+        (globalMessageXPosition + messageBounds.width);
+
+      if (0 > overflowRightX) targetX += overflowRightX;
+      if (0 > globalMessageXPosition) targetX -= globalMessageXPosition;
+
+      message.setPosition({
+        x: targetX,
+        y: targetY,
+      });
+      messages.push(message);
     },
   );
 

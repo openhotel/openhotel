@@ -55,10 +55,9 @@ export const offlineComponent: ContainerComponent<Props> = ({ reconnect }) => {
     const $human = sprite({
       texture: TextureEnum.HUMAN_DEV,
     });
-    $human.on(DisplayObjectEvent.LOADED, () => {
-      $human.setPivotX($human.getBounds().width);
-      $human.setTint(0xefcfb1);
-    });
+    $human.setPivotX($human.getBounds().width);
+    $human.setTint(0xefcfb1);
+
     const $title = textSprite({
       text: "You have been disconnected from the server!",
       spriteSheet: SpriteSheetEnum.DEFAULT_FONT,
@@ -68,9 +67,7 @@ export const offlineComponent: ContainerComponent<Props> = ({ reconnect }) => {
         y: 80,
       },
     });
-    $title.on(DisplayObjectEvent.LOADED, () => {
-      $title.setPivotX($title.getBounds().width / 2);
-    });
+    $title.setPivotX($title.getBounds().width / 2);
 
     const $button = buttonComponent({
       text: "Return to the hotel",
