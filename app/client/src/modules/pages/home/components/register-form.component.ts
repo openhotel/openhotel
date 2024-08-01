@@ -5,7 +5,11 @@ import {
   EventMode,
   HorizontalAlign,
 } from "@tulib/tulip";
-import { buttonComponent, inputComponent } from "shared/components";
+import {
+  buttonComponent,
+  inputComponent,
+  loaderComponent,
+} from "shared/components";
 import { getRegisterUrl } from "shared/utils/auth.utils";
 import { getCaptchaComponent } from "shared/utils";
 
@@ -66,13 +70,27 @@ export const registerFormComponent: ContainerComponent = (props) => {
     eventMode: EventMode.STATIC,
   });
 
+  const $loader = loaderComponent({
+    visible: false,
+    position: {
+      x: 50,
+      y: 20 * 7 + 2,
+    },
+  });
+
   $registerButton.on(DisplayObjectEvent.POINTER_TAP, async () => {
+    $registerButton.setVisible(false);
+    $loader.setVisible(true);
+
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
 
     const $clear = () => {
       $password.clear();
       $captchaComponent?.refresh();
+
+      $loader.setVisible(false);
+      $registerButton.setVisible(true);
     };
 
     try {
@@ -92,7 +110,13 @@ export const registerFormComponent: ContainerComponent = (props) => {
     }
   });
 
-  $container.add($username, $password, $passwordRepeat, $registerButton);
+  $container.add(
+    $username,
+    $password,
+    $passwordRepeat,
+    $registerButton,
+    $loader,
+  );
 
   return $container.getComponent(registerFormComponent);
 };

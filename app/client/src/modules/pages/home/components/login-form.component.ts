@@ -5,7 +5,11 @@ import {
   EventMode,
   HorizontalAlign,
 } from "@tulib/tulip";
-import { buttonComponent, inputComponent } from "shared/components";
+import {
+  buttonComponent,
+  inputComponent,
+  loaderComponent,
+} from "shared/components";
 import { System } from "system";
 import {
   getCaptchaComponent,
@@ -65,8 +69,20 @@ export const loginFormComponent: ContainerComponent = (props) => {
     },
     eventMode: EventMode.STATIC,
   });
+
+  const $loader = loaderComponent({
+    visible: false,
+    position: {
+      x: 50,
+      y: 20 * 7 + 2,
+    },
+  });
+
   $loginButton.on(DisplayObjectEvent.POINTER_TAP, async () => {
     try {
+      $loginButton.setVisible(false);
+      $loader.setVisible(true);
+
       await System.proxy.connect({
         username: $username.getValue(),
         password: $password.getValue(),
@@ -75,14 +91,16 @@ export const loginFormComponent: ContainerComponent = (props) => {
     } catch (e) {
       $password.clear();
       $captchaComponent?.refresh();
+
+      $loader.setVisible(false);
+      $loginButton.setVisible(true);
     }
   });
 
-  $container.add($username, $password, $loginButton);
+  $container.add($username, $password, $loginButton, $loader);
 
   if (isDevelopment()) {
     try {
-      console.log(localStorage.getItem("auto-connect"));
       if (localStorage.getItem("auto-connect") === null)
         localStorage.setItem("auto-connect", "true");
 
