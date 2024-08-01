@@ -13,6 +13,7 @@ import {
   textSprite,
 } from "@tulib/tulip";
 import { SpriteSheetEnum } from "shared/enums";
+import { loaderComponent } from "../loader";
 
 type CaptchaProps = {
   captchaId: string;
@@ -43,8 +44,19 @@ export const captchaComponent: ContainerComponent<
 
   let $captchaId;
 
+  const $loader = loaderComponent({
+    visible: true,
+    position: {
+      x: 58,
+      y: 25,
+    },
+  });
+
+  $container.add($loader);
+
   const refresh = async () => {
     $captchaContainer.remove(...$captchaContainer.getChildren());
+    $loader.setVisible(true);
 
     const { question, image, sessionId } = await fetch(
       `${captchaUrl}/v1/captcha?id=${captchaId}`,
@@ -80,6 +92,8 @@ export const captchaComponent: ContainerComponent<
       },
       horizontalAlign: HorizontalAlign.CENTER,
     });
+
+    $loader.setVisible(false);
     $captchaContainer.add($background, $textQuestion, $imageSprite);
 
     $imageSprite.on(
