@@ -33,8 +33,6 @@ export const users = () => {
               targetPosition,
               user.getId(),
             );
-            //discard first (current position)
-            pathfinding.shift();
 
             //Path is not possible
             if (!pathfinding.length) {
