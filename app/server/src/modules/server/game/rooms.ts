@@ -78,14 +78,14 @@ export const rooms = () => {
     };
     const getUsers = () => roomUserMap[room.id];
 
-    const getPoint = (position: Point3d) => room.layout[position.z][position.x];
+    const getPoint = (position: Point3d) =>
+      room.layout?.[position.z]?.[position.x];
 
     const isPointFree = (position: Point3d, userId?: string) => {
-      if (room.layout[position.z][position.x] === RoomPointEnum.EMPTY)
-        return false;
-      if (room.layout[position.z][position.x] === RoomPointEnum.SPAWN)
-        return true;
+      if (getPoint(position) === RoomPointEnum.EMPTY) return false;
+      if (getPoint(position) === RoomPointEnum.SPAWN) return true;
 
+      //TODO map users position (performance)
       return Boolean(
         !getUsers()
           .filter(($userId) => !userId || $userId !== userId)

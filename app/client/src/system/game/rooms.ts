@@ -14,8 +14,8 @@ export const rooms = () => {
     point: Partial<Point3d>,
     stairsCalc: boolean = false,
   ): number | null => {
-    if (!$room?.layout[point.z]) return null;
-    const roomPoint = $room.layout[point.z][point.x];
+    if (!$room?.layout?.[point.z]) return null;
+    const roomPoint = $room.layout?.[point.z]?.[point.x];
 
     if (roomPoint === RoomPointEnum.EMPTY) return null;
     if (roomPoint === RoomPointEnum.SPAWN) return 0;
@@ -26,11 +26,11 @@ export const rooms = () => {
   };
 
   const getStairsFromPoint = (point: Partial<Point3d>): "x" | "z" | null => {
-    if (!$room?.layout[point.z]) return null;
-    const roomPoint = $room.layout[point.z][point.x];
+    if (!$room?.layout?.[point.z]) return null;
+    const roomPoint = $room.layout?.[point.z]?.[point.x];
 
-    if (roomPoint > $room?.layout[point.z][point.x - 1]) return "z";
-    if (roomPoint > $room?.layout[point.z - 1]?.[point.x]) return "x";
+    if (roomPoint > $room?.layout?.[point.z]?.[point.x - 1]) return "z";
+    if (roomPoint > $room?.layout?.[point.z - 1]?.[point.x]) return "x";
 
     return null;
   };
