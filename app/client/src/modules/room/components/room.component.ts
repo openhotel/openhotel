@@ -64,6 +64,7 @@ export const roomComponent: ContainerComponent<Props, Mutable> = ({
   let removeOnAddHuman;
   let removeOnRemoveHuman;
   let removeOnMoveHuman;
+  let removeOnSetPositionHuman;
   let removeOnStopHuman;
 
   const onRemove = () => {
@@ -71,6 +72,7 @@ export const roomComponent: ContainerComponent<Props, Mutable> = ({
     removeOnRemoveHuman?.();
     removeOnMoveHuman?.();
     removeOnLeaveRoom?.();
+    removeOnSetPositionHuman?.();
     removeOnStopHuman?.();
   };
 
@@ -98,6 +100,14 @@ export const roomComponent: ContainerComponent<Props, Mutable> = ({
         const human = humanList.find((human) => human.getUser().id === userId);
 
         human.moveTo(position);
+      },
+    );
+    removeOnSetPositionHuman = System.proxy.on<any>(
+      Event.SET_POSITION_HUMAN,
+      ({ userId, position }) => {
+        const human = humanList.find((human) => human.getUser().id === userId);
+
+        human.setIsometricPosition(position);
       },
     );
 

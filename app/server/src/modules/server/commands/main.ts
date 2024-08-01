@@ -11,6 +11,7 @@ import { blacklistCommand } from "./blacklist.command.ts";
 import { whitelistCommand } from "./whitelist.command.ts";
 import { kickCommand } from "./kick.command.ts";
 import { updateCommand } from "./update.command.ts";
+import { tpCommand } from "./tp.command.ts";
 
 const commandList = [
   stopCommand,
@@ -26,6 +27,8 @@ const commandList = [
 
   kickCommand,
   updateCommand,
+
+  tpCommand,
 ];
 
 export const executeCommand = ({

@@ -10,6 +10,7 @@ export enum Event {
   ADD_HUMAN = "add-human",
   REMOVE_HUMAN = "remove-human",
   MOVE_HUMAN = "move-human",
+  SET_POSITION_HUMAN = "set-position-human",
 
   POINTER_TILE = "pointer-tile",
 

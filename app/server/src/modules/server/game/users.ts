@@ -91,7 +91,7 @@ export const users = () => {
 
     const setPathfinding = (path: Point3d[]) => {
       $userPathfindingMap[user.id] = path;
-      if (!path.length) delete $userPathfindingMap[user.id];
+      if (!path?.length) delete $userPathfindingMap[user.id];
     };
     const getPathfinding = (): Point3d[] => $userPathfindingMap[user.id] || [];
 
