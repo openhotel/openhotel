@@ -1,7 +1,6 @@
 import {
   container,
   ContainerComponent,
-  DisplayObjectEvent,
   HorizontalAlign,
   sliceSprite,
   textSprite,
@@ -18,10 +17,10 @@ export const messageComponent: ContainerComponent<
     sortableChildren: true,
   });
 
-  const $text = textSprite({
+  const $username = textSprite({
     color: 0x000000,
-    spriteSheet: SpriteSheetEnum.DEFAULT_FONT,
-    text: `${username}: ${message}`,
+    spriteSheet: SpriteSheetEnum.BOLD_FONT,
+    text: `${username}: `,
     position: {
       x: 8,
       y: 1,
@@ -29,9 +28,22 @@ export const messageComponent: ContainerComponent<
     horizontalAlign: HorizontalAlign.CENTER,
     pivot: { x: -5, y: -3 },
   });
+  const boundsName = $username.getBounds();
 
-  const bounds = $text.getBounds();
-  const width = bounds.width + 32;
+  const $message = textSprite({
+    color: 0x000000,
+    spriteSheet: SpriteSheetEnum.DEFAULT_FONT,
+    text: message,
+    position: {
+      x: 8 + boundsName.width,
+      y: 1,
+    },
+    horizontalAlign: HorizontalAlign.CENTER,
+    pivot: { x: -5, y: -3 },
+  });
+  const boundsMessage = $message.getBounds();
+
+  const width = boundsName.width + boundsMessage.width + 32;
   const height = 13;
 
   const $bubbleBackground = sliceSprite({
@@ -58,7 +70,7 @@ export const messageComponent: ContainerComponent<
   });
   $container.add($bubbleOver);
 
-  $container.add($text);
+  $container.add($username, $message);
 
   return $container.getComponent(messageComponent);
 };
