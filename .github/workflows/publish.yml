@@ -107,6 +107,7 @@ jobs:
 
       - name: "Zip build"
         run: |
+          cp -R ./app/server/assets ./app/server/build/assets
           cd ./app/server/build/
           zip -r ../../../server_${{ matrix.os }}.zip .
 
