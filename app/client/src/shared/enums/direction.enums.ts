@@ -10,3 +10,10 @@ export enum Direction {
 
   NONE = -1,
 }
+
+export enum CrossDirection {
+  NORTH,
+  EAST,
+  SOUTH,
+  WEST,
+}

@@ -12,8 +12,9 @@ export const System = (() => {
 
   const $tasks = tasks();
 
-  const load = () => {
+  const load = async () => {
     $tasks.load();
+    await $game.load();
 
     global.events.on(Event.KEY_DOWN, ({ ctrlKey, key }) => {
       const lowerCaseKey = key.toLowerCase();

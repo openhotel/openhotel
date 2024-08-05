@@ -13,7 +13,7 @@ export const Server = (() => {
   const $tasks = tasks();
   const $game = game();
 
-  const load = ({
+  const load = async ({
     config,
     envs,
     proxyWorker,
@@ -27,9 +27,9 @@ export const Server = (() => {
     $config = config;
     $envs = envs;
 
+    await $game.load();
     $proxy.load(proxyWorker);
     $tasks.load();
-    $game.load();
   };
 
   const getConfig = () => $config;

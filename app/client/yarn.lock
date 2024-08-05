@@ -214,10 +214,10 @@
   resolved "https://registry.yarnpkg.com/@rollup/rollup-win32-x64-msvc/-/rollup-win32-x64-msvc-4.18.0.tgz#5d694d345ce36b6ecf657349e03eb87297e68da4"
   integrity sha512-UOo5FdvOL0+eIVTgS4tIdbW+TtnBLWg1YBCcU2KWM7nuNwRz9bksDX1bekJJCpu25N1DVWaCwnT39dVQxzqS8g==
 
-"@tulib/tulip@0.11.10":
-  version "0.11.10"
-  resolved "https://registry.yarnpkg.com/@tulib/tulip/-/tulip-0.11.10.tgz#beba153e8a44b8226d145e55a1a52609a957cdf3"
-  integrity sha512-mFJAOzAeVBXAN7KwOk3rBoF+cCcFChi2bXZKNFeC1uxA1yej/NlwRQ3EwMpbI2nsBsolltZ6EVuFT2cnlXYCDQ==
+"@tulib/tulip@0.11.12":
+  version "0.11.12"
+  resolved "https://registry.yarnpkg.com/@tulib/tulip/-/tulip-0.11.12.tgz#36f6968e8c79b3f4d249de25e7329a7bedf4e3d2"
+  integrity sha512-ATsXMyjV5hrmTS/U8CggUUJ1TG8QJmxg64+TAlnrguf6nmRWjRKEEDrjNFE9xwGk4y4+qsNUQDThrCP7NIFmhQ==
   dependencies:
     "@tulib/vite-tulip-plugin" "1.0.8"
     howler "2.2.4"
@@ -437,3 +437,8 @@ vite@5.2.12:
     rollup "^4.13.0"
   optionalDependencies:
     fsevents "~2.3.3"
+
+yaml@2.5.0:
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/yaml/-/yaml-2.5.0.tgz#c6165a721cf8000e91c36490a41d7be25176cf5d"
+  integrity sha512-2wWLbGbYDiSqqIKoPjar3MPgB94ErzCtrNE1FdqGuaO0pi2JGjmE8aW8TDZwzU7vuxcGRdL/4gPQwQ7hD5AMSw==

@@ -26,9 +26,12 @@ export const users = () => {
             $userPathfindingMap[userId][$userPathfindingMap[userId].length - 1];
 
           //check if targetPosition exists and if it's not free
-          if (targetPosition && !room.isPointFree(nextPosition, user.getId())) {
+          if (
+            targetPosition &&
+            !room?.isPointFree(nextPosition, user.getId())
+          ) {
             //calc new pathfinding
-            const pathfinding = room.findPath(
+            const pathfinding = room?.findPath(
               user.getPosition(),
               targetPosition,
               user.getId(),
@@ -153,7 +156,7 @@ export const users = () => {
     if (!$user) return;
 
     const room = Server.game.rooms.get($user.getRoom());
-    room.removeUser(user);
+    room?.removeUser(user);
 
     delete $userMap[user.id];
     delete $privateUserMap[user.id];

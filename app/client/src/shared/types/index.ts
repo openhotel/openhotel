@@ -4,3 +4,6 @@ export * from "./size.types";
 export * from "./room.types";
 export * from "./user.types";
 export * from "./preview.types";
+export * from "./direction.types";
+export * from "./furniture.types";
+export * from "./event.types";

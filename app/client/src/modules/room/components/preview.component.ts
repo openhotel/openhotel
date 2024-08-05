@@ -101,8 +101,7 @@ export const previewComponent: ContainerComponent = (props) => {
     removeOnShowPreview = System.events.on(
       SystemEvent.SHOW_PREVIEW,
       async ({ type, texture, spriteSheet, name }: Preview) => {
-        if (spriteSheet) await $sprite.setSpriteSheet(spriteSheet);
-        await $sprite.setTexture(texture);
+        $sprite.setTexture(texture, spriteSheet);
         $name.setText(name);
 
         $sprite.setTint(type === "human" ? 0xefcfb1 : null);

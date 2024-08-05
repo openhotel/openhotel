@@ -1,0 +1,19 @@
+{
+  "frames": {
+    "lamp-small": {
+      "frame": { "x": 0, "y": 0, "w": 24, "h": 29 },
+      "sourceSize": { "w": 24, "h": 29 },
+      "anchor": { "x": 0, "y": 0 }
+    }
+  },
+  "animations": {},
+  "meta": {
+    "format": "RGBA8888",
+    "image": "alpha.png",
+    "size": {
+      "w": 24,
+      "h": 29
+    },
+    "scale": 1
+  }
+}

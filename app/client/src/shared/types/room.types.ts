@@ -1,5 +1,6 @@
 import { RoomPointEnum } from "shared/enums";
-import { Point2d } from "./point.types";
+import { Point3d } from "./point.types";
+import { RoomFurniture } from "shared/types/furniture.types";
 
 export type RoomPoint = string | RoomPointEnum;
 
@@ -8,5 +9,6 @@ export type Room = {
   title: string;
   description: string;
   layout: RoomPoint[][];
-  spawnPoint: Point2d;
+  furniture: RoomFurniture[];
+  spawnPoint: Point3d;
 };

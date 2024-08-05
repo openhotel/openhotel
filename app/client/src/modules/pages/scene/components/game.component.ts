@@ -10,7 +10,7 @@ import { Event } from "shared/enums";
 import { System } from "system";
 import { roomComponent, previewComponent } from "modules/room";
 import { getRandomNumber } from "shared/utils";
-import { Size } from "shared/types";
+import { LoadRoomEvent, Size } from "shared/types";
 
 const CHAT_PADDING = {
   x: 12,
@@ -59,14 +59,17 @@ export const gameComponent: ContainerComponent = () => {
   let $room;
   let $bubbleChat;
 
-  const removeOnLoadRoom = System.proxy.on<any>(Event.LOAD_ROOM, ({ room }) => {
-    System.game.rooms.set(room);
-    $room = roomComponent({ layout: room.layout });
-    $container.add($room);
+  const removeOnLoadRoom = System.proxy.on<LoadRoomEvent>(
+    Event.LOAD_ROOM,
+    ({ room }) => {
+      System.game.rooms.set(room);
+      $room = roomComponent({ room });
+      $container.add($room);
 
-    $bubbleChat = bubbleChatComponent({ room: $room });
-    $container.add($bubbleChat);
-  });
+      $bubbleChat = bubbleChatComponent({ room: $room });
+      $container.add($bubbleChat);
+    },
+  );
 
   const removeOnLeaveRoom = System.proxy.on<any>(
     Event.LEAVE_ROOM,

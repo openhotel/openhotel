@@ -2,25 +2,19 @@ import {
   container,
   ContainerComponent,
   ContainerMutable,
+  Cursor,
   DisplayObjectEvent,
   EventMode,
   graphics,
   GraphicType,
   sprite,
-  textSprite,
 } from "@tulib/tulip";
 import {
   getPositionFromIsometricPosition,
   isDirectionToFront,
 } from "shared/utils";
 import { Point3d, User } from "shared/types";
-import {
-  Direction,
-  Event,
-  SpriteSheetEnum,
-  SystemEvent,
-  TextureEnum,
-} from "shared/enums";
+import { Direction, Event, SystemEvent, TextureEnum } from "shared/enums";
 import {
   MOVEMENT_BETWEEN_TILES_DURATION,
   TILE_SIZE,
@@ -46,35 +40,32 @@ type Mutable = {
 
 export type HumanMutable = ContainerMutable<{}, Mutable>;
 
-export const humanComponent: ContainerComponent<Props, Mutable> = ({
-  user,
-}) => {
-  const $container = container<Props, Mutable>();
-  $container.setEventMode(EventMode.STATIC);
+export const humanComponent: ContainerComponent<Props, Mutable> = (props) => {
+  const $container = container<Props, Mutable>({
+    ...props,
+    eventMode: EventMode.STATIC,
+    cursor: Cursor.POINTER,
+  });
+
+  const { user } = $container.getProps();
 
   //@ts-ignore
   const $isCurrent = System.game.users.getCurrentUser().id === user.id;
 
   const capsule = graphics({
     type: GraphicType.CAPSULE,
-    radius: TILE_SIZE.width / 2,
-    length: 30,
+    radius: TILE_SIZE.width / 4,
+    length: 45,
     angle: 90,
     tint: 0xff00ff,
     zIndex: -1000,
-    alpha: 0.0001,
-  });
-  capsule.setPivotX(-TILE_SIZE.height);
-  const tagName = textSprite({
-    text: user.username,
-    spriteSheet: SpriteSheetEnum.DEFAULT_FONT,
-    position: {
-      y: -16,
-      x: 0,
+    alpha: 0,
+    pivot: {
+      x: -TILE_SIZE.height - 8,
+      y: 0,
     },
   });
-  tagName.setPivotX(tagName.getBounds().width / 2);
-  $container.add(capsule, tagName);
+  $container.add(capsule);
 
   const human = sprite({
     texture: TextureEnum.HUMAN_DEV,

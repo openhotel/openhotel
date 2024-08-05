@@ -2,7 +2,11 @@ import { application, global } from "@tulib/tulip";
 import { mainComponent } from "modules/main";
 import { isDevelopment, loadLocale } from "shared/utils";
 import { System } from "system";
-import { SpriteSheetEnum, TextureEnum } from "shared/enums";
+import {
+  FurnitureCollection,
+  SpriteSheetEnum,
+  TextureEnum,
+} from "shared/enums";
 
 const app = application({
   backgroundColor: 0x030303,
@@ -15,13 +19,20 @@ const app = application({
   importMetaHot: import.meta.hot,
 });
 
-System.load();
 app.load(async () => {
   const spriteSheets = Object.values(SpriteSheetEnum);
+  const furnitureCollectionSpriteSheets = Object.values(FurnitureCollection);
+
+  await global.spriteSheets.load(
+    ...spriteSheets,
+    ...furnitureCollectionSpriteSheets,
+  );
+
   const textures = Object.values(TextureEnum);
-  await global.spriteSheets.load(...spriteSheets);
   await global.textures.load(...textures);
+
   await loadLocale();
+  await System.load();
 
   app.add(mainComponent());
 });

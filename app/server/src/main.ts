@@ -24,5 +24,5 @@ export const load = async (envs: Envs) => {
   // -> Load client
   await loadClient({ config, envs });
   // Load server
-  Server.load({ config, envs, proxyWorker });
+  await Server.load({ config, envs, proxyWorker });
 };

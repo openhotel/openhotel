@@ -40,6 +40,7 @@ export const messageComponent: ContainerComponent<
     },
     horizontalAlign: HorizontalAlign.CENTER,
     pivot: { x: -5, y: -3 },
+    accentYCorrection: -2,
   });
   const boundsMessage = $message.getBounds();
 

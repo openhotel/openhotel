@@ -13,13 +13,15 @@ import {
 } from "@tulib/tulip";
 import { getPositionFromIsometricPosition, getTilePolygon } from "shared/utils";
 import {
+  CrossDirection,
   Event,
+  Furniture,
   RoomPointEnum,
   SpriteSheetEnum,
   SystemEvent,
   TextureEnum,
 } from "shared/enums";
-import { RoomPoint } from "shared/types";
+import { Room } from "shared/types";
 import { System } from "system";
 import { humanComponent, HumanMutable } from "modules/human";
 import {
@@ -28,10 +30,11 @@ import {
   WALL_DOOR_HEIGHT,
   WALL_HEIGHT,
 } from "shared/consts";
-import { wallComponent } from "modules/room/components/wall.component";
+import { wallComponent } from "./wall.component";
+import { furnitureComponent } from "./furniture.component";
 
 type Props = {
-  layout: RoomPoint[][];
+  room: Room;
 };
 
 type Mutable = {
@@ -41,7 +44,7 @@ type Mutable = {
 export type RoomMutable = ContainerMutable<Props, Mutable>;
 
 export const roomComponent: ContainerComponent<Props, Mutable> = ({
-  layout,
+  room: { layout, furniture },
 }) => {
   const $container = container<{}, Mutable>({
     sortableChildren: true,
@@ -108,6 +111,17 @@ export const roomComponent: ContainerComponent<Props, Mutable> = ({
         const human = humanList.find((human) => human.getUser().id === userId);
 
         human.setIsometricPosition(position);
+      },
+    );
+    removeOnSetPositionHuman = System.proxy.on<any>(
+      Event.ADD_FURNITURE,
+      ({ furniture: { id, uid, position } }) => {
+        const furniture = furnitureComponent({
+          direction: CrossDirection.NORTH,
+          furniture: id,
+          isometricPosition: position,
+        });
+        $container.add(...furniture.getSpriteList());
       },
     );
 
@@ -271,7 +285,7 @@ export const roomComponent: ContainerComponent<Props, Mutable> = ({
           type: GraphicType.POLYGON,
           polygon: getTilePolygon({ width: 12, height: 12 }),
           tint: 0xff00ff,
-          zIndex: 1000,
+          zIndex: zIndex,
           eventMode: EventMode.STATIC,
           cursor: Cursor.POINTER,
           pivot: {
@@ -305,25 +319,51 @@ export const roomComponent: ContainerComponent<Props, Mutable> = ({
       }
     }
 
+    //rooms
+    {
+      for (const { id, uid, position, direction } of furniture) {
+        const $furniture = furnitureComponent({
+          furniture: id as Furniture,
+          isometricPosition: position,
+          id: uid,
+          direction: direction,
+        });
+        $container.add(...$furniture.getSpriteList());
+      }
+    }
+
     // todo: remove test
-    const $test = sprite({
-      texture: TextureEnum.FRAME_P,
-      eventMode: EventMode.STATIC,
-      position: getPositionFromIsometricPosition({ x: 1, y: 3, z: 7 }),
-      zIndex: 2000,
-      withContext: true,
-    });
-    global.context.onNoContext(() =>
-      System.events.emit(SystemEvent.HIDE_PREVIEW, {}),
-    );
-    $test.on(DisplayObjectEvent.POINTER_TAP, () => {
-      System.events.emit(SystemEvent.SHOW_PREVIEW, {
-        type: "furniture",
+    {
+      const $test = sprite({
         texture: TextureEnum.FRAME_P,
-        name: "P.24",
+        eventMode: EventMode.STATIC,
+        position: getPositionFromIsometricPosition({ x: 1, y: 3, z: 7 }),
+        zIndex: 2000,
+        withContext: true,
       });
-    });
-    $container.add($test);
+      global.context.onNoContext(() =>
+        System.events.emit(SystemEvent.HIDE_PREVIEW, {}),
+      );
+      $test.on(DisplayObjectEvent.POINTER_TAP, () => {
+        System.events.emit(SystemEvent.SHOW_PREVIEW, {
+          type: "furniture",
+          texture: TextureEnum.FRAME_P,
+          name: "P.24",
+        });
+      });
+      $container.add($test);
+
+      // const furni = furnitureComponent({
+      //   direction: CrossDirection.NORTH,
+      //   furniture: Furniture.SMALL_LAMP,
+      //   isometricPosition: {
+      //     x: 5,
+      //     z: 2,
+      //     y: 0,
+      //   },
+      // });
+      // $container.add(...furni.getSpriteList());
+    }
     // ---
   });
 
