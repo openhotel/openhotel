@@ -12,6 +12,7 @@ import { whitelistCommand } from "./whitelist.command.ts";
 import { kickCommand } from "./kick.command.ts";
 import { updateCommand } from "./update.command.ts";
 import { tpCommand } from "./tp.command.ts";
+import { setCommand } from "./set.command.ts";
 
 const commandList = [
   stopCommand,
@@ -29,6 +30,7 @@ const commandList = [
   updateCommand,
 
   tpCommand,
+  setCommand,
 ];
 
 export const executeCommand = ({

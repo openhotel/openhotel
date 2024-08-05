@@ -1,10 +1,4 @@
-import {
-  container,
-  ContainerComponent,
-  DisplayObjectEvent,
-  EventMode,
-  sprite,
-} from "@tulib/tulip";
+import { container, ContainerComponent, EventMode, sprite } from "@tulib/tulip";
 import { SpriteSheetEnum } from "shared/enums";
 
 type Props = {

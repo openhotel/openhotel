@@ -18,7 +18,7 @@ export const tpCommand: Command = {
     user.setPathfinding(null);
     user.setPosition({ x, z });
 
-    room.emit(ProxyEvent.SET_POSITION_HUMAN, {
+    room?.emit(ProxyEvent.SET_POSITION_HUMAN, {
       userId: user.getId(),
       position: { x, z, y: 0 },
     });
