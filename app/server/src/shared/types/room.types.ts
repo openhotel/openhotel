@@ -1,4 +1,4 @@
-import { Point3d, User } from "shared/types/main.ts";
+import { Point3d, RoomFurniture, User } from "shared/types/main.ts";
 import { ProxyEvent, RoomPointEnum } from "shared/enums/main.ts";
 
 type BaseRoom = {
@@ -14,6 +14,7 @@ export type RawRoom = BaseRoom & {
 export type Room = BaseRoom & {
   layout: RoomPoint[][];
   spawnPoint: Point3d;
+  furniture: RoomFurniture[];
 };
 
 export type RoomPoint = number | RoomPointEnum;
@@ -30,6 +31,8 @@ export type RoomMutable = {
   getPoint: (point: Point3d) => RoomPoint;
   isPointFree: (point: Point3d, userId?: string) => boolean;
   findPath: (start: Point3d, endPoint: Point3d, userId?: string) => Point3d[];
+
+  addFurniture: (furniture: RoomFurniture) => void;
 
   getObject: () => Room;
 

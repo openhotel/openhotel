@@ -71,6 +71,7 @@ export const inputComponent: ContainerComponent<InputProps, InputMutable> = ({
     verticalAlign: VerticalAlign.BOTTOM,
     onTextChange,
     withMask: true,
+    accentYCorrection: -2,
   });
 
   $container.add($input);

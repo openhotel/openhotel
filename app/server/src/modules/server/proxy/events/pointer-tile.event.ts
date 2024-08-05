@@ -7,7 +7,6 @@ export const pointerTileEvent: ProxyEventType<any> = {
   event: ProxyEvent.POINTER_TILE,
   func: async ({ data: { position }, user }) => {
     const $room = Server.game.rooms.get(user.getRoom());
-
     if (!$room) return;
 
     //check if position is spawn, and leave room

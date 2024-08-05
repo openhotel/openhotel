@@ -2,6 +2,7 @@ import {
   Point3d,
   RawRoom,
   Room,
+  RoomFurniture,
   RoomMutable,
   RoomPoint,
   User,
@@ -112,7 +113,10 @@ export const rooms = () => {
         roomLayout[position.z][position.x] = RoomPointEnum.EMPTY;
       }
 
-      //TODO remove from the roomLayout the objects
+      for (const furniture of getFurniture()) {
+        const position = furniture.position;
+        roomLayout[position.z][position.x] = RoomPointEnum.EMPTY;
+      }
 
       const grid = $getGridLayout(roomLayout);
 
@@ -129,6 +133,11 @@ export const rooms = () => {
       pathfinding.shift();
       return pathfinding;
     };
+
+    const addFurniture = (furniture: RoomFurniture) => {
+      roomMap[room.id].furniture.push(furniture);
+    };
+    const getFurniture = (): RoomFurniture[] => roomMap[room.id].furniture;
 
     const getObject = () => roomMap[room.id];
 
@@ -154,6 +163,8 @@ export const rooms = () => {
       getPoint,
       isPointFree,
       findPath,
+
+      addFurniture,
 
       getObject,
 
@@ -211,12 +222,14 @@ export const rooms = () => {
     roomMap[room.id] = {
       ...room,
       layout,
+      furniture: [],
       spawnPoint: $getRoomSpawnPoint(layout),
     };
     roomUserMap[room.id] = [];
   };
 
-  const get = (roomId: string): RoomMutable | null => $getRoom(roomMap[roomId]);
+  const get = (roomId: string): RoomMutable | null =>
+    roomMap[roomId] ? $getRoom(roomMap[roomId]) : null;
 
   const getRandom = (): RoomMutable => {
     const roomList = Object.values(roomMap);
@@ -225,7 +238,7 @@ export const rooms = () => {
   };
 
   create({
-    id: "test_2",
+    id: "test_0",
     title: "Room 1",
     description: "This is a description",
     layout: [

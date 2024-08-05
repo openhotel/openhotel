@@ -7,3 +7,7 @@ export * from "./event.types.ts";
 export * from "./room.types.ts";
 export * from "./point.types.ts";
 export * from "./commands.types.ts";
+export * from "./furniture.types.ts";
+export * from "./direction.types.ts";
+export * from "./size.types.ts";
+export * from "./catalog.types.ts";
