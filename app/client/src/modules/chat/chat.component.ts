@@ -19,7 +19,7 @@ type Mutable = {
 export const chatComponent: ContainerComponent<{}, Mutable> = (props) => {
   const $container = container<{}, Mutable>(props);
 
-  let $focused = false;
+  let $focused = true;
   let $typing = false;
   let $typingTimeout: number;
 
