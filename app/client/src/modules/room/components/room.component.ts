@@ -13,15 +13,13 @@ import {
 } from "@tulib/tulip";
 import { getPositionFromIsometricPosition, getTilePolygon } from "shared/utils";
 import {
-  CrossDirection,
   Event,
   Furniture,
+  FurnitureType,
   RoomPointEnum,
   SpriteSheetEnum,
-  SystemEvent,
-  TextureEnum,
 } from "shared/enums";
-import { Room } from "shared/types";
+import { Room, RoomFurniture, RoomFurnitureFrame } from "shared/types";
 import { System } from "system";
 import { humanComponent, HumanMutable } from "modules/human";
 import {
@@ -32,6 +30,7 @@ import {
 } from "shared/consts";
 import { wallComponent } from "./wall.component";
 import { furnitureComponent } from "./furniture.component";
+import { furnitureFrameComponent } from "./furniture-frame.component";
 
 type Props = {
   room: Room;
@@ -115,13 +114,8 @@ export const roomComponent: ContainerComponent<Props, Mutable> = ({
     );
     removeOnSetPositionHuman = System.proxy.on<any>(
       Event.ADD_FURNITURE,
-      ({ furniture: { id, uid, position } }) => {
-        const furniture = furnitureComponent({
-          direction: CrossDirection.NORTH,
-          furniture: id,
-          isometricPosition: position,
-        });
-        $container.add(...furniture.getSpriteList());
+      ({ furniture }) => {
+        $addFurniture(furniture);
       },
     );
 
@@ -320,51 +314,57 @@ export const roomComponent: ContainerComponent<Props, Mutable> = ({
     }
 
     //rooms
-    {
-      for (const { id, uid, position, direction } of furniture) {
-        const $furniture = furnitureComponent({
-          furniture: id as Furniture,
-          isometricPosition: position,
-          id: uid,
-          direction: direction,
-        });
-        $container.add(...$furniture.getSpriteList());
+    const $addFurniture = (...furniture: RoomFurniture[]) => {
+      for (const {
+        id,
+        uid,
+        position,
+        direction,
+        type,
+        ...props
+      } of furniture) {
+        let $furniture;
+        switch (type) {
+          case FurnitureType.FURNITURE:
+            $furniture = furnitureComponent({
+              furniture: id as Furniture,
+              isometricPosition: position,
+              id: uid,
+              direction,
+            });
+            $container.add(...$furniture.getSpriteList());
+            break;
+          case FurnitureType.FRAME:
+            $furniture = furnitureFrameComponent({
+              direction,
+              furniture: id as Furniture,
+              isometricPosition: position,
+              framePosition: (props as RoomFurnitureFrame).framePosition,
+            });
+            $container.add($furniture);
+            break;
+        }
       }
-    }
+    };
+    $addFurniture(...furniture);
 
     // todo: remove test
-    {
-      const $test = sprite({
-        texture: TextureEnum.FRAME_P,
-        eventMode: EventMode.STATIC,
-        position: getPositionFromIsometricPosition({ x: 1, y: 3, z: 7 }),
-        zIndex: 2000,
-        withContext: true,
-      });
-      global.context.onNoContext(() =>
-        System.events.emit(SystemEvent.HIDE_PREVIEW, {}),
-      );
-      $test.on(DisplayObjectEvent.POINTER_TAP, () => {
-        System.events.emit(SystemEvent.SHOW_PREVIEW, {
-          type: "furniture",
-          texture: TextureEnum.FRAME_P,
-          name: "P.24",
-        });
-      });
-      $container.add($test);
-
-      // const furni = furnitureComponent({
-      //   direction: CrossDirection.NORTH,
-      //   furniture: Furniture.SMALL_LAMP,
-      //   isometricPosition: {
-      //     x: 5,
-      //     z: 2,
-      //     y: 0,
-      //   },
-      // });
-      // $container.add(...furni.getSpriteList());
-    }
-    // ---
+    // {
+    //   const $furni = furnitureFrameComponent({
+    //     direction: CrossDirection.EAST,
+    //     furniture: Furniture.ALPHA__P_24,
+    //     isometricPosition: {
+    //       x: 1,
+    //       z: 3,
+    //       y: 0,
+    //     },
+    //     framePosition: {
+    //       x: 0,
+    //       y: 20,
+    //     },
+    //   });
+    //   $container.add($furni);
+    // }
   });
 
   return $container.getComponent(roomComponent, {

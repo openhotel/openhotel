@@ -9,21 +9,29 @@ import {
 export const furniture = () => {
   const furnitureMap: Record<string, FurnitureData> = {};
 
+  const $getDefaultFurnitureData = (furnitureId: string) =>
+    fetch(`furniture/${furnitureId}.yml`)
+      .then((data) => data.text())
+      .then(parse);
+
   const load = async () => {
     for (const fullFurnitureId of Object.values(Furniture)) {
       const [collectionId] = fullFurnitureId.split("/");
       const spriteSheet = FurnitureCollection[collectionId.toUpperCase()];
 
-      const furnitureData = await fetch(`furniture/${fullFurnitureId}.yml`)
-        .then((data) => data.text())
-        .then(parse);
+      let furnitureData = furnitureMap[Furniture.DEFAULT__FURNITURE];
+      try {
+        furnitureData = await $getDefaultFurnitureData(fullFurnitureId);
+      } catch (e) {
+        console.error(`Furniture ${fullFurnitureId} not loaded!`);
+      }
 
       furnitureMap[fullFurnitureId] = {
         id: fullFurnitureId,
         label: furnitureData.label,
         collection: collectionId,
         spriteSheet,
-        size: furnitureData.size,
+        size: furnitureData?.size,
         direction: Object.keys(
           furnitureData.direction,
         ).reduce<FurnitureDirectionDataMap>(
@@ -33,11 +41,11 @@ export const furniture = () => {
               ...dataMap,
               [direction]: {
                 textures: textures.map((textureData) => ({
-                  texture: textureData.name,
+                  texture: textureData.texture,
                   bounds: textureData.bounds,
-                  pivot: textureData.pivot,
-                  zIndex: textureData.zIndex,
-                  hitArea: textureData.hitArea,
+                  pivot: textureData?.pivot ?? { x: 0, y: 0 },
+                  zIndex: textureData?.zIndex ?? 0,
+                  hitArea: textureData?.hitArea,
                 })),
               },
             };
