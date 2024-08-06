@@ -2,6 +2,7 @@ import {
   container,
   ContainerComponent,
   Cursor,
+  DisplayObjectEvent,
   EventMode,
   HorizontalAlign,
   inputTextSprite,
@@ -26,6 +27,7 @@ type InputMutable = {
   clear: () => void;
   focus: () => void;
   setSize: (size: Size) => void;
+  on: <Data>(event: DisplayObjectEvent, callback: (data: Data) => void) => void;
 };
 
 export const inputComponent: ContainerComponent<InputProps, InputMutable> = ({
@@ -82,5 +84,6 @@ export const inputComponent: ContainerComponent<InputProps, InputMutable> = ({
     clear: () => $input.clear(),
     focus: $input.focus,
     setSize: $input.setSize,
+    on: $input.on,
   });
 };
