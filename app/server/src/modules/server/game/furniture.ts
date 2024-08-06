@@ -1,5 +1,6 @@
 import { parse } from "deno/yaml/mod.ts";
-import { FurnitureData, Catalog } from "shared/types/main.ts";
+import { Catalog, FurnitureData } from "shared/types/main.ts";
+import { FurnitureType } from "shared/enums/main.ts";
 
 export const furniture = () => {
   const furnitureList: FurnitureData[] = [];
@@ -18,6 +19,9 @@ export const furniture = () => {
       ) as FurnitureData;
       furnitureList.push({
         ...furniData,
+        type: FurnitureType[
+          (furniData.type as unknown as string).toUpperCase()
+        ],
         id: furnitureId,
       });
     }

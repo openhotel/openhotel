@@ -1,0 +1,14 @@
+label: furniture
+size:
+  width: 1
+  depth: 1
+direction:
+  north:
+    textures:
+      - texture: furniture
+        bounds:
+          width: 48
+          height: 50
+        pivot:
+          x: 0
+          y: 0
