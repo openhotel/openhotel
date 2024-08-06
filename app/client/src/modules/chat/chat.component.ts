@@ -19,6 +19,7 @@ type Mutable = {
 export const chatComponent: ContainerComponent<{}, Mutable> = (props) => {
   const $container = container<{}, Mutable>(props);
 
+  let $focused = true;
   let $typing = false;
   let $typingTimeout: number;
 
@@ -79,6 +80,7 @@ export const chatComponent: ContainerComponent<{}, Mutable> = (props) => {
     KeyEvent.KEY_UP,
     ({ key }: KeyboardEvent) => {
       if (key.toLowerCase() === "c") return $input.focus();
+      if (!$focused) return;
 
       if (key === "ArrowUp" && $history.length > 0) {
         $historyIndex = Math.min($history.length - 1, $historyIndex + 1);
@@ -105,6 +107,9 @@ export const chatComponent: ContainerComponent<{}, Mutable> = (props) => {
       if ($input.getValue().length === MAX_LENGTH) $sendMessage();
     },
   );
+
+  $input.on(DisplayObjectEvent.CONTEXT_ENTER, () => ($focused = true));
+  $input.on(DisplayObjectEvent.CONTEXT_LEAVE, () => ($focused = false));
 
   $container.on(DisplayObjectEvent.DESTROYED, () => {
     removeOnKeyUp();
