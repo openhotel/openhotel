@@ -1,7 +1,7 @@
 import { Point2d, Point3d } from "./point.types";
 import { Size, Size3d } from "./size.types";
 import { CrossDirectionKeys } from "./direction.types";
-import { CrossDirection } from "shared/enums";
+import { CrossDirection, FurnitureType } from "shared/enums";
 
 export type FurnitureDirectionTexture = {
   texture: string;
@@ -25,17 +25,25 @@ export type FurnitureData = {
   label: string;
   collection: string;
   spriteSheet: string;
-  size: Size3d;
+  size?: Size3d;
   direction: FurnitureDirectionDataMap;
 };
 
 export type BaseFurniture = {
   uid: string;
   id: string;
+  position: Point3d;
+  direction: CrossDirection;
 };
 
-export type RoomFurniture = {
-  position: Point3d;
+export type RoomFurnitureBase = {
+  type: FurnitureType.FURNITURE;
   size: Size3d;
-  direction: CrossDirection;
 } & BaseFurniture;
+
+export type RoomFurnitureFrame = {
+  type: FurnitureType.FRAME;
+  framePosition: Point2d;
+} & BaseFurniture;
+
+export type RoomFurniture = RoomFurnitureFrame | RoomFurnitureBase;
