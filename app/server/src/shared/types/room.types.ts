@@ -17,7 +17,7 @@ export type Room = BaseRoom & {
   furniture: RoomFurniture[];
 };
 
-export type RoomPoint = number | RoomPointEnum;
+export type RoomPoint = number | string | RoomPointEnum;
 
 export type RoomMutable = {
   getId: () => string;
