@@ -135,9 +135,16 @@ export const rooms = () => {
           { x: end.x, y: end.z },
           { maxJumpCost: 5, jumpBlockedDiagonals: true },
         )
-        .map(({ x, y }) => ({ x, y: 0, z: y }));
+        .map(({ x, y }) => ({
+          x,
+          z: y,
+        }));
 
-      const pathfinding = getInterpolatedPath(path);
+      const pathfinding = getInterpolatedPath(path).map(({ x, z }) => ({
+        x,
+        y: getYFromPoint({ x, z }),
+        z,
+      }));
       //discard first (current position)
       pathfinding.shift();
       return pathfinding;
@@ -147,6 +154,21 @@ export const rooms = () => {
       roomMap[room.id].furniture.push(furniture);
     };
     const getFurniture = (): RoomFurniture[] => roomMap[room.id].furniture;
+
+    const getYFromPoint = (point: Partial<Point3d>): number | null => {
+      if (!room?.layout?.[point.z]) return null;
+      const roomPoint = room.layout?.[point.z]?.[point.x];
+
+      if (roomPoint === RoomPointEnum.EMPTY) return null;
+      if (roomPoint === RoomPointEnum.SPAWN) return 0;
+
+      const onStairs =
+        room?.layout?.[point.z] &&
+        (roomPoint > room?.layout?.[point.z]?.[point.x - 1] ||
+          roomPoint > room?.layout?.[point.z - 1]?.[point.x]);
+
+      return -(parseInt(roomPoint + "") - 1) + (onStairs ? 0.5 : 0);
+    };
 
     const getObject = () => roomMap[room.id];
 
@@ -201,8 +223,8 @@ export const rooms = () => {
     for (let z = 0; z < layout.length; z++) {
       grid[z] = [];
       for (let x = 0; x < layout[z].length; x++) {
-        let point = layout[z][x];
-        switch (point) {
+        let point = 0;
+        switch (layout[z][x]) {
           case RoomPointEnum.SPAWN:
             point = 4;
             break;
@@ -210,7 +232,7 @@ export const rooms = () => {
             point = 0;
             break;
           default:
-            point *= 4;
+            point = parseInt(layout[z][x] + "") * 4;
             break;
         }
         grid[z][x] = point;

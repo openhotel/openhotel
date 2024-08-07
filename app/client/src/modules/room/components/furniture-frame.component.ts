@@ -32,11 +32,6 @@ export const furnitureFrameComponent: ContainerComponent<Props, Mutable> = ({
     CrossDirection[direction].toLowerCase()
   ] as FurnitureDirectionData;
 
-  isometricPosition.y = System.game.rooms.getYFromPoint(
-    isometricPosition,
-    true,
-  );
-
   const positionZIndex =
     isometricPosition.x + isometricPosition.z - isometricPosition.y;
 

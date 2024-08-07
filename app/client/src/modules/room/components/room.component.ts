@@ -167,9 +167,8 @@ export const roomComponent: ContainerComponent<Props, Mutable> = ({
 
         const isSpawn = roomLine[x] === RoomPointEnum.SPAWN;
 
-        const y = System.game.rooms.getYFromPoint({ x, z });
-
-        const previewY = System.game.rooms.getYFromPoint({ x, z }, true);
+        const previewY = -((parseInt(roomLine[x] + "") ?? 1) - 1);
+        const y = Math.floor(previewY);
         const previewPosition = getPositionFromIsometricPosition({
           x,
           z,
@@ -347,24 +346,6 @@ export const roomComponent: ContainerComponent<Props, Mutable> = ({
       }
     };
     $addFurniture(...furniture);
-
-    // todo: remove test
-    // {
-    //   const $furni = furnitureFrameComponent({
-    //     direction: CrossDirection.EAST,
-    //     furniture: Furniture.ALPHA__P_24,
-    //     isometricPosition: {
-    //       x: 1,
-    //       z: 3,
-    //       y: 0,
-    //     },
-    //     framePosition: {
-    //       x: 0,
-    //       y: 20,
-    //     },
-    //   });
-    //   $container.add($furni);
-    // }
   });
 
   return $container.getComponent(roomComponent, {
