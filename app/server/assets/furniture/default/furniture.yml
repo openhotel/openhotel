@@ -1,0 +1,7 @@
+label: default furniture
+description: you are not supposed to be here
+type: furniture
+size:
+  - width: 1
+  - depth: 1
+  - height: 1
