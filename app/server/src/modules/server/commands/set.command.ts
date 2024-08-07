@@ -24,6 +24,7 @@ export const setCommand: Command = {
       return;
 
     const $furniture = Server.game.furniture.get(furnitureId);
+    console.log($furniture);
     if (!$furniture) return;
 
     if (

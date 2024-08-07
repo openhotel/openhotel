@@ -14,7 +14,7 @@
   "animations": {},
   "meta": {
     "format": "RGBA8888",
-    "image": "alpha.png",
+    "image": "default.png",
     "size": {
       "w": 72,
       "h": 50
