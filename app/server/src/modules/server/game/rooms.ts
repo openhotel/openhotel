@@ -7,7 +7,7 @@ import {
   RoomPoint,
   User,
 } from "shared/types/main.ts";
-import { ProxyEvent, RoomPointEnum } from "shared/enums/main.ts";
+import { FurnitureType, ProxyEvent, RoomPointEnum } from "shared/enums/main.ts";
 import { Grid } from "@oh/pathfinding";
 import { Server } from "modules/server/main.ts";
 import { getInterpolatedPath } from "shared/utils/pathfinding.utils.ts";
@@ -86,12 +86,20 @@ export const rooms = () => {
       if (getPoint(position) === RoomPointEnum.EMPTY) return false;
       if (getPoint(position) === RoomPointEnum.SPAWN) return true;
 
-      //TODO map users position (performance)
       return Boolean(
         !getUsers()
           .filter(($userId) => !userId || $userId !== userId)
-          .map(($userId) => Server.game.users.get({ id: $userId }))
-          .find((user) => isPoint3dEqual(user.getPosition(), position)),
+          .find(($userId) => {
+            const user = Server.game.users.get({ id: $userId });
+            isPoint3dEqual(user.getPosition(), position);
+          }) &&
+          Boolean(
+            !getFurniture()
+              .filter((furniture) => furniture.type !== FurnitureType.FRAME)
+              .find((furniture) =>
+                isPoint3dEqual(furniture.position, position),
+              ),
+          ),
       );
     };
 
@@ -114,6 +122,7 @@ export const rooms = () => {
       }
 
       for (const furniture of getFurniture()) {
+        if (furniture.type === FurnitureType.FRAME) continue;
         const position = furniture.position;
         roomLayout[position.z][position.x] = RoomPointEnum.EMPTY;
       }
