@@ -4,7 +4,7 @@ import {
   DisplayObjectEvent,
   EventMode,
   global,
-} from "@tulib/tulip";
+} from "@tu/tulip";
 import { Event } from "shared/enums";
 import { System } from "system";
 import { messageComponent } from "./message.component";

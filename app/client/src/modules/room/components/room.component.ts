@@ -10,7 +10,7 @@ import {
   GraphicType,
   sprite,
   textSprite,
-} from "@tulib/tulip";
+} from "@tu/tulip";
 import { getPositionFromIsometricPosition, getTilePolygon } from "shared/utils";
 import {
   Event,

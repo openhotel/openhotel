@@ -7,7 +7,7 @@ import {
   HorizontalAlign,
   inputTextSprite,
   VerticalAlign,
-} from "@tulib/tulip";
+} from "@tu/tulip";
 import { SpriteSheetEnum } from "shared/enums";
 import { Size } from "shared/types";
 

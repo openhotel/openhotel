@@ -151,6 +151,11 @@ export const rooms = () => {
     };
 
     const addFurniture = (furniture: RoomFurniture) => {
+      console.log(furniture);
+      furniture.position = {
+        ...furniture.position,
+        y: getYFromPoint(furniture.position),
+      };
       roomMap[room.id].furniture.push(furniture);
     };
     const getFurniture = (): RoomFurniture[] => roomMap[room.id].furniture;

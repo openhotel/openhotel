@@ -7,7 +7,7 @@ import {
   sprite,
   textSprite,
   VerticalAlign,
-} from "@tulib/tulip";
+} from "@tu/tulip";
 import { SpriteSheetEnum, SystemEvent } from "shared/enums";
 import { System } from "system";
 import { buttonComponent } from "shared/components";

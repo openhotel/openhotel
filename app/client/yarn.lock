@@ -214,6 +214,16 @@
   resolved "https://registry.yarnpkg.com/@rollup/rollup-win32-x64-msvc/-/rollup-win32-x64-msvc-4.18.0.tgz#5d694d345ce36b6ecf657349e03eb87297e68da4"
   integrity sha512-UOo5FdvOL0+eIVTgS4tIdbW+TtnBLWg1YBCcU2KWM7nuNwRz9bksDX1bekJJCpu25N1DVWaCwnT39dVQxzqS8g==
 
+"@tu/tulip@npm:@jsr/tu__tulip@0.11.15":
+  version "0.11.15"
+  resolved "https://npm.jsr.io/~/11/@jsr/tu__tulip/0.11.15.tgz#32A8FA8DF82F9EBB042E0FA489C2B9ED10ED043C"
+  integrity sha512-Mmbo/SiTLaRBwtY1fS56P/CIQZJZmPyngzgma/Lx/iZ8aaucGThl8tkjEHQKO1wGl/1cO4sDjFP58eGeMi453g==
+  dependencies:
+    "@tulib/vite-tulip-plugin" "1.0.8"
+    howler "2.2.4"
+    p2 "0.7.1"
+    pixi.js "8.2.6"
+
 "@tulib/tulip@0.11.12":
   version "0.11.12"
   resolved "https://registry.yarnpkg.com/@tulib/tulip/-/tulip-0.11.12.tgz#36f6968e8c79b3f4d249de25e7329a7bedf4e3d2"

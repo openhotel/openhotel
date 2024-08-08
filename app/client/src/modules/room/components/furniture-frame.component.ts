@@ -4,7 +4,7 @@ import {
   DisplayObjectEvent,
   EventMode,
   sprite,
-} from "@tulib/tulip";
+} from "@tu/tulip";
 import { FurnitureDirectionData, Point2d, Point3d } from "shared/types";
 import { TILE_SIZE, TILE_WIDTH } from "shared/consts";
 import { System } from "system";

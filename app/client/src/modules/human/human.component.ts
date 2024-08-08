@@ -8,13 +8,20 @@ import {
   graphics,
   GraphicType,
   sprite,
-} from "@tulib/tulip";
+} from "@tu/tulip";
 import {
+  getDirection,
   getPositionFromIsometricPosition,
   isDirectionToFront,
 } from "shared/utils";
 import { Point3d, User } from "shared/types";
-import { Direction, Event, SystemEvent, TextureEnum } from "shared/enums";
+import {
+  Direction,
+  Event,
+  SpriteSheetEnum,
+  SystemEvent,
+  TextureEnum,
+} from "shared/enums";
 import {
   MOVEMENT_BETWEEN_TILES_DURATION,
   TILE_SIZE,
@@ -24,7 +31,6 @@ import {
 import { System } from "system";
 import { typingBubbleComponent } from "../chat";
 import { TickerQueue } from "@oh/queue";
-import { getDirection } from "shared/utils/direction.utils";
 
 type Props = {
   user: User;
@@ -45,9 +51,17 @@ export const humanComponent: ContainerComponent<Props, Mutable> = (props) => {
     ...props,
     eventMode: EventMode.STATIC,
     cursor: Cursor.POINTER,
+    tint: 0xefcfb1,
+    pivot: {
+      x: -TILE_SIZE.width / 2,
+      y: -TILE_SIZE.height / 2,
+    },
   });
 
   const { user } = $container.getProps();
+
+  let $isometricPosition: Point3d;
+  let $direction: Direction = Direction.NORTH;
 
   //@ts-ignore
   const $isCurrent = System.game.users.getCurrentUser().id === user.id;
@@ -61,28 +75,50 @@ export const humanComponent: ContainerComponent<Props, Mutable> = (props) => {
     zIndex: -1000,
     alpha: 0,
     pivot: {
-      x: -TILE_SIZE.height - 8,
+      x: TILE_SIZE.height + 4,
       y: 0,
     },
   });
   $container.add(capsule);
 
-  const human = sprite({
-    texture: TextureEnum.HUMAN_DEV,
+  let humanData = System.game.human.get($direction);
+
+  const $body = container({
+    pivot: humanData.pivot,
+  });
+  $body.getDisplayObject().scale.x = humanData?.xScale ?? 1;
+  $container.add($body);
+
+  const head = sprite({
+    spriteSheet: SpriteSheetEnum.HUMAN,
+    texture: `head_${humanData.directionInitials}`,
+    pivot: humanData.head.pivot,
+  });
+  const torso = sprite({
+    spriteSheet: SpriteSheetEnum.HUMAN,
+    texture: `torso_${humanData.directionInitials}`,
   });
 
-  human.setTint(0xefcfb1);
+  const $rerender = () => {
+    humanData = System.game.human.get($direction);
 
-  $container.add(human);
-  const bounds = human.getBounds();
-  human.setPivotX(Math.round(bounds.width / 2));
+    $body.setPivot(humanData.pivot);
+    $body.getDisplayObject().scale.x = humanData?.xScale ?? 1;
 
-  $container.setPivotY(bounds.height - 15);
-  $container.setPivotX(-23);
+    head.setTexture(
+      `head_${humanData.directionInitials}`,
+      SpriteSheetEnum.HUMAN,
+    );
+    head.setPivot(humanData.head.pivot);
 
-  let $isometricPosition: Point3d;
-  //@ts-ignore
-  let $direction: Direction;
+    torso.setTexture(
+      `torso_${humanData.directionInitials}`,
+      SpriteSheetEnum.HUMAN,
+    );
+  };
+  $rerender();
+
+  $body.add(torso, head);
 
   const $typingBubble = typingBubbleComponent({
     position: {
@@ -155,50 +191,51 @@ export const humanComponent: ContainerComponent<Props, Mutable> = (props) => {
     $direction = direction;
     switch (direction) {
       case Direction.NORTH:
-        positionXFunc = (x) => x - 2;
-        positionYFunc = (y) => y - 1;
-        incrementX--;
-        break;
-      case Direction.NORTH_EAST:
-        positionYFunc = (y) => y - 2;
-        incrementX -= 1;
-        incrementZ -= 1;
-        break;
-      case Direction.EAST:
-        positionXFunc = (x) => x + 2;
-        positionYFunc = (y) => y - 1;
-        incrementZ--;
-        break;
-      case Direction.SOUTH_EAST:
-        positionXFunc = (x) => x + 4;
-        incrementX += 1;
-        incrementZ -= 1;
-        // fixes passing below tile
-        forceZIndex = 1;
-        break;
-      case Direction.SOUTH:
         positionXFunc = (x) => x + 2;
         positionYFunc = (y) => y + 1;
         incrementX++;
         break;
-      case Direction.SOUTH_WEST:
+      case Direction.NORTH_EAST:
         positionYFunc = (y) => y + 2;
         incrementX += 1;
         incrementZ += 1;
         break;
-      case Direction.WEST:
+      case Direction.EAST:
         positionXFunc = (x) => x - 2;
         positionYFunc = (y) => y + 1;
         incrementZ++;
         break;
-      case Direction.NORTH_WEST:
+      case Direction.SOUTH_EAST:
         positionXFunc = (x) => x - 4;
         incrementX -= 1;
         incrementZ += 1;
         // fixes passing below tile
         forceZIndex = 1;
         break;
+      case Direction.SOUTH:
+        positionXFunc = (x) => x - 2;
+        positionYFunc = (y) => y - 1;
+        incrementX--;
+        break;
+      case Direction.SOUTH_WEST:
+        positionYFunc = (y) => y - 2;
+        incrementX -= 1;
+        incrementZ -= 1;
+        break;
+      case Direction.WEST:
+        positionXFunc = (x) => x + 2;
+        positionYFunc = (y) => y - 1;
+        incrementZ--;
+        break;
+      case Direction.NORTH_WEST:
+        positionXFunc = (x) => x + 4;
+        incrementX += 1;
+        incrementZ -= 1;
+        // fixes passing below tile
+        forceZIndex = 1;
+        break;
     }
+    $rerender();
 
     let repeatIndex = 0;
     const repeatEvery = MOVEMENT_BETWEEN_TILES_DURATION / TILE_WIDTH;
