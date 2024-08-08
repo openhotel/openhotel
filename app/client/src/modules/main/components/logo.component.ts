@@ -1,4 +1,4 @@
-import { sprite, SpriteComponent } from "@tulib/tulip";
+import { sprite, SpriteComponent } from "@tu/tulip";
 import { TextureEnum } from "shared/enums";
 
 export const logoComponent: SpriteComponent = () => {

@@ -5,7 +5,7 @@ import {
   EventMode,
   HorizontalAlign,
   textSprite,
-} from "@tulib/tulip";
+} from "@tu/tulip";
 import { SpriteSheetEnum } from "shared/enums";
 
 type InputProps = {

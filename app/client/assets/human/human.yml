@@ -1,0 +1,40 @@
+north_east:
+  pivot:
+    x: 8
+    y: 45
+  head:
+    pivot:
+      x: 1
+      y: 17
+north:
+  pivot:
+    x: 11
+    y: 44
+  head:
+    pivot:
+      x: 0
+      y: 17
+north_west:
+  pivot:
+    x: 9
+    y: 44
+  head:
+    pivot:
+      x: 2
+      y: 16
+west:
+  pivot:
+    x: 11
+    y: 44
+  head:
+    pivot:
+      x: 2
+      y: 18
+south_west:
+  pivot:
+    x: 9
+    y: 43
+  head:
+    pivot:
+      x: 0
+      y: 19

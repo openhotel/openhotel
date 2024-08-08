@@ -9,7 +9,7 @@ import {
   GraphicType,
   sprite,
   textSprite,
-} from "@tulib/tulip";
+} from "@tu/tulip";
 import { SpriteSheetEnum } from "shared/enums";
 import { buttonComponent } from "shared/components";
 import { Size } from "shared/types";

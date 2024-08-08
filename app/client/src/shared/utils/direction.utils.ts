@@ -8,17 +8,52 @@ export const getDirection = (
   const xDifference = currentPoint.x - targetPoint.x;
   const zDifference = currentPoint.z - targetPoint.z;
 
-  if (xDifference > 0 && zDifference > 0) return Direction.NORTH_EAST;
-  if (xDifference > 0 && zDifference < 0) return Direction.NORTH_WEST;
-  if (xDifference < 0 && zDifference > 0) return Direction.SOUTH_EAST;
-  if (xDifference < 0 && zDifference < 0) return Direction.SOUTH_WEST;
-  if (xDifference > 0) return Direction.NORTH;
-  if (xDifference < 0) return Direction.SOUTH;
-  if (zDifference > 0) return Direction.EAST;
-  if (zDifference < 0) return Direction.WEST;
+  if (xDifference < 0 && zDifference < 0) return Direction.NORTH_EAST;
+  if (xDifference < 0 && zDifference > 0) return Direction.NORTH_WEST;
+  if (xDifference > 0 && zDifference < 0) return Direction.SOUTH_EAST;
+  if (xDifference > 0 && zDifference > 0) return Direction.SOUTH_WEST;
+  if (xDifference < 0) return Direction.NORTH;
+  if (xDifference > 0) return Direction.SOUTH;
+  if (zDifference < 0) return Direction.EAST;
+  if (zDifference > 0) return Direction.WEST;
 
   return Direction.NONE;
 };
 
 export const isDirectionToFront = (direction: Direction): boolean =>
-  [Direction.SOUTH, Direction.SOUTH_WEST, Direction.WEST].includes(direction);
+  [Direction.NORTH, Direction.NORTH_EAST, Direction.EAST].includes(direction);
+
+export const getDirectionInitials = (direction: Direction): string => {
+  switch (direction) {
+    case Direction.NORTH:
+      return "n";
+    case Direction.NORTH_EAST:
+      return "ne";
+    case Direction.EAST:
+      return "e";
+    case Direction.SOUTH_EAST:
+      return "se";
+    case Direction.SOUTH:
+      return "s";
+    case Direction.SOUTH_WEST:
+      return "sw";
+    case Direction.WEST:
+      return "w";
+    case Direction.NORTH_WEST:
+      return "nw";
+    default:
+      return "";
+  }
+};
+
+export const getNextDirection = (
+  direction: Direction,
+  clockwise = true,
+): Direction =>
+  clockwise
+    ? direction === Direction.NORTH_WEST
+      ? Direction.NORTH
+      : direction + 1
+    : direction === Direction.NORTH
+      ? Direction.NORTH_WEST
+      : direction - 1;

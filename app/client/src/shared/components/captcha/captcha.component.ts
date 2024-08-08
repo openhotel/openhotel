@@ -11,7 +11,7 @@ import {
   HorizontalAlign,
   sprite,
   textSprite,
-} from "@tulib/tulip";
+} from "@tu/tulip";
 import { SpriteSheetEnum } from "shared/enums";
 import { loaderComponent } from "../loader";
 

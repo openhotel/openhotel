@@ -1,5 +1,5 @@
 import { proxy } from "system/proxy";
-import { Event, global } from "@tulib/tulip";
+import { Event, global } from "@tu/tulip";
 import { isDevelopment } from "shared/utils";
 import { game } from "system/game";
 import { tasks } from "system/tasks";

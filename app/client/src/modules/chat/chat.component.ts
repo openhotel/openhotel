@@ -5,7 +5,7 @@ import {
   Event as KeyEvent,
   global,
   HorizontalAlign,
-} from "@tulib/tulip";
+} from "@tu/tulip";
 import { System } from "system";
 import { Event } from "shared/enums";
 import { inputComponent } from "shared/components";

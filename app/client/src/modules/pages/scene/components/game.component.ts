@@ -4,7 +4,7 @@ import {
   DisplayObjectEvent,
   Event as TulipEvent,
   global,
-} from "@tulib/tulip";
+} from "@tu/tulip";
 import { bubbleChatComponent, chatComponent } from "modules/chat";
 import { Event } from "shared/enums";
 import { System } from "system";

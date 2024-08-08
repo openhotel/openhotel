@@ -6,7 +6,7 @@ import {
   EventMode,
   HorizontalAlign,
   textSprite,
-} from "@tulib/tulip";
+} from "@tu/tulip";
 import { SpriteSheetEnum } from "shared/enums";
 import { registerFormComponent } from "./register-form.component";
 import { loginFormComponent } from "./login-form.component";

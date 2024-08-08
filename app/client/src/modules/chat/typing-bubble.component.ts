@@ -5,7 +5,7 @@ import {
   sliceSprite,
   textSprite,
   VerticalAlign,
-} from "@tulib/tulip";
+} from "@tu/tulip";
 import { SpriteSheetEnum, TextureEnum } from "shared/enums";
 
 export const typingBubbleComponent: ContainerComponent = (props) => {

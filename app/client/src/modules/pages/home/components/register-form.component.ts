@@ -4,7 +4,7 @@ import {
   DisplayObjectEvent,
   EventMode,
   HorizontalAlign,
-} from "@tulib/tulip";
+} from "@tu/tulip";
 import {
   buttonComponent,
   inputComponent,
