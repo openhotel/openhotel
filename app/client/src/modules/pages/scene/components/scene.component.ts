@@ -1,4 +1,4 @@
-import { container, ContainerComponent } from "@tulib/tulip";
+import { container, ContainerComponent } from "@tu/tulip";
 import { System } from "system";
 import { Event } from "shared/enums";
 import { gameComponent } from "./game.component";

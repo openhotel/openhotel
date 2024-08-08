@@ -1,4 +1,4 @@
-import { animatedSprite, ContainerComponent, PlayStatus } from "@tulib/tulip";
+import { animatedSprite, ContainerComponent, PlayStatus } from "@tu/tulip";
 import { SpriteSheetEnum } from "shared/enums";
 
 export const loaderComponent: ContainerComponent = (props) => {

@@ -6,7 +6,7 @@ import {
   EventMode,
   sprite,
   SpriteMutable,
-} from "@tulib/tulip";
+} from "@tu/tulip";
 import { FurnitureDirectionData, Point3d } from "shared/types";
 import { TILE_SIZE } from "shared/consts";
 import { System } from "system";

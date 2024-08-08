@@ -1,11 +1,11 @@
-import { container, ContainerComponent, textSprite } from "@tulib/tulip";
+import { container, textSprite } from "@tu/tulip";
 import { logoComponent } from "./logo.component";
 import { System } from "system";
 import { Event, SpriteSheetEnum } from "shared/enums";
 import { homeComponent, offlineComponent, sceneComponent } from "modules/pages";
 import { getVersion, isDevelopment } from "shared/utils";
 
-export const mainComponent: ContainerComponent = () => {
+export const mainComponent = () => {
   const $container = container();
 
   const $pageContainer = container();
@@ -29,7 +29,7 @@ export const mainComponent: ContainerComponent = () => {
   let $scene;
   let $offlinePage;
 
-  System.proxy.on(Event.WELCOME, async ({ user }) => {
+  System.proxy.on<any>(Event.WELCOME, async ({ user }) => {
     System.game.users.setCurrentUser(user);
 
     $homePage && $homePage.$destroy();

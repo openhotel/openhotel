@@ -4,7 +4,7 @@ import {
   HorizontalAlign,
   sliceSprite,
   textSprite,
-} from "@tulib/tulip";
+} from "@tu/tulip";
 import { SpriteSheetEnum, TextureEnum } from "shared/enums";
 
 type Mutable = {};

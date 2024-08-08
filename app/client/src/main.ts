@@ -1,4 +1,4 @@
-import { application, global } from "@tulib/tulip";
+import { application, global } from "@tu/tulip";
 import { mainComponent } from "modules/main";
 import { isDevelopment, loadLocale } from "shared/utils";
 import { System } from "system";
@@ -23,13 +23,20 @@ app.load(async () => {
   const spriteSheets = Object.values(SpriteSheetEnum);
   const furnitureCollectionSpriteSheets = Object.values(FurnitureCollection);
 
-  await global.spriteSheets.load(
-    ...spriteSheets,
-    ...furnitureCollectionSpriteSheets,
-  );
+  await global.spriteSheets.load({
+    spriteSheet: [...spriteSheets, ...furnitureCollectionSpriteSheets],
+    onLoad: (label) => {
+      console.info(`Spritesheet ${label} loaded!`);
+    },
+  });
 
   const textures = Object.values(TextureEnum);
-  await global.textures.load(...textures);
+  await global.textures.load({
+    textures,
+    onLoad: (label) => {
+      console.info(`Texture ${label} loaded!`);
+    },
+  });
 
   await loadLocale();
   await System.load();
