@@ -167,7 +167,9 @@ export const roomComponent: ContainerComponent<Props, Mutable> = ({
 
         const isSpawn = roomLine[x] === RoomPointEnum.SPAWN;
 
-        const previewY = -((parseInt(roomLine[x] + "") ?? 1) - 1);
+        const previewY = -(
+          (isSpawn ? 1 : (parseInt(roomLine[x] + "") ?? 1)) - 1
+        );
         const y = Math.floor(previewY);
         const previewPosition = getPositionFromIsometricPosition({
           x,
