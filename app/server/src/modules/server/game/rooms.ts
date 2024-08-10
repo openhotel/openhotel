@@ -7,12 +7,21 @@ import {
   RoomPoint,
   User,
 } from "shared/types/main.ts";
-import { FurnitureType, ProxyEvent, RoomPointEnum } from "shared/enums/main.ts";
-import { Grid } from "@oh/pathfinding";
+import {
+  Direction,
+  FurnitureType,
+  ProxyEvent,
+  RoomPointEnum,
+} from "shared/enums/main.ts";
 import { Server } from "modules/server/main.ts";
 import { getInterpolatedPath } from "shared/utils/pathfinding.utils.ts";
 import { getRandomNumber } from "shared/utils/random.utils.ts";
 import { isPoint3dEqual } from "shared/utils/point.utils.ts";
+import {
+  getRoomGridLayout,
+  getRoomSpawnDirection,
+  getRoomSpawnPoint,
+} from "shared/utils/rooms.utils.ts";
 
 export const rooms = () => {
   let roomMap: Record<string, Room> = {};
@@ -24,6 +33,7 @@ export const rooms = () => {
     const getDescription = () => room.description;
 
     const getSpawnPoint = (): Point3d => room.spawnPoint;
+    const getSpawnDirection = (): Direction => room.spawnDirection;
 
     const addUser = (user: User) => {
       const $user = Server.game.users.get({ id: user.id });
@@ -31,6 +41,7 @@ export const rooms = () => {
 
       $user.setRoom(room.id);
       $user.setPosition(getSpawnPoint());
+      $user.setBodyDirection(getSpawnDirection());
 
       //Add user to "room" internally
       Server.proxy.$emit(ProxyEvent.$ADD_ROOM, {
@@ -127,7 +138,7 @@ export const rooms = () => {
         roomLayout[position.z][position.x] = RoomPointEnum.EMPTY;
       }
 
-      const grid = $getGridLayout(roomLayout);
+      const grid = getRoomGridLayout(roomLayout);
 
       const path = grid
         .findPath(
@@ -208,44 +219,6 @@ export const rooms = () => {
     };
   };
 
-  const $getRoomSpawnPoint = (layout: RoomPoint[][]): Point3d => {
-    const roomSize = {
-      width: layout.length,
-      depth: Math.max(...layout.map((line) => line.length)),
-    };
-
-    for (let z = 0; z < roomSize.depth; z++) {
-      const roomLine = layout[z];
-      for (let x = 0; x < roomSize.width; x++) {
-        if (roomLine[x] === RoomPointEnum.SPAWN) return { x, y: 0, z };
-      }
-    }
-    return undefined;
-  };
-
-  const $getGridLayout = (layout: RoomPoint[][]) => {
-    let grid: number[][] = [];
-    for (let z = 0; z < layout.length; z++) {
-      grid[z] = [];
-      for (let x = 0; x < layout[z].length; x++) {
-        let point = 0;
-        switch (layout[z][x]) {
-          case RoomPointEnum.SPAWN:
-            point = 4;
-            break;
-          case RoomPointEnum.EMPTY:
-            point = 0;
-            break;
-          default:
-            point = parseInt(layout[z][x] + "") * 4;
-            break;
-        }
-        grid[z][x] = point;
-      }
-    }
-    return Grid.from(grid);
-  };
-
   const create = (room: RawRoom) => {
     let layout: RoomPoint[][] = room.layout.map((line) =>
       line
@@ -255,11 +228,14 @@ export const rooms = () => {
         ),
     );
 
+    console.log("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<,");
+    console.debug(Direction[getRoomSpawnDirection(layout)]);
     roomMap[room.id] = {
       ...room,
       layout,
       furniture: [],
-      spawnPoint: $getRoomSpawnPoint(layout),
+      spawnPoint: getRoomSpawnPoint(layout),
+      spawnDirection: getRoomSpawnDirection(layout),
     };
     roomUserMap[room.id] = [];
   };
@@ -273,72 +249,83 @@ export const rooms = () => {
     return $getRoom(roomList[roomIndex]);
   };
 
-  create({
-    id: "test_0",
-    title: "Room 1",
-    description: "This is a description",
-    layout: [
-      "xxxxxx2222",
-      "xxxxxx2222",
-      "xxxxxx2222",
-      "x111122222",
-      "x111122222",
-      "s111122222",
-      "x111122222",
-      "x111122222",
-      "xxxxxx2222",
-      "xxxxxx2222",
-    ],
-  });
+  const load = () => {
+    create({
+      id: "test_0",
+      title: "Room 1",
+      description: "This is a description",
+      layout: [
+        "xxxxxx2222",
+        "xxxxxx2222",
+        "xxxxxx2222",
+        "x111122222",
+        "x111122222",
+        "s111122222",
+        "x111122222",
+        "x111122222",
+        "xxxxxx2222",
+        "xxxxxx2222",
+      ],
+    });
 
-  create({
-    id: "test_1",
-    title: "Room 2",
-    description: "This is a description",
-    layout: [
-      "xxxxsxxxxx",
-      "xxx111x222",
-      "xx11112222",
-      "x11111x222",
-      "x11111x222",
-      "x22222x333",
-      "x33333x333",
-      "x333333333",
-      "x333333333",
-      "x333333333",
-      "x333333333",
-      "x333333333",
-    ],
-  });
+    create({
+      id: "test_1",
+      title: "Room 2",
+      description: "This is a description",
+      layout: [
+        "xxxxsxxxxx",
+        "xxx111x222",
+        "xx11112222",
+        "x11111x222",
+        "x11111x222",
+        "x22222x333",
+        "x33333x333",
+        "x333333333",
+        "x333333333",
+        "x333333333",
+        "x333333333",
+        "x333333333",
+      ],
+    });
 
-  create({
-    id: "test_2",
-    title: "Room 3",
-    description: "This is a description",
-    layout: ["x111111", "x111111", "s111111", "x111111", "x111111", "x111111"],
-  });
+    create({
+      id: "test_2",
+      title: "Room 3",
+      description: "This is a description",
+      layout: [
+        "x111111",
+        "x111111",
+        "s111111",
+        "x111111",
+        "x111111",
+        "x111111",
+      ],
+    });
 
-  create({
-    id: "test_3",
-    title: "Room 4",
-    description: "This is a description",
-    layout: [
-      "x111111",
-      "x111111",
-      "x111111",
-      "x111111",
-      "x111111",
-      "x111111",
-      "s111111",
-      "x111111",
-      "x111111",
-      "x111111",
-      "x111111",
-      "x111111",
-    ],
-  });
+    create({
+      id: "test_3",
+      title: "Room 4",
+      description: "This is a description",
+      layout: [
+        "x111111",
+        "x111111",
+        "x111111",
+        "x111111",
+        "x111111",
+        "x111111",
+        "s111111",
+        "x111111",
+        "x111111",
+        "x111111",
+        "x111111",
+        "x111111",
+      ],
+    });
+  };
 
   return {
+    load,
+
     create,
     get,
 

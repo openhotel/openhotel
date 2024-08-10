@@ -6,6 +6,7 @@ import {
   EventMode,
   HorizontalAlign,
   inputTextSprite,
+  InputTextSpriteMutable,
   VerticalAlign,
 } from "@tu/tulip";
 import { SpriteSheetEnum } from "shared/enums";
@@ -28,6 +29,7 @@ type InputMutable = {
   focus: () => void;
   setSize: (size: Size) => void;
   on: <Data>(event: DisplayObjectEvent, callback: (data: Data) => void) => void;
+  getInputComponent: () => InputTextSpriteMutable;
 };
 
 export const inputComponent: ContainerComponent<InputProps, InputMutable> = ({

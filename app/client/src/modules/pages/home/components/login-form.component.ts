@@ -42,6 +42,11 @@ export const loginFormComponent: ContainerComponent = (props) => {
       return true;
     },
   });
+
+  $username.on(DisplayObjectEvent.CONTEXT_FORWARD, () => {
+    $password.focus();
+  });
+
   const $password = inputComponent({
     placeholder: __("password"),
     horizontalAlign: HorizontalAlign.CENTER,
@@ -52,6 +57,12 @@ export const loginFormComponent: ContainerComponent = (props) => {
       x: 0,
       y: 20,
     },
+  });
+  $password.on(DisplayObjectEvent.CONTEXT_FORWARD, () => {
+    $loginButton.focus();
+  });
+  $password.on(DisplayObjectEvent.CONTEXT_BACKWARD, () => {
+    $username.focus();
   });
 
   const $captchaComponent = getCaptchaComponent();
@@ -69,6 +80,9 @@ export const loginFormComponent: ContainerComponent = (props) => {
       y: 20 * 7,
     },
     eventMode: EventMode.STATIC,
+  });
+  $loginButton.on(DisplayObjectEvent.CONTEXT_BACKWARD, () => {
+    $password.focus();
   });
 
   const $loader = loaderComponent({
@@ -99,6 +113,10 @@ export const loginFormComponent: ContainerComponent = (props) => {
   });
 
   $container.add($username, $password, $loginButton, $loader);
+
+  $container.on(DisplayObjectEvent.ADDED, () => {
+    $username.focus();
+  });
 
   if (isDevelopment()) {
     try {

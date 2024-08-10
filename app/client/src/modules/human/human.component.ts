@@ -10,7 +10,6 @@ import {
   sprite,
 } from "@tu/tulip";
 import {
-  getDirection,
   getPositionFromIsometricPosition,
   isDirectionToFront,
 } from "shared/utils";
@@ -39,7 +38,8 @@ type Props = {
 type Mutable = {
   setIsometricPosition: (position: Point3d) => void;
   getIsometricPosition: () => Point3d;
-  moveTo: (position: Point3d) => Promise<void>;
+  setBodyDirection: (direction: Direction) => void;
+  moveTo: (position: Point3d, direction: Direction) => Promise<void>;
   cancelMovement: () => void;
   getUser: () => { id: string; username: string };
 };
@@ -86,7 +86,7 @@ export const humanComponent: ContainerComponent<Props, Mutable> = (props) => {
   const $body = container({
     pivot: humanData.pivot,
   });
-  $body.getDisplayObject().scale.x = humanData?.xScale ?? 1;
+  $body.setScaleX(humanData?.xScale ?? 1);
   $container.add($body);
 
   const head = sprite({
@@ -103,7 +103,7 @@ export const humanComponent: ContainerComponent<Props, Mutable> = (props) => {
     humanData = System.game.human.get($direction);
 
     $body.setPivot(humanData.pivot);
-    $body.getDisplayObject().scale.x = humanData?.xScale ?? 1;
+    $body.setScaleX(humanData?.xScale ?? 1);
 
     head.setTexture(
       `head_${humanData.directionInitials}`,
@@ -173,12 +173,15 @@ export const humanComponent: ContainerComponent<Props, Mutable> = (props) => {
   };
   const getIsometricPosition = () => $isometricPosition;
 
+  const setBodyDirection = (direction: Direction) => {
+    $direction = direction;
+    $rerender();
+  };
+
   let lastMovementAnimationId;
   //TODO Move this to a util
-  const moveTo = (point: Point3d) => {
+  const moveTo = (point: Point3d, direction: Direction) => {
     System.tasks.remove(lastMovementAnimationId);
-
-    const direction = getDirection(getIsometricPosition(), point);
 
     let positionXFunc: (x: number) => number = (x) => x;
     let positionYFunc: (y: number) => number = (y) => y;
@@ -283,9 +286,16 @@ export const humanComponent: ContainerComponent<Props, Mutable> = (props) => {
     });
   });
 
+  $isometricPosition = user.position;
+  $direction = user.bodyDirection;
+
+  $calcIsometricPosition();
+  $rerender();
+
   return $container.getComponent(humanComponent, {
     setIsometricPosition,
     getIsometricPosition,
+    setBodyDirection,
     moveTo,
     getUser: () => user,
   });
