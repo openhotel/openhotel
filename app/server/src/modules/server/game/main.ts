@@ -3,19 +3,21 @@ import { users } from "./users.ts";
 import { furniture } from "./furniture.ts";
 
 export const game = () => {
-  const $users = users();
   const $furniture = furniture();
+  const $rooms = rooms();
+  const $users = users();
 
   const load = async () => {
     await $furniture.load();
+    $rooms.load();
     $users.load();
   };
 
   return {
     load,
 
-    rooms: rooms(),
-    users: $users,
     furniture: $furniture,
+    rooms: $rooms,
+    users: $users,
   };
 };

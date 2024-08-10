@@ -1,7 +1,8 @@
 export const getBrowserLanguage = () => {
   return navigator.languages
     ? navigator.languages[0]
-    : navigator.language || navigator.userLanguage;
+    : // @ts-ignore
+      navigator.language || navigator.userLanguage;
 };
 
 let locale;

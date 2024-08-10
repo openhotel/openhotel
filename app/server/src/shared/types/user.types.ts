@@ -1,5 +1,5 @@
 import { Point3d } from "shared/types/point.types.ts";
-import { ProxyEvent } from "shared/enums/event.enum.ts";
+import { ProxyEvent, Direction } from "shared/enums/main.ts";
 
 export type PrivateUser = {
   id: string;
@@ -16,6 +16,8 @@ export type User = {
 
   position?: Point3d;
   positionUpdatedAt?: number;
+
+  bodyDirection?: Direction;
 };
 
 export type UsersConfig = {
@@ -39,6 +41,9 @@ export type UserMutable = {
   setPosition: (position: Pick<Point3d, "x" | "z">) => void;
   getPosition: () => Point3d | null;
   getPositionUpdatedAt: () => number | null;
+
+  setBodyDirection: (direction: Direction) => void;
+  getBodyDirection: () => Direction;
 
   setRoom: (roomId: string) => void;
   getRoom: () => string | null;

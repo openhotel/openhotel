@@ -15,8 +15,8 @@ import { __ } from "shared/utils";
 export const homeComponent: ContainerComponent = () => {
   const $container = container();
 
-  const $registerForm = registerFormComponent({ visible: false });
-  const $loginForm = loginFormComponent();
+  let isLogForm = true;
+  let $currentForm = loginFormComponent();
 
   const $switchText = textSprite({
     text: __("Register instead"),
@@ -34,15 +34,17 @@ export const homeComponent: ContainerComponent = () => {
     eventMode: EventMode.STATIC,
   });
   $switchText.on(DisplayObjectEvent.POINTER_TAP, () => {
-    const isRegister = $registerForm.getVisible();
-    $registerForm.setVisible(!isRegister);
-    $loginForm.setVisible(isRegister);
+    $container.remove($currentForm);
+    $currentForm = isLogForm ? registerFormComponent() : loginFormComponent();
+    $container.add($currentForm);
+
+    isLogForm = !isLogForm;
     $switchText.setText(
-      !isRegister ? __("Login instead") : __("Register instead"),
+      !isLogForm ? __("Login instead") : __("Register instead"),
     );
   });
 
-  $container.add($switchText, $registerForm, $loginForm);
+  $container.add($switchText, $currentForm);
 
   return $container.getComponent(homeComponent);
 };

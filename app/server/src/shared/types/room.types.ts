@@ -1,5 +1,5 @@
 import { Point3d, RoomFurniture, User } from "shared/types/main.ts";
-import { ProxyEvent, RoomPointEnum } from "shared/enums/main.ts";
+import { Direction, ProxyEvent, RoomPointEnum } from "shared/enums/main.ts";
 
 type BaseRoom = {
   id: string;
@@ -13,8 +13,9 @@ export type RawRoom = BaseRoom & {
 
 export type Room = BaseRoom & {
   layout: RoomPoint[][];
-  spawnPoint: Point3d;
   furniture: RoomFurniture[];
+  spawnPoint: Point3d;
+  spawnDirection: Direction;
 };
 
 export type RoomPoint = number | string | RoomPointEnum;
