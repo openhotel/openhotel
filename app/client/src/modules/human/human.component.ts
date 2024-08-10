@@ -47,11 +47,11 @@ type Mutable = {
 export type HumanMutable = ContainerMutable<{}, Mutable>;
 
 export const humanComponent: ContainerComponent<Props, Mutable> = (props) => {
+  const HUMAN_TINT = 0xefcfb1;
   const $container = container<Props, Mutable>({
     ...props,
     eventMode: EventMode.STATIC,
     cursor: Cursor.POINTER,
-    tint: 0xefcfb1,
     pivot: {
       x: -TILE_SIZE.width / 2,
       y: -TILE_SIZE.height / 2,
@@ -62,9 +62,6 @@ export const humanComponent: ContainerComponent<Props, Mutable> = (props) => {
 
   let $isometricPosition: Point3d;
   let $direction: Direction = Direction.NORTH;
-
-  //@ts-ignore
-  const $isCurrent = System.game.users.getCurrentUser().id === user.id;
 
   const capsule = graphics({
     type: GraphicType.CAPSULE,
@@ -93,10 +90,12 @@ export const humanComponent: ContainerComponent<Props, Mutable> = (props) => {
     spriteSheet: SpriteSheetEnum.HUMAN,
     texture: `head_${humanData.directionInitials}`,
     pivot: humanData.head.pivot,
+    tint: HUMAN_TINT,
   });
   const torso = sprite({
     spriteSheet: SpriteSheetEnum.HUMAN,
     texture: `torso_${humanData.directionInitials}`,
+    tint: HUMAN_TINT,
   });
 
   const $rerender = () => {
@@ -122,8 +121,8 @@ export const humanComponent: ContainerComponent<Props, Mutable> = (props) => {
 
   const $typingBubble = typingBubbleComponent({
     position: {
-      x: 7,
-      y: -8,
+      x: humanData.pivot.x / 2,
+      y: -humanData.pivot.y - humanData.head.pivot.y,
     },
   });
   $container.add($typingBubble);
@@ -253,12 +252,12 @@ export const humanComponent: ContainerComponent<Props, Mutable> = (props) => {
 
     if (isDirectionToFront(direction)) $calcZIndex();
 
-    return new Promise<void>(async (resolve, reject) => {
+    return new Promise<void>(async (resolve) => {
       lastMovementAnimationId = System.tasks.add({
         type: TickerQueue.REPEAT,
         repeatEvery: repeatEvery,
         repeats: TILE_WIDTH,
-        onFunc: (delta) => {
+        onFunc: () => {
           let targetY = 0;
           //Check if it's at the middle of the index to change to the nex Y
           if (repeatIndex === TILE_WIDTH / 2)
