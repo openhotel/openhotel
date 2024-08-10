@@ -3,6 +3,8 @@ import { Server } from "modules/server/main.ts";
 import { ProxyEvent } from "shared/enums/event.enum.ts";
 import { MOVEMENT_BETWEEN_TILES_DURATION } from "shared/consts/tiles.consts.ts";
 import { TickerQueue } from "@oh/queue";
+import { getDirection } from "shared/utils/main.ts";
+import { Direction } from "shared/enums/direction.enums.ts";
 
 export const users = () => {
   let $privateUserMap: Record<string, PrivateUser> = {};
@@ -54,11 +56,17 @@ export const users = () => {
             return;
           }
 
+          const targetBodyDirection = getDirection(
+            user.getPosition(),
+            nextPosition,
+          );
           //set next position (reserve it)
           user.setPosition(nextPosition);
+          user.setBodyDirection(targetBodyDirection);
           room.emit(ProxyEvent.MOVE_HUMAN, {
             userId: user.getId(),
             position: nextPosition,
+            bodyDirection: targetBodyDirection,
           });
 
           //check if there's no more pathfinding
@@ -81,6 +89,11 @@ export const users = () => {
     const getPosition = (): Point3d => $userMap[user.id]?.position;
     const getPositionUpdatedAt = (): number =>
       $userMap[user.id].positionUpdatedAt;
+
+    const setBodyDirection = (direction: Direction) => {
+      $userMap[user.id].bodyDirection = direction;
+    };
+    const getBodyDirection = (): Direction => $userMap[user.id]?.bodyDirection;
 
     const setRoom = (roomId: string) => {
       $userMap[user.id].roomId = roomId;
@@ -127,6 +140,9 @@ export const users = () => {
       setPosition,
       getPosition,
       getPositionUpdatedAt,
+
+      setBodyDirection,
+      getBodyDirection,
 
       setRoom,
       getRoom,

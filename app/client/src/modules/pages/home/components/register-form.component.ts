@@ -30,6 +30,10 @@ export const registerFormComponent: ContainerComponent = (props) => {
     maxLength: 16,
     password: false,
   });
+
+  $username.on(DisplayObjectEvent.CONTEXT_FORWARD, () => {
+    $password.focus();
+  });
   const $password = inputComponent({
     placeholder: __("password"),
     horizontalAlign: HorizontalAlign.CENTER,
@@ -41,6 +45,12 @@ export const registerFormComponent: ContainerComponent = (props) => {
       y: 20,
     },
   });
+  $password.on(DisplayObjectEvent.CONTEXT_FORWARD, () => {
+    $passwordRepeat.focus();
+  });
+  $password.on(DisplayObjectEvent.CONTEXT_BACKWARD, () => {
+    $username.focus();
+  });
   const $passwordRepeat = inputComponent({
     placeholder: __("repeat password"),
     horizontalAlign: HorizontalAlign.CENTER,
@@ -51,6 +61,12 @@ export const registerFormComponent: ContainerComponent = (props) => {
       x: 0,
       y: 20 * 2,
     },
+  });
+  $passwordRepeat.on(DisplayObjectEvent.CONTEXT_FORWARD, () => {
+    $registerButton.focus();
+  });
+  $passwordRepeat.on(DisplayObjectEvent.CONTEXT_BACKWARD, () => {
+    $password.focus();
   });
 
   const $captchaComponent = getCaptchaComponent();
@@ -68,6 +84,9 @@ export const registerFormComponent: ContainerComponent = (props) => {
       y: 20 * 7,
     },
     eventMode: EventMode.STATIC,
+  });
+  $registerButton.on(DisplayObjectEvent.CONTEXT_BACKWARD, () => {
+    $passwordRepeat.focus();
   });
 
   const $loader = loaderComponent({
@@ -117,6 +136,9 @@ export const registerFormComponent: ContainerComponent = (props) => {
     $registerButton,
     $loader,
   );
+  $container.on(DisplayObjectEvent.ADDED, () => {
+    $username.focus();
+  });
 
   return $container.getComponent(registerFormComponent);
 };

@@ -82,7 +82,6 @@ export const roomComponent: ContainerComponent<Props, Mutable> = ({
   $container.on(DisplayObjectEvent.ADDED, () => {
     removeOnAddHuman = System.proxy.on<any>(Event.ADD_HUMAN, ({ user }) => {
       const human = humanComponent({ user });
-      human.setIsometricPosition(user.position);
       humanList.push(human);
       $container.add(human);
     });
@@ -98,10 +97,10 @@ export const roomComponent: ContainerComponent<Props, Mutable> = ({
     );
     removeOnMoveHuman = System.proxy.on<any>(
       Event.MOVE_HUMAN,
-      ({ userId, position }) => {
+      ({ userId, position, bodyDirection }) => {
         const human = humanList.find((human) => human.getUser().id === userId);
 
-        human.moveTo(position);
+        human.moveTo(position, bodyDirection);
       },
     );
     removeOnSetPositionHuman = System.proxy.on<any>(
@@ -292,7 +291,7 @@ export const roomComponent: ContainerComponent<Props, Mutable> = ({
         });
 
         pol.on(DisplayObjectEvent.POINTER_UP, () => {
-          global.context.clear();
+          global.context.blur();
           System.proxy.emit(Event.POINTER_TILE, {
             position: {
               x,
