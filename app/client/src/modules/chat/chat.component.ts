@@ -40,12 +40,11 @@ export const chatComponent: ContainerComponent<{}, Mutable> = (props) => {
     }, 800);
   };
 
-  const MAX_LENGTH = 64;
   const $input = inputComponent({
     placeholder: __("Click here or press 'c' to write a message"),
     horizontalAlign: HorizontalAlign.LEFT,
     width: 100,
-    maxLength: MAX_LENGTH,
+    maxLength: 64,
 
     onTextChange: (_, postText) => {
       setTyping(postText);
@@ -101,19 +100,12 @@ export const chatComponent: ContainerComponent<{}, Mutable> = (props) => {
     },
     $container,
   );
-  const removeOnKeyDown = global.events.on(
-    KeyEvent.KEY_DOWN,
-    ({ key }: KeyboardEvent) => {
-      if ($input.getValue().length === MAX_LENGTH) $sendMessage();
-    },
-  );
 
   $input.on(DisplayObjectEvent.CONTEXT_ENTER, () => ($focused = true));
   $input.on(DisplayObjectEvent.CONTEXT_LEAVE, () => ($focused = false));
 
   $container.on(DisplayObjectEvent.DESTROYED, () => {
     removeOnKeyUp();
-    removeOnKeyDown();
   });
 
   return $container.getComponent(chatComponent, {
