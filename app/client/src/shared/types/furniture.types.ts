@@ -1,6 +1,5 @@
 import { Point2d, Point3d } from "./point.types";
 import { Size, Size3d } from "./size.types";
-import { CrossDirectionKeys } from "./direction.types";
 import { CrossDirection, FurnitureType } from "shared/enums";
 
 export type FurnitureDirectionTexture = {
@@ -16,14 +15,16 @@ export type FurnitureDirectionData = {
 };
 
 export type FurnitureDirectionDataMap = Record<
-  Partial<CrossDirectionKeys>,
+  Partial<CrossDirection>,
   FurnitureDirectionData
 >;
 
 export type FurnitureData = {
   id: string;
+  type: FurnitureType;
   label: string;
-  collection: string;
+  description: string;
+  collectionId: string;
   spriteSheet: string;
   size?: Size3d;
   direction: FurnitureDirectionDataMap;

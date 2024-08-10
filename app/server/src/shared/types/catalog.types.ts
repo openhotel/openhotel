@@ -7,6 +7,7 @@ export type CatalogFurniture = {
 
 export type CatalogCategory = {
   id: string;
+  label: string;
   enabled: boolean;
   furniture: CatalogFurniture[];
 };

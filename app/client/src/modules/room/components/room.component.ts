@@ -14,7 +14,6 @@ import {
 import { getPositionFromIsometricPosition, getTilePolygon } from "shared/utils";
 import {
   Event,
-  Furniture,
   FurnitureType,
   RoomPointEnum,
   SpriteSheetEnum,
@@ -327,7 +326,7 @@ export const roomComponent: ContainerComponent<Props, Mutable> = ({
         switch (type) {
           case FurnitureType.FURNITURE:
             $furniture = furnitureComponent({
-              furniture: id as Furniture,
+              furniture: id,
               isometricPosition: position,
               id: uid,
               direction,
@@ -337,7 +336,7 @@ export const roomComponent: ContainerComponent<Props, Mutable> = ({
           case FurnitureType.FRAME:
             $furniture = furnitureFrameComponent({
               direction,
-              furniture: id as Furniture,
+              furniture: id,
               isometricPosition: position,
               framePosition: (props as RoomFurnitureFrame).framePosition,
             });
