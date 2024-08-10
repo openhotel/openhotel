@@ -68,7 +68,7 @@ export const proxy = () => {
         silent: true,
       });
       $socket.on("connected", () => {
-        console.log("handshake connected!");
+        console.info("handshake connected!");
 
         $socket.emit("session", {
           sessionId: $sessionId,
@@ -85,7 +85,7 @@ export const proxy = () => {
           silent: true,
         });
         $socket.on("connected", () => {
-          console.log("proxy connected!");
+          console.info("proxy connected!");
           isConnected = true;
 
           for (const event of Object.keys(eventFunctionMap)) {

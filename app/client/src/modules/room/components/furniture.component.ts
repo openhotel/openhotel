@@ -10,12 +10,12 @@ import {
 import { FurnitureDirectionData, Point3d } from "shared/types";
 import { TILE_SIZE } from "shared/consts";
 import { System } from "system";
-import { CrossDirection, Furniture, SystemEvent } from "shared/enums";
+import { CrossDirection, SystemEvent } from "shared/enums";
 import { getPositionFromIsometricPosition } from "shared/utils";
 
 type Props = {
   isometricPosition: Point3d;
-  furniture: Furniture;
+  furniture: string;
   direction: CrossDirection;
 };
 
@@ -30,7 +30,7 @@ export const furnitureComponent: Component<Props, Mutable> = (props) => {
   const furnitureData = System.game.furniture.get(furniture);
 
   const furnitureDirectionData = furnitureData.direction[
-    CrossDirection[direction].toLowerCase()
+    direction
   ] as FurnitureDirectionData;
 
   const positionZIndex =

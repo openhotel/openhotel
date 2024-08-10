@@ -6,4 +6,3 @@ export * from "./direction.enums";
 export * from "./system-event.enums";
 export * from "./texture.enum";
 export * from "./furniture.enum";
-export * from "./furniture-collection.enum";
