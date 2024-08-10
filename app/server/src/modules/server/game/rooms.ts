@@ -162,7 +162,6 @@ export const rooms = () => {
     };
 
     const addFurniture = (furniture: RoomFurniture) => {
-      console.log(furniture);
       furniture.position = {
         ...furniture.position,
         y: getYFromPoint(furniture.position),
@@ -228,8 +227,6 @@ export const rooms = () => {
         ),
     );
 
-    console.log("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<,");
-    console.debug(Direction[getRoomSpawnDirection(layout)]);
     roomMap[room.id] = {
       ...room,
       layout,
