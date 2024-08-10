@@ -17,4 +17,3 @@ direction:
           height: 49
         zIndex: 0
         hitArea: [0, 0, 32, 0, 32, 49, 0, 49]
-

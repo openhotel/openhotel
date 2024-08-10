@@ -16,4 +16,3 @@ direction:
           y: 4
         zIndex: 0
         hitArea: [0, 0, 24, 0, 24, 29, 0, 29]
-
