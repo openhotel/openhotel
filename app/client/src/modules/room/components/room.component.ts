@@ -169,10 +169,14 @@ export const roomComponent: ContainerComponent<Props, Mutable> = ({
           (isSpawn ? 1 : (parseInt(roomLine[x] + "") ?? 1)) - 1
         );
         const y = Math.floor(previewY);
+
+        const isXStairs = roomLine[x] > roomLine[x - 1];
+        const isZStairs = roomLine[x] > layout[z - 1]?.[x];
+
         const previewPosition = getPositionFromIsometricPosition({
           x,
           z,
-          y: previewY,
+          y: previewY + (isXStairs || isZStairs ? 0.5 : 0),
         });
 
         const position = getPositionFromIsometricPosition({ x, z, y });
@@ -246,8 +250,6 @@ export const roomComponent: ContainerComponent<Props, Mutable> = ({
         }
 
         //detect stairs
-        const isXStairs = roomLine[x] > roomLine[x - 1];
-        const isZStairs = roomLine[x] > layout[z - 1]?.[x];
         if (isXStairs || isZStairs) {
           const stairs = sprite({
             spriteSheet: SpriteSheetEnum.ROOM,
