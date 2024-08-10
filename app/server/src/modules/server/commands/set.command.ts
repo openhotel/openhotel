@@ -26,6 +26,8 @@ export const setCommand: Command = {
     const $furniture = Server.game.furniture.get(furnitureId);
     if (!$furniture) return;
 
+    if (!$furniture.direction[CrossDirection[direction].toLowerCase()]) return;
+
     if (
       $furniture.type === FurnitureType.FRAME &&
       (isNaN(wallX) || isNaN(wallY))

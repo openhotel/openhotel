@@ -2,11 +2,7 @@ import { application, global } from "@tu/tulip";
 import { mainComponent } from "modules/main";
 import { isDevelopment, loadLocale } from "shared/utils";
 import { System } from "system";
-import {
-  FurnitureCollection,
-  SpriteSheetEnum,
-  TextureEnum,
-} from "shared/enums";
+import { SpriteSheetEnum, TextureEnum } from "shared/enums";
 
 const app = application({
   backgroundColor: 0x030303,
@@ -21,10 +17,9 @@ const app = application({
 
 app.load(async () => {
   const spriteSheets = Object.values(SpriteSheetEnum);
-  const furnitureCollectionSpriteSheets = Object.values(FurnitureCollection);
 
   await global.spriteSheets.load({
-    spriteSheet: [...spriteSheets, ...furnitureCollectionSpriteSheets],
+    spriteSheet: spriteSheets,
     onLoad: (label) => {
       console.info(`Spritesheet ${label} loaded!`);
     },

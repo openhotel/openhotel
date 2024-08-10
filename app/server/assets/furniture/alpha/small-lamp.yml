@@ -1,6 +1,18 @@
 label: Small lamp
 type: furniture
 size:
-  - width: 1
-  - depth: 1
-  - height: 1
+  width: 1
+  depth: 1
+  height: 1
+direction:
+  north:
+    textures:
+      - texture: lamp-small
+        bounds:
+          width: 24
+          height: 29
+        pivot:
+          x: 0
+          y: 4
+        zIndex: 0
+        hitArea: [0, 0, 24, 0, 24, 29, 0, 29]

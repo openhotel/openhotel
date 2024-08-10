@@ -10,29 +10,49 @@ moduleWorker.on("start", async ({ config, envs }: WorkerProps) => {
 
   log(`Client started on :${config.client.port}`);
 
-  await Deno.serve({ port: config.client.port }, async (request: Request) => {
+  const getFurnitureResponse = async (pathname: string) => {
     try {
-      const { url } = request;
-      const { pathname } = new URL(url);
+      pathname = pathname.substring(5);
+      const fileData = await Deno.readFile("./assets/furniture" + pathname);
 
-      if (!pathname.startsWith(ROOT_DIR_PATH)) {
-        return new Response("404", { status: 404 });
-      }
-      const filePath = pathname.replace("/", "");
-      const targetFile = "./client/" + (filePath || "index.html");
-
-      let fileData = await Deno.readFile(targetFile);
-      if (targetFile === "./client/index.html")
-        fileData = (await Deno.readTextFile(targetFile)).replace(
-          /{\s*\/\*__CONFIG__\*\/\s*}/,
-          JSON.stringify(config),
-        );
       return new Response(fileData, {
         headers: {
-          "Content-Type": getContentType(targetFile),
+          "Content-Type": getContentType(pathname),
         },
       });
     } catch (e) {}
     return new Response("404", { status: 404 });
-  });
+  };
+
+  await Deno.serve(
+    { port: config.client.port * (envs.isDevelopment ? 10 : 1) },
+    async (request: Request) => {
+      try {
+        const { url } = request;
+        const { pathname } = new URL(url);
+
+        if (!pathname.startsWith(ROOT_DIR_PATH)) {
+          return new Response("404", { status: 404 });
+        }
+        if (pathname.startsWith("/data"))
+          return await getFurnitureResponse(pathname);
+
+        const filePath = pathname.replace("/", "");
+        const targetFile = "./client/" + (filePath || "index.html");
+
+        let fileData = await Deno.readFile(targetFile);
+        if (targetFile === "./client/index.html")
+          fileData = (await Deno.readTextFile(targetFile)).replace(
+            /{\s*\/\*__CONFIG__\*\/\s*}/,
+            JSON.stringify(config),
+          );
+        return new Response(fileData, {
+          headers: {
+            "Content-Type": getContentType(targetFile),
+          },
+        });
+      } catch (e) {}
+      return new Response("404", { status: 404 });
+    },
+  );
 });

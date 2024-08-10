@@ -1,12 +1,33 @@
 import { Point2d, Point3d } from "./point.types.ts";
 import { CrossDirection, FurnitureType } from "../enums/main.ts";
 import { Size3d } from "./size.types.ts";
+import { CrossDirectionKeys } from "./direction.types.ts";
+
+export type FurnitureDirectionTexture = {
+  texture: string;
+  bounds: Size3d;
+  pivot?: Point2d;
+  zIndex: number;
+  hitArea: number[];
+};
+
+export type FurnitureDirectionData = {
+  textures: FurnitureDirectionTexture[];
+};
+
+export type FurnitureDirectionDataMap = Record<
+  Partial<CrossDirectionKeys>,
+  FurnitureDirectionData
+>;
 
 export type FurnitureData = {
   id: string;
-  label: string;
   type: FurnitureType;
-  size: Size3d;
+  label: string;
+  description: string;
+  collectionId: string;
+  size?: Size3d;
+  direction: FurnitureDirectionDataMap;
 };
 
 export type Furniture = {

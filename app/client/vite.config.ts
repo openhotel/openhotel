@@ -5,10 +5,14 @@ import { plugin } from "@tulib/vite-tulip-plugin";
 export default defineConfig({
   server: {
     port: 1994,
+
+    proxy: {
+      "/data": "http://localhost:19940",
+    },
     // open: true,
   },
   plugins: [tsconfigPaths(), plugin()],
-  publicDir: "assets",
+  publicDir: "assets/",
   build: {
     outDir: "./build",
     emptyOutDir: true, // also necessary

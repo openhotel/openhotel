@@ -6,6 +6,10 @@ export const getContentType = (targetFile: string): string => {
     contentType = "text/css";
   } else if (targetFile.endsWith(".html")) {
     contentType = "text/html";
+  } else if (targetFile.endsWith(".json")) {
+    contentType = "application/json";
+  } else if (targetFile.endsWith(".png")) {
+    contentType = "image/png";
   }
   return contentType;
 };
