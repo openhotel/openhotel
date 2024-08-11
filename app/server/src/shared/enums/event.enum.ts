@@ -39,4 +39,6 @@ export enum ProxyEvent {
   MESSAGE = "message",
   TYPING_START = "typing-start",
   TYPING_END = "typing-end",
+
+  SYSTEM_MESSAGE = "system-message",
 }
