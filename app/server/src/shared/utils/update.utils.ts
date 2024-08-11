@@ -22,7 +22,7 @@ export const getSlicedVersion = (version: string): (number | string)[] =>
     });
 
 export const getLatestVersion = async (envs: Envs): Promise<string | false> => {
-  // if (envs.isDevelopment) return false;
+  if (envs.isDevelopment) return false;
 
   try {
     const { tag_name: latestVersion } = await fetch(
