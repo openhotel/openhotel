@@ -24,7 +24,6 @@ export type FurnitureData = {
   type: FurnitureType;
   label: string;
   description: string;
-  collectionId: string;
   spriteSheet: string;
   size?: Size3d;
   direction: FurnitureDirectionDataMap;
