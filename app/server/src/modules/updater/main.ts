@@ -6,6 +6,7 @@ import {
   getPath,
   log,
   getTemporalUpdateFilePathname,
+  getSlicedVersion,
 } from "shared/utils/main.ts";
 import { OS } from "shared/enums/main.ts";
 import * as path from "deno/path/mod.ts";
@@ -54,15 +55,6 @@ export const load = async ({
     const { tag_name: latestVersion, assets } = await fetch(
       `https://api.github.com/repos/openhotel/openhotel/releases/${isLatest ? "latest" : `tags/${targetVersion}`}`,
     ).then((data) => data.json());
-
-    const getSlicedVersion = (version: string): (number | string)[] =>
-      version
-        .slice(1)
-        .split(".")
-        .map((e: string) => {
-          const num = parseInt(e);
-          return `${num}` === e ? num : e;
-        });
 
     const [oldMajor, oldMinor, oldPatch, oldExtra] = getSlicedVersion(
       envs.version,
