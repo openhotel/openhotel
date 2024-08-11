@@ -12,8 +12,11 @@ moduleWorker.on("start", async ({ config, envs }: WorkerProps) => {
 
   const getFurnitureResponse = async (pathname: string) => {
     try {
+      //removes "/data"
       pathname = pathname.substring(5);
-      const fileData = await Deno.readFile("./assets/furniture" + pathname);
+      const fileData = await Deno.readFile(
+        "./assets/furniture/.data" + pathname,
+      );
 
       return new Response(fileData, {
         headers: {

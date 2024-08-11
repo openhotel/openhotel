@@ -1,40 +1,51 @@
-import { parse } from "deno/yaml/mod.ts";
+import { parse, stringify } from "deno/yaml/mod.ts";
 import { Catalog, FurnitureData } from "shared/types/main.ts";
 import { FurnitureType } from "shared/enums/furniture.enum.ts";
+import { decompress } from "zip";
 
 export const furniture = () => {
-  // const furnitureList: FurnitureData[] = [];
   let $catalog: Catalog;
   const $furnitureMap: Record<string, FurnitureData> = {};
 
   const load = async () => {
-    const furnitureData = parse(
-      await Deno.readTextFile("./assets/furniture/furniture.yml"),
-    );
+    for await (const dirEntry of Deno.readDir("./assets/furniture")) {
+      if (!dirEntry.isFile || !dirEntry.name.includes(".zip")) continue;
 
-    for (const fullFurnitureId of furnitureData.furniture) {
-      const [collectionId, furnitureId] = fullFurnitureId.split("/");
-
-      const furnitureData = parse(
-        await Deno.readTextFile(
-          `./assets/furniture/${collectionId}/${furnitureId}.yml`,
-        ),
+      const destName = `./assets/furniture/.data/${dirEntry.name}`.replace(
+        ".zip",
+        "",
       );
 
-      $furnitureMap[fullFurnitureId] = {
+      try {
+        await Deno.stat(destName);
+      } catch (e) {
+        decompress(`./assets/furniture/${dirEntry.name}`, destName);
+      }
+
+      const furnitureData = parse(
+        await Deno.readTextFile(`${destName}/data.yml`),
+      );
+
+      if ($furnitureMap[furnitureData.id])
+        throw Error(`Furniture with id ${furnitureData.id} already exists!`);
+
+      $furnitureMap[furnitureData.id] = {
         ...furnitureData,
-        id: fullFurnitureId,
-        collectionId,
         type: FurnitureType[
           furnitureData.type.toUpperCase() ?? "FURNITURE"
         ] as unknown as FurnitureType,
       };
     }
 
+    await Deno.writeTextFile(
+      "./assets/furniture/.data/furniture.yml",
+      stringify(Object.keys($furnitureMap)),
+    );
+
     $catalog = parse(await Deno.readTextFile("./assets/catalog.yml"));
   };
 
-  const getCatalog = (): Catalog => catalogData;
+  const getCatalog = (): Catalog => $catalog;
 
   const getList = (): FurnitureData[] => Object.values($furnitureMap);
   const get = (furnitureId: string): FurnitureData | null =>

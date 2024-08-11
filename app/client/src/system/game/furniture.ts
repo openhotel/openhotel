@@ -11,33 +11,28 @@ export const furniture = () => {
   const $furnitureMap: Record<string, FurnitureData> = {};
 
   const load = async () => {
-    const { furniture } = await fetch("/data/furniture.yml")
+    const furniture = await fetch("/data/furniture.yml")
       .then((data) => data.text())
       .then(parse);
-    const spriteSheet: string[] = [
-      ...new Set(furniture.map((furnitureId) => furnitureId.split("/")[0])),
-    ].map((collectionId) => `/data/${collectionId}/${collectionId}.json`);
+    const spriteSheet: string[] = furniture.map(
+      (furnitureId: string) => `/data/${furnitureId}/sheet.json`,
+    );
 
     await global.spriteSheets.load({
       spriteSheet,
-      onLoad: (collectionId) => {
-        console.info(`Spritesheet ${collectionId}`);
+      onLoad: (furnitureId) => {
+        console.info(`Furniture spritesheet ${furnitureId}`);
       },
     });
-    for (const fullFurnitureId of furniture) {
-      const [collectionId, furnitureId] = fullFurnitureId.split("/");
-
-      console.info(`Furniture ${fullFurnitureId}`);
-      const furnitureData = await fetch(
-        `data/${collectionId}/${furnitureId}.yml`,
-      )
+    for (const furnitureId of furniture) {
+      console.info(`Furniture data ${furnitureId}`);
+      const furnitureData = await fetch(`data/${furnitureId}/data.yml`)
         .then((data) => data.text())
         .then(parse);
 
-      $furnitureMap[fullFurnitureId] = {
-        id: fullFurnitureId,
-        collectionId,
-        spriteSheet: `/data/${collectionId}/${collectionId}.json`,
+      $furnitureMap[furnitureId] = {
+        id: furnitureId,
+        spriteSheet: `/data/${furnitureId}/sheet.json`,
         type: FurnitureType[
           furnitureData.type.toUpperCase() ?? "FURNITURE"
         ] as unknown as FurnitureType,
