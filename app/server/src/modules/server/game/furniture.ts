@@ -2,12 +2,15 @@ import { parse, stringify } from "deno/yaml/mod.ts";
 import { Catalog, FurnitureData } from "shared/types/main.ts";
 import { FurnitureType } from "shared/enums/furniture.enum.ts";
 import { decompress } from "zip";
+import { createDirectoryIfNotExists } from "shared/utils/main.ts";
 
 export const furniture = () => {
   let $catalog: Catalog;
   const $furnitureMap: Record<string, FurnitureData> = {};
 
   const load = async () => {
+    await createDirectoryIfNotExists("./assets/furniture/.data/");
+
     for await (const dirEntry of Deno.readDir("./assets/furniture")) {
       if (!dirEntry.isFile || !dirEntry.name.includes(".zip")) continue;
 
@@ -19,7 +22,8 @@ export const furniture = () => {
       try {
         await Deno.stat(destName);
       } catch (e) {
-        decompress(`./assets/furniture/${dirEntry.name}`, destName);
+        await createDirectoryIfNotExists(destName);
+        await decompress(`./assets/furniture/${dirEntry.name}`, destName);
       }
 
       const furnitureData = parse(

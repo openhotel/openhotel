@@ -1,16 +1,26 @@
-import { getUsersConfig, writeUserConfig } from "shared/utils/users.utils.ts";
+import { getUsersConfig, writeUserConfig } from "shared/utils/main.ts";
 import { Command } from "shared/types/main.ts";
+import { ProxyEvent } from "shared/enums/main.ts";
 
 export const opCommand: Command = {
   command: "op",
-  func: async ({ args }) => {
-    const user = args[0] as string;
-    if (!user) return;
+  func: async ({ user, args }) => {
+    const username = args[0] as string;
+    if (!username) return;
 
     const config = await getUsersConfig();
-    if (config.op.users.includes(user)) return;
-    config.op.users.push(user);
+    if (config.op.users.includes(username)) {
+      user.emit(ProxyEvent.SYSTEM_MESSAGE, {
+        message: `User ${username} was already op`,
+      });
+      return;
+    }
+    config.op.users.push(username);
 
     await writeUserConfig(config);
+
+    user.emit(ProxyEvent.SYSTEM_MESSAGE, {
+      message: `User ${username} is now op`,
+    });
   },
 };

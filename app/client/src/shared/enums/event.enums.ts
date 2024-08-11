@@ -23,6 +23,8 @@ export enum Event {
   TYPING_START = "typing-start",
   TYPING_END = "typing-end",
 
+  SYSTEM_MESSAGE = "system-message",
+
   TEST = "test",
 
   CONNECTED = "connected",

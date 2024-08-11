@@ -1,10 +1,11 @@
 import { getUsersConfig, writeUserConfig } from "shared/utils/users.utils.ts";
 import { Server } from "../main.ts";
 import { Command } from "shared/types/main.ts";
+import { ProxyEvent } from "shared/enums/main.ts";
 
 export const banCommand: Command = {
   command: "ban",
-  func: async ({ args }) => {
+  func: async ({ user, args }) => {
     const username = args[0] as string;
     if (!username) return;
 
@@ -14,9 +15,12 @@ export const banCommand: Command = {
 
     await writeUserConfig(config);
 
-    const user = Server.game.users.get({ username });
-    if (!user) return;
+    const bannedUser = Server.game.users.get({ username });
+    if (!bannedUser) return;
 
-    user.disconnect();
+    bannedUser.disconnect();
+    user.emit(ProxyEvent.SYSTEM_MESSAGE, {
+      message: `User ${username} has been banned`,
+    });
   },
 };

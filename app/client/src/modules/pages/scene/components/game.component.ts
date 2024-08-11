@@ -5,10 +5,14 @@ import {
   Event as TulipEvent,
   global,
 } from "@tu/tulip";
-import { bubbleChatComponent, chatComponent } from "modules/chat";
+import {
+  bubbleChatComponent,
+  chatComponent,
+  systemMessageComponent,
+} from "modules/chat";
 import { Event } from "shared/enums";
 import { System } from "system";
-import { roomComponent, previewComponent } from "modules/room";
+import { previewComponent, roomComponent } from "modules/room";
 import { getRandomNumber } from "shared/utils";
 import { LoadRoomEvent, Size } from "shared/types";
 
@@ -36,6 +40,14 @@ export const gameComponent: ContainerComponent = () => {
   });
   $container.add(chat);
 
+  const systemMessage = systemMessageComponent({
+    position: {
+      x: 0,
+      y: windowBounds.height - CHAT_PADDING.y - 24,
+    },
+  });
+  $container.add(systemMessage);
+
   const $preview = previewComponent({
     position: {
       x: windowBounds.width - PREVIEW_PADDING.x,
@@ -49,6 +61,8 @@ export const gameComponent: ContainerComponent = () => {
   global.events.on(TulipEvent.RESIZE, (size: Size) => {
     chat.setPositionY(size.height - CHAT_PADDING.y);
     chat.setInputWidth(size.width - CHAT_PADDING.x * 2);
+
+    systemMessage.setPositionY(size.height - CHAT_PADDING.y - 24);
 
     $preview.setPosition({
       x: size.width - PREVIEW_PADDING.x,
@@ -71,17 +85,14 @@ export const gameComponent: ContainerComponent = () => {
     },
   );
 
-  const removeOnLeaveRoom = System.proxy.on<any>(
-    Event.LEAVE_ROOM,
-    ({ room }) => {
-      $container.remove($room, $bubbleChat);
+  const removeOnLeaveRoom = System.proxy.on<any>(Event.LEAVE_ROOM, () => {
+    $container.remove($room, $bubbleChat);
 
-      System.proxy.emit(Event.JOIN_ROOM, {
-        roomId: `test_${getRandomNumber(0, 3)}`,
-        // roomId: `test_1`,
-      });
-    },
-  );
+    System.proxy.emit(Event.JOIN_ROOM, {
+      roomId: `test_${getRandomNumber(0, 3)}`,
+      // roomId: `test_1`,
+    });
+  });
 
   $container.on(DisplayObjectEvent.DESTROYED, () => {
     removeOnLoadRoom?.();
