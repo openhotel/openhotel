@@ -1,4 +1,4 @@
-import { getUsersConfig, writeUserConfig } from "shared/utils/main.ts";
+import { __, getUsersConfig, writeUserConfig } from "shared/utils/main.ts";
 import {
   Command,
   ListActions,
@@ -10,14 +10,14 @@ import { ProxyEvent } from "shared/enums/main.ts";
 const on = (config: UsersConfig, _: string[], user: UserMutable) => {
   config.whitelist.active = true;
   user.emit(ProxyEvent.SYSTEM_MESSAGE, {
-    message: "Whitelist enabled",
+    message: __(user.getLanguage(), "Whitelist enabled"),
   });
   return config;
 };
 const off = (config: UsersConfig, _: string[], user: UserMutable) => {
   config.whitelist.active = false;
   user.emit(ProxyEvent.SYSTEM_MESSAGE, {
-    message: "Whitelist disabled",
+    message: __(user.getLanguage(), "Whitelist disabled"),
   });
   return config;
 };
@@ -27,7 +27,9 @@ const add = (config: UsersConfig, args: string[], user: UserMutable) => {
 
   config.whitelist.users.push(username);
   user.emit(ProxyEvent.SYSTEM_MESSAGE, {
-    message: `User ${username} added to whitelist`,
+    message: __(user.getLanguage(), "User {{username}} added to whitelist", {
+      username,
+    }),
   });
   return config;
 };
@@ -35,14 +37,21 @@ const remove = (config: UsersConfig, args: string[], user: UserMutable) => {
   const username = args[0];
   config.whitelist.users = config.whitelist.users.filter((u) => u !== username);
   user.emit(ProxyEvent.SYSTEM_MESSAGE, {
-    message: `User ${username} removed from whitelist`,
+    message: __(
+      user.getLanguage(),
+      "User {{username}} removed from whitelist",
+      {
+        username,
+      },
+    ),
   });
   return config;
 };
 const list = (config: UsersConfig, _: string[], user: UserMutable) => {
   user.emit(ProxyEvent.SYSTEM_MESSAGE, {
     message:
-      config.whitelist.users.join(", ") || "There is no users on the whitelist",
+      config.whitelist.users.join(", ") ||
+      __(user.getLanguage(), "There is no users on the whitelist"),
   });
   return config;
 };

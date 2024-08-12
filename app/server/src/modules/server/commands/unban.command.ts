@@ -1,4 +1,4 @@
-import { getUsersConfig, writeUserConfig } from "shared/utils/main.ts";
+import { __, getUsersConfig, writeUserConfig } from "shared/utils/main.ts";
 import { Command } from "shared/types/main.ts";
 import { ProxyEvent } from "shared/enums/main.ts";
 
@@ -16,7 +16,9 @@ export const unbanCommand: Command = {
     await writeUserConfig(config);
 
     user.emit(ProxyEvent.SYSTEM_MESSAGE, {
-      message: `User ${username} has been unbanned`,
+      message: __(user.getLanguage(), "User {{username}} has been unbanned", {
+        username,
+      }),
     });
   },
 };

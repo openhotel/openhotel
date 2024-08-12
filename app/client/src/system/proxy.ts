@@ -1,4 +1,5 @@
 import {
+  getBrowserLanguage,
   getClientSocket,
   getConfig,
   getRandomString,
@@ -74,6 +75,7 @@ export const proxy = () => {
           sessionId: $sessionId,
           token: $lastToken,
           username: $lastUsername,
+          language: getBrowserLanguage(),
         });
       });
       $socket.on("join", async (data) => {

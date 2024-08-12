@@ -11,3 +11,4 @@ export * from "./furniture.types.ts";
 export * from "./direction.types.ts";
 export * from "./size.types.ts";
 export * from "./catalog.types.ts";
+export * from "./languages.types.ts";

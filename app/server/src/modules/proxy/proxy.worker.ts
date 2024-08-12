@@ -101,13 +101,13 @@ serverWorker.on("start", async ({ config, envs }: WorkerProps) => {
     envs,
     token: protocolToken,
   } as WorkerProps);
-  firewallWorker.on("join", ({ session, userId, username }) => {
+  firewallWorker.on("join", ({ session, userId, username, language }) => {
     const foundUser = userList.find((user) => user.id === userId);
 
     if (foundUser) {
       foundUser.session = session;
     } else {
-      userList.push({ session, id: userId, username });
+      userList.push({ session, id: userId, username, language });
       firewallWorker.emit("userList", { userList });
     }
 

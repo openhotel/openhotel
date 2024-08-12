@@ -1,4 +1,4 @@
-import { getUsersConfig, writeUserConfig } from "shared/utils/users.utils.ts";
+import { __, getUsersConfig, writeUserConfig } from "shared/utils/main.ts";
 import { Server } from "../main.ts";
 import { Command } from "shared/types/main.ts";
 import { ProxyEvent } from "shared/enums/main.ts";
@@ -20,7 +20,9 @@ export const banCommand: Command = {
 
     bannedUser.disconnect();
     user.emit(ProxyEvent.SYSTEM_MESSAGE, {
-      message: `User ${username} has been banned`,
+      message: __(user.getLanguage(), "User {{username}} has been banned", {
+        username,
+      }),
     });
   },
 };

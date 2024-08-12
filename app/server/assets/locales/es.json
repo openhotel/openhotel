@@ -1,0 +1,20 @@
+{
+  "User {{username}} has been banned": "El usuario {{username}} ha sido baneado",
+  "Blacklist enabled": "Lista negra habilitada",
+  "Blacklist disabled": "Lista negra deshabilitada",
+  "User {{username}} added to blacklist": "Usuario {{username}} añadido a la lista negra",
+  "User {{username}} removed from blacklist": "Usuario {{username}} eliminado de la lista negra",
+  "There is no users on the blacklist": "No hay usuarios en la lista negra",
+  "User {{username}} is no longer op": "El usuario {{username}} ya no es administrador",
+  "User {{username}} kicked": "Usuario {{username}} expulsado",
+  "User {{username}} is now op": "El usuario {{username}} es ahora administrador",
+  "User {{username}} was already op": "El usuario {{username}} ya era administrador",
+  "Stopping server...": "Deteniendo el servidor...",
+  "User {{username}} has been unbanned": "El usuario {{username}} ha sido desbaneado",
+  "Checking new versions...": "Comprobando nuevas versiones...",
+  "Whitelist enabled": "Lista blanca habilitada",
+  "Whitelist disabled": "Lista blanca deshabilitada",
+  "User {{username}} added to whitelist": "Usuario {{username}} añadido a la lista blanca",
+  "User {{username}} removed from whitelist": "Usuario {{username}} eliminado de la lista blanca",
+  "There is no users on the whitelist": "No hay usuarios en la lista blanca"
+}
