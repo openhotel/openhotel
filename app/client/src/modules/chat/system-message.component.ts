@@ -14,6 +14,7 @@ export const systemMessageComponent: ContainerComponent = ({ position }) => {
     sortableChildren: true,
     position,
     visible: false,
+    zIndex: 1_000,
   });
 
   const $title = textSprite({
