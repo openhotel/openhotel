@@ -14,7 +14,7 @@ import { Event } from "shared/enums";
 import { System } from "system";
 import { previewComponent, roomComponent } from "modules/room";
 import { getRandomNumber } from "shared/utils";
-import { LoadRoomEvent, Size } from "shared/types";
+import { LoadRoomEvent, Size2d } from "shared/types";
 
 const CHAT_PADDING = {
   x: 12,
@@ -58,7 +58,7 @@ export const gameComponent: ContainerComponent = () => {
 
   chat.setInputWidth(windowBounds.width - CHAT_PADDING.x * 2);
 
-  global.events.on(TulipEvent.RESIZE, (size: Size) => {
+  global.events.on(TulipEvent.RESIZE, (size: Size2d) => {
     chat.setPositionY(size.height - CHAT_PADDING.y);
     chat.setInputWidth(size.width - CHAT_PADDING.x * 2);
 

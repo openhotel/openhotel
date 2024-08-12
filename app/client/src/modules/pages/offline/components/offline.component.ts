@@ -12,7 +12,7 @@ import {
 } from "@tu/tulip";
 import { SpriteSheetEnum } from "shared/enums";
 import { buttonComponent } from "shared/components";
-import { Size } from "shared/types";
+import { Size2d } from "shared/types";
 import { TextureEnum } from "shared/enums";
 import { __, isDevelopment } from "shared/utils";
 
@@ -35,7 +35,7 @@ export const offlineComponent: ContainerComponent<Props> = ({ reconnect }) => {
   $container.add($background);
   $background.focus();
 
-  const renderBackground = (data?: Size) => {
+  const renderBackground = (data?: Size2d) => {
     const { width, height } =
       data || global.getApplication().window.getBounds();
     $background.setRectangle(width, height);
