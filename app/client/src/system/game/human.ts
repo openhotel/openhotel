@@ -2,11 +2,13 @@ import { parse } from "yaml";
 import { HumanData, HumanDirectionData } from "shared/types/human.types";
 import { Direction } from "shared/enums";
 import { getDirectionInitials } from "shared/utils";
+import { System } from "system/system";
 
 export const human = () => {
   let $humanData: HumanData;
 
   const load = async () => {
+    System.loader.addText("Loading human...");
     $humanData = await fetch(`human/human.yml`)
       .then((data) => data.text())
       .then(parse);
