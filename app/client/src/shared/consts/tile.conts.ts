@@ -1,6 +1,6 @@
-import { Size } from "shared/types";
+import { Size2d } from "shared/types";
 
-export const TILE_SIZE: Size = {
+export const TILE_SIZE: Size2d = {
   width: 50,
   height: 25,
 };

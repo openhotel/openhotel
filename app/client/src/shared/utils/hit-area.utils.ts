@@ -1,4 +1,4 @@
-import { Size } from "shared/types";
+import { Size2d } from "shared/types";
 
 /**
  * Code courtesy of @voidpixel
@@ -20,7 +20,7 @@ import { Size } from "shared/types";
  * @param {number} size.height - The height of the tile.
  * @returns {number[]} - The array of polygon coordinates [polA, polB, polC, polD, polE, polF, polG, polH].
  */
-export const getTilePolygon = ({ width, height }: Size): number[] => {
+export const getTilePolygon = ({ width, height }: Size2d): number[] => {
   // DON'T TOUCH THIS ******* *******, THIS FIXES THE PIXEL PERFECT ON GRAPHICS
   // IF YOU WANT TO CHECK IF IT WORKS, TAKE A PICTURE AND CHECK IT ON ASEPRITE
   const xMargin = -2;

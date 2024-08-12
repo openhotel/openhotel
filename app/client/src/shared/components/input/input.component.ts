@@ -10,7 +10,7 @@ import {
   VerticalAlign,
 } from "@tu/tulip";
 import { SpriteSheetEnum } from "shared/enums";
-import { Size } from "shared/types";
+import { Size2d } from "shared/types";
 
 type InputProps = {
   placeholder: string;
@@ -27,7 +27,7 @@ type InputMutable = {
   setValue: (text: string) => void;
   clear: () => void;
   focus: () => void;
-  setSize: (size: Size) => void;
+  setSize: (size: Size2d) => void;
   on: <Data>(event: DisplayObjectEvent, callback: (data: Data) => void) => void;
   getInputComponent: () => InputTextSpriteMutable;
 };

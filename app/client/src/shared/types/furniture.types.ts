@@ -1,10 +1,10 @@
 import { Point2d, Point3d } from "./point.types";
-import { Size, Size3d } from "./size.types";
+import { Size2d, Size3d } from "./size.types";
 import { CrossDirection, FurnitureType } from "shared/enums";
 
 export type FurnitureDirectionTexture = {
   texture: string;
-  bounds: Size;
+  bounds: Size2d;
   pivot: Point2d;
   zIndex: number;
   hitArea: number[];
