@@ -1,4 +1,4 @@
-import { getUsersConfig, writeUserConfig } from "shared/utils/main.ts";
+import { __, getUsersConfig, writeUserConfig } from "shared/utils/main.ts";
 import { Command } from "shared/types/main.ts";
 import { ProxyEvent } from "shared/enums/main.ts";
 
@@ -11,7 +11,9 @@ export const opCommand: Command = {
     const config = await getUsersConfig();
     if (config.op.users.includes(username)) {
       user.emit(ProxyEvent.SYSTEM_MESSAGE, {
-        message: `User ${username} was already op`,
+        message: __(user.getLanguage(), "User {{username}} was already op", {
+          username,
+        }),
       });
       return;
     }
@@ -20,7 +22,9 @@ export const opCommand: Command = {
     await writeUserConfig(config);
 
     user.emit(ProxyEvent.SYSTEM_MESSAGE, {
-      message: `User ${username} is now op`,
+      message: __(user.getLanguage(), "User {{username}} is now op", {
+        username,
+      }),
     });
   },
 };

@@ -1,11 +1,13 @@
 import { Point3d } from "shared/types/point.types.ts";
 import { ProxyEvent, Direction } from "shared/enums/main.ts";
+import { Languages } from "./languages.types.ts";
 
 export type PrivateUser = {
   id: string;
   username: string;
   session?: string;
   clientId?: string;
+  language?: Languages;
 };
 
 export type User = {
@@ -56,6 +58,8 @@ export type UserMutable = {
   getLastMessage: () => string;
 
   getObject: () => User;
+
+  getLanguage: () => Languages;
 
   disconnect: () => void;
 

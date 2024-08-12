@@ -17,6 +17,11 @@ export const loadLocale = async (code?: string) => {
   }
 };
 
-export const __ = (key: string): string => {
-  return locale[key] ?? key;
+export const __ = (key: string, obj?: { [key: string]: string }): string => {
+  let result = locale[key] ?? key;
+  obj &&
+    Object.keys(obj).forEach((key) => {
+      result = result.replace(`{{${key}}}`, obj[key]);
+    });
+  return result;
 };
