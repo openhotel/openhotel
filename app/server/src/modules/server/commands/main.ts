@@ -13,8 +13,9 @@ import { kickCommand } from "./kick.command.ts";
 import { updateCommand } from "./update.command.ts";
 import { tpCommand } from "./tp.command.ts";
 import { setCommand } from "./set.command.ts";
+import { helpCommand } from "./help.command.ts";
 
-const commandList = [
+export const commandList = [
   stopCommand,
 
   opCommand,
@@ -31,6 +32,8 @@ const commandList = [
 
   tpCommand,
   setCommand,
+
+  helpCommand,
 ];
 
 export const executeCommand = ({
