@@ -118,6 +118,8 @@ export const users = () => {
 
     const getObject = (): User => $userMap[user.id];
 
+    const getLanguage = () => $privateUserMap[user.id].language;
+
     const disconnect = () =>
       Server.proxy.$emit(ProxyEvent.$DISCONNECT_USER, {
         clientId: $privateUserMap[user.id].clientId,
@@ -157,6 +159,8 @@ export const users = () => {
       getObject,
 
       disconnect,
+
+      getLanguage,
 
       emit,
     };

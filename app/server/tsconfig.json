@@ -9,6 +9,7 @@
     "lib": ["ES2022", "dom"],
     "baseUrl": "./src/",
     "rootDir": "./src",
-    "allowImportingTsExtensions": true
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true
   }
 }

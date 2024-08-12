@@ -122,12 +122,6 @@ export const loginFormComponent: ContainerComponent = (props) => {
     try {
       if (localStorage.getItem("auto-connect") === null)
         localStorage.setItem("auto-connect", "true");
-
-      // if (localStorage.getItem("auto-connect") === "true")
-      // System.proxy.connect({
-      //   username: $username.getValue() || `player_${getRandomString(8)}`,
-      //   password: $password.getValue(),
-      // });
     } catch (e) {}
   }
 

@@ -1,0 +1,20 @@
+{
+  "User {{username}} has been banned": "User {{username}} has been banned",
+  "Blacklist enabled": "Blacklist enabled",
+  "Blacklist disabled": "Blacklist disabled",
+  "User {{username}} added to blacklist": "User {{username}} added to blacklist",
+  "User {{username}} removed from blacklist": "User {{username}} removed from blacklist",
+  "There is no users on the blacklist": "There is no users on the blacklist",
+  "User {{username}} is no longer op": "User {{username}} is no longer op",
+  "User {{username}} kicked": "User {{username}} kicked",
+  "User {{username}} is now op": "User {{username}} is now op",
+  "User {{username}} was already op": "User {{username}} was already op",
+  "Stopping server...": "Stopping server...",
+  "User {{username}} has been unbanned": "User {{username}} has been unbanned",
+  "Checking new versions...": "Checking new versions...",
+  "Whitelist enabled": "Whitelist enabled",
+  "Whitelist disabled": "Whitelist disabled",
+  "User {{username}} added to whitelist": "User {{username}} added to whitelist",
+  "User {{username}} removed from whitelist": "User {{username}} removed from whitelist",
+  "There is no users on the whitelist": "There is no users on the whitelist"
+}

@@ -83,7 +83,7 @@ proxyWorker.on(
       );
       if (!foundHandshake) return client.close();
 
-      client.on("session", async ({ sessionId, token, username }) => {
+      client.on("session", async ({ sessionId, token, username, language }) => {
         if (((!sessionId || !token) && !envs.isDevelopment) || !username)
           return client.close();
 
@@ -106,6 +106,8 @@ proxyWorker.on(
 
           userId: getRandomString(16),
           username,
+
+          language: language.split("-")[0] ?? "en",
         };
 
         if (!envs.isDevelopment) {
