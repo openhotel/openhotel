@@ -2,3 +2,6 @@
 /client
 config.yml
 users.yml
+server-database
+server-database-shm
+server-database-wal

@@ -16,5 +16,7 @@
   "Whitelist disabled": "Whitelist disabled",
   "User {{username}} added to whitelist": "User {{username}} added to whitelist",
   "User {{username}} removed from whitelist": "User {{username}} removed from whitelist",
-  "There is no users on the whitelist": "There is no users on the whitelist"
+  "There is no users on the whitelist": "There is no users on the whitelist",
+  "New version {{newVersion}} available!": "New version {{newVersion}} available!",
+  "Available commands: {{commands}}": "Available commands: {{commands}}"
 }

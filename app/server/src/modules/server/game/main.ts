@@ -9,7 +9,7 @@ export const game = () => {
 
   const load = async () => {
     await $furniture.load();
-    $rooms.load();
+    await $rooms.load();
     $users.load();
   };
 

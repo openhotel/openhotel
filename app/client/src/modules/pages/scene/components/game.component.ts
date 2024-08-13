@@ -89,7 +89,7 @@ export const gameComponent: ContainerComponent = () => {
     $container.remove($room, $bubbleChat);
 
     System.proxy.emit(Event.JOIN_ROOM, {
-      roomId: `test_${getRandomNumber(0, 3)}`,
+      roomId: `test_${getRandomNumber(0, 5)}`,
       // roomId: `test_1`,
     });
   });

@@ -4,6 +4,7 @@ import { proxy } from "./proxy/main.ts";
 import { game } from "./game/main.ts";
 import { log } from "shared/utils/main.ts";
 import { tasks } from "./tasks.ts";
+import { db } from "./db/main.ts";
 
 export const Server = (() => {
   let $config: ConfigTypes;
@@ -12,6 +13,7 @@ export const Server = (() => {
   const $proxy = proxy();
   const $tasks = tasks();
   const $game = game();
+  const $db = db();
 
   const load = async ({
     config,
@@ -27,6 +29,7 @@ export const Server = (() => {
     $config = config;
     $envs = envs;
 
+    await $db.load();
     await $game.load();
     $proxy.load(proxyWorker);
     $tasks.load();
@@ -46,5 +49,7 @@ export const Server = (() => {
     proxy: $proxy,
 
     tasks: $tasks,
+
+    db: $db,
   };
 })();

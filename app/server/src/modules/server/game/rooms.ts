@@ -22,6 +22,8 @@ import {
   getRoomSpawnDirection,
   getRoomSpawnPoint,
 } from "shared/utils/rooms.utils.ts";
+import { DEFAULT_ROOMS } from "shared/consts/main.ts";
+import { log } from "shared/utils/main.ts";
 
 export const rooms = () => {
   let roomMap: Record<string, Room> = {};
@@ -167,6 +169,8 @@ export const rooms = () => {
         y: getYFromPoint(furniture.position),
       };
       roomMap[room.id].furniture.push(furniture);
+
+      $save(room.id, { furniture: [furniture] });
     };
     const getFurniture = (): RoomFurniture[] => roomMap[room.id].furniture;
 
@@ -230,7 +234,6 @@ export const rooms = () => {
     roomMap[room.id] = {
       ...room,
       layout,
-      furniture: [],
       spawnPoint: getRoomSpawnPoint(layout),
       spawnDirection: getRoomSpawnDirection(layout),
     };
@@ -246,78 +249,39 @@ export const rooms = () => {
     return $getRoom(roomList[roomIndex]);
   };
 
-  const load = () => {
-    create({
-      id: "test_0",
-      title: "Room 1",
-      description: "This is a description",
-      layout: [
-        "xxxxxx2222",
-        "xxxxxx2222",
-        "xxxxxx2222",
-        "x111122222",
-        "x111122222",
-        "s111122222",
-        "x111122222",
-        "x111122222",
-        "xxxxxx2222",
-        "xxxxxx2222",
-      ],
-    });
+  const generateDefaultRooms = async () => {
+    for (const room of DEFAULT_ROOMS) {
+      await Server.db.set(["rooms", room.id], room);
+    }
+  };
 
-    create({
-      id: "test_1",
-      title: "Room 2",
-      description: "This is a description",
-      layout: [
-        "xxxxsxxxxx",
-        "xxx111x222",
-        "xx11112222",
-        "x11111x222",
-        "x11111x222",
-        "x22222x333",
-        "x33333x333",
-        "x333333333",
-        "x333333333",
-        "x333333333",
-        "x333333333",
-        "x333333333",
-      ],
-    });
+  const $save = async (roomId: string, mutable: Partial<RawRoom>) => {
+    const roomResult = await Server.db.get(["rooms", roomId]);
+    if (!roomResult.value) {
+      console.error(`Room with id ${roomId} not found.`);
+      return;
+    }
 
-    create({
-      id: "test_2",
-      title: "Room 3",
-      description: "This is a description",
-      layout: [
-        "x111111",
-        "x111111",
-        "s111111",
-        "x111111",
-        "x111111",
-        "x111111",
-      ],
-    });
+    const room = roomResult.value;
+    for (const key in mutable) {
+      if (Array.isArray(room[key]) && Array.isArray(mutable[key])) {
+        room[key] = [...room[key], ...mutable[key]];
+      } else {
+        room[key] = mutable[key];
+      }
+    }
+    await Server.db.set(["rooms", roomId], room);
+  };
 
-    create({
-      id: "test_3",
-      title: "Room 4",
-      description: "This is a description",
-      layout: [
-        "x111111",
-        "x111111",
-        "x111111",
-        "x111111",
-        "x111111",
-        "x111111",
-        "s111111",
-        "x111111",
-        "x111111",
-        "x111111",
-        "x111111",
-        "x111111",
-      ],
-    });
+  const load = async () => {
+    const isEmptyRooms = await Server.db.isEmpty({ prefix: ["rooms"] });
+    if (isEmptyRooms) await generateDefaultRooms();
+
+    const rooms = Server.db.list({ prefix: ["rooms"] });
+    for await (const entry of rooms) {
+      create(entry.value);
+      log(`Loaded room ${entry.key[1]}...`);
+    }
   };
 
   return {

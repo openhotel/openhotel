@@ -9,6 +9,7 @@ type BaseRoom = {
 
 export type RawRoom = BaseRoom & {
   layout: string[];
+  furniture: RoomFurniture[];
 };
 
 export type Room = BaseRoom & {
