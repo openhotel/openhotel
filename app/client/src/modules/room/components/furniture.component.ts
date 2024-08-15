@@ -1,11 +1,11 @@
 import {
-  Component,
   component,
   Cursor,
   DisplayObjectEvent,
   EventMode,
   sprite,
   SpriteMutable,
+  ContainerComponent,
 } from "@tu/tulip";
 import { FurnitureDirectionData, Point3d } from "shared/types";
 import { TILE_SIZE } from "shared/consts";
@@ -19,12 +19,16 @@ type Props = {
   direction: CrossDirection;
 };
 
-type Mutable = {
+export type FurnitureMutable = {
   getSpriteList: () => SpriteMutable[];
 };
 
-export const furnitureComponent: Component<Props, Mutable> = (props) => {
-  const $component = component<Props, Mutable>(props);
+export const furnitureComponent: ContainerComponent<Props, FurnitureMutable> = (
+  props,
+) => {
+  const $component = component<Props, FurnitureMutable>(props);
+
+  const $$destroy = $component.$destroy;
 
   const { furniture, direction, isometricPosition } = $component.getProps();
   const furnitureData = System.game.furniture.get(furniture);
@@ -71,5 +75,9 @@ export const furnitureComponent: Component<Props, Mutable> = (props) => {
 
   return $component.getComponent(furnitureComponent, {
     getSpriteList: () => spriteList,
+    $destroy: () => {
+      spriteList.forEach((sprite) => sprite.$destroy());
+      $$destroy();
+    },
   });
 };
