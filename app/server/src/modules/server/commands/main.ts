@@ -14,6 +14,7 @@ import { updateCommand } from "./update.command.ts";
 import { tpCommand } from "./tp.command.ts";
 import { setCommand } from "./set.command.ts";
 import { helpCommand } from "./help.command.ts";
+import { unsetCommand } from "./unset.command.ts";
 
 export const commandList = [
   stopCommand,
@@ -31,7 +32,9 @@ export const commandList = [
   updateCommand,
 
   tpCommand,
+
   setCommand,
+  unsetCommand,
 
   helpCommand,
 ];
