@@ -107,7 +107,7 @@ export const rooms = () => {
             isPoint3dEqual(user.getPosition(), position);
           }) &&
           Boolean(
-            !getFurniture()
+            !getFurnitures()
               .filter((furniture) => furniture.type !== FurnitureType.FRAME)
               .find((furniture) =>
                 isPoint3dEqual(furniture.position, position),
@@ -134,7 +134,7 @@ export const rooms = () => {
         roomLayout[position.z][position.x] = RoomPointEnum.EMPTY;
       }
 
-      for (const furniture of getFurniture()) {
+      for (const furniture of getFurnitures()) {
         if (furniture.type === FurnitureType.FRAME) continue;
         const position = furniture.position;
         roomLayout[position.z][position.x] = RoomPointEnum.EMPTY;
@@ -172,7 +172,14 @@ export const rooms = () => {
 
       $save(room.id, { furniture: [furniture] });
     };
-    const getFurniture = (): RoomFurniture[] => roomMap[room.id].furniture;
+    const removeFurniture = (furniture: RoomFurniture) => {
+      roomMap[room.id].furniture = roomMap[room.id].furniture.filter(
+        (f) => f.uid !== furniture.uid,
+      );
+
+      $save(room.id, { furniture: roomMap[room.id].furniture }, false);
+    };
+    const getFurnitures = (): RoomFurniture[] => roomMap[room.id].furniture;
 
     const getYFromPoint = (point: Partial<Point3d>): number | null => {
       if (!room?.layout?.[point.z]) return null;
@@ -215,6 +222,8 @@ export const rooms = () => {
       findPath,
 
       addFurniture,
+      removeFurniture,
+      getFurnitures,
 
       getObject,
 
@@ -255,7 +264,11 @@ export const rooms = () => {
     }
   };
 
-  const $save = async (roomId: string, mutable: Partial<RawRoom>) => {
+  const $save = async (
+    roomId: string,
+    mutable: Partial<RawRoom>,
+    merge = true,
+  ) => {
     const roomResult = await Server.db.get(["rooms", roomId]);
     if (!roomResult.value) {
       console.error(`Room with id ${roomId} not found.`);
@@ -264,7 +277,7 @@ export const rooms = () => {
 
     const room = roomResult.value;
     for (const key in mutable) {
-      if (Array.isArray(room[key]) && Array.isArray(mutable[key])) {
+      if (merge && Array.isArray(room[key]) && Array.isArray(mutable[key])) {
         room[key] = [...room[key], ...mutable[key]];
       } else {
         room[key] = mutable[key];

@@ -28,7 +28,7 @@ import {
   WALL_HEIGHT,
 } from "shared/consts";
 import { wallComponent } from "./wall.component";
-import { furnitureComponent } from "./furniture.component";
+import { furnitureComponent, FurnitureMutable } from "./furniture.component";
 import { furnitureFrameComponent } from "./furniture-frame.component";
 
 type Props = {
@@ -44,6 +44,7 @@ export type RoomMutable = ContainerMutable<Props, Mutable>;
 export const roomComponent: ContainerComponent<Props, Mutable> = ({
   room: { layout, furniture },
 }) => {
+  const furnituresMap: Record<string, FurnitureMutable> = {};
   const $container = container<{}, Mutable>({
     sortableChildren: true,
   });
@@ -67,6 +68,8 @@ export const roomComponent: ContainerComponent<Props, Mutable> = ({
   let removeOnMoveHuman;
   let removeOnSetPositionHuman;
   let removeOnStopHuman;
+  let removeOnAddFurniture;
+  let removeOnRemoveFurniture;
 
   const onRemove = () => {
     removeOnAddHuman?.();
@@ -75,6 +78,9 @@ export const roomComponent: ContainerComponent<Props, Mutable> = ({
     removeOnLeaveRoom?.();
     removeOnSetPositionHuman?.();
     removeOnStopHuman?.();
+
+    removeOnAddFurniture?.();
+    removeOnRemoveFurniture?.();
   };
 
   $container.on(DisplayObjectEvent.REMOVED, onRemove);
@@ -110,10 +116,16 @@ export const roomComponent: ContainerComponent<Props, Mutable> = ({
         human.setIsometricPosition(position);
       },
     );
-    removeOnSetPositionHuman = System.proxy.on<any>(
+    removeOnAddFurniture = System.proxy.on<any>(
       Event.ADD_FURNITURE,
       ({ furniture }) => {
         $addFurniture(furniture);
+      },
+    );
+    removeOnRemoveFurniture = System.proxy.on<any>(
+      Event.REMOVE_FURNITURE,
+      ({ furniture }) => {
+        $removeFurniture(furniture);
       },
     );
 
@@ -345,8 +357,18 @@ export const roomComponent: ContainerComponent<Props, Mutable> = ({
             $container.add($furniture);
             break;
         }
+
+        furnituresMap[uid] = $furniture;
       }
     };
+
+    const $removeFurniture = (furniture: RoomFurniture) => {
+      if (furnituresMap[furniture.uid]) {
+        furnituresMap[furniture.uid].$destroy();
+        delete furnituresMap[furniture.uid];
+      }
+    };
+
     $addFurniture(...furniture);
   });
 

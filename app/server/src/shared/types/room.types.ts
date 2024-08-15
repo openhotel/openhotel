@@ -35,6 +35,8 @@ export type RoomMutable = {
   findPath: (start: Point3d, endPoint: Point3d, userId?: string) => Point3d[];
 
   addFurniture: (furniture: RoomFurniture) => void;
+  removeFurniture: (furniture: RoomFurniture) => void;
+  getFurnitures: () => RoomFurniture[];
 
   getObject: () => Room;
 

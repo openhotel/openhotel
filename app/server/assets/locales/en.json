@@ -18,5 +18,6 @@
   "User {{username}} removed from whitelist": "User {{username}} removed from whitelist",
   "There is no users on the whitelist": "There is no users on the whitelist",
   "New version {{newVersion}} available!": "New version {{newVersion}} available!",
-  "Available commands: {{commands}}": "Available commands: {{commands}}"
+  "Available commands: {{commands}}": "Available commands: {{commands}}",
+  "Furniture not found on {{x}},{{z}}": "Furniture not found on {{x}},{{z}}"
 }
