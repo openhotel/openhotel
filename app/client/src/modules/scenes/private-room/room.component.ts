@@ -11,8 +11,13 @@ import {
   sprite,
   DisplayObjectMutable,
 } from "@tu/tulip";
-import { getPositionFromIsometricPosition, getTilePolygon } from "shared/utils";
 import {
+  getPositionFromIsometricPosition,
+  getTilePolygon,
+  isDevelopment,
+} from "shared/utils";
+import {
+  Direction,
   Event,
   FurnitureType,
   RoomPointEnum,
@@ -92,6 +97,22 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = () => {
     removeOnAddFurniture?.();
     removeOnRemoveFurniture?.();
   };
+
+  if (isDevelopment()) {
+    const human = humanComponent({
+      user: {
+        skinColor: 0xff00ff,
+        accountId: "",
+        bodyDirection: Direction.WEST,
+        position: { x: 5, y: 1, z: 5 },
+        positionUpdatedAt: performance.now(),
+        roomId: "",
+        username: "pepino",
+      },
+    });
+    humanList.push(human);
+    $container.add(human);
+  }
 
   $container.on(DisplayObjectEvent.REMOVED, onRemove);
   $container.on(DisplayObjectEvent.ADDED, () => {

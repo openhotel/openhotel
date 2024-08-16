@@ -47,7 +47,6 @@ type Mutable = {
 export type HumanMutable = ContainerMutable<{}, Mutable>;
 
 export const humanComponent: ContainerComponent<Props, Mutable> = (props) => {
-  const HUMAN_TINT = 0xefcfb1;
   const $container = container<Props, Mutable>({
     ...props,
     eventMode: EventMode.STATIC,
@@ -56,12 +55,13 @@ export const humanComponent: ContainerComponent<Props, Mutable> = (props) => {
       x: -TILE_SIZE.width / 2,
       y: -TILE_SIZE.height / 2,
     },
+    sortableChildren: true,
   });
 
   const { user } = $container.getProps();
 
   let $isometricPosition: Point3d;
-  let $direction: Direction = Direction.NORTH;
+  let $direction: Direction = user.bodyDirection;
 
   const capsule = graphics({
     type: GraphicType.CAPSULE,
@@ -90,13 +90,26 @@ export const humanComponent: ContainerComponent<Props, Mutable> = (props) => {
     spriteSheet: SpriteSheetEnum.HUMAN,
     texture: `head_${humanData.directionInitials}`,
     pivot: humanData.head.pivot,
-    tint: HUMAN_TINT,
+    tint: user.skinColor,
   });
   const torso = sprite({
     spriteSheet: SpriteSheetEnum.HUMAN,
     texture: `torso_${humanData.directionInitials}`,
-    tint: HUMAN_TINT,
+    tint: user.skinColor,
   });
+
+  const rightArm = sprite({
+    spriteSheet: SpriteSheetEnum.HUMAN,
+    texture: `arm_right_${humanData.directionInitials}`,
+    tint: user.skinColor,
+  });
+
+  const leftArm = sprite({
+    spriteSheet: SpriteSheetEnum.HUMAN,
+    texture: `arm_left_${humanData.directionInitials}`,
+    tint: user.skinColor,
+  });
+  console.log(`arm_left_${humanData.directionInitials}`);
 
   const $rerender = () => {
     humanData = System.game.human.get($direction);
@@ -114,10 +127,26 @@ export const humanComponent: ContainerComponent<Props, Mutable> = (props) => {
       `torso_${humanData.directionInitials}`,
       SpriteSheetEnum.HUMAN,
     );
+
+    rightArm.setVisible(humanData?.rightArm?.visible ?? true);
+    rightArm.setTexture(
+      `arm_right_${humanData.directionInitials}`,
+      SpriteSheetEnum.HUMAN,
+    );
+    rightArm.setZIndex(humanData?.rightArm?.zIndex ?? 0);
+    rightArm.setPivot(humanData?.rightArm?.pivot ?? { x: 0, y: 0 });
+
+    leftArm.setVisible(humanData?.leftArm?.visible ?? true);
+    leftArm.setTexture(
+      `arm_left_${humanData.directionInitials}`,
+      SpriteSheetEnum.HUMAN,
+    );
+    leftArm.setZIndex(humanData?.leftArm?.zIndex ?? 0);
+    leftArm.setPivot(humanData?.leftArm?.pivot ?? { x: 0, y: 0 });
   };
   $rerender();
 
-  $body.add(torso, head);
+  $body.add(torso, head, rightArm, leftArm);
 
   const $typingBubble = typingBubbleComponent({
     position: {

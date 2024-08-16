@@ -8,6 +8,4 @@ export enum TextureEnum {
   HUMAN_DEV = "human_dev.png",
 
   LOGO_FULL = "logo_full.png",
-
-  FRAME_P = "frame_p.png",
 }

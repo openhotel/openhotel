@@ -9,4 +9,5 @@ export type User = {
   positionUpdatedAt: number;
   bodyDirection: Direction;
   apiToken: string;
+  skinColor: number;
 };

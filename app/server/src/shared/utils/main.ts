@@ -17,3 +17,4 @@ export * from "./users.utils.ts";
 export * from "./pathfinding.utils.ts";
 export * from "./point.utils.ts";
 export * from "./languages.utils.ts";
+export * from "./human.utils.ts";

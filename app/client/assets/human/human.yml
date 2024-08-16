@@ -6,14 +6,34 @@ north_east:
     pivot:
       x: 1
       y: 17
+  rightArm:
+    zIndex: -1
+    pivot:
+      x: 3
+      y: -1
+  leftArm:
+    zIndex: -1
+    pivot:
+      x: -14
+      y: -1
 north:
   pivot:
     x: 11
     y: 44
   head:
     pivot:
-      x: 0
-      y: 17
+      x: -1
+      y: 18
+  rightArm:
+    zIndex: 1
+    pivot:
+      x: 2
+      y: -2
+  leftArm:
+    zIndex: -1
+    pivot:
+      x: -13
+      y: -2
 north_west:
   pivot:
     x: 9
@@ -22,6 +42,13 @@ north_west:
     pivot:
       x: 2
       y: 16
+  rightArm:
+    zIndex: 1
+    pivot:
+      x: -2
+      y: -6
+  leftArm:
+    visible: false
 west:
   pivot:
     x: 11
@@ -30,6 +57,16 @@ west:
     pivot:
       x: 2
       y: 18
+  rightArm:
+    zIndex: 1
+    pivot:
+      x: -12
+      y: -3
+  leftArm:
+    zIndex: -1
+    pivot:
+      x: 3
+      y: -2
 south_west:
   pivot:
     x: 9

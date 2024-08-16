@@ -1,0 +1,10 @@
+export enum SkinColor {
+  A = 0xefcfb1,
+  B = 0x663931,
+  C = 0xaa695d,
+  D = 0xefe0b1,
+  E = 0xefc1b1,
+  F = 0xd6b585,
+  G = 0xb57445,
+  H = 0xf7e1cd,
+}
