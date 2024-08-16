@@ -111,7 +111,7 @@ serverWorker.on("start", async ({ config, envs }: WorkerProps) => {
   $envs = envs;
   initLog(envs);
 
-  const isAuthDisabled = !envs.isDevelopment;
+  const isAuthDisabled = envs.isDevelopment;
 
   server = getServerSocket(config.proxy.port, async (request: Request) => {
     const { method, url } = request;
