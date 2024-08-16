@@ -1,6 +1,7 @@
 import { ConfigTypes, Envs } from "shared/types/main.ts";
 import { getRandomString } from "shared/utils/random.utils.ts";
 import { protocolToken, ticketMap, userList } from "../proxy.worker.ts";
+import { log } from "shared/utils/log.utils.ts";
 
 export const getRequestRequest = {
   method: "GET",
@@ -72,6 +73,7 @@ export const getRequestRequest = {
         { status: 200 },
       );
     } catch (e) {
+      log(e);
       return Response.json(
         {
           status: 500,
