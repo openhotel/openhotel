@@ -25,7 +25,7 @@ export const messageEvent: ProxyEventType<{ message: string }> = {
 
     user.setLastMessage(message);
     room.emit(ProxyEvent.MESSAGE, {
-      userId: user.getId(),
+      accountId: user.getAccountId(),
       message,
       color: isOp ? 0 : await getRandomNumberFromSeed(user.getUsername()),
     });

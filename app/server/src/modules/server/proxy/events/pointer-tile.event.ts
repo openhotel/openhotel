@@ -23,7 +23,7 @@ export const pointerTileEvent: ProxyEventType<any> = {
     const pathfinding = $room.findPath(
       user.getPosition(),
       position,
-      user.getId(),
+      user.getAccountId(),
     );
 
     //Path is not possible

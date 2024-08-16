@@ -3,10 +3,9 @@ import { getBrowserLanguage } from "shared/utils";
 export const locale = () => {
   let $locale = {};
 
-  const load = async (code?: string) => {
+  const load = async () => {
     try {
-      const $code = code ?? getBrowserLanguage();
-      const language = $code.split("-")[0] ?? "en";
+      const language = getBrowserLanguage();
       const response = await fetch(`./locales/${language}.json`);
       $locale = await response.json();
     } catch (e) {

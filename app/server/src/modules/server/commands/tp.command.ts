@@ -19,7 +19,7 @@ export const tpCommand: Command = {
     user.setPosition({ x, z });
 
     room?.emit(ProxyEvent.SET_POSITION_HUMAN, {
-      userId: user.getId(),
+      accountId: user.getAccountId(),
       position: { x, z, y: 0 },
     });
   },

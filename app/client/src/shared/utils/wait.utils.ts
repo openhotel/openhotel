@@ -1,12 +1,22 @@
-export const waitUntil = (callback: () => boolean) =>
-  new Promise((resolve) => {
+export const wait = async (time: number): Promise<void> =>
+  new Promise((resolve) => setTimeout(resolve, time));
+
+export const waitUntil = async (
+  callback: () => boolean,
+  intervalTime = 100,
+  retires = 10,
+): Promise<void> =>
+  new Promise((resolve, reject) => {
+    let iteration = 0;
     const interval = setInterval(() => {
       if (callback()) {
-        resolve(1);
         clearInterval(interval);
+        resolve();
       }
-    }, 100);
+      if (iteration > retires) {
+        clearInterval(interval);
+        reject();
+      }
+      iteration++;
+    }, intervalTime);
   });
-
-export const delay = (ms: number) =>
-  new Promise((resolve) => setTimeout(resolve, ms));

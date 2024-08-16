@@ -23,7 +23,7 @@
     "loadenv": "https://deno.land/x/loadenv@v1.0.1/mod.ts",
     "modules/": "./src/modules/",
     "shared/": "./src/shared/",
-    "socket_ionic": "https://deno.land/x/socket_ionic@v1.9.0/mod.ts",
+    "socket_ionic": "https://deno.land/x/socket_ionic@v1.9.4/mod.ts",
     "worker_ionic": "https://deno.land/x/worker_ionic@v1.4.2/mod.ts",
     "yaml": "npm:yaml@2.4.2",
     "zip": "https://deno.land/x/zip@v1.2.5/mod.ts"

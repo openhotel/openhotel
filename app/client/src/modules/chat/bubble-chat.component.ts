@@ -39,10 +39,10 @@ export const bubbleChatComponent: ContainerComponent<Props, Mutable> = ({
 
   const removeOnMessage = System.proxy.on<any>(
     Event.MESSAGE,
-    ({ userId, message: text, color }) => {
+    ({ accountId, message: text, color }) => {
       const human = room
         .getHumanList()
-        .find((human) => human.getUser().id === userId);
+        .find((human) => human.getUser().accountId === accountId);
       const position = human.getPosition();
 
       const message = messageComponent({
