@@ -16,7 +16,7 @@ export const CONFIG_DEFAULT: ConfigTypes = {
   },
   auth: {
     redirectUrl: "http://localhost:1994",
-    url: "http://localhost:2024",
-    api: "http://localhost:2024/api/v2/server",
+    url: "https://auth.openhotel.club",
+    api: "https://auth.openhotel.club/api/v2/server",
   },
 };
