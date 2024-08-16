@@ -23,7 +23,7 @@ export const getConfig = async (): Promise<ConfigTypes> => {
       url: config?.proxy?.url || CONFIG_DEFAULT.proxy.url,
     },
     auth: {
-      redirectUrl: config?.auth?.redirect || CONFIG_DEFAULT.auth.redirectUrl,
+      redirectUrl: config?.auth?.redirectUrl || CONFIG_DEFAULT.auth.redirectUrl,
       url: config?.auth?.url || CONFIG_DEFAULT.auth.url,
       api: config?.auth?.api || CONFIG_DEFAULT.auth.api,
     },
