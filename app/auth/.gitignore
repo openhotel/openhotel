@@ -1,7 +1,2 @@
-/build
-database
-database-shm
-database-wal
-config.yml
 /node_modules
 .idea

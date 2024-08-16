@@ -1,11 +1,10 @@
-
 FROM debian:latest
 
 WORKDIR /app
 
 # Install curl and jq
 RUN apt-get update \
-    && apt-get install -y curl jq
+    && apt-get install -y curl jq unzip
 
 COPY ./downloader.sh /downloader.sh
 

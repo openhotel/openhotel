@@ -7,6 +7,10 @@
 
 ---
 
+- `OHAP`: `OpenHotel Auth Protocol`
+
+Basic example with `OHAP` [/auth-example](github.com/openhotel/auth-example)
+
 ## How to run the project
 
 ### Dependencies
@@ -14,7 +18,8 @@
 - Install `deno >= 1.44`
 - Install `node >= 20`
 - Install `yarn`
-- 
+-
+
 ### Start project
 
 - Run `deno task start`

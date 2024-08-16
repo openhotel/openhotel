@@ -1,0 +1,9 @@
+# Create Ticket
+POST http://localhost:2024/api/v2/server/create-ticket
+Content-Type: application/json
+
+{
+  "ticketKey": "THIS_IS_A_PRIVATE_TOKEN",
+  "redirectUrl": "https://client.openhotel.club"
+}
+

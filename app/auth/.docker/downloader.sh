@@ -15,9 +15,13 @@ if [ ! -f ./$FILE_NAME ]; then
   VERSION=$(curl -s "https://api.github.com/repos/openhotel/auth/releases/latest" | jq -r '.tag_name')
 
   echo "Downloading server (version $VERSION)..."
-  curl -L https://github.com/openhotel/auth/releases/download/$VERSION/$FILE_NAME > $FILE_NAME
+  curl -L https://github.com/openhotel/auth/releases/download/$VERSION/$FILE_NAME.zip -o $FILE_NAME.zip
 
   echo "Server downloaded!"
+
+  echo "Decompressing server..."
+  unzip -o $FILE_NAME.zip
+  echo "Server decompressed!"
 
   chmod 777 $FILE_NAME
 fi
