@@ -1,5 +1,5 @@
 import { requestV2List } from "modules/api/v2/main.ts";
-import { getContentType } from "shared/utils/main.ts";
+import { appendCORSHeaders, getContentType } from "shared/utils/main.ts";
 import { System } from "system/main.ts";
 
 export const api = () => {
@@ -50,7 +50,7 @@ export const api = () => {
           );
           if (foundMethodRequest) {
             const response = await foundMethodRequest.func(request, parsedUrl);
-            // appendCORSHeaders(response.headers);
+            appendCORSHeaders(response.headers);
             return response;
           }
           if (foundRequests.length)
