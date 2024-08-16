@@ -3,7 +3,8 @@ import { Server } from "modules/server/main.ts";
 import { load as loadClient } from "modules/client/main.ts";
 import { load as loadUpdater } from "modules/updater/main.ts";
 import { getConfig, initLog } from "shared/utils/main.ts";
-import { ConfigTypes, Envs } from "shared/types/main.ts";
+import { ConfigTypes } from "shared/types/config.types.ts";
+import { Envs } from "shared/types/envs.types.ts";
 
 export const load = async (envs: Envs) => {
   console.clear();
@@ -19,7 +20,7 @@ export const load = async (envs: Envs) => {
   // Check for an update if true, close the server
   if (await loadUpdater({ config, envs })) return;
 
-  // -> Load proxy -> load firewall
+  // -> Load proxy
   const { proxyWorker } = await loadProxy({ config, envs });
   // -> Load client
   await loadClient({ config, envs });

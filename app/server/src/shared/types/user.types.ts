@@ -1,17 +1,16 @@
 import { Point3d } from "shared/types/point.types.ts";
-import { ProxyEvent, Direction } from "shared/enums/main.ts";
-import { Languages } from "./languages.types.ts";
+import { ProxyEvent, Direction, Language } from "shared/enums/main.ts";
 
 export type PrivateUser = {
-  id: string;
+  accountId: string;
   username: string;
-  session?: string;
-  clientId?: string;
-  language?: Languages;
+
+  clientId: string;
+  language?: Language;
 };
 
 export type User = {
-  id: string;
+  accountId: string;
   username: string;
 
   roomId?: string;
@@ -37,7 +36,7 @@ export type UsersConfig = {
 };
 
 export type UserMutable = {
-  getId: () => string;
+  getAccountId: () => string;
   getUsername: () => string;
 
   setPosition: (position: Pick<Point3d, "x" | "z">) => void;
@@ -59,6 +58,7 @@ export type UserMutable = {
 
   getObject: () => User;
 
+  setLanguage: (language: Languages) => void;
   getLanguage: () => Languages;
 
   disconnect: () => void;

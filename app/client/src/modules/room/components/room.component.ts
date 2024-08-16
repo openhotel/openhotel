@@ -92,26 +92,32 @@ export const roomComponent: ContainerComponent<Props, Mutable> = ({
     });
     removeOnRemoveHuman = System.proxy.on<any>(
       Event.REMOVE_HUMAN,
-      ({ userId }) => {
+      ({ accountId }) => {
         const currentHuman = humanList.find(
-          (human) => human.getUser().id === userId,
+          (human) => human.getUser().accountId === accountId,
         );
         $container.remove(currentHuman);
-        humanList = humanList.filter((human) => human.getUser().id !== userId);
+        humanList = humanList.filter(
+          (human) => human.getUser().accountId !== accountId,
+        );
       },
     );
     removeOnMoveHuman = System.proxy.on<any>(
       Event.MOVE_HUMAN,
-      ({ userId, position, bodyDirection }) => {
-        const human = humanList.find((human) => human.getUser().id === userId);
+      ({ accountId, position, bodyDirection }) => {
+        const human = humanList.find(
+          (human) => human.getUser().accountId === accountId,
+        );
 
         human.moveTo(position, bodyDirection);
       },
     );
     removeOnSetPositionHuman = System.proxy.on<any>(
       Event.SET_POSITION_HUMAN,
-      ({ userId, position }) => {
-        const human = humanList.find((human) => human.getUser().id === userId);
+      ({ accountId, position }) => {
+        const human = humanList.find(
+          (human) => human.getUser().accountId === accountId,
+        );
 
         human.setIsometricPosition(position);
       },

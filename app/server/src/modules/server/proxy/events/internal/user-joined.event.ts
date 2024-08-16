@@ -8,7 +8,7 @@ export const userJoinedEvent: ProxyEventType<{ user: PrivateUser }> = {
   func: ({ data: { user } }) => {
     Server.game.users.add(
       {
-        id: user.id,
+        accountId: user.accountId,
         username: user.username,
       },
       user,

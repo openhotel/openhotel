@@ -8,6 +8,6 @@ export const typingStartEvent: ProxyEventType = {
     const room = Server.game.rooms.get(user.getRoom());
     if (!room) return;
 
-    room.emit(ProxyEvent.TYPING_START, { userId: user.getId() });
+    room.emit(ProxyEvent.TYPING_START, { accountId: user.getAccountId() });
   },
 };

@@ -1,6 +1,7 @@
 import { rooms } from "./rooms.ts";
 import { users } from "./users.ts";
 import { furniture } from "./furniture.ts";
+import { Language } from "shared/enums/languages.enum.ts";
 
 export const game = () => {
   const $furniture = furniture();

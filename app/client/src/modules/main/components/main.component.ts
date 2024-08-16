@@ -2,7 +2,7 @@ import { container, textSprite } from "@tu/tulip";
 import { logoComponent } from "./logo.component";
 import { System } from "system";
 import { Event, SpriteSheetEnum } from "shared/enums";
-import { homeComponent, offlineComponent, sceneComponent } from "modules/pages";
+import { offlineComponent, sceneComponent } from "modules/pages";
 import { getVersion, isDevelopment } from "shared/utils";
 
 export const mainComponent = () => {
@@ -23,16 +23,12 @@ export const mainComponent = () => {
   });
   $container.add($logo, $version, $pageContainer);
 
-  const $homePage = homeComponent();
-  $pageContainer.add($homePage);
-
   let $scene;
   let $offlinePage;
 
   System.proxy.on<any>(Event.WELCOME, async ({ user }) => {
     System.game.users.setCurrentUser(user);
 
-    $homePage && $homePage.$destroy();
     $offlinePage && $offlinePage.$destroy();
     $scene && $scene.$destroy();
 
@@ -40,19 +36,10 @@ export const mainComponent = () => {
     $pageContainer.add($scene);
   });
 
-  const reconnect = () => System.proxy.refreshSession();
-
   System.proxy.on(Event.DISCONNECTED, () => {
-    $offlinePage = offlineComponent({
-      reconnect,
-    });
+    $offlinePage = offlineComponent();
     $pageContainer.add($offlinePage);
   });
 
-  try {
-    reconnect();
-  } catch (e) {
-    console.warn("Cannot refresh session, you need to log in!");
-  }
   return $container.getComponent(mainComponent);
 };

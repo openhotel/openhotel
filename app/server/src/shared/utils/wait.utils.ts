@@ -15,7 +15,7 @@ export const waitUntil = async (
       }
       if (iteration > retires) {
         clearInterval(interval);
-        reject();
+        reject(`waitUntil failed on ${callback}!`);
       }
       iteration++;
     }, intervalTime);

@@ -5,28 +5,17 @@ import {
   getRandomString,
   getVersion,
   getWebSocketUrl,
+  isAuthDisabled,
   isDevelopment,
 } from "shared/utils";
 import { Event } from "shared/enums";
-import { getLoginUrl, getRefreshSessionUrl } from "shared/utils/auth.utils";
-
-type ConnectProps = {
-  username?: string;
-  password?: string;
-  captchaId?: string;
-};
+import { System } from "system/system";
 
 export const proxy = () => {
   const config = getConfig();
 
-  let $sessionId;
-
-  let $lastToken;
-
-  let $lastUsername: string;
-  let $lastPassword: string;
-
   let isConnected: boolean = false;
+
   let $socket;
   let eventFunctionMap: Record<Event | string, Function[]> = {};
   let eventFunctionRemoveMap: Record<Event | string, Function[]> = {};
@@ -34,14 +23,12 @@ export const proxy = () => {
   const headers = new Headers();
   headers.append("Content-Type", "application/json");
 
-  const setRefreshSession = (sessionId: string, refreshToken: string) => {
-    $sessionId = sessionId;
-
-    localStorage.setItem(
-      "session-refresh",
-      btoa(JSON.stringify({ sessionId, refreshToken })),
-    );
-  };
+  const params = new URLSearchParams(location.search);
+  let ticketId = params.get("ticketId");
+  let sessionId = params.get("sessionId");
+  let token = params.get("token");
+  let protocolToken = localStorage.getItem("protocolToken");
+  window.history.pushState(null, null, "/");
 
   const getRefreshSession = () => {
     try {
@@ -51,44 +38,54 @@ export const proxy = () => {
     }
   };
 
-  const $connect = async () =>
-    new Promise(async (resolve, reject) => {
-      const firewall = await fetch(
-        `${config.firewall.url}/request?version=${getVersion()}`,
-      ).then((data) => data.json());
+  const canConnect = () => ticketId && sessionId && token && protocolToken;
 
-      if (!firewall.token || !firewall.session) {
-        reject("Cannot connect right now to the server :(!");
-        return;
-      }
+  const clearConnection = () => {
+    ticketId = null;
+    sessionId = null;
+    token = null;
+    protocolToken = null;
+  };
 
-      $socket = getClientSocket({
-        url: getWebSocketUrl(config.firewall.url),
-        protocols: [firewall.token, firewall.session],
-        reconnect: false,
-        silent: true,
-      });
-      $socket.on("connected", () => {
-        console.info("handshake connected!");
+  const preConnect = async () => {
+    System.loader.addText("Requesting connection...");
+    if (isAuthDisabled() || canConnect()) return;
 
-        $socket.emit("session", {
-          sessionId: $sessionId,
-          token: $lastToken,
-          username: $lastUsername,
-          language: getBrowserLanguage(),
-        });
-      });
-      $socket.on("join", async (data) => {
-        $socket.close();
+    const { status, data } = await fetch(
+      `${config.proxy.url}/request?version=${getVersion()}`,
+    ).then((data) => data.json());
+    if (status === 200) {
+      localStorage.setItem("protocolToken", data.protocolToken);
+      window.location.href = data.redirectUrl;
+      return;
+    }
+    System.loader.addText("Something went wrong  :(");
+  };
+
+  const connect = async () =>
+    new Promise<void>(async (resolve, reject) => {
+      try {
+        if (isConnected) return;
+        System.loader.addText("Connecting...");
         $socket = getClientSocket({
           url: getWebSocketUrl(config.proxy.url),
-          protocols: [data.token, data.session],
+          protocols: isAuthDisabled()
+            ? [
+                "DEVELOPMENT",
+                localStorage.getItem("username") ||
+                  `player_${getRandomString(4)}`,
+              ]
+            : [protocolToken, ticketId, sessionId, token],
           reconnect: false,
           silent: true,
         });
         $socket.on("connected", () => {
-          console.info("proxy connected!");
+          System.loader.addText("Connected!");
           isConnected = true;
+
+          $socket.emit(Event.SET_LANGUAGE, {
+            language: getBrowserLanguage(),
+          });
 
           for (const event of Object.keys(eventFunctionMap)) {
             eventFunctionRemoveMap[event] = [];
@@ -98,91 +95,18 @@ export const proxy = () => {
               );
           }
 
-          resolve(1);
+          resolve();
         });
         $socket.on("disconnected", () => {
           console.error("proxy disconnected!");
           isConnected = false;
-          resolve(1);
+          reject();
+          clearConnection();
+          if (isDevelopment()) connect();
         });
         await $socket.connect();
-      });
-      await $socket.connect();
-    });
-
-  const refreshSession = async () =>
-    new Promise(async (resolve, reject) => {
-      try {
-        if (!isDevelopment()) {
-          const { sessionId, refreshToken } = getRefreshSession();
-          const { status: loginStatus, data } = await fetch(
-            getRefreshSessionUrl(),
-            {
-              headers,
-              method: "POST",
-              body: JSON.stringify({
-                sessionId,
-                refreshToken,
-              }),
-            },
-          ).then((data) => data.json());
-
-          $lastToken = data?.token;
-          $lastUsername = data?.username;
-          setRefreshSession(sessionId, data?.refreshToken);
-
-          if (loginStatus !== 200 || !$sessionId || !$lastToken) {
-            reject("Incorrect username or password!");
-            localStorage.removeItem("session-refresh");
-            return;
-          }
-        } else {
-          if (localStorage.getItem("auto-connect") === "false") return reject();
-          localStorage.setItem("auto-connect", "true");
-
-          $lastUsername =
-            localStorage.getItem("username") || `player_${getRandomString(8)}`;
-        }
-        resolve(await $connect());
       } catch (e) {
-        reject(e);
-        localStorage.removeItem("session-refresh");
-      }
-    });
-
-  const connect = async ({
-    username,
-    password,
-    captchaId,
-  }: ConnectProps = {}) =>
-    new Promise(async (resolve, reject) => {
-      username && ($lastUsername = username);
-      password && ($lastPassword = password);
-
-      if (!isDevelopment()) {
-        const { status: loginStatus, data } = await fetch(getLoginUrl(), {
-          headers,
-          method: "POST",
-          body: JSON.stringify({
-            username: $lastUsername,
-            password: $lastPassword,
-            captchaId,
-          }),
-        }).then((data) => data.json());
-
-        $lastToken = data?.token;
-        setRefreshSession(data?.sessionId, data?.refreshToken);
-
-        if (loginStatus !== 200 || !$sessionId || !$lastToken) {
-          reject("Incorrect username or password!");
-          return;
-        }
-      }
-
-      try {
-        resolve(await $connect());
-      } catch (e) {
-        reject(e);
+        System.loader.addText("Something went wrong :(");
       }
     });
 
@@ -215,8 +139,8 @@ export const proxy = () => {
   };
 
   return {
+    preConnect,
     connect,
-    refreshSession,
     getRefreshSession,
 
     emit,
