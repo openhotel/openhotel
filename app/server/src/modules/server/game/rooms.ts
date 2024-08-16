@@ -38,7 +38,7 @@ export const rooms = () => {
     const getSpawnDirection = (): Direction => room.spawnDirection;
 
     const addUser = (user: User) => {
-      const $user = Server.game.users.get({ id: user.id });
+      const $user = Server.game.users.get({ accountId: user.accountId });
       if (!$user) return;
 
       $user.setRoom(room.id);
@@ -47,7 +47,7 @@ export const rooms = () => {
 
       //Add user to "room" internally
       Server.proxy.$emit(ProxyEvent.$ADD_ROOM, {
-        userId: $user.getId(),
+        accountId: $user.getAccountId(),
         roomId: getId(),
       });
 
@@ -58,52 +58,52 @@ export const rooms = () => {
       emit(ProxyEvent.ADD_HUMAN, { user: $user.getObject() });
 
       //Send every existing user inside room to the user
-      for (const userId of getUsers()) {
-        const user = Server.game.users.get({ id: userId });
+      for (const accountId of getUsers()) {
+        const user = Server.game.users.get({ accountId });
         $user.emit(ProxyEvent.ADD_HUMAN, {
           user: user.getObject(),
           isOld: true,
         });
       }
 
-      roomUserMap[room.id].push($user.getId());
+      roomUserMap[room.id].push($user.getAccountId());
     };
     const removeUser = (user: User) => {
-      const $user = Server.game.users.get({ id: user.id });
+      const $user = Server.game.users.get({ accountId: user.accountId });
       if (!$user) return;
 
-      const $userId = $user.getId();
+      const $accountId = $user.getAccountId();
 
       $user.removeRoom();
 
       roomUserMap[room.id] = roomUserMap[room.id].filter(
-        (userId) => userId !== $userId,
+        (accountId) => accountId !== $accountId,
       );
 
       //Remove user from internal "room"
       Server.proxy.$emit(ProxyEvent.$REMOVE_ROOM, {
-        userId: $userId,
+        accountId: $accountId,
         roomId: room.id,
       });
       //Disconnect user from current room
       $user.emit(ProxyEvent.LEAVE_ROOM);
       //Remove user human from the room to existing users
-      emit(ProxyEvent.REMOVE_HUMAN, { userId: $user.getId() });
+      emit(ProxyEvent.REMOVE_HUMAN, { accountId: $user.getAccountId() });
     };
     const getUsers = () => roomUserMap[room.id];
 
     const getPoint = (position: Point3d) =>
       room.layout?.[position.z]?.[position.x];
 
-    const isPointFree = (position: Point3d, userId?: string) => {
+    const isPointFree = (position: Point3d, accountId?: string) => {
       if (getPoint(position) === RoomPointEnum.EMPTY) return false;
       if (getPoint(position) === RoomPointEnum.SPAWN) return true;
 
       return Boolean(
         !getUsers()
-          .filter(($userId) => !userId || $userId !== userId)
-          .find(($userId) => {
-            const user = Server.game.users.get({ id: $userId });
+          .filter(($accountId) => !accountId || $accountId !== accountId)
+          .find(($accountId) => {
+            const user = Server.game.users.get({ accountId: $accountId });
             isPoint3dEqual(user.getPosition(), position);
           }) &&
           Boolean(
@@ -116,15 +116,15 @@ export const rooms = () => {
       );
     };
 
-    const findPath = (start: Point3d, end: Point3d, userId?: string) => {
+    const findPath = (start: Point3d, end: Point3d, accountId?: string) => {
       const roomLayout = structuredClone(room.layout);
-      const roomUsers = getUsers().map((userId) =>
-        Server.game.users.get({ id: userId }),
+      const roomUsers = getUsers().map(($accountId) =>
+        Server.game.users.get({ accountId: $accountId }),
       );
 
       for (const user of roomUsers) {
         //ignore current user
-        if (userId && user.getId() === userId) continue;
+        if (accountId && user.getAccountId() === accountId) continue;
 
         const position = user.getPosition();
         //if spawn, ignore

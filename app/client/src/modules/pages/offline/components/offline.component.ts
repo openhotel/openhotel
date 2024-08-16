@@ -14,13 +14,10 @@ import { SpriteSheetEnum } from "shared/enums";
 import { buttonComponent } from "shared/components";
 import { Size2d } from "shared/types";
 import { TextureEnum } from "shared/enums";
-import { __, isDevelopment } from "shared/utils";
+import { __, isAuthDisabled, isDevelopment } from "shared/utils";
+import { System } from "system";
 
-type Props = {
-  reconnect: () => {};
-};
-
-export const offlineComponent: ContainerComponent<Props> = ({ reconnect }) => {
+export const offlineComponent: ContainerComponent = () => {
   const $container = container({});
 
   const $background = graphics({
@@ -80,16 +77,23 @@ export const offlineComponent: ContainerComponent<Props> = ({ reconnect }) => {
     });
     $button.setPivotX($button.getBounds().width / 2);
 
-    if (isDevelopment()) {
-      const interval = setInterval(reconnect, 1000);
+    if (isAuthDisabled()) {
+      let timeout;
+      const connect = async () => {
+        try {
+          await System.proxy.connect();
+        } catch (e) {}
+        timeout = setTimeout(connect, 1000);
+      };
 
       $container.on(DisplayObjectEvent.DESTROYED, () => {
-        clearInterval(interval);
+        clearTimeout(timeout);
       });
     }
 
     $button.on(DisplayObjectEvent.POINTER_TAP, () => {
-      reconnect();
+      System.proxy.preConnect();
+      if (isAuthDisabled()) System.proxy.connect();
     });
 
     $card.add($button, $title, $human);

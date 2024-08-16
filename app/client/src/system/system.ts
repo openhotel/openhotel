@@ -20,14 +20,16 @@ export const System = (() => {
 
   const load = async () => {
     await $textures.loadText();
-
     $loader.start();
+
+    await $proxy.preConnect();
 
     await $locale.load();
     await $textures.load();
     $tasks.load();
     await $game.load();
 
+    await $proxy.connect();
     $loader.end();
 
     global.events.on(Event.KEY_DOWN, ({ ctrlKey, key }) => {

@@ -1,10 +1,12 @@
 import { System } from "system";
 
 export const getBrowserLanguage = () => {
-  return navigator.languages
+  const language = navigator.languages
     ? navigator.languages[0]
     : // @ts-ignore
       navigator.language || navigator.userLanguage;
+
+  return language?.split("-")[0] ?? "en";
 };
 
 export const __ = (key: string, obj?: { [key: string]: string }): string => {

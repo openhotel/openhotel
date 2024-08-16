@@ -1,4 +1,4 @@
-import { Languages } from "../types/languages.types.ts";
+import { Language } from "shared/enums/languages.enum.ts";
 
 // @ts-ignore
 import localeEN from "../../../assets/locales/en.json" assert { type: "json" };
@@ -11,7 +11,7 @@ let locales = {
 };
 
 export const __ = (
-  code: Languages,
+  code: Language,
   key: string,
   obj?: { [key: string]: string },
 ): string => {

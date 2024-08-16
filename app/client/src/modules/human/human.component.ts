@@ -41,7 +41,7 @@ type Mutable = {
   setBodyDirection: (direction: Direction) => void;
   moveTo: (position: Point3d, direction: Direction) => Promise<void>;
   cancelMovement: () => void;
-  getUser: () => { id: string; username: string };
+  getUser: () => { accountId: string; username: string };
 };
 
 export type HumanMutable = ContainerMutable<{}, Mutable>;
@@ -135,17 +135,17 @@ export const humanComponent: ContainerComponent<Props, Mutable> = (props) => {
     removeOnTypingEnd?.();
   });
   $container.on(DisplayObjectEvent.ADDED, () => {
-    removeOnTypingStart = System.proxy.on<{ userId: string }>(
+    removeOnTypingStart = System.proxy.on<{ accountId: string }>(
       Event.TYPING_START,
-      ({ userId }) => {
-        if (user.id === userId) $typingBubble.setVisible(true);
+      ({ accountId }) => {
+        if (user.accountId === accountId) $typingBubble.setVisible(true);
       },
     );
 
-    removeOnTypingEnd = System.proxy.on<{ userId: string }>(
+    removeOnTypingEnd = System.proxy.on<{ accountId: string }>(
       Event.TYPING_END,
-      ({ userId }) => {
-        if (user.id === userId) $typingBubble.setVisible(false);
+      ({ accountId }) => {
+        if (user.accountId === accountId) $typingBubble.setVisible(false);
       },
     );
   });

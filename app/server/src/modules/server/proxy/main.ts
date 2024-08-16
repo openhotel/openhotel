@@ -41,7 +41,7 @@ export const proxy = () => {
           if (!foundEvent) return;
 
           foundEvent.func({
-            user: Server.game.users.get({ id: user.id }),
+            user: Server.game.users.get({ accountId: user.accountId }),
             data: message,
           });
         } catch (e) {

@@ -18,6 +18,8 @@ export enum ProxyEvent {
 
   WELCOME = "welcome",
 
+  SET_LANGUAGE = "set-language",
+
   JOIN_ROOM = "join-room",
   LEAVE_ROOM = "leave-room",
 
