@@ -76,6 +76,7 @@ export const registerRequest: RequestType = {
       `<a href="${verifyUrl}">${verifyUrl}<p/>`,
     );
 
+    // Every key related to the account is temporary until the account is verified or freed if not
     await System.db.set(
       ["accounts", accountId],
       {

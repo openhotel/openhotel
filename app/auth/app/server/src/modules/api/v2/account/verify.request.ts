@@ -2,6 +2,7 @@ import { RequestType } from "shared/types/main.ts";
 import { RequestMethod } from "shared/enums/main.ts";
 import { System } from "system/main.ts";
 import * as bcrypt from "bcrypt";
+import { ACCOUNT_EXPIRE_TIME } from "shared/consts/account.consts.ts";
 
 export const verifyRequest: RequestType = {
   method: RequestMethod.GET,
@@ -57,7 +58,13 @@ export const verifyRequest: RequestType = {
     delete account.verifyTokensHash;
 
     await System.db.delete(["accountsByVerifyId", id]);
+
     await System.db.set(["accounts", account.accountId], account);
+    await System.db.set(["accountsByEmail", account.email], account.accountId);
+    await System.db.set(
+      ["accountsByUsername", account.username.toLowerCase()],
+      account.accountId,
+    );
 
     return Response.json(
       {
