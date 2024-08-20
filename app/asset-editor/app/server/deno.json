@@ -1,0 +1,29 @@
+{
+  "tasks": {
+    "start": "ENV=development deno run -A --watch=./src --unstable-kv mod.ts",
+    "start:nowatch": "ENV=development deno run -A --unstable-kv mod.ts",
+
+    "compile": "deno compile -A --unstable-kv --no-check",
+
+    "compile:windows": "deno task compile --target=x86_64-pc-windows-msvc --output ./build/assets_editor_windows ./mod.ts",
+    "compile:linux": "deno task compile --target=x86_64-unknown-linux-gnu --output ./build/assets_editor_linux ./mod.ts",
+    "compile:darwin": "deno task compile --target=x86_64-apple-darwin --output ./build/assets_editor_darwin ./mod.ts",
+
+    "build:index": "deno run -A build-index.ts",
+
+    "build": "(deno task compile:linux) & (deno task compile:darwin) & (deno task compile:windows)"
+  },
+  "imports": {
+    "shared/": "./src/shared/",
+    "system/": "./src/system/",
+    "modules/": "./src/modules/",
+
+    "deno/": "https://deno.land/std@0.221.0/",
+    "loadenv": "https://deno.land/x/loadenv@v1.0.1/mod.ts",
+
+    "yaml": "npm:yaml@2.4.2",
+
+    "bcrypt": "https://deno.land/x/bcrypt@v0.4.1/mod.ts",
+    "smtp": "https://deno.land/x/smtp@v0.7.0/mod.ts"
+  }
+}

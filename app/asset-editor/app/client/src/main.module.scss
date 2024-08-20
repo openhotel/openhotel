@@ -1,0 +1,65 @@
+:root {
+  --color-primary: #f0ebe3;
+  --color-background: #121212;
+}
+
+* {
+  font-size: 1.6rem;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  box-sizing: border-box;
+
+  button {
+    border-radius: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  input {
+    border: 0 solid;
+    padding: 0;
+    border: 0;
+  }
+
+  img {
+    vertical-align: middle;
+    image-rendering: crisp-edges;
+  }
+
+  h1 {
+    font-size: 3.2rem;
+  }
+  h2 {
+    font-size: 2.8rem;
+  }
+  h3 {
+    font-size: 2.2rem;
+  }
+  h4 {
+    font-size: 2rem;
+  }
+}
+
+html {
+  // Allows to use rem instead of px in a simple way, ej. 1.4rem is 14px, 2.5rem is 25px
+  font-size: 10px !important;
+
+  color: var(--color-primary);
+  background: var(--color-background);
+}
+
+body {
+  margin: 0;
+
+  height: 100vh;
+  width: 100vw;
+
+  background-attachment: fixed;
+  background-size: cover;
+  overflow-x: hidden !important;
+}
+a {
+  &:visited,
+  &:link {
+    color: var(--color-primary);
+  }
+}

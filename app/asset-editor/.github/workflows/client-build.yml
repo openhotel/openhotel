@@ -1,0 +1,34 @@
+name: Build Client
+on:
+  push:
+    branches: [master]
+    paths:
+      - app/client/**
+  pull_request:
+    paths:
+      - app/client/**
+
+jobs:
+  client-build:
+    name: "Build Client"
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          sparse-checkout: "app/client"
+          sparse-checkout-cone-mode: false
+
+      - name: Install Node.js, NPM and Yarn
+        uses: actions/setup-node@v1
+        with:
+          node-version: 20.x
+
+      - name: Install dependencies
+        working-directory: ./app/client
+        run: yarn install --frozen-lockfile
+
+      - name: Build
+        working-directory: ./app/client
+        run: yarn run build

@@ -1,0 +1,29 @@
+name: Build Auth
+on:
+  push:
+    branches: [master]
+    paths:
+      - app/server/**
+  pull_request:
+    paths:
+      - app/server/**
+
+jobs:
+  auth-build:
+    name: "Build Server"
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          sparse-checkout: "app/server"
+          sparse-checkout-cone-mode: false
+
+      - uses: denoland/setup-deno@v1
+        with:
+          deno-version: vx.x.x
+
+      - name: Build
+        working-directory: ./app/server
+        run: deno task build

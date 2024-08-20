@@ -1,0 +1,115 @@
+name: Publish
+on:
+  push:
+    tags:
+      - "*"
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+jobs:
+  client-build:
+    name: "Build Client"
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          sparse-checkout: "app/client"
+          sparse-checkout-cone-mode: false
+
+      - name: Install Node.js, NPM and Yarn
+        uses: actions/setup-node@v1
+        with:
+          node-version: 20.x
+
+      - name: Set Versions
+        uses: actions/github-script@v4
+        id: set_version
+        with:
+          script: |
+            const tag = context.ref.substring(10).replace('v', '')
+            core.setOutput('tag', tag)
+            core.setOutput('version', tag.split("-")[0])
+
+      - name: Add version to package.json
+        uses: jaywcjlove/github-action-package@main
+        with:
+          path: "./app/client/package.json"
+          data: |
+            {
+              "version": "${{ steps.set_version.outputs.tag }}"
+            }
+
+      - name: Install dependencies
+        working-directory: ./app/client
+        run: yarn install --frozen-lockfile
+
+      - name: Build
+        working-directory: ./app/client
+        run: yarn run build
+
+      - name: "Upload Artifact"
+        uses: actions/upload-artifact@v3
+        with:
+          name: client-build
+          path: "./app/client/build"
+
+  server-build:
+    name: "Build Server"
+
+    needs: [client-build]
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [darwin, linux]
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          sparse-checkout: "app/server"
+          sparse-checkout-cone-mode: false
+
+      - uses: denoland/setup-deno@v1
+        with:
+          deno-version: vx.x.x
+
+      - name: Set Versions
+        uses: actions/github-script@v4
+        id: set_version
+        with:
+          script: |
+            const tag = context.ref.substring(10).replace('v', '')
+            core.setOutput('tag', tag)
+            core.setOutput('version', tag.split("-")[0])
+
+      - name: Replace consts.ts version
+        uses: richardrigutins/replace-in-files@v2
+        with:
+          files: "./app/server/mod.ts"
+          search-text: "__VERSION__"
+          replacement-text: ${{ steps.set_version.outputs.tag }}
+
+      - name: Download client-build artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: client-build
+          path: ./app/server
+
+      - name: Build index
+        working-directory: ./app/server
+        run: deno task build:index
+
+      - name: Compile
+        working-directory: ./app/server
+        run: deno task compile:${{ matrix.os }}
+
+      - name: "Upload to release"
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: ./build/assets_editor_${{ matrix.os }}
+          tag: ${{ github.ref }}
+          overwrite: true
+          file_glob: true

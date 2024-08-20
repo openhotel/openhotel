@@ -1,0 +1,29 @@
+name: Prettier Check
+on:
+  push:
+    branches: [master]
+    paths:
+      - app/server/**
+      - app/client/**
+  pull_request:
+    paths:
+      - app/server/**
+      - app/client/**
+
+jobs:
+  prettier:
+    name: "Checking code style"
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install Node.js, NPM and Yarn
+        uses: actions/setup-node@v1
+        with:
+          node-version: 20.x
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run Prettier check
+        run: npm run prettier:check
