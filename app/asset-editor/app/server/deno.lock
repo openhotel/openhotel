@@ -13,9 +13,13 @@
   },
   "redirects": {
     "https://deno.land/x/denomailer/mod.ts": "https://deno.land/x/denomailer@1.6.0/mod.ts",
+    "https://deno.land/x/is_docker/mod.ts": "https://deno.land/x/is_docker@v2.0.0/mod.ts",
     "https://deno.land/x/smtp/mod.ts": "https://deno.land/x/smtp@v0.7.0/mod.ts"
   },
   "remote": {
+    "https://deno.land/std@0.106.0/path/_constants.ts": "1247fee4a79b70c89f23499691ef169b41b6ccf01887a0abd131009c5581b853",
+    "https://deno.land/std@0.106.0/path/_util.ts": "2e06a3b9e79beaf62687196bd4b60a4c391d862cfa007a20fc3a39f778ba073b",
+    "https://deno.land/std@0.106.0/path/posix.ts": "b81974c768d298f8dcd2c720229639b3803ca4a241fa9a355c762fa2bc5ef0c1",
     "https://deno.land/std@0.173.0/encoding/base64.ts": "7de04c2f8aeeb41453b09b186480be90f2ff357613b988e99fabb91d2eeceba1",
     "https://deno.land/std@0.211.0/dotenv/mod.ts": "bcfa9c102d5ce6218ec0c4a69aa0fc1009fc309a85448f98a8debaa75866a3d7",
     "https://deno.land/std@0.211.0/dotenv/parse.ts": "ddcb04a8a7198918cfc52efbebb0d4fc51abfea913649912fcc1cf4c52bd81a2",
@@ -142,8 +146,11 @@
     "https://deno.land/x/denomailer@1.6.0/config/mail/mod.ts": "a7fafa3386a45a585d7983d816b09ddc28b2f2b84097a614f1e38685b1f62868",
     "https://deno.land/x/denomailer@1.6.0/deps.ts": "12bef188bb2a490fedc82ac1889f3d438e8a15887c423b045fee532b31a43102",
     "https://deno.land/x/denomailer@1.6.0/mod.ts": "71a197dff098194ab53691abd3c9d22a276ef04e1382eb85f5632dbcb5a83bf3",
+    "https://deno.land/x/is_docker@v2.0.0/mod.ts": "4c8753346f4afbb6c251d7984a609aa84055559cf713fba828939a5d39c95cd0",
+    "https://deno.land/x/is_wsl@v1.1.0/mod.ts": "30996b09376652df7a4d495320e918154906ab94325745c1399e13e658dca5da",
     "https://deno.land/x/loadenv@v1.0.1/mod.ts": "287c1cc1b4bf024a1381610428d783854853aa36cca6f927e5f6dba81f350616",
     "https://deno.land/x/loadenv@v1.0.1/src/main.ts": "216f20535f9e41be15679b0a48bba5eeb8dcf12b3ad1a1ab1971c5b0ae698e0a",
+    "https://deno.land/x/open@v0.0.6/index.ts": "c7484a7bf2628236f33bbe354520e651811faf1a7cbc3c3f80958ce81b4c42ef",
     "https://deno.land/x/smtp@v0.7.0/code.ts": "f388fae4995b4d35d99fb6b8bfded522f5a3e7e7d63babdf318a059d6db43baf",
     "https://deno.land/x/smtp@v0.7.0/deps.ts": "5e2a437e3ae35f0e83719fd2e707858dcb750c1111ff5bebc729522a1380b53d",
     "https://deno.land/x/smtp@v0.7.0/mod.ts": "9b0d8fbdacc184d1af10f727980e51486e0ddf9d2ec7227c8dfce90db5bfbcf5",

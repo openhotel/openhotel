@@ -1,7 +1,7 @@
 {
   "tasks": {
-    "start": "ENV=development deno run -A --watch=./src --unstable-kv mod.ts",
-    "start:nowatch": "ENV=development deno run -A --unstable-kv mod.ts",
+    "start": "deno run -A --watch=./src --unstable-kv mod.ts",
+    "start:nowatch": "deno run -A --unstable-kv mod.ts",
 
     "compile": "deno compile -A --unstable-kv --no-check",
 
@@ -23,7 +23,6 @@
 
     "yaml": "npm:yaml@2.4.2",
 
-    "bcrypt": "https://deno.land/x/bcrypt@v0.4.1/mod.ts",
-    "smtp": "https://deno.land/x/smtp@v0.7.0/mod.ts"
+    "open": "https://deno.land/x/open@v0.0.6/index.ts"
   }
 }
