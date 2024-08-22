@@ -52,7 +52,7 @@ export const proxy = () => {
     if (isAuthDisabled() || canConnect()) return;
 
     const { status, data } = await fetch(
-      `${config.proxy.url}/request?version=${getVersion()}`,
+      `/request?version=${getVersion()}`,
     ).then((data) => data.json());
     if (status === 200) {
       localStorage.setItem("protocolToken", data.protocolToken);
@@ -68,7 +68,7 @@ export const proxy = () => {
         if (isConnected) return;
         System.loader.addText("Connecting...");
         $socket = getClientSocket({
-          url: getWebSocketUrl(config.proxy.url),
+          url: getWebSocketUrl(`${window.location.origin}/proxy`),
           protocols: isAuthDisabled()
             ? [
                 "DEVELOPMENT",

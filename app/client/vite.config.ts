@@ -8,6 +8,11 @@ export default defineConfig({
 
     proxy: {
       "/data": "http://localhost:19940",
+      "/request": "http://localhost:19940",
+      "/proxy": {
+        target: "http://localhost:19940",
+        ws: true,
+      },
     },
     // open: true,
   },

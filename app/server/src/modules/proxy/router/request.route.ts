@@ -40,6 +40,7 @@ export const getRequestRequest = {
     const ticketKey = getRandomString(64);
 
     try {
+      console.log(`${config.auth.api}/create-ticket`);
       const {
         data: { ticketId },
       } = await fetch(`${config.auth.api}/create-ticket`, {

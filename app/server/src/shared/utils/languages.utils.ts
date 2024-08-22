@@ -1,9 +1,9 @@
 import { Language } from "shared/enums/languages.enum.ts";
 
 // @ts-ignore
-import localeEN from "../../../assets/locales/en.json" assert { type: "json" };
+import localeEN from "../../../assets/locales/en.json" with { type: "json" };
 // @ts-ignore
-import localeES from "../../../assets/locales/es.json" assert { type: "json" };
+import localeES from "../../../assets/locales/es.json" with { type: "json" };
 
 let locales = {
   en: localeEN,
