@@ -12,15 +12,9 @@ export const getConfig = async (): Promise<ConfigTypes> => {
     version: config?.version || CONFIG_DEFAULT.version,
     name: config?.name || CONFIG_DEFAULT.name,
     description: config?.description || CONFIG_DEFAULT.description,
+    port: config?.port || CONFIG_DEFAULT.port,
     limits: {
       players: config?.limits?.players || CONFIG_DEFAULT.limits.players,
-    },
-    client: {
-      port: config?.client?.port || CONFIG_DEFAULT.client.port,
-    },
-    proxy: {
-      port: config?.proxy?.port || CONFIG_DEFAULT.proxy.port,
-      url: config?.proxy?.url || CONFIG_DEFAULT.proxy.url,
     },
     auth: {
       redirectUrl: config?.auth?.redirectUrl || CONFIG_DEFAULT.auth.redirectUrl,

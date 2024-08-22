@@ -1,3 +1,5 @@
+import { isDevelopment } from "shared/utils/environment.utils";
+
 export const getWebSocketUrl = (url: string) => {
   const { protocol, hostname, pathname, port } = new URL(url);
 

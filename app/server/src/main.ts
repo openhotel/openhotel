@@ -1,6 +1,5 @@
 import { load as loadProxy } from "modules/proxy/main.ts";
 import { Server } from "modules/server/main.ts";
-import { load as loadClient } from "modules/client/main.ts";
 import { load as loadUpdater } from "modules/updater/main.ts";
 import { getConfig, initLog } from "shared/utils/main.ts";
 import { ConfigTypes } from "shared/types/config.types.ts";
@@ -22,8 +21,6 @@ export const load = async (envs: Envs) => {
 
   // -> Load proxy
   const { proxyWorker } = await loadProxy({ config, envs });
-  // -> Load client
-  await loadClient({ config, envs });
   // Load server
   await Server.load({ config, envs, proxyWorker });
 };

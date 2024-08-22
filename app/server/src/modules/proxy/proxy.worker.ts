@@ -17,6 +17,7 @@ import { PROXY_CLIENT_EVENT_WHITELIST } from "shared/consts/main.ts";
 import { ProxyEvent } from "shared/enums/main.ts";
 import { load as loadUpdater } from "modules/updater/main.ts";
 import { routesList } from "./router/main.ts";
+import { requestClient } from "./client.request.ts";
 
 const serverWorker = getChildWorker();
 
@@ -113,19 +114,25 @@ serverWorker.on("start", async ({ config, envs }: WorkerProps) => {
 
   const isAuthDisabled = envs.isDevelopment;
 
-  server = getServerSocket(config.proxy.port, async (request: Request) => {
-    const { method, url } = request;
-    const { pathname } = new URL(url);
+  server = getServerSocket(
+    config.port * (envs.isDevelopment ? 10 : 1),
+    async (request: Request) => {
+      const { method, url } = request;
+      const { pathname } = new URL(url);
 
-    const foundRoute = routesList.find(
-      (route) => route.method === method && route.pathname === pathname,
-    );
+      const clientResponse = await requestClient(request);
+      if (clientResponse) return clientResponse;
 
-    let response = new Response("404", { status: 404 });
-    if (foundRoute) response = await foundRoute.fn(request, config, envs);
-    appendCORSHeaders(response.headers);
-    return response;
-  });
+      const foundRoute = routesList.find(
+        (route) => route.method === method && route.pathname === pathname,
+      );
+
+      let response = new Response("404", { status: 404 });
+      if (foundRoute) response = await foundRoute.fn(request, config, envs);
+      appendCORSHeaders(response.headers);
+      return response;
+    },
+  );
 
   server.on(
     "guest",
@@ -247,5 +254,5 @@ serverWorker.on("start", async ({ config, envs }: WorkerProps) => {
       console.error(e);
     }
   });
-  log(`Proxy started on :${config.proxy.port}`);
+  log(`Started on :${config.port}`);
 });
