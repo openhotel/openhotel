@@ -1,0 +1,2 @@
+#
+GET http://localhost:2030/api/data/read-file?path=/furniture/example/data.yml

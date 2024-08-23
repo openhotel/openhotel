@@ -1,0 +1,15 @@
+#
+GET http://localhost:2030/api/sprite-sheets/sprite?id=test
+
+###
+
+#
+POST http://localhost:2030/api/sprite-sheets/sprite?id=test
+Content-Type: multipart/form-data; boundary=boundary
+
+--boundary
+Content-Disposition: form-data; filename="sprite.png"
+Content-Type: image/png
+
+< ./sprite.png
+--boundary--

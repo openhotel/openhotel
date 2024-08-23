@@ -10,6 +10,8 @@ export const getContentType = (targetFile: string): string => {
     contentType = "application/json";
   } else if (targetFile.endsWith(".png")) {
     contentType = "image/png";
+  } else if (targetFile.endsWith(".yml")) {
+    contentType = "text/yaml";
   }
   return contentType;
 };

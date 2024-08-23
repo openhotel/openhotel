@@ -1,0 +1,43 @@
+@import "../../../../shared/styles/consts.module";
+@import "../../../../shared/styles/mixins.module";
+
+.animations {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  .frame {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 2rem;
+
+    .sprites {
+      display: flex;
+      flex-direction: row;
+      gap: 1rem;
+      padding: 0.25rem;
+      width: 100%;
+
+      .sprite {
+        display: flex;
+        flex-direction: row;
+        gap: 1rem;
+        padding: 0 0.5rem;
+        background-color: rgba(0, 0, 0, 0.25);
+      }
+    }
+
+    label {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    label {
+      min-width: 10rem;
+    }
+    .action {
+      width: 40rem;
+      padding: 0;
+    }
+  }
+}

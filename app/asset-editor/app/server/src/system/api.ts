@@ -39,10 +39,6 @@ export const api = () => {
             appendCORSHeaders(response.headers);
             return response;
           }
-          if (foundRequests.length)
-            return new Response("200", {
-              status: 200,
-            });
           return new Response("404", { status: 404 });
         } catch (e) {
           console.log(e);

@@ -3,13 +3,23 @@ import React from "react";
 import { LayoutComponent } from "../layout";
 import { NotFoundComponent } from "../not-found";
 import { HomeComponent } from "modules/home";
+import { FileManagerComponent } from "modules/file-manager";
 import { RedirectComponent } from "shared/components";
+import { SpriteSheetsComponent } from "modules/sprite-sheets";
 
 const router = createBrowserRouter([
   {
     element: <LayoutComponent />,
     path: "/",
     children: [
+      {
+        path: "/sprite-sheets",
+        element: <SpriteSheetsComponent />,
+      },
+      {
+        path: "/file-manager",
+        element: <FileManagerComponent />,
+      },
       {
         path: "/",
         Component: () => <HomeComponent />,

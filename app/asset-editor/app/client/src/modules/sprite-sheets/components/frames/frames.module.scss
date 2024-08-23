@@ -1,0 +1,31 @@
+@import "../../../../shared/styles/consts.module";
+@import "../../../../shared/styles/mixins.module";
+
+.frames {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  .frame {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 2rem;
+
+    label {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    span,
+    label {
+      width: 100%;
+    }
+    span {
+      text-align: center;
+    }
+    .action {
+      width: 40rem;
+      padding: 0;
+    }
+  }
+}

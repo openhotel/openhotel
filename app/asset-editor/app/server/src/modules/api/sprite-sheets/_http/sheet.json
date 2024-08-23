@@ -1,0 +1,21 @@
+{
+  "frames": {
+    "furniture": {
+      "frame": { "x": 0, "y": 0, "w": 48, "h": 50 },
+      "sourceSize": { "w": 48, "h": 50 },
+      "anchor": { "x": 0, "y": 0 }
+    },
+    "furniture-icon": {
+      "frame": { "x": 48, "y": 0, "w": 24, "h": 24 },
+      "sourceSize": { "w": 24, "h": 24 },
+      "anchor": { "x": 0, "y": 0 }
+    }
+  },
+  "animations": {},
+  "meta": {
+    "format": "RGBA8888",
+    "image": "sprite.png",
+    "size": { "w": 72, "h": 72 },
+    "scale": 1
+  }
+}

@@ -1,4 +1,4 @@
-name: Build Auth
+name: Build Server
 on:
   push:
     branches: [master]

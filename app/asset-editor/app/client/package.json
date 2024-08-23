@@ -21,7 +21,8 @@
     "react-dom": "18.3.1",
     "react-router": "6.26.0",
     "react-router-dom": "6.26.0",
-    "sass": "1.77.8"
+    "sass": "1.77.8",
+    "yaml": "^2.5.0"
   },
   "packageManager": "yarn@1.22.22"
 }

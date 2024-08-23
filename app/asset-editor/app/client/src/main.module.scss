@@ -1,23 +1,40 @@
 :root {
   --color-primary: #f0ebe3;
+  --color-secondary: #b4b0ad;
   --color-background: #121212;
 }
 
 * {
   font-size: 1.6rem;
-  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-family: monospace;
   box-sizing: border-box;
 
   button {
     border-radius: 0;
-    padding: 0;
+    border: 0;
+    padding: 0 0.5rem;
+    background: white;
+    cursor: pointer;
+    label {
+      cursor: pointer;
+    }
+  }
+
+  select {
+    border-radius: 0;
     border: 0;
   }
 
   input {
     border: 0 solid;
     padding: 0;
-    border: 0;
+    width: 100%;
+  }
+
+  form {
+    background-color: gray;
+    display: flex;
+    gap: 0.25rem;
   }
 
   img {
@@ -37,6 +54,9 @@
   h4 {
     font-size: 2rem;
   }
+  hr {
+    color: var(--color-primary);
+  }
 }
 
 html {
@@ -55,7 +75,6 @@ body {
 
   background-attachment: fixed;
   background-size: cover;
-  overflow-x: hidden !important;
 }
 a {
   &:visited,

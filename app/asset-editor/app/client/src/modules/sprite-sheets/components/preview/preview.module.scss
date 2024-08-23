@@ -1,0 +1,39 @@
+@import "../../../../shared/styles/consts.module";
+@import "../../../../shared/styles/mixins.module";
+
+.preview {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  hr {
+    width: 100%;
+  }
+  .imageWrap {
+    border: 1px solid;
+    //overflow: hidden;
+  }
+  .image {
+    position: relative;
+    cursor: cell;
+  }
+  .coords {
+    display: flex;
+    flex-direction: column;
+    .scale,
+    .absolute,
+    .relative {
+      display: flex;
+      flex-direction: row;
+      gap: 1rem;
+      padding: 0 1rem;
+    }
+    .relative {
+      background-color: #b4b0ad;
+      color: black;
+      font-weight: bold;
+    }
+  }
+  img {
+  }
+  //transform: translate(50%, 50%) scale(2);
+}

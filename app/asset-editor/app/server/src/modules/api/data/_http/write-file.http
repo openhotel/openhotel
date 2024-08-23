@@ -1,0 +1,16 @@
+#
+POST http://localhost:2030/api/data/write-file?path=/test
+Content-Type: multipart/form-data; boundary=boundary
+
+--boundary
+Content-Disposition: form-data; name="first"; filename="input.txt"
+Content-Type: text/plain
+
+< ./input.txt
+
+--boundary
+Content-Disposition: form-data; name="second"; filename="sprite.png"
+Content-Type: image/png
+
+< ./sprite.png
+--boundary--

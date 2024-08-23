@@ -9,3 +9,7 @@ export * from "./content-type.utils.ts";
 export * from "./update.utils.ts";
 export * from "./os.utils.ts";
 export * from "./environment.utils.ts";
+export * from "./url.utils.ts";
+export * from "./image.utils.ts";
+export * from "./text.utils.ts";
+export * from "./readable-stream.utils.ts";

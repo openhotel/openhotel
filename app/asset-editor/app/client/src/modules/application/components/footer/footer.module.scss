@@ -2,4 +2,24 @@
 @import "../../../../shared/styles/mixins.module";
 
 .footer {
+  margin: 2rem 0;
+  color: var(--color-secondary);
+
+  .container {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    line-height: 3rem;
+
+    label {
+      flex: 1;
+    }
+    img {
+      height: 3rem;
+      opacity: 0.5;
+      &:hover {
+        opacity: 1;
+      }
+    }
+  }
 }
