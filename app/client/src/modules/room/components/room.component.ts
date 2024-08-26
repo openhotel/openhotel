@@ -9,7 +9,7 @@ import {
   graphics,
   GraphicType,
   sprite,
-  textSprite,
+  DisplayObjectMutable,
 } from "@tu/tulip";
 import { getPositionFromIsometricPosition, getTilePolygon } from "shared/utils";
 import {
@@ -47,18 +47,33 @@ export const roomComponent: ContainerComponent<Props, Mutable> = ({
   const furnituresMap: Record<string, FurnitureMutable> = {};
   const $container = container<{}, Mutable>({
     sortableChildren: true,
-  });
-  $container.setPosition({ x: 230, y: 100 });
-
-  const $coords = textSprite({
-    spriteSheet: SpriteSheetEnum.DEFAULT_FONT,
-    text: "0.0",
-    position: {
-      x: 180,
-      y: 300,
+    pivot: {
+      x: 0,
+      y: -WALL_HEIGHT / 2,
     },
   });
-  $container.add($coords);
+  $container.on(
+    DisplayObjectEvent.ADD_CHILD,
+    (component: DisplayObjectMutable<any>) => {
+      const position = component.getPosition();
+      const containerPivot = $container.getPivot();
+
+      if (containerPivot.x > position.x) $container.setPivotX(position.x - 4);
+      if (containerPivot.y > position.y)
+        $container.setPivotY(position.y - WALL_HEIGHT);
+    },
+  );
+  // $container.setPosition({ x: 230, y: 100 });
+
+  // const $coords = textSprite({
+  //   spriteSheet: SpriteSheetEnum.DEFAULT_FONT,
+  //   text: "0.0",
+  //   position: {
+  //     x: 180,
+  //     y: 300,
+  //   },
+  // });
+  // $container.add($coords);
 
   let humanList: ContainerMutable<{}, HumanMutable>[] = [];
 
@@ -322,7 +337,7 @@ export const roomComponent: ContainerComponent<Props, Mutable> = ({
           $tilePreview.setPosition(previewPosition);
           $tilePreview.setZIndex(zIndex - 0.05);
           $tilePreview.setVisible(true);
-          $coords.setText(`${x}.${z}`);
+          // $coords.setText(`${x}.${z}`);
         });
         pol.on(DisplayObjectEvent.POINTER_LEAVE, () =>
           $tilePreview.setVisible(false),

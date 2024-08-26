@@ -73,6 +73,18 @@ export const gameComponent: ContainerComponent = () => {
   let $room;
   let $bubbleChat;
 
+  const loadRoomPosition = () => {
+    const size = global.getApplication().window.getBounds();
+    const roomBounds = $room.getBounds();
+
+    $room.setPosition({
+      x: size.width / 2 - roomBounds.width / 2,
+      y: size.height / 2 - roomBounds.height / 2,
+    });
+
+    $bubbleChat.setPositionX(size.width / 2);
+  };
+
   const removeOnLoadRoom = System.proxy.on<LoadRoomEvent>(
     Event.LOAD_ROOM,
     ({ room }) => {
@@ -82,8 +94,11 @@ export const gameComponent: ContainerComponent = () => {
 
       $bubbleChat = bubbleChatComponent({ room: $room });
       $container.add($bubbleChat);
+      loadRoomPosition();
     },
   );
+
+  global.events.on(TulipEvent.RESIZE, loadRoomPosition);
 
   const removeOnLeaveRoom = System.proxy.on<any>(Event.LEAVE_ROOM, () => {
     $container.remove($room, $bubbleChat);
