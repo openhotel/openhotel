@@ -214,15 +214,15 @@
   resolved "https://registry.yarnpkg.com/@rollup/rollup-win32-x64-msvc/-/rollup-win32-x64-msvc-4.18.0.tgz#5d694d345ce36b6ecf657349e03eb87297e68da4"
   integrity sha512-UOo5FdvOL0+eIVTgS4tIdbW+TtnBLWg1YBCcU2KWM7nuNwRz9bksDX1bekJJCpu25N1DVWaCwnT39dVQxzqS8g==
 
-"@tu/tulip@npm:@jsr/tu__tulip@0.12.1":
-  version "0.12.1"
-  resolved "https://npm.jsr.io/~/11/@jsr/tu__tulip/0.12.1.tgz#2EAC1215A866AD36D5881DB0F5756B26CC66D0C7"
-  integrity sha512-RPS1inuGIqWNRFOOAoF7n950JW7pBjBY4LQYQfCd5E/RdEN3Jh336N6hz2mS2eXSmskt+AXWnLzOJ+iTZR3AHg==
+"@tu/tulip@npm:@jsr/tu__tulip@0.12.3":
+  version "0.12.3"
+  resolved "https://npm.jsr.io/~/11/@jsr/tu__tulip/0.12.3.tgz#48589DD73869293FEE01F31B2E241F843FAE902A"
+  integrity sha512-uV+gXckj/Qzc74ofhGSoF66cT2BqlIu3czTmvVvpzIpouat3XU/kC+FnGQNUlxB4kVAQAkFemM53W3kQwHhwTw==
   dependencies:
     "@tulib/vite-tulip-plugin" "1.0.8"
     howler "2.2.4"
     p2 "0.7.1"
-    pixi.js "8.2.6"
+    pixi.js "8.3.3"
 
 "@tulib/tulip@0.11.12":
   version "0.11.12"
@@ -363,6 +363,21 @@ pixi.js@8.2.6:
   version "8.2.6"
   resolved "https://registry.yarnpkg.com/pixi.js/-/pixi.js-8.2.6.tgz#e56508109c6a4195f288770f3a937514a5719dbb"
   integrity sha512-CNfr7CmjIEWJ06e3TBrXBKFpcTPMGUaFdtP4RlMOgNOTkDD6+Bhm728I/EkGAo2vsOVO1YwNFsuORQyD3MngZg==
+  dependencies:
+    "@pixi/colord" "^2.9.6"
+    "@types/css-font-loading-module" "^0.0.12"
+    "@types/earcut" "^2.1.4"
+    "@webgpu/types" "^0.1.40"
+    "@xmldom/xmldom" "^0.8.10"
+    earcut "^2.2.4"
+    eventemitter3 "^5.0.1"
+    ismobilejs "^1.1.1"
+    parse-svg-path "^0.1.2"
+
+pixi.js@8.3.3:
+  version "8.3.3"
+  resolved "https://registry.yarnpkg.com/pixi.js/-/pixi.js-8.3.3.tgz#d9f7a94b6f0f49ecadce300359ec963782991aca"
+  integrity sha512-dpucBKAqEm0K51MQKlXvyIJ40bcxniP82uz4ZPEQejGtPp0P+vueuG5DyArHCkC48mkVE2FEDvyYvBa45/JlQg==
   dependencies:
     "@pixi/colord" "^2.9.6"
     "@types/css-font-loading-module" "^0.0.12"
