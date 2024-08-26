@@ -1,0 +1,63 @@
+@import "../../../../../shared/styles/consts.module";
+@import "../../../../../shared/styles/mixins.module";
+
+.container {
+  .header {
+    .actions {
+      display: flex;
+      flex-direction: row;
+      gap: 1rem;
+      .delete {
+        margin-left: auto;
+      }
+    }
+    .sub {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+  }
+
+  .direction {
+    .data {
+      display: flex;
+      flex-direction: row;
+    }
+
+    .textures {
+      flex: 1;
+      padding: 0.5rem 1rem;
+
+      .header {
+        padding: 0.5rem 1rem;
+        display: flex;
+        flex-direction: row;
+        gap: 0.5rem;
+        & > span {
+          width: 100%;
+        }
+      }
+
+      .list {
+        padding: 0.5rem 1rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+
+        .item {
+          display: flex;
+          gap: 1rem;
+
+          span {
+            width: 100%;
+          }
+        }
+      }
+    }
+  }
+
+  .footer {
+    display: flex;
+    justify-content: end;
+  }
+}

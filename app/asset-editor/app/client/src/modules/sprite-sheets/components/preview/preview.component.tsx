@@ -6,7 +6,8 @@ import {
   SpriteSheetPoint,
   SpriteSheetRectangle,
 } from "shared/types";
-import { getColorFromSeed } from "shared/utils";
+import { getColorFromSeed, getScale, setScale } from "shared/utils";
+import { useScale } from "shared/hooks";
 
 type Props = {
   sheet: SpriteSheet;
@@ -22,7 +23,7 @@ export const PreviewComponent: React.FC<Props> = ({
   sprite,
   onChangePreviewRectangle,
 }) => {
-  const [previewScale, setPreviewScale] = useState<number>(6);
+  const [previewScale, setPreviewScale] = useScale();
 
   const [firstPoint, setFirstPoint] = useState<SpriteSheetPoint>({
     x: 0,
@@ -36,6 +37,15 @@ export const PreviewComponent: React.FC<Props> = ({
     x: 0,
     y: 0,
   });
+  const [backgroundColor, setBackgroundColor] = useState<string>(
+    localStorage.getItem("bg") === null
+      ? "#f0f0ff"
+      : localStorage.getItem("bg"),
+  );
+
+  useEffect(() => {
+    setScale(previewScale);
+  }, [previewScale]);
 
   const previewRectangle: SpriteSheetRectangle = {
     x: firstPoint.x,
@@ -79,6 +89,11 @@ export const PreviewComponent: React.FC<Props> = ({
     setPreviewScale((scale) => (scale === 0 ? 0 : scale - 1));
   };
 
+  const onChangeBackground = (event) => {
+    setBackgroundColor(event.target.value);
+    localStorage.setItem("bg", event.target.value);
+  };
+
   const frames = Object.keys(sheet.frames).map<
     [string, SpriteSheetFrame, string]
   >((frameKey) => [
@@ -102,6 +117,7 @@ export const PreviewComponent: React.FC<Props> = ({
           style={{
             width: imageSize.w * previewScale,
             height: imageSize.h * previewScale,
+            backgroundColor: backgroundColor,
           }}
         >
           <div
@@ -165,6 +181,11 @@ export const PreviewComponent: React.FC<Props> = ({
           <label>scale: {previewScale}</label>
           <button onClick={onAddScale}>+</button>
           <button onClick={onSubScale}>-</button>
+        </div>
+        <hr />
+        <div className={styles.bg}>
+          <label>bg: </label>
+          <input value={backgroundColor} onChange={onChangeBackground} />
         </div>
         <hr />
         <div className={styles.absolute}>

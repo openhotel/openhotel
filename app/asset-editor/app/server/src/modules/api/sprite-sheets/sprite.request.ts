@@ -19,7 +19,9 @@ export const getSpriteRequest: RequestType = {
       });
     } catch (e) {
       console.error(e);
-      return Response.json({ status: 500 }, { status: 500 });
+      return new Response("", {
+        status: 500,
+      });
     }
   },
 };

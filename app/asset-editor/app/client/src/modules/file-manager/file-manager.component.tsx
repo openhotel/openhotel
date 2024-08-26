@@ -8,7 +8,7 @@ import React, {
 } from "react";
 import { useData } from "shared/hooks";
 import { File } from "shared/types";
-import { getBase64FromBody } from "shared/utils";
+import { downloadURI, getBase64FromBody } from "shared/utils";
 import { parse } from "yaml";
 import styles from "./file-manager.module.scss";
 
@@ -81,6 +81,12 @@ export const FileManagerComponent: React.FC = () => {
     await remove(path + `/${file.name}`);
     loadFiles();
   };
+  const onClickDownload = (file: File) => async () => {
+    downloadURI(
+      `/api/data/read-file?path=${path + "/" + file.name}`,
+      file.name,
+    );
+  };
 
   const onUploadFiles = async (event: ChangeEvent<HTMLInputElement>) => {
     const { files } = event.target;
@@ -128,6 +134,9 @@ export const FileManagerComponent: React.FC = () => {
               {file.isDirectory ? "/" : ""}
               {file.name}
             </label>
+            {file.isFile ? (
+              <button onClick={onClickDownload(file)}>download</button>
+            ) : null}
             <button onClick={onClickDeleteFile(file)}>delete</button>
           </div>
         ))}

@@ -6,12 +6,17 @@ import { HomeComponent } from "modules/home";
 import { FileManagerComponent } from "modules/file-manager";
 import { RedirectComponent } from "shared/components";
 import { SpriteSheetsComponent } from "modules/sprite-sheets";
+import { FurnitureComponent } from "modules/furniture";
 
 const router = createBrowserRouter([
   {
     element: <LayoutComponent />,
     path: "/",
     children: [
+      {
+        path: "/furniture",
+        element: <FurnitureComponent />,
+      },
       {
         path: "/sprite-sheets",
         element: <SpriteSheetsComponent />,

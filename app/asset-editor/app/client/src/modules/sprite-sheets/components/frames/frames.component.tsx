@@ -1,4 +1,4 @@
-import React, { FormEvent, useEffect, useRef } from "react";
+import React, { FormEvent, useEffect, useRef, useState } from "react";
 import {
   SpriteSheet,
   SpriteSheetFrame,
@@ -6,41 +6,44 @@ import {
 } from "shared/types";
 import { getColorFromSeed } from "shared/utils";
 import styles from "./frames.module.scss";
+import { SpriteFrameComponent } from "shared/components/sprite-frame";
 
 type Props = {
+  sprite: string;
   sheet: SpriteSheet;
   setSheet: (sheet: SpriteSheet) => void;
   previewRectangle: SpriteSheetRectangle;
 };
 
 export const FramesComponent: React.FC<Props> = ({
+  sprite,
   sheet,
   setSheet,
-  previewRectangle,
+  previewRectangle: rectangle,
 }) => {
   const nameFrameRef = useRef();
 
+  const [previewRectangle, setPreviewRectangle] =
+    useState<SpriteSheetRectangle>(rectangle);
+
   useEffect(() => {
+    setPreviewRectangle(rectangle);
     //@ts-ignore
     nameFrameRef.current.focus();
-  }, [previewRectangle]);
+  }, [rectangle]);
 
   const onSubmitAddFrame = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const data = new FormData(event.target as unknown as HTMLFormElement);
     const name = data.get("name") as string;
-    const x = parseInt(data.get("x") as string);
-    const y = parseInt(data.get("y") as string);
-    const w = parseInt(data.get("w") as string);
-    const h = parseInt(data.get("h") as string);
 
     if (!name) return;
 
     const frame: SpriteSheetFrame = {
-      frame: { x, y, w, h },
+      frame: previewRectangle,
       anchor: { x: 0, y: 0 },
-      sourceSize: { w, h },
+      sourceSize: { w: previewRectangle.w, h: previewRectangle.h },
     };
 
     setSheet({
@@ -95,6 +98,58 @@ export const FramesComponent: React.FC<Props> = ({
         <span>h</span>
         <label className={styles.action}></label>
       </div>
+      <form className={styles.frame} onSubmit={onSubmitAddFrame}>
+        <input ref={nameFrameRef} name="name" placeholder="name" />
+        <input
+          name="x"
+          value={previewRectangle.x}
+          placeholder="x"
+          type="number"
+          onChange={(event) =>
+            setPreviewRectangle((d) => ({
+              ...d,
+              x: parseInt(event.target.value),
+            }))
+          }
+        />
+        <input
+          name="y"
+          value={previewRectangle.y}
+          placeholder="y"
+          type="number"
+          onChange={(event) =>
+            setPreviewRectangle((d) => ({
+              ...d,
+              y: parseInt(event.target.value),
+            }))
+          }
+        />
+        <input
+          name="w"
+          value={previewRectangle.w}
+          placeholder="w"
+          type="number"
+          onChange={(event) =>
+            setPreviewRectangle((d) => ({
+              ...d,
+              w: parseInt(event.target.value),
+            }))
+          }
+        />
+        <input
+          name="h"
+          value={previewRectangle.h}
+          placeholder="h"
+          type="number"
+          onChange={(event) =>
+            setPreviewRectangle((d) => ({
+              ...d,
+              h: parseInt(event.target.value),
+            }))
+          }
+        />
+        <button>+</button>
+      </form>
       {frames.map(([frameKey, { frame }, color]) => (
         <div
           key={frameKey}
@@ -106,43 +161,19 @@ export const FramesComponent: React.FC<Props> = ({
           <span>{frame.y}</span>
           <span>{frame.w}</span>
           <span>{frame.h}</span>
+          <span>
+            <SpriteFrameComponent
+              sprite={sprite}
+              size={sheet.meta.size}
+              frame={frame}
+              scale={2}
+            />
+          </span>
           <button className={styles.action} onClick={onDeleteFrame(frameKey)}>
             delete
           </button>
         </div>
       ))}
-      <form className={styles.frame} onSubmit={onSubmitAddFrame}>
-        <input ref={nameFrameRef} name="name" placeholder="name" />
-        <input
-          name="x"
-          value={previewRectangle.x}
-          placeholder="x"
-          type="number"
-          defaultValue="0"
-        />
-        <input
-          name="y"
-          value={previewRectangle.y}
-          placeholder="y"
-          type="number"
-          defaultValue="0"
-        />
-        <input
-          name="w"
-          value={previewRectangle.w}
-          placeholder="w"
-          type="number"
-          defaultValue="0"
-        />
-        <input
-          name="h"
-          value={previewRectangle.h}
-          placeholder="h"
-          type="number"
-          defaultValue="0"
-        />
-        <button>+</button>
-      </form>
     </div>
   );
 };

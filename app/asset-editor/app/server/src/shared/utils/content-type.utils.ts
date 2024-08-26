@@ -12,6 +12,8 @@ export const getContentType = (targetFile: string): string => {
     contentType = "image/png";
   } else if (targetFile.endsWith(".yml")) {
     contentType = "text/yaml";
+  } else if (targetFile.endsWith(".zip")) {
+    contentType = "application/zip";
   }
   return contentType;
 };

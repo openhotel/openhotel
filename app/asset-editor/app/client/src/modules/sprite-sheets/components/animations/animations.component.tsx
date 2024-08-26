@@ -1,6 +1,7 @@
 import React, { FormEvent, useRef } from "react";
 import { getColorFromSeed } from "shared/utils";
 import styles from "./animations.module.scss";
+import { SelectComponent } from "shared/components/select";
 
 type Props = {
   frames: string[];
@@ -102,15 +103,13 @@ export const AnimationsComponent: React.FC<Props> = ({
               className={styles.frame}
               onSubmit={onAddAnimationFrame(animationKey)}
             >
-              <select name="frame">
-                {frames
-                  .filter((frame) => !animations.includes(frame))
-                  .map((frame) => (
-                    <option key={frame} value={frame}>
-                      {frame}
-                    </option>
-                  ))}
-              </select>
+              <SelectComponent
+                name="frame"
+                list={[
+                  "",
+                  ...frames.filter((frame) => !animations.includes(frame)),
+                ]}
+              />
               <button>+</button>
             </form>
           </div>

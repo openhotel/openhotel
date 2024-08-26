@@ -9,9 +9,14 @@ import { PreviewComponent } from "modules/sprite-sheets/components/preview/previ
 type Props = {
   id: string;
   onDelete: () => void;
+  onClose: (id: string) => void;
 };
 
-export const SpriteSheetComponent: React.FC<Props> = ({ id, onDelete }) => {
+export const SpriteSheetComponent: React.FC<Props> = ({
+  id,
+  onDelete,
+  onClose,
+}) => {
   const { getSprite, getSheet, updateSheet, uploadSheet, uploadSprite } =
     useSpriteSheets();
   const uploadSpriteRef = useRef();
@@ -24,8 +29,8 @@ export const SpriteSheetComponent: React.FC<Props> = ({ id, onDelete }) => {
     useState<SpriteSheetRectangle>({ x: 0, y: 0, w: 0, h: 0 });
 
   const $reload = () => {
-    getSprite(id).then(setSprite);
-    getSheet(id).then(setSheet);
+    getSprite(id).then(setSprite).catch(onClose);
+    getSheet(id).then(setSheet).catch(onClose);
   };
 
   useEffect(() => {
@@ -112,6 +117,7 @@ export const SpriteSheetComponent: React.FC<Props> = ({ id, onDelete }) => {
       </div>
       <hr />
       <FramesComponent
+        sprite={sprite}
         sheet={sheet}
         setSheet={setSheet}
         previewRectangle={previewRectangle}
@@ -125,9 +131,3 @@ export const SpriteSheetComponent: React.FC<Props> = ({ id, onDelete }) => {
     </div>
   );
 };
-
-// <select>
-//   {frames.map(([frame]) => (
-//     <option key={frame}>{frame}</option>
-//   ))}
-// </select>

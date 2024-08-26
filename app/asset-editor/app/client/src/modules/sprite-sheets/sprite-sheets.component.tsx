@@ -3,6 +3,7 @@ import { ContainerComponent } from "shared/components";
 import { useSpriteSheets } from "shared/hooks";
 import { SpriteSheetComponent } from "./components";
 import styles from "./sprite-sheets.module.scss";
+import { SelectComponent } from "shared/components/select";
 
 export const SpriteSheetsComponent: React.FC = () => {
   const { getList, create, remove } = useSpriteSheets();
@@ -16,9 +17,16 @@ export const SpriteSheetsComponent: React.FC = () => {
     reload();
   }, []);
 
-  const onSelectSpriteSheet = (event) => {
-    setSelectedSpriteSheet(event.target.value);
-  };
+  useEffect(() => {
+    const spriteSheet = localStorage.getItem("sprite-sheet");
+    if (spriteSheet !== null) setSelectedSpriteSheet(spriteSheet);
+  }, []);
+
+  useEffect(() => {
+    selectedSpriteSheet
+      ? localStorage.setItem("sprite-sheet", selectedSpriteSheet)
+      : localStorage.removeItem("sprite-sheet");
+  }, [selectedSpriteSheet]);
 
   const onSubmitAddSpriteSheet = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -41,17 +49,18 @@ export const SpriteSheetsComponent: React.FC = () => {
     setSelectedSpriteSheet("");
   };
 
+  const onClose = async () => {
+    setSelectedSpriteSheet("");
+  };
+
   return (
     <ContainerComponent className={styles.container}>
       <div className={styles.actions}>
-        <select value={selectedSpriteSheet} onChange={onSelectSpriteSheet}>
-          <option value=""></option>
-          {spriteSheets.map((spriteSheetId) => (
-            <option key={spriteSheetId} value={spriteSheetId}>
-              {spriteSheetId}
-            </option>
-          ))}
-        </select>
+        <SelectComponent
+          list={["", ...spriteSheets]}
+          onChange={setSelectedSpriteSheet}
+          value={selectedSpriteSheet}
+        />
         <form className={styles.new} onSubmit={onSubmitAddSpriteSheet}>
           <input name="name" placeholder="sprite-sheet name" />
           <button>+</button>
@@ -59,8 +68,12 @@ export const SpriteSheetsComponent: React.FC = () => {
       </div>
       <hr />
       <div className={styles.content}>
-        {selectedSpriteSheet ? (
-          <SpriteSheetComponent id={selectedSpriteSheet} onDelete={onDelete} />
+        {selectedSpriteSheet && spriteSheets.length ? (
+          <SpriteSheetComponent
+            id={selectedSpriteSheet}
+            onDelete={onDelete}
+            onClose={onClose}
+          />
         ) : null}
       </div>
       <hr />

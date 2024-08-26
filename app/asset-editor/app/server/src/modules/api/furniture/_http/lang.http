@@ -1,0 +1,11 @@
+#
+GET http://localhost:2030/api/furniture/lang?id=example
+
+###
+#
+POST http://localhost:2030/api/furniture/lang?id=example
+Content-Type: application/json
+
+{
+    "test":"dsdf"
+}

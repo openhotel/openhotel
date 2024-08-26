@@ -1,5 +1,6 @@
 import { File } from "shared/types/main.ts";
 import { DATA_PATH } from "shared/consts/main.ts";
+import { yaml } from "./yaml.ts";
 
 export const data = () => {
   const load = async () => {
@@ -28,16 +29,20 @@ export const data = () => {
     return list;
   };
 
-  const readFile = async (path: string): Promise<Uint8Array> =>
-    await Deno.readFile($getDataPath(path));
+  const readFile = async (
+    path: string,
+    root: boolean = false,
+  ): Promise<Uint8Array> =>
+    await Deno.readFile(root ? path : $getDataPath(path));
 
   const writeFile = async (
     path: string,
     data: ReadableStream<Uint8Array> | Uint8Array,
-  ) => await Deno.writeFile($getDataPath(path), data);
+    root: boolean = false,
+  ) => await Deno.writeFile(root ? path : $getDataPath(path), data);
 
-  const remove = async (path: string) =>
-    await Deno.remove($getDataPath(path), { recursive: true });
+  const remove = async (path: string, root: boolean = false) =>
+    await Deno.remove(root ? path : $getDataPath(path), { recursive: true });
 
   return {
     load,
@@ -49,5 +54,7 @@ export const data = () => {
     writeFile,
 
     remove,
+
+    yaml: yaml(),
   };
 };

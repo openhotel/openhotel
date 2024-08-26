@@ -1,0 +1,16 @@
+@import "../../shared/styles/consts.module";
+@import "../../shared/styles/mixins.module";
+
+.container {
+  .actions {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+
+    .new {
+    }
+  }
+  .content {
+    padding: 1rem 2rem;
+  }
+}

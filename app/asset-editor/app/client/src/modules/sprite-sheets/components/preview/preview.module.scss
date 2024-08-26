@@ -21,7 +21,8 @@
     flex-direction: column;
     .scale,
     .absolute,
-    .relative {
+    .relative,
+    .bg {
       display: flex;
       flex-direction: row;
       gap: 1rem;

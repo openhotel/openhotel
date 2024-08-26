@@ -1,11 +1,11 @@
-import { readYaml, writeYaml } from "./yaml.utils.ts";
 import { ConfigTypes } from "shared/types/config.types.ts";
 import { CONFIG_DEFAULT } from "shared/consts/config.consts.ts";
+import { System } from "system/main.ts";
 
 export const getConfig = async (): Promise<ConfigTypes> => {
   let config: ConfigTypes = {} as ConfigTypes;
   try {
-    config = await readYaml<ConfigTypes>("./config.yml");
+    config = await System.data.yaml.read<ConfigTypes>("./config.yml", true);
   } catch (e) {}
 
   const defaults: ConfigTypes = {
@@ -13,7 +13,7 @@ export const getConfig = async (): Promise<ConfigTypes> => {
     url: config?.url || CONFIG_DEFAULT.url,
   };
   try {
-    await writeYaml<ConfigTypes>("./config.yml", defaults, { async: true });
+    await System.data.yaml.write("./config.yml", defaults, true);
   } catch (e) {}
 
   return defaults;
