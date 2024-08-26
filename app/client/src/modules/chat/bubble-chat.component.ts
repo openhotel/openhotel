@@ -26,10 +26,6 @@ export const bubbleChatComponent: ContainerComponent<Props, Mutable> = ({
   const $container = container<{}, Mutable>({
     sortableChildren: true,
     eventMode: EventMode.NONE,
-    position: {
-      x: room.getPosition().x,
-      y: 0,
-    },
   });
 
   let messages = [];
@@ -50,10 +46,12 @@ export const bubbleChatComponent: ContainerComponent<Props, Mutable> = ({
         color,
         message: text,
       });
+      const messageBoundsWidth = message.getBounds().width / 2;
+      message.setPivotX(messageBoundsWidth - TILE_SIZE.width / 2);
       $container.add(message);
 
       const messageBounds = message.getBounds();
-      jumpHeight = messageBounds.height + 1;
+      jumpHeight = messageBounds.height + 2;
 
       let targetY = Math.round(position.y / jumpHeight) * jumpHeight;
 
@@ -63,19 +61,25 @@ export const bubbleChatComponent: ContainerComponent<Props, Mutable> = ({
         targetY = Math.max(targetY, lastMessageY);
       }
       moveMessages();
+      //
+      let targetX = position.x;
 
-      let targetX = position.x - messageBounds.width / 2 + TILE_SIZE.width / 2;
-
-      const containerGlobalPosition = $container.getGlobalPosition();
-
-      const globalMessageXPosition = containerGlobalPosition.x + targetX;
+      const globalContainerPositionX = $container.getGlobalPosition().x;
 
       const overflowRightX =
-        global.getApplication().window.getBounds().width -
-        (globalMessageXPosition + messageBounds.width);
+        globalContainerPositionX -
+        targetX -
+        messageBoundsWidth -
+        TILE_SIZE.width / 2;
+
+      const overflowLeftX =
+        globalContainerPositionX +
+        targetX -
+        messageBoundsWidth +
+        TILE_SIZE.width / 2;
 
       if (0 > overflowRightX) targetX += overflowRightX;
-      if (0 > globalMessageXPosition) targetX -= globalMessageXPosition;
+      if (0 > overflowLeftX) targetX -= overflowLeftX;
 
       message.setPosition({
         x: targetX,
