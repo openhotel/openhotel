@@ -92,7 +92,7 @@ jobs:
           replacement-text: ${{ steps.set_version.outputs.tag }}
 
       - name: Download client-build artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4.1.7
         with:
           name: client-build
           path: ./app/server/build/client
