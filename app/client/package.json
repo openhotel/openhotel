@@ -13,8 +13,7 @@
   },
   "dependencies": {
     "@oh/queue": "npm:@jsr/oh__queue@1.1.1",
-    "@tu/tulip": "npm:@jsr/tu__tulip@0.12.3",
-    "@tulib/tulip": "0.11.12",
+    "@tu/tulip": "npm:@jsr/tu__tulip@0.13.6",
     "yaml": "2.5.0"
   },
   "packageManager": "yarn@1.22.22"

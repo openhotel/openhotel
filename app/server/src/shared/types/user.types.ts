@@ -7,6 +7,8 @@ export type PrivateUser = {
 
   clientId: string;
   language?: Language;
+
+  apiToken: string;
 };
 
 export type User = {
@@ -58,8 +60,8 @@ export type UserMutable = {
 
   getObject: () => User;
 
-  setLanguage: (language: Languages) => void;
-  getLanguage: () => Languages;
+  setLanguage: (language: Language) => void;
+  getLanguage: () => Language;
 
   disconnect: () => void;
 

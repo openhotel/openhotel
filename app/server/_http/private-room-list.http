@@ -1,0 +1,4 @@
+#
+GET http://localhost:1994/proxy/api/room-list
+accountId: 465a4f6a-5204-40bc-8905-a02418d619cf
+token: ufhMVtmtuS4PpAfDO8wQkYLdhm54uXOi

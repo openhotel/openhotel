@@ -2,10 +2,10 @@ import {
   container,
   ContainerComponent,
   HorizontalAlign,
-  sliceSprite,
+  nineSliceSprite,
   textSprite,
 } from "@tu/tulip";
-import { SpriteSheetEnum, TextureEnum } from "shared/enums";
+import { SpriteSheetEnum } from "shared/enums";
 
 type Mutable = {};
 
@@ -47,8 +47,9 @@ export const messageComponent: ContainerComponent<
   const width = boundsName.width + boundsMessage.width + 32;
   const height = 13;
 
-  const $bubbleBackground = sliceSprite({
-    texture: TextureEnum.CHAT_BUBBLE_BACKGROUND,
+  const $bubbleBackground = nineSliceSprite({
+    spriteSheet: SpriteSheetEnum.UI,
+    texture: "circle-3",
     leftWidth: 6,
     topHeight: 6,
     rightWidth: 6,
@@ -58,8 +59,9 @@ export const messageComponent: ContainerComponent<
     zIndex: -2,
   });
   $container.add($bubbleBackground);
-  const $bubbleOver = sliceSprite({
-    texture: TextureEnum.CHAT_BUBBLE_OVER,
+  const $bubbleOver = nineSliceSprite({
+    spriteSheet: SpriteSheetEnum.UI,
+    texture: "circle-border-3",
     leftWidth: 6,
     topHeight: 6,
     rightWidth: 6,

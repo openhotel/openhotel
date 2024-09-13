@@ -9,8 +9,13 @@ export const rooms = () => {
 
   const get = () => $room;
 
+  const remove = () => {
+    $room = null;
+  };
+
   return {
     set,
     get,
+    remove,
   };
 };

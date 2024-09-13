@@ -8,4 +8,5 @@ export type User = {
   position: Point3d;
   positionUpdatedAt: number;
   bodyDirection: Direction;
+  apiToken: string;
 };

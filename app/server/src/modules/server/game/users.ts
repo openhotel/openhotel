@@ -127,7 +127,8 @@ export const users = () => {
       if (!Language[language.toUpperCase()]) return;
       $privateUserMap[user.accountId].language = language;
     };
-    const getLanguage = () => $privateUserMap[user.accountId].language ?? "en";
+    const getLanguage = () =>
+      $privateUserMap[user.accountId].language ?? Language.EN;
 
     const disconnect = () =>
       Server.proxy.$emit(ProxyEvent.$DISCONNECT_USER, {
@@ -199,17 +200,17 @@ export const users = () => {
   }: Partial<Pick<User, "accountId" | "username">>): UserMutable | null => {
     if (accountId) return $getUser($userMap[accountId]);
     if (username)
-      return getAll().find((user) => user.getUsername() === username);
+      return getList().find((user) => user.getUsername() === username);
     return null;
   };
 
-  const getAll = () => Object.values($userMap).map($getUser);
+  const getList = () => Object.values($userMap).map($getUser);
 
   return {
     load,
     add,
     remove,
     get,
-    getAll,
+    getList,
   };
 };

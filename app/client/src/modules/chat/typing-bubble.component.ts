@@ -2,11 +2,11 @@ import {
   container,
   ContainerComponent,
   HorizontalAlign,
-  sliceSprite,
+  nineSliceSprite,
   textSprite,
   VerticalAlign,
 } from "@tu/tulip";
-import { SpriteSheetEnum, TextureEnum } from "shared/enums";
+import { SpriteSheetEnum } from "shared/enums";
 
 export const typingBubbleComponent: ContainerComponent = (props) => {
   const $container = container({
@@ -17,8 +17,9 @@ export const typingBubbleComponent: ContainerComponent = (props) => {
   const width = 13;
   const height = 10;
 
-  const $bubbleBackground = sliceSprite({
-    texture: TextureEnum.CHAT_ACTION_BACKGROUND,
+  const $bubbleBackground = nineSliceSprite({
+    spriteSheet: SpriteSheetEnum.UI,
+    texture: "chat-writing-bg",
     leftWidth: 8,
     topHeight: 3,
     rightWidth: 3,
@@ -26,8 +27,9 @@ export const typingBubbleComponent: ContainerComponent = (props) => {
     width,
     height,
   });
-  const $bubbleOver = sliceSprite({
-    texture: TextureEnum.CHAT_ACTION_OVER,
+  const $bubbleOver = nineSliceSprite({
+    spriteSheet: SpriteSheetEnum.UI,
+    texture: "chat-writing-border",
     leftWidth: 8,
     topHeight: 3,
     rightWidth: 3,

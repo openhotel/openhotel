@@ -4,6 +4,7 @@ export enum ProxyEvent {
   $USER_JOINED = "$$user-joined",
   $USER_LEFT = "$$user-left",
   $USER_DATA = "$$user-data",
+  $USER_API_DATA = "$$user-api-data",
 
   $ADD_ROOM = "$$add-room",
   $REMOVE_ROOM = "$$remove-room",

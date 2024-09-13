@@ -3,14 +3,13 @@ import {
   ContainerComponent,
   DisplayObjectEvent,
   EventMode,
-  global,
 } from "@tu/tulip";
 import { Event } from "shared/enums";
 import { System } from "system";
 import { messageComponent } from "./message.component";
-import { RoomMutable } from "../room";
 import { HumanMutable } from "modules/human";
 import { CHAT_BUBBLE_MESSAGE_INTERVAL, TILE_SIZE } from "shared/consts";
+import { RoomMutable } from "modules/scenes/private-room";
 
 type Props = {
   room: RoomMutable;

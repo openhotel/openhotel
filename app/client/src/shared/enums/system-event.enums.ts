@@ -1,4 +1,8 @@
 export enum SystemEvent {
-  SHOW_PREVIEW = "show-preview",
-  HIDE_PREVIEW = "hide-preview",
+  SHOW_PREVIEW,
+  HIDE_PREVIEW,
+
+  SHOW_NAVIGATOR_MODAL,
+  HIDE_NAVIGATOR_MODAL,
+  TOGGLE_NAVIGATOR_MODAL,
 }

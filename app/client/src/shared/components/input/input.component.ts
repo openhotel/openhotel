@@ -38,6 +38,13 @@ export const inputComponent: ContainerComponent<InputProps, InputMutable> = ({
 }) => {
   const $container = container<InputProps, InputMutable>(props);
 
+  const backgroundPadding = {
+    top: 4,
+    right: 8,
+    bottom: 3,
+    left: 8,
+  };
+
   const {
     placeholder,
     horizontalAlign,
@@ -60,17 +67,14 @@ export const inputComponent: ContainerComponent<InputProps, InputMutable> = ({
       width,
       height: 7,
     },
-    backgroundPadding: {
-      top: 4,
-      right: 8,
-      bottom: 3,
-      left: 8,
-    },
+    backgroundPadding,
     placeholder,
     horizontalAlign,
     maxLength,
     passwordChar: password ? "$" : null,
     selectionColor: 0xdddddd,
+    selectionVisible: false,
+
     defaultValue,
     verticalAlign: VerticalAlign.BOTTOM,
     onTextChange,
@@ -85,7 +89,21 @@ export const inputComponent: ContainerComponent<InputProps, InputMutable> = ({
     setValue: $input.setText,
     clear: () => $input.clear(),
     focus: $input.focus,
-    setSize: $input.setSize,
+    setSize: (size: Size2d) => {
+      $input.setSize({
+        width: size.width - backgroundPadding.left - backgroundPadding.right,
+        height: size.height - backgroundPadding.top - backgroundPadding.bottom,
+      });
+    },
     on: $input.on,
+    getBounds: () => {
+      const bounds = $input.getBounds();
+
+      return {
+        width: bounds.width - backgroundPadding.left - backgroundPadding.right,
+        height:
+          bounds.height - backgroundPadding.top - backgroundPadding.bottom,
+      };
+    },
   });
 };

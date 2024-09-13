@@ -4,11 +4,19 @@ import { loadInternalEvents, eventList } from "./events/main.ts";
 import { ProxyEvent } from "shared/enums/main.ts";
 import { log } from "shared/utils/main.ts";
 import { Server } from "modules/server/main.ts";
+import { requestList } from "./api/main.ts";
 
 type WorkerProps = {
   user: PrivateUser;
   event: ProxyEvent;
   message: any;
+};
+
+type WorkerApiProps = {
+  user: PrivateUser;
+  data: Record<string, string>;
+  eventName: string;
+  pathname: string;
 };
 
 type EmitProps<Data> = {
@@ -44,6 +52,27 @@ export const proxy = () => {
             user: Server.game.users.get({ accountId: user.accountId }),
             data: message,
           });
+        } catch (e) {
+          log(e);
+        }
+      },
+    );
+
+    $worker.on(
+      ProxyEvent.$USER_API_DATA,
+      async ({ pathname, eventName, data, user }: WorkerApiProps) => {
+        try {
+          const foundRequest = requestList.find(
+            (request) => request.pathname === pathname,
+          );
+          if (!foundRequest) return $worker.emit(eventName, { status: 404 });
+
+          const response = await foundRequest.func({
+            user: Server.game.users.get({ accountId: user.accountId }),
+            data,
+          });
+
+          $worker.emit(eventName, response);
         } catch (e) {
           log(e);
         }
