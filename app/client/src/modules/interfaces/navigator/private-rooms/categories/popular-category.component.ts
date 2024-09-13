@@ -3,6 +3,7 @@ import {
   Cursor,
   DisplayObjectEvent,
   EventMode,
+  nineSliceSprite,
   scrollableContainer,
   sprite,
   textSprite,
@@ -11,14 +12,28 @@ import { Event, SpriteSheetEnum, SystemEvent } from "shared/enums";
 import { System } from "system";
 
 export const popularCategoryComponent = () => {
-  const $container = container({
+  const $container = container();
+  const $content = container({
     position: {
-      x: 4,
-      y: 19,
+      x: 6,
+      y: 7,
     },
   });
 
-  const $content = scrollableContainer({
+  const $backgroundModal = nineSliceSprite({
+    spriteSheet: SpriteSheetEnum.UI,
+    texture: "modal-2",
+    leftWidth: 6,
+    topHeight: 6,
+    rightWidth: 6,
+    bottomHeight: 6,
+    width: 201,
+    height: 165,
+    eventMode: EventMode.STATIC,
+  });
+  $container.add($backgroundModal, $content);
+
+  const $roomList = scrollableContainer({
     position: {
       x: 0,
       y: 10,
@@ -56,14 +71,13 @@ export const popularCategoryComponent = () => {
       }),
     ],
   });
-  $container.add($content);
 
   const text = textSprite({
     spriteSheet: SpriteSheetEnum.DEFAULT_FONT,
     text: "popular",
     tint: 0,
   });
-  $container.add(text);
+  $content.add($roomList, text);
 
   let roomTextList = [];
 
@@ -101,8 +115,8 @@ export const popularCategoryComponent = () => {
       });
       targetRoomTextList.push($joinRoomText);
     }
-    $content.add(...targetRoomTextList);
-    $content.remove(...roomTextList);
+    $roomList.add(...targetRoomTextList);
+    $roomList.remove(...roomTextList);
     roomTextList = targetRoomTextList;
   };
 

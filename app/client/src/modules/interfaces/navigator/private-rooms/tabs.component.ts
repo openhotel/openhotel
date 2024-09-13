@@ -5,9 +5,9 @@ import {
   EventMode,
   HorizontalAlign,
   nineSliceSprite,
+  NineSliceSpriteMutable,
   textSprite,
   VerticalAlign,
-  NineSliceSpriteMutable,
 } from "@tu/tulip";
 import { SpriteSheetEnum } from "shared/enums";
 import { __ } from "shared/utils";
@@ -17,20 +17,24 @@ import {
   popularCategoryComponent,
   topCategoryComponent,
 } from "./categories";
+
 export const tabsComponent = () => {
   const $container = container({
     sortableChildren: true,
   });
 
   const $contentContainer = container({
-    cursor: Cursor.ALIAS,
     eventMode: EventMode.STATIC,
     zIndex: 10,
+    position: {
+      x: 0,
+      y: 13,
+    },
   });
 
   const width = 51;
-  const height = 40;
-  const pivotY = 13;
+  const height = 21;
+  const pivotY = 2;
 
   const options = ["Popular", "Top", "My own", "Favorites"];
   const optionsComponents = [
@@ -100,22 +104,7 @@ export const tabsComponent = () => {
     $container.add(tabSelector, tabText);
   }
 
-  const $backgroundModal = nineSliceSprite({
-    spriteSheet: SpriteSheetEnum.UI,
-    texture: "modal-2",
-    leftWidth: 6,
-    topHeight: 6,
-    rightWidth: 6,
-    bottomHeight: 6,
-    width: 201,
-    height: 165,
-    position: {
-      x: 0,
-      y: 13,
-    },
-  });
-
-  $container.add($backgroundModal, $contentContainer);
+  $container.add($contentContainer);
 
   return $container.getComponent(tabsComponent);
 };
