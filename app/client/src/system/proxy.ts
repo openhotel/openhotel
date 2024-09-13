@@ -1,7 +1,6 @@
 import {
   getBrowserLanguage,
   getClientSocket,
-  getConfig,
   getRandomString,
   getVersion,
   getWebSocketUrl,
@@ -12,8 +11,6 @@ import { Event } from "shared/enums";
 import { System } from "system/system";
 
 export const proxy = () => {
-  const config = getConfig();
-
   let isConnected: boolean = false;
 
   let $socket;

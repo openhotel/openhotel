@@ -7,6 +7,7 @@ import { events } from "./events";
 import { textures } from "system/textures";
 import { locale } from "system/locale";
 import { loader } from "system/loader";
+import { api } from "system/api";
 
 export const System = (() => {
   const $locale = locale();
@@ -15,6 +16,7 @@ export const System = (() => {
   const $proxy = proxy();
   const $game = game();
   const $events = events();
+  const $api = api();
 
   const $tasks = tasks();
 
@@ -59,6 +61,7 @@ export const System = (() => {
     game: $game,
     tasks: $tasks,
     events: $events,
+    api: $api,
 
     load,
   };
