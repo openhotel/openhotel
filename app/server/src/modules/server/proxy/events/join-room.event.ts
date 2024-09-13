@@ -6,7 +6,12 @@ import { __, getLatestVersion, getUsersConfig } from "shared/utils/main.ts";
 export const joinRoomEvent: ProxyEventType<{ roomId: string }> = {
   event: ProxyEvent.JOIN_ROOM,
   func: async ({ data: { roomId }, user }) => {
-    Server.game.rooms.get(roomId)?.addUser?.(user.getObject());
+    const getRoom = Server.game.rooms.get;
+
+    const currentRoom = user.getRoom();
+    if (currentRoom) getRoom(currentRoom).removeUser(user.getObject());
+
+    getRoom(roomId)?.addUser?.(user.getObject());
 
     const isOp = (await getUsersConfig()).op.users.includes(user.getUsername());
     if (isOp) {

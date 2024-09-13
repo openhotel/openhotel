@@ -60,6 +60,8 @@ export const rooms = () => {
       //Send every existing user inside room to the user
       for (const accountId of getUsers()) {
         const user = Server.game.users.get({ accountId });
+        if (!user) continue;
+
         $user.emit(ProxyEvent.ADD_HUMAN, {
           user: user.getObject(),
           isOld: true,
@@ -252,6 +254,8 @@ export const rooms = () => {
   const get = (roomId: string): RoomMutable | null =>
     roomMap[roomId] ? $getRoom(roomMap[roomId]) : null;
 
+  const getList = (): RoomMutable[] => Object.values(roomMap).map($getRoom);
+
   const getRandom = (): RoomMutable => {
     const roomList = Object.values(roomMap);
     const roomIndex = getRandomNumber(0, roomList.length - 1);
@@ -302,6 +306,7 @@ export const rooms = () => {
 
     create,
     get,
+    getList,
 
     getRandom,
   };

@@ -18,6 +18,7 @@ import { ProxyEvent } from "shared/enums/main.ts";
 import { load as loadUpdater } from "modules/updater/main.ts";
 import { routesList } from "./router/main.ts";
 import { requestClient } from "./client.request.ts";
+import * as bcrypt from "bcrypt";
 
 const serverWorker = getChildWorker();
 
@@ -25,6 +26,7 @@ const serverWorker = getChildWorker();
 // The accountId cannot be duplicated as value, if so, it would be the same user connected twice
 let clientIdAccountIdMap: Record<string, string> = {};
 export let userList: PrivateUser[] = [];
+export let userTokenMap: Record<string, string> = {};
 export const ticketMap: Record<
   string,
   {
@@ -117,18 +119,28 @@ serverWorker.on("start", async ({ config, envs }: WorkerProps) => {
   server = getServerSocket(
     config.port * (envs.isDevelopment ? 10 : 1),
     async (request: Request) => {
-      const { method, url } = request;
+      let { method, url } = request;
+
+      if (envs.isDevelopment) url = url.replace("/proxy", "");
       const { pathname } = new URL(url);
 
       const clientResponse = await requestClient(request);
       if (clientResponse) return clientResponse;
 
       const foundRoute = routesList.find(
-        (route) => route.method === method && route.pathname === pathname,
+        (route) =>
+          route.method === method && pathname.startsWith(route.pathname),
       );
 
       let response = new Response("404", { status: 404 });
-      if (foundRoute) response = await foundRoute.fn(request, config, envs);
+      if (foundRoute)
+        response = await foundRoute.fn({
+          request,
+          config,
+          envs,
+          serverWorker,
+          userList,
+        });
       appendCORSHeaders(response.headers);
       return response;
     },
@@ -138,6 +150,10 @@ serverWorker.on("start", async ({ config, envs }: WorkerProps) => {
     "guest",
     async (clientId: string, [$protocolToken, ticketId, sessionId, token]) => {
       let foundUser;
+      const apiToken = getRandomString(32);
+      const apiTokenHash = bcrypt.hashSync(apiToken, bcrypt.genSaltSync(8));
+
+      userTokenMap[clientId] = apiToken;
       if (isAuthDisabled) {
         const username = ticketId;
         const accountId = crypto.randomUUID();
@@ -146,6 +162,7 @@ serverWorker.on("start", async ({ config, envs }: WorkerProps) => {
           clientId,
           accountId,
           username,
+          apiToken: apiTokenHash,
         });
         return true;
       }
@@ -183,6 +200,7 @@ serverWorker.on("start", async ({ config, envs }: WorkerProps) => {
         clientId,
         accountId: data.accountId,
         username: data.username,
+        apiToken: apiTokenHash,
       });
       return true;
     },
@@ -225,8 +243,9 @@ serverWorker.on("start", async ({ config, envs }: WorkerProps) => {
       });
       client.emit(ProxyEvent.WELCOME, {
         datetime: Date.now(),
-        user: foundUser,
+        user: { ...foundUser, apiToken: userTokenMap[foundUser.clientId] },
       });
+      delete userTokenMap[foundUser.clientId];
     } catch (e) {
       console.error("proxy-7");
       console.error(e);

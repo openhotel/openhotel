@@ -6,4 +6,6 @@ export enum SpriteSheetEnum {
   BOLD_FONT = "bold-font/bold-font.json",
 
   SPINNER = "spinner/spinner.json",
+
+  UI = "ui/sheet.json",
 }
