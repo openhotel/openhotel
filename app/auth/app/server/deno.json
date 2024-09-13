@@ -24,6 +24,6 @@
     "yaml": "npm:yaml@2.4.2",
 
     "bcrypt": "https://deno.land/x/bcrypt@v0.4.1/mod.ts",
-    "smtp": "https://deno.land/x/smtp@v0.7.0/mod.ts"
+    "nodemailer": "npm:nodemailer@6.9.15"
   }
 }

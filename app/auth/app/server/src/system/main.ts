@@ -22,6 +22,7 @@ export const System = (() => {
     $envs = envs;
 
     await $db.load();
+    await $email.load();
     $api.load();
   };
 

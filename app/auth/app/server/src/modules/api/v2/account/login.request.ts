@@ -42,7 +42,6 @@ export const loginRequest: RequestType = {
       email,
     ]);
 
-    console.log(!accountByEmail);
     if (!accountByEmail)
       return Response.json(
         { status: 403 },

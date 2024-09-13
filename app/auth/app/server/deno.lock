@@ -2,9 +2,14 @@
   "version": "3",
   "packages": {
     "specifiers": {
+      "npm:nodemailer@6.9.15": "npm:nodemailer@6.9.15",
       "npm:yaml@2.4.2": "npm:yaml@2.4.2"
     },
     "npm": {
+      "nodemailer@6.9.15": {
+        "integrity": "sha512-AHf04ySLC6CIfuRtRiEYtGEXgRfa6INgWGluDhnxTZhHSKvrBu7lc1VVchQ0d8nPc4cFaZoPq8vkyNoZr0TpGQ==",
+        "dependencies": {}
+      },
       "yaml@2.4.2": {
         "integrity": "sha512-B3VqDZ+JAg1nZpaEmWtTXUlBneoGx6CPM9b0TENK6aoSu5t73dItudwdgmi6tHlIZZId4dZ9skcAQ2UbcyAeVA==",
         "dependencies": {}
@@ -151,6 +156,7 @@
   },
   "workspace": {
     "dependencies": [
+      "npm:nodemailer@6.9.15",
       "npm:yaml@2.4.2"
     ]
   }
