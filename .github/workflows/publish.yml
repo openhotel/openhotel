@@ -51,7 +51,7 @@ jobs:
         run: yarn run build
 
       - name: "Upload Artifact"
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4.4.0
         with:
           name: client-build
           path: "./app/client/build"
@@ -92,7 +92,7 @@ jobs:
           replacement-text: ${{ steps.set_version.outputs.tag }}
 
       - name: Download client-build artifact
-        uses: actions/download-artifact@v4.1.7
+        uses: actions/download-artifact@v4.1.8
         with:
           name: client-build
           path: ./app/server/build/client
