@@ -26,10 +26,12 @@ import { DEFAULT_ROOMS } from "shared/consts/main.ts";
 import { log } from "shared/utils/main.ts";
 
 export const rooms = () => {
-  let roomMap: Record<string, Room> = {};
+  let roomMap: Record<string, RoomMutable> = {};
   let roomUserMap: Record<string, string[]> = {};
 
   const $getRoom = (room: Room): RoomMutable => {
+    let $room: Room = { ...room };
+
     const getId = () => room.id;
     const getTitle = () => room.title;
     const getDescription = () => room.description;
@@ -106,7 +108,7 @@ export const rooms = () => {
           .filter(($accountId) => !accountId || $accountId !== accountId)
           .find(($accountId) => {
             const user = Server.game.users.get({ accountId: $accountId });
-            isPoint3dEqual(user.getPosition(), position);
+            return isPoint3dEqual(user.getPosition(), position, true);
           }) &&
           Boolean(
             !getFurnitures()
@@ -170,18 +172,16 @@ export const rooms = () => {
         ...furniture.position,
         y: getYFromPoint(furniture.position),
       };
-      roomMap[room.id].furniture.push(furniture);
+      $room.furniture.push(furniture);
 
       $save(room.id, { furniture: [furniture] });
     };
     const removeFurniture = (furniture: RoomFurniture) => {
-      roomMap[room.id].furniture = roomMap[room.id].furniture.filter(
-        (f) => f.uid !== furniture.uid,
-      );
+      $room.furniture = $room.furniture.filter((f) => f.uid !== furniture.uid);
 
-      $save(room.id, { furniture: roomMap[room.id].furniture }, false);
+      $save(room.id, { furniture: $room.furniture }, false);
     };
-    const getFurnitures = (): RoomFurniture[] => roomMap[room.id].furniture;
+    const getFurnitures = (): RoomFurniture[] => $room.furniture;
 
     const getYFromPoint = (point: Partial<Point3d>): number | null => {
       if (!room?.layout?.[point.z]) return null;
@@ -198,7 +198,7 @@ export const rooms = () => {
       return -(parseInt(roomPoint + "") - 1) + (onStairs ? 0.5 : 0);
     };
 
-    const getObject = () => roomMap[room.id];
+    const getObject = () => $room;
 
     const emit = <Data extends any>(
       event: ProxyEvent,
@@ -242,24 +242,23 @@ export const rooms = () => {
         ),
     );
 
-    roomMap[room.id] = {
+    roomMap[room.id] = $getRoom({
       ...room,
       layout,
       spawnPoint: getRoomSpawnPoint(layout),
       spawnDirection: getRoomSpawnDirection(layout),
-    };
+    });
     roomUserMap[room.id] = [];
   };
 
-  const get = (roomId: string): RoomMutable | null =>
-    roomMap[roomId] ? $getRoom(roomMap[roomId]) : null;
+  const get = (roomId: string): RoomMutable | null => roomMap[roomId];
 
-  const getList = (): RoomMutable[] => Object.values(roomMap).map($getRoom);
+  const getList = (): RoomMutable[] => Object.values(roomMap);
 
   const getRandom = (): RoomMutable => {
     const roomList = Object.values(roomMap);
     const roomIndex = getRandomNumber(0, roomList.length - 1);
-    return $getRoom(roomList[roomIndex]);
+    return roomList[roomIndex];
   };
 
   const generateDefaultRooms = async () => {

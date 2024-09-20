@@ -1,13 +1,13 @@
-import { User } from "shared/types";
+import { CurrentUser } from "shared/types";
 
 export const users = () => {
-  let $user: User;
+  let $user: CurrentUser;
 
-  const setCurrentUser = (user: User) => {
+  const setCurrentUser = (user: CurrentUser) => {
     $user = user;
   };
 
-  const getCurrentUser = (): User => $user;
+  const getCurrentUser = (): CurrentUser => $user;
 
   return {
     setCurrentUser,
