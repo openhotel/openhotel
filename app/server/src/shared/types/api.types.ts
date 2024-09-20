@@ -2,6 +2,7 @@ import { ConfigTypes } from "./config.types.ts";
 import { Envs } from "./envs.types.ts";
 import { WorkerParent } from "worker_ionic";
 import { PrivateUser, UserMutable } from "./user.types.ts";
+import { RequestMethod } from "../enums/request.enum.ts";
 
 export type ApiRequestProps = {
   request: Request;
@@ -23,5 +24,6 @@ type Response = {
 
 export type ProxyRequestType = {
   pathname: string;
+  method: RequestMethod;
   func: (data: FuncProps) => Promise<Response> | Response;
 };

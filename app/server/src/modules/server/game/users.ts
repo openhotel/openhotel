@@ -6,10 +6,11 @@ import { TickerQueue } from "@oh/queue";
 import { getDirection } from "shared/utils/main.ts";
 import { Direction } from "shared/enums/direction.enums.ts";
 import { Language } from "shared/enums/languages.enum.ts";
+import { RoomPointEnum } from "shared/enums/room.enums.ts";
 
 export const users = () => {
   let $privateUserMap: Record<string, PrivateUser> = {};
-  let $userMap: Record<string, User> = {};
+  let $userMap: Record<string, UserMutable> = {};
 
   let $userPathfindingMap: Record<string, Point3d[]> = {};
   let $userLastMessageMap: Record<string, string> = {};
@@ -30,6 +31,12 @@ export const users = () => {
               $userPathfindingMap[accountId].length - 1
             ];
 
+          //check if next position is spawn, exit <<
+          if (room.getPoint(nextPosition) === RoomPointEnum.SPAWN) {
+            room.removeUser(user.getObject());
+            return;
+          }
+
           //check if targetPosition exists and if it's not free
           if (
             targetPosition &&
@@ -44,6 +51,12 @@ export const users = () => {
 
             //Path is not possible
             if (!pathfinding.length) {
+              //if target position is spawn, exit <<
+              if (room.getPoint(targetPosition) === RoomPointEnum.SPAWN) {
+                room.removeUser(user.getObject());
+                return;
+              }
+
               delete $userPathfindingMap[accountId];
               return;
             }
@@ -81,38 +94,54 @@ export const users = () => {
 
   const $getUser = (user: User): UserMutable => {
     if (!user) return null;
+    let $user: User = { ...user };
 
     const getId = () => user.accountId;
     const getUsername = () => user.username;
 
     const setPosition = (position: Point3d) => {
-      $userMap[user.accountId].position = position;
-      $userMap[user.accountId].positionUpdatedAt = performance.now();
+      $user.position = position;
+      $user.positionUpdatedAt = performance.now();
     };
-    const getPosition = (): Point3d => $userMap[user.accountId]?.position;
-    const getPositionUpdatedAt = (): number =>
-      $userMap[user.accountId].positionUpdatedAt;
+    const getPosition = (): Point3d => $user?.position;
+    const getPositionUpdatedAt = (): number => $user.positionUpdatedAt;
 
     const setBodyDirection = (direction: Direction) => {
-      $userMap[user.accountId].bodyDirection = direction;
+      $user.bodyDirection = direction;
     };
-    const getBodyDirection = (): Direction =>
-      $userMap[user.accountId]?.bodyDirection;
+    const getBodyDirection = (): Direction => $user?.bodyDirection;
 
     const setRoom = (roomId: string) => {
-      $userMap[user.accountId].roomId = roomId;
-      setPathfinding([]);
+      $user.roomId = roomId;
+      delete $userPathfindingMap[user.accountId];
     };
-    const getRoom = (): string => $userMap[user.accountId].roomId;
+    const getRoom = (): string => $user.roomId;
     const removeRoom = () => {
       setRoom(null);
       setPosition(null);
     };
 
-    const setPathfinding = (path: Point3d[]) => {
-      $userPathfindingMap[user.accountId] = path;
-      if (!path?.length) delete $userPathfindingMap[user.accountId];
+    const setTargetPosition = (targetPosition: Point3d) => {
+      const $room = Server.game.rooms.get(getRoom());
+      if (!$room) return;
+
+      const pathfinding = $room.findPath(
+        getPosition(),
+        targetPosition,
+        user.accountId,
+      );
+
+      //if not pf do nothing
+      if (!pathfinding.length) {
+        //target is spawn, exit <<
+        if ($room.getPoint(targetPosition) === RoomPointEnum.SPAWN)
+          return $room.removeUser(getObject());
+        return;
+      }
+
+      $userPathfindingMap[user.accountId] = pathfinding;
     };
+
     const getPathfinding = (): Point3d[] =>
       $userPathfindingMap[user.accountId] || [];
 
@@ -121,7 +150,7 @@ export const users = () => {
     };
     const getLastMessage = (): string => $userLastMessageMap[user.accountId];
 
-    const getObject = (): User => $userMap[user.accountId];
+    const getObject = (): User => $user;
 
     const setLanguage = (language: Language) => {
       if (!Language[language.toUpperCase()]) return;
@@ -160,7 +189,9 @@ export const users = () => {
       getRoom,
       removeRoom,
 
-      setPathfinding,
+      setTargetPosition,
+
+      // setPathfinding,
       getPathfinding,
 
       setLastMessage,
@@ -178,7 +209,7 @@ export const users = () => {
   };
 
   const add = (user: User, privateUser: PrivateUser) => {
-    $userMap[user.accountId] = user;
+    $userMap[user.accountId] = $getUser(user);
     $privateUserMap[privateUser.accountId] = privateUser;
   };
 
@@ -198,13 +229,13 @@ export const users = () => {
     accountId,
     username,
   }: Partial<Pick<User, "accountId" | "username">>): UserMutable | null => {
-    if (accountId) return $getUser($userMap[accountId]);
+    if (accountId) return $userMap[accountId];
     if (username)
       return getList().find((user) => user.getUsername() === username);
     return null;
   };
 
-  const getList = () => Object.values($userMap).map($getUser);
+  const getList = () => Object.values($userMap);
 
   return {
     load,
