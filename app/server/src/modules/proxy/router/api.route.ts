@@ -11,7 +11,7 @@ export const getApiRequest = {
     serverWorker,
     userList,
   }: ApiRequestProps): Promise<Response> => {
-    const { headers } = request;
+    const { headers, method } = request;
     const accountId: string = headers.get("accountId");
     const token: string = headers.get("token");
 
@@ -44,6 +44,7 @@ export const getApiRequest = {
           data,
           eventName,
           pathname,
+          method,
         });
 
         serverWorker.on(eventName, ({ status, data }) => {

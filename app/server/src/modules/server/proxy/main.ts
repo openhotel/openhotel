@@ -1,7 +1,7 @@
 import { WorkerParent } from "worker_ionic";
 import { PrivateUser } from "shared/types/main.ts";
 import { loadInternalEvents, eventList } from "./events/main.ts";
-import { ProxyEvent } from "shared/enums/main.ts";
+import { ProxyEvent, RequestMethod } from "shared/enums/main.ts";
 import { log } from "shared/utils/main.ts";
 import { Server } from "modules/server/main.ts";
 import { requestList } from "./api/main.ts";
@@ -17,6 +17,7 @@ type WorkerApiProps = {
   data: Record<string, string>;
   eventName: string;
   pathname: string;
+  method: RequestMethod;
 };
 
 type EmitProps<Data> = {
@@ -60,10 +61,11 @@ export const proxy = () => {
 
     $worker.on(
       ProxyEvent.$USER_API_DATA,
-      async ({ pathname, eventName, data, user }: WorkerApiProps) => {
+      async ({ pathname, eventName, data, user, method }: WorkerApiProps) => {
         try {
           const foundRequest = requestList.find(
-            (request) => request.pathname === pathname,
+            (request) =>
+              request.pathname === pathname && request.method === method,
           );
           if (!foundRequest) return $worker.emit(eventName, { status: 404 });
 
