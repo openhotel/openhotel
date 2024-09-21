@@ -6,7 +6,7 @@ import {
   textSprite,
 } from "@tu/tulip";
 import { System } from "system";
-import { Event, SpriteSheetEnum } from "shared/enums";
+import { Event, SpriteSheetEnum, SystemEvent } from "shared/enums";
 import { scenesComponent } from "modules/scenes";
 import { getVersion, isDevelopment } from "shared/utils";
 
@@ -42,7 +42,19 @@ export const mainComponent = () => {
       y: 14,
     },
   });
-  $textContainer.add($fps, $version);
+  const $coords = textSprite({
+    text: "0.0.0",
+    spriteSheet: SpriteSheetEnum.DEFAULT_FONT,
+    color: 0xffffff,
+    position: {
+      x: 4,
+      y: 24,
+    },
+  });
+  System.events.on(SystemEvent.CURSOR_COORDS, ({ position }) => {
+    $coords.setText(`${position.x}.${position.y}.${position.z}`);
+  });
+  $textContainer.add($fps, $version, $coords);
 
   $container.add($pageContainer, $textContainer);
 

@@ -2,8 +2,7 @@ import { container, ContainerComponent, DisplayObjectEvent } from "@tu/tulip";
 import { logoComponent } from "modules/main";
 import { hotBarComponent } from "modules/interfaces";
 import { System } from "system";
-import { Event, SystemEvent } from "shared/enums";
-import { isDevelopment } from "shared/utils";
+import { SystemEvent } from "shared/enums";
 
 type Props = {};
 
@@ -11,7 +10,7 @@ export const homeComponent: ContainerComponent<Props> = () => {
   const $container = container();
 
   const $logo = logoComponent();
-  $logo.setPosition({ x: 10, y: 10 });
+  $logo.setPosition({ x: 10, y: 40 });
   const $hotBar = hotBarComponent();
   $container.add($logo, $hotBar);
 
