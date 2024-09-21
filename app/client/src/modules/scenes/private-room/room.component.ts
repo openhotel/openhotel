@@ -4,12 +4,12 @@ import {
   ContainerMutable,
   Cursor,
   DisplayObjectEvent,
+  DisplayObjectMutable,
   EventMode,
   global,
   graphics,
   GraphicType,
   sprite,
-  DisplayObjectMutable,
 } from "@tu/tulip";
 import { getPositionFromIsometricPosition, getTilePolygon } from "shared/utils";
 import {
@@ -17,6 +17,7 @@ import {
   FurnitureType,
   RoomPointEnum,
   SpriteSheetEnum,
+  SystemEvent,
 } from "shared/enums";
 import { RoomFurniture, RoomFurnitureFrame } from "shared/types";
 import { System } from "system";
@@ -332,7 +333,9 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = () => {
           $tilePreview.setPosition(previewPosition);
           $tilePreview.setZIndex(zIndex - 0.05);
           $tilePreview.setVisible(true);
-          // $coords.setText(`${x}.${z}`);
+          System.events.emit(SystemEvent.CURSOR_COORDS, {
+            position: { x, y, z },
+          });
         });
         pol.on(DisplayObjectEvent.POINTER_LEAVE, () =>
           $tilePreview.setVisible(false),
