@@ -214,10 +214,11 @@ export const users = () => {
   };
 
   const remove = (user: User) => {
-    const $user = $getUser(user);
+    const $user = $userMap[user.accountId];
     if (!$user) return;
 
     const room = Server.game.rooms.get($user.getRoom());
+    console.log(room);
     room?.removeUser(user);
 
     delete $userMap[user.accountId];
