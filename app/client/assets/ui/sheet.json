@@ -66,12 +66,12 @@
       "sourceSize": { "w": 13, "h": 13 }
     },
     "selector-arrow": {
-      "frame": { "x": 66, "y": 26, "w": 9, "h": 9 },
+      "frame": { "x": 66, "y": 22, "w": 9, "h": 9 },
       "anchor": { "x": 0, "y": 0 },
       "sourceSize": { "w": 9, "h": 9 }
     },
     "selector": {
-      "frame": { "x": 66, "y": 36, "w": 9, "h": 9 },
+      "frame": { "x": 66, "y": 32, "w": 9, "h": 9 },
       "anchor": { "x": 0, "y": 0 },
       "sourceSize": { "w": 9, "h": 9 }
     },
@@ -84,11 +84,6 @@
       "frame": { "x": 55, "y": 46, "w": 5, "h": 6 },
       "anchor": { "x": 0, "y": 0 },
       "sourceSize": { "w": 5, "h": 6 }
-    },
-    "circle-border-5": {
-      "frame": { "x": 54, "y": 54, "w": 26, "h": 26 },
-      "anchor": { "x": 0, "y": 0 },
-      "sourceSize": { "w": 26, "h": 26 }
     },
     "modal-1-selected": {
       "frame": { "x": 26, "y": 0, "w": 16, "h": 16 },
@@ -104,13 +99,63 @@
       "frame": { "x": 58, "y": 0, "w": 16, "h": 16 },
       "anchor": { "x": 0, "y": 0 },
       "sourceSize": { "w": 16, "h": 16 }
+    },
+    "console": {
+      "frame": { "x": 0, "y": 58, "w": 15, "h": 23 },
+      "anchor": { "x": 0, "y": 0 },
+      "sourceSize": { "w": 15, "h": 23 }
+    },
+    "console-notification": {
+      "frame": { "x": 15, "y": 58, "w": 15, "h": 23 },
+      "anchor": { "x": 0, "y": 0 },
+      "sourceSize": { "w": 15, "h": 23 }
+    },
+    "navigator": {
+      "frame": { "x": 30, "y": 58, "w": 23, "h": 23 },
+      "anchor": { "x": 0, "y": 0 },
+      "sourceSize": { "w": 23, "h": 23 }
+    },
+    "catalog": {
+      "frame": { "x": 53, "y": 58, "w": 16, "h": 23 },
+      "anchor": { "x": 0, "y": 0 },
+      "sourceSize": { "w": 16, "h": 23 }
+    },
+    "box": {
+      "frame": { "x": 69, "y": 62, "w": 20, "h": 19 },
+      "anchor": { "x": 0, "y": 0 },
+      "sourceSize": { "w": 20, "h": 19 }
+    },
+    "card-gold": {
+      "frame": { "x": 0, "y": 81, "w": 21, "h": 15 },
+      "anchor": { "x": 0, "y": 0 },
+      "sourceSize": { "w": 21, "h": 15 }
+    },
+    "card-reverse-gold": {
+      "frame": { "x": 21, "y": 81, "w": 21, "h": 15 },
+      "anchor": { "x": 0, "y": 0 },
+      "sourceSize": { "w": 21, "h": 15 }
+    },
+    "card": {
+      "frame": { "x": 42, "y": 81, "w": 21, "h": 15 },
+      "anchor": { "x": 0, "y": 0 },
+      "sourceSize": { "w": 21, "h": 15 }
+    },
+    "card-reverse": {
+      "frame": { "x": 63, "y": 81, "w": 21, "h": 15 },
+      "anchor": { "x": 0, "y": 0 },
+      "sourceSize": { "w": 21, "h": 15 }
+    },
+    "club": {
+      "frame": { "x": 73, "y": 41, "w": 23, "h": 21 },
+      "anchor": { "x": 0, "y": 0 },
+      "sourceSize": { "w": 23, "h": 21 }
     }
   },
   "animations": {},
   "meta": {
     "format": "RGBA8888",
     "image": "sprite.png",
-    "size": { "w": 80, "h": 80 },
+    "size": { "w": 96, "h": 96 },
     "scale": 1
   }
 }

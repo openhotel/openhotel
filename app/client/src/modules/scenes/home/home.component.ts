@@ -10,7 +10,7 @@ export const homeComponent: ContainerComponent<Props> = () => {
   const $container = container();
 
   const $logo = logoComponent();
-  $logo.setPosition({ x: 10, y: 40 });
+  $logo.setPosition({ x: 10, y: 20 });
   const $hotBar = hotBarComponent();
   $container.add($logo, $hotBar);
 
