@@ -152,6 +152,7 @@ export const navigatorModalComponent: ContainerComponent<Props> = (
       x: 6,
       y: 50,
     },
+    eventMode: EventMode.STATIC,
     cursor: Cursor.DEFAULT,
   });
 

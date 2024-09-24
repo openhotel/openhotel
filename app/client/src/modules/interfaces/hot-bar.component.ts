@@ -1,18 +1,15 @@
 import {
   container,
   ContainerComponent,
-  Cursor,
   DisplayObjectEvent,
   Env,
   Event,
-  EventMode,
   global,
   graphics,
   GraphicType,
 } from "@tu/tulip";
 import { Size2d } from "shared/types";
-import { System } from "system";
-import { SystemEvent } from "shared/enums";
+import { hotBarItemsComponent } from "./hot-bar-items.component";
 
 type Props = {};
 
@@ -21,13 +18,13 @@ export const hotBarComponent: ContainerComponent<Props> = () => {
     zIndex: 10,
   });
 
-  const height = 24 + global.envs.get(Env.SAFE_AREA_INSET_BOTTOM);
+  const height = 30 + global.envs.get(Env.SAFE_AREA_INSET_BOTTOM);
 
   const bg = graphics({
     type: GraphicType.RECTANGLE,
     width: 20,
     height: height + 2,
-    tint: 0xff00ff,
+    tint: 0x0,
   });
   $container.add(bg);
 
@@ -36,52 +33,8 @@ export const hotBarComponent: ContainerComponent<Props> = () => {
     ({ vale: safeAreaInsetBottom }) => {},
   );
 
-  const itemContainer = container();
+  const itemContainer = hotBarItemsComponent();
   $container.add(itemContainer);
-
-  // room list
-  const icon = graphics({
-    type: GraphicType.RECTANGLE,
-    width: 20,
-    height: 20,
-    tint: 0x00ffff,
-    eventMode: EventMode.STATIC,
-    cursor: Cursor.POINTER,
-  });
-  icon.on(DisplayObjectEvent.POINTER_TAP, () => {
-    System.events.emit(SystemEvent.TOGGLE_NAVIGATOR_MODAL);
-  });
-
-  // console
-  const iconB = graphics({
-    type: GraphicType.RECTANGLE,
-    width: 20,
-    height: 20,
-    tint: 0xffff00,
-    eventMode: EventMode.STATIC,
-    cursor: Cursor.POINTER,
-  });
-
-  // catalog
-  const iconC = graphics({
-    type: GraphicType.RECTANGLE,
-    width: 20,
-    height: 20,
-    tint: 0x00ff00,
-    eventMode: EventMode.STATIC,
-    cursor: Cursor.POINTER,
-  });
-
-  // inventory
-  const iconD = graphics({
-    type: GraphicType.RECTANGLE,
-    width: 20,
-    height: 20,
-    tint: 0x0000ff,
-    eventMode: EventMode.STATIC,
-    cursor: Cursor.POINTER,
-  });
-  itemContainer.add(icon, iconB, iconC, iconD);
 
   const resize = (size: Size2d) => {
     bg.setRectangle(size.width, height + 2);

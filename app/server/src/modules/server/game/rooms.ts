@@ -127,8 +127,9 @@ export const rooms = () => {
       );
 
       for (const user of roomUsers) {
+        if (!user) continue;
         //ignore current user
-        if (accountId && user.getAccountId() === accountId) continue;
+        if (accountId && user?.getAccountId() === accountId) continue;
 
         const position = user.getPosition();
         //if spawn, ignore
