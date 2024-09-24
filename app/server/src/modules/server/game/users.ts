@@ -218,7 +218,6 @@ export const users = () => {
     if (!$user) return;
 
     const room = Server.game.rooms.get($user.getRoom());
-    console.log(room);
     room?.removeUser(user);
 
     delete $userMap[user.accountId];
