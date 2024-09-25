@@ -8,6 +8,7 @@ import { HomeComponent } from "modules/home";
 import { RedirectComponent } from "shared/components";
 import { VerifyComponent } from "modules/verify";
 import { LogoutComponent } from "modules/logout";
+import { AccountComponent } from "modules/account";
 
 const router = createBrowserRouter([
   {
@@ -29,6 +30,10 @@ const router = createBrowserRouter([
       {
         path: "/logout",
         Component: () => <LogoutComponent />,
+      },
+      {
+        path: "/account",
+        Component: () => <AccountComponent />,
       },
       {
         path: "/",

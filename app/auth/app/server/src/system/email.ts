@@ -6,8 +6,10 @@ export const email = () => {
   const $loadTransporter = (currentResolve?: () => void) =>
     new Promise<void>((resolve, reject) => {
       const {
-        email: { hostname, port, username, password },
+        email: { enabled, hostname, port, username, password },
       } = System.getConfig();
+
+      if (!enabled) return resolve();
 
       transporter = nodemailer.createTransport({
         host: hostname,

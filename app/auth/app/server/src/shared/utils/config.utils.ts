@@ -21,6 +21,7 @@ export const getConfig = async (): Promise<ConfigTypes> => {
       token: config?.captcha?.token ?? CONFIG_DEFAULT.captcha.token,
     },
     email: {
+      enabled: config?.email?.enabled ?? CONFIG_DEFAULT.email.enabled,
       hostname: config?.email?.hostname ?? CONFIG_DEFAULT.email.hostname,
       username: config?.email?.username ?? CONFIG_DEFAULT.email.username,
       password: config?.email?.password ?? CONFIG_DEFAULT.email.password,

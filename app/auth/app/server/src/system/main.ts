@@ -5,12 +5,14 @@ import { getConfig as $getConfig } from "shared/utils/main.ts";
 import { load as loadUpdater } from "modules/updater/main.ts";
 import { captcha } from "./captcha.ts";
 import { email } from "./email.ts";
+import { otp } from "./otp.ts";
 
 export const System = (() => {
   const $db = db();
   const $api = api();
   const $captcha = captcha();
   const $email = email();
+  const $otp = otp();
 
   let $config: ConfigTypes;
   let $envs: Envs;
@@ -38,5 +40,6 @@ export const System = (() => {
     api: $api,
     captcha: $captcha,
     email: $email,
+    otp: $otp,
   };
 })();

@@ -77,6 +77,7 @@ export const claimSessionRequest: RequestType = {
     //destroy session token (but not refresh token)
     await System.db.set(["accounts", account.accountId], account);
     await System.db.delete(["accountsBySession", sessionId]);
+    await System.db.delete(["ticketBySession", sessionId]);
 
     //destroy ticket
     await System.db.delete(["tickets", ticketId]);

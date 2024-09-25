@@ -5,6 +5,7 @@ import * as bcrypt from "bcrypt";
 import {
   SESSION_EXPIRE_TIME,
   REFRESH_TOKEN_EXPIRE_TIME,
+  SESSION_WITHOUT_TICKET_EXPIRE_TIME,
 } from "shared/consts/main.ts";
 import { getRandomString } from "shared/utils/random.utils.ts";
 
@@ -22,23 +23,19 @@ export const refreshSessionRequest: RequestType = {
         },
       );
 
-    //Allow to redirect to retrieve a new ticket
-    if (!ticketId)
-      return Response.json(
-        { status: 410 },
-        {
-          status: 410,
-        },
-      );
-    const { value: ticket } = await System.db.get(["tickets", ticketId]);
+    let ticket;
+    if (ticketId) {
+      const { value: foundTicket } = await System.db.get(["tickets", ticketId]);
 
-    if (!ticket || ticket.isUsed)
-      return Response.json(
-        { status: 410 },
-        {
-          status: 410,
-        },
-      );
+      ticket = foundTicket;
+      if (!foundTicket || foundTicket.isUsed)
+        return Response.json(
+          { status: 410 },
+          {
+            status: 410,
+          },
+        );
+    }
 
     const { value: accountByRefreshSession } = await System.db.get([
       "accountsByRefreshSession",
@@ -86,29 +83,38 @@ export const refreshSessionRequest: RequestType = {
       refreshTokenHash: bcrypt.hashSync(refreshToken, bcrypt.genSaltSync(8)),
     });
     await System.db.set(["accountsBySession", sessionId], account.accountId, {
-      expireIn: SESSION_EXPIRE_TIME,
+      expireIn: ticket
+        ? SESSION_EXPIRE_TIME
+        : SESSION_WITHOUT_TICKET_EXPIRE_TIME,
     });
     await System.db.set(
       ["accountsByRefreshSession", sessionId],
       account.accountId,
       { expireIn: REFRESH_TOKEN_EXPIRE_TIME },
     );
-    await System.db.set(
-      ["tickets", ticket.ticketId],
-      {
-        ...ticket,
-        isUsed: true,
-      },
-      {
+    if (ticket) {
+      await System.db.set(
+        ["tickets", ticket.ticketId],
+        {
+          ...ticket,
+          isUsed: true,
+        },
+        {
+          expireIn: SESSION_EXPIRE_TIME,
+        },
+      );
+      await System.db.set(["ticketBySession", sessionId], ticket.ticketId, {
         expireIn: SESSION_EXPIRE_TIME,
-      },
-    );
+      });
+    }
 
     return Response.json(
       {
         status: 200,
         data: {
-          redirectUrl: `${ticket.redirectUrl}?ticketId=${ticket.ticketId}&sessionId=${account.sessionId}&token=${token}`,
+          redirectUrl: ticket
+            ? `${ticket.redirectUrl}?ticketId=${ticket.ticketId}&sessionId=${account.sessionId}&token=${token}`
+            : null,
 
           token,
           refreshToken,

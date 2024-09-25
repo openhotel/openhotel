@@ -11,6 +11,7 @@ export type ConfigTypes = {
     token: string;
   };
   email: {
+    enabled: boolean;
     hostname: string;
     port: number;
     username: string;

@@ -6,24 +6,37 @@ export const useApi = () => {
 
   const clearSessionCookies = () => {
     Cookies.remove("sessionId");
+    Cookies.remove("token");
     Cookies.remove("refreshToken");
   };
+
+  const getSessionId = () => Cookies.get("sessionId");
+  const getToken = () => Cookies.get("token");
+  const getRefreshToken = () => Cookies.get("refreshToken");
 
   const setFallbackRedirectUrl = (redirectUrl: string) => {
     const { href, search } = new URL(redirectUrl);
     localStorage.setItem("fallbackRedirectUrl", href.replace(search, ""));
   };
 
-  const login = (email: string, password: string, captchaId: string) =>
+  const login = (
+    email: string,
+    password: string,
+    captchaId: string,
+    ticketId?: string,
+    otpToken?: string,
+  ) =>
     new Promise((resolve, reject) => {
       fetch("/api/v2/account/login", {
         method: "POST",
         body: JSON.stringify({
-          ticketId: getTicketId(),
+          ticketId,
 
           email,
           password,
           captchaId,
+
+          otpToken,
         }),
       })
         .then((data) => data.json())
@@ -38,23 +51,30 @@ export const useApi = () => {
             expires: 7,
             sameSite: "strict",
           });
-          setFallbackRedirectUrl(data.redirectUrl);
+          if (data.redirectUrl) setFallbackRedirectUrl(data.redirectUrl);
+          else
+            Cookies.set("token", data.token, {
+              expires: 1,
+              sameSite: "strict",
+            });
           resolve(data);
         })
         .catch(() => reject({ status: 600 }));
     });
 
-  const refreshSession = () =>
+  const refreshSession = (
+    ticketId?: string,
+  ): Promise<{ redirectUrl: string }> =>
     new Promise((resolve, reject) => {
-      const sessionId = Cookies.get("sessionId");
-      const refreshToken = Cookies.get("refreshToken");
+      const sessionId = getSessionId();
+      const refreshToken = getRefreshToken();
 
       if (!sessionId || !refreshToken) return reject();
 
       fetch("/api/v2/account/refresh-session", {
         method: "POST",
         body: JSON.stringify({
-          ticketId: getTicketId(),
+          ticketId,
 
           sessionId,
           refreshToken,
@@ -72,7 +92,12 @@ export const useApi = () => {
               expires: 7,
               sameSite: "strict",
             });
-            setFallbackRedirectUrl(data.redirectUrl);
+            if (data.redirectUrl) setFallbackRedirectUrl(data.redirectUrl);
+            else
+              Cookies.set("token", data.token, {
+                expires: 1,
+                sameSite: "strict",
+              });
             return resolve(data);
           }
           clearSessionCookies();
@@ -106,8 +131,8 @@ export const useApi = () => {
 
   const logout = () =>
     new Promise((resolve) => {
-      const sessionId = Cookies.get("sessionId");
-      const refreshToken = Cookies.get("refreshToken");
+      const sessionId = getSessionId();
+      const refreshToken = getRefreshToken();
 
       clearSessionCookies();
 
@@ -136,12 +161,16 @@ export const useApi = () => {
     });
 
   return {
+    getSessionId,
+    getRefreshToken,
+    getToken,
+    getTicketId,
+
     login,
     refreshSession,
     register,
     logout,
     clearSessionCookies,
-    getTicketId,
     verify,
   };
 };

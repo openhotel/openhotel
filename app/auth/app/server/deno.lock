@@ -149,6 +149,7 @@
     "https://deno.land/x/denomailer@1.6.0/mod.ts": "71a197dff098194ab53691abd3c9d22a276ef04e1382eb85f5632dbcb5a83bf3",
     "https://deno.land/x/loadenv@v1.0.1/mod.ts": "287c1cc1b4bf024a1381610428d783854853aa36cca6f927e5f6dba81f350616",
     "https://deno.land/x/loadenv@v1.0.1/src/main.ts": "216f20535f9e41be15679b0a48bba5eeb8dcf12b3ad1a1ab1971c5b0ae698e0a",
+    "https://deno.land/x/otpauth@v9.3.3/dist/otpauth.esm.js": "ad5c59ffca5316919b1369b63631c94078a1aca5d05e75f547cffa7fb54e64e8",
     "https://deno.land/x/smtp@v0.7.0/code.ts": "f388fae4995b4d35d99fb6b8bfded522f5a3e7e7d63babdf318a059d6db43baf",
     "https://deno.land/x/smtp@v0.7.0/deps.ts": "5e2a437e3ae35f0e83719fd2e707858dcb750c1111ff5bebc729522a1380b53d",
     "https://deno.land/x/smtp@v0.7.0/mod.ts": "9b0d8fbdacc184d1af10f727980e51486e0ddf9d2ec7227c8dfce90db5bfbcf5",

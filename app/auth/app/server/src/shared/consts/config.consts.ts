@@ -13,6 +13,7 @@ export const CONFIG_DEFAULT: ConfigTypes = {
     url: "",
   },
   email: {
+    enabled: true,
     hostname: "",
     port: 587,
     username: "",

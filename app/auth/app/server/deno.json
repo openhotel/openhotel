@@ -24,6 +24,7 @@
     "yaml": "npm:yaml@2.4.2",
 
     "bcrypt": "https://deno.land/x/bcrypt@v0.4.1/mod.ts",
-    "nodemailer": "npm:nodemailer@6.9.15"
+    "nodemailer": "npm:nodemailer@6.9.15",
+    "otp": "https://deno.land/x/otpauth@v9.3.3/dist/otpauth.esm.js"
   }
 }

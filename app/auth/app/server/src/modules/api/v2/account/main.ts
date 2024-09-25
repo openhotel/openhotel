@@ -1,11 +1,14 @@
 import { RequestType } from "shared/types/main.ts";
 import { getPathRequestList } from "shared/utils/main.ts";
 
+import { otpRequestList } from "./otp/main.ts";
+
 import { registerRequest } from "./register.request.ts";
 import { loginRequest } from "./login.request.ts";
 import { verifyRequest } from "./verify.request.ts";
 import { refreshSessionRequest } from "./refresh-session.request.ts";
 import { logoutRequest } from "./logout.request.ts";
+import { accountGetRequest } from "./account.request.ts";
 
 export const accountRequestList: RequestType[] = getPathRequestList({
   requestList: [
@@ -14,6 +17,9 @@ export const accountRequestList: RequestType[] = getPathRequestList({
     verifyRequest,
     refreshSessionRequest,
     logoutRequest,
+    accountGetRequest,
+
+    ...otpRequestList,
   ],
   pathname: "/account",
 });

@@ -6,20 +6,17 @@ import { getRandomString } from "shared/utils/main.ts";
 import {
   REFRESH_TOKEN_EXPIRE_TIME,
   SESSION_EXPIRE_TIME,
+  SESSION_WITHOUT_TICKET_EXPIRE_TIME,
 } from "shared/consts/main.ts";
 
 export const loginRequest: RequestType = {
   method: RequestMethod.POST,
   pathname: "/login",
   func: async (request, url) => {
-    const { ticketId, email, password, captchaId } = await request.json();
+    const { ticketId, email, password, captchaId, otpToken } =
+      await request.json();
 
-    if (
-      !(await System.captcha.verify(captchaId)) ||
-      !email ||
-      !password ||
-      !ticketId
-    )
+    if (!(await System.captcha.verify(captchaId)) || !email || !password)
       return Response.json(
         { status: 403 },
         {
@@ -27,15 +24,19 @@ export const loginRequest: RequestType = {
         },
       );
 
-    const { value: ticket } = await System.db.get(["tickets", ticketId]);
+    let ticket;
+    if (ticketId) {
+      const { value: foundTicket } = await System.db.get(["tickets", ticketId]);
+      ticket = foundTicket;
 
-    if (!ticket || ticket.isUsed)
-      return Response.json(
-        { status: 410 },
-        {
-          status: 410,
-        },
-      );
+      if (!foundTicket || foundTicket.isUsed)
+        return Response.json(
+          { status: 410 },
+          {
+            status: 410,
+          },
+        );
+    }
 
     const { value: accountByEmail } = await System.db.get([
       "accountsByEmail",
@@ -79,9 +80,33 @@ export const loginRequest: RequestType = {
         },
       );
 
+    const { value: accountOTP } = await System.db.get([
+      "accountOTP",
+      account.accountId,
+    ]);
+
+    if (accountOTP.verified) {
+      if (!otpToken)
+        return Response.json(
+          { status: 441, message: "OTP secret is needed!" },
+          {
+            status: 441,
+          },
+        );
+
+      if (!System.otp.verify(accountOTP.secret, otpToken))
+        return Response.json(
+          { status: 441, message: "OTP is not valid!" },
+          {
+            status: 441,
+          },
+        );
+    }
+
     if (account.sessionId) {
       await System.db.delete(["accountsBySession", account.sessionId]);
       await System.db.delete(["accountsByRefreshSession", account.sessionId]);
+      await System.db.delete(["ticketBySession", account.sessionId]);
     }
 
     const sessionId = crypto.randomUUID();
@@ -96,29 +121,38 @@ export const loginRequest: RequestType = {
       refreshTokenHash: bcrypt.hashSync(refreshToken, bcrypt.genSaltSync(8)),
     });
     await System.db.set(["accountsBySession", sessionId], account.accountId, {
-      expireIn: SESSION_EXPIRE_TIME,
+      expireIn: ticket
+        ? SESSION_EXPIRE_TIME
+        : SESSION_WITHOUT_TICKET_EXPIRE_TIME,
     });
     await System.db.set(
       ["accountsByRefreshSession", sessionId],
       account.accountId,
       { expireIn: REFRESH_TOKEN_EXPIRE_TIME },
     );
-    await System.db.set(
-      ["tickets", ticket.ticketId],
-      {
-        ...ticket,
-        isUsed: true,
-      },
-      {
+    if (ticket) {
+      await System.db.set(
+        ["tickets", ticket.ticketId],
+        {
+          ...ticket,
+          isUsed: true,
+        },
+        {
+          expireIn: SESSION_EXPIRE_TIME,
+        },
+      );
+      await System.db.set(["ticketBySession", sessionId], ticket.ticketId, {
         expireIn: SESSION_EXPIRE_TIME,
-      },
-    );
+      });
+    }
 
     return Response.json(
       {
         status: 200,
         data: {
-          redirectUrl: `${ticket.redirectUrl}?ticketId=${ticket.ticketId}&sessionId=${sessionId}&token=${token}`,
+          redirectUrl: ticket
+            ? `${ticket.redirectUrl}?ticketId=${ticket.ticketId}&sessionId=${sessionId}&token=${token}`
+            : null,
 
           sessionId,
           token,

@@ -4,12 +4,12 @@ import { useApi } from "shared/hooks";
 
 export const HomeComponent: React.FC = () => {
   const [isReady, setIsReady] = useState(false);
-  const { refreshSession } = useApi();
+  const { refreshSession, getTicketId } = useApi();
 
   useEffect(() => {
     if (window.location.pathname === "/logout") return;
 
-    refreshSession()
+    refreshSession(getTicketId() ?? "refresh")
       .then(({ redirectUrl }) => {
         window.location.href = redirectUrl;
       })
