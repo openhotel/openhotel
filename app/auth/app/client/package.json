@@ -9,7 +9,7 @@
     "@types/react": "18.3.3",
     "@types/js-cookie": "3.0.6",
     "@rollup/plugin-alias": "5.1.0",
-    "vite": "5.2.13",
+    "vite": "5.2.14",
     "vite-tsconfig-paths": "4.3.2"
   },
   "dependencies": {

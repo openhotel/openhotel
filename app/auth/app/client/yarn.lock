@@ -935,10 +935,10 @@ vite-tsconfig-paths@4.3.2:
     globrex "^0.1.2"
     tsconfck "^3.0.3"
 
-vite@5.2.13:
-  version "5.2.13"
-  resolved "https://registry.yarnpkg.com/vite/-/vite-5.2.13.tgz#945ababcbe3d837ae2479c29f661cd20bc5e1a80"
-  integrity sha512-SSq1noJfY9pR3I1TUENL3rQYDQCFqgD+lM6fTRAM8Nv6Lsg5hDLaXkjETVeBt+7vZBCMoibD+6IWnT2mJ+Zb/A==
+vite@5.2.14:
+  version "5.2.14"
+  resolved "https://registry.yarnpkg.com/vite/-/vite-5.2.14.tgz#fd5f60facf6b5f90ec7da6323c467a365d380c3d"
+  integrity sha512-TFQLuwWLPms+NBNlh0D9LZQ+HXW471COABxw/9TEUBrjuHMo9BrYBPrN/SYAwIuVL+rLerycxiLT41t4f5MZpA==
   dependencies:
     esbuild "^0.20.1"
     postcss "^8.4.38"
