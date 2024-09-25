@@ -5,9 +5,10 @@ import styles from "./login.module.scss";
 import { useNavigate } from "react-router-dom";
 export const LoginComponent: React.FC = () => {
   const [submittedAt, setSubmittedAt] = useState<number>();
-  const [captchaId, setCaptchaId] = useState<string>();
+  const [captchaId, setCaptchaId] = useState<string>(null);
   const [loaded, setLoaded] = useState<boolean>(false);
   const [showOTP, setShowOTP] = useState<boolean>(false);
+  const [showCaptcha, setShowCaptcha] = useState<boolean>(false);
 
   const { login, refreshSession, getTicketId } = useApi();
   let navigate = useNavigate();
@@ -42,7 +43,8 @@ export const LoginComponent: React.FC = () => {
           window.location.href = redirectUrl;
         })
         .catch(({ status }) => {
-          if (status === 441) setShowOTP(true);
+          if (status === 461 || status === 451) setShowCaptcha(true);
+          if (status === 461 || status === 441) setShowOTP(true);
           setSubmittedAt(performance.now());
         });
     },
@@ -56,7 +58,12 @@ export const LoginComponent: React.FC = () => {
       <form className={styles.form} onSubmit={onSubmit}>
         <input name="email" placeholder="email" />
         <input name="password" placeholder="password" type="password" />
-        <CaptchaComponent submittedAt={submittedAt} onResolve={setCaptchaId} />
+        {showCaptcha && (
+          <CaptchaComponent
+            submittedAt={submittedAt}
+            onResolve={setCaptchaId}
+          />
+        )}
         {showOTP && <input name="otpToken" placeholder="otp" maxLength={6} />}
         <button type="submit">Login</button>
       </form>

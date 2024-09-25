@@ -16,7 +16,7 @@ export const loginRequest: RequestType = {
     const { ticketId, email, password, captchaId, otpToken } =
       await request.json();
 
-    if (!(await System.captcha.verify(captchaId)) || !email || !password)
+    if (!email || !password)
       return Response.json(
         { status: 403 },
         {
@@ -85,23 +85,29 @@ export const loginRequest: RequestType = {
       account.accountId,
     ]);
 
-    if (accountOTP.verified) {
-      if (!otpToken)
-        return Response.json(
-          { status: 441, message: "OTP secret is needed!" },
-          {
-            status: 441,
-          },
-        );
+    let isValidOTP = true;
 
-      if (!System.otp.verify(accountOTP.secret, otpToken))
-        return Response.json(
-          { status: 441, message: "OTP is not valid!" },
-          {
-            status: 441,
-          },
-        );
-    }
+    if (
+      accountOTP.verified &&
+      (!otpToken || !System.otp.verify(accountOTP.secret, otpToken))
+    )
+      isValidOTP = false;
+
+    if (!(await System.captcha.verify(captchaId)))
+      return Response.json(
+        { status: isValidOTP ? 451 : 461, message: "Captcha is not valid!" },
+        {
+          status: isValidOTP ? 451 : 461,
+        },
+      );
+
+    if (!isValidOTP)
+      return Response.json(
+        { status: 441, message: "OTP is not valid!" },
+        {
+          status: 441,
+        },
+      );
 
     if (account.sessionId) {
       await System.db.delete(["accountsBySession", account.sessionId]);

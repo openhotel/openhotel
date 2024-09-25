@@ -2,6 +2,8 @@ import { System } from "system/main.ts";
 
 export const captcha = () => {
   const verify = async (sessionId: string): Promise<boolean> => {
+    if (!sessionId) return false;
+
     const { enabled, id, token, url } = System.getConfig().captcha;
     if (!enabled || !id || !token || !url) return true;
 
