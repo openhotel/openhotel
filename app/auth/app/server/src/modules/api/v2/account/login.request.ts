@@ -88,7 +88,7 @@ export const loginRequest: RequestType = {
     let isValidOTP = true;
 
     if (
-      accountOTP.verified &&
+      accountOTP?.verified &&
       (!otpToken || !System.otp.verify(accountOTP.secret, otpToken))
     )
       isValidOTP = false;
