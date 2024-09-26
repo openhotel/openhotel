@@ -1,7 +1,7 @@
 import { getContentType } from "shared/utils/main.ts";
-import { Server } from "modules/server/main.ts";
+import { ConfigTypes } from "shared/types/config.types.ts";
 
-export const requestClient = async (request: Request) => {
+export const requestClient = async (request: Request, config: ConfigTypes) => {
   const ROOT_DIR_PATH = "/";
 
   try {
@@ -35,7 +35,7 @@ export const requestClient = async (request: Request) => {
     if (targetFile === "./client/index.html")
       fileData = (await Deno.readTextFile(targetFile)).replace(
         /{\s*\/\*__CONFIG__\*\/\s*}/,
-        JSON.stringify(Server.getConfig()),
+        JSON.stringify(config),
       );
     return new Response(fileData, {
       headers: {
