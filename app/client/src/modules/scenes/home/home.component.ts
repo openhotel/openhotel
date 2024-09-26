@@ -2,7 +2,6 @@ import {
   container,
   ContainerComponent,
   DisplayObjectEvent,
-  HorizontalAlign,
   textSprite,
 } from "@tu/tulip";
 import { logoComponent } from "modules/main";

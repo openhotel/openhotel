@@ -124,7 +124,7 @@ serverWorker.on("start", async ({ config, envs }: WorkerProps) => {
       if (envs.isDevelopment) url = url.replace("/proxy", "");
       const { pathname } = new URL(url);
 
-      const clientResponse = await requestClient(request);
+      const clientResponse = await requestClient(request, config);
       if (clientResponse) return clientResponse;
 
       const foundRoute = routesList.find(
