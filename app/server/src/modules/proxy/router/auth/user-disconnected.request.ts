@@ -43,6 +43,7 @@ export const getUserDisconnectedRequest = {
         },
         { status: 404 },
       );
+    console.log(foundUser);
     serverWorker.emit(ProxyEvent.$DISCONNECT_USER, {
       clientId: foundUser.clientId,
     });

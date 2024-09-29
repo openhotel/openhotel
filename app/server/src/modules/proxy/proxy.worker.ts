@@ -97,6 +97,8 @@ serverWorker.on(ProxyEvent.$ROOM_DATA, ({ roomId, event, message }) => {
 });
 serverWorker.on(ProxyEvent.$DISCONNECT_USER, ({ clientId }) => {
   try {
+    console.error("proxy-5-A");
+    console.log(userClientMap, userClientMap?.[clientId]);
     userClientMap?.[clientId]?.close?.();
   } catch (e) {
     console.error("proxy-5");
