@@ -2,12 +2,17 @@ import React, { FormEvent, useCallback, useEffect, useState } from "react";
 import { useAccount, useApi, useQR } from "shared/hooks";
 import { Navigate, useNavigate } from "react-router-dom";
 import { LinkComponent } from "shared/components";
+import { AdminComponent } from "modules/admin";
 
 export const AccountComponent: React.FC = () => {
   const [loaded, setLoaded] = useState<boolean>(false);
   const [otpLoaded, setOTPLoaded] = useState<boolean>(false);
 
-  const [account, setAccount] = useState<{ username: string; email: string }>();
+  const [account, setAccount] = useState<{
+    username: string;
+    email: string;
+    isAdmin?: boolean;
+  }>();
   const [otpUrl, setOTPUrl] = useState<string>();
   let navigate = useNavigate();
 
@@ -86,6 +91,12 @@ export const AccountComponent: React.FC = () => {
         <LinkComponent to="/logout">Logout</LinkComponent>
         <p />
       </div>
+      {account.isAdmin ? (
+        <div>
+          <hr />
+          <AdminComponent />
+        </div>
+      ) : null}
     </div>
   );
 };

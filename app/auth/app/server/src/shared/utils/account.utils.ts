@@ -44,3 +44,18 @@ export const isAccountAuthValid = async ({
   if (!result) return 403;
   return 200;
 };
+
+export const isAccountAdminValid = async (
+  request: Request,
+): Promise<number> => {
+  const authStatus = await isAccountAuthValid(request);
+  if (authStatus !== 200) return authStatus;
+
+  const account = await getAccountFromRequest(request);
+  return Boolean(account.isAdmin) ? 200 : 403;
+};
+
+export const getAccountList = async () =>
+  (await System.db.list({ prefix: ["accounts"] })).map(({ value }) => value);
+export const getAdminList = async () =>
+  (await getAccountList()).filter((account) => account.isAdmin);

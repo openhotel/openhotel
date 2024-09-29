@@ -9,7 +9,12 @@ export const db = () => {
 
   const get = (...args) => kv.get(...args);
   const set = (...args) => kv.set(...args);
-  const list = (...args) => kv.list(...args);
+  const list = async (...args) => {
+    const items = [];
+    for await (const entry of kv.list(...args)) items.push(entry);
+
+    return items;
+  };
   const getMany = (...args) => kv.getMany(...args);
   const $delete = (...args) => kv.delete(...args);
 

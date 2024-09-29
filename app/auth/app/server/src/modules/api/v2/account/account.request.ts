@@ -21,13 +21,16 @@ export const accountGetRequest: RequestType = {
 
     const account = await getAccountFromRequest(request);
 
+    let data: any = {
+      username: account.username,
+      email: account.email,
+    };
+    if (account.isAdmin) data.isAdmin = true;
+
     return Response.json(
       {
         status: 200,
-        data: {
-          username: account.username,
-          email: account.email,
-        },
+        data,
       },
       {
         status: 200,

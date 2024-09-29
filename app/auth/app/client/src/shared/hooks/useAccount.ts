@@ -1,9 +1,9 @@
 import { useApi } from "./useApi";
 
 export const useAccount = () => {
-  const { refreshSession, getSessionId, getToken } = useApi();
+  const { getSessionId, getToken } = useApi();
 
-  const $getHeaders = () => {
+  const getHeaders = () => {
     const headers = new Headers();
     headers.append("sessionId", getSessionId());
     headers.append("token", getToken());
@@ -13,14 +13,14 @@ export const useAccount = () => {
 
   const getAccount = async () => {
     const { data } = await fetch(`/api/v2/account`, {
-      headers: $getHeaders(),
+      headers: getHeaders(),
     }).then((response) => response.json());
     return data;
   };
 
   const getOTP = async (): Promise<string> => {
     const { data } = await fetch(`/api/v2/account/otp`, {
-      headers: $getHeaders(),
+      headers: getHeaders(),
       method: "POST",
     }).then((response) => response.json());
 
@@ -31,7 +31,7 @@ export const useAccount = () => {
     const { status } = await fetch(
       `/api/v2/account/otp/verify?token=${token}`,
       {
-        headers: $getHeaders(),
+        headers: getHeaders(),
       },
     ).then((response) => response.json());
 
@@ -40,13 +40,15 @@ export const useAccount = () => {
 
   const deleteOTP = async () => {
     await fetch(`/api/v2/account/otp`, {
-      headers: $getHeaders(),
+      headers: getHeaders(),
       method: "DELETE",
     }).then((response) => response.json());
   };
 
   return {
     getAccount,
+
+    getHeaders,
 
     getOTP,
     verifyOTP,

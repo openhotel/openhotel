@@ -1,0 +1,28 @@
+# Get list
+GET http://localhost:2024/api/v2/admin
+token: x7GzeFJvLuNWUCCas2EBLB7an5rsJfpF3jOInSOG0sa17AGQAszHFwBVKsTJjWIh
+sessionId: 3be671dd-bfb8-4cb0-bc68-bfe09b036f2e
+
+###
+
+# Add new
+POST http://localhost:2024/api/v2/admin
+token: 32hB5Y6u9OTBmG6H3FC91tkSDQzug5ANj6y1O56goyxsac1GwDnmu1K2Uw60BtHT
+sessionId: 3be671dd-bfb8-4cb0-bc68-bfe09b036f2e
+Content-Type: application/json
+
+{
+  "email": "pagoru@gmail.com"
+}
+###
+
+# Remove new
+DELETE http://localhost:2024/api/v2/admin
+token: x7GzeFJvLuNWUCCas2EBLB7an5rsJfpF3jOInSOG0sa17AGQAszHFwBVKsTJjWIh
+sessionId: 3be671dd-bfb8-4cb0-bc68-bfe09b036f2e
+Content-Type: application/json
+
+{
+  "email": "pagoru@gmail.com"
+}
+###
