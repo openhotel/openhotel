@@ -1,4 +1,3 @@
-import { Server } from "modules/server/main.ts";
 import { ApiRequestProps } from "shared/types/api.types.ts";
 import { getIpFromRequest, getIpFromUrl } from "shared/utils/ip.utils.ts";
 import { ProxyEvent } from "shared/enums/event.enum.ts";
@@ -37,7 +36,6 @@ export const getUserDisconnectedRequest = {
       );
 
     const foundUser = userList.find((user) => user.accountId === accountId);
-    console.log(accountId, foundUser?.username, "<<<<<<<<<<<");
     if (!foundUser)
       return Response.json(
         {
@@ -45,8 +43,8 @@ export const getUserDisconnectedRequest = {
         },
         { status: 404 },
       );
-    serverWorker.$emit(ProxyEvent.$DISCONNECT_USER, {
-      clientId: foundUser?.clientId,
+    serverWorker.emit(ProxyEvent.$DISCONNECT_USER, {
+      clientId: foundUser.clientId,
     });
     return Response.json(
       {
