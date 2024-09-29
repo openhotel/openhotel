@@ -36,6 +36,7 @@ export const getUserDisconnectedRequest = {
       );
 
     const foundUser = userList.find((user) => user.accountId === accountId);
+
     if (!foundUser)
       return Response.json(
         {
@@ -43,9 +44,9 @@ export const getUserDisconnectedRequest = {
         },
         { status: 404 },
       );
-    console.log(foundUser);
+
     serverWorker.emit(ProxyEvent.$DISCONNECT_USER, {
-      clientId: foundUser.clientId,
+      data: { accountId },
     });
     return Response.json(
       {

@@ -61,23 +61,26 @@ export const proxy = () => {
     System.loader.addText("Something went wrong  :(");
   };
 
+  const $pingAuth = () =>
+    fetch(getPingUrl(), {
+      method: "POST",
+      headers,
+      body: JSON.stringify({
+        ticketId,
+        accountId,
+        server: location.origin,
+      }),
+    });
+
   const connect = async () =>
     new Promise<void>(async (resolve, reject) => {
       try {
         if (isConnected) return;
         System.loader.addText("Connecting...");
         //prevent auth disconnection
-        // setInterval(() => {
-        //   fetch(getPingUrl(), {
-        //     method: "POST",
-        //     headers,
-        //     body: JSON.stringify({
-        //       ticketId,
-        //       accountId,
-        //       server: location.origin,
-        //     }),
-        //   });
-        // }, 30_000);
+        setInterval($pingAuth, 30_000);
+        $pingAuth();
+
         $socket = getClientSocket({
           url: getWebSocketUrl(`${window.location.origin}/proxy`),
           protocols: isAuthDisabled()
