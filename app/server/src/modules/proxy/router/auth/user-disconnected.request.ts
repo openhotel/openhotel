@@ -46,7 +46,7 @@ export const getUserDisconnectedRequest = {
       );
 
     serverWorker.emit(ProxyEvent.$DISCONNECT_USER, {
-      accountId,
+      data: { accountId },
     });
     return Response.json(
       {
