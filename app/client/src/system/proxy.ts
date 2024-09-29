@@ -9,7 +9,7 @@ import {
 } from "shared/utils";
 import { Event } from "shared/enums";
 import { System } from "system/system";
-import { getPinUrl } from "shared/utils/auth.utils";
+import { getPingUrl } from "shared/utils/auth.utils";
 
 export const proxy = () => {
   let isConnected: boolean = false;
@@ -52,7 +52,7 @@ export const proxy = () => {
 
     //prevent auth disconnection
     setInterval(() => {
-      fetch(getPinUrl(), {
+      fetch(getPingUrl(), {
         method: "POST",
         headers,
         body: JSON.stringify({
