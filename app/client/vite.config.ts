@@ -13,6 +13,9 @@ export default defineConfig({
         target: "http://localhost:19940",
         ws: true,
       },
+      "/auth": {
+        target: "http://localhost:19940",
+      },
     },
     // open: true,
   },

@@ -163,6 +163,7 @@ serverWorker.on("start", async ({ config, envs }: WorkerProps) => {
           accountId,
           username,
           apiToken: apiTokenHash,
+          authToken: "AUTH_TOKEN",
         });
         return true;
       }
@@ -194,6 +195,7 @@ serverWorker.on("start", async ({ config, envs }: WorkerProps) => {
         userClientMap[foundUser.clientId]?.close();
         foundUser.clientId = clientId;
         foundUser.username = data.username;
+        foundUser.authToken = data.token;
         return true;
       }
       userList.push({
@@ -201,6 +203,7 @@ serverWorker.on("start", async ({ config, envs }: WorkerProps) => {
         accountId: data.accountId,
         username: data.username,
         apiToken: apiTokenHash,
+        authToken: data.token,
       });
       return true;
     },
