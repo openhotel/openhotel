@@ -50,19 +50,6 @@ export const proxy = () => {
     System.loader.addText("Requesting connection...");
     if (isAuthDisabled() || canConnect()) return;
 
-    //prevent auth disconnection
-    setInterval(() => {
-      fetch(getPingUrl(), {
-        method: "POST",
-        headers,
-        body: JSON.stringify({
-          ticketId,
-          accountId,
-          server: location.origin,
-        }),
-      });
-    }, 30_000);
-
     const { status, data } = await fetch(
       `/request?version=${getVersion()}`,
     ).then((data) => data.json());
@@ -79,6 +66,18 @@ export const proxy = () => {
       try {
         if (isConnected) return;
         System.loader.addText("Connecting...");
+        //prevent auth disconnection
+        // setInterval(() => {
+        //   fetch(getPingUrl(), {
+        //     method: "POST",
+        //     headers,
+        //     body: JSON.stringify({
+        //       ticketId,
+        //       accountId,
+        //       server: location.origin,
+        //     }),
+        //   });
+        // }, 30_000);
         $socket = getClientSocket({
           url: getWebSocketUrl(`${window.location.origin}/proxy`),
           protocols: isAuthDisabled()
