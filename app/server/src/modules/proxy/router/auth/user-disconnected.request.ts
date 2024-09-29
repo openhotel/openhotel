@@ -1,5 +1,4 @@
 import { Server } from "modules/server/main.ts";
-import { User } from "shared/types/user.types.ts";
 import { ApiRequestProps } from "shared/types/api.types.ts";
 import { getIpFromRequest, getIpFromUrl } from "shared/utils/ip.utils.ts";
 
@@ -24,7 +23,7 @@ export const getUserDisconnectedRequest = {
         },
       );
 
-    Server.game.users.remove({ accountId } as User);
+    Server.game.users.get({ accountId }).disconnect();
     return Response.json(
       {
         status: 200,
