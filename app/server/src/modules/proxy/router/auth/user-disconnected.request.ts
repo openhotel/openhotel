@@ -13,6 +13,14 @@ export const getUserDisconnectedRequest = {
     const requestIp = getIpFromRequest(request);
 
     const isAuthServer = authIp === requestIp;
+    console.warn(
+      ">>>>>>>>>",
+      authIp,
+      requestIp,
+      request.url,
+      accountId,
+      isAuthServer,
+    );
     if (!isAuthServer)
       return Response.json(
         {
