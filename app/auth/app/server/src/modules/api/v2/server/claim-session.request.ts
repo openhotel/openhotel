@@ -12,7 +12,6 @@ export const claimSessionRequest: RequestType = {
   func: async (request, url) => {
     let { ticketId, ticketKey, sessionId, token } = await request.json();
 
-    console.warn("<<<<<<<< 1");
     if (!ticketId || !ticketKey || !sessionId || !token)
       return Response.json(
         { status: 403 },
@@ -23,7 +22,6 @@ export const claimSessionRequest: RequestType = {
 
     const { value: ticket } = await System.db.get(["tickets", ticketId]);
 
-    console.warn("<<<<<<<< 2");
     if (!ticket || !ticket.isUsed)
       return Response.json(
         { status: 403 },
@@ -33,7 +31,6 @@ export const claimSessionRequest: RequestType = {
       );
 
     const ticketResult = bcrypt.compareSync(ticketKey, ticket.ticketKeyHash);
-    console.warn("<<<<<<<< 3");
     if (!ticketResult)
       return Response.json(
         { status: 403 },
@@ -47,7 +44,6 @@ export const claimSessionRequest: RequestType = {
       sessionId,
     ]);
 
-    console.warn("<<<<<<<< 4");
     if (!accountBySession)
       return Response.json(
         { status: 403 },
@@ -61,7 +57,6 @@ export const claimSessionRequest: RequestType = {
       accountBySession,
     ]);
 
-    console.warn("<<<<<<<< 5");
     if (!account)
       return Response.json(
         { status: 403 },
@@ -75,7 +70,6 @@ export const claimSessionRequest: RequestType = {
       account.accountId,
     ]);
 
-    console.warn("<<<<<<<< 6");
     if (!serverSession)
       return Response.json(
         { status: 403 },
@@ -86,7 +80,6 @@ export const claimSessionRequest: RequestType = {
 
     const result = bcrypt.compareSync(token, account.tokenHash);
 
-    console.warn("<<<<<<<< 7");
     if (!result)
       return Response.json(
         { status: 403 },
