@@ -1,0 +1,8 @@
+#
+GET http://localhost:1994/auth/user-disconnected
+Content-Type: application/json
+
+{
+  "accountId": ""
+}
+

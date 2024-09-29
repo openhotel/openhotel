@@ -9,6 +9,7 @@ import {
 } from "shared/utils";
 import { Event } from "shared/enums";
 import { System } from "system/system";
+import { getPinUrl } from "shared/utils/auth.utils";
 
 export const proxy = () => {
   let isConnected: boolean = false;
@@ -24,6 +25,7 @@ export const proxy = () => {
   let ticketId = params.get("ticketId");
   let sessionId = params.get("sessionId");
   let token = params.get("token");
+  let accountId = params.get("accountId");
   let protocolToken = localStorage.getItem("protocolToken");
   window.history.pushState(null, null, "/");
 
@@ -47,6 +49,19 @@ export const proxy = () => {
   const preConnect = async () => {
     System.loader.addText("Requesting connection...");
     if (isAuthDisabled() || canConnect()) return;
+
+    //prevent auth disconnection
+    setInterval(() => {
+      fetch(getPinUrl(), {
+        method: "POST",
+        headers,
+        body: JSON.stringify({
+          ticketId,
+          accountId,
+          server: location.origin,
+        }),
+      });
+    }, 30_000);
 
     const { status, data } = await fetch(
       `/request?version=${getVersion()}`,
