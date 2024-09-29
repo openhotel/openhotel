@@ -2,7 +2,7 @@ import { RequestType } from "shared/types/main.ts";
 import { RequestMethod } from "shared/enums/main.ts";
 import { System } from "system/main.ts";
 import * as bcrypt from "bcrypt";
-import { getRandomString } from "shared/utils/main.ts";
+import { getIpFromRequest, getRandomString } from "shared/utils/main.ts";
 import {
   REFRESH_TOKEN_EXPIRE_TIME,
   SESSION_EXPIRE_TIME,
@@ -61,6 +61,8 @@ export const loginRequest: RequestType = {
           status: 403,
         },
       );
+
+    console.log(account.username, ">> ip >>", getIpFromRequest(request));
 
     const result = bcrypt.compareSync(password, account.passwordHash);
 
