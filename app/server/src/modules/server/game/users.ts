@@ -243,5 +243,7 @@ export const users = () => {
     remove,
     get,
     getList,
+
+    $userMap,
   };
 };
