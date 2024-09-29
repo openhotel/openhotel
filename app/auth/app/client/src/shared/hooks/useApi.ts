@@ -160,6 +160,8 @@ export const useApi = () => {
         .catch(() => reject({ status: 600 }));
     });
 
+  const getVersion = () => fetch(`/api/v2/version`).then((data) => data.json());
+
   return {
     getSessionId,
     getRefreshToken,
@@ -172,5 +174,7 @@ export const useApi = () => {
     logout,
     clearSessionCookies,
     verify,
+
+    getVersion,
   };
 };

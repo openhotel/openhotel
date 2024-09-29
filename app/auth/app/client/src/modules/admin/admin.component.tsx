@@ -1,8 +1,9 @@
 import React, { FormEvent, useCallback, useEffect, useState } from "react";
-import { useAdmin } from "shared/hooks";
+import { useAdmin, useApi } from "shared/hooks";
 
 export const AdminComponent: React.FC = () => {
   const { getList, remove, add, update } = useAdmin();
+  const { getVersion } = useApi();
 
   const [adminList, setAdminList] = useState<
     {
@@ -11,12 +12,14 @@ export const AdminComponent: React.FC = () => {
       email: string;
     }[]
   >([]);
+  const [version, setVersion] = useState<string>();
 
   const $reloadList = () =>
     getList().then(({ data }) => setAdminList(data.adminList));
 
   useEffect(() => {
     $reloadList();
+    getVersion().then(({ version }) => setVersion(version));
   }, []);
 
   const removeAdmin = (email) => () => {
@@ -40,7 +43,7 @@ export const AdminComponent: React.FC = () => {
         //TODO is updating!
         setTimeout(() => {
           window.location.reload();
-        }, 30_000);
+        }, 10_000);
     });
   };
 
@@ -66,6 +69,8 @@ export const AdminComponent: React.FC = () => {
       <hr />
       <h3>Update</h3>
       <button onClick={$update}>Update</button>
+      <br />
+      <b>{version}</b>
       <br />
     </div>
   );
