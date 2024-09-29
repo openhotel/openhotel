@@ -116,8 +116,8 @@ export const refreshSessionRequest: RequestType = {
           redirectUrl: ticket
             ? getRedirectUrl({
                 redirectUrl: ticket.redirectUrl,
-                ticketId,
-                sessionId,
+                ticketId: ticket.ticketId,
+                sessionId: account.sessionId,
                 token,
                 accountId: account.accountId,
               })
