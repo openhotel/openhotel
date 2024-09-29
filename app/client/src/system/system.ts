@@ -8,6 +8,7 @@ import { textures } from "system/textures";
 import { locale } from "system/locale";
 import { loader } from "system/loader";
 import { api } from "system/api";
+import { $window } from "system/window";
 
 export const System = (() => {
   const $locale = locale();
@@ -19,8 +20,11 @@ export const System = (() => {
   const $api = api();
 
   const $tasks = tasks();
+  const $$window = $window();
 
   const load = async () => {
+    $$window.load();
+
     await $textures.loadText();
     $loader.start();
 
