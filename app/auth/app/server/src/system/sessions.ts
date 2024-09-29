@@ -26,6 +26,7 @@ export const sessions = () => {
         ).catch(() => {
           //we don't really care if server receives our petition, the session is being invalidated anyway
         });
+        delete sessionMap[accountId];
       };
 
       if (foundSession) {
@@ -41,8 +42,6 @@ export const sessions = () => {
       }
       //account is disconnected
       $disconnectFromLastServer();
-
-      delete sessionMap[accountId];
     }
 
     //update sessions
