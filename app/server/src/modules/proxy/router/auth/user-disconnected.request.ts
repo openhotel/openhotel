@@ -25,7 +25,7 @@ export const getUserDisconnectedRequest = {
       //check if is equal
       authIp === requestIp;
 
-    console.log(authIp, requestIp, "1");
+    console.warn(authIp, requestIp, "1");
     if (!isAuthServer)
       return Response.json(
         {
@@ -38,7 +38,7 @@ export const getUserDisconnectedRequest = {
 
     const foundUser = userList.find((user) => user.accountId === accountId);
 
-    console.log(authIp, requestIp, "2");
+    console.warn(authIp, requestIp, "2");
     if (!foundUser)
       return Response.json(
         {
@@ -46,7 +46,7 @@ export const getUserDisconnectedRequest = {
         },
         { status: 404 },
       );
-    console.log(foundUser, "3");
+    console.warn(foundUser, "3");
     serverWorker.emit(ProxyEvent.$DISCONNECT_USER, {
       clientId: foundUser.clientId,
     });
