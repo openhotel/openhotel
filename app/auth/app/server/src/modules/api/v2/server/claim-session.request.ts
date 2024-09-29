@@ -2,6 +2,9 @@ import { RequestType } from "shared/types/main.ts";
 import { RequestMethod } from "shared/enums/main.ts";
 import { System } from "system/main.ts";
 import * as bcrypt from "bcrypt";
+import { SERVER_SESSION_EXPIRE_TIME } from "shared/consts/session.consts.ts";
+import { getIpFromRequest } from "shared/utils/ip.utils.ts";
+import { getRandomString } from "shared/utils/random.utils.ts";
 
 export const claimSessionRequest: RequestType = {
   method: RequestMethod.POST,
@@ -62,6 +65,19 @@ export const claimSessionRequest: RequestType = {
         },
       );
 
+    const { value: serverSession } = await System.db.get([
+      "serverSessionByAccount",
+      account.accountId,
+    ]);
+
+    if (!serverSession)
+      return Response.json(
+        { status: 403 },
+        {
+          status: 403,
+        },
+      );
+
     const result = bcrypt.compareSync(token, account.tokenHash);
 
     if (!result)
@@ -82,12 +98,30 @@ export const claimSessionRequest: RequestType = {
     //destroy ticket
     await System.db.delete(["tickets", ticketId]);
 
+    const serverSessionToken = getRandomString(64);
+
+    //save current server ip to verify identity on future petitions
+    const serverIp = getIpFromRequest(request);
+    await System.db.set(
+      ["serverSessionByAccount", account.accountId],
+      {
+        ...serverSession,
+        serverIp,
+        serverToken: bcrypt.hashSync(serverSessionToken, bcrypt.genSaltSync(8)),
+        claimed: true,
+      },
+      {
+        expireIn: SERVER_SESSION_EXPIRE_TIME,
+      },
+    );
+
     return Response.json(
       {
         status: 200,
         data: {
           accountId: account.accountId,
           username: account.username,
+          token: serverSessionToken,
         },
       },
       {

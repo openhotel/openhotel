@@ -25,6 +25,8 @@
 
     "bcrypt": "https://deno.land/x/bcrypt@v0.4.1/mod.ts",
     "nodemailer": "npm:nodemailer@6.9.15",
-    "otp": "https://deno.land/x/otpauth@v9.3.3/dist/otpauth.esm.js"
+    "otp": "https://deno.land/x/otpauth@v9.3.3/dist/otpauth.esm.js",
+
+    "@oh/queue": "jsr:@oh/queue@1.1.1"
   }
 }

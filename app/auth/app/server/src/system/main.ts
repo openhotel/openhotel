@@ -6,6 +6,8 @@ import { load as loadUpdater } from "modules/updater/main.ts";
 import { captcha } from "./captcha.ts";
 import { email } from "./email.ts";
 import { otp } from "./otp.ts";
+import { tasks } from "./tasks.ts";
+import { sessions } from "./sessions.ts";
 
 export const System = (() => {
   const $db = db();
@@ -13,6 +15,8 @@ export const System = (() => {
   const $captcha = captcha();
   const $email = email();
   const $otp = otp();
+  const $tasks = tasks();
+  const $sessions = sessions();
 
   let $config: ConfigTypes;
   let $envs: Envs;
@@ -23,9 +27,12 @@ export const System = (() => {
     $config = await $getConfig();
     $envs = envs;
 
+    $tasks.load();
     await $db.load();
     await $email.load();
     $api.load();
+
+    $sessions.load();
   };
 
   const getConfig = (): ConfigTypes => $config;
@@ -41,5 +48,6 @@ export const System = (() => {
     captcha: $captcha,
     email: $email,
     otp: $otp,
+    tasks: $tasks,
   };
 })();

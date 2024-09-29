@@ -5,6 +5,7 @@ import * as bcrypt from "bcrypt";
 import { getIpFromRequest, getRandomString } from "shared/utils/main.ts";
 import {
   REFRESH_TOKEN_EXPIRE_TIME,
+  SERVER_SESSION_EXPIRE_TIME,
   SESSION_EXPIRE_TIME,
   SESSION_WITHOUT_TICKET_EXPIRE_TIME,
 } from "shared/consts/main.ts";
@@ -61,8 +62,6 @@ export const loginRequest: RequestType = {
           status: 403,
         },
       );
-
-    console.log(account.username, ">> ip >>", getIpFromRequest(request));
 
     const result = bcrypt.compareSync(password, account.passwordHash);
 
@@ -152,6 +151,22 @@ export const loginRequest: RequestType = {
       await System.db.set(["ticketBySession", sessionId], ticket.ticketId, {
         expireIn: SESSION_EXPIRE_TIME,
       });
+
+      //server session
+      const ip = getIpFromRequest(request);
+      await System.db.set(
+        ["serverSessionByAccount", account.accountId],
+        {
+          sessionId,
+          ticketId,
+          server: ticket.redirectUrl,
+          ip,
+        },
+        {
+          //first time 5 minutes, next, 60 seconds
+          expireIn: SERVER_SESSION_EXPIRE_TIME * 5,
+        },
+      );
     }
 
     return Response.json(

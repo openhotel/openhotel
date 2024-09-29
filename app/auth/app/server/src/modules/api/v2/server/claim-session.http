@@ -3,9 +3,9 @@ POST http://localhost:2024/api/v2/server/claim-session
 Content-Type: application/json
 
 {
-  "ticketId": "f20c73a4-cef7-41d1-ab0e-8cf4e809d2d6",
+  "ticketId": "9a17faeb-d037-4552-b9b7-35a6b8378fb6",
   "ticketKey": "THIS_IS_A_PRIVATE_TOKEN",
 
-  "sessionId": "292f5f28-7882-4dfc-a4f5-486131b8eb2f",
-  "token": "88KwEVAPM7NzSpg638DynYf66I85Mg4v9bl8cUpMcyiBpiVS8xuxURq888DwObdo"
+  "sessionId": "27b185b9-1c0a-4f0b-b3b8-ce8b73882551",
+  "token": "PSMKAA2KhxuYEAUVo4frSkNqoc1eF7u1JfwpyhoNN0n02omeS4mZkAZEJdZjCxlI"
 }

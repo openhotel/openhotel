@@ -12,7 +12,11 @@ export const api = () => {
         port:
           System.getConfig().port * (System.getEnvs().isDevelopment ? 10 : 1),
       },
-      async (request: Request) => {
+      async ($request: Request, connInfo) => {
+        const headers = new Headers($request.headers);
+        headers.set("remote-address", connInfo.remoteAddr.hostname);
+        const request = new Request($request, { headers });
+
         try {
           const { url, method } = request;
           const parsedUrl = new URL(url);

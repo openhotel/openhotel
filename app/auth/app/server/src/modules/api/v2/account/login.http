@@ -3,9 +3,9 @@ POST http://localhost:2024/api/v2/account/login
 Content-Type: application/json
 
 {
-  "ticketId": "aa3b3fc4-3207-44dc-9f87-f0da77665240",
+  "ticketId": "9a17faeb-d037-4552-b9b7-35a6b8378fb6",
 
   "email": "pagoru@gmail.com",
   "password": "123456Abc*",
-  "captchaId": "M9dSOF4OVxfCSmW1qarA7TlviHzqUaHL"
+  "otpToken": "031245"
 }

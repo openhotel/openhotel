@@ -2,8 +2,14 @@
   "version": "3",
   "packages": {
     "specifiers": {
+      "jsr:@oh/queue@1.1.1": "jsr:@oh/queue@1.1.1",
       "npm:nodemailer@6.9.15": "npm:nodemailer@6.9.15",
       "npm:yaml@2.4.2": "npm:yaml@2.4.2"
+    },
+    "jsr": {
+      "@oh/queue@1.1.1": {
+        "integrity": "8e8ec809202c48beaf436b3ea01b4c3a17f8c015ca686d906822482c9c881390"
+      }
     },
     "npm": {
       "nodemailer@6.9.15": {
@@ -157,6 +163,7 @@
   },
   "workspace": {
     "dependencies": [
+      "jsr:@oh/queue@1.1.1",
       "npm:nodemailer@6.9.15",
       "npm:yaml@2.4.2"
     ]

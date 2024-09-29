@@ -57,5 +57,11 @@ export const isAccountAdminValid = async (
 
 export const getAccountList = async () =>
   (await System.db.list({ prefix: ["accounts"] })).map(({ value }) => value);
+
 export const getAdminList = async () =>
   (await getAccountList()).filter((account) => account.isAdmin);
+
+export const getServerSessionList = async () =>
+  (await System.db.list({ prefix: ["serverSessionByAccount"] })).filter(
+    ({ value: { claimed } }) => claimed,
+  );

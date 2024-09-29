@@ -11,6 +11,11 @@ export const getConfig = async (): Promise<ConfigTypes> => {
   const defaults: ConfigTypes = {
     port: config?.port || CONFIG_DEFAULT.port,
     url: config?.url || CONFIG_DEFAULT.url,
+    sessions: {
+      checkInterval:
+        config?.sessions?.checkInterval ||
+        CONFIG_DEFAULT.sessions.checkInterval,
+    },
     database: {
       filename: config?.database?.filename || CONFIG_DEFAULT.database.filename,
     },

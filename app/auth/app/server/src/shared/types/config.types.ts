@@ -1,6 +1,9 @@
 export type ConfigTypes = {
   port: number;
   url: string;
+  sessions: {
+    checkInterval: number;
+  };
   database: {
     filename: string;
   };
