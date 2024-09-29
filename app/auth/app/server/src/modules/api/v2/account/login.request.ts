@@ -2,7 +2,11 @@ import { RequestType } from "shared/types/main.ts";
 import { RequestMethod } from "shared/enums/main.ts";
 import { System } from "system/main.ts";
 import * as bcrypt from "bcrypt";
-import { getIpFromRequest, getRandomString } from "shared/utils/main.ts";
+import {
+  getIpFromRequest,
+  getRandomString,
+  getRedirectUrl,
+} from "shared/utils/main.ts";
 import {
   REFRESH_TOKEN_EXPIRE_TIME,
   SERVER_SESSION_EXPIRE_TIME,
@@ -174,9 +178,14 @@ export const loginRequest: RequestType = {
         status: 200,
         data: {
           redirectUrl: ticket
-            ? `${ticket.redirectUrl}?ticketId=${ticket.ticketId}&sessionId=${sessionId}&token=${token}`
+            ? getRedirectUrl({
+                redirectUrl: ticket.redirectUrl,
+                ticketId,
+                sessionId,
+                token,
+                accountId: account.accountId,
+              })
             : null,
-
           sessionId,
           token,
           refreshToken,

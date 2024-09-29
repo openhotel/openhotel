@@ -8,6 +8,7 @@ import {
   SESSION_WITHOUT_TICKET_EXPIRE_TIME,
 } from "shared/consts/main.ts";
 import { getRandomString } from "shared/utils/random.utils.ts";
+import { getRedirectUrl } from "shared/utils/account.utils.ts";
 
 export const refreshSessionRequest: RequestType = {
   method: RequestMethod.POST,
@@ -113,7 +114,13 @@ export const refreshSessionRequest: RequestType = {
         status: 200,
         data: {
           redirectUrl: ticket
-            ? `${ticket.redirectUrl}?ticketId=${ticket.ticketId}&sessionId=${account.sessionId}&token=${token}`
+            ? getRedirectUrl({
+                redirectUrl: ticket.redirectUrl,
+                ticketId,
+                sessionId,
+                token,
+                accountId: account.accountId,
+              })
             : null,
 
           token,

@@ -65,3 +65,12 @@ export const getServerSessionList = async () =>
   (await System.db.list({ prefix: ["serverSessionByAccount"] })).filter(
     ({ value: { claimed } }) => claimed,
   );
+
+export const getRedirectUrl = ({
+  redirectUrl,
+  ticketId,
+  sessionId,
+  token,
+  accountId,
+}) =>
+  `${redirectUrl}?ticketId=${ticketId}&sessionId=${sessionId}&token=${token}&accountId=${accountId}`;
