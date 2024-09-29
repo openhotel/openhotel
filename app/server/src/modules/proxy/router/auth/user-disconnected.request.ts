@@ -1,6 +1,7 @@
 import { Server } from "modules/server/main.ts";
 import { ApiRequestProps } from "shared/types/api.types.ts";
 import { getIpFromRequest, getIpFromUrl } from "shared/utils/ip.utils.ts";
+import { System } from "app/client/src/system";
 
 export const getUserDisconnectedRequest = {
   method: "GET",
@@ -30,6 +31,12 @@ export const getUserDisconnectedRequest = {
         },
       );
 
+    console.error(
+      accountId,
+      Server.game.users.get({ accountId }),
+      Server.game.users.$userMap,
+      Server.game.users.getList().map((c) => c.getObject()),
+    );
     Server.game.users.get({ accountId }).disconnect();
     return Response.json(
       {
