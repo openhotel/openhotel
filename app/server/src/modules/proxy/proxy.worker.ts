@@ -175,6 +175,7 @@ serverWorker.on("start", async ({ config, envs }: WorkerProps) => {
         return false;
 
       const foundTicket = ticketMap[ticketId];
+      console.log("ticket error!");
       //if not found
       if (!foundTicket) return false;
 
@@ -188,6 +189,9 @@ serverWorker.on("start", async ({ config, envs }: WorkerProps) => {
         }),
       }).then((data) => data.json());
 
+      console.log(
+        `claim-session error, ${status} ${foundTicket.ticketId} ${foundTicket.ticketKey} ${sessionId} ${token}!`,
+      );
       if (status !== 200) return false;
 
       foundUser = userList.find((user) => user.accountId === data.accountId);
