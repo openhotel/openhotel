@@ -12,15 +12,14 @@ export const getUserDisconnectedRequest = {
     const authIp = await getIpFromUrl(config.auth.redirectUrl);
     const requestIp = getIpFromRequest(request);
 
-    const isAuthServer = authIp === requestIp;
-    console.warn(
-      ">>>>>>>>>",
-      authIp,
-      requestIp,
-      request.url,
-      accountId,
-      isAuthServer,
-    );
+    const isAuthServer =
+      //check if is local network
+      requestIp.startsWith("192.168") ||
+      //check if is local computer
+      requestIp.startsWith("172.") ||
+      //check if is equal
+      authIp === requestIp;
+
     if (!isAuthServer)
       return Response.json(
         {
