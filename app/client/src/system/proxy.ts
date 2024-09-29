@@ -67,17 +67,17 @@ export const proxy = () => {
         if (isConnected) return;
         System.loader.addText("Connecting...");
         //prevent auth disconnection
-        // setInterval(() => {
-        //   fetch(getPingUrl(), {
-        //     method: "POST",
-        //     headers,
-        //     body: JSON.stringify({
-        //       ticketId,
-        //       accountId,
-        //       server: location.origin,
-        //     }),
-        //   });
-        // }, 30_000);
+        setInterval(() => {
+          fetch(getPingUrl(), {
+            method: "POST",
+            headers,
+            body: JSON.stringify({
+              ticketId,
+              accountId,
+              server: location.origin,
+            }),
+          });
+        }, 30_000);
         $socket = getClientSocket({
           url: getWebSocketUrl(`${window.location.origin}/proxy`),
           protocols: isAuthDisabled()
