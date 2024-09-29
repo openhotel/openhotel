@@ -15,7 +15,7 @@ export const getUserDisconnectedRequest = {
 
     const isAuthServer =
       //check if is local network
-      requestIp.startsWith("192.168") ||
+      requestIp.startsWith("192.168.") ||
       //check if is local computer
       requestIp.startsWith("172.") ||
       //check if is equal
