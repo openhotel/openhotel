@@ -121,6 +121,7 @@ export const claimSessionRequest: RequestType = {
         data: {
           accountId: account.accountId,
           username: account.username,
+          token: serverSessionToken,
         },
       },
       {

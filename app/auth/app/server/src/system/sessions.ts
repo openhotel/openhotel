@@ -48,12 +48,8 @@ export const sessions = () => {
     for (const {
       key: [, accountId],
       value: session,
-    } of sessionList) {
+    } of sessionList)
       sessionMap[accountId] = session;
-      console.log(
-        `- ${accountId} ${session.ip} ${session.server} ${session.serverIp}`,
-      );
-    }
   };
 
   const load = () => {
