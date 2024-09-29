@@ -6,8 +6,14 @@ import {
   accountPostRequest,
   accountDeleteRequest,
 } from "./admin.request.ts";
+import { updateGetRequest } from "./update.request.ts";
 
 export const adminRequestList: RequestType[] = getPathRequestList({
-  requestList: [accountGetRequest, accountPostRequest, accountDeleteRequest],
+  requestList: [
+    accountGetRequest,
+    accountPostRequest,
+    accountDeleteRequest,
+    updateGetRequest,
+  ],
   pathname: "/admin",
 });

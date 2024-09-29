@@ -1,10 +1,8 @@
 import React, { FormEvent, useCallback, useEffect, useState } from "react";
-import { useAccount, useAdmin, useApi, useQR } from "shared/hooks";
-import { useNavigate } from "react-router-dom";
-import { LinkComponent } from "shared/components";
+import { useAdmin } from "shared/hooks";
 
 export const AdminComponent: React.FC = () => {
-  const { getList, remove, add } = useAdmin();
+  const { getList, remove, add, update } = useAdmin();
 
   const [adminList, setAdminList] = useState<
     {
@@ -36,6 +34,16 @@ export const AdminComponent: React.FC = () => {
     add(email).then(() => $reloadList());
   }, []);
 
+  const $update = () => {
+    update().then(({ status }) => {
+      if (status === 200)
+        //TODO is updating!
+        setTimeout(() => {
+          window.location.reload();
+        }, 30_000);
+    });
+  };
+
   if (!adminList.length) return <div>Loading...</div>;
 
   return (
@@ -54,6 +62,10 @@ export const AdminComponent: React.FC = () => {
           <button>add admin</button>
         </form>
       </div>
+      <br />
+      <hr />
+      <h3>Update</h3>
+      <button onClick={$update}>Update</button>
       <br />
     </div>
   );

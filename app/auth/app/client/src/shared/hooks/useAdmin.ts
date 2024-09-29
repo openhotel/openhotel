@@ -23,9 +23,17 @@ export const useAdmin = () => {
       body: JSON.stringify({ email }),
     }).then((response) => response.json());
 
+  const update = async () =>
+    await fetch(`/api/v2/admin/update`, {
+      headers: getHeaders(),
+      method: "GET",
+    }).then((response) => response.json());
+
   return {
     getList,
     add,
     remove,
+    //
+    update,
   };
 };
