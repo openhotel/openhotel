@@ -77,13 +77,17 @@ export const proxy = () => {
       try {
         if (isConnected) return;
         System.loader.addText("Connecting...");
+        const $isAuthDisabled = isAuthDisabled();
+
         //prevent auth disconnection
-        setInterval($pingAuth, 30_000);
-        $pingAuth();
+        if (!$isAuthDisabled) {
+          setInterval($pingAuth, 30_000);
+          $pingAuth();
+        }
 
         $socket = getClientSocket({
           url: getWebSocketUrl(`${window.location.origin}/proxy`),
-          protocols: isAuthDisabled()
+          protocols: $isAuthDisabled
             ? [
                 "DEVELOPMENT",
                 localStorage.getItem("username") ||
