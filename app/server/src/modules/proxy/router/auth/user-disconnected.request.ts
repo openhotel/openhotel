@@ -14,7 +14,7 @@ export const getUserDisconnectedRequest = {
     const { searchParams } = new URL(request.url);
     const accountId = searchParams.get("accountId");
 
-    const authIp = await getIpFromUrl(config.auth.redirectUrl);
+    const authIp = await getIpFromUrl(config.auth.url);
     const requestIp = getIpFromRequest(request);
 
     const isAuthServer =
