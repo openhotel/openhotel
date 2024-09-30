@@ -12,5 +12,7 @@ export const CONFIG_DEFAULT: ConfigTypes = {
     redirectUrl: "http://localhost:1994",
     url: "https://auth.openhotel.club",
     api: "https://auth.openhotel.club/api/v2/server",
+    pingCheck: true,
+    userDisconnectedEvent: true,
   },
 };
