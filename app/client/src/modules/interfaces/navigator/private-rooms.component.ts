@@ -1,5 +1,6 @@
 import {
   container,
+  ContainerComponent,
   Cursor,
   DisplayObjectEvent,
   EventMode,
@@ -10,28 +11,29 @@ import {
 } from "@tu/tulip";
 import { Event, SpriteSheetEnum, SystemEvent } from "shared/enums";
 import { System } from "system";
+import { Size2d } from "shared/types";
 
-export const popularCategoryComponent = () => {
-  const $container = container();
-  const $content = container({
+type Props = {
+  size: Size2d;
+};
+
+export const privateRoomsComponent: ContainerComponent<Props> = (props) => {
+  const $container = container(props);
+
+  const $text = textSprite({
+    text: `PRIVATE`,
+    spriteSheet: SpriteSheetEnum.DEFAULT_FONT,
+    color: 0,
     position: {
-      x: 6,
-      y: 7,
+      x: 0,
+      y: 0,
     },
   });
+  $container.add($text);
 
-  const $backgroundModal = nineSliceSprite({
-    spriteSheet: SpriteSheetEnum.UI,
-    texture: "modal-2",
-    leftWidth: 6,
-    topHeight: 6,
-    rightWidth: 6,
-    bottomHeight: 6,
-    width: 201,
-    height: 165,
-    eventMode: EventMode.STATIC,
-  });
-  $container.add($backgroundModal, $content);
+  let roomTextList = [];
+
+  const { size } = $container.getProps();
 
   const $roomList = scrollableContainer({
     position: {
@@ -39,8 +41,8 @@ export const popularCategoryComponent = () => {
       y: 10,
     },
     size: {
-      width: 180,
-      height: 73,
+      width: size.width - 10,
+      height: size.height - 10,
     },
     jump: 3,
     verticalScroll: true,
@@ -71,15 +73,7 @@ export const popularCategoryComponent = () => {
       }),
     ],
   });
-
-  const text = textSprite({
-    spriteSheet: SpriteSheetEnum.DEFAULT_FONT,
-    text: "popular",
-    tint: 0,
-  });
-  $content.add($roomList, text);
-
-  let roomTextList = [];
+  $container.add($roomList);
 
   const loadRooms = async () => {
     const targetRoomTextList = [];
@@ -96,10 +90,8 @@ export const popularCategoryComponent = () => {
 
     for (let i = 0; i < rooms.length; i++) {
       const room = rooms[i];
-      const $joinRoomText = textSprite({
-        text: `join ${room.title} (${room.userCount})`,
-        tint: 0,
-        spriteSheet: SpriteSheetEnum.DEFAULT_FONT,
+
+      const $container = container({
         position: {
           x: 0,
           y: i * 14,
@@ -107,13 +99,39 @@ export const popularCategoryComponent = () => {
         cursor: Cursor.POINTER,
         eventMode: EventMode.STATIC,
       });
-      $joinRoomText.on(DisplayObjectEvent.POINTER_TAP, () => {
+
+      const $background = nineSliceSprite({
+        spriteSheet: SpriteSheetEnum.NAVIGATOR,
+        texture: "bubble-9",
+        leftWidth: 4,
+        topHeight: 4,
+        rightWidth: 4,
+        bottomHeight: 4,
+        width: size.width - 15,
+        height: 9,
+        zIndex: -2,
+        tint: 0xd2d3d7,
+      });
+
+      const $joinRoomText = textSprite({
+        text: `${room.title} (${room.userCount})`,
+        tint: 0,
+        spriteSheet: SpriteSheetEnum.DEFAULT_FONT,
+        position: {
+          x: 6,
+          y: 2,
+        },
+        eventMode: EventMode.NONE,
+      });
+      $container.add($background, $joinRoomText);
+
+      $container.on(DisplayObjectEvent.POINTER_TAP, () => {
         System.proxy.emit(Event.JOIN_ROOM, {
           roomId: room.id,
         });
         System.events.emit(SystemEvent.HIDE_NAVIGATOR_MODAL);
       });
-      targetRoomTextList.push($joinRoomText);
+      targetRoomTextList.push($container);
     }
     $roomList.add(...targetRoomTextList);
     $roomList.remove(...roomTextList);
@@ -134,5 +152,5 @@ export const popularCategoryComponent = () => {
     clearInterval(reloadInterval);
   });
 
-  return $container.getComponent(popularCategoryComponent);
+  return $container.getComponent(privateRoomsComponent);
 };

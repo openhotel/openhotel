@@ -8,4 +8,5 @@ export enum SpriteSheetEnum {
   SPINNER = "spinner/spinner.json",
 
   UI = "ui/sheet.json",
+  NAVIGATOR = "navigator/sheet.json",
 }
