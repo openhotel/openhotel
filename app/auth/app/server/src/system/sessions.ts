@@ -69,9 +69,9 @@ export const sessions = () => {
     //only if last server is different from current one
     if (
       session &&
-      session.server !== currentSession.server &&
-      (session.sessionId !== currentSession.sessionId ||
-        session.ticketId !== currentSession.ticketId)
+      session.server !== currentSession?.server &&
+      (session.sessionId !== currentSession?.sessionId ||
+        session.ticketId !== currentSession?.ticketId)
     ) {
       $disconnectFromLastServer(accountId, session.server);
       console.warn(
