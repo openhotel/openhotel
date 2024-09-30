@@ -1,6 +1,7 @@
 import {
   getBrowserLanguage,
   getClientSocket,
+  getConfig,
   getRandomString,
   getVersion,
   getWebSocketUrl,
@@ -80,7 +81,7 @@ export const proxy = () => {
         const $isAuthDisabled = isAuthDisabled();
 
         //prevent auth disconnection
-        if (!$isAuthDisabled) {
+        if (!$isAuthDisabled && getConfig().auth.pingCheck) {
           setInterval($pingAuth, 30_000);
           $pingAuth();
         }

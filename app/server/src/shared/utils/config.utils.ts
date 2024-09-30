@@ -20,6 +20,10 @@ export const getConfig = async (): Promise<ConfigTypes> => {
       redirectUrl: config?.auth?.redirectUrl || CONFIG_DEFAULT.auth.redirectUrl,
       url: config?.auth?.url || CONFIG_DEFAULT.auth.url,
       api: config?.auth?.api || CONFIG_DEFAULT.auth.api,
+      pingCheck: config?.auth?.pingCheck || CONFIG_DEFAULT.auth.pingCheck,
+      userDisconnectedEvent:
+        config?.auth?.userDisconnectedEvent ||
+        CONFIG_DEFAULT.auth.userDisconnectedEvent,
     },
   };
   try {

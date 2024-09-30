@@ -10,5 +10,9 @@ export type ConfigTypes = {
     redirectUrl?: string;
     url?: string;
     api?: string;
+    //client emit ping checks to auth
+    pingCheck?: boolean;
+    //server accepts user disconnected events from auth.api
+    userDisconnectedEvent?: boolean;
   };
 };
