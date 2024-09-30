@@ -11,6 +11,16 @@ export const getUserDisconnectedRequest = {
     serverWorker,
     userList,
   }: ApiRequestProps): Promise<Response> => {
+    if (!config?.auth?.userDisconnectedEvent)
+      return Response.json(
+        {
+          status: 406,
+        },
+        {
+          status: 406,
+        },
+      );
+
     const { searchParams } = new URL(request.url);
     const accountId = searchParams.get("accountId");
 

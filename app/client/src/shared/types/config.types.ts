@@ -11,5 +11,7 @@ export type ConfigTypes = {
     redirectUrl?: string;
     url?: string;
     api?: string;
+    pingCheck?: boolean;
+    userDisconnectedEvent?: boolean;
   };
 };
