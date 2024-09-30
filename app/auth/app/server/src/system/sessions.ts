@@ -63,25 +63,25 @@ export const sessions = () => {
     ]);
     const session = sessionMap[accountId];
 
-    console.warn(
-      accountId,
-      "->",
-      session?.server,
-      "->",
-      foundSession?.value?.server,
-      "<<<<",
-    );
-
     const currentSession = foundSession.value;
 
     //check if session server exists and changed if so disconnect from last server
+    //only if last server is different from current one
     if (
       session &&
+      session.server !== currentSession.server &&
       (session.sessionId !== currentSession.sessionId ||
-        session.ticketId !== currentSession.ticketId ||
-        session.server !== currentSession.server)
+        session.ticketId !== currentSession.ticketId)
     ) {
       $disconnectFromLastServer(accountId, session.server);
+      console.warn(
+        accountId,
+        "->",
+        session?.server,
+        "->",
+        foundSession?.value?.server,
+        "<<<<",
+      );
     }
     //reassign server session
     sessionMap[accountId] = currentSession;
