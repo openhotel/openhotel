@@ -49,5 +49,6 @@ export const System = (() => {
     email: $email,
     otp: $otp,
     tasks: $tasks,
+    sessions: $sessions,
   };
 })();

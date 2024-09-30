@@ -5,51 +5,46 @@ import { getServerSessionList } from "shared/utils/main.ts";
 export const sessions = () => {
   const sessionMap: Record<string, any> = {};
 
+  const $disconnectFromLastServer = (accountId: string, server: string) => {
+    const headers = new Headers();
+    headers.append("auth-server", performance.now() + "");
+
+    console.error(`${server}/auth/user-disconnected?accountId=${accountId}`);
+    fetch(`${server}/auth/user-disconnected?accountId=${accountId}`, {
+      headers,
+    })
+      .then(async (response) => console.error(await response.json()))
+      .catch((e) => {
+        console.error(e);
+        //we don't really care if server receives our petition, the session is being invalidated anyway
+      });
+  };
+
   const $checkSessions = async () => {
-    const sessionList = await getServerSessionList();
-    console.log(`Checking sessions... (${sessionList.length})`);
+    const currentSessions = Object.keys(sessionMap);
+    const targetSessions = (await getServerSessionList()).map<string>(
+      ({ key: [, accountId] }) => accountId,
+    );
+    console.log(
+      `Checking sessions... (${currentSessions.length}..${targetSessions.length})`,
+    );
 
-    //check disconnected accounts
-    for (const accountId of Object.keys(sessionMap)) {
-      const foundSession = sessionList.find(({ key }) => key[1] === accountId);
+    const toDeleteSessions = currentSessions.filter(
+      (accountId) => !targetSessions.includes(accountId),
+    );
 
-      const session = sessionMap[accountId];
-      const $disconnectFromLastServer = () => {
-        const headers = new Headers();
-        headers.append("auth-server", performance.now() + "");
-
-        fetch(
-          `${session.server}/auth/user-disconnected?accountId=${accountId}`,
-          {
-            headers,
-          },
-        ).catch(() => {
-          //we don't really care if server receives our petition, the session is being invalidated anyway
-        });
-        delete sessionMap[accountId];
-      };
-
-      if (foundSession) {
-        const { sessionId, ticketId, server } = foundSession.value;
-        //check if session/server/ticket is still the same
-        if (
-          session.sessionId !== sessionId ||
-          session.ticketId !== ticketId ||
-          session.server !== server
-        )
-          $disconnectFromLastServer();
-        continue;
-      }
-      //account is disconnected
-      $disconnectFromLastServer();
+    //remove not active sessions
+    for (const accountId of toDeleteSessions) {
+      $disconnectFromLastServer(accountId, sessionMap[accountId].server);
+      delete sessionMap[accountId];
     }
 
-    //update sessions
-    for (const {
-      key: [, accountId],
-      value: session,
-    } of sessionList)
-      sessionMap[accountId] = session;
+    const accountCheckList = [
+      ...new Set([...currentSessions, ...targetSessions]),
+    ].filter((accountId) => toDeleteSessions.includes(accountId));
+
+    //check accounts
+    for (const accountId of accountCheckList) checkAccountSession(accountId);
   };
 
   const load = () => {
@@ -61,7 +56,39 @@ export const sessions = () => {
     $checkSessions();
   };
 
+  const checkAccountSession = async (accountId: string) => {
+    const foundSession = await System.db.get([
+      "serverSessionByAccount",
+      accountId,
+    ]);
+    const session = sessionMap[accountId];
+
+    console.warn(
+      accountId,
+      "->",
+      session?.server,
+      "->",
+      foundSession?.value?.server,
+      "<<<<",
+    );
+
+    const currentSession = foundSession.value;
+
+    //check if session server exists and changed if so disconnect from last server
+    if (
+      session &&
+      (session.sessionId !== currentSession.sessionId ||
+        session.ticketId !== currentSession.ticketId ||
+        session.server !== currentSession.server)
+    ) {
+      $disconnectFromLastServer(accountId, session.server);
+    }
+    //reassign server session
+    sessionMap[accountId] = currentSession;
+  };
+
   return {
     load,
+    checkAccountSession,
   };
 };

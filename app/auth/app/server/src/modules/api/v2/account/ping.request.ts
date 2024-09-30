@@ -19,12 +19,12 @@ export const pingRequest: RequestType = {
       );
 
     // const account = await getAccountFromRequest(request);
-    const serverSessionByAccount = await System.db.get([
+    const { value: serverSession } = await System.db.get([
       "serverSessionByAccount",
       accountId,
     ]);
 
-    if (!serverSessionByAccount)
+    if (!serverSession)
       return Response.json(
         { status: 403 },
         {
@@ -34,12 +34,10 @@ export const pingRequest: RequestType = {
 
     const ip = getIpFromRequest(request);
 
-    const serverSession = serverSessionByAccount.value;
-
     if (
-      serverSession.ip !== ip ||
-      serverSession.server !== server ||
-      serverSession.ticketId !== ticketId
+      serverSession?.ip !== ip ||
+      serverSession?.server !== server ||
+      serverSession?.ticketId !== ticketId
     )
       return Response.json(
         { status: 403 },

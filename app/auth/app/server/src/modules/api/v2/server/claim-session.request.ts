@@ -114,6 +114,7 @@ export const claimSessionRequest: RequestType = {
         expireIn: SERVER_SESSION_EXPIRE_TIME,
       },
     );
+    await System.sessions.checkAccountSession(account.accountId);
 
     return Response.json(
       {
