@@ -6,12 +6,16 @@ import {
   EventMode,
   graphics,
   GraphicType,
-  nineSliceSprite,
   sprite,
 } from "@tu/tulip";
-import { SpriteSheetEnum, SystemEvent } from "shared/enums";
-import { mainTabsComponent } from "./main-tabs.component";
+import { NavigatorCategory, SpriteSheetEnum, SystemEvent } from "shared/enums";
 import { System } from "system";
+import { NAVIGATOR_CATEGORY_SPRITE_MAP } from "shared/consts";
+import { publicRoomsComponent } from "./public-rooms.component";
+import { privateRoomsComponent } from "./private-rooms.component";
+import { topRoomsComponent } from "./top-rooms.component";
+import { likedRoomsComponent } from "./liked-rooms.component";
+import { ownRoomsComponent } from "./own-rooms.component";
 
 type Props = {
   visible: boolean;
@@ -22,14 +26,18 @@ export const navigatorModalComponent: ContainerComponent<Props> = (
 ) => {
   const $container = container({
     visible,
+    sortableChildren: true,
   });
-  const modalHeight = 287;
-  const modalWidth = 213;
+  const base = sprite({
+    spriteSheet: SpriteSheetEnum.NAVIGATOR,
+    texture: "modal",
+  });
+  $container.add(base);
 
   const draggable = graphics({
     type: GraphicType.RECTANGLE,
-    width: modalWidth,
-    height: 21,
+    width: base.getBounds().width,
+    height: 20,
     tint: 0xff00ff,
     eventMode: EventMode.STATIC,
     position: {
@@ -41,129 +49,109 @@ export const navigatorModalComponent: ContainerComponent<Props> = (
   });
   const close = graphics({
     type: GraphicType.RECTANGLE,
-    width: 20,
-    height: 21,
-    tint: 0xffffff,
+    width: 16,
+    height: 16,
+    tint: 0xff00ff,
     eventMode: EventMode.STATIC,
     position: {
-      x: 180,
-      y: 0,
+      x: base.getBounds().width - 25,
+      y: 3,
     },
+    alpha: 0,
     cursor: Cursor.POINTER,
   });
   close.on(DisplayObjectEvent.POINTER_TAP, () => {
     $container.setVisible(false);
   });
-  const base = nineSliceSprite({
-    spriteSheet: SpriteSheetEnum.UI,
-    texture: "modal-base-rooms",
-    leftWidth: 11,
-    topHeight: 11,
-    rightWidth: 11,
-    bottomHeight: 11,
-    width: modalWidth,
-    height: modalHeight,
-  });
-  const closeButton = sprite({
-    spriteSheet: SpriteSheetEnum.UI,
-    texture: "drag-close",
-    eventMode: EventMode.STATIC,
-    cursor: Cursor.POINTER,
-    position: {
-      x: modalWidth - 21,
-      y: 4,
-    },
-  });
-  closeButton.on(DisplayObjectEvent.POINTER_DOWN, () => {
-    $container.setVisible(false);
-  });
-  const dotsContainer = container({
-    position: {
-      x: 8,
-      y: 4,
-    },
-    eventMode: EventMode.NONE,
-  });
-  {
-    const dotsWidth = modalWidth / 2 - 15;
-    const firstDotsGraphics = sprite({
-      spriteSheet: SpriteSheetEnum.UI,
-      texture: "drag-1",
-      position: {
-        x: -4,
-        y: 0,
-      },
-    });
-    const secondDotsGraphics = sprite({
-      spriteSheet: SpriteSheetEnum.UI,
-      texture: "drag-2",
-      position: {
-        x: -2,
-        y: 0,
-      },
-    });
-    const preLastDotsGraphics = sprite({
-      spriteSheet: SpriteSheetEnum.UI,
-      texture: "drag-2",
-      position: {
-        x: dotsWidth * 2 + 15,
-        y: 0,
-      },
-    });
-    const lastDotsGraphics = sprite({
-      spriteSheet: SpriteSheetEnum.UI,
-      texture: "drag-1",
-      position: {
-        x: dotsWidth * 2 + 17,
-        y: 0,
-      },
-    });
-    dotsContainer.add(
-      firstDotsGraphics,
-      secondDotsGraphics,
-      preLastDotsGraphics,
-      lastDotsGraphics,
-    );
-    for (let i = 0; i < dotsWidth; i++) {
-      const dotsGraphics = sprite({
-        spriteSheet: SpriteSheetEnum.UI,
-        texture: "drag-3",
-        position: {
-          x: i * 2,
-          y: 0,
-        },
-      });
-      dotsContainer.add(dotsGraphics);
-    }
-  }
+  $container.add(draggable, close);
 
-  const $mainTabs = mainTabsComponent();
+  const content = sprite({
+    spriteSheet: SpriteSheetEnum.NAVIGATOR,
+    texture: "content",
+    position: {
+      x: 37,
+      y: 20,
+    },
+    zIndex: 10,
+  });
+  $container.add(content);
 
-  const $backgroundModal = nineSliceSprite({
-    spriteSheet: SpriteSheetEnum.UI,
-    texture: "modal-1-selected",
-    leftWidth: 6,
-    topHeight: 6,
-    rightWidth: 6,
-    bottomHeight: 6,
-    width: 201,
-    height: modalHeight - 60,
+  const $contentSize = content.getBounds();
+  const contentSize = {
+    width: $contentSize.width - 12,
+    height: $contentSize.height - 12,
+  };
+
+  const categoryComponentMap: Record<NavigatorCategory, any> = {
+    [NavigatorCategory.PUBLIC]: publicRoomsComponent(),
+    [NavigatorCategory.PRIVATE]: privateRoomsComponent({ size: contentSize }),
+    [NavigatorCategory.TOP]: topRoomsComponent(),
+    [NavigatorCategory.LIKED]: likedRoomsComponent(),
+    [NavigatorCategory.OWN]: ownRoomsComponent(),
+  };
+
+  const $content = container({
+    position: {
+      x: 43,
+      y: 26,
+    },
+    zIndex: 20,
+  });
+  $container.add($content);
+
+  let selectedCategory: NavigatorCategory = NavigatorCategory.PRIVATE;
+  $content.add(categoryComponentMap[selectedCategory]);
+
+  const selectionTabItem = sprite({
+    spriteSheet: SpriteSheetEnum.NAVIGATOR,
+    texture: (selectedCategory as number) === 0 ? "selector-top" : "selector",
     position: {
       x: 6,
-      y: 50,
+      y: 20 + selectedCategory * 26,
     },
-    eventMode: EventMode.STATIC,
-    cursor: Cursor.DEFAULT,
+    zIndex: 11,
   });
+  $container.add(selectionTabItem);
+  for (
+    let categoryIndex = 0;
+    categoryIndex < Object.keys(NAVIGATOR_CATEGORY_SPRITE_MAP).length;
+    categoryIndex++
+  ) {
+    const texture = NAVIGATOR_CATEGORY_SPRITE_MAP[categoryIndex];
+    const tabItem = sprite({
+      spriteSheet: SpriteSheetEnum.NAVIGATOR,
+      texture: "selector-disabled",
+      position: {
+        x: 6,
+        y: 20 + categoryIndex * 26,
+      },
+      zIndex: 9,
+      eventMode: EventMode.STATIC,
+      cursor: Cursor.POINTER,
+    });
+    tabItem.on(DisplayObjectEvent.POINTER_TAP, () => {
+      selectionTabItem.setPositionY(20 + categoryIndex * 26);
+      selectionTabItem.setTexture(
+        categoryIndex === 0 ? "selector-top" : "selector",
+        SpriteSheetEnum.NAVIGATOR,
+      );
 
-  $container.add(
-    base,
-    draggable,
-    $backgroundModal,
-    $mainTabs,
-    dotsContainer,
-    closeButton,
-  );
+      $content.remove(categoryComponentMap[selectedCategory]);
+      selectedCategory = categoryIndex;
+      $content.add(categoryComponentMap[selectedCategory]);
+    });
+    const tabItemTexture = sprite({
+      spriteSheet: SpriteSheetEnum.NAVIGATOR,
+      texture,
+      position: {
+        x: 12,
+        y: 23 + categoryIndex * 26,
+      },
+      zIndex: 12,
+      eventMode: EventMode.NONE,
+    });
+    $container.add(tabItem, tabItemTexture);
+  }
 
   let removeOnShowNavigatorModal;
   let removeOnHideNavigatorModal;
