@@ -4,7 +4,7 @@
     "specifiers": {
       "jsr:@oh/pathfinding@2.0.3": "jsr:@oh/pathfinding@2.0.3",
       "jsr:@oh/queue@1.1.1": "jsr:@oh/queue@1.1.1",
-      "jsr:@oh/updater@1.0.3": "jsr:@oh/updater@1.0.3",
+      "jsr:@oh/updater@1.1.1": "jsr:@oh/updater@1.1.1",
       "jsr:@std/path@1.0.6": "jsr:@std/path@1.0.6",
       "npm:yaml@2.4.2": "npm:yaml@2.4.2"
     },
@@ -15,8 +15,8 @@
       "@oh/queue@1.1.1": {
         "integrity": "8e8ec809202c48beaf436b3ea01b4c3a17f8c015ca686d906822482c9c881390"
       },
-      "@oh/updater@1.0.3": {
-        "integrity": "56063989d555d838e85d332eed51267f0fa4a0719651816691a16ba32f0d6017",
+      "@oh/updater@1.1.1": {
+        "integrity": "e44609b1cf52a31239714e6bbceb6aa9c32c6c3909724086781664beb00b2b51",
         "dependencies": [
           "jsr:@std/path@1.0.6"
         ]
@@ -447,7 +447,7 @@
     "dependencies": [
       "jsr:@oh/pathfinding@2.0.3",
       "jsr:@oh/queue@1.1.1",
-      "jsr:@oh/updater@1.0.3",
+      "jsr:@oh/updater@1.1.1",
       "npm:yaml@2.4.2"
     ]
   }
