@@ -1,9 +1,11 @@
 import { load as loadProxy } from "modules/proxy/main.ts";
 import { Server } from "modules/server/main.ts";
 import { load as loadUpdater } from "modules/updater/main.ts";
-import { getConfig, initLog } from "shared/utils/main.ts";
+import { initLog } from "shared/utils/main.ts";
 import { ConfigTypes } from "shared/types/config.types.ts";
 import { Envs } from "shared/types/envs.types.ts";
+import { getConfig } from "@oh/config";
+import { CONFIG_DEFAULT } from "shared/consts/config.consts.ts";
 
 export const load = async (envs: Envs) => {
   console.clear();
@@ -14,7 +16,7 @@ export const load = async (envs: Envs) => {
     );
   initLog(envs);
 
-  const config: ConfigTypes = await getConfig();
+  const config: ConfigTypes = await getConfig<ConfigTypes>(CONFIG_DEFAULT);
 
   // Check for an update if true, close the server
   if (await loadUpdater({ config, envs })) return;
