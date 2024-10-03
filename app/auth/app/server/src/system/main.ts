@@ -1,13 +1,14 @@
 import { db } from "./db.ts";
 import { api } from "./api.ts";
 import { ConfigTypes, Envs } from "shared/types/main.ts";
-import { getConfig as $getConfig } from "shared/utils/main.ts";
+import { getConfig as $getConfig } from "@oh/config";
 import { load as loadUpdater } from "modules/updater/main.ts";
 import { captcha } from "./captcha.ts";
 import { email } from "./email.ts";
 import { otp } from "./otp.ts";
 import { tasks } from "./tasks.ts";
 import { sessions } from "./sessions.ts";
+import { CONFIG_DEFAULT } from "shared/consts/config.consts.ts";
 
 export const System = (() => {
   const $db = db();
@@ -24,7 +25,7 @@ export const System = (() => {
   const load = async (envs: Envs) => {
     if (await loadUpdater(envs)) return;
 
-    $config = await $getConfig();
+    $config = await $getConfig<ConfigTypes>(CONFIG_DEFAULT);
     $envs = envs;
 
     $tasks.load();

@@ -2,13 +2,24 @@
   "version": "3",
   "packages": {
     "specifiers": {
+      "jsr:@oh/config@1.0.1": "jsr:@oh/config@1.0.1",
       "jsr:@oh/queue@1.1.1": "jsr:@oh/queue@1.1.1",
       "jsr:@oh/updater@1.1.1": "jsr:@oh/updater@1.1.1",
+      "jsr:@oh/yaml@1.0.2": "jsr:@oh/yaml@1.0.2",
+      "jsr:@std/fs@1.0.4": "jsr:@std/fs@1.0.4",
       "jsr:@std/path@1.0.6": "jsr:@std/path@1.0.6",
+      "jsr:@std/path@^1.0.6": "jsr:@std/path@1.0.6",
       "npm:nodemailer@6.9.15": "npm:nodemailer@6.9.15",
-      "npm:yaml@2.4.2": "npm:yaml@2.4.2"
+      "npm:yaml@2.4.2": "npm:yaml@2.4.2",
+      "npm:yaml@2.5.1": "npm:yaml@2.5.1"
     },
     "jsr": {
+      "@oh/config@1.0.1": {
+        "integrity": "91271bbd88999b13ffe1d161453f83cef2b37900a4b1467da7a9688d051d71fc",
+        "dependencies": [
+          "jsr:@oh/yaml@1.0.2"
+        ]
+      },
       "@oh/queue@1.1.1": {
         "integrity": "8e8ec809202c48beaf436b3ea01b4c3a17f8c015ca686d906822482c9c881390"
       },
@@ -16,6 +27,20 @@
         "integrity": "e44609b1cf52a31239714e6bbceb6aa9c32c6c3909724086781664beb00b2b51",
         "dependencies": [
           "jsr:@std/path@1.0.6"
+        ]
+      },
+      "@oh/yaml@1.0.2": {
+        "integrity": "06921094d666924dc39280961578acc197a9449199b9425647a60738140bd279",
+        "dependencies": [
+          "jsr:@std/fs@1.0.4",
+          "jsr:@std/path@1.0.6",
+          "npm:yaml@2.5.1"
+        ]
+      },
+      "@std/fs@1.0.4": {
+        "integrity": "2907d32d8d1d9e540588fd5fe0ec21ee638134bd51df327ad4e443aaef07123c",
+        "dependencies": [
+          "jsr:@std/path@^1.0.6"
         ]
       },
       "@std/path@1.0.6": {
@@ -29,6 +54,10 @@
       },
       "yaml@2.4.2": {
         "integrity": "sha512-B3VqDZ+JAg1nZpaEmWtTXUlBneoGx6CPM9b0TENK6aoSu5t73dItudwdgmi6tHlIZZId4dZ9skcAQ2UbcyAeVA==",
+        "dependencies": {}
+      },
+      "yaml@2.5.1": {
+        "integrity": "sha512-bLQOjaX/ADgQ20isPJRvF0iRUHIxVhYvr53Of7wGcWlO2jvtUlH5m87DsmulFVxRpNLOnI4tB6p/oh8D7kpn9Q==",
         "dependencies": {}
       }
     }
@@ -174,6 +203,7 @@
   },
   "workspace": {
     "dependencies": [
+      "jsr:@oh/config@1.0.1",
       "jsr:@oh/queue@1.1.1",
       "jsr:@oh/updater@1.1.1",
       "npm:nodemailer@6.9.15",
