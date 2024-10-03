@@ -2,13 +2,24 @@
   "version": "3",
   "packages": {
     "specifiers": {
+      "jsr:@oh/config@1.0.1": "jsr:@oh/config@1.0.1",
       "jsr:@oh/pathfinding@2.0.3": "jsr:@oh/pathfinding@2.0.3",
       "jsr:@oh/queue@1.1.1": "jsr:@oh/queue@1.1.1",
       "jsr:@oh/updater@1.1.1": "jsr:@oh/updater@1.1.1",
+      "jsr:@oh/yaml@1.0.2": "jsr:@oh/yaml@1.0.2",
+      "jsr:@std/fs@1.0.4": "jsr:@std/fs@1.0.4",
       "jsr:@std/path@1.0.6": "jsr:@std/path@1.0.6",
-      "npm:yaml@2.4.2": "npm:yaml@2.4.2"
+      "jsr:@std/path@^1.0.6": "jsr:@std/path@1.0.6",
+      "npm:yaml@2.4.2": "npm:yaml@2.4.2",
+      "npm:yaml@2.5.1": "npm:yaml@2.5.1"
     },
     "jsr": {
+      "@oh/config@1.0.1": {
+        "integrity": "91271bbd88999b13ffe1d161453f83cef2b37900a4b1467da7a9688d051d71fc",
+        "dependencies": [
+          "jsr:@oh/yaml@1.0.2"
+        ]
+      },
       "@oh/pathfinding@2.0.3": {
         "integrity": "a0812c0706d0d4fe21ae70e2cd63242e40b903972b21ba5f4f59d0b8f78eb351"
       },
@@ -21,6 +32,20 @@
           "jsr:@std/path@1.0.6"
         ]
       },
+      "@oh/yaml@1.0.2": {
+        "integrity": "06921094d666924dc39280961578acc197a9449199b9425647a60738140bd279",
+        "dependencies": [
+          "jsr:@std/fs@1.0.4",
+          "jsr:@std/path@1.0.6",
+          "npm:yaml@2.5.1"
+        ]
+      },
+      "@std/fs@1.0.4": {
+        "integrity": "2907d32d8d1d9e540588fd5fe0ec21ee638134bd51df327ad4e443aaef07123c",
+        "dependencies": [
+          "jsr:@std/path@^1.0.6"
+        ]
+      },
       "@std/path@1.0.6": {
         "integrity": "ab2c55f902b380cf28e0eec501b4906e4c1960d13f00e11cfbcd21de15f18fed"
       }
@@ -28,6 +53,10 @@
     "npm": {
       "yaml@2.4.2": {
         "integrity": "sha512-B3VqDZ+JAg1nZpaEmWtTXUlBneoGx6CPM9b0TENK6aoSu5t73dItudwdgmi6tHlIZZId4dZ9skcAQ2UbcyAeVA==",
+        "dependencies": {}
+      },
+      "yaml@2.5.1": {
+        "integrity": "sha512-bLQOjaX/ADgQ20isPJRvF0iRUHIxVhYvr53Of7wGcWlO2jvtUlH5m87DsmulFVxRpNLOnI4tB6p/oh8D7kpn9Q==",
         "dependencies": {}
       }
     }
@@ -445,6 +474,7 @@
   },
   "workspace": {
     "dependencies": [
+      "jsr:@oh/config@1.0.1",
       "jsr:@oh/pathfinding@2.0.3",
       "jsr:@oh/queue@1.1.1",
       "jsr:@oh/updater@1.1.1",
