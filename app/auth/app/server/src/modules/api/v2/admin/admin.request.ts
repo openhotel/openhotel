@@ -7,7 +7,7 @@ import {
   isAccountAdminValid,
   isAccountAuthValid,
 } from "shared/utils/account.utils.ts";
-import { System } from "system/main.ts";
+import { System } from "modules/system/main.ts";
 
 export const accountGetRequest: RequestType = {
   method: RequestMethod.GET,

@@ -1,4 +1,4 @@
-import { System } from "system/main.ts";
+import { System } from "./main.ts";
 
 export const db = () => {
   let kv;

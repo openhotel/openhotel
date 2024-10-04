@@ -1,5 +1,5 @@
 import * as OTPAuth from "otp";
-import { System } from "system/main.ts";
+import { System } from "modules/system/main.ts";
 
 export const otp = () => {
   const $getTOTP = (email: string, otpSecret: string): OTPAuth.TOTP =>

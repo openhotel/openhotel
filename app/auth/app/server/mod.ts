@@ -1,4 +1,4 @@
-import { System } from "./src/main.ts";
+import { System } from "modules/system/main.ts";
 import { load as loadEnv } from "loadenv";
 import { getProcessedEnvs } from "shared/utils/main.ts";
 

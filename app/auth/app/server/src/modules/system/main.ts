@@ -25,7 +25,7 @@ export const System = (() => {
   const load = async (envs: Envs) => {
     if (await loadUpdater(envs)) return;
 
-    $config = await $getConfig<ConfigTypes>(CONFIG_DEFAULT);
+    $config = await $getConfig<ConfigTypes>({ defaults: CONFIG_DEFAULT });
     $envs = envs;
 
     $tasks.load();

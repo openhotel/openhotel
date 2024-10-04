@@ -1,4 +1,4 @@
-import { System } from "system/main.ts";
+import { System } from "modules/system/main.ts";
 import * as bcrypt from "bcrypt";
 
 export const getAccountFromRequest = async ({ headers }: Request) => {

@@ -16,10 +16,9 @@
   "imports": {
     "@oh/queue": "jsr:@oh/queue@1.1.1",
     "@oh/updater": "jsr:@oh/updater@1.1.1",
-    "@oh/config": "jsr:@oh/config@1.0.1",
+    "@oh/config": "jsr:@oh/config@1.1.1",
 
     "shared/": "./src/shared/",
-    "system/": "./src/system/",
     "modules/": "./src/modules/",
 
     "deno/": "https://deno.land/std@0.221.0/",

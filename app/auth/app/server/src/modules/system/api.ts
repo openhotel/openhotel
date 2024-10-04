@@ -4,7 +4,7 @@ import {
   getContentType,
   getCORSHeaders,
 } from "shared/utils/main.ts";
-import { System } from "system/main.ts";
+import { System } from "./main.ts";
 
 export const api = () => {
   const load = () => {

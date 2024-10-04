@@ -2,7 +2,7 @@ import { RequestType } from "shared/types/request.types.ts";
 import { RequestMethod } from "shared/enums/request.enum.ts";
 import { isAccountAdminValid } from "shared/utils/account.utils.ts";
 import { load as loadUpdater } from "modules/updater/main.ts";
-import { System } from "system/main.ts";
+import { System } from "modules/system/main.ts";
 
 export const updateGetRequest: RequestType = {
   method: RequestMethod.GET,

@@ -1,6 +1,6 @@
 import { RequestType } from "shared/types/main.ts";
 import { RequestMethod } from "shared/enums/main.ts";
-import { System } from "system/main.ts";
+import { System } from "modules/system/main.ts";
 import * as bcrypt from "bcrypt";
 import { SERVER_SESSION_EXPIRE_TIME } from "shared/consts/session.consts.ts";
 import { getIpFromRequest } from "shared/utils/ip.utils.ts";

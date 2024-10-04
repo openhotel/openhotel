@@ -1,6 +1,6 @@
 import { RequestType } from "shared/types/main.ts";
 import { RequestMethod } from "shared/enums/main.ts";
-import { System } from "system/main.ts";
+import { System } from "modules/system/main.ts";
 import * as bcrypt from "bcrypt";
 
 export const verifyRequest: RequestType = {

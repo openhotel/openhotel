@@ -1,4 +1,4 @@
-import { System } from "system/main.ts";
+import { System } from "modules/system/main.ts";
 
 export const captcha = () => {
   const verify = async (sessionId: string): Promise<boolean> => {

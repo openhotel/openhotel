@@ -1,4 +1,4 @@
-import { System } from "system/main.ts";
+import { System } from "modules/system/main.ts";
 import { TickerQueue } from "@oh/queue";
 import { getServerSessionList } from "shared/utils/main.ts";
 

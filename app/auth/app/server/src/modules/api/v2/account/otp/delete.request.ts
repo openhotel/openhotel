@@ -4,7 +4,7 @@ import {
   getAccountFromRequest,
   isAccountAuthValid,
 } from "shared/utils/account.utils.ts";
-import { System } from "system/main.ts";
+import { System } from "modules/system/main.ts";
 
 export const deleteRequest: RequestType = {
   method: RequestMethod.DELETE,
