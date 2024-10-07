@@ -1,0 +1,14 @@
+{
+  "name": "@oh/utils",
+  "version": "0.0.0",
+  "exports": "./index.ts",
+  "imports": {
+    "@std/path": "jsr:@std/path@1.0.6",
+    "@std/fs": "jsr:@std/fs@1.0.4",
+    "@std/yaml": "jsr:@std/yaml@1.0.5",
+
+    "@oh/yaml": "jsr:@oh/yaml@1.1.0",
+
+    "dayjs": "npm:dayjs@1.11.13"
+  }
+}
