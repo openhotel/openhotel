@@ -2,6 +2,7 @@ import { ApiRequestProps } from "shared/types/main.ts";
 import { getRandomString } from "shared/utils/random.utils.ts";
 import { protocolToken, ticketMap, userList } from "../proxy.worker.ts";
 import { log } from "shared/utils/log.utils.ts";
+import { getURL } from "shared/utils/urls.utils.ts";
 
 export const getRequestRequest = {
   method: "GET",
@@ -9,7 +10,7 @@ export const getRequestRequest = {
   fn: async ({ request, config, envs }: ApiRequestProps): Promise<Response> => {
     //@ts-ignore
     const clientIPAddress: string = request.headers.get("host");
-    const { searchParams } = new URL(request.url);
+    const { searchParams } = getURL(request.url);
     const clientVersion = searchParams.get("version");
 
     if (clientVersion !== envs.version)

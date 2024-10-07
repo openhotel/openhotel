@@ -1,6 +1,7 @@
 import { ApiRequestProps } from "shared/types/api.types.ts";
 import { getIpFromRequest, getIpFromUrl } from "shared/utils/ip.utils.ts";
 import { ProxyEvent } from "shared/enums/event.enum.ts";
+import { getURL } from "shared/utils/urls.utils.ts";
 
 export const getUserDisconnectedRequest = {
   method: "GET",
@@ -21,7 +22,7 @@ export const getUserDisconnectedRequest = {
         },
       );
 
-    const { searchParams } = new URL(request.url);
+    const { searchParams } = getURL(request.url);
     const accountId = searchParams.get("accountId");
 
     const authIp = await getIpFromUrl(config.auth.url);
