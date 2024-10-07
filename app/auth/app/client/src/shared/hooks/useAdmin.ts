@@ -29,11 +29,21 @@ export const useAdmin = () => {
       method: "GET",
     }).then((response) => response.json());
 
+  const account = {
+    getList: async () =>
+      await fetch(`/api/v2/admin/account/list`, {
+        headers: getHeaders(),
+        method: "GET",
+      }).then((response) => response.json()),
+  };
+
   return {
     getList,
     add,
     remove,
     //
     update,
+
+    account,
   };
 };

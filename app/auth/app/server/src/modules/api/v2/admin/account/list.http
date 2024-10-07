@@ -1,0 +1,2 @@
+# Get list
+GET http://localhost:2024/api/v2/admin/account/list

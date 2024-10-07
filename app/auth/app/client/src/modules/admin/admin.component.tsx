@@ -1,17 +1,13 @@
 import React, { FormEvent, useCallback, useEffect, useState } from "react";
 import { useAdmin, useApi } from "shared/hooks";
+import { Account } from "shared/types";
 
 export const AdminComponent: React.FC = () => {
-  const { getList, remove, add, update } = useAdmin();
+  const { getList, remove, add, update, account } = useAdmin();
   const { getVersion } = useApi();
 
-  const [adminList, setAdminList] = useState<
-    {
-      accountId: string;
-      username: string;
-      email: string;
-    }[]
-  >([]);
+  const [adminList, setAdminList] = useState<Account[]>([]);
+  const [accountList, setAccountList] = useState<Account[]>([]);
   const [version, setVersion] = useState<string>();
 
   const $reloadList = () =>
@@ -20,6 +16,7 @@ export const AdminComponent: React.FC = () => {
   useEffect(() => {
     $reloadList();
     getVersion().then(({ version }) => setVersion(version));
+    account.getList().then(({ data }) => setAccountList(data.accountList));
   }, []);
 
   const removeAdmin = (email) => () => {
@@ -71,6 +68,21 @@ export const AdminComponent: React.FC = () => {
       <button onClick={$update}>Update</button>
       <br />
       <b>{version}</b>
+      <br />
+      <h1>Accounts</h1>
+      <div>
+        <div>Accounts: ({accountList.length})</div>
+        {accountList.map((user) => (
+          <div key={user.accountId}>
+            <label title={user.email}>
+              {user.email.substring(0, 1)}***@***
+              {user.email.substring(user.email.length - 1, user.email.length)}
+            </label>
+            - {user.username}
+          </div>
+        ))}
+      </div>
+      <br />
       <br />
     </div>
   );
