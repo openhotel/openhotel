@@ -244,7 +244,6 @@ export const users = () => {
   };
 
   const getList = () => Object.values($userMap);
-
   const $getConfig = (): Promise<UsersConfig> => {
     return getConfig<UsersConfig>({
       defaults: USERS_CONFIG_DEFAULT,
