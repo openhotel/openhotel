@@ -9,3 +9,4 @@ export * from "./content-type.utils.ts";
 export * from "./cors.utils.ts";
 export * from "./urls.utils.ts";
 export * from "./wait.utils.ts";
+export * from "./update.utils.ts";
