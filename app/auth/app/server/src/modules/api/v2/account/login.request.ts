@@ -1,12 +1,12 @@
-import { RequestType } from "shared/types/main.ts";
-import { RequestMethod } from "shared/enums/main.ts";
-import { System } from "modules/system/main.ts";
-import * as bcrypt from "bcrypt";
 import {
+  RequestType,
+  RequestMethod,
   getIpFromRequest,
   getRandomString,
-  getRedirectUrl,
-} from "shared/utils/main.ts";
+} from "@oh/utils";
+import { System } from "modules/system/main.ts";
+import * as bcrypt from "bcrypt";
+import { getRedirectUrl } from "shared/utils/main.ts";
 import {
   REFRESH_TOKEN_EXPIRE_TIME,
   SERVER_SESSION_EXPIRE_TIME,

@@ -1,5 +1,4 @@
-import { RequestType } from "shared/types/main.ts";
-import { getPathRequestList } from "shared/utils/main.ts";
+import { RequestType, getPathRequestList } from "@oh/utils";
 
 import { postRequest } from "modules/api/v2/account/otp/post.request.ts";
 import { verifyRequest } from "./verify.request.ts";

@@ -15,17 +15,13 @@
   },
   "imports": {
     "@oh/queue": "jsr:@oh/queue@1.1.1",
-    "@oh/updater": "jsr:@oh/updater@1.1.1",
-    "@oh/config": "jsr:@oh/config@1.1.1",
-    "@oh/db": "jsr:@oh/db@1.1.2",
+    "@oh/utils": "jsr:@oh/utils@1.2.3",
 
     "shared/": "./src/shared/",
     "modules/": "./src/modules/",
 
     "deno/": "https://deno.land/std@0.221.0/",
     "loadenv": "https://deno.land/x/loadenv@v1.0.1/mod.ts",
-
-    "yaml": "npm:yaml@2.4.2",
 
     "bcrypt": "https://deno.land/x/bcrypt@v0.4.1/mod.ts",
     "nodemailer": "npm:nodemailer@6.9.15",

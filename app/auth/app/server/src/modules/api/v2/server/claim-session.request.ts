@@ -1,10 +1,12 @@
-import { RequestType } from "shared/types/main.ts";
-import { RequestMethod } from "shared/enums/main.ts";
+import {
+  RequestType,
+  RequestMethod,
+  getIpFromRequest,
+  getRandomString,
+} from "@oh/utils";
 import { System } from "modules/system/main.ts";
 import * as bcrypt from "bcrypt";
 import { SERVER_SESSION_EXPIRE_TIME } from "shared/consts/session.consts.ts";
-import { getIpFromRequest } from "shared/utils/ip.utils.ts";
-import { getRandomString } from "shared/utils/random.utils.ts";
 
 export const claimSessionRequest: RequestType = {
   method: RequestMethod.POST,

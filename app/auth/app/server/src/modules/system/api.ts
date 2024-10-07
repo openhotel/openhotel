@@ -1,9 +1,5 @@
 import { requestV2List } from "modules/api/v2/main.ts";
-import {
-  appendCORSHeaders,
-  getContentType,
-  getCORSHeaders,
-} from "shared/utils/main.ts";
+import { appendCORSHeaders, getContentType, getCORSHeaders } from "@oh/utils";
 import { System } from "./main.ts";
 
 export const api = () => {

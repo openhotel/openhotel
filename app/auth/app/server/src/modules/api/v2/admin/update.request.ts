@@ -1,7 +1,5 @@
-import { RequestType } from "shared/types/request.types.ts";
-import { RequestMethod } from "shared/enums/request.enum.ts";
+import { RequestType, RequestMethod, update } from "@oh/utils";
 import { isAccountAdminValid } from "shared/utils/account.utils.ts";
-import { load as loadUpdater } from "modules/updater/main.ts";
 import { System } from "modules/system/main.ts";
 
 export const updateGetRequest: RequestType = {
@@ -18,7 +16,17 @@ export const updateGetRequest: RequestType = {
         },
       );
 
-    const canUpdate = await loadUpdater(System.getEnvs());
+    const { version } = System.getEnvs();
+
+    const canUpdate =
+      version !== "DEVELOPMENT" &&
+      (await update({
+        targetVersion: "latest",
+        version,
+        repository: "openhotel/auth",
+        log: console.log,
+        debug: console.debug,
+      }));
 
     if (!canUpdate)
       return Response.json(

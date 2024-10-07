@@ -1,5 +1,4 @@
-import { RequestType } from "shared/types/main.ts";
-import { RequestMethod } from "shared/enums/main.ts";
+import { RequestType, RequestMethod, getRandomString } from "@oh/utils";
 import { System } from "modules/system/main.ts";
 import * as bcrypt from "bcrypt";
 import {
@@ -8,7 +7,6 @@ import {
   ACCOUNT_EXPIRE_TIME,
   USERNAME_REGEX,
 } from "shared/consts/main.ts";
-import { getRandomString } from "shared/utils/random.utils.ts";
 
 export const registerRequest: RequestType = {
   method: RequestMethod.POST,
