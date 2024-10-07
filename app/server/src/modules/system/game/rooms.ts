@@ -291,13 +291,12 @@ export const rooms = () => {
   };
 
   const load = async () => {
-    const isEmptyRooms = await System.db.isEmpty({ prefix: ["rooms"] });
-    if (isEmptyRooms) await generateDefaultRooms();
+    const rooms = await System.db.list({ prefix: ["rooms"] });
+    if (!rooms) await generateDefaultRooms();
 
-    const rooms = System.db.list({ prefix: ["rooms"] });
-    for await (const entry of rooms) {
-      create(entry.value);
-      log(`Loaded room ${entry.key[1]}...`);
+    for (const { value, key } of rooms) {
+      create(value);
+      log(`Loaded room ${key[1]}...`);
     }
   };
 

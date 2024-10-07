@@ -1,5 +1,6 @@
 import {
   appendCORSHeaders,
+  debug,
   getRandomString,
   initLog,
   log,
@@ -15,10 +16,10 @@ import {
 import { getServerSocket, ServerClient } from "socket_ionic";
 import { PROXY_CLIENT_EVENT_WHITELIST } from "shared/consts/main.ts";
 import { ProxyEvent } from "shared/enums/main.ts";
-import { load as loadUpdater } from "modules/updater/main.ts";
 import { routesList } from "./router/main.ts";
 import { requestClient } from "./client.request.ts";
 import * as bcrypt from "bcrypt";
+import { update } from "@oh/updater";
 
 const serverWorker = getChildWorker();
 
@@ -105,9 +106,17 @@ serverWorker.on(ProxyEvent.$DISCONNECT_USER, ({ clientId }) => {
   }
 });
 serverWorker.on(ProxyEvent.$UPDATE, async () => {
-  const canUpdate = await loadUpdater({ config: $config, envs: $envs });
-
-  if (canUpdate) serverWorker.emit(ProxyEvent.$STOP);
+  if (
+    !$envs.isDevelopment &&
+    (await update({
+      targetVersion: $config.version,
+      version: $envs.version,
+      repository: "openhotel/openhotel",
+      log,
+      debug,
+    }))
+  )
+    serverWorker.emit(ProxyEvent.$STOP);
 });
 
 serverWorker.on("start", async ({ config, envs }: WorkerProps) => {
