@@ -20,6 +20,7 @@
     "@oh/updater": "jsr:@oh/updater@1.1.1",
     "@oh/config": "jsr:@oh/config@1.1.1",
     "@oh/yaml": "jsr:@oh/yaml@1.1.0",
+    "@oh/db": "jsr:@oh/db@1.1.1",
 
     "dayjs": "https://deno.land/x/deno_dayjs@v0.5.0/mod.ts",
     "deno/": "https://deno.land/std@0.221.0/",

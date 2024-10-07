@@ -1,13 +1,13 @@
 import { Envs, ConfigTypes } from "shared/types/main.ts";
 import { proxy } from "./proxy/main.ts";
 import { game } from "./game/main.ts";
-import { initLog, log } from "shared/utils/main.ts";
+import { debug, initLog, log } from "shared/utils/main.ts";
 import { tasks } from "./tasks.ts";
-import { db } from "./db/main.ts";
 import { CONFIG_DEFAULT } from "shared/consts/config.consts.ts";
 import { getConfig } from "@oh/config";
-import { load as loadUpdater } from "modules/updater/main.ts";
+import { getDb } from "@oh/db";
 import { load as loadProxy } from "modules/proxy/main.ts";
+import { update } from "@oh/updater";
 
 export const System = (() => {
   let $config: ConfigTypes;
@@ -16,7 +16,7 @@ export const System = (() => {
   const $proxy = proxy();
   const $tasks = tasks();
   const $game = game();
-  const $db = db();
+  const $db = getDb({ pathname: `./server-database` });
 
   const load = async (envs: Envs) => {
     console.clear();
@@ -32,7 +32,17 @@ export const System = (() => {
     });
 
     // Check for an update if true, close the server
-    if (await loadUpdater({ config: $config, envs })) return;
+    if (
+      !envs.isDevelopment &&
+      (await update({
+        targetVersion: $config.version,
+        version: envs.version,
+        repository: "openhotel/openhotel",
+        log,
+        debug,
+      }))
+    )
+      return;
 
     // -> Load proxy
     const { proxyWorker } = await loadProxy({ config: $config, envs });

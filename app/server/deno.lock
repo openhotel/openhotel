@@ -3,6 +3,7 @@
   "packages": {
     "specifiers": {
       "jsr:@oh/config@1.1.1": "jsr:@oh/config@1.1.1",
+      "jsr:@oh/db@1.1.1": "jsr:@oh/db@1.1.1",
       "jsr:@oh/pathfinding@2.0.3": "jsr:@oh/pathfinding@2.0.3",
       "jsr:@oh/queue@1.1.1": "jsr:@oh/queue@1.1.1",
       "jsr:@oh/updater@1.1.1": "jsr:@oh/updater@1.1.1",
@@ -18,6 +19,9 @@
         "dependencies": [
           "jsr:@oh/yaml@1.1.0"
         ]
+      },
+      "@oh/db@1.1.1": {
+        "integrity": "efc17746cdcfd7aa5de53df9a47319140377f38c7d9ee6eaa28d55239eb37f45"
       },
       "@oh/pathfinding@2.0.3": {
         "integrity": "a0812c0706d0d4fe21ae70e2cd63242e40b903972b21ba5f4f59d0b8f78eb351"
@@ -467,6 +471,7 @@
   "workspace": {
     "dependencies": [
       "jsr:@oh/config@1.1.1",
+      "jsr:@oh/db@1.1.1",
       "jsr:@oh/pathfinding@2.0.3",
       "jsr:@oh/queue@1.1.1",
       "jsr:@oh/updater@1.1.1",
