@@ -20,7 +20,7 @@ export const banCommand: Command = {
 
     bannedUser.disconnect();
     user.emit(ProxyEvent.SYSTEM_MESSAGE, {
-      message: __(user.getLanguage(), "User {{username}} has been banned", {
+      message: __(user.getLanguage())("User {{username}} has been banned", {
         username,
       }),
     });

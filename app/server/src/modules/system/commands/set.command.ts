@@ -1,9 +1,8 @@
 import { Command, RoomFurniture } from "shared/types/main.ts";
 import { ProxyEvent } from "shared/enums/event.enum.ts";
 import { System } from "modules/system/main.ts";
-import { getRandomString } from "shared/utils/random.utils.ts";
-import { CrossDirection } from "shared/enums/direction.enums.ts";
 import { FurnitureType } from "shared/enums/furniture.enum.ts";
+import { getRandomString, CrossDirection } from "@oh/utils";
 
 export const setCommand: Command = {
   command: "set",

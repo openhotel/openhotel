@@ -8,7 +8,7 @@ export const updateCommand: Command = {
   func: async ({ user }) => {
     System.proxy.$emit(ProxyEvent.$UPDATE);
     user.emit(ProxyEvent.SYSTEM_MESSAGE, {
-      message: __(user.getLanguage(), "Checking new versions..."),
+      message: __(user.getLanguage())("Checking new versions..."),
     });
   },
 };

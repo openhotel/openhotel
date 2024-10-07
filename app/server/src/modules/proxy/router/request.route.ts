@@ -1,8 +1,7 @@
 import { ApiRequestProps } from "shared/types/main.ts";
-import { getRandomString } from "shared/utils/random.utils.ts";
+import { getRandomString, getURL } from "@oh/utils";
 import { protocolToken, ticketMap, userList } from "../proxy.worker.ts";
 import { log } from "shared/utils/log.utils.ts";
-import { getURL } from "shared/utils/urls.utils.ts";
 
 export const getRequestRequest = {
   method: "GET",

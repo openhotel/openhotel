@@ -15,7 +15,7 @@ export const kickCommand: Command = {
     kickUser.disconnect();
 
     user.emit(ProxyEvent.SYSTEM_MESSAGE, {
-      message: __(user.getLanguage(), "User {{username}} kicked", { username }),
+      message: __(user.getLanguage())("User {{username}} kicked", { username }),
     });
   },
 };
