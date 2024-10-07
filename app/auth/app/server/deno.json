@@ -17,6 +17,7 @@
     "@oh/queue": "jsr:@oh/queue@1.1.1",
     "@oh/updater": "jsr:@oh/updater@1.1.1",
     "@oh/config": "jsr:@oh/config@1.1.1",
+    "@oh/db": "jsr:@oh/db@1.1.2",
 
     "shared/": "./src/shared/",
     "modules/": "./src/modules/",

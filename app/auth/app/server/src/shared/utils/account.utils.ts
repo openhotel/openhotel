@@ -4,17 +4,14 @@ import * as bcrypt from "bcrypt";
 export const getAccountFromRequest = async ({ headers }: Request) => {
   const sessionId = headers.get("sessionId");
 
-  const { value: accountBySession } = await System.db.get([
+  const accountBySession = await System.db.get([
     "accountsBySession",
     sessionId,
   ]);
 
   if (!accountBySession) return null;
 
-  const { value: account } = await System.db.get([
-    "accounts",
-    accountBySession,
-  ]);
+  const account = await System.db.get(["accounts", accountBySession]);
 
   return account;
 };
@@ -27,10 +24,7 @@ export const isAccountAuthValid = async ({
 
   if (!sessionId || !token) return 403;
 
-  const { value: ticketBySession } = await System.db.get([
-    "ticketBySession",
-    sessionId,
-  ]);
+  const ticketBySession = await System.db.get(["ticketBySession", sessionId]);
 
   //cannot use a session generated with a ticket
   if (ticketBySession) return 410;

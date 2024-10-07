@@ -28,7 +28,7 @@ export const refreshSessionRequest: RequestType = {
 
     let ticket;
     if (ticketId) {
-      const { value: foundTicket } = await System.db.get(["tickets", ticketId]);
+      const foundTicket = await System.db.get(["tickets", ticketId]);
 
       ticket = foundTicket;
       if (!foundTicket || foundTicket.isUsed)
@@ -40,7 +40,7 @@ export const refreshSessionRequest: RequestType = {
         );
     }
 
-    const { value: accountByRefreshSession } = await System.db.get([
+    const accountByRefreshSession = await System.db.get([
       "accountsByRefreshSession",
       sessionId,
     ]);
@@ -53,10 +53,7 @@ export const refreshSessionRequest: RequestType = {
         },
       );
 
-    const { value: account } = await System.db.get([
-      "accounts",
-      accountByRefreshSession,
-    ]);
+    const account = await System.db.get(["accounts", accountByRefreshSession]);
 
     if (!account)
       return Response.json(

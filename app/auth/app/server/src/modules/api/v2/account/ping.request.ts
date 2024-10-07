@@ -19,7 +19,7 @@ export const pingRequest: RequestType = {
       );
 
     // const account = await getAccountFromRequest(request);
-    const { value: serverSession } = await System.db.get([
+    const serverSession = await System.db.get([
       "serverSessionByAccount",
       accountId,
     ]);

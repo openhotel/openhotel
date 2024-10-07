@@ -31,10 +31,9 @@ export const loginRequest: RequestType = {
 
     let ticket;
     if (ticketId) {
-      const { value: foundTicket } = await System.db.get(["tickets", ticketId]);
-      ticket = foundTicket;
+      ticket = await System.db.get(["tickets", ticketId]);
 
-      if (!foundTicket || foundTicket.isUsed)
+      if (!ticket || ticket.isUsed)
         return Response.json(
           { status: 410 },
           {
@@ -43,10 +42,7 @@ export const loginRequest: RequestType = {
         );
     }
 
-    const { value: accountByEmail } = await System.db.get([
-      "accountsByEmail",
-      email,
-    ]);
+    const accountByEmail = await System.db.get(["accountsByEmail", email]);
 
     if (!accountByEmail)
       return Response.json(
@@ -55,10 +51,7 @@ export const loginRequest: RequestType = {
           status: 403,
         },
       );
-    const { value: account } = await System.db.get([
-      "accounts",
-      accountByEmail,
-    ]);
+    const account = await System.db.get(["accounts", accountByEmail]);
     if (!account)
       return Response.json(
         { status: 403 },
@@ -85,10 +78,7 @@ export const loginRequest: RequestType = {
         },
       );
 
-    const { value: accountOTP } = await System.db.get([
-      "accountOTP",
-      account.accountId,
-    ]);
+    const accountOTP = await System.db.get(["accountOTP", account.accountId]);
 
     let isValidOTP = true;
 

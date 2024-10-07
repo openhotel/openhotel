@@ -44,14 +44,11 @@ export const registerRequest: RequestType = {
         },
       );
 
-    const { value: accountByUsername } = await System.db.get([
+    const accountByUsername = await System.db.get([
       "accountsByUsername",
       username.toLowerCase(),
     ]);
-    const { value: accountByEmail } = await System.db.get([
-      "accountsByEmail",
-      email,
-    ]);
+    const accountByEmail = await System.db.get(["accountsByEmail", email]);
 
     if (accountByUsername || accountByEmail)
       return Response.json(

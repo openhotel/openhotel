@@ -31,10 +31,7 @@ export const verifyRequest: RequestType = {
 
     const account = await getAccountFromRequest(request);
 
-    const { value: accountOTP } = await System.db.get([
-      "accountOTP",
-      account.accountId,
-    ]);
+    const accountOTP = await System.db.get(["accountOTP", account.accountId]);
     if (!accountOTP)
       return Response.json(
         {

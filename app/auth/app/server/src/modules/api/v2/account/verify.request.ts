@@ -18,10 +18,7 @@ export const verifyRequest: RequestType = {
         },
       );
 
-    const { value: accountByVerifyId } = await System.db.get([
-      "accountsByVerifyId",
-      id,
-    ]);
+    const accountByVerifyId = await System.db.get(["accountsByVerifyId", id]);
 
     if (!accountByVerifyId)
       return Response.json(
@@ -31,10 +28,7 @@ export const verifyRequest: RequestType = {
         },
       );
 
-    const { value: account } = await System.db.get([
-      "accounts",
-      accountByVerifyId,
-    ]);
+    const account = await System.db.get(["accounts", accountByVerifyId]);
     if (!account || !account.verifyId || !account.verifyTokensHash)
       return Response.json(
         { status: 403 },

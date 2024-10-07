@@ -20,7 +20,7 @@ export const claimSessionRequest: RequestType = {
         },
       );
 
-    const { value: ticket } = await System.db.get(["tickets", ticketId]);
+    const ticket = await System.db.get(["tickets", ticketId]);
 
     if (!ticket || !ticket.isUsed)
       return Response.json(
@@ -39,7 +39,7 @@ export const claimSessionRequest: RequestType = {
         },
       );
 
-    const { value: accountBySession } = await System.db.get([
+    const accountBySession = await System.db.get([
       "accountsBySession",
       sessionId,
     ]);
@@ -52,10 +52,7 @@ export const claimSessionRequest: RequestType = {
         },
       );
 
-    const { value: account } = await System.db.get([
-      "accounts",
-      accountBySession,
-    ]);
+    const account = await System.db.get(["accounts", accountBySession]);
 
     if (!account)
       return Response.json(
@@ -65,7 +62,7 @@ export const claimSessionRequest: RequestType = {
         },
       );
 
-    const { value: serverSession } = await System.db.get([
+    const serverSession = await System.db.get([
       "serverSessionByAccount",
       account.accountId,
     ]);

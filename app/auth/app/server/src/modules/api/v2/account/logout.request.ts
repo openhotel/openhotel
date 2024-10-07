@@ -17,7 +17,7 @@ export const logoutRequest: RequestType = {
         },
       );
 
-    const { value: accountByRefreshSession } = await System.db.get([
+    const accountByRefreshSession = await System.db.get([
       "accountsByRefreshSession",
       sessionId,
     ]);
@@ -30,10 +30,7 @@ export const logoutRequest: RequestType = {
         },
       );
 
-    const { value: account } = await System.db.get([
-      "accounts",
-      accountByRefreshSession,
-    ]);
+    const account = await System.db.get(["accounts", accountByRefreshSession]);
 
     if (!account)
       return Response.json(
