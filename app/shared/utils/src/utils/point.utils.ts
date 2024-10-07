@@ -4,7 +4,7 @@ export const isPoint3dEqual = (
   pointA: Point3d,
   pointB: Point3d,
   ignoreY: boolean = true,
-) =>
+): boolean =>
   pointA?.x === pointB?.x &&
   (pointA?.y === pointB?.y || ignoreY) &&
   pointA?.z === pointB?.z;
