@@ -1,4 +1,4 @@
-import { getContentType } from "shared/utils/main.ts";
+import { getContentType, getURL } from "shared/utils/main.ts";
 import { ConfigTypes } from "shared/types/config.types.ts";
 
 export const requestClient = async (request: Request, config: ConfigTypes) => {
@@ -6,7 +6,7 @@ export const requestClient = async (request: Request, config: ConfigTypes) => {
 
   try {
     const { url } = request;
-    const { pathname } = new URL(url);
+    const { pathname } = getURL(url);
 
     if (!pathname.startsWith(ROOT_DIR_PATH)) {
       return new Response("404", { status: 404 });

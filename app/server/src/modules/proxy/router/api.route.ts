@@ -1,6 +1,6 @@
 import { ApiRequestProps } from "shared/types/main.ts";
 import { ProxyEvent } from "shared/enums/main.ts";
-import { getRandomString } from "shared/utils/main.ts";
+import { getRandomString, getURL } from "shared/utils/main.ts";
 import * as bcrypt from "bcrypt";
 
 export const getApiRequest = {
@@ -31,7 +31,7 @@ export const getApiRequest = {
       );
 
     let data = {};
-    const { searchParams, pathname: currentPathname } = new URL(request.url);
+    const { searchParams, pathname: currentPathname } = getURL(request.url);
     for (const [key, value] of searchParams as any) data[key] = value;
 
     const pathname = currentPathname.replace("/proxy", "").replace("/api", "");
