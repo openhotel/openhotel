@@ -15,7 +15,7 @@ export const deopCommand: Command = {
     await System.game.users.setConfig(config);
 
     user.emit(ProxyEvent.SYSTEM_MESSAGE, {
-      message: __(user.getLanguage(), "User {{username}} is no longer op", {
+      message: __(user.getLanguage())("User {{username}} is no longer op", {
         username,
       }),
     });

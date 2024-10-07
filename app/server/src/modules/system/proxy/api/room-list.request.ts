@@ -1,6 +1,6 @@
 import { ProxyRequestType } from "shared/types/api.types.ts";
 import { System } from "modules/system/main.ts";
-import { RequestMethod } from "shared/enums/request.enum.ts";
+import { RequestMethod } from "@oh/utils";
 
 export const roomListRequest: ProxyRequestType = {
   pathname: "/room-list",

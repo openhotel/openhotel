@@ -1,7 +1,8 @@
 import { Command } from "shared/types/main.ts";
 import { System } from "modules/system/main.ts";
 import { ProxyEvent } from "shared/enums/main.ts";
-import { __, isPoint3dEqual } from "shared/utils/main.ts";
+import { __ } from "shared/utils/main.ts";
+import { isPoint3dEqual } from "@oh/utils";
 
 export const unsetCommand: Command = {
   command: "unset",
@@ -21,7 +22,7 @@ export const unsetCommand: Command = {
 
     if (!furniture) {
       user.emit(ProxyEvent.SYSTEM_MESSAGE, {
-        message: __(user.getLanguage(), "Furniture not found on {{x}},{{z}}", {
+        message: __(user.getLanguage())("Furniture not found on {{x}},{{z}}", {
           x: x.toString(),
           z: z.toString(),
         }),

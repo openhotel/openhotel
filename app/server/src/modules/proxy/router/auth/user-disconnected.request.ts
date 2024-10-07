@@ -1,7 +1,5 @@
 import { ApiRequestProps } from "shared/types/api.types.ts";
-import { getIpFromRequest, getIpFromUrl } from "shared/utils/ip.utils.ts";
-import { ProxyEvent } from "shared/enums/event.enum.ts";
-import { getURL } from "shared/utils/urls.utils.ts";
+import { getIpFromRequest, getIpFromUrl, getURL } from "@oh/utils";
 
 export const getUserDisconnectedRequest = {
   method: "GET",

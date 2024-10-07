@@ -6,7 +6,7 @@ export const stopCommand: Command = {
   command: "stop",
   func: ({ user }) => {
     user.emit(ProxyEvent.SYSTEM_MESSAGE, {
-      message: __(user.getLanguage(), "Stopping server..."),
+      message: __(user.getLanguage())("Stopping server..."),
     });
 
     //@ts-ignore

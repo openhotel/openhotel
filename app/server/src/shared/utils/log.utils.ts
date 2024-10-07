@@ -1,4 +1,4 @@
-import { getBeautyDate } from "./date.utils.ts";
+import { getBeautyDate } from "@oh/utils";
 import { Envs } from "shared/types/envs.types.ts";
 
 export const initLog = (envs: Envs) => {
