@@ -1,4 +1,4 @@
-import { getContentType, getURL } from "shared/utils/main.ts";
+import { getContentType, getURL } from "@oh/utils";
 import { ConfigTypes } from "shared/types/config.types.ts";
 
 export const requestClient = async (request: Request, config: ConfigTypes) => {

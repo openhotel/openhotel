@@ -1,8 +1,9 @@
 import { ProxyEventType } from "shared/types/main.ts";
 import { ProxyEvent } from "shared/enums/main.ts";
 import { System } from "modules/system/main.ts";
-import { getRandomNumberFromSeed, log } from "shared/utils/main.ts";
+import { log } from "shared/utils/main.ts";
 import { executeCommand } from "modules/system/commands/main.ts";
+import { getRandomNumberFromSeed } from "@oh/utils";
 
 export const messageEvent: ProxyEventType<{ message: string }> = {
   event: ProxyEvent.MESSAGE,

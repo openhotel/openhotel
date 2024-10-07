@@ -1,26 +1,12 @@
-import { Language } from "shared/enums/languages.enum.ts";
+import { getLang } from "@oh/utils";
+import { Language } from "../enums/languages.enum.ts";
 
 // @ts-ignore
 import localeEN from "../../../assets/locales/en.json" with { type: "json" };
 // @ts-ignore
 import localeES from "../../../assets/locales/es.json" with { type: "json" };
 
-let locales = {
-  en: localeEN,
-  es: localeES,
-};
-
-export const __ = (
-  code: Language,
-  key: string,
-  obj?: { [key: string]: string },
-): string => {
-  let result = locales[code][key] ?? key;
-
-  obj &&
-    Object.keys(obj).forEach((key) => {
-      result = result.replace(`{{${key}}}`, obj[key]);
-    });
-
-  return result;
-};
+export const __ = getLang<Language>({
+  [Language.EN]: localeEN,
+  [Language.ES]: localeES,
+});

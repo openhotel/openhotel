@@ -1,5 +1,5 @@
-import { Point3d } from "shared/types/point.types.ts";
-import { ProxyEvent, Direction, Language } from "shared/enums/main.ts";
+import { Point3d, Direction } from "@oh/utils";
+import { ProxyEvent, Language } from "shared/enums/main.ts";
 
 export type PrivateUser = {
   accountId: string;

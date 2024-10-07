@@ -1,7 +1,7 @@
 import { ApiRequestProps } from "shared/types/main.ts";
 import { ProxyEvent } from "shared/enums/main.ts";
-import { getRandomString, getURL } from "shared/utils/main.ts";
 import * as bcrypt from "bcrypt";
+import { getRandomString, getURL } from "@oh/utils";
 
 export const getApiRequest = {
   method: "GET",

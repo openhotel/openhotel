@@ -12,7 +12,7 @@ export const opCommand: Command = {
     const config = await System.game.users.getConfig();
     if (config.op.users.includes(username)) {
       user.emit(ProxyEvent.SYSTEM_MESSAGE, {
-        message: __(user.getLanguage(), "User {{username}} was already op", {
+        message: __(user.getLanguage())("User {{username}} was already op", {
           username,
         }),
       });
@@ -23,7 +23,7 @@ export const opCommand: Command = {
     await System.game.users.setConfig(config);
 
     user.emit(ProxyEvent.SYSTEM_MESSAGE, {
-      message: __(user.getLanguage(), "User {{username}} is now op", {
+      message: __(user.getLanguage())("User {{username}} is now op", {
         username,
       }),
     });

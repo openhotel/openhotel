@@ -17,7 +17,7 @@ export const unbanCommand: Command = {
     await System.game.users.setConfig(config);
 
     user.emit(ProxyEvent.SYSTEM_MESSAGE, {
-      message: __(user.getLanguage(), "User {{username}} has been unbanned", {
+      message: __(user.getLanguage())("User {{username}} has been unbanned", {
         username,
       }),
     });

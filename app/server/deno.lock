@@ -2,37 +2,31 @@
   "version": "3",
   "packages": {
     "specifiers": {
-      "jsr:@oh/config@1.1.1": "jsr:@oh/config@1.1.1",
-      "jsr:@oh/db@1.1.2": "jsr:@oh/db@1.1.2",
       "jsr:@oh/pathfinding@2.0.3": "jsr:@oh/pathfinding@2.0.3",
       "jsr:@oh/queue@1.1.1": "jsr:@oh/queue@1.1.1",
-      "jsr:@oh/updater@1.1.1": "jsr:@oh/updater@1.1.1",
+      "jsr:@oh/utils@1.2.2": "jsr:@oh/utils@1.2.2",
       "jsr:@oh/yaml@1.1.0": "jsr:@oh/yaml@1.1.0",
       "jsr:@std/fs@1.0.4": "jsr:@std/fs@1.0.4",
       "jsr:@std/path@1.0.6": "jsr:@std/path@1.0.6",
       "jsr:@std/path@^1.0.6": "jsr:@std/path@1.0.6",
-      "jsr:@std/yaml@1.0.5": "jsr:@std/yaml@1.0.5"
+      "jsr:@std/yaml@1.0.5": "jsr:@std/yaml@1.0.5",
+      "npm:dayjs@1.11.13": "npm:dayjs@1.11.13"
     },
     "jsr": {
-      "@oh/config@1.1.1": {
-        "integrity": "5dc84429d3e4926ce1f4d7dbe72ed13da44ce26f8fa4440a7ceef4b78dd7fed1",
-        "dependencies": [
-          "jsr:@oh/yaml@1.1.0"
-        ]
-      },
-      "@oh/db@1.1.2": {
-        "integrity": "440b5c3610137c4b6955ecb410b605518e116a0d27fdaad9719bbc12284ef31e"
-      },
       "@oh/pathfinding@2.0.3": {
         "integrity": "a0812c0706d0d4fe21ae70e2cd63242e40b903972b21ba5f4f59d0b8f78eb351"
       },
       "@oh/queue@1.1.1": {
         "integrity": "8e8ec809202c48beaf436b3ea01b4c3a17f8c015ca686d906822482c9c881390"
       },
-      "@oh/updater@1.1.1": {
-        "integrity": "e44609b1cf52a31239714e6bbceb6aa9c32c6c3909724086781664beb00b2b51",
+      "@oh/utils@1.2.2": {
+        "integrity": "58fa3928c65fb4a490277d8e24c3634e66d764edeffed498c16c14d1620ef299",
         "dependencies": [
-          "jsr:@std/path@1.0.6"
+          "jsr:@oh/yaml@1.1.0",
+          "jsr:@std/fs@1.0.4",
+          "jsr:@std/path@1.0.6",
+          "jsr:@std/yaml@1.0.5",
+          "npm:dayjs@1.11.13"
         ]
       },
       "@oh/yaml@1.1.0": {
@@ -54,6 +48,12 @@
       },
       "@std/yaml@1.0.5": {
         "integrity": "71ba3d334305ee2149391931508b2c293a8490f94a337eef3a09cade1a2a2742"
+      }
+    },
+    "npm": {
+      "dayjs@1.11.13": {
+        "integrity": "sha512-oaMBel6gjolK862uaPQOVTA7q3TZhuSvuMQAAglQDOWYO9A91IrAOUJEyKVlqJlHE0vq5p5UXxzdPfMH/x6xNg==",
+        "dependencies": {}
       }
     }
   },
@@ -470,12 +470,9 @@
   },
   "workspace": {
     "dependencies": [
-      "jsr:@oh/config@1.1.1",
-      "jsr:@oh/db@1.1.2",
       "jsr:@oh/pathfinding@2.0.3",
       "jsr:@oh/queue@1.1.1",
-      "jsr:@oh/updater@1.1.1",
-      "jsr:@oh/yaml@1.1.0"
+      "jsr:@oh/utils@1.2.2"
     ]
   }
 }

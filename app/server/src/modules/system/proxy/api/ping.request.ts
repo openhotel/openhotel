@@ -1,5 +1,5 @@
 import { ProxyRequestType } from "shared/types/api.types.ts";
-import { RequestMethod } from "shared/enums/request.enum.ts";
+import { RequestMethod } from "@oh/utils";
 
 export const pingRequest: ProxyRequestType = {
   pathname: "/ping",

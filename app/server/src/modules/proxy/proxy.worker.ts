@@ -1,12 +1,4 @@
-import {
-  appendCORSHeaders,
-  debug,
-  getRandomString,
-  getURL,
-  initLog,
-  log,
-  waitUntil,
-} from "shared/utils/main.ts";
+import { debug, initLog, log } from "shared/utils/main.ts";
 import { getChildWorker } from "worker_ionic";
 import {
   ConfigTypes,
@@ -20,7 +12,13 @@ import { ProxyEvent } from "shared/enums/main.ts";
 import { routesList } from "./router/main.ts";
 import { requestClient } from "./client.request.ts";
 import * as bcrypt from "bcrypt";
-import { update } from "@oh/updater";
+import {
+  update,
+  waitUntil,
+  getRandomString,
+  getURL,
+  appendCORSHeaders,
+} from "@oh/utils";
 
 const serverWorker = getChildWorker();
 

@@ -4,10 +4,8 @@ import { game } from "./game/main.ts";
 import { debug, initLog, log } from "shared/utils/main.ts";
 import { tasks } from "./tasks.ts";
 import { CONFIG_DEFAULT } from "shared/consts/config.consts.ts";
-import { getConfig } from "@oh/config";
-import { getDb } from "@oh/db";
+import { getConfig, update, getDb } from "@oh/utils";
 import { load as loadProxy } from "modules/proxy/main.ts";
-import { update } from "@oh/updater";
 
 export const System = (() => {
   let $config: ConfigTypes;

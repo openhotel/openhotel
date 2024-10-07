@@ -1,5 +1,6 @@
-import { Point3d, RoomPoint } from "shared/types/main.ts";
-import { Direction, RoomPointEnum } from "shared/enums/main.ts";
+import { RoomPoint } from "shared/types/main.ts";
+import { RoomPointEnum } from "shared/enums/main.ts";
+import { Point3d, Direction } from "@oh/utils";
 import { Grid } from "@oh/pathfinding";
 
 export const getRoomGridLayout = (layout: RoomPoint[][]) => {

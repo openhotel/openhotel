@@ -7,7 +7,7 @@ export const helpCommand: Command = {
   command: "help",
   func: async ({ user }) => {
     user.emit(ProxyEvent.SYSTEM_MESSAGE, {
-      message: __(user.getLanguage(), "Available commands: {{commands}}", {
+      message: __(user.getLanguage())("Available commands: {{commands}}", {
         commands: commandList
           .filter((c) => c.command !== "help")
           .map((c) => c.command)

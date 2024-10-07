@@ -1,8 +1,7 @@
-import { readYaml, writeYaml } from "@oh/yaml";
+import { readYaml, writeYaml, createDirectoryIfNotExists } from "@oh/utils";
 import { Catalog, FurnitureData } from "shared/types/main.ts";
 import { FurnitureType } from "shared/enums/furniture.enum.ts";
 import { decompress } from "zip";
-import { createDirectoryIfNotExists } from "shared/utils/main.ts";
 
 export const furniture = () => {
   let $catalog: Catalog;

@@ -11,14 +11,14 @@ import { System } from "modules/system/main.ts";
 const on = (config: UsersConfig, _: string[], user: UserMutable) => {
   config.blacklist.active = true;
   user.emit(ProxyEvent.SYSTEM_MESSAGE, {
-    message: __(user.getLanguage(), "Blacklist enabled"),
+    message: __(user.getLanguage())("Blacklist enabled"),
   });
   return config;
 };
 const off = (config: UsersConfig, _: string[], user: UserMutable) => {
   config.blacklist.active = false;
   user.emit(ProxyEvent.SYSTEM_MESSAGE, {
-    message: __(user.getLanguage(), "Blacklist disabled"),
+    message: __(user.getLanguage())("Blacklist disabled"),
   });
   return config;
 };
@@ -28,7 +28,7 @@ const add = (config: UsersConfig, args: string[], user: UserMutable) => {
 
   config.blacklist.users.push(username);
   user.emit(ProxyEvent.SYSTEM_MESSAGE, {
-    message: __(user.getLanguage(), "User {{username}} added to blacklist", {
+    message: __(user.getLanguage())("User {{username}} added to blacklist", {
       username,
     }),
   });
@@ -38,8 +38,7 @@ const remove = (config: UsersConfig, args: string[], user: UserMutable) => {
   const username = args[0];
   config.blacklist.users = config.blacklist.users.filter((u) => u !== username);
   user.emit(ProxyEvent.SYSTEM_MESSAGE, {
-    message: __(
-      user.getLanguage(),
+    message: __(user.getLanguage())(
       "User {{username}} removed from blacklist",
       {
         username,
@@ -52,7 +51,7 @@ const list = (config: UsersConfig, _: string[], user: UserMutable) => {
   user.emit(ProxyEvent.SYSTEM_MESSAGE, {
     message:
       config.blacklist.users.join(", ") ||
-      __(user.getLanguage(), "There is no users on the blacklist"),
+      __(user.getLanguage())("There is no users on the blacklist"),
   });
   return config;
 };
