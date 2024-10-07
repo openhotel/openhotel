@@ -1,6 +1,6 @@
 import { OS } from "../enums/main.ts";
 
-export const getOS = () => {
+export const getOS = (): OS => {
   switch (Deno.build.os) {
     case "linux":
       return OS.LINUX;
@@ -12,7 +12,7 @@ export const getOS = () => {
   return OS.UNKNOWN;
 };
 
-export const getOSName = () => {
+export const getOSName = (): string | null => {
   const { os } = Deno.build;
   switch (os) {
     case "linux":
@@ -20,5 +20,5 @@ export const getOSName = () => {
     case "windows":
       return os;
   }
-  return undefined;
+  return null;
 };

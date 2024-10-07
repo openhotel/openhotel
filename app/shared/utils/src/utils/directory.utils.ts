@@ -1,7 +1,9 @@
 import * as path from "@std/path";
 import { exists } from "@std/fs";
 
-export const createDirectoryIfNotExists = async (filePath: string) => {
+export const createDirectoryIfNotExists = async (
+  filePath: string,
+): Promise<void> => {
   const dirPath = path.dirname(filePath);
   if (!(await exists(dirPath))) await Deno.mkdir(dirPath, { recursive: true });
 };

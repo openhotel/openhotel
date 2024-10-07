@@ -1,7 +1,7 @@
 export const getRandomNumber = (min: number, max: number): number =>
   Math.round(Math.random() * (max - min)) + min;
 
-export const getRandomString = (length: number) => {
+export const getRandomString = (length: number): string => {
   let result = "";
   const characters =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";

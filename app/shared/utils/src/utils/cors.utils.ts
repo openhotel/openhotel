@@ -14,6 +14,6 @@ export const getCORSHeaders = (): Headers => {
   return headers;
 };
 1;
-export const appendCORSHeaders = (headers: Headers) => {
+export const appendCORSHeaders = (headers: Headers): void => {
   for (const [key, value] of HEADERS) headers.append(key, value);
 };
