@@ -2,6 +2,7 @@ import {
   appendCORSHeaders,
   debug,
   getRandomString,
+  getURL,
   initLog,
   log,
   waitUntil,
@@ -132,7 +133,7 @@ serverWorker.on("start", async ({ config, envs }: WorkerProps) => {
       let { method, url } = request;
 
       if (envs.isDevelopment) url = url.replace("/proxy", "");
-      const { pathname } = new URL(url);
+      const { pathname } = getURL(url);
 
       const clientResponse = await requestClient(request, config);
       if (clientResponse) return clientResponse;
