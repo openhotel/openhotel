@@ -1,0 +1,63 @@
+name: Publish
+on:
+  push:
+    tags:
+      - "*"
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+jobs:
+  build:
+    name: "Build Onet"
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [darwin, linux, linux_aarch64, windows]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: denoland/setup-deno@v1
+        with:
+          deno-version: vx.x.x
+
+      - name: Set Versions
+        uses: actions/github-script@v4
+        id: set_version
+        with:
+          script: |
+            const tag = context.ref.substring(10).replace('v', '')
+            core.setOutput('tag', tag)
+            core.setOutput('version', tag.split("-")[0])
+
+      - name: Replace consts.ts version
+        uses: richardrigutins/replace-in-files@v2
+        with:
+          files: "./mod.ts"
+          search-text: "__VERSION__"
+          replacement-text: ${{ steps.set_version.outputs.tag }}
+
+      - name: Download client-build artifact
+        uses: actions/download-artifact@v4.1.8
+        with:
+          name: client-build
+          path: ./build/client
+
+      - name: Compile
+        run: deno task compile:${{ matrix.os }}
+
+      - name: "Zip build"
+        run: |
+          cd ./build/
+          zip -r ../onet_${{ matrix.os }}.zip .
+
+      - name: "Upload to release"
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: ./onet_${{ matrix.os }}.zip
+          tag: ${{ github.ref }}
+          overwrite: true
+          file_glob: true

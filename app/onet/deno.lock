@@ -1,0 +1,80 @@
+{
+  "version": "3",
+  "packages": {
+    "specifiers": {
+      "jsr:@da/socket@2.0.2": "jsr:@da/socket@2.0.2",
+      "jsr:@oh/utils@1.2.3": "jsr:@oh/utils@1.2.3",
+      "jsr:@oh/yaml@1.1.0": "jsr:@oh/yaml@1.1.0",
+      "jsr:@std/fs@1.0.4": "jsr:@std/fs@1.0.4",
+      "jsr:@std/path@1.0.6": "jsr:@std/path@1.0.6",
+      "jsr:@std/path@^1.0.6": "jsr:@std/path@1.0.6",
+      "jsr:@std/yaml@1.0.5": "jsr:@std/yaml@1.0.5",
+      "npm:dayjs@1.11.13": "npm:dayjs@1.11.13"
+    },
+    "jsr": {
+      "@da/socket@2.0.2": {
+        "integrity": "bca959ad3da7a4cb600d7daa569809a8801948f49a138a27e31d2ff8399e55cf"
+      },
+      "@oh/utils@1.2.3": {
+        "integrity": "6ca24af5ef4f812ef675844109adfdcd30f39bd7ce06695f214bd63b6f0bdab4",
+        "dependencies": [
+          "jsr:@oh/yaml@1.1.0",
+          "jsr:@std/fs@1.0.4",
+          "jsr:@std/path@1.0.6",
+          "jsr:@std/yaml@1.0.5",
+          "npm:dayjs@1.11.13"
+        ]
+      },
+      "@oh/yaml@1.1.0": {
+        "integrity": "57f2f01bf259dff8896fb9d8f4f49e477e6533ccc5cbc4559ebd8410142aeff5",
+        "dependencies": [
+          "jsr:@std/fs@1.0.4",
+          "jsr:@std/path@1.0.6",
+          "jsr:@std/yaml@1.0.5"
+        ]
+      },
+      "@std/fs@1.0.4": {
+        "integrity": "2907d32d8d1d9e540588fd5fe0ec21ee638134bd51df327ad4e443aaef07123c",
+        "dependencies": [
+          "jsr:@std/path@^1.0.6"
+        ]
+      },
+      "@std/path@1.0.6": {
+        "integrity": "ab2c55f902b380cf28e0eec501b4906e4c1960d13f00e11cfbcd21de15f18fed"
+      },
+      "@std/yaml@1.0.5": {
+        "integrity": "71ba3d334305ee2149391931508b2c293a8490f94a337eef3a09cade1a2a2742"
+      }
+    },
+    "npm": {
+      "dayjs@1.11.13": {
+        "integrity": "sha512-oaMBel6gjolK862uaPQOVTA7q3TZhuSvuMQAAglQDOWYO9A91IrAOUJEyKVlqJlHE0vq5p5UXxzdPfMH/x6xNg==",
+        "dependencies": {}
+      }
+    }
+  },
+  "remote": {
+    "https://deno.land/std@0.211.0/dotenv/mod.ts": "bcfa9c102d5ce6218ec0c4a69aa0fc1009fc309a85448f98a8debaa75866a3d7",
+    "https://deno.land/std@0.211.0/dotenv/parse.ts": "ddcb04a8a7198918cfc52efbebb0d4fc51abfea913649912fcc1cf4c52bd81a2",
+    "https://deno.land/std@0.211.0/dotenv/stringify.ts": "74521a8e907adffff19f132765902a8c51743e386107b91cc934bae154031e84",
+    "https://deno.land/x/loadenv@v1.0.1/mod.ts": "287c1cc1b4bf024a1381610428d783854853aa36cca6f927e5f6dba81f350616",
+    "https://deno.land/x/loadenv@v1.0.1/src/main.ts": "216f20535f9e41be15679b0a48bba5eeb8dcf12b3ad1a1ab1971c5b0ae698e0a",
+    "https://deno.land/x/socket_ionic@v1.9.4/mod.ts": "f82d8589770fa92d8209b3f85024598b963453b2b95833b51b270232280255d2",
+    "https://deno.land/x/socket_ionic@v1.9.4/src/client.ts": "8e4906376d7b89553965e9dd30ab7f70cc1d57db10eb745bf9f8c2dbd6684f55",
+    "https://deno.land/x/socket_ionic@v1.9.4/src/server.ts": "67ce2a2667cdda020976095c4323247e955b1d2cb85a4384c6912d8e3a3c0ab4",
+    "https://deno.land/x/socket_ionic@v1.9.4/src/types.ts": "c20ac2af2eb7011852705c5da1f35dce7a4f03e34aac22e2f91eef5a7e614cbd",
+    "https://deno.land/x/socket_ionic@v1.9.4/src/utis.ts": "728a8d5c39474ea7fdf00d13df2cf9b3d966560b3c746148906f7ea66345eed2"
+  },
+  "workspace": {
+    "dependencies": [
+      "jsr:@da/socket@2.0.2",
+      "jsr:@oh/queue@1.1.1",
+      "jsr:@oh/utils@1.2.3"
+    ],
+    "packageJson": {
+      "dependencies": [
+        "npm:prettier@3.3.3"
+      ]
+    }
+  }
+}
