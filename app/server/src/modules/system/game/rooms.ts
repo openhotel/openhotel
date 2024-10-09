@@ -256,9 +256,10 @@ export const rooms = () => {
   };
 
   const generateDefaultRooms = async () => {
-    for (const room of DEFAULT_ROOMS) {
+    for (const room of DEFAULT_ROOMS)
       await System.db.set(["rooms", room.id], room);
-    }
+
+    return await System.db.list({ prefix: ["rooms"] });
   };
 
   const $save = async (
@@ -284,8 +285,8 @@ export const rooms = () => {
   };
 
   const load = async () => {
-    const rooms = await System.db.list({ prefix: ["rooms"] });
-    if (!rooms.length) await generateDefaultRooms();
+    let rooms = await System.db.list({ prefix: ["rooms"] });
+    if (!rooms.length) rooms = await generateDefaultRooms();
 
     for (const { value, key } of rooms) {
       create(value);
