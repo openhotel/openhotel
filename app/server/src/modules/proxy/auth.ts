@@ -6,6 +6,7 @@ export const auth = () => {
   let $token: string;
 
   const load = async () => {
+    if (Proxy.getConfig().development) return;
     try {
       const { serverId, token } = await readYaml("./server.key", {
         decode: true,

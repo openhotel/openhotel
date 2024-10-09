@@ -285,7 +285,7 @@ export const rooms = () => {
 
   const load = async () => {
     const rooms = await System.db.list({ prefix: ["rooms"] });
-    if (!rooms) await generateDefaultRooms();
+    if (!rooms.length) await generateDefaultRooms();
 
     for (const { value, key } of rooms) {
       create(value);
