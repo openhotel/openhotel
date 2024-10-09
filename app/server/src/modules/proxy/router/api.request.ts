@@ -1,22 +1,18 @@
-import { ApiRequestProps } from "shared/types/main.ts";
 import { ProxyEvent } from "shared/enums/main.ts";
 import * as bcrypt from "bcrypt";
 import { getRandomString, getURL } from "@oh/utils";
+import { Proxy } from "modules/proxy/main.ts";
 
 export const getApiRequest = {
   method: "GET",
   pathname: "/api",
-  fn: async ({
-    request,
-    serverWorker,
-    userList,
-  }: ApiRequestProps): Promise<Response> => {
+  fn: async (request: Request): Promise<Response> => {
     const { headers, method } = request;
     const accountId: string = headers.get("accountId");
     const token: string = headers.get("token");
 
     // envs.isDevelopment ? userList[0] :
-    const user = userList.find(
+    const user = Proxy.getUserList().find(
       (user) =>
         user.accountId === accountId &&
         bcrypt.compareSync(token, user.apiToken),
@@ -39,7 +35,7 @@ export const getApiRequest = {
 
     try {
       return await new Promise<Response>((resolve) => {
-        serverWorker.emit(ProxyEvent.$USER_API_DATA, {
+        Proxy.getServerWorker().emit(ProxyEvent.$USER_API_DATA, {
           user,
           data,
           eventName,
@@ -47,7 +43,7 @@ export const getApiRequest = {
           method,
         });
 
-        serverWorker.on(eventName, ({ status, data }) => {
+        Proxy.getServerWorker().on(eventName, ({ status, data }) => {
           resolve(Response.json({ status, data }, { status }));
         });
       });

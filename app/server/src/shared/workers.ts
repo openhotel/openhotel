@@ -1,1 +1,1 @@
-export * from "../modules/proxy/proxy.worker.ts";
+export * from "../modules/proxy/main.ts";

@@ -5,6 +5,7 @@ export const CONFIG_DEFAULT: ConfigTypes = {
   name: "Open Hotel",
   description: "Welcome to the Hotel!",
   port: 1994,
+  development: false,
   limits: {
     players: 100,
   },

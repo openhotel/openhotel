@@ -5,7 +5,6 @@ import { debug, initLog, log } from "shared/utils/main.ts";
 import { tasks } from "./tasks.ts";
 import { CONFIG_DEFAULT } from "shared/consts/config.consts.ts";
 import { getConfig, update, getDb } from "@oh/utils";
-import { load as loadProxy } from "modules/proxy/main.ts";
 
 export const System = (() => {
   let $config: ConfigTypes;
@@ -19,19 +18,14 @@ export const System = (() => {
   const load = async (envs: Envs) => {
     console.clear();
 
-    if (envs.isDevelopment)
-      console.log(
-        "\n\n    ------------------\n    DEVELOPMENT SERVER\n    ------------------\n\n",
-      );
-    initLog(envs);
-
+    $envs = envs;
     $config = await getConfig<ConfigTypes>({
       defaults: CONFIG_DEFAULT,
     });
 
     // Check for an update if true, close the server
     if (
-      !envs.isDevelopment &&
+      !$config.development &&
       (await update({
         targetVersion: $config.version,
         version: envs.version,
@@ -42,16 +36,19 @@ export const System = (() => {
     )
       return;
 
+    if ($config.development)
+      console.log(
+        "\n\n    ------------------\n    DEVELOPMENT SERVER\n    ------------------\n\n",
+      );
+    initLog($config);
+
     // -> Load proxy
-    const { proxyWorker } = await loadProxy({ config: $config, envs });
 
     log("server");
 
-    $envs = envs;
-
+    $proxy.load($config, envs);
     await $db.load();
     await $game.load();
-    $proxy.load(proxyWorker);
     $tasks.load();
   };
 

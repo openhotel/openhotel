@@ -4,7 +4,7 @@
     "specifiers": {
       "jsr:@oh/pathfinding@2.0.3": "jsr:@oh/pathfinding@2.0.3",
       "jsr:@oh/queue@1.1.1": "jsr:@oh/queue@1.1.1",
-      "jsr:@oh/utils@1.2.2": "jsr:@oh/utils@1.2.2",
+      "jsr:@oh/utils@1.2.4": "jsr:@oh/utils@1.2.4",
       "jsr:@oh/yaml@1.1.0": "jsr:@oh/yaml@1.1.0",
       "jsr:@std/fs@1.0.4": "jsr:@std/fs@1.0.4",
       "jsr:@std/path@1.0.6": "jsr:@std/path@1.0.6",
@@ -19,8 +19,8 @@
       "@oh/queue@1.1.1": {
         "integrity": "8e8ec809202c48beaf436b3ea01b4c3a17f8c015ca686d906822482c9c881390"
       },
-      "@oh/utils@1.2.2": {
-        "integrity": "58fa3928c65fb4a490277d8e24c3634e66d764edeffed498c16c14d1620ef299",
+      "@oh/utils@1.2.4": {
+        "integrity": "3136bda5d47148693ea6436b0e52ef1bf4c31bdf3a3f099cefa077086bc53812",
         "dependencies": [
           "jsr:@oh/yaml@1.1.0",
           "jsr:@std/fs@1.0.4",
@@ -472,7 +472,7 @@
     "dependencies": [
       "jsr:@oh/pathfinding@2.0.3",
       "jsr:@oh/queue@1.1.1",
-      "jsr:@oh/utils@1.2.2"
+      "jsr:@oh/utils@1.2.4"
     ]
   }
 }

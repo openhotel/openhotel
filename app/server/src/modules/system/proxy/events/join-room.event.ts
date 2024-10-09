@@ -14,14 +14,15 @@ export const joinRoomEvent: ProxyEventType<{ roomId: string }> = {
 
     getRoom(roomId)?.addUser?.(user.getObject());
 
-    const { version, isDevelopment } = System.getEnvs();
-    if (isDevelopment) return;
+    const { development, version: configVersion } = System.getConfig();
+    if (development || configVersion === "development") return;
 
     const isOp = (await System.game.users.getConfig()).op.users.includes(
       user.getUsername(),
     );
     if (!isOp) return;
 
+    const { version } = System.getEnvs();
     const newVersion = await getLatestVersion({
       version,
       repository: "openhotel/openhotel",

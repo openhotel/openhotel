@@ -1,30 +1,30 @@
-import { ApiRequestProps } from "shared/types/main.ts";
-import { getRandomString, getURL } from "@oh/utils";
-import { protocolToken, ticketMap, userList } from "../proxy.worker.ts";
+import { getRandomString, getURL, RequestMethod } from "@oh/utils";
 import { log } from "shared/utils/log.utils.ts";
+import { Proxy } from "modules/proxy/main.ts";
 
 export const getRequestRequest = {
   method: "GET",
   pathname: "/request",
-  fn: async ({ request, config, envs }: ApiRequestProps): Promise<Response> => {
-    //@ts-ignore
-    const clientIPAddress: string = request.headers.get("host");
+  fn: async (request: Request): Promise<Response> => {
+    const { version } = Proxy.getEnvs();
+    const config = Proxy.getConfig();
+
     const { searchParams } = getURL(request.url);
     const clientVersion = searchParams.get("version");
 
-    if (clientVersion !== envs.version)
+    if (clientVersion !== version)
       return Response.json(
         {
           error: 406,
           message: [
             "Version mismatch",
-            `Expected (${envs.version}) != ${clientVersion}`,
+            `Expected (${version}) != ${clientVersion}`,
           ],
         },
         { status: 406 },
       );
 
-    if (userList.length >= config.limits.players)
+    if (Proxy.getUserList().length >= config.limits.players)
       return Response.json(
         {
           error: 406,
@@ -36,24 +36,23 @@ export const getRequestRequest = {
     const ticketKey = getRandomString(64);
 
     try {
-      console.log(`${config.auth.api}/create-ticket`);
-      const {
-        data: { ticketId },
-      } = await fetch(`${config.auth.api}/create-ticket`, {
-        method: "POST",
-        body: JSON.stringify({
+      const data = await Proxy.auth.fetch<any>(
+        RequestMethod.POST,
+        `/create-ticket`,
+        {
           ticketKey,
           redirectUrl: config.auth.redirectUrl,
-        }),
-      }).then((data) => data.json());
+        },
+      );
 
-      ticketMap[ticketId] = {
-        ticketId,
-        ticketKey,
-      };
+      if (!data) throw "ERROR: Cannot create auth ticket!";
+
+      const { ticketId } = data;
+
+      Proxy.setTicket(ticketId, ticketKey);
       setTimeout(
         () => {
-          delete ticketMap[ticketId];
+          Proxy.deleteTicket(ticketId);
         },
         1000 * 60 * 60 * 2,
       );
@@ -64,7 +63,7 @@ export const getRequestRequest = {
           data: {
             ticketId,
             redirectUrl: `${config.auth.url}#ticketId=${ticketId}`,
-            protocolToken,
+            protocolToken: Proxy.getProtocolToken(),
           },
         },
         { status: 200 },

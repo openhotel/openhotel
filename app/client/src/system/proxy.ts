@@ -3,10 +3,7 @@ import {
   getClientSocket,
   getConfig,
   getRandomString,
-  getVersion,
   getWebSocketUrl,
-  isAuthDisabled,
-  isDevelopment,
 } from "shared/utils";
 import { Event } from "shared/enums";
 import { System } from "system/system";
@@ -49,10 +46,10 @@ export const proxy = () => {
 
   const preConnect = async () => {
     System.loader.addText("Requesting connection...");
-    if (isAuthDisabled() || canConnect()) return;
+    if (System.version.isDevelopment() || canConnect()) return;
 
     const { status, data } = await fetch(
-      `/request?version=${getVersion()}`,
+      `/request?version=${System.version.getVersion()}`,
     ).then((data) => data.json());
     if (status === 200) {
       localStorage.setItem("protocolToken", data.protocolToken);
@@ -78,7 +75,7 @@ export const proxy = () => {
       try {
         if (isConnected) return;
         System.loader.addText("Connecting...");
-        const $isAuthDisabled = isAuthDisabled();
+        const $isAuthDisabled = System.version.isDevelopment();
 
         //prevent auth disconnection
         if (!$isAuthDisabled && getConfig().auth.pingCheck) {
@@ -90,7 +87,7 @@ export const proxy = () => {
           url: getWebSocketUrl(`${window.location.origin}/proxy`),
           protocols: $isAuthDisabled
             ? [
-                "DEVELOPMENT",
+                "development",
                 localStorage.getItem("username") ||
                   `player_${getRandomString(4)}`,
               ]
@@ -121,7 +118,7 @@ export const proxy = () => {
           isConnected = false;
           reject();
           clearConnection();
-          if (isDevelopment()) connect();
+          if (System.version.isDevelopment()) connect();
         });
         await $socket.connect();
       } catch (e) {

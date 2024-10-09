@@ -17,7 +17,7 @@
   "imports": {
     "@oh/pathfinding": "jsr:@oh/pathfinding@2.0.3",
     "@oh/queue": "jsr:@oh/queue@1.1.1",
-    "@oh/utils": "jsr:@oh/utils@1.2.2",
+    "@oh/utils": "jsr:@oh/utils@1.2.4",
 
     "dayjs": "https://deno.land/x/deno_dayjs@v0.5.0/mod.ts",
     "deno/": "https://deno.land/std@0.221.0/",

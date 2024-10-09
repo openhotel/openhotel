@@ -11,13 +11,10 @@ export const getConfig = (): ConfigTypes => {
     ? config
     : {
         version: "latest",
-        name: "DEVELOPMENT",
-        description: "DEVELOPMENT",
-        proxy: {
-          port: 2005,
-          url: `http://${hostname}:2005`,
-        },
+        name: "development",
+        description: "development",
         auth: {
+          pingCheck: true,
           url: `http://${hostname}:2024`,
           // url: "https://auth.openhotel.club",
         },
