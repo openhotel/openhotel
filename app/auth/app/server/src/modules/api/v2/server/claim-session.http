@@ -1,6 +1,8 @@
 # Claim Session
 POST http://localhost:2024/api/v2/server/claim-session
 Content-Type: application/json
+server-id: 3bf6c370-6011-4c0e-a99d-a9ba0aad7413
+token: lSW0AZBg3frHtNm12NNau7cEwvCBDk0F
 
 {
   "ticketId": "9a17faeb-d037-4552-b9b7-35a6b8378fb6",

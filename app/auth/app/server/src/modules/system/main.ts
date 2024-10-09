@@ -7,6 +7,7 @@ import { otp } from "./otp.ts";
 import { tasks } from "./tasks.ts";
 import { sessions } from "./sessions.ts";
 import { CONFIG_DEFAULT } from "shared/consts/config.consts.ts";
+import { servers } from "./servers.ts";
 
 export const System = (() => {
   let $config: ConfigTypes;
@@ -18,11 +19,15 @@ export const System = (() => {
   const $otp = otp();
   const $tasks = tasks();
   const $sessions = sessions();
+  const $servers = servers();
   let $db;
 
   const load = async (envs: Envs) => {
+    $config = await $getConfig<ConfigTypes>({ defaults: CONFIG_DEFAULT });
+    $envs = envs;
+
     if (
-      envs.version !== "DEVELOPMENT" &&
+      !$config.development &&
       (await update({
         targetVersion: "latest",
         version: envs.version,
@@ -32,9 +37,6 @@ export const System = (() => {
       }))
     )
       return;
-
-    $config = await $getConfig<ConfigTypes>({ defaults: CONFIG_DEFAULT });
-    $envs = envs;
 
     $db = getDb({ pathname: `./${$config.database.filename}` });
 
@@ -63,5 +65,6 @@ export const System = (() => {
     otp: $otp,
     tasks: $tasks,
     sessions: $sessions,
+    servers: $servers,
   };
 })();

@@ -3,7 +3,7 @@
   "packages": {
     "specifiers": {
       "jsr:@oh/queue@1.1.1": "jsr:@oh/queue@1.1.1",
-      "jsr:@oh/utils@1.2.3": "jsr:@oh/utils@1.2.3",
+      "jsr:@oh/utils@1.2.4": "jsr:@oh/utils@1.2.4",
       "jsr:@oh/yaml@1.1.0": "jsr:@oh/yaml@1.1.0",
       "jsr:@std/fs@1.0.4": "jsr:@std/fs@1.0.4",
       "jsr:@std/path@1.0.6": "jsr:@std/path@1.0.6",
@@ -16,8 +16,8 @@
       "@oh/queue@1.1.1": {
         "integrity": "8e8ec809202c48beaf436b3ea01b4c3a17f8c015ca686d906822482c9c881390"
       },
-      "@oh/utils@1.2.3": {
-        "integrity": "6ca24af5ef4f812ef675844109adfdcd30f39bd7ce06695f214bd63b6f0bdab4",
+      "@oh/utils@1.2.4": {
+        "integrity": "3136bda5d47148693ea6436b0e52ef1bf4c31bdf3a3f099cefa077086bc53812",
         "dependencies": [
           "jsr:@oh/yaml@1.1.0",
           "jsr:@std/fs@1.0.4",
@@ -200,7 +200,7 @@
   "workspace": {
     "dependencies": [
       "jsr:@oh/queue@1.1.1",
-      "jsr:@oh/utils@1.2.3",
+      "jsr:@oh/utils@1.2.4",
       "npm:nodemailer@6.9.15"
     ]
   }

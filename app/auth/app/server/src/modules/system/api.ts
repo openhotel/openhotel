@@ -7,10 +7,11 @@ export const api = () => {
     for (const request of requestV2List)
       console.info(request.method, request.pathname);
 
+    const { development, version, port } = System.getConfig();
+    const isDevelopment = development || version === "development";
     Deno.serve(
       {
-        port:
-          System.getConfig().port * (System.getEnvs().isDevelopment ? 10 : 1),
+        port: port * (isDevelopment ? 10 : 1),
       },
       async ($request: Request, connInfo) => {
         const headers = new Headers($request.headers);

@@ -1,0 +1,5 @@
+#
+GET http://localhost:2024/api/v2/server/validate
+Content-Type: application/json
+server-id: 3bf6c370-6011-4c0e-a99d-a9ba0aad7413
+token: lSW0AZBg3frHtNm12NNau7cEwvCBDk0F

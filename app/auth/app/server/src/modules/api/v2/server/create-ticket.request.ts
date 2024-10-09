@@ -6,7 +6,15 @@ import { TICKET_EXPIRE_TIME } from "shared/consts/tickets.consts.ts";
 export const createTicketRequest: RequestType = {
   method: RequestMethod.POST,
   pathname: "/create-ticket",
-  func: async (request, url) => {
+  func: async (request: Request, url) => {
+    if (!(await System.servers.isRequestValid(request)))
+      return Response.json(
+        { status: 403 },
+        {
+          status: 403,
+        },
+      );
+
     let { ticketKey, redirectUrl } = await request.json();
 
     if (!ticketKey || !redirectUrl)

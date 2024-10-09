@@ -22,7 +22,7 @@ export const sessions = () => {
 
   const $checkSessions = async () => {
     const currentSessions = Object.keys(sessionMap);
-    const targetSessions = (await getServerSessionList()).map<string>(
+    const targetSessions = (await getServerSessionList()).map(
       ({ key: [, accountId] }) => accountId,
     );
     console.log(
@@ -35,6 +35,7 @@ export const sessions = () => {
 
     //remove not active sessions
     for (const accountId of toDeleteSessions) {
+      if (!sessionMap[accountId]) return;
       $disconnectFromLastServer(accountId, sessionMap[accountId].server);
       delete sessionMap[accountId];
     }

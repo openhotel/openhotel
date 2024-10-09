@@ -1,6 +1,8 @@
 # Create Ticket
 POST http://localhost:2024/api/v2/server/create-ticket
 Content-Type: application/json
+server-id: 3bf6c370-6011-4c0e-a99d-a9ba0aad7413
+token: lSW0AZBg3frHtNm12NNau7cEwvCBDk0F
 
 {
   "ticketKey": "THIS_IS_A_PRIVATE_TOKEN",

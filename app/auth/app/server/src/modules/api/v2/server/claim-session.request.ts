@@ -12,6 +12,14 @@ export const claimSessionRequest: RequestType = {
   method: RequestMethod.POST,
   pathname: "/claim-session",
   func: async (request, url) => {
+    if (!(await System.servers.isRequestValid(request)))
+      return Response.json(
+        { status: 403 },
+        {
+          status: 403,
+        },
+      );
+
     let { ticketId, ticketKey, sessionId, token } = await request.json();
 
     if (!ticketId || !ticketKey || !sessionId || !token)
