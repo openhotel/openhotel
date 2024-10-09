@@ -1,4 +1,5 @@
 import { UserMutable } from "shared/types/main.ts";
+import { ProxyEvent } from "shared/enums/event.enum.ts";
 
 type FuncProps<Data> = {
   data?: Data;
@@ -6,6 +7,6 @@ type FuncProps<Data> = {
 };
 
 export type ProxyEventType<Data = {}> = {
-  event: string;
+  event: ProxyEvent;
   func: (data: FuncProps<Data>) => Promise<any> | any;
 };
