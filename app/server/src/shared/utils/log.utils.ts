@@ -1,8 +1,8 @@
 import { getBeautyDate } from "@oh/utils";
-import { Envs } from "shared/types/envs.types.ts";
+import { ConfigTypes } from "shared/types/config.types.ts";
 
-export const initLog = (envs: Envs) => {
-  if (envs?.isDevelopment) return;
+export const initLog = (config: ConfigTypes) => {
+  if (config?.development) return;
   console.log = () => {};
 };
 

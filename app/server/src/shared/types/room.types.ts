@@ -1,5 +1,6 @@
-import { Point3d, RoomFurniture, User } from "shared/types/main.ts";
-import { Direction, ProxyEvent, RoomPointEnum } from "shared/enums/main.ts";
+import { RoomFurniture, User } from "shared/types/main.ts";
+import { ProxyEvent, RoomPointEnum } from "shared/enums/main.ts";
+import { Point3d, Direction } from "@oh/utils";
 
 type BaseRoom = {
   id: string;

@@ -1,5 +1,11 @@
-import { getRequestRequest } from "./request.route.ts";
-import { getApiRequest } from "./api.route.ts";
+import { getRequestRequest } from "./request.request.ts";
+import { getApiRequest } from "./api.request.ts";
 import { authRoutesList } from "./auth/main.ts";
+import { getVersionRequest } from "./version.request.ts";
 
-export const routesList = [getRequestRequest, getApiRequest, ...authRoutesList];
+export const routesList = [
+  getRequestRequest,
+  getApiRequest,
+  getVersionRequest,
+  ...authRoutesList,
+];

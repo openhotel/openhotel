@@ -80,7 +80,7 @@ export const offlineComponent: ContainerComponent = () => {
     });
     $button.setPivotX($button.getBounds().width / 2);
 
-    if (isAuthDisabled()) {
+    if (System.version.isDevelopment()) {
       let timeout;
       const connect = async () => {
         try {
@@ -96,7 +96,7 @@ export const offlineComponent: ContainerComponent = () => {
 
     $button.on(DisplayObjectEvent.POINTER_TAP, () => {
       System.proxy.preConnect();
-      if (isAuthDisabled()) System.proxy.connect();
+      if (System.version.isDevelopment()) System.proxy.connect();
     });
 
     $card.add($button, $title, $human);

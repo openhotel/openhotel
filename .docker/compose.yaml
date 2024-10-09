@@ -5,10 +5,9 @@ services:
     container_name: openhotel
     ports:
       - "1994:1994"
-      - "2005:2005"
     volumes:
       - "openhotel-data:/app"
     image: "openhotel/openhotel:latest"
 volumes:
   openhotel-data: null
-#https://client.openhotel.club:1994,https://proxy.openhotel.club:2005
+#https://client.openhotel.club:1994

@@ -1,5 +1,4 @@
 import { System } from "system/system";
-import { isDevelopment } from "shared/utils";
 
 export const api = () => {
   const $fetch = async <Data>(
@@ -14,9 +13,13 @@ export const api = () => {
     headers.append("accountId", accountId);
     headers.append("token", apiToken);
 
+    const isDevelopment =
+      System.version.isDevelopment() ||
+      System.version.getVersion() === "development";
+
     const params = searchParams.toString();
     const { status, data: responseData } = await fetch(
-      `${isDevelopment() ? "/proxy" : ""}/api${pathname}${params ? `?${params}` : ""}`,
+      `${isDevelopment ? "proxy" : ""}/api${pathname}${params ? `?${params}` : ""}`,
       {
         headers,
       },

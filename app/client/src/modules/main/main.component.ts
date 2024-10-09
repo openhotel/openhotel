@@ -8,7 +8,6 @@ import {
 import { System } from "system";
 import { Event, SpriteSheetEnum, SystemEvent } from "shared/enums";
 import { scenesComponent } from "modules/scenes";
-import { getVersion, isDevelopment } from "shared/utils";
 
 export const mainComponent = () => {
   const $container = container({
@@ -33,8 +32,13 @@ export const mainComponent = () => {
   global.events.on(TulipEvent.FPS, ({ fps }) => {
     $fps.setText(`${fps} FPS`);
   });
+  const version = System.version.getVersion();
+  const isDevelopment =
+    System.version.isDevelopment() || version === "development";
   const $version = textSprite({
-    text: isDevelopment() ? "DEVELOPMENT" : `${getVersion()}-alpha`,
+    text: isDevelopment
+      ? "development"
+      : `${System.version.getVersion()}-alpha`,
     spriteSheet: SpriteSheetEnum.DEFAULT_FONT,
     color: 0xffffff,
     position: {
