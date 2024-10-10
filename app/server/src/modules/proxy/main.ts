@@ -55,7 +55,10 @@ export const Proxy = (() => {
 
     server = getServerSocket(
       config.port * (isDevelopment ? 10 : 1),
-      async (request: Request) => {
+      async ($request: Request, connInfo) => {
+        const headers = new Headers($request.headers);
+        headers.set("remote-address", connInfo.remoteAddr.hostname);
+        const request = new Request($request, { headers });
         let { method, url } = request;
 
         if (isDevelopment) url = url.replace("/proxy", "");
