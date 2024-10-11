@@ -7,6 +7,7 @@ import {
 import { System } from "modules/system/main.ts";
 import * as bcrypt from "bcrypt";
 import { SERVER_SESSION_EXPIRE_TIME } from "shared/consts/session.consts.ts";
+import { Session } from "shared/types/session.types.ts";
 
 export const claimSessionRequest: RequestType = {
   method: RequestMethod.POST,
@@ -72,7 +73,7 @@ export const claimSessionRequest: RequestType = {
         },
       );
 
-    const serverSession = await System.db.get([
+    const serverSession: Session = await System.db.get([
       "serverSessionByAccount",
       account.accountId,
     ]);
@@ -107,16 +108,19 @@ export const claimSessionRequest: RequestType = {
 
     const serverSessionToken = getRandomString(64);
 
+    const serverId = request.headers.get("server-id");
     //save current server ip to verify identity on future petitions
     const serverIp = getIpFromRequest(request);
+    const session: Session = {
+      ...serverSession,
+      serverIp,
+      serverId,
+      serverToken: bcrypt.hashSync(serverSessionToken, bcrypt.genSaltSync(8)),
+      claimed: true,
+    };
     await System.db.set(
       ["serverSessionByAccount", account.accountId],
-      {
-        ...serverSession,
-        serverIp,
-        serverToken: bcrypt.hashSync(serverSessionToken, bcrypt.genSaltSync(8)),
-        claimed: true,
-      },
+      session,
       {
         expireIn: SERVER_SESSION_EXPIRE_TIME,
       },

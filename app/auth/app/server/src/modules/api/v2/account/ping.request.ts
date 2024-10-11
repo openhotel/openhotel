@@ -6,6 +6,7 @@ import {
 } from "@oh/utils";
 import { System } from "modules/system/main.ts";
 import { SERVER_SESSION_EXPIRE_TIME } from "shared/consts/main.ts";
+import { Session } from "shared/types/session.types.ts";
 
 export const pingRequest: RequestType = {
   method: RequestMethod.POST,
@@ -22,7 +23,7 @@ export const pingRequest: RequestType = {
       );
 
     // const account = await getAccountFromRequest(request);
-    const serverSession = await System.db.get([
+    const serverSession: Session = await System.db.get([
       "serverSessionByAccount",
       accountId,
     ]);

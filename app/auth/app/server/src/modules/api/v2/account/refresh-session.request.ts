@@ -14,6 +14,7 @@ import {
   SERVER_SESSION_EXPIRE_TIME,
 } from "shared/consts/main.ts";
 import { getRedirectUrl } from "shared/utils/account.utils.ts";
+import { Session } from "shared/types/session.types.ts";
 
 export const refreshSessionRequest: RequestType = {
   method: RequestMethod.POST,
@@ -113,14 +114,15 @@ export const refreshSessionRequest: RequestType = {
       //server session
       const ip = getIpFromRequest(request);
       const serverIp = await getIpFromUrl(ticket.redirectUrl);
+      const session: Session = {
+        sessionId,
+        ticketId,
+        serverIp,
+        ip,
+      };
       await System.db.set(
         ["serverSessionByAccount", account.accountId],
-        {
-          sessionId,
-          ticketId,
-          serverIp,
-          ip,
-        },
+        session,
         {
           //first time 5 minutes, next, 60 seconds
           expireIn: SERVER_SESSION_EXPIRE_TIME * 5,

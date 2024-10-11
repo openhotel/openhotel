@@ -14,6 +14,7 @@ import {
   SESSION_EXPIRE_TIME,
   SESSION_WITHOUT_TICKET_EXPIRE_TIME,
 } from "shared/consts/main.ts";
+import { Session } from "shared/types/session.types.ts";
 
 export const loginRequest: RequestType = {
   method: RequestMethod.POST,
@@ -150,14 +151,15 @@ export const loginRequest: RequestType = {
       //server session
       const ip = getIpFromRequest(request);
       const serverIp = await getIpFromUrl(ticket.redirectUrl);
+      const session: Session = {
+        sessionId,
+        ticketId,
+        serverIp,
+        ip,
+      };
       await System.db.set(
         ["serverSessionByAccount", account.accountId],
-        {
-          sessionId,
-          ticketId,
-          serverIp,
-          ip,
-        },
+        session,
         {
           //first time 5 minutes, next, 60 seconds
           expireIn: SERVER_SESSION_EXPIRE_TIME * 5,

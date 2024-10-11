@@ -1,18 +1,28 @@
 import { System } from "modules/system/main.ts";
 import { TickerQueue } from "@oh/queue";
 import { getServerSessionList } from "shared/utils/main.ts";
+import { Session } from "shared/types/session.types.ts";
 
 export const sessions = () => {
-  const sessionMap: Record<string, any> = {};
+  const sessionMap: Record<string, Session> = {};
 
-  const $disconnectFromLastServer = (accountId: string, server: string) => {
+  const $disconnectFromLastServer = async (
+    accountId: string,
+    serverId: string,
+  ) => {
     const headers = new Headers();
     headers.append("auth-server", performance.now() + "");
 
-    console.error(`${server}/auth/user-disconnected?accountId=${accountId}`);
-    fetch(`${server}/auth/user-disconnected?accountId=${accountId}`, {
-      headers,
-    })
+    const server = await System.servers.getServerData(serverId);
+    if (!server) return;
+
+    const protocol = `http${System.getEnvs().version === "development" ? "" : "s"}://`;
+    fetch(
+      `${protocol}${server.hostname}/auth/user-disconnected?accountId=${accountId}`,
+      {
+        headers,
+      },
+    )
       .then(async (response) => console.error(await response.json()))
       .catch((e) => {
         console.error(e);
@@ -22,7 +32,7 @@ export const sessions = () => {
 
   const $checkSessions = async () => {
     const currentSessions = Object.keys(sessionMap);
-    const targetSessions = (await getServerSessionList()).map(
+    const targetSessions: string[] = (await getServerSessionList()).map(
       ({ key: [, accountId] }) => accountId,
     );
     console.log(
@@ -36,7 +46,7 @@ export const sessions = () => {
     //remove not active sessions
     for (const accountId of toDeleteSessions) {
       if (!sessionMap[accountId]) return;
-      $disconnectFromLastServer(accountId, sessionMap[accountId].server);
+      $disconnectFromLastServer(accountId, sessionMap[accountId].serverId);
       delete sessionMap[accountId];
     }
 
@@ -58,7 +68,7 @@ export const sessions = () => {
   };
 
   const checkAccountSession = async (accountId: string) => {
-    const currentSession = await System.db.get([
+    const currentSession: Session = await System.db.get([
       "serverSessionByAccount",
       accountId,
     ]);
@@ -68,20 +78,13 @@ export const sessions = () => {
     //only if last server is different from current one
     if (
       session &&
-      session.server !== currentSession?.server &&
+      session.serverId !== currentSession?.serverId &&
       (session.sessionId !== currentSession?.sessionId ||
         session.ticketId !== currentSession?.ticketId)
     ) {
-      $disconnectFromLastServer(accountId, session.server);
-      console.warn(
-        accountId,
-        "->",
-        session?.server,
-        "->",
-        currentSession?.server,
-        "<<<<",
-      );
+      $disconnectFromLastServer(accountId, session.serverId);
     }
+
     //reassign server session
     sessionMap[accountId] = currentSession;
   };

@@ -1,5 +1,6 @@
 import { RequestType, RequestMethod } from "@oh/utils";
 import { System } from "modules/system/main.ts";
+import { Session } from "shared/types/session.types.ts";
 
 export const validateAccountRequest: RequestType = {
   method: RequestMethod.POST,
@@ -32,7 +33,7 @@ export const validateAccountRequest: RequestType = {
       );
 
     // get active session
-    const serverSession = await System.db.get([
+    const serverSession: Session = await System.db.get([
       "serverSessionByAccount",
       accountId,
     ]);
