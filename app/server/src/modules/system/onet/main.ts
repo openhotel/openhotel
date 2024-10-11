@@ -2,6 +2,7 @@ import { System } from "modules/system/main.ts";
 import { getClientSocket, getWebSocketUrl } from "@da/socket";
 import { OnetEvent } from "shared/enums/event.enum.ts";
 import { eventList } from "modules/system/onet/events/main.ts";
+import { log } from "shared/utils/log.utils.ts";
 
 export const onet = () => {
   let $api;
@@ -28,6 +29,7 @@ export const onet = () => {
 
       //CONNECT TO ONET
       const { serverId, token } = System.auth.getAuth();
+      log(serverId, token);
       $socket = getClientSocket({
         url: getWebSocketUrl($api),
         protocols: [serverId, token],
