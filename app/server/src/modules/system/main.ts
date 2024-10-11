@@ -5,6 +5,8 @@ import { debug, initLog, log } from "shared/utils/main.ts";
 import { tasks } from "./tasks.ts";
 import { CONFIG_DEFAULT } from "shared/consts/config.consts.ts";
 import { getConfig, update, getDb } from "@oh/utils";
+import { onet } from "./onet/main.ts";
+import { auth } from "./auth.ts";
 
 export const System = (() => {
   let $config: ConfigTypes;
@@ -14,6 +16,8 @@ export const System = (() => {
   const $tasks = tasks();
   const $game = game();
   const $db = getDb({ pathname: `./server-database` });
+  const $onet = onet();
+  const $auth = auth();
 
   const load = async (envs: Envs) => {
     console.clear();
@@ -23,9 +27,11 @@ export const System = (() => {
       defaults: CONFIG_DEFAULT,
     });
 
+    const isDevelopment = $envs.version === "development";
+
     // Check for an update if true, close the server
     if (
-      !$config.development &&
+      !isDevelopment &&
       (await update({
         targetVersion: $config.version,
         version: envs.version,
@@ -36,20 +42,22 @@ export const System = (() => {
     )
       return;
 
-    if ($config.development)
+    if (isDevelopment)
       console.log(
         "\n\n    ------------------\n    DEVELOPMENT SERVER\n    ------------------\n\n",
       );
-    initLog($config);
+    initLog();
 
     // -> Load proxy
 
     log("server");
 
-    $proxy.load($config, envs);
+    await $auth.load();
+    $proxy.load();
     await $db.load();
     await $game.load();
     $tasks.load();
+    await $onet.load();
   };
 
   const $getConfig = () => $config;
@@ -65,5 +73,7 @@ export const System = (() => {
     proxy: $proxy,
     tasks: $tasks,
     db: $db,
+    onet: $onet,
+    auth: $auth,
   };
 })();

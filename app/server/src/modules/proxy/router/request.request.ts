@@ -57,12 +57,13 @@ export const getRequestRequest = {
         1000 * 60 * 60 * 2,
       );
 
+      const authApiUrl = new URL(config.auth.api);
       return Response.json(
         {
           status: 200,
           data: {
             ticketId,
-            redirectUrl: `${config.auth.url}#ticketId=${ticketId}`,
+            redirectUrl: `${authApiUrl.origin}#ticketId=${ticketId}`,
             protocolToken: Proxy.getProtocolToken(),
           },
         },
