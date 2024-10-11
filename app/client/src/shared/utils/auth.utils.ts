@@ -1,6 +1,6 @@
 import { getConfig } from "./config.utils";
 
 export const getAuthPathname = (pathname: string) =>
-  `${getConfig().auth.url}${pathname}`;
+  `${getConfig().auth.api}${pathname}`;
 
-export const getPingUrl = () => getAuthPathname("/api/v2/account/ping");
+export const getPingUrl = () => getAuthPathname("/account/ping");

@@ -33,8 +33,7 @@ export const mainComponent = () => {
     $fps.setText(`${fps} FPS`);
   });
   const version = System.version.getVersion();
-  const isDevelopment =
-    System.version.isDevelopment() || version === "development";
+  const isDevelopment = System.version.isDevelopment();
   const $version = textSprite({
     text: isDevelopment
       ? "development"

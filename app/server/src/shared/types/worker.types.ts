@@ -4,4 +4,8 @@ import { Envs } from "./envs.types.ts";
 export type WorkerProps = {
   config: ConfigTypes;
   envs: Envs;
+  auth: {
+    serverId: string;
+    token: string;
+  };
 };

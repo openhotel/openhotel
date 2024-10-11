@@ -20,7 +20,7 @@ export const getUserDisconnectedRequest = {
     const { searchParams } = getURL(request.url);
     const accountId = searchParams.get("accountId");
 
-    const authIp = await getIpFromUrl(config.auth.url);
+    const authIp = await getIpFromUrl(config.auth.api);
     const requestIp = getIpFromRequest(request);
 
     if (!compareIps(authIp, requestIp))

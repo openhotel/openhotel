@@ -7,7 +7,7 @@ import {
   Ticket,
   WorkerProps,
 } from "shared/types/main.ts";
-import { getServerSocket, ServerClient } from "socket_ionic";
+import { getServerSocket, ServerClient } from "@da/socket";
 import { PROXY_CLIENT_EVENT_WHITELIST } from "shared/consts/main.ts";
 import { ProxyEvent } from "shared/enums/main.ts";
 import { routesList } from "./router/main.ts";
@@ -41,17 +41,16 @@ export const Proxy = (() => {
 
   const $auth = auth();
 
-  const load = async ({ envs, config }: WorkerProps) => {
+  const load = async ({ envs, config, auth }: WorkerProps) => {
     $config = config;
     $envs = envs;
 
-    await $auth.load();
+    await $auth.load(auth.serverId, auth.token);
 
     for (const { event, func } of eventList)
       serverWorker.on(event, (data: unknown) => func({ data }));
 
-    const isDevelopment =
-      config.development || config.version === "development";
+    const isDevelopment = config.version === "development";
 
     server = getServerSocket(
       config.port * (isDevelopment ? 10 : 1),
@@ -78,6 +77,7 @@ export const Proxy = (() => {
         return response;
       },
     );
+
     server.on(
       "guest",
       async (
@@ -89,7 +89,7 @@ export const Proxy = (() => {
         const apiTokenHash = bcrypt.hashSync(apiToken, bcrypt.genSaltSync(8));
 
         userTokenMap[clientId] = apiToken;
-        if (config.development) {
+        if (!config.auth.enabled) {
           const username = ticketId;
           const accountId = crypto.randomUUID();
 

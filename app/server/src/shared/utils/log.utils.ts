@@ -1,8 +1,8 @@
 import { getBeautyDate } from "@oh/utils";
-import { ConfigTypes } from "shared/types/config.types.ts";
+import { System } from "modules/system/main.ts";
 
-export const initLog = (config: ConfigTypes) => {
-  if (config?.development) return;
+export const initLog = () => {
+  if (System.getEnvs().version === "development") return;
   console.log = () => {};
 };
 
