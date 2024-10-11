@@ -3,6 +3,7 @@ import {
   RequestMethod,
   getRandomString,
   getIpFromRequest,
+  getIpFromUrl,
 } from "@oh/utils";
 import { System } from "modules/system/main.ts";
 import * as bcrypt from "bcrypt";
@@ -111,12 +112,13 @@ export const refreshSessionRequest: RequestType = {
 
       //server session
       const ip = getIpFromRequest(request);
+      const serverIp = await getIpFromUrl(ticket.redirectUrl);
       await System.db.set(
         ["serverSessionByAccount", account.accountId],
         {
           sessionId,
           ticketId,
-          server: ticket.redirectUrl,
+          serverIp,
           ip,
         },
         {

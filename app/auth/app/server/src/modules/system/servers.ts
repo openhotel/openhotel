@@ -1,6 +1,7 @@
 import { System } from "modules/system/main.ts";
 import { getIpFromUrl, compareIps, getIpFromRequest } from "@oh/utils";
 import * as bcrypt from "bcrypt";
+import { Server } from "shared/types/server.types.ts";
 
 export const servers = () => {
   const isValid = async (
@@ -27,8 +28,12 @@ export const servers = () => {
     return isValid(serverId, token, requestIp);
   };
 
+  const getServerData = (serverId: string): Promise<Server | null> =>
+    System.db.get(["servers", serverId]);
+
   return {
     isValid,
     isRequestValid,
+    getServerData,
   };
 };

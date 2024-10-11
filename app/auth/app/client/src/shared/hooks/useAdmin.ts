@@ -36,6 +36,16 @@ export const useAdmin = () => {
         method: "GET",
       }).then((response) => response.json()),
   };
+  const onet = {
+    generateKey: async (api: string) =>
+      await fetch(`/api/v2/admin/onet/generate-key`, {
+        headers: getHeaders(),
+        method: "POST",
+        body: JSON.stringify({
+          api,
+        }),
+      }).then((response) => response.json()),
+  };
 
   return {
     getList,
@@ -45,5 +55,6 @@ export const useAdmin = () => {
     update,
 
     account,
+    onet,
   };
 };

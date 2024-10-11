@@ -1,4 +1,9 @@
-import { RequestType, RequestMethod, getIpFromRequest } from "@oh/utils";
+import {
+  RequestType,
+  RequestMethod,
+  getIpFromRequest,
+  getIpFromUrl,
+} from "@oh/utils";
 import { System } from "modules/system/main.ts";
 import { SERVER_SESSION_EXPIRE_TIME } from "shared/consts/main.ts";
 
@@ -31,10 +36,11 @@ export const pingRequest: RequestType = {
       );
 
     const ip = getIpFromRequest(request);
+    const serverIp = await getIpFromUrl(server);
 
     if (
       serverSession?.ip !== ip ||
-      serverSession?.server !== server ||
+      serverSession?.serverIp !== serverIp ||
       serverSession?.ticketId !== ticketId
     )
       return Response.json(

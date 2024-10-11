@@ -5,3 +5,4 @@ database-shm
 database-wal
 config.yml
 abc_config.yml
+node_modules

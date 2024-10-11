@@ -58,13 +58,11 @@ export const sessions = () => {
   };
 
   const checkAccountSession = async (accountId: string) => {
-    const foundSession = await System.db.get([
+    const currentSession = await System.db.get([
       "serverSessionByAccount",
       accountId,
     ]);
     const session = sessionMap[accountId];
-
-    const currentSession = foundSession.value;
 
     //check if session server exists and changed if so disconnect from last server
     //only if last server is different from current one
@@ -80,7 +78,7 @@ export const sessions = () => {
         "->",
         session?.server,
         "->",
-        foundSession?.value?.server,
+        currentSession?.server,
         "<<<<",
       );
     }

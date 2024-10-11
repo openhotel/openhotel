@@ -8,6 +8,7 @@ import {
 } from "@oh/utils";
 import * as bcrypt from "bcrypt";
 import { System } from "modules/system/main.ts";
+import { Server } from "shared/types/server.types.ts";
 
 export const registerRequest: RequestType = {
   method: RequestMethod.POST,
@@ -53,7 +54,7 @@ export const registerRequest: RequestType = {
       hostname,
       ip: requestIp,
       tokenHash: bcrypt.hashSync(token, bcrypt.genSaltSync(8)),
-    });
+    } as Server);
 
     await System.db.set(["serverByHostname", hostname], serverId);
 
