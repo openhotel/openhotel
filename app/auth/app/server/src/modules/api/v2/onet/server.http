@@ -1,0 +1,9 @@
+#
+POST https://auth.openhotel.club/api/v2/onet/server
+onet-key: wCqgvXz8El5AxhDv5Bub7smjZQs2kynFmkm0apZqKdSJ9C4Vir8jZHNSREPV8IFH
+
+{
+  "serverId": "a",
+  "token": "b",
+  "ip": "172.25.0.3"
+}
