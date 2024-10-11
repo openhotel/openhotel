@@ -9,9 +9,11 @@ export type ConfigTypes = {
   };
   auth?: {
     redirectUrl?: string;
-    url?: string;
     api?: string;
     pingCheck?: boolean;
     userDisconnectedEvent?: boolean;
+  };
+  onet: {
+    enabled: boolean;
   };
 };

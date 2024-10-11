@@ -18,6 +18,7 @@
     "@oh/pathfinding": "jsr:@oh/pathfinding@2.0.3",
     "@oh/queue": "jsr:@oh/queue@1.1.1",
     "@oh/utils": "jsr:@oh/utils@1.2.4",
+    "@da/socket": "jsr:@da/socket@2.2.0",
 
     "dayjs": "https://deno.land/x/deno_dayjs@v0.5.0/mod.ts",
     "deno/": "https://deno.land/std@0.221.0/",
@@ -25,9 +26,9 @@
     "loadenv": "https://deno.land/x/loadenv@v1.0.1/mod.ts",
     "modules/": "./src/modules/",
     "shared/": "./src/shared/",
-    "socket_ionic": "https://deno.land/x/socket_ionic@v1.9.4/mod.ts",
     "worker_ionic": "https://deno.land/x/worker_ionic@v1.4.2/mod.ts",
     "zip": "https://deno.land/x/zip@v1.2.5/mod.ts",
     "bcrypt": "https://deno.land/x/bcrypt@v0.4.1/mod.ts"
-  }
+  },
+  "nodeModulesDir": "auto"
 }

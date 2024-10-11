@@ -3,17 +3,19 @@ export type ConfigTypes = {
   name: string;
   description: string;
   port: number;
-  development: boolean;
   limits: {
     players: number;
   };
   auth: {
+    enabled: boolean;
     redirectUrl: string;
-    url: string;
     api: string;
     //client emit ping checks to auth
     pingCheck: boolean;
     //server accepts user disconnected events from auth.api
     userDisconnectedEvent: boolean;
+  };
+  onet: {
+    enabled: boolean;
   };
 };

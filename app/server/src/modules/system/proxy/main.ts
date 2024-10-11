@@ -1,5 +1,5 @@
 import { WorkerParent } from "worker_ionic";
-import { ConfigTypes, Envs, PrivateUser } from "shared/types/main.ts";
+import { PrivateUser, WorkerProps } from "shared/types/main.ts";
 import { loadInternalEvents, eventList } from "./events/main.ts";
 import { ProxyEvent } from "shared/enums/main.ts";
 import { log } from "shared/utils/main.ts";
@@ -8,7 +8,7 @@ import { requestList } from "./api/main.ts";
 import { getParentWorker } from "worker_ionic";
 import { RequestMethod } from "@oh/utils";
 
-type WorkerProps = {
+type WorkerDataProps = {
   user: PrivateUser;
   event: ProxyEvent;
   message: any;
@@ -37,20 +37,25 @@ type EmitRoomProps<Data> = {
 export const proxy = () => {
   let $worker: WorkerParent;
 
-  const load = (config: ConfigTypes, envs: Envs) => {
+  const load = () => {
+    const config = System.getConfig();
+    const envs = System.getEnvs();
+    const auth = System.auth.getAuth();
+
     $worker = getParentWorker({
       url: new URL("../../proxy/main.ts", import.meta.url).href,
     });
     $worker.emit("start", {
       config,
       envs,
-    });
+      auth,
+    } as WorkerProps);
 
     loadInternalEvents($worker);
 
     $worker.on(
       ProxyEvent.$USER_DATA,
-      ({ user, event, message }: WorkerProps) => {
+      ({ user, event, message }: WorkerDataProps) => {
         try {
           const foundEvent = eventList.find(
             (proxyEvent) => proxyEvent.event === (event as unknown),

@@ -1,12 +1,17 @@
 import { UserMutable } from "shared/types/main.ts";
-import { ProxyEvent } from "shared/enums/event.enum.ts";
+import { OnetEvent, ProxyEvent } from "shared/enums/event.enum.ts";
 
-type FuncProps<Data> = {
+type ProxyFuncProps<Data> = {
   data?: Data;
   user?: UserMutable;
 };
 
-export type ProxyEventType<Data = {}> = {
+export type ProxyEventType<Data extends unknown = undefined> = {
   event: ProxyEvent;
-  func: (data: FuncProps<Data>) => Promise<any> | any;
+  func: (data: ProxyFuncProps<Data>) => Promise<unknown> | unknown;
+};
+
+export type OnetEventType<Data extends unknown = undefined> = {
+  event: OnetEvent;
+  func: (data: Data) => Promise<unknown> | unknown;
 };

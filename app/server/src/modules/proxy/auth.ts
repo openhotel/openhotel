@@ -1,54 +1,13 @@
-import { RequestMethod, readYaml, writeYaml } from "@oh/utils";
+import { RequestMethod } from "@oh/utils";
 import { Proxy } from "modules/proxy/main.ts";
 
 export const auth = () => {
   let $serverId: string;
   let $token: string;
 
-  const load = async () => {
-    if (Proxy.getConfig().development) return;
-    try {
-      const { serverId, token } = await readYaml("./server.key", {
-        decode: true,
-      });
-      $serverId = serverId;
-      $token = token;
-      await $validate();
-    } catch (e) {
-      await $register();
-    }
-  };
-
-  const $register = async () => {
-    const { auth } = Proxy.getConfig();
-    const { data } = await fetch(`${auth.api}/register`, {
-      method: RequestMethod.POST,
-      body: JSON.stringify({
-        version: Proxy.getEnvs().version,
-        ip: auth.redirectUrl,
-      }),
-    }).then((response) => response.json());
-
-    const { serverId, token } = data;
-    await writeYaml(
-      "./server.key",
-      {
-        serverId,
-        token,
-      },
-      { encode: true },
-    );
-
+  const load = async (serverId: string, token: string) => {
     $serverId = serverId;
     $token = token;
-  };
-
-  const $validate = async () => {
-    try {
-      await $fetch(RequestMethod.GET, "/validate");
-    } catch (e) {
-      await $register();
-    }
   };
 
   const $fetch = async <Data>(
@@ -61,7 +20,7 @@ export const auth = () => {
     headers.append("token", $token);
 
     const { status, data: responseData } = await fetch(
-      `${Proxy.getConfig().auth.api}${pathname}`,
+      `${Proxy.getConfig().auth.api}/server${pathname}`,
       {
         method,
         body: data ? JSON.stringify(data) : null,

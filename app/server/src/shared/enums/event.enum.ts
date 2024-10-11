@@ -45,3 +45,10 @@ export enum ProxyEvent {
 
   SYSTEM_MESSAGE = "system-message",
 }
+
+export enum OnetEvent {
+  CONNECTED = "connected",
+  RECONNECTING = "reconnecting",
+  DISCONNECTED = "disconnected",
+  WELCOME = "welcome",
+}

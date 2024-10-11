@@ -13,9 +13,7 @@ export const api = () => {
     headers.append("accountId", accountId);
     headers.append("token", apiToken);
 
-    const isDevelopment =
-      System.version.isDevelopment() ||
-      System.version.getVersion() === "development";
+    const isDevelopment = System.version.isDevelopment();
 
     const params = searchParams.toString();
     const { status, data: responseData } = await fetch(

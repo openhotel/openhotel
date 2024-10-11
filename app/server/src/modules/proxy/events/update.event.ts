@@ -11,7 +11,7 @@ export const updateEvent: ProxyEventType = {
     const envs = Proxy.getEnvs();
 
     if (
-      !config.development &&
+      envs.version !== "development" &&
       (await update({
         targetVersion: config.version,
         version: envs.version,

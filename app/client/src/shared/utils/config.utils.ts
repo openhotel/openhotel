@@ -15,8 +15,11 @@ export const getConfig = (): ConfigTypes => {
         description: "development",
         auth: {
           pingCheck: true,
-          url: `http://${hostname}:2024`,
+          api: `http://${hostname}:2024/api/v2`,
           // url: "https://auth.openhotel.club",
+        },
+        onet: {
+          enabled: true,
         },
       };
 };
