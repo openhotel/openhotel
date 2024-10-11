@@ -1,5 +1,5 @@
 import { ConfigTypes, Envs } from "shared/types/main.ts";
-import { getConfig as $getConfig } from "@oh/utils";
+import { getConfig as $getConfig, update } from "@oh/utils";
 import { CONFIG_DEFAULTS } from "shared/consts/config.consts.ts";
 import { api } from "./api.ts";
 import { serverSocket } from "./server-socket.ts";
@@ -20,6 +20,20 @@ export const System = (() => {
     $config = await $getConfig<ConfigTypes>({
       defaults: CONFIG_DEFAULTS,
     });
+
+    const isDevelopment = $envs.version === "development";
+
+    if (
+      !isDevelopment &&
+      (await update({
+        targetVersion: $config.version,
+        version: envs.version,
+        repository: "openhotel/onet",
+        log: console.log,
+        debug: console.debug,
+      }))
+    )
+      return;
 
     await $auth.load();
     $api.load();
