@@ -24,10 +24,12 @@ export const serverSocket = () => {
       ) => {
         const ip = connInfo.remoteAddr.hostname;
 
+        console.log(serverId, token, ip);
         //server is already logged
         if (System.servers.get({ serverId })) return false;
 
         const hostname = await System.servers.getHostname(serverId, token, ip);
+        console.log(hostname);
         if (!hostname) return false;
 
         System.servers.add({
