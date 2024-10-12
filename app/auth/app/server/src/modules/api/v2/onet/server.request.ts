@@ -5,7 +5,6 @@ export const serverRequest: RequestType = {
   method: RequestMethod.POST,
   pathname: "/server",
   func: async (request: Request, url) => {
-    console.log("<<<<<<<<<<<< 1");
     if (!(await System.onet.isValidRequest(request)))
       return Response.json(
         { status: 403 },
@@ -14,9 +13,7 @@ export const serverRequest: RequestType = {
         },
       );
 
-    console.log("<<<<<<<<<<<< 2");
     const { serverId, token, ip } = await request.json();
-    console.log("<<<<<<<<<<<< 3", serverId, token, ip);
 
     if (!serverId || !token || !ip)
       return Response.json(
