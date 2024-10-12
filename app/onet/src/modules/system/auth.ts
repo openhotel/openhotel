@@ -30,7 +30,6 @@ export const auth = () => {
       },
     ).then((response) => response.json());
 
-    console.log(status)
     if (status !== 200) throw Error(`Status ${status}!`);
 
     return responseData as Data;
