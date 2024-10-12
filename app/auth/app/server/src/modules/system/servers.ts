@@ -9,18 +9,15 @@ export const servers = () => {
     token: string,
     requestIp: string,
   ): Promise<boolean> => {
-    console.log('isValid 1')
     if (!serverId || !token) return false;
 
     const server = await System.db.get(["servers", serverId]);
-    console.log('isValid 2', server)
     if (!server) return false;
 
     const dnsIp = await getIpFromUrl(server.hostname);
-    console.log('isValid 3', dnsIp, requestIp, server.ip)
-    if (!compareIps(dnsIp, requestIp) || requestIp !== server.ip) return false;
-    
-    console.log('isValid 4', token, server.tokenHash)
+    if (!compareIps(dnsIp, requestIp) || !compareIps(server.ip, requestIp))
+      return false;
+
     return bcrypt.compareSync(token, server.tokenHash);
   };
 

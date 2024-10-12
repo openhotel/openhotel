@@ -30,19 +30,15 @@ export const onet = () => {
   };
 
   const isValidRequest = async (request: Request): Promise<boolean> => {
-    console.error("isValidRequest 1", request);
     const data = await System.db.get(["onetConnection"]);
-    console.error("isValidRequest 2", data);
     if (!data) return false;
 
     const remoteIp = getIpFromRequest(request);
-    console.error("isValidRequest 3", remoteIp);
     if (!remoteIp) return false;
 
     if (!compareIps(data.ip, remoteIp)) return false;
 
     const onetKey = request.headers.get("onet-key");
-    console.error("isValidRequest 4", onetKey);
     return bcrypt.compareSync(onetKey, data.keyHash);
   };
 
