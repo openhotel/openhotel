@@ -3,6 +3,7 @@ import {
   RequestMethod,
   getIpFromRequest,
   getIpFromUrl,
+  compareIps,
 } from "@oh/utils";
 import { System } from "modules/system/main.ts";
 import { SERVER_SESSION_EXPIRE_TIME } from "shared/consts/main.ts";
@@ -41,7 +42,7 @@ export const pingRequest: RequestType = {
 
     if (
       serverSession?.ip !== ip ||
-      serverSession?.serverIp !== serverIp ||
+      !compareIps(serverSession?.serverIp, serverIp) ||
       serverSession?.ticketId !== ticketId
     )
       return Response.json(
