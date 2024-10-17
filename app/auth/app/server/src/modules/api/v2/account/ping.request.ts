@@ -42,7 +42,7 @@ export const pingRequest: RequestType = {
 
     if (
       serverSession?.ip !== ip ||
-      !compareIps(serverSession?.serverIp, serverIp) ||
+      !compareIps(serverIp, serverSession?.serverIp) ||
       serverSession?.ticketId !== ticketId
     )
       return Response.json(
