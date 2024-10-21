@@ -4,7 +4,7 @@ import { RequestMethod } from "@oh/utils";
 export const auth = () => {
   const load = async () => {
     try {
-      await $fetch(RequestMethod.GET, "/onet/validate");
+      await $fetch(RequestMethod.GET, "/tokens/validate");
     } catch (e) {
       console.error("cannot connect to auth service!");
       console.error(e);
@@ -19,7 +19,8 @@ export const auth = () => {
     const config = System.getConfig();
 
     const headers = new Headers();
-    headers.append("onet-key", config.auth.key);
+    headers.append("token-key", config.auth.key);
+    headers.append("token-service", "onet");
 
     const { status, data: responseData } = await fetch(
       `${config.auth.api}${pathname}`,
