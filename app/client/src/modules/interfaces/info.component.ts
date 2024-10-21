@@ -6,7 +6,7 @@ import {
   textSprite,
   Event as TulipEvent,
 } from "@tu/tulip";
-import { SpriteSheetEnum, SystemEvent } from "shared/enums";
+import { Hemisphere, SpriteSheetEnum, SystemEvent } from "shared/enums";
 import { System } from "system";
 
 export const infoComponent: ContainerComponent = () => {
@@ -47,7 +47,7 @@ export const infoComponent: ContainerComponent = () => {
   }
   {
     const $coords = textSprite({
-      text: `lat ${System.coordinates.getLatitude()}`,
+      text: `hem ${Hemisphere[System.coordinates.getHemisphere()].toLowerCase()}`,
       spriteSheet: SpriteSheetEnum.DEFAULT_FONT,
       color: 0xffffff,
       position: {

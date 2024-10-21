@@ -1,3 +1,5 @@
+import { Hemisphere } from "shared/enums";
+
 export const coordinates = () => {
   let latitude = 41.997548;
   let longitude = 2.8197577;
@@ -15,13 +17,14 @@ export const coordinates = () => {
   const getLatitude = () => latitude;
   const getLongitude = () => longitude;
 
-  const isNorthHemisphere = () => latitude >= 0;
+  const getHemisphere = () =>
+    latitude >= 0 ? Hemisphere.NORTH : Hemisphere.SOUTH;
 
   return {
     load,
 
     getLatitude,
     getLongitude,
-    isNorthHemisphere,
+    getHemisphere,
   };
 };
