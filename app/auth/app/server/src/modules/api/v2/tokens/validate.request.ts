@@ -2,7 +2,7 @@ import { RequestType, RequestMethod } from "@oh/utils";
 import { System } from "modules/system/main.ts";
 
 export const getValidateRequest: RequestType = {
-  method: RequestMethod.POST,
+  method: RequestMethod.GET,
   pathname: "/validate",
   func: async (request) => {
     if (!(await System.tokens.isValidRequest(request)))
