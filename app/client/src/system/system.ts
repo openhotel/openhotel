@@ -9,6 +9,7 @@ import { loader } from "system/loader";
 import { api } from "system/api";
 import { $window } from "system/window";
 import { version } from "system/version";
+import { coordinates } from "system/coordinates";
 
 export const System = (() => {
   const $locale = locale();
@@ -19,6 +20,7 @@ export const System = (() => {
   const $events = events();
   const $api = api();
   const $version = version();
+  const $coordinates = coordinates();
 
   const $tasks = tasks();
   const $$window = $window();
@@ -38,6 +40,8 @@ export const System = (() => {
     await $game.load();
 
     await $proxy.connect();
+
+    await $coordinates.load();
     $loader.end();
 
     global.events.on(Event.KEY_DOWN, ({ ctrlKey, key }) => {
@@ -69,6 +73,7 @@ export const System = (() => {
     events: $events,
     api: $api,
     version: $version,
+    coordinates: $coordinates,
 
     load,
   };
