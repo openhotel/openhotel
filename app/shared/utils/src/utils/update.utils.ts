@@ -10,11 +10,10 @@ export const getTemporalUpdateFilePathname = (): string => {
   return path.join(dirPath, "./updater") + (isWindows ? ".ps1" : ".sh");
 };
 
-export const getSlicedVersion = (version: string): (number | string)[] =>
-  version
-    .slice(1)
-    .split(".")
-    .map((e: string) => {
-      const num = parseInt(e);
-      return `${num}` === e ? num : e;
-    });
+export const getSlicedVersion = (version: string): (number | string)[] => {
+  if (version.startsWith("v")) version = version.slice(1);
+  return version.split(".").map((e: string) => {
+    const num = parseInt(e);
+    return `${num}` === e ? num : e;
+  });
+};
