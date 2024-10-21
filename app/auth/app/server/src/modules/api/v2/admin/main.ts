@@ -7,7 +7,7 @@ import {
 } from "./admin.request.ts";
 import { updateGetRequest } from "./update.request.ts";
 import { accountRequestList } from "./account/main.ts";
-import { onetRequestList } from "./onet/main.ts";
+import { tokensRequestList } from "./tokens/main.ts";
 
 export const adminRequestList: RequestType[] = getPathRequestList({
   requestList: [
@@ -17,7 +17,7 @@ export const adminRequestList: RequestType[] = getPathRequestList({
     updateGetRequest,
 
     ...accountRequestList,
-    ...onetRequestList,
+    ...tokensRequestList,
   ],
   pathname: "/admin",
 });

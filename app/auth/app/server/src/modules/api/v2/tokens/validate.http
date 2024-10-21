@@ -1,0 +1,6 @@
+#
+GET http://localhost:20240/api/v2/tokens/validate
+token-key: aaa
+token-service: onet
+
+###

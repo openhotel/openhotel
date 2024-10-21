@@ -1,11 +1,12 @@
-import { RequestType, RequestMethod } from "@oh/utils";
+import { RequestMethod, RequestType } from "@oh/utils";
 import { System } from "modules/system/main.ts";
+import { Service } from "shared/enums/services.enums.ts";
 
 export const serverRequest: RequestType = {
   method: RequestMethod.POST,
   pathname: "/server",
   func: async (request: Request, url) => {
-    if (!(await System.onet.isValidRequest(request)))
+    if (!(await System.tokens.isValidRequest(request, Service.ONET)))
       return Response.json(
         { status: 403 },
         {

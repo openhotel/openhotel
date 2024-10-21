@@ -1,11 +1,11 @@
 import { RequestType, RequestMethod } from "@oh/utils";
 import { System } from "modules/system/main.ts";
 
-export const validateRequest: RequestType = {
-  method: RequestMethod.GET,
+export const getValidateRequest: RequestType = {
+  method: RequestMethod.POST,
   pathname: "/validate",
-  func: async (request: Request, url) => {
-    if (!(await System.onet.isValidRequest(request)))
+  func: async (request) => {
+    if (!(await System.tokens.isValidRequest(request)))
       return Response.json(
         { status: 403 },
         {
@@ -14,9 +14,7 @@ export const validateRequest: RequestType = {
       );
 
     return Response.json(
-      {
-        status: 200,
-      },
+      { status: 200 },
       {
         status: 200,
       },

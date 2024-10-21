@@ -1,12 +1,13 @@
 import { RequestType, RequestMethod } from "@oh/utils";
 import { System } from "modules/system/main.ts";
 import { Session } from "shared/types/session.types.ts";
+import { Service } from "shared/enums/services.enums.ts";
 
 export const validateAccountRequest: RequestType = {
   method: RequestMethod.POST,
   pathname: "/validate-account",
   func: async (request: Request, url) => {
-    if (!(await System.onet.isValidRequest(request)))
+    if (!(await System.tokens.isValidRequest(request, Service.ONET)))
       return Response.json(
         { status: 403 },
         {

@@ -51,8 +51,10 @@ export const email = () => {
         const hiddenEmail = `${to.substring(0, 3)}***${to.substring(to.length - 3, to.length)}`;
         try {
           const {
-            email: { username },
+            email: { enabled, username },
           } = System.getConfig();
+          if (!enabled) return resolve();
+
           await new Promise<void>((resolve, reject) => {
             transporter.sendMail(
               {

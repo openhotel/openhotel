@@ -70,6 +70,9 @@ export const registerRequest: RequestType = {
       verifyUrl,
       `<a href="${verifyUrl}">${verifyUrl}<p/>`,
     );
+    const {
+      email: { enabled: isEmailVerificationEnabled },
+    } = System.getConfig();
 
     // Every key related to the account is temporary until the account is verified or freed if not
     await System.db.set(
@@ -80,23 +83,33 @@ export const registerRequest: RequestType = {
         email,
         passwordHash: bcrypt.hashSync(password, bcrypt.genSaltSync(8)),
 
-        verifyId,
-        verifyTokensHash: bcrypt.hashSync(verifyToken, bcrypt.genSaltSync(8)),
+        verifyId: isEmailVerificationEnabled ? verifyId : null,
+        verifyTokensHash: isEmailVerificationEnabled
+          ? bcrypt.hashSync(verifyToken, bcrypt.genSaltSync(8))
+          : null,
       },
-      { expireIn: ACCOUNT_EXPIRE_TIME },
+      isEmailVerificationEnabled ? { expireIn: ACCOUNT_EXPIRE_TIME } : {},
     );
     await System.db.set(["accountsByVerifyId", verifyId], accountId, {
       expireIn: ACCOUNT_EXPIRE_TIME,
     });
-    await System.db.set(["accountsByEmail", email], accountId, {
-      expireIn: ACCOUNT_EXPIRE_TIME,
-    });
+    await System.db.set(
+      ["accountsByEmail", email],
+      accountId,
+      isEmailVerificationEnabled
+        ? {
+            expireIn: ACCOUNT_EXPIRE_TIME,
+          }
+        : {},
+    );
     await System.db.set(
       ["accountsByUsername", username.toLowerCase()],
       accountId,
-      {
-        expireIn: ACCOUNT_EXPIRE_TIME,
-      },
+      isEmailVerificationEnabled
+        ? {
+            expireIn: ACCOUNT_EXPIRE_TIME,
+          }
+        : {},
     );
 
     return Response.json(

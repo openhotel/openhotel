@@ -36,12 +36,18 @@ export const useAdmin = () => {
         method: "GET",
       }).then((response) => response.json()),
   };
-  const onet = {
-    generateKey: async (api: string) =>
-      await fetch(`/api/v2/admin/onet/generate-key`, {
+  const tokens = {
+    getList: async () =>
+      await fetch(`/api/v2/admin/tokens/list`, {
+        headers: getHeaders(),
+        method: "GET",
+      }).then((response) => response.json()),
+    generate: async (service: string, api: string) =>
+      await fetch(`/api/v2/admin/tokens/generate`, {
         headers: getHeaders(),
         method: "POST",
         body: JSON.stringify({
+          service,
           api,
         }),
       }).then((response) => response.json()),
@@ -55,6 +61,6 @@ export const useAdmin = () => {
     update,
 
     account,
-    onet,
+    tokens,
   };
 };

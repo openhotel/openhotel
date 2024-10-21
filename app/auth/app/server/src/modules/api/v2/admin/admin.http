@@ -7,8 +7,8 @@ sessionId: 3be671dd-bfb8-4cb0-bc68-bfe09b036f2e
 
 # Add new
 POST http://localhost:2024/api/v2/admin
-token: 32hB5Y6u9OTBmG6H3FC91tkSDQzug5ANj6y1O56goyxsac1GwDnmu1K2Uw60BtHT
-sessionId: 3be671dd-bfb8-4cb0-bc68-bfe09b036f2e
+token: dUpAHJIfu5n8MDVJasedEqfMDoqCaXRqsGNyhoEYKiR3WIM70goKHUsWkoPHmkfn
+sessionId: 447321fd-361e-4697-9b36-1eba13fb16da
 Content-Type: application/json
 
 {

@@ -1,0 +1,10 @@
+# POST
+POST http://localhost:20240/api/v2/admin/tokens/generate
+Content-Type: application/json
+
+{
+  "api": "a",
+  "service": "onet"
+}
+
+###

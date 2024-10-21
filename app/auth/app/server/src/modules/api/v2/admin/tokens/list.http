@@ -1,0 +1,4 @@
+# Get list
+GET http://localhost:20240/api/v2/admin/tokens/list
+
+###

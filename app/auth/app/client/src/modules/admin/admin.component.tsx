@@ -1,7 +1,7 @@
 import React, { FormEvent, useCallback, useEffect, useState } from "react";
 import { useAdmin, useApi } from "shared/hooks";
 import { Account } from "shared/types";
-import { OnetComponent } from "./onet.component";
+import { TokensComponent } from "modules/admin/tokens.component";
 
 export const AdminComponent: React.FC = () => {
   const { getList, remove, add, update, account } = useAdmin();
@@ -70,7 +70,7 @@ export const AdminComponent: React.FC = () => {
       <br />
       <b>{version}</b>
       <br />
-      <OnetComponent />
+      <TokensComponent />
       <h1>Accounts</h1>
       <div>
         <div>Accounts: ({accountList.length})</div>

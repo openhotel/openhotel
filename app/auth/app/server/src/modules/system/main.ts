@@ -8,7 +8,7 @@ import { tasks } from "./tasks.ts";
 import { sessions } from "./sessions.ts";
 import { CONFIG_DEFAULT } from "shared/consts/config.consts.ts";
 import { servers } from "./servers.ts";
-import { onet } from "modules/system/onet.ts";
+import { tokens } from "modules/system/tokens.ts";
 
 export const System = (() => {
   let $config: ConfigTypes;
@@ -21,7 +21,7 @@ export const System = (() => {
   const $tasks = tasks();
   const $sessions = sessions();
   const $servers = servers();
-  const $onet = onet();
+  const $tokens = tokens();
   let $db;
 
   const load = async (envs: Envs) => {
@@ -48,7 +48,6 @@ export const System = (() => {
     $api.load();
 
     $sessions.load();
-    await $onet.load();
   };
 
   const getConfig = (): ConfigTypes => $config;
@@ -69,6 +68,6 @@ export const System = (() => {
     tasks: $tasks,
     sessions: $sessions,
     servers: $servers,
-    onet: $onet,
+    tokens: $tokens,
   };
 })();

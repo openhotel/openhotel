@@ -11,9 +11,7 @@ export const getAccountFromRequest = async ({ headers }: Request) => {
 
   if (!accountBySession) return null;
 
-  const account = await System.db.get(["accounts", accountBySession]);
-
-  return account;
+  return await System.db.get(["accounts", accountBySession]);
 };
 
 export const isAccountAuthValid = async ({

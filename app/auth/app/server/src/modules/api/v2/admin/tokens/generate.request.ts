@@ -1,10 +1,11 @@
 import { RequestType, RequestMethod } from "@oh/utils";
 import { isAccountAdminValid } from "shared/utils/account.utils.ts";
 import { System } from "modules/system/main.ts";
+import { isServiceValid } from "shared/utils/services.utils.ts";
 
-export const generateKeyPostRequest: RequestType = {
+export const postGenerateRequest: RequestType = {
   method: RequestMethod.POST,
-  pathname: "/generate-key",
+  pathname: "/generate",
   func: async (request) => {
     const status = await isAccountAdminValid(request);
 
@@ -16,9 +17,9 @@ export const generateKeyPostRequest: RequestType = {
         },
       );
 
-    let { api } = await request.json();
+    let { api, service } = await request.json();
 
-    if (!api)
+    if (!api || !service || !isServiceValid(service))
       return Response.json(
         { status: 403 },
         {
@@ -26,10 +27,10 @@ export const generateKeyPostRequest: RequestType = {
         },
       );
 
-    const key = await System.onet.generateKey(api);
+    const data = await System.tokens.generateKey(service, api);
 
     return Response.json(
-      { status: 200, data: { key } },
+      { status: 200, data },
       {
         status: 200,
       },
