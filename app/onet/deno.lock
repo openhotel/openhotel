@@ -2,7 +2,7 @@
   "version": "4",
   "specifiers": {
     "jsr:@da/socket@2.1.0": "2.1.0",
-    "jsr:@oh/utils@1.2.3": "1.2.3",
+    "jsr:@oh/utils@1.3.0": "1.3.0",
     "jsr:@oh/yaml@1.1.0": "1.1.0",
     "jsr:@std/fs@1.0.4": "1.0.4",
     "jsr:@std/path@1.0.6": "1.0.6",
@@ -15,8 +15,8 @@
     "@da/socket@2.1.0": {
       "integrity": "f88593772db6d9c4d36d3eaf0c14d253fd93b462a7bcbe4ea9cb8da136d01792"
     },
-    "@oh/utils@1.2.3": {
-      "integrity": "6ca24af5ef4f812ef675844109adfdcd30f39bd7ce06695f214bd63b6f0bdab4",
+    "@oh/utils@1.3.0": {
+      "integrity": "5547e8e611707dc1d6f02a749490676d65288b508b82104bc7c00cfb78281cae",
       "dependencies": [
         "jsr:@oh/yaml",
         "jsr:@std/fs",
@@ -70,7 +70,7 @@
     "dependencies": [
       "jsr:@da/socket@2.1.0",
       "jsr:@oh/queue@1.1.1",
-      "jsr:@oh/utils@1.2.3"
+      "jsr:@oh/utils@1.3.0"
     ],
     "packageJson": {
       "dependencies": [
