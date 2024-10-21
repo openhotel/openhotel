@@ -15,7 +15,7 @@
   },
   "imports": {
     "@oh/queue": "jsr:@oh/queue@1.1.1",
-    "@oh/utils": "jsr:@oh/utils@1.2.4",
+    "@oh/utils": "jsr:@oh/utils@1.3.0",
 
     "shared/": "./src/shared/",
     "modules/": "./src/modules/",
