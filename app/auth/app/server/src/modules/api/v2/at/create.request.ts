@@ -32,8 +32,6 @@ export const postCreateRequest: RequestType = {
       );
     const account = await getAccountFromRequest(request);
 
-    account.username;
-
     await System.tokens.$fetch(RequestMethod.POST, "/create", Service.AT, {
       username: account.username,
       did,

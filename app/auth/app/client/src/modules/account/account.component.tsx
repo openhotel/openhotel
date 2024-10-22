@@ -1,27 +1,25 @@
 import React, { FormEvent, useCallback, useEffect, useState } from "react";
 import { useAccount, useApi, useQR } from "shared/hooks";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { LinkComponent } from "shared/components";
 import { AdminComponent } from "modules/admin";
+import { BskyComponent } from "./components";
+import { Account } from "shared/types";
 
 export const AccountComponent: React.FC = () => {
   const [loaded, setLoaded] = useState<boolean>(false);
   const [otpLoaded, setOTPLoaded] = useState<boolean>(false);
 
-  const [account, setAccount] = useState<{
-    username: string;
-    email: string;
-    isAdmin?: boolean;
-  }>();
+  const [account, setAccount] = useState<Account>();
   const [otpUrl, setOTPUrl] = useState<string>();
   let navigate = useNavigate();
 
   const { refreshSession } = useApi();
-  const { getAccount, getOTP, verifyOTP, deleteOTP } = useAccount();
+  const { getAccount, otp } = useAccount();
   const { getQR } = useQR();
 
   const $reloadOTP = () => {
-    getOTP().then(async (uri) => {
+    otp.get().then(async (uri) => {
       if (uri) setOTPUrl(await getQR(uri));
       setOTPLoaded(true);
     });
@@ -50,13 +48,13 @@ export const AccountComponent: React.FC = () => {
 
     if (!token || token.length !== 6) return;
 
-    const isVerified = await verifyOTP(token);
+    const isVerified = await otp.verify(token);
     if (isVerified) setOTPUrl(null);
   }, []);
 
   const onDeleteOTP = async () => {
     setOTPLoaded(false);
-    await deleteOTP();
+    await otp.remove();
     $reloadOTP();
   };
 
@@ -70,7 +68,7 @@ export const AccountComponent: React.FC = () => {
         <p>{account.email}</p>
       </div>
       <div>
-        <h2>OTP</h2>
+        <h2>2FA</h2>
         {otpLoaded &&
           (otpUrl ? (
             <form onSubmit={onSubmit}>
@@ -84,6 +82,7 @@ export const AccountComponent: React.FC = () => {
             </div>
           ))}
       </div>
+      <BskyComponent account={account} />
       <div>
         <h2>Actions</h2>
         <LinkComponent to="/">Go to hotel</LinkComponent>
@@ -91,7 +90,7 @@ export const AccountComponent: React.FC = () => {
         <LinkComponent to="/logout">Logout</LinkComponent>
         <p />
       </div>
-      {account.isAdmin ? (
+      {account?.isAdmin ? (
         <div>
           <hr />
           <AdminComponent />
