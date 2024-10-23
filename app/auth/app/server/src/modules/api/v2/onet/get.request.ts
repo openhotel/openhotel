@@ -4,7 +4,7 @@ import { Service } from "shared/enums/services.enums.ts";
 
 export const getRequest: RequestType = {
   method: RequestMethod.GET,
-  pathname: "/",
+  pathname: "",
   func: async (request: Request, url) => {
     const api = await System.tokens.getApiUrl(Service.ONET);
 
