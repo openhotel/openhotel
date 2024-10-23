@@ -1,4 +1,4 @@
 export enum Service {
-  ONET,
-  AT,
+  ONET = "ONET",
+  AT = "AT",
 }

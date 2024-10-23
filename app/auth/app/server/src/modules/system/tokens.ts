@@ -21,7 +21,7 @@ export const tokens = () => {
     const token = getRandomString(64);
 
     const ip = await getIpFromUrl(api);
-    await System.db.set(["tokens", Service[service.toUpperCase()]], {
+    await System.db.set(["tokens", service], {
       keyHash: bcrypt.hashSync(key, bcrypt.genSaltSync(8)),
       token,
       api,
@@ -42,14 +42,10 @@ export const tokens = () => {
     service?: Service,
   ): Promise<boolean> => {
     const tokenService = request.headers.get("token-service");
-    if (
-      service
-        ? tokenService !== Service[service].toLowerCase()
-        : !isServiceValid(tokenService)
-    )
+    if (service ? tokenService !== service : !isServiceValid(tokenService))
       return false;
 
-    const data = await System.db.get(["tokens", service]);
+    const data = await System.db.get(["tokens", tokenService]);
     if (!data) return false;
 
     const remoteIp = getIpFromRequest(request);
@@ -68,7 +64,7 @@ export const tokens = () => {
     data?: unknown,
   ): Promise<Data> => {
     const tokenData = await System.db.get(["tokens", service]);
-    if (!tokenData) throw `No service ${Service[service]} data!`;
+    if (!tokenData) throw `No service ${service} data!`;
 
     const headers = new Headers();
     headers.append("token", tokenData.token);
