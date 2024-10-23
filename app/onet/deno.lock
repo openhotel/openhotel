@@ -1,7 +1,7 @@
 {
   "version": "4",
   "specifiers": {
-    "jsr:@da/socket@2.1.0": "2.1.0",
+    "jsr:@da/socket@2.3.0": "2.3.0",
     "jsr:@oh/utils@1.3.0": "1.3.0",
     "jsr:@oh/yaml@1.1.0": "1.1.0",
     "jsr:@std/fs@1.0.4": "1.0.4",
@@ -12,8 +12,8 @@
     "npm:prettier@3.3.3": "3.3.3"
   },
   "jsr": {
-    "@da/socket@2.1.0": {
-      "integrity": "f88593772db6d9c4d36d3eaf0c14d253fd93b462a7bcbe4ea9cb8da136d01792"
+    "@da/socket@2.3.0": {
+      "integrity": "837038107dd08654b8cff848f55e82c2919acd22d83b3508ad19d725e43b124c"
     },
     "@oh/utils@1.3.0": {
       "integrity": "5547e8e611707dc1d6f02a749490676d65288b508b82104bc7c00cfb78281cae",
@@ -68,7 +68,7 @@
   },
   "workspace": {
     "dependencies": [
-      "jsr:@da/socket@2.1.0",
+      "jsr:@da/socket@2.3.0",
       "jsr:@oh/queue@1.1.1",
       "jsr:@oh/utils@1.3.0"
     ],

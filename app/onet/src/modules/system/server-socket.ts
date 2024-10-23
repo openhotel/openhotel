@@ -1,4 +1,5 @@
 import { getServerSocket, ServerClient } from "@da/socket";
+import { getIpFromRequest } from "@oh/utils";
 import { System } from "modules/system/main.ts";
 
 export const serverSocket = () => {
@@ -17,12 +18,16 @@ export const serverSocket = () => {
 
     $server.on(
       "guest",
-      async (
-        clientId: string,
-        [serverId, token]: string[],
-        connInfo: Deno.ServeHandlerInfo,
-      ) => {
-        const ip = connInfo.remoteAddr.hostname;
+      async ({
+        clientId,
+        protocols: [serverId, token],
+        headers,
+      }: {
+        clientId: string;
+        protocols: string[];
+        headers: Headers;
+      }) => {
+        const ip = getIpFromRequest({ headers } as Request)!;
         console.log(`- guest 1. ${clientId} ${serverId} '${ip}'`);
 
         //server is already logged
