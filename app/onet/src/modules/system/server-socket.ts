@@ -23,11 +23,13 @@ export const serverSocket = () => {
         connInfo: Deno.ServeHandlerInfo,
       ) => {
         const ip = connInfo.remoteAddr.hostname;
+        console.log(`- guest 1. ${clientId} ${serverId} '${ip}'`);
 
         //server is already logged
         if (System.servers.get({ serverId })) return false;
 
         const hostname = await System.servers.getHostname(serverId, token, ip);
+        console.log(`- guest 2. ${clientId} ${serverId} '${hostname}'`);
         if (!hostname) return false;
 
         System.servers.add({
@@ -51,6 +53,7 @@ export const serverSocket = () => {
       delete serverClientMap[client.id];
 
       const foundServer = System.servers.get({ clientId: client.id });
+      console.log(`- bye ${client.id} '${foundServer?.getHostname()}'`);
       if (!foundServer) return;
 
       System.servers.remove(foundServer.getObject());
