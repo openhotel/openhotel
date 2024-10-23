@@ -1,9 +1,10 @@
 import { RequestType, getPathRequestList } from "@oh/utils";
 
-import { serverRequest } from "modules/api/v2/onet/server.request.ts";
+import { serverRequest } from "./server.request.ts";
 import { validateAccountRequest } from "./validate-account.request.ts";
+import { getRequest } from "./get.request.ts";
 
 export const onetRequestList: RequestType[] = getPathRequestList({
-  requestList: [serverRequest, validateAccountRequest],
+  requestList: [getRequest, serverRequest, validateAccountRequest],
   pathname: "/onet",
 });
