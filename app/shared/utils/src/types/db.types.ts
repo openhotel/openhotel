@@ -2,6 +2,18 @@ export type DbProps = {
   pathname?: string;
 };
 
+export type Migration = {
+  id: string;
+  up: (db: DbMutable) => Promise<void>;
+  down: (db: DbMutable) => Promise<void>;
+};
+
+export type DbMigrationsMutable = {
+  load: (migrations: Migration[]) => Promise<void>;
+  up: (count?: number) => Promise<void>;
+  down: (count?: number) => Promise<void>;
+};
+
 export type DbMutable = {
   get: <Value extends unknown>(
     key: DbKey,
@@ -28,6 +40,8 @@ export type DbMutable = {
 
   load: () => Promise<void>;
   close: () => void;
+
+  migrations: DbMigrationsMutable;
 };
 
 export type DbKeyPart =
