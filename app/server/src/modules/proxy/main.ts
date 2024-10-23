@@ -60,6 +60,8 @@ export const Proxy = (() => {
         const request = new Request($request, { headers });
         let { method, url } = request;
 
+        log(`Request from ${connInfo.remoteAddr.hostname}`);
+
         if (isDevelopment) url = url.replace("/proxy", "");
         const { pathname } = getURL(url);
 
