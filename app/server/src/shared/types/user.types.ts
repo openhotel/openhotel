@@ -10,6 +10,8 @@ export type PrivateUser = {
 
   apiToken: string;
   authToken: string;
+
+  ip: string;
 };
 
 export type User = {

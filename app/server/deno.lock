@@ -1,7 +1,7 @@
 {
   "version": "4",
   "specifiers": {
-    "jsr:@da/socket@2.2.0": "2.2.0",
+    "jsr:@da/socket@2.3.0": "2.3.0",
     "jsr:@oh/pathfinding@2.0.3": "2.0.3",
     "jsr:@oh/queue@1.1.1": "1.1.1",
     "jsr:@oh/utils@1.3.0": "1.3.0",
@@ -13,8 +13,8 @@
     "npm:dayjs@1.11.13": "1.11.13"
   },
   "jsr": {
-    "@da/socket@2.2.0": {
-      "integrity": "7ef80c126b8619404d1882ceac5eaa08f9acc3141a155397a056e023037db891"
+    "@da/socket@2.3.0": {
+      "integrity": "837038107dd08654b8cff848f55e82c2919acd22d83b3508ad19d725e43b124c"
     },
     "@oh/pathfinding@2.0.3": {
       "integrity": "a0812c0706d0d4fe21ae70e2cd63242e40b903972b21ba5f4f59d0b8f78eb351"
@@ -471,7 +471,7 @@
   },
   "workspace": {
     "dependencies": [
-      "jsr:@da/socket@2.2.0",
+      "jsr:@da/socket@2.3.0",
       "jsr:@oh/pathfinding@2.0.3",
       "jsr:@oh/queue@1.1.1",
       "jsr:@oh/utils@1.3.0"

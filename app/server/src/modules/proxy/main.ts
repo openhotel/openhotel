@@ -61,8 +61,6 @@ export const Proxy = (() => {
         const request = new Request($request, { headers });
         let { method, url } = request;
 
-        log(`Request from`, getIpFromRequest(request));
-
         if (isDevelopment) url = url.replace("/proxy", "");
         const { pathname } = getURL(url);
 
@@ -83,13 +81,16 @@ export const Proxy = (() => {
 
     server.on(
       "guest",
-      async (
-        clientId: string,
-        [$protocolToken, ticketId, sessionId, token],
-      ) => {
+      async ({
+        clientId,
+        protocols: [$protocolToken, ticketId, sessionId, token],
+        headers,
+      }) => {
         let foundUser;
         const apiToken = getRandomString(32);
         const apiTokenHash = bcrypt.hashSync(apiToken, bcrypt.genSaltSync(8));
+
+        const ip = getIpFromRequest({ headers } as Request);
 
         userTokenMap[clientId] = apiToken;
         if (!config.auth.enabled) {
@@ -102,6 +103,7 @@ export const Proxy = (() => {
             username,
             apiToken: apiTokenHash,
             authToken: "AUTH_TOKEN",
+            ip,
           });
           return true;
         }
@@ -143,6 +145,7 @@ export const Proxy = (() => {
           username: data.username,
           apiToken: apiTokenHash,
           authToken: data.token,
+          ip,
         });
         return true;
       },
