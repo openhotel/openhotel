@@ -20,9 +20,9 @@ export const getListRequest: RequestType = {
       {
         status: 200,
         data: {
-          list: Object.values(Service)
-            .filter((value) => typeof value === "string")
-            .map((value: string) => value.toLowerCase()),
+          list: Object.values(Service).filter(
+            (value) => typeof value === "string",
+          ),
         },
       },
       {
