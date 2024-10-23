@@ -19,6 +19,7 @@ import {
   getURL,
   appendCORSHeaders,
   RequestMethod,
+  getIpFromRequest,
 } from "@oh/utils";
 import { eventList } from "./events/main.ts";
 import { auth } from "./auth.ts";
@@ -60,7 +61,7 @@ export const Proxy = (() => {
         const request = new Request($request, { headers });
         let { method, url } = request;
 
-        log(`Request from ${connInfo.remoteAddr.hostname}`);
+        log(`Request from`, getIpFromRequest(request));
 
         if (isDevelopment) url = url.replace("/proxy", "");
         const { pathname } = getURL(url);
