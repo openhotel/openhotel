@@ -20,7 +20,7 @@ export const auth = () => {
 
     const headers = new Headers();
     headers.append("token-key", config.auth.key);
-    headers.append("token-service", "onet");
+    headers.append("token-service", "ONET");
 
     const { status, data: responseData } = await fetch(
       `${config.auth.api}${pathname}`,
