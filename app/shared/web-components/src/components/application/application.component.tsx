@@ -1,6 +1,7 @@
 import * as React from "react";
 
-import * as styles from "./application.module.scss";
+// @ts-ignore
+import styles from "./application.module.scss";
 
 type Props = {
   children: React.ReactNode;
