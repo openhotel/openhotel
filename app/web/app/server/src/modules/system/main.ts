@@ -19,7 +19,7 @@ export const System = (() => {
       (await update({
         targetVersion: "latest",
         version: envs.version,
-        repository: "openhotel/auth",
+        repository: "openhotel/web",
         log: console.log,
         debug: console.debug,
       }))
