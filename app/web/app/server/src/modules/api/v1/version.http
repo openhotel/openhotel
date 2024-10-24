@@ -1,0 +1,2 @@
+#
+GET http://localhost:2025/api/v2/version

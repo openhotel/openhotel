@@ -1,0 +1,12 @@
+{
+  "tasks": {
+    "start": "deno task start:client & deno task start:server",
+
+    "start:server": "cd ./app/server && deno task start",
+    "start:server:nowatch": "cd ./app/server && deno task start:nowatch",
+    "start:client": "cd ./app/client && deno task start",
+
+    "prettier:check": "prettier -c ./",
+    "prettier:write": "prettier --write ."
+  }
+}
