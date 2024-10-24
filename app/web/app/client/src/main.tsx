@@ -3,7 +3,7 @@ import { createRoot } from "react-dom/client";
 
 // @ts-ignore
 import "./main.module.scss";
-import "@oh/components/dist/style.css";
+import "@oh/styles/style.css";
 
 import { Application } from "@oh/components";
 import { TestComponent } from "modules";
