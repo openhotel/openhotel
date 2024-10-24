@@ -8,5 +8,6 @@ type Props = {
 };
 
 export const Application: React.FC<Props> = ({ children }) => {
+  console.log("?");
   return <div className={styles.application}>{children}</div>;
 };
