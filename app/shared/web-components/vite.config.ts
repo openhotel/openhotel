@@ -13,7 +13,7 @@ export default defineConfig({
   ],
   build: {
     lib: {
-      entry: "./index.dev.ts",
+      entry: "./src/index.ts",
       fileName: (format) => `index.${format}.js`, // Output file name
       formats: ["es"], // Supported formats
     },
