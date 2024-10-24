@@ -8,7 +8,7 @@ export const useApi = () => {
   ): Promise<Data> => {
     const headers = new Headers();
 
-    const { status, data: responseData } = await fetch(`/api/v1/${pathname}`, {
+    const { status, data: responseData } = await fetch(`/api/v1${pathname}`, {
       method,
       body: data ? JSON.stringify(data) : null,
       headers,
