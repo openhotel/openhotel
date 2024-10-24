@@ -1,0 +1,52 @@
+name: Publish
+on:
+  push:
+    tags:
+      - "*"
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        deno-version: [2.0.0]
+
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set Versions
+        uses: actions/github-script@v4
+        id: set_version
+        with:
+          script: |
+            const tag = context.ref.substring(10).replace('v', '')
+            core.setOutput('tag', tag)
+            console.log(tag)
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20.x"
+          registry-url: "https://registry.npmjs.org"
+      - run: yarn install --frozen-lockfile
+
+      - name: run prettier checker
+        run: yarn prettier:check
+
+      - name: Add version to package.json
+        uses: jaywcjlove/github-action-package@main
+        with:
+          path: "./deno.json"
+          data: |
+            {
+              "version": "${{ steps.set_version.outputs.tag }}"
+            }
+
+      - name: run build
+        run: yarn run build
+
+      - name: Publish package
+        run: yarn run publish

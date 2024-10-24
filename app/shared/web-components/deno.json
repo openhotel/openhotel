@@ -1,0 +1,8 @@
+{
+  "name": "@oh/utils",
+  "version": "0.0.0",
+  "exports": "./dist/index.es.js",
+  "publish": {
+    "exclude": ["src/", ".storybook", ".github", "!dist/"]
+  }
+}
