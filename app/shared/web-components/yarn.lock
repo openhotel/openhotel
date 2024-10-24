@@ -197,7 +197,7 @@
   resolved "https://registry.yarnpkg.com/@base2/pretty-print-object/-/pretty-print-object-1.0.1.tgz#371ba8be66d556812dc7fb169ebc3c08378f69d4"
   integrity sha512-4iri8i1AqYHJE2DstZYkyEprg6Pq6sKx3xn5FpySk9sNhH7qN2LLlHJCfDTZRILNwQNPD7mATWM0TBui7uC1pA==
 
-"@chromatic-com/storybook@^1.9.0":
+"@chromatic-com/storybook@1.9.0":
   version "1.9.0"
   resolved "https://registry.yarnpkg.com/@chromatic-com/storybook/-/storybook-1.9.0.tgz#d95eb3474783bcc17a830a7627c3f099c1f75ba5"
   integrity sha512-vYQ+TcfktEE3GHnLZXHCzXF/sN9dw+KivH8a5cmPyd9YtQs7fZtHrEgsIjWpYycXiweKMo1Lm1RZsjxk8DH3rA==
@@ -712,7 +712,7 @@
     rehype-slug "^6.0.0"
     ts-dedent "^2.0.0"
 
-"@storybook/addon-essentials@^8.3.6":
+"@storybook/addon-essentials@8.3.6":
   version "8.3.6"
   resolved "https://registry.yarnpkg.com/@storybook/addon-essentials/-/addon-essentials-8.3.6.tgz#b8a0bbcad10ecd26cddddb517b4a864e4b65de37"
   integrity sha512-MQPFvThlGU7wlda1xhBPQCmDh90cSSZ31OsVs1uC5kJh0aLbY2gYXPurq1G54kzrYo8SMfBxsXrCplz8Ir6UTg==
@@ -735,7 +735,7 @@
   dependencies:
     "@storybook/global" "^5.0.0"
 
-"@storybook/addon-interactions@^8.3.6":
+"@storybook/addon-interactions@8.3.6":
   version "8.3.6"
   resolved "https://registry.yarnpkg.com/@storybook/addon-interactions/-/addon-interactions-8.3.6.tgz#ae03320903688e97934c37a211b3f1a45312248c"
   integrity sha512-Y0YUJj0oE1+6DFkaTPXM/8+dwTSoy0ltj2Sn2KOTJYzxKQYXBp8TlUv0QOQiGH7o/GKXIWek/VlTuvG/JEeiWw==
@@ -746,7 +746,7 @@
     polished "^4.2.2"
     ts-dedent "^2.2.0"
 
-"@storybook/addon-links@^8.3.6":
+"@storybook/addon-links@8.3.6":
   version "8.3.6"
   resolved "https://registry.yarnpkg.com/@storybook/addon-links/-/addon-links-8.3.6.tgz#2388083f7f53936061cb8cd5d5a40ea116fad785"
   integrity sha512-EGEH/kEjndEldbqyiJ8XSASkxqwzL/lgA/+6mHpa6Ljxhk1s5IMGcdA1ymJYJ2BpNdkUxRj/uxAa38eGcQiJ/g==
@@ -763,7 +763,7 @@
     "@storybook/global" "^5.0.0"
     tiny-invariant "^1.3.1"
 
-"@storybook/addon-onboarding@^8.3.6":
+"@storybook/addon-onboarding@8.3.6":
   version "8.3.6"
   resolved "https://registry.yarnpkg.com/@storybook/addon-onboarding/-/addon-onboarding-8.3.6.tgz#8547114beadb0d90690426391d19e2f94bcb83b8"
   integrity sha512-DvwtK3k5docaO7ZO0LRXL1myCwOnW2X+e9c383GEk9AykgL5otzkMjxRZ1rSAw39q/WIE9H0vBvUmzGVRpUm+A==
@@ -790,7 +790,7 @@
   dependencies:
     memoizerific "^1.11.3"
 
-"@storybook/blocks@8.3.6", "@storybook/blocks@^8.3.6":
+"@storybook/blocks@8.3.6":
   version "8.3.6"
   resolved "https://registry.yarnpkg.com/@storybook/blocks/-/blocks-8.3.6.tgz#ac2e4f07a4df23004b3361c592c2cffe6b95464a"
   integrity sha512-Oc5jU6EzfsENjrd91KcKyEKBh60RT+8uyLi1RIrymC2C/mzZMTEoNIrbnQt0eIqbjlHxn6y9JMJxHu4NJ4EmZg==
@@ -897,7 +897,7 @@
   resolved "https://registry.yarnpkg.com/@storybook/react-dom-shim/-/react-dom-shim-8.3.6.tgz#40ce82a4e6559a617c4a7288b532652fefcd271e"
   integrity sha512-9BO6VXIdli4GHSfiP/Z0gwAf7oQig3D/yWK2U1+91UWDV8nIAgnNBAi76U4ORC6MiK5MdkDfIikIxnLLeLnahA==
 
-"@storybook/react-vite@^8.3.6":
+"@storybook/react-vite@8.3.6":
   version "8.3.6"
   resolved "https://registry.yarnpkg.com/@storybook/react-vite/-/react-vite-8.3.6.tgz#1d29353eb3bbf853bd83a5e9a2944138e57cc377"
   integrity sha512-KXi4ZT4X7DsB4OOIWeR1XMH/Oz6Rp4TlWBNx/TgSEDGYEkPooqZK/O0S+G+VIsrRGQUf/57YqO73mP6kNluxTA==
@@ -912,7 +912,7 @@
     resolve "^1.22.8"
     tsconfig-paths "^4.2.0"
 
-"@storybook/react@8.3.6", "@storybook/react@^8.3.6":
+"@storybook/react@8.3.6":
   version "8.3.6"
   resolved "https://registry.yarnpkg.com/@storybook/react/-/react-8.3.6.tgz#da7dedf28c9985476409ab118142337db1bd03d0"
   integrity sha512-s3COryqIOYK7urgZaCPb77zlxGjPKr6dIsYmblQJcsFY2ZlG2x0Ysm8b5oRgD8Pv71hCJ0PKYA4RzDgBVYJS9A==
@@ -938,7 +938,7 @@
     type-fest "~2.19"
     util-deprecate "^1.0.2"
 
-"@storybook/test@8.3.6", "@storybook/test@^8.3.6":
+"@storybook/test@8.3.6":
   version "8.3.6"
   resolved "https://registry.yarnpkg.com/@storybook/test/-/test-8.3.6.tgz#a1b92be405004f479319127bba833a52e8d075b1"
   integrity sha512-WIc8LzK9jaEw+e3OiweEM2j3cppPzsWod59swuf6gDBf176EQLIyjtVc+Kh3qO4NNkcL+lwmqaLPjOxlBLaDbg==
@@ -1200,7 +1200,7 @@
   resolved "https://registry.yarnpkg.com/@ungap/structured-clone/-/structured-clone-1.2.0.tgz#756641adb587851b5ccb3e095daf27ae581c8406"
   integrity sha512-zuVdFrMJiuCDQUMCzQaD6KL28MjnqqN8XnAqiEq9PNm/hCPTSGfrXCOfwj1ow4LFb/tNymJPwsNbVePc1xFqrQ==
 
-"@vitejs/plugin-react@^4.3.3":
+"@vitejs/plugin-react@4.3.3":
   version "4.3.3"
   resolved "https://registry.yarnpkg.com/@vitejs/plugin-react/-/plugin-react-4.3.3.tgz#28301ac6d7aaf20b73a418ee5c65b05519b4836c"
   integrity sha512-NooDe9GpHGqNns1i8XDERg0Vsg5SSYRhRxxyTGogUdkdNt47jal+fbuYi+Yfq6pzRCKXyoPcWisfxE6RIM3GKA==
@@ -2414,7 +2414,7 @@ jsonfile@^6.0.1, jsonfile@^6.1.0:
   optionalDependencies:
     graceful-fs "^4.1.6"
 
-jsr@^0.13.2:
+jsr@0.13.2:
   version "0.13.2"
   resolved "https://registry.yarnpkg.com/jsr/-/jsr-0.13.2.tgz#6be8760fe44ec426ac114b3d817e7e4173508fd9"
   integrity sha512-c4ir0ql2Xgpg9mSOSPKBANS9oTvlV8fSzpesCsHP04VAOJ3pBm7YygY2LVkHC0jz9G36JBGh1oiEZTWO4UyctA==
@@ -2795,7 +2795,7 @@ postcss@^8.4.43:
     picocolors "^1.1.0"
     source-map-js "^1.2.1"
 
-prettier@^3.3.3:
+prettier@3.3.3:
   version "3.3.3"
   resolved "https://registry.yarnpkg.com/prettier/-/prettier-3.3.3.tgz#30c54fe0be0d8d12e6ae61dbb10109ea00d53105"
   integrity sha512-i2tDNA0O5IrMO757lfrdQZCc2jPNDVntV0m/+4whiDfWaTKfMNgR7Qz0NAeGz/nRqF4m5/6CLzbP4/liHt12Ew==
@@ -2814,7 +2814,7 @@ process@^0.11.10:
   resolved "https://registry.yarnpkg.com/process/-/process-0.11.10.tgz#7332300e840161bda3e69a1d1d91a7d4bc16f182"
   integrity sha512-cdGef/drWFoydD1JsMzuFf8100nZl+GT+yacc2bEced5f9Rjk4z+WtFUTBu9PhOi9j/jfmBPu0mMEY4wIdAF8A==
 
-prop-types@^15.7.2, prop-types@^15.8.1:
+prop-types@15.8.1, prop-types@^15.7.2:
   version "15.8.1"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.8.1.tgz#67d87bf1a694f48435cf332c24af10214a3140b5"
   integrity sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==
@@ -3157,7 +3157,7 @@ statuses@2.0.1:
   resolved "https://registry.yarnpkg.com/statuses/-/statuses-2.0.1.tgz#55cb000ccf1d48728bd23c685a063998cf1a1b63"
   integrity sha512-RwNA9Z/7PrK06rYLIzFMlaF+l73iwpzsqRIFgbMLbTcLD6cOao82TaWefPXQvB2fOC4AjuYSEndS7N/mTCbkdQ==
 
-storybook@^8.3.6:
+storybook@8.3.6:
   version "8.3.6"
   resolved "https://registry.yarnpkg.com/storybook/-/storybook-8.3.6.tgz#c5e733504fac26c1a31c527a645c04ec7da4222f"
   integrity sha512-9GVbtej6ZzPRUM7KRQ7848506FfHrUiJGqPuIQdoSJd09EmuEoLjmLAgEOmrHBQKgGYMaM7Vh9GsTLim6vwZTQ==
@@ -3405,7 +3405,7 @@ vary@~1.1.2:
   resolved "https://registry.yarnpkg.com/vary/-/vary-1.1.2.tgz#2299f02c6ded30d4a5961b0b9f74524a18f634fc"
   integrity sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg==
 
-vite-plugin-dts@^4.3.0:
+vite-plugin-dts@4.3.0:
   version "4.3.0"
   resolved "https://registry.yarnpkg.com/vite-plugin-dts/-/vite-plugin-dts-4.3.0.tgz#f7365e4969f018ee47e6dda55adf051aa47083a7"
   integrity sha512-LkBJh9IbLwL6/rxh0C1/bOurDrIEmRE7joC+jFdOEEciAFPbpEKOLSAr5nNh5R7CJ45cMbksTrFfy52szzC5eA==
