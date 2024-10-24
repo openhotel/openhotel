@@ -3,7 +3,6 @@
   "version": "0.0.0",
   "exports": "./dist/index.es.js",
   "publish": {
-    "exclude": ["src/", ".storybook", ".github", "!dist/"],
-    "include": ["./dist/style.css"]
+    "exclude": ["src/", ".storybook", ".github", "!dist/"]
   }
 }
