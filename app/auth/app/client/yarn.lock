@@ -328,6 +328,13 @@
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
 
+"@oh/components@npm:@jsr/oh__components@0.1.6":
+  version "0.1.6"
+  resolved "https://npm.jsr.io/~/11/@jsr/oh__components/0.1.6.tgz#36B2A9EF8C27D1D84692E759546FB07FE1119CDB"
+  integrity sha512-g7I5auWREGeDnugmukeRP6mRG2Zc7ewz/WdoB0v6/s/XYFWwEJUGnd+4wnskaeGt25Ypazk55Ju/27mEX7E6ZQ==
+  dependencies:
+    react "18.3.1"
+
 "@remix-run/router@1.19.0":
   version "1.19.0"
   resolved "https://registry.yarnpkg.com/@remix-run/router/-/router-1.19.0.tgz#745dbffbce67f05386d57ca22c51dfd85c979593"

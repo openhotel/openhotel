@@ -21,6 +21,7 @@ export default defineConfig({
     alias: {
       modules: "/modules",
       shared: "/shared",
+      "@oh/styles": "../node_modules/@oh/components/dist/",
     },
   },
 });
