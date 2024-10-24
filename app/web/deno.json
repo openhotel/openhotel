@@ -4,6 +4,6 @@
 
     "start:server": "cd ./app/server && deno task start",
     "start:server:nowatch": "cd ./app/server && deno task start:nowatch",
-    "start:client": "cd ./app/client && deno task start"
+    "start:client": "cd ./app/client && yarn start"
   }
 }
