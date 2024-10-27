@@ -1,6 +1,7 @@
 import React, { FormEvent, useCallback } from "react";
 import { Account } from "shared/types";
 import { useAccount } from "shared/hooks";
+import { PROTO_DID_REGEX } from "shared/consts";
 
 type Props = {
   account: Account;
@@ -15,8 +16,7 @@ export const BskyComponent: React.FC<Props> = ({ account }) => {
     const data = new FormData(event.target as unknown as HTMLFormElement);
     const did = data.get("did") as string;
 
-    console.log(did);
-    if (!did || did.length !== 24) return;
+    if (!did || !new RegExp(PROTO_DID_REGEX).test(did)) return;
 
     await at.create(did);
   }, []);
@@ -52,17 +52,16 @@ export const BskyComponent: React.FC<Props> = ({ account }) => {
         <br />
         <br />
         <div>
-          2. Copy the (did) red part only (24 letters/numbers) to the input{" "}
-          <br />
-          <label style={{ backgroundColor: "black" }}>did=did:plc:</label>
+          2. Copy the (did) red part only to the input <br />
+          <label style={{ backgroundColor: "black" }}>did=</label>
           <b
             style={{ backgroundColor: "rgba(206, 2, 2, 0.66)", color: "white" }}
           >
-            xxxxxxxxxxxxxxxxxxxxxxxx
+            did:plc:xxxxxxxxxxxxxxxxxxxxxxxx
           </b>
         </div>
         <br />
-        <input placeholder="bluesky account did" name="did" maxLength={24} />
+        <input placeholder="bluesky account did" name="did" />
         <br />
         <br />
         <button type="submit" style={{ cursor: "pointer" }}>
