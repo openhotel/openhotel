@@ -72,11 +72,33 @@ export const BskyComponent: React.FC<Props> = ({ account }) => {
         <label>4. Click on 'Verify DNS Record'</label>
         <br />
         <br />
+        <label>
+          5A. Don't click on 'Update to {handler}' if you want to preserve your
+          own handler. This will work as an additional one.
+        </label>
+        <br />
+        <label>
+          5B. Click on 'Update to {handler}' if you want to change your main
+          handler to this one.
+        </label>
+        <br />
+        <br />
         <label
           style={{ backgroundColor: "rgba(206, 2, 2, 0.66)", color: "white" }}
         >
-          If it doesn't work, wait a few minutes/hours and try again. This
-          process can be slow at times, be patient!
+          If it doesn't work:
+        </label>
+        <label
+          style={{ backgroundColor: "rgba(206, 2, 2, 0.66)", color: "white" }}
+        >
+          - Check if another of your accounts already have this handler and
+          remove it. (it doesn't work on multiple accounts)
+        </label>
+        <label
+          style={{ backgroundColor: "rgba(206, 2, 2, 0.66)", color: "white" }}
+        >
+          - Wait a few minutes/hours and try again. This process can be slow at
+          times, be patient!
         </label>
       </form>
     </div>
