@@ -1,1 +1,1 @@
-export const PROTO_DID_REGEX = /^[a-z0-9]{24}$/;
+export const PROTO_DID_REGEX = /^did:[a-z]+:[a-zA-Z0-9._:%-]*[a-zA-Z0-9._-]$/;
