@@ -1,7 +1,7 @@
 import { readYaml, writeYaml, createDirectoryIfNotExists } from "@oh/utils";
 import { Catalog, FurnitureData } from "shared/types/main.ts";
+import { BlobReader, ZipReader, Uint8ArrayWriter } from "@zip-js";
 import { FurnitureType } from "shared/enums/furniture.enum.ts";
-import { decompress } from "zip";
 
 export const furniture = () => {
   let $catalog: Catalog;
@@ -22,7 +22,21 @@ export const furniture = () => {
         await Deno.stat(destName);
       } catch (e) {
         await createDirectoryIfNotExists(destName);
-        await decompress(`./assets/furniture/${dirEntry.name}`, destName);
+
+        const file = await Deno.readFile(`./assets/furniture/${dirEntry.name}`);
+
+        // Initialize a zip reader
+        const blob = new Blob([file]);
+        const blobReader = new BlobReader(blob);
+        const zipReader = new ZipReader(blobReader);
+
+        for (const file of await zipReader.getEntries()) {
+          const content = await file.getData(new Uint8ArrayWriter());
+          const fileDir = destName + "/" + file.filename;
+          await createDirectoryIfNotExists(fileDir);
+
+          await Deno.writeFile(fileDir, content);
+        }
       }
 
       const furnitureData = await readYaml(`${destName}/data.yml`);
