@@ -35,6 +35,11 @@ export const System = (() => {
     )
       return;
 
+    if (System.isDevelopment())
+      console.log(
+        "\n\n    ------------------\n    DEVELOPMENT SERVER\n    ------------------\n\n",
+      );
+
     await $auth.load();
     $api.load();
     $serverSocket.load($config.port, $api.onRequest);
@@ -43,10 +48,13 @@ export const System = (() => {
   const getConfig = () => $config;
   const getEnvs = () => $envs;
 
+  const isDevelopment = () => $config.version === "development";
+
   return {
     load,
     getConfig,
     getEnvs,
+    isDevelopment,
 
     api: $api,
     auth: $auth,

@@ -27,6 +27,17 @@ export const serverSocket = () => {
         protocols: string[];
         headers: Headers;
       }) => {
+        if (System.isDevelopment()) {
+          System.servers.add({
+            clientId,
+            serverId,
+            ip: "0.0.0.0",
+            hostname: serverId,
+            token,
+          });
+          return true;
+        }
+
         const ip = getIpFromRequest({ headers } as Request)!;
         console.log(`- guest 1. ${clientId} ${serverId} '${ip}'`);
 

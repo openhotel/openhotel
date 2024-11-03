@@ -3,6 +3,7 @@ import { RequestMethod } from "@oh/utils";
 
 export const auth = () => {
   const load = async () => {
+    if (System.isDevelopment()) return;
     try {
       await $fetch(RequestMethod.GET, "/tokens/validate");
     } catch (e) {
