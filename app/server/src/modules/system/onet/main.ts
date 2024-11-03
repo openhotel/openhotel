@@ -2,7 +2,7 @@ import { System } from "modules/system/main.ts";
 import { getClientSocket, getWebSocketUrl } from "@da/socket";
 import { OnetEvent } from "shared/enums/event.enum.ts";
 import { eventList } from "modules/system/onet/events/main.ts";
-import { log } from "shared/utils/log.utils.ts";
+import { getRandomString } from "@oh/utils";
 
 export const onet = () => {
   let $api;
@@ -16,11 +16,17 @@ export const onet = () => {
 
     if (!onet.enabled) return;
 
+    const isDevelopment = System.isDevelopment();
+
     try {
-      const { data } = await fetch(`${auth.api}/onet`).then((data) =>
-        data.json(),
-      );
-      $api = data.api;
+      if (isDevelopment) {
+        $api = "http://localhost:9400/api/v1";
+      } else {
+        const { data } = await fetch(`${auth.api}/onet`).then((data) =>
+          data.json(),
+        );
+        $api = data.api;
+      }
 
       const onetResponse = await fetch(`${$api}/version`).then((data) =>
         data.json(),
@@ -29,10 +35,20 @@ export const onet = () => {
 
       //CONNECT TO ONET
       const { serverId, token } = System.auth.getAuth();
-      log(serverId, token);
+
+      const protocols = isDevelopment
+        ? [
+            `development_${getRandomString(4).toUpperCase()}`,
+            getRandomString(16),
+          ]
+        : [serverId, token];
+
+      if (isDevelopment)
+        console.log(`development onet hostname: ${protocols[0]}`);
+
       $socket = getClientSocket({
         url: getWebSocketUrl($api),
-        protocols: [serverId, token],
+        protocols,
         reconnect: true,
         reconnectIntents: 1000,
         reconnectInterval:
@@ -43,6 +59,7 @@ export const onet = () => {
 
       await $socket.connect();
     } catch (e) {
+      console.log(e);
       console.error(`/!\\ Onet server is not reachable!`);
     }
   };
