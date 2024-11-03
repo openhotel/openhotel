@@ -63,11 +63,14 @@ export const System = (() => {
   const $getConfig = () => $config;
   const getEnvs = () => $envs;
 
+  const isDevelopment = () => $config.version === "development";
+
   return {
     load,
 
     getConfig: $getConfig,
     getEnvs,
+    isDevelopment,
 
     game: $game,
     proxy: $proxy,
