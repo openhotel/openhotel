@@ -42,7 +42,15 @@ export const furniture = () => {
       "./assets/furniture/.data/furniture.yml",
       Object.keys($furnitureMap),
     );
-    $catalog = await readYaml("./assets/catalog.yml");
+    const catalogDir = "./assets/catalog.yml";
+    try {
+      $catalog = await readYaml(catalogDir);
+    } catch (e) {
+      $catalog = {
+        categories: [],
+      };
+      await writeYaml(catalogDir, $catalog);
+    }
   };
 
   const getCatalog = (): Catalog => $catalog;
