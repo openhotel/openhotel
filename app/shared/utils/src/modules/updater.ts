@@ -3,7 +3,6 @@ import {
   getOSName,
   getPath,
   getTemporalUpdateFilePathname,
-  getSlicedVersion,
 } from "../utils/main.ts";
 import { OS } from "../enums/main.ts";
 import * as path from "@std/path";
@@ -12,6 +11,7 @@ import type {
   LatestVersionProps,
   UpdateProps,
 } from "../types/update.types.ts";
+import { isNewVersionGreater } from "../utils/version.utils.ts";
 
 let isUpdating = false;
 
@@ -72,17 +72,8 @@ export const update = async ({
       },
     ).then((data) => data.json());
 
-    const [oldMajor, oldMinor, oldPatch, oldExtra] = getSlicedVersion(version);
-    const [newMajor, newMinor, newPatch, newExtra] =
-      getSlicedVersion(latestVersion);
-
     if (isLatest) {
-      if (
-        oldMajor >= newMajor &&
-        oldMinor >= newMinor &&
-        oldPatch >= newPatch &&
-        (oldExtra >= newExtra || oldExtra === newExtra)
-      ) {
+      if (!isNewVersionGreater(version, latestVersion)) {
         log("Everything is up to date!");
         isUpdating = false;
         return false;
@@ -194,16 +185,7 @@ export const getLatestVersion = async ({
       },
     ).then((data) => data.json());
 
-    const [oldMajor, oldMinor, oldPatch, oldExtra] = getSlicedVersion(version);
-    const [newMajor, newMinor, newPatch, newExtra] =
-      getSlicedVersion(latestVersion);
-
-    if (
-      oldMajor >= newMajor &&
-      oldMinor >= newMinor &&
-      oldPatch >= newPatch &&
-      (oldExtra >= newExtra || oldExtra === newExtra)
-    ) {
+    if (!isNewVersionGreater(version, latestVersion)) {
       log("Everything is up to date!");
       return null;
     }

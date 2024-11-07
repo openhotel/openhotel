@@ -6,3 +6,4 @@ export * from "./config.types.ts";
 export * from "./update.types.ts";
 export * from "./lang.types.ts";
 export * from "./direction.types.ts";
+export * from "./version.types.ts";

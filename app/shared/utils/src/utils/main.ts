@@ -13,3 +13,4 @@ export * from "./update.utils.ts";
 export * from "./point.utils.ts";
 export * from "./ip.utils.ts";
 export * from "./request.utils.ts";
+export * from "./version.utils.ts";
