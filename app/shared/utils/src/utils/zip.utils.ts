@@ -6,7 +6,10 @@ const initConfigure = () => {
   configure({ useWebWorkers: false });
 };
 
-export const decompress = async (srcPath: string, destPath: string) => {
+export const decompress = async (
+  srcPath: string,
+  destPath: string,
+): Promise<void> => {
   initConfigure();
 
   const file = await Deno.readFile(srcPath);
