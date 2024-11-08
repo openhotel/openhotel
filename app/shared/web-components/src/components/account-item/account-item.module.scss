@@ -1,0 +1,24 @@
+.accountItem {
+  border-radius: 0.75rem;
+  padding: 1rem 3rem;
+
+  color: var(--text-primary);
+
+  font-weight: bold;
+  cursor: pointer;
+  user-select: none;
+
+  display: flex;
+  gap: 1rem;
+
+  border: 2px solid var(--bg-main);
+
+  &:hover,
+  &.selected {
+    border: 2px solid var(--bg-primary);
+  }
+
+  &:active {
+    border: 2px solid var(--bg-secondary);
+  }
+}

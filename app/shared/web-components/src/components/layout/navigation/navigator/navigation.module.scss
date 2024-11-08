@@ -1,0 +1,35 @@
+.navigator {
+  display: flex;
+  flex-direction: column;
+
+  padding: 1rem;
+
+  .logo {
+    margin: 0 auto;
+
+    img {
+      width: 12.8rem;
+    }
+  }
+
+  .items {
+    height: 100%;
+
+    margin-top: 1rem;
+
+    position: relative;
+    width: 100%;
+    overflow: scroll;
+    min-width: 16rem;
+
+    .content {
+      position: absolute;
+
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+
+      width: 100%;
+    }
+  }
+}

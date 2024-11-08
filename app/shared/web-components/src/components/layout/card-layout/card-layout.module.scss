@@ -1,0 +1,32 @@
+.wrapper {
+  height: 100%;
+  width: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .card {
+    width: 35rem;
+    height: 40rem;
+    overflow: hidden;
+
+    .main {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+
+      .content,
+      .actions {
+        padding: 2rem 3rem;
+      }
+
+      .content {
+        flex: 1;
+        background-color: var(--bg-footer);
+      }
+      .actions {
+      }
+    }
+  }
+}

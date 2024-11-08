@@ -1,0 +1,44 @@
+@use "../../../styles/colors.module.scss";
+
+.bigCard {
+  display: flex;
+  flex-direction: column;
+
+  $margin: 0.5rem;
+
+  margin: $margin auto;
+  width: calc(100% - ($margin * 2));
+  height: calc(100% - ($margin * 2));
+
+  box-shadow:
+    rgba(14, 30, 37, 0.12) 0 2px 4px 0,
+    rgba(14, 30, 37, 0.32) 0 2px 16px 0;
+
+  max-width: 144rem;
+
+  overflow: hidden;
+
+  background-color: var(--bg-card);
+
+  .container {
+    display: flex;
+    flex: 1;
+
+    .bigContainer {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+
+      .main {
+        border-top-left-radius: 0.75rem;
+
+        &.headless {
+          border-top-left-radius: 1.5rem;
+        }
+
+        background-color: var(--bg-main);
+        @include colors.setPrimaryTextColors();
+      }
+    }
+  }
+}

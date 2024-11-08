@@ -1,0 +1,44 @@
+.button {
+  display: inline-flex;
+  width: fit-content;
+  height: fit-content;
+
+  padding: 1rem 3rem;
+  border-radius: 0.5rem;
+
+  font-weight: bold;
+  cursor: pointer;
+  user-select: none;
+
+  &.formButton {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+
+    @media (prefers-color-scheme: light) {
+      color: var(--dark-text-primary);
+      svg path {
+        fill: var(--dark-text-primary);
+      }
+    }
+
+    &:hover,
+    &:active {
+      background-color: var(--bg-secondary);
+    }
+  }
+
+  &.threeButton {
+    background-color: #f1c72d;
+    border-bottom: 2px solid #d08d28;
+    color: #272536;
+
+    &:hover {
+      background-color: #f1b92d;
+    }
+
+    &:active {
+      border-bottom: 0;
+      border-top: 2px solid #d08d28;
+    }
+  }
+}

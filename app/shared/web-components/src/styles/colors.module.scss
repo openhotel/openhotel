@@ -1,0 +1,6 @@
+@mixin setPrimaryTextColors() {
+  color: var(--text-primary);
+  svg path {
+    fill: var(--text-primary);
+  }
+}

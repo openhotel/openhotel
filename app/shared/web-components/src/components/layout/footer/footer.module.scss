@@ -1,0 +1,13 @@
+@use "../../../styles/colors.module.scss";
+
+.footer {
+  background-color: var(--bg-footer);
+  @include colors.setPrimaryTextColors();
+
+  display: flex;
+  padding: 3rem 4rem;
+  justify-content: space-between;
+
+  text-align: center;
+  align-items: center;
+}

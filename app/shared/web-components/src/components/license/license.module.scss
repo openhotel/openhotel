@@ -1,0 +1,18 @@
+.license {
+  cursor: pointer;
+
+  display: flex;
+  text-align: center;
+  align-items: center;
+
+  text-decoration: none;
+
+  &:link,
+  &:visited {
+    text-decoration: none;
+  }
+
+  svg path {
+    fill: var(--text-primary) !important;
+  }
+}

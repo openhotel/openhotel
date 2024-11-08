@@ -89,7 +89,7 @@
         "npm:prop-types@15.8.1",
         "npm:react-dom@18.3.1",
         "npm:react@18.3.1",
-        "npm:sass@1.77.8",
+        "npm:sass@^1.80.4",
         "npm:storybook@8.3.6",
         "npm:vite-plugin-dts@4.3.0",
         "npm:vite@^5.4.10"

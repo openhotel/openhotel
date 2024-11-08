@@ -1,0 +1,11 @@
+@use "../../../styles/colors.module.scss";
+
+.background {
+  background-color: var(--bg);
+  @include colors.setPrimaryTextColors();
+
+  width: 100%;
+  height: 100%;
+
+  overflow: hidden;
+}

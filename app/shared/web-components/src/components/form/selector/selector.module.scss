@@ -1,0 +1,111 @@
+.selector {
+  position: relative;
+  user-select: none;
+
+  .input {
+    display: flex;
+
+    color: var(--text-primary);
+    svg path {
+      fill: var(--text-primary);
+    }
+
+    background-color: var(--bg-footer);
+
+    gap: 1rem;
+    padding: 1rem 3rem;
+    border-radius: 0.5rem;
+
+    cursor: pointer;
+
+    position: relative;
+
+    &.isOpen {
+      border-radius: 0.5rem 0.5rem 0 0;
+    }
+
+    .clear {
+      cursor: pointer;
+      height: 1.8rem;
+      opacity: 0.5;
+
+      svg {
+        height: 1.8rem;
+      }
+    }
+
+    .chevron {
+      height: 1.8rem;
+      margin-left: auto;
+
+      svg {
+        height: 1.8rem;
+      }
+    }
+
+    .selection {
+      flex: 1;
+    }
+    .placeholder {
+      opacity: 0.55;
+    }
+    .placeholder,
+    .selection {
+      height: 1.8rem;
+      cursor: pointer;
+    }
+    .input {
+      height: 100%;
+      position: absolute;
+      width: 100%;
+      left: 0;
+      top: 0;
+      background-color: transparent;
+      color: transparent;
+      z-index: -1;
+    }
+  }
+
+  .options {
+    .option {
+      cursor: pointer;
+    }
+  }
+
+  .modal {
+    position: absolute;
+    color: var(--text-primary);
+
+    width: 100%;
+
+    overflow: hidden;
+
+    background: rgba(0, 0, 0, 0.6);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+
+    border-radius: 0 0 0.5rem 0.5rem;
+
+    z-index: 100;
+
+    @media (prefers-color-scheme: light) {
+      background: rgba(255, 255, 255, 0.8);
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+
+      .option {
+        padding: 1rem 3rem;
+
+        &:hover {
+          background: rgba(255, 255, 255, 0.5);
+        }
+        &:active {
+          background: rgba(255, 255, 255, 0.75);
+        }
+      }
+    }
+  }
+}
