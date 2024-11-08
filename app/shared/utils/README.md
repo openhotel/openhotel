@@ -2,7 +2,7 @@
 
 ### Tests
 
-- Run `deno task test:watch`
+- Run `jest`
 
 Exposed functions
 

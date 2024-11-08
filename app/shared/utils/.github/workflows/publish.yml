@@ -42,7 +42,7 @@ jobs:
           deno-version: ${{ matrix.deno-version }}
 
       - name: run tests
-        run: deno test
+        run: yarn test
 
       - name: Add version to package.json
         uses: jaywcjlove/github-action-package@main

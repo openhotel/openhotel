@@ -30,4 +30,4 @@ jobs:
           deno-version: ${{ matrix.deno-version }}
 
       - name: run tests
-        run: deno test
+        run: yarn test

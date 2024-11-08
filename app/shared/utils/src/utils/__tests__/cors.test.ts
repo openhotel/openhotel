@@ -1,5 +1,4 @@
-import { describe, it } from "jsr:@std/testing/bdd";
-import { expect } from "jsr:@std/expect";
+import { expect, describe, it } from "@jest/globals";
 import { appendCORSHeaders, getCORSHeaders } from "../cors.utils.ts";
 
 const corsHeaders = [

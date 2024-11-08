@@ -59,7 +59,12 @@
     ],
     "packageJson": {
       "dependencies": [
+        "npm:@babel/core@^7.26.0",
+        "npm:@babel/preset-env@^7.26.0",
+        "npm:@babel/preset-typescript@^7.26.0",
+        "npm:babel-jest@^29.7.0",
         "npm:dayjs@1.11.13",
+        "npm:jest@^29.7.0",
         "npm:prettier@3.3.3"
       ]
     }
