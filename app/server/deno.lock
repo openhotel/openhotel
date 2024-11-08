@@ -4,7 +4,7 @@
     "jsr:@da/socket@2.3.0": "2.3.0",
     "jsr:@oh/pathfinding@2.0.3": "2.0.3",
     "jsr:@oh/queue@1.1.1": "1.1.1",
-    "jsr:@oh/utils@1.3.3": "1.3.3",
+    "jsr:@oh/utils@1.3.6": "1.3.6",
     "jsr:@oh/yaml@1.1.0": "1.1.0",
     "jsr:@std/fs@1.0.4": "1.0.4",
     "jsr:@std/path@1.0.6": "1.0.6",
@@ -23,13 +23,14 @@
     "@oh/queue@1.1.1": {
       "integrity": "8e8ec809202c48beaf436b3ea01b4c3a17f8c015ca686d906822482c9c881390"
     },
-    "@oh/utils@1.3.3": {
-      "integrity": "bb178465cd4a507e5a7b31ec9440df2306b28679784796b63a674e075489e56d",
+    "@oh/utils@1.3.6": {
+      "integrity": "f027fc31ef1429e0816323c8d0a703248f5f566d9dfb4da3823d0c892b00efb6",
       "dependencies": [
         "jsr:@oh/yaml",
         "jsr:@std/fs",
         "jsr:@std/path@1.0.6",
         "jsr:@std/yaml",
+        "jsr:@zip-js/zip-js",
         "npm:dayjs"
       ]
     },
@@ -478,8 +479,7 @@
       "jsr:@da/socket@2.3.0",
       "jsr:@oh/pathfinding@2.0.3",
       "jsr:@oh/queue@1.1.1",
-      "jsr:@oh/utils@1.3.3",
-      "jsr:@zip-js/zip-js@2.7.53"
+      "jsr:@oh/utils@1.3.6"
     ]
   }
 }
