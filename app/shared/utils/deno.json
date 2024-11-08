@@ -10,5 +10,8 @@
     "@oh/yaml": "jsr:@oh/yaml@1.1.0",
 
     "dayjs": "npm:dayjs@1.11.13"
+  },
+  "tasks": {
+    "test:watch": "deno test --watch=./src"
   }
 }
