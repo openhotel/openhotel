@@ -328,10 +328,10 @@
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
 
-"@oh/components@npm:@jsr/oh__components@0.1.6":
-  version "0.1.6"
-  resolved "https://npm.jsr.io/~/11/@jsr/oh__components/0.1.6.tgz#36B2A9EF8C27D1D84692E759546FB07FE1119CDB"
-  integrity sha512-g7I5auWREGeDnugmukeRP6mRG2Zc7ewz/WdoB0v6/s/XYFWwEJUGnd+4wnskaeGt25Ypazk55Ju/27mEX7E6ZQ==
+"@oh/components@npm:@jsr/oh__components@0.1.7":
+  version "0.1.7"
+  resolved "https://npm.jsr.io/~/11/@jsr/oh__components/0.1.7.tgz#EE6D6DFA70125CA4C61C626460345AE85141AA4A"
+  integrity sha512-zws1KxWsD6eH8iRKPdUMk8sdp/Mf+cEzLfs85FT641NnlENBtCdXrTmhn+jSFrHiGavPhEPK9MQcZA1x5pw/mA==
   dependencies:
     react "18.3.1"
 
