@@ -1,4 +1,4 @@
-import { configure } from "@zip-js";
+import { configure, BlobReader, ZipReader, Uint8ArrayWriter } from "@zip-js";
 import { createDirectoryIfNotExists } from "../utils/directory.utils.ts";
 
 const initConfigure = () => {
@@ -9,7 +9,7 @@ const initConfigure = () => {
 export const decompress = async (srcPath: string, destPath: string) => {
   initConfigure();
 
-  const file = await Deno.readFile(path);
+  const file = await Deno.readFile(srcPath);
 
   const blob = new Blob([file]);
   const blobReader = new BlobReader(blob);
