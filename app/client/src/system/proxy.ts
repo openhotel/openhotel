@@ -1,7 +1,6 @@
 import {
   getBrowserLanguage,
   getClientSocket,
-  getConfig,
   getRandomString,
   getWebSocketUrl,
 } from "shared/utils";
@@ -46,7 +45,12 @@ export const proxy = () => {
 
   const preConnect = async () => {
     System.loader.addText("Requesting connection...");
-    if (System.version.isDevelopment() || canConnect()) return;
+    if (
+      System.version.isDevelopment() ||
+      canConnect() ||
+      !System.config.get().auth.enabled
+    )
+      return;
 
     const { status, data } = await fetch(
       `/request?version=${System.version.getVersion()}`,
@@ -73,12 +77,14 @@ export const proxy = () => {
   const connect = async () =>
     new Promise<void>(async (resolve, reject) => {
       try {
+        const config = System.config.get();
         if (isConnected) return;
         System.loader.addText("Connecting...");
-        const $isAuthDisabled = System.version.isDevelopment();
+        const $isAuthDisabled =
+          System.version.isDevelopment() || !config.auth.enabled;
 
         //prevent auth disconnection
-        if (!$isAuthDisabled && getConfig().auth.pingCheck) {
+        if (!$isAuthDisabled && config.auth.pingCheck) {
           setInterval($pingAuth, 30_000);
           $pingAuth();
         }

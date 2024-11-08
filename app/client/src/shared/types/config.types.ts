@@ -8,6 +8,7 @@ export type ConfigTypes = {
     players?: number;
   };
   auth?: {
+    enabled: boolean;
     redirectUrl?: string;
     api?: string;
     pingCheck?: boolean;

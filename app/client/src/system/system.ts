@@ -10,6 +10,7 @@ import { api } from "system/api";
 import { $window } from "system/window";
 import { version } from "system/version";
 import { coordinates } from "system/coordinates";
+import { config } from "system/config";
 
 export const System = (() => {
   const $locale = locale();
@@ -21,6 +22,7 @@ export const System = (() => {
   const $api = api();
   const $version = version();
   const $coordinates = coordinates();
+  const $config = config();
 
   const $tasks = tasks();
   const $$window = $window();
@@ -74,6 +76,7 @@ export const System = (() => {
     api: $api,
     version: $version,
     coordinates: $coordinates,
+    config: $config,
 
     load,
   };

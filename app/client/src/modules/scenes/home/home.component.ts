@@ -8,7 +8,6 @@ import { logoComponent } from "modules/main";
 import { hotBarComponent } from "modules/interfaces";
 import { System } from "system";
 import { SpriteSheetEnum, SystemEvent } from "shared/enums";
-import { getConfig } from "shared/utils";
 
 type Props = {};
 
@@ -18,7 +17,7 @@ export const homeComponent: ContainerComponent<Props> = () => {
   const $logo = logoComponent();
   $logo.setPosition({ x: 10, y: 20 });
 
-  const { name, description } = getConfig();
+  const { name, description } = System.config.get();
 
   const $name = textSprite({
     spriteSheet: SpriteSheetEnum.BOLD_FONT,

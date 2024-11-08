@@ -5,14 +5,12 @@ export const getVersionRequest = {
   pathname: "/version",
   fn: async (request: Request): Promise<Response> => {
     const { version } = Proxy.getEnvs();
-    const { development } = Proxy.getConfig();
 
     return Response.json(
       {
         status: 200,
         data: {
           version,
-          development,
         },
       },
       { status: 200 },
