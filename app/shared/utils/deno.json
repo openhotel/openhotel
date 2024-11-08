@@ -9,6 +9,8 @@
 
     "@oh/yaml": "jsr:@oh/yaml@1.1.0",
 
+    "@zip-js": "jsr:@zip-js/zip-js@2.7.53",
+
     "dayjs": "npm:dayjs@1.11.13"
   },
   "tasks": {

@@ -1,6 +1,7 @@
 {
   "version": "4",
   "specifiers": {
+    "jsr:@oh/yaml@1.1.0": "1.1.0",
     "jsr:@std/assert@^1.0.7": "1.0.7",
     "jsr:@std/expect@*": "1.0.7",
     "jsr:@std/fs@1.0.4": "1.0.4",
@@ -8,9 +9,18 @@
     "jsr:@std/path@1.0.6": "1.0.6",
     "jsr:@std/path@^1.0.6": "1.0.6",
     "jsr:@std/testing@*": "1.0.4",
+    "jsr:@std/yaml@1.0.5": "1.0.5",
     "npm:dayjs@1.11.13": "1.11.13"
   },
   "jsr": {
+    "@oh/yaml@1.1.0": {
+      "integrity": "57f2f01bf259dff8896fb9d8f4f49e477e6533ccc5cbc4559ebd8410142aeff5",
+      "dependencies": [
+        "jsr:@std/fs",
+        "jsr:@std/path@1.0.6",
+        "jsr:@std/yaml"
+      ]
+    },
     "@std/assert@1.0.7": {
       "integrity": "64ce9fac879e0b9f3042a89b3c3f8ccfc9c984391af19e2087513a79d73e28c3",
       "dependencies": [
@@ -42,6 +52,9 @@
         "jsr:@std/assert",
         "jsr:@std/internal"
       ]
+    },
+    "@std/yaml@1.0.5": {
+      "integrity": "71ba3d334305ee2149391931508b2c293a8490f94a337eef3a09cade1a2a2742"
     }
   },
   "npm": {
@@ -55,6 +68,7 @@
       "jsr:@std/fs@1.0.4",
       "jsr:@std/path@1.0.6",
       "jsr:@std/yaml@1.0.5",
+      "jsr:@zip-js/zip-js@2.7.53",
       "npm:dayjs@1.11.13"
     ],
     "packageJson": {
