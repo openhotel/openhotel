@@ -49,8 +49,13 @@
 - Run `deno task install`
 
 ### Start project
-
+- Run [Onet](https://github.com/openhotel/onet/releases/latest)
 - Run `deno task start`
+- If it's the first time you run the project you need to modify `app/server/config.yml`
+  - `version: development`
+  - `auth: 
+       enabled: false`
+  - Then run again `deno task start`
 
 ---
 
