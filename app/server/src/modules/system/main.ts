@@ -23,11 +23,23 @@ export const System = (() => {
     console.clear();
 
     $envs = envs;
-    $config = await getConfig<ConfigTypes>({
-      defaults: CONFIG_DEFAULT,
-    });
 
     const isDevelopment = $envs.version === "development";
+
+    $config = await getConfig<ConfigTypes>({
+      defaults: {
+        ...CONFIG_DEFAULT,
+        version: isDevelopment ? "development" : CONFIG_DEFAULT.version,
+        auth: {
+          ...CONFIG_DEFAULT.auth,
+          enabled: isDevelopment ? false : CONFIG_DEFAULT.auth.enabled,
+        },
+        onet: {
+          ...CONFIG_DEFAULT.onet,
+          enabled: isDevelopment ? false : CONFIG_DEFAULT.onet.enabled,
+        },
+      },
+    });
 
     // Check for an update if true, close the server
     if (
