@@ -49,13 +49,12 @@
 - Run `deno task install`
 
 ### Start project
-- Run [Onet](https://github.com/openhotel/onet/releases/latest)
 - Run `deno task start`
-- If it's the first time you run the project you need to modify `app/server/config.yml`
-  - `version: development`
-  - `auth: 
-       enabled: false`
-  - Then run again `deno task start`
+- If it's the first time running the project:
+  - On the browser, add a value on the localStorage with key `username` and value of your choice.
+  - Reload the browser
+  - Go to `./app/server/users.yml` and add the username on the `op` list
+  - Go to `Room 1` and use the command `/set flags@pirate 3 3 0 0 20` 🏴‍☠️
 
 ---
 

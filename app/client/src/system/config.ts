@@ -10,17 +10,16 @@ export const config = () => {
     Object.keys(config || {}).length
       ? config
       : {
-          version: "latest",
+          version: "development",
           name: "development",
           description: "development",
           auth: {
-            enabled: true,
-            pingCheck: true,
+            enabled: false,
             api: `http://${hostname}:2024/api/v2`,
             // url: "https://auth.openhotel.club",
           },
           onet: {
-            enabled: true,
+            enabled: false,
           },
         };
 
