@@ -13,7 +13,7 @@
     "compile:current": "deno task compile --output ./server ./mod.ts",
 
     "build": "(deno task compile:linux) & (deno task compile:linux_aarch64) & (deno task compile:darwin) & (deno task compile:windows) & (deno task writeContributors)",
-    "writeContributors": "deno run --allow-net --allow-write writeContributors.ts ./build/CONTRIBUTORS.md"
+    "writeContributors": "deno run --allow-net --allow-write writeContributors.ts ./build/contributors.json"
   },
   "imports": {
     "@oh/pathfinding": "jsr:@oh/pathfinding@2.0.3",
