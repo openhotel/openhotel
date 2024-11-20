@@ -26,9 +26,12 @@ async function fetchContributors() {
 }
 
 async function writeContributors() {
-  const defaultPath = "./build/contributors.json";
-  const path = Deno.args.length === 0 ? defaultPath : Deno.args[0];
+  if (Deno.args.length === 0) {
+    console.error("Missing contributors output path.");
+    Deno.exit();
+  }
 
+  const path = Deno.args[0];
   const contributors: Contributor[] = await fetchContributors();
   const humanContributors = contributors.filter((c) => c.type !== "Bot");
   await Deno.writeTextFile(path, JSON.stringify(humanContributors, null, 2));

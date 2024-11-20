@@ -12,7 +12,10 @@
     "start:server:prod:linux": "cd app/server && deno task start:prod:linux",
 
     "build": "deno task build:client & deno task build:server",
-    "build:client": "cd app/client && yarn build",
-    "build:server": "cd app/server && deno task build"
+    "build:client": "cd app/client && yarn build; cd $INIT_CWD && deno task writeContributors:client",
+    "build:server": "cd app/server && deno task build",
+
+    "writeContributors:client": "deno run --allow-net --allow-write utils/writeContributors.ts ./app/client/build/contributors.json",
+    "writeContributors:server": "deno run --allow-net --allow-write utils/writeContributors.ts ./app/server/build/contributors.json"
   }
 }
