@@ -49,6 +49,7 @@
 - Run `deno task install`
 
 ### Start project
+
 - Run `deno task start`
 - If it's the first time running the project:
   - On the browser, add a value on the localStorage with key `username` and value of your choice.
