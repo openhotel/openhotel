@@ -9,7 +9,7 @@ interface Contributor {
   contributions: number;
 }
 
-export async function fetchContributors() {
+export const fetchContributors = async () => {
   return await fetch(
     "https://api.github.com/repos/openhotel/openhotel/contributors",
     {
@@ -28,7 +28,7 @@ export async function fetchContributors() {
     });
 }
 
-export async function writeContributors(path: string) {
+export const writeContributors = async (path: string) => {
   const contributors: Contributor[] = await fetchContributors();
   const humanContributors = contributors.filter((c) => c.type !== "Bot");
 
