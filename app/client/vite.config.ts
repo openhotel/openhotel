@@ -1,6 +1,7 @@
 import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 import { plugin } from "@tulib/vite-tulip-plugin";
+import {build} from "./vite/index.ts";
 
 export default defineConfig({
   server: {
@@ -20,7 +21,7 @@ export default defineConfig({
     },
     // open: true,
   },
-  plugins: [tsconfigPaths(), plugin()],
+  plugins: [tsconfigPaths(), plugin(), build()],
   publicDir: "assets/",
   build: {
     outDir: "./build",

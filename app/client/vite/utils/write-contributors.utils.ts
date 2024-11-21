@@ -1,3 +1,6 @@
+import { stringify } from "yaml";
+import { writeFile } from 'fs/promises';
+
 interface Contributor {
   login: string;
   html_url: string;
@@ -6,7 +9,7 @@ interface Contributor {
   contributions: number;
 }
 
-async function fetchContributors() {
+export async function fetchContributors() {
   return await fetch(
     "https://api.github.com/repos/openhotel/openhotel/contributors",
     {
@@ -25,16 +28,13 @@ async function fetchContributors() {
     });
 }
 
-async function writeContributors() {
-  if (Deno.args.length === 0) {
-    console.error("Missing contributors output path.");
-    Deno.exit();
-  }
-
-  const path = Deno.args[0];
+export async function writeContributors(path: string) {
   const contributors: Contributor[] = await fetchContributors();
   const humanContributors = contributors.filter((c) => c.type !== "Bot");
-  await Deno.writeTextFile(path, JSON.stringify(humanContributors, null, 2));
-}
 
-await writeContributors();
+  try {
+    await writeFile(path, stringify(humanContributors), 'utf8');
+  } catch (error) {
+    console.error('Error writing file:', error);
+  }
+}
