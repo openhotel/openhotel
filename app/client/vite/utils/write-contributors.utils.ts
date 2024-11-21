@@ -26,7 +26,7 @@ export const fetchContributors = async () => {
         contributions: contributor.contributions,
       }));
     });
-}
+};
 
 export const writeContributors = async (path: string) => {
   const contributors: Contributor[] = await fetchContributors();
@@ -37,4 +37,4 @@ export const writeContributors = async (path: string) => {
   } catch (error) {
     console.error("Error writing file:", error);
   }
-}
+};
