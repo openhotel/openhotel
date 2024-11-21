@@ -1,7 +1,7 @@
 import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 import { plugin } from "@tulib/vite-tulip-plugin";
-import {build} from "./vite/index.ts";
+import { build } from "./vite/index.ts";
 
 export default defineConfig({
   server: {

@@ -1,5 +1,5 @@
 import { stringify } from "yaml";
-import { writeFile } from 'fs/promises';
+import { writeFile } from "fs/promises";
 
 interface Contributor {
   login: string;
@@ -33,8 +33,8 @@ export async function writeContributors(path: string) {
   const humanContributors = contributors.filter((c) => c.type !== "Bot");
 
   try {
-    await writeFile(path, stringify(humanContributors), 'utf8');
+    await writeFile(path, stringify(humanContributors), "utf8");
   } catch (error) {
-    console.error('Error writing file:', error);
+    console.error("Error writing file:", error);
   }
 }

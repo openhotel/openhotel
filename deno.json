@@ -14,6 +14,5 @@
     "build": "deno task build:client & deno task build:server",
     "build:client": "cd app/client && yarn build",
     "build:server": "cd app/server && deno task build"
-
   }
 }
