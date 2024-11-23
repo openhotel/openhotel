@@ -1,6 +1,8 @@
 export enum ProxyEvent {
   //### INTERNAL #####################################################################################################//
 
+  $LOAD = "$$load",
+
   $USER_JOINED = "$$user-joined",
   $USER_LEFT = "$$user-left",
   $USER_DATA = "$$user-data",
