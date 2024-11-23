@@ -20,7 +20,7 @@ export const users = () => {
   let $userPathfindingMap: Record<string, Point3d[]> = {};
   let $userLastMessageMap: Record<string, string> = {};
 
-  const load = () => {
+  const load = async () => {
     System.tasks.add({
       type: TickerQueue.REPEAT,
       repeatEvery: MOVEMENT_BETWEEN_TILES_DURATION,
@@ -93,6 +93,19 @@ export const users = () => {
           //check if there's no more pathfinding
           if (!targetPosition) delete $userPathfindingMap[accountId];
         }
+      },
+    });
+    await setConfig({
+      op: {
+        users: [],
+      },
+      blacklist: {
+        active: false,
+        users: [],
+      },
+      whitelist: {
+        active: false,
+        users: [],
       },
     });
   };
