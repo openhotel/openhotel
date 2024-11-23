@@ -158,6 +158,19 @@ export const Proxy = (() => {
 
         if (!foundUser) return client?.close();
 
+        let hasLoad = false;
+        client.on(ProxyEvent.$LOAD, () => {
+          if (hasLoad) return;
+          hasLoad = true;
+
+          client.emit(ProxyEvent.WELCOME, {
+            datetime: Date.now(),
+            user: {
+              ...foundUser,
+              apiToken: userTokenMap[foundUser.clientId],
+            },
+          });
+        });
         // Wait if current user is connected to be disconnected
         await waitUntil(
           () =>
@@ -185,10 +198,6 @@ export const Proxy = (() => {
             console.error("proxy-6");
             console.error(e);
           }
-        });
-        client.emit(ProxyEvent.WELCOME, {
-          datetime: Date.now(),
-          user: { ...foundUser, apiToken: userTokenMap[foundUser.clientId] },
         });
         delete userTokenMap[foundUser.clientId];
       } catch (e) {

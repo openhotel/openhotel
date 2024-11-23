@@ -24,6 +24,7 @@ export const mainComponent = () => {
     $scene = scenesComponent();
     $pageContainer.add($scene);
   });
+  System.proxy.loaded();
 
   return $container.getComponent(mainComponent);
 };

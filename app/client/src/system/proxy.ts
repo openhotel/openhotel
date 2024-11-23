@@ -132,6 +132,10 @@ export const proxy = () => {
       }
     });
 
+  const loaded = () => {
+    $socket.emit("$$load", { p: performance.now() });
+  };
+
   const emit = <Data>(event: Event, data: Data) => {
     $socket.emit("$$user-data", { event, message: data });
   };
@@ -164,6 +168,7 @@ export const proxy = () => {
     preConnect,
     connect,
     getRefreshSession,
+    loaded,
 
     emit,
     on,
