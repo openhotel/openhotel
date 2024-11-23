@@ -170,6 +170,7 @@ export const Proxy = (() => {
               apiToken: userTokenMap[foundUser.clientId],
             },
           });
+          delete userTokenMap[foundUser.clientId];
         });
         // Wait if current user is connected to be disconnected
         await waitUntil(
@@ -199,7 +200,6 @@ export const Proxy = (() => {
             console.error(e);
           }
         });
-        delete userTokenMap[foundUser.clientId];
       } catch (e) {
         console.error("proxy-7");
         console.error(e);
