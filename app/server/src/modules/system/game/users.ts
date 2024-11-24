@@ -12,6 +12,7 @@ import { RoomPointEnum } from "shared/enums/room.enums.ts";
 import { USERS_CONFIG_DEFAULT } from "shared/consts/users.consts.ts";
 import { TickerQueue } from "@oh/queue";
 import { Direction, getDirection, getConfig, Point3d } from "@oh/utils";
+import { exists } from "deno/fs/mod.ts";
 
 export const users = () => {
   let $privateUserMap: Record<string, PrivateUser> = {};
@@ -95,19 +96,24 @@ export const users = () => {
         }
       },
     });
-    await setConfig({
-      op: {
-        users: [],
-      },
-      blacklist: {
-        active: false,
-        users: [],
-      },
-      whitelist: {
-        active: false,
-        users: [],
-      },
-    });
+
+    // Check config file
+    const config = await exists("./users.yml");
+    if (!config) {
+      await setConfig({
+        op: {
+          users: [],
+        },
+        blacklist: {
+          active: false,
+          users: [],
+        },
+        whitelist: {
+          active: false,
+          users: [],
+        },
+      });
+    }
   };
 
   const $getUser = (user: User): UserMutable => {
