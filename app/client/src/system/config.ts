@@ -1,29 +1,16 @@
 import { ConfigTypes } from "shared/types";
 
 export const config = () => {
-  // @ts-ignore
-  const config = window?.__config__;
+  let config: ConfigTypes;
 
-  const { hostname } = window.location;
+  const load = async () => {
+    config = (await (await fetch("/config")).json()).data;
+  };
 
-  const get = (): ConfigTypes =>
-    Object.keys(config || {}).length
-      ? config
-      : {
-          version: "development",
-          name: "development",
-          description: "development",
-          auth: {
-            enabled: false,
-            api: `http://${hostname}:2024/api/v2`,
-            // url: "https://auth.openhotel.club",
-          },
-          onet: {
-            enabled: false,
-          },
-        };
+  const get = (): ConfigTypes => config;
 
   return {
+    load,
     get,
   };
 };

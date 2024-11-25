@@ -8,4 +8,3 @@ export * from "./commands.types.ts";
 export * from "./furniture.types.ts";
 export * from "./catalog.types.ts";
 export * from "./api.types.ts";
-export * from "./ticket.types.ts";

@@ -4,13 +4,14 @@ import { plugin } from "@tulib/vite-tulip-plugin";
 import { build } from "./vite/index.ts";
 
 export default defineConfig({
+  clearScreen: false,
   server: {
     port: 1994,
-
     proxy: {
       "/data": "http://localhost:19940",
       "/request": "http://localhost:19940",
       "/version": "http://localhost:19940",
+      "/config": "http://localhost:19940",
       "/proxy": {
         target: "http://localhost:19940",
         ws: true,
@@ -19,7 +20,6 @@ export default defineConfig({
         target: "http://localhost:19940",
       },
     },
-    // open: true,
   },
   plugins: [tsconfigPaths(), plugin(), build()],
   publicDir: "assets/",

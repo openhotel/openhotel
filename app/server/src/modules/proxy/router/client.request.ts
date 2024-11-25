@@ -33,10 +33,7 @@ export const requestClient = async (request: Request, config: ConfigTypes) => {
 
     let fileData = await Deno.readFile(targetFile);
     if (targetFile === "./client/index.html")
-      fileData = (await Deno.readTextFile(targetFile)).replace(
-        /{\s*\/\*__CONFIG__\*\/\s*}/,
-        JSON.stringify(config),
-      );
+      fileData = await Deno.readTextFile(targetFile);
     return new Response(fileData, {
       headers: {
         "Content-Type": getContentType(targetFile),

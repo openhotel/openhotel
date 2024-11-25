@@ -8,14 +8,12 @@ export type ConfigTypes = {
   };
   auth: {
     enabled: boolean;
+    licenseToken?: string;
     redirectUrl: string;
     api: string;
-    //client emit ping checks to auth
-    pingCheck: boolean;
-    //server accepts user disconnected events from auth.api
-    userDisconnectedEvent: boolean;
   };
   onet: {
     enabled: boolean;
+    api: string;
   };
 };
