@@ -3,6 +3,7 @@ import {
   ContainerComponent,
   DisplayObjectEvent,
   EventMode,
+  global
 } from "@tu/tulip";
 import { Event } from "shared/enums";
 import { System } from "system";
@@ -61,24 +62,28 @@ export const bubbleChatComponent: ContainerComponent<Props, Mutable> = ({
       }
       moveMessages();
       //
-      let targetX = position.x;
+      let targetX = human.getGlobalPosition().x;
 
-      const globalContainerPositionX = $container.getGlobalPosition().x;
+      const leftBound = $container.getPosition().x;
+      // Better to use the size of the parent Container
+      const rightBound = global.getApplication().window.getBounds().width;
 
-      const overflowRightX =
-        globalContainerPositionX -
-        targetX -
-        messageBoundsWidth -
-        TILE_SIZE.width / 2;
+      const isOverflowingLeft =
+        targetX - messageBoundsWidth + TILE_SIZE.width / 2 < leftBound;
+      const isOverflowingRight =
+        targetX + messageBoundsWidth + TILE_SIZE.width / 2 > rightBound;
 
-      const overflowLeftX =
-        globalContainerPositionX +
-        targetX -
-        messageBoundsWidth +
-        TILE_SIZE.width / 2;
+      if (isOverflowingLeft) {
+        const overflow =
+          leftBound - (targetX - messageBoundsWidth) - TILE_SIZE.width / 2;
+        targetX += overflow;
+      }
 
-      if (0 > overflowRightX) targetX += overflowRightX;
-      if (0 > overflowLeftX) targetX -= overflowLeftX;
+      if (isOverflowingRight) {
+        const overflow =
+          targetX + messageBoundsWidth - rightBound + TILE_SIZE.width / 2;
+        targetX -= overflow;
+      }
 
       message.setPosition({
         x: targetX,
