@@ -1,5 +1,5 @@
 import { getRandomString } from "./random.utils.ts";
-import * as bcrypt from "bcrypt";
+import * as bcrypt from "@da/bcrypt";
 
 type GenToken = {
   token: string;

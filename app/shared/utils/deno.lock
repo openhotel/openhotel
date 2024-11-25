@@ -1,6 +1,7 @@
 {
   "version": "4",
   "specifiers": {
+    "jsr:@da/bcrypt@1.0.0": "1.0.0",
     "jsr:@oh/yaml@1.1.0": "1.1.0",
     "jsr:@std/assert@^1.0.7": "1.0.7",
     "jsr:@std/expect@*": "1.0.7",
@@ -10,9 +11,13 @@
     "jsr:@std/path@^1.0.6": "1.0.6",
     "jsr:@std/testing@*": "1.0.4",
     "jsr:@std/yaml@1.0.5": "1.0.5",
+    "jsr:@zip-js/zip-js@2.7.53": "2.7.53",
     "npm:dayjs@1.11.13": "1.11.13"
   },
   "jsr": {
+    "@da/bcrypt@1.0.0": {
+      "integrity": "615d5875bf153c825e98f3d065b24ec3de78051f5a8f352e1fea792228ac1060"
+    },
     "@oh/yaml@1.1.0": {
       "integrity": "57f2f01bf259dff8896fb9d8f4f49e477e6533ccc5cbc4559ebd8410142aeff5",
       "dependencies": [
@@ -55,6 +60,9 @@
     },
     "@std/yaml@1.0.5": {
       "integrity": "71ba3d334305ee2149391931508b2c293a8490f94a337eef3a09cade1a2a2742"
+    },
+    "@zip-js/zip-js@2.7.53": {
+      "integrity": "acea5bd8e01feb3fe4c242cfbde7d33dd5e006549a4eb1d15283bc0c778ed672"
     }
   },
   "npm": {
@@ -62,8 +70,15 @@
       "integrity": "sha512-oaMBel6gjolK862uaPQOVTA7q3TZhuSvuMQAAglQDOWYO9A91IrAOUJEyKVlqJlHE0vq5p5UXxzdPfMH/x6xNg=="
     }
   },
+  "remote": {
+    "https://deno.land/x/bcrypt@v0.4.1/mod.ts": "ff09bdae282583cf5f7d87efe37ddcecef7f14f6d12e8b8066a3058db8c6c2f7",
+    "https://deno.land/x/bcrypt@v0.4.1/src/bcrypt/base64.ts": "b8266450a4f1eb6960f60f2f7986afc4dde6b45bd2d7ee7ba10789e67e17b9f7",
+    "https://deno.land/x/bcrypt@v0.4.1/src/bcrypt/bcrypt.ts": "ec221648cc6453ea5e3803bc817c01157dada06aa6f7a0ba6b9f87aae32b21e2",
+    "https://deno.land/x/bcrypt@v0.4.1/src/main.ts": "08d201b289c8d9c46f8839c69cd6625b213863db29775c7a200afc3b540e64f8"
+  },
   "workspace": {
     "dependencies": [
+      "jsr:@da/bcrypt@1.0.0",
       "jsr:@oh/yaml@1.1.0",
       "jsr:@std/fs@1.0.4",
       "jsr:@std/path@1.0.6",

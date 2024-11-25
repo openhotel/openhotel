@@ -8,6 +8,7 @@
     "@std/yaml": "jsr:@std/yaml@1.0.5",
 
     "@oh/yaml": "jsr:@oh/yaml@1.1.0",
+    "@da/bcrypt": "jsr:@da/bcrypt@1.0.0",
 
     "@zip-js": "jsr:@zip-js/zip-js@2.7.53",
 
