@@ -1,11 +1,23 @@
 import { getRandomString } from "./random.utils.ts";
 import * as bcrypt from "bcrypt";
 
+type GenToken = {
+  token: string;
+  id: string;
+  tokenHash: string;
+};
+
+type Token = {
+  label: string;
+  token: string;
+  id: string;
+};
+
 export const generateToken = (
   label: string,
   idLength: number,
   tokenLength: number,
-) => {
+): GenToken => {
   const id = getRandomString(idLength);
   const token = getRandomString(tokenLength);
   const tokenHash = bcrypt.hashSync(token, bcrypt.genSaltSync(8));
@@ -17,7 +29,7 @@ export const generateToken = (
   };
 };
 
-export const getTokenData = (license: string) => {
+export const getTokenData = (license: string): Token => {
   const [label, id, token] = license.split(".");
   return { label, id, token };
 };

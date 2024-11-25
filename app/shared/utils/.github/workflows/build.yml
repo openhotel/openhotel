@@ -31,3 +31,6 @@ jobs:
 
       - name: run tests
         run: yarn test
+
+      - name: Publish package check
+        run: npx jsr publish --allow-dirty --dry-run
