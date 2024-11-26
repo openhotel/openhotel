@@ -7,6 +7,6 @@ export type ConfigTypes = {
     api: string;
   };
   onet: {
-    enabled: string;
+    enabled: boolean;
   };
 };
