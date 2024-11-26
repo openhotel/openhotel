@@ -1,7 +1,8 @@
 import { getURL } from "./urls.utils.ts";
 
 export const getIpFromRequest = (request: Request): string | null =>
-  request.headers.get("X-Forwarded-For") ??
+  request.headers.get("x-forwarded-for") ??
+  request.headers.get("x-real-ip") ??
   request.headers.get("remote-address");
 
 export const getIpFromUrl = async (url: string): Promise<string> => {
