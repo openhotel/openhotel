@@ -44,11 +44,11 @@ export const messageComponent: ContainerComponent<
   });
   const boundsMessage = $message.getBounds();
 
-  let width =  Math.round(boundsName.width +boundsMessage.width + 32);
+  let width = Math.round(boundsName.width + boundsMessage.width + 32);
   const height = 13;
-  
+
   //prevent odd widths that cannot be divided by 2
-  if(width % 2 === 0) width++;
+  if (width % 2 === 0) width++;
 
   const $bubbleBackground = nineSliceSprite({
     spriteSheet: SpriteSheetEnum.UI,
