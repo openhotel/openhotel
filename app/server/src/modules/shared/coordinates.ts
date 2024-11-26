@@ -8,6 +8,7 @@ export const coordinates = () => {
   let ipMap: Record<string, [number, number]> = {};
 
   const get = async (ip: string, retries = 0): Promise<Hemisphere> => {
+    if (ipMap[ip]) return getHemisphere(ipMap[ip][0]);
     if (ip.startsWith("127.0.") || retries > 60)
       return getHemisphere(defaultLatitude);
     try {
