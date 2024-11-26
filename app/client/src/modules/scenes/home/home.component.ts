@@ -2,17 +2,23 @@ import {
   container,
   ContainerComponent,
   DisplayObjectEvent,
+  Event,
+  global,
+  sprite,
   textSprite,
+  Size,
 } from "@tu/tulip";
 import { logoComponent } from "modules/main";
 import { hotBarComponent } from "modules/interfaces";
 import { System } from "system";
-import { SpriteSheetEnum, SystemEvent } from "shared/enums";
+import { SpriteSheetEnum, SystemEvent, TextureEnum } from "shared/enums";
 
 type Props = {};
 
 export const homeComponent: ContainerComponent<Props> = () => {
-  const $container = container();
+  const $container = container({
+    sortableChildren: true,
+  });
 
   const $logo = logoComponent();
   $logo.setPosition({ x: 10, y: 20 });
@@ -34,15 +40,29 @@ export const homeComponent: ContainerComponent<Props> = () => {
   const $hotBar = hotBarComponent();
   $container.add($logo, $hotBar);
 
+  const background = sprite({
+    texture: TextureEnum.HOTEL_ALPHA_V1,
+    zIndex: -1,
+  });
+  const backgroundBounds = background.getBounds();
+
+  const $rePositionBackground = (size: Size) => {
+    background.setPivot({
+      x: backgroundBounds.width / 2 - size.width / 2,
+      y: backgroundBounds.height / 2 - size.height / 2,
+    });
+  };
+  $rePositionBackground(global.getApplication().window.getBounds());
+  $container.add(background);
+
+  let $removeOnResize;
   $container.on(DisplayObjectEvent.MOUNT, (e) => {
     System.events.emit(SystemEvent.SHOW_NAVIGATOR_MODAL);
 
-    // if (isDevelopment()) {
-    //   System.proxy.emit(Event.JOIN_ROOM, {
-    //     roomId: "test_0",
-    //   });
-    //   System.events.emit(SystemEvent.HIDE_NAVIGATOR_MODAL);
-    // }
+    $removeOnResize = global.events.on(Event.RESIZE, $rePositionBackground);
+  });
+  $container.on(DisplayObjectEvent.UNMOUNT, (e) => {
+    $removeOnResize();
   });
 
   return $container.getComponent(homeComponent);
