@@ -96,6 +96,7 @@ export const Proxy = (() => {
 
         const ip = getIpFromRequest({ headers } as Request);
 
+        console.log(givenHeaders, headers, connInfo.remoteAddr);
         const hemisphere = await $coordinates.get(ip);
 
         userTokenMap[clientId] = apiToken;
