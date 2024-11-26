@@ -1,5 +1,5 @@
 import { Point3d } from "shared/types";
-import { Direction } from "shared/enums";
+import { Direction, Hemisphere } from "shared/enums";
 
 export type User = {
   accountId: string;
@@ -13,4 +13,5 @@ export type User = {
 
 export type CurrentUser = {
   apiToken: string;
+  hemisphere: Hemisphere;
 } & User;

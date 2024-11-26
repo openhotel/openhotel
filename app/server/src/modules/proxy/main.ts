@@ -21,6 +21,7 @@ import {
 } from "@oh/utils";
 import { eventList } from "./events/main.ts";
 import { auth } from "../shared/auth.ts";
+import { coordinates } from "../shared/coordinates.ts";
 
 export const Proxy = (() => {
   const serverWorker = getChildWorker();
@@ -35,6 +36,7 @@ export const Proxy = (() => {
   const state = getRandomString(64);
 
   const $auth = auth();
+  const $coordinates = coordinates();
   let server;
   let $config: ConfigTypes;
   let $envs: Envs;
@@ -78,11 +80,23 @@ export const Proxy = (() => {
 
     server.on(
       "guest",
-      async ({ clientId, protocols: [state, connectionToken], headers }) => {
+      async ({
+        clientId,
+        connInfo,
+        protocols: [state, connectionToken],
+        headers: givenHeaders,
+      }) => {
+        const headers = new Headers({
+          ...givenHeaders,
+          "remote-address": connInfo.remoteAddr.hostname,
+        });
+
         const apiToken = getRandomString(32);
         const apiTokenHash = bcrypt.hashSync(apiToken, bcrypt.genSaltSync(8));
 
         const ip = getIpFromRequest({ headers } as Request);
+
+        const hemisphere = await $coordinates.get(ip);
 
         userTokenMap[clientId] = apiToken;
         if (!config.auth.enabled) {
@@ -98,6 +112,7 @@ export const Proxy = (() => {
               connectionToken: "AUTH_TOKEN",
             },
             ip,
+            hemisphere,
           });
           return true;
         }
@@ -132,6 +147,7 @@ export const Proxy = (() => {
             connectionToken,
           },
           ip,
+          hemisphere,
         });
         return true;
       },
@@ -263,5 +279,6 @@ export const Proxy = (() => {
     getScopes,
 
     auth: $auth,
+    coordinates: $coordinates,
   };
 })();
