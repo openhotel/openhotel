@@ -6,6 +6,8 @@ import {
   global,
 } from "@tu/tulip";
 import { navigatorModalComponent } from "modules/interfaces";
+import { System } from "system";
+import { SystemEvent } from "shared/enums";
 
 export const interfacesComponent = () => {
   const $container = draggableContainer({
@@ -19,9 +21,15 @@ export const interfacesComponent = () => {
   $container.add($navigator);
 
   let $removeOnResize;
+  let $removeOnHideModals;
   $container.on(DisplayObjectEvent.MOUNT, () => {
     $removeOnResize = global.events.on(Event.RESIZE, (size) => {
       $container.setSize(size);
+    });
+
+    $removeOnHideModals = System.events.on(SystemEvent.HIDE_MODALS, () => {
+      System.events.emit(SystemEvent.HIDE_NAVIGATOR_MODAL);
+      // ...
     });
 
     const destroyNavigatorVisibility = $navigator.on(
@@ -41,6 +49,7 @@ export const interfacesComponent = () => {
   });
   $container.on(DisplayObjectEvent.UNMOUNT, () => {
     $removeOnResize();
+    $removeOnHideModals();
   });
 
   return $container.getComponent(interfacesComponent);
