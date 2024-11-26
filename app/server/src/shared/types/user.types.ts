@@ -1,5 +1,5 @@
 import { Point3d, Direction } from "@oh/utils";
-import { ProxyEvent, Language } from "shared/enums/main.ts";
+import { ProxyEvent, Language, Hemisphere } from "shared/enums/main.ts";
 
 export type PrivateUser = {
   accountId: string;
@@ -9,6 +9,8 @@ export type PrivateUser = {
   language?: Language;
 
   apiToken: string;
+
+  hemisphere: Hemisphere;
 
   auth: {
     connectionToken: string;

@@ -7,4 +7,6 @@ export enum SystemEvent {
   TOGGLE_NAVIGATOR_MODAL,
 
   CURSOR_COORDS,
+
+  CURRENT_USER_SET,
 }
