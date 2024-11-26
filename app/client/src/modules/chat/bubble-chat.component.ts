@@ -3,6 +3,7 @@ import {
   ContainerComponent,
   DisplayObjectEvent,
   EventMode,
+  global,
 } from "@tu/tulip";
 import { Event } from "shared/enums";
 import { System } from "system";
@@ -45,11 +46,12 @@ export const bubbleChatComponent: ContainerComponent<Props, Mutable> = ({
         color,
         message: text,
       });
-      const messageBoundsWidth = message.getBounds().width / 2;
+      const messageBounds = message.getBounds();
+      const messageBoundsWidth = messageBounds.width / 2;
+
       message.setPivotX(messageBoundsWidth - TILE_SIZE.width / 2);
       $container.add(message);
 
-      const messageBounds = message.getBounds();
       jumpHeight = messageBounds.height + 2;
 
       let targetY = Math.round(position.y / jumpHeight) * jumpHeight;
@@ -61,24 +63,33 @@ export const bubbleChatComponent: ContainerComponent<Props, Mutable> = ({
       }
       moveMessages();
       //
-      let targetX = position.x;
+      let targetX = human.getGlobalPosition().x;
 
-      const globalContainerPositionX = $container.getGlobalPosition().x;
+      const leftBound = $container.getPosition().x;
+      // Better to use the size of the parent Container
+      // -1 is a magic number that prevents overflowing
+      const rightBound = global.getApplication().window.getBounds().width - 1;
 
-      const overflowRightX =
-        globalContainerPositionX -
-        targetX -
-        messageBoundsWidth -
-        TILE_SIZE.width / 2;
+      const isOverflowingLeft =
+        Math.round(targetX - messageBoundsWidth + TILE_SIZE.width / 2) <
+        leftBound;
+      const isOverflowingRight =
+        Math.round(targetX + messageBoundsWidth + TILE_SIZE.width / 2) >
+        rightBound;
 
-      const overflowLeftX =
-        globalContainerPositionX +
-        targetX -
-        messageBoundsWidth +
-        TILE_SIZE.width / 2;
+      if (isOverflowingLeft) {
+        const overflow = Math.round(
+          leftBound - (targetX - messageBoundsWidth) - TILE_SIZE.width / 2,
+        );
+        targetX += overflow;
+      }
 
-      if (0 > overflowRightX) targetX += overflowRightX;
-      if (0 > overflowLeftX) targetX -= overflowLeftX;
+      if (isOverflowingRight) {
+        const overflow = Math.round(
+          targetX + messageBoundsWidth - rightBound + TILE_SIZE.width / 2,
+        );
+        targetX -= overflow;
+      }
 
       message.setPosition({
         x: targetX,
