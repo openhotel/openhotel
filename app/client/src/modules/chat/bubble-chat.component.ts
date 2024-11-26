@@ -46,11 +46,12 @@ export const bubbleChatComponent: ContainerComponent<Props, Mutable> = ({
         color,
         message: text,
       });
-      const messageBoundsWidth = message.getBounds().width / 2;
+      const messageBounds = message.getBounds();
+      const messageBoundsWidth = (messageBounds.width / 2);
+      
       message.setPivotX(messageBoundsWidth - TILE_SIZE.width / 2);
       $container.add(message);
 
-      const messageBounds = message.getBounds();
       jumpHeight = messageBounds.height + 2;
 
       let targetY = Math.round(position.y / jumpHeight) * jumpHeight;
@@ -66,23 +67,24 @@ export const bubbleChatComponent: ContainerComponent<Props, Mutable> = ({
 
       const leftBound = $container.getPosition().x;
       // Better to use the size of the parent Container
-      const rightBound = global.getApplication().window.getBounds().width;
+      // -1 is a magic number that prevents overflowing
+      const rightBound = global.getApplication().window.getBounds().width - 1;
 
       const isOverflowingLeft =
-        targetX - messageBoundsWidth + TILE_SIZE.width / 2 < leftBound;
+        Math.round(targetX - messageBoundsWidth + TILE_SIZE.width / 2) < leftBound;
       const isOverflowingRight =
-        targetX + messageBoundsWidth + TILE_SIZE.width / 2 > rightBound;
+        Math.round(targetX + messageBoundsWidth + TILE_SIZE.width / 2) > rightBound;
 
       if (isOverflowingLeft) {
         const overflow =
-          leftBound - (targetX - messageBoundsWidth) - TILE_SIZE.width / 2;
+          Math.round(leftBound - (targetX - messageBoundsWidth) - TILE_SIZE.width / 2);
         targetX += overflow;
       }
 
       if (isOverflowingRight) {
         const overflow =
-          targetX + messageBoundsWidth - rightBound + TILE_SIZE.width / 2;
-        targetX -= overflow;
+          Math.round(targetX + messageBoundsWidth - rightBound + TILE_SIZE.width / 2);
+        targetX -= (overflow);
       }
 
       message.setPosition({
