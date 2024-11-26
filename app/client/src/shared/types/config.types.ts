@@ -1,18 +1,10 @@
 export type ConfigTypes = {
-  version?: string;
-  name?: string;
-  description?: string;
-  port?: number;
-
-  limits?: {
-    players?: number;
-  };
-  auth?: {
+  name: string;
+  description: string;
+  version: string;
+  auth: {
     enabled: boolean;
-    redirectUrl?: string;
-    api?: string;
-    pingCheck?: boolean;
-    userDisconnectedEvent?: boolean;
+    api: string;
   };
   onet: {
     enabled: boolean;
