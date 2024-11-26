@@ -12,6 +12,7 @@ export const api = () => {
     connInfo: Deno.ServeHandlerInfo,
   ): Promise<Response> => {
     const headers = new Headers($request.headers);
+    //@ts-ignore
     headers.set("remote-address", connInfo.remoteAddr.hostname);
     const request = new Request($request, { headers });
 

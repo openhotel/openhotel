@@ -1,5 +1,5 @@
 import { System } from "modules/system/main.ts";
-import { RequestMethod } from "@oh/utils";
+import { getTokenData } from "@oh/utils";
 import { Server, ServerMutable } from "shared/types/server.types.ts";
 import { eventList } from "./events/main.ts";
 import { Event } from "shared/enums/event.enums.ts";
@@ -7,38 +7,14 @@ import { Event } from "shared/enums/event.enums.ts";
 export const servers = () => {
   const $serverMap: Record<string, ServerMutable> = {};
 
-  const getHostname = async (
-    serverId: string,
-    token: string,
-    ip: string,
-  ): Promise<string | null> => {
-    try {
-      const { hostname } = await System.auth.fetch<{ hostname: string }>(
-        RequestMethod.POST,
-        "/onet/server",
-        {
-          serverId,
-          token,
-          ip,
-        },
-      );
-      return hostname;
-    } catch (e) {
-      return null;
-    }
-  };
-
   const $getServer = (server: Server): ServerMutable | null => {
     if (!server) return null;
     const $server: Server = { ...server };
 
-    const getId = () => $server.serverId;
-    const getHostname = () => $server.hostname;
-
     const load = () => {
       for (const { event, func } of eventList)
         getSocket().on(event, (data: any) =>
-          func({ server: $serverMap[$server.serverId], data }),
+          func({ server: $serverMap[$server.licenseToken], data }),
         );
 
       emit(Event.WELCOME);
@@ -50,37 +26,40 @@ export const servers = () => {
       data: Data = {} as Data,
     ) => getSocket().emit(event, data);
 
+    const getTokenId = () => getTokenData($server.licenseToken).id;
+    const getToken = () => $server.licenseToken;
+
     const getObject = () => $server;
 
     return {
-      getId,
-      getHostname,
-
       load,
 
       getSocket,
       emit,
+
+      getTokenId,
+      getToken,
 
       getObject,
     };
   };
 
   const add = (server: Server) => {
-    $serverMap[server.serverId] = $getServer(server)!;
+    $serverMap[server.licenseToken] = $getServer(server)!;
   };
 
   const remove = (server: Server) => {
-    const $server = $serverMap[server.serverId];
+    const $server = $serverMap[server.licenseToken];
     if (!$server) return;
 
-    delete $serverMap[server.serverId];
+    delete $serverMap[server.licenseToken];
   };
 
   const get = ({
     clientId,
-    serverId,
-  }: Partial<Pick<Server, "serverId" | "clientId">>) => {
-    if (serverId) return $serverMap[serverId];
+    licenseToken,
+  }: Partial<Pick<Server, "licenseToken" | "clientId">>) => {
+    if (licenseToken) return $serverMap[licenseToken];
     if (clientId)
       return getList().find(
         (server) => server.getObject().clientId === clientId,
@@ -91,8 +70,6 @@ export const servers = () => {
   const getList = () => Object.values($serverMap);
 
   return {
-    getHostname,
-
     add,
     get,
     getList,

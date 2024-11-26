@@ -1,10 +1,10 @@
 {
   "tasks": {
-    "start": "deno run -A --watch=./src --unstable-kv mod.ts",
+    "start": "deno run -A --watch=./src --unstable-kv --unstable-cron mod.ts",
 
     "start:prod:linux": "cd build && ./onet_linux",
 
-    "compile": "deno compile -A --unstable-kv --no-check",
+    "compile": "deno compile -A --unstable-kv --unstable-cron --no-check",
 
     "compile:windows": "deno task compile --target=x86_64-pc-windows-msvc --output ./build/onet_windows ./mod.ts",
     "compile:linux": "deno task compile --target=x86_64-unknown-linux-gnu --output ./build/onet_linux ./mod.ts",
@@ -16,7 +16,7 @@
   },
   "imports": {
     "@oh/queue": "jsr:@oh/queue@1.1.1",
-    "@oh/utils": "jsr:@oh/utils@1.3.0",
+    "@oh/utils": "jsr:@oh/utils@1.3.10",
 
     "@da/socket": "jsr:@da/socket@2.3.0",
 

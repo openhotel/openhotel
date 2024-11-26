@@ -1,9 +1,10 @@
 import { getServerSocket, ServerClient } from "@da/socket";
-import { getIpFromRequest } from "@oh/utils";
+import { RequestMethod, getTokenData } from "@oh/utils";
 import { System } from "modules/system/main.ts";
 
 export const serverSocket = () => {
   let $server;
+
   const serverClientMap: Record<string, ServerClient> = {};
 
   const load = (
@@ -20,40 +21,31 @@ export const serverSocket = () => {
       "guest",
       async ({
         clientId,
-        protocols: [serverId, token],
-        headers,
+        protocols: [licenseToken],
       }: {
         clientId: string;
         protocols: string[];
         headers: Headers;
       }) => {
-        if (System.isDevelopment()) {
-          System.servers.add({
-            clientId,
-            serverId,
-            ip: "0.0.0.0",
-            hostname: serverId,
-            token,
+        try {
+          const { valid } = await System.auth.fetch<{ valid: boolean }>({
+            method: RequestMethod.GET,
+            pathname: "/hotels/check-license",
+            headers: {
+              "license-token": licenseToken,
+            },
           });
-          return true;
+          if (!valid) return false;
+        } catch (e) {
+          return false;
         }
 
-        const ip = getIpFromRequest({ headers } as Request)!;
-        console.log(`- guest 1. ${clientId} ${serverId} '${ip}'`);
-
-        //server is already logged
-        if (System.servers.get({ serverId })) return false;
-
-        const hostname = await System.servers.getHostname(serverId, token, ip);
-        console.log(`- guest 2. ${clientId} ${serverId} '${hostname}'`);
-        if (!hostname) return false;
+        const foundServer = System.servers.get({ licenseToken });
+        if (foundServer) foundServer.getSocket()?.close();
 
         System.servers.add({
+          licenseToken,
           clientId,
-          serverId,
-          ip,
-          hostname,
-          token,
         });
         return true;
       },
@@ -69,7 +61,7 @@ export const serverSocket = () => {
       delete serverClientMap[client.id];
 
       const foundServer = System.servers.get({ clientId: client.id });
-      console.log(`- bye ${client.id} '${foundServer?.getHostname()}'`);
+      console.log(`- bye ${client.id} '${foundServer?.getTokenId()}'`);
       if (!foundServer) return;
 
       System.servers.remove(foundServer.getObject());

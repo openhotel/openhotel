@@ -1,27 +1,34 @@
 {
   "version": "4",
   "specifiers": {
+    "jsr:@da/bcrypt@1.0.0": "1.0.0",
     "jsr:@da/socket@2.3.0": "2.3.0",
-    "jsr:@oh/utils@1.3.0": "1.3.0",
+    "jsr:@oh/utils@1.3.10": "1.3.10",
     "jsr:@oh/yaml@1.1.0": "1.1.0",
     "jsr:@std/fs@1.0.4": "1.0.4",
     "jsr:@std/path@1.0.6": "1.0.6",
     "jsr:@std/path@^1.0.6": "1.0.6",
     "jsr:@std/yaml@1.0.5": "1.0.5",
+    "jsr:@zip-js/zip-js@2.7.53": "2.7.53",
     "npm:dayjs@1.11.13": "1.11.13",
     "npm:prettier@3.3.3": "3.3.3"
   },
   "jsr": {
+    "@da/bcrypt@1.0.0": {
+      "integrity": "615d5875bf153c825e98f3d065b24ec3de78051f5a8f352e1fea792228ac1060"
+    },
     "@da/socket@2.3.0": {
       "integrity": "837038107dd08654b8cff848f55e82c2919acd22d83b3508ad19d725e43b124c"
     },
-    "@oh/utils@1.3.0": {
-      "integrity": "5547e8e611707dc1d6f02a749490676d65288b508b82104bc7c00cfb78281cae",
+    "@oh/utils@1.3.10": {
+      "integrity": "592a90888359f3a7b83899637c3470a5af7a45850f51a5f15c9fc0c489812cd8",
       "dependencies": [
+        "jsr:@da/bcrypt",
         "jsr:@oh/yaml",
         "jsr:@std/fs",
         "jsr:@std/path@1.0.6",
         "jsr:@std/yaml",
+        "jsr:@zip-js/zip-js",
         "npm:dayjs"
       ]
     },
@@ -44,6 +51,9 @@
     },
     "@std/yaml@1.0.5": {
       "integrity": "71ba3d334305ee2149391931508b2c293a8490f94a337eef3a09cade1a2a2742"
+    },
+    "@zip-js/zip-js@2.7.53": {
+      "integrity": "acea5bd8e01feb3fe4c242cfbde7d33dd5e006549a4eb1d15283bc0c778ed672"
     }
   },
   "npm": {
@@ -70,7 +80,7 @@
     "dependencies": [
       "jsr:@da/socket@2.3.0",
       "jsr:@oh/queue@1.1.1",
-      "jsr:@oh/utils@1.3.0"
+      "jsr:@oh/utils@1.3.10"
     ],
     "packageJson": {
       "dependencies": [

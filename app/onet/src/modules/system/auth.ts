@@ -1,34 +1,62 @@
 import { System } from "modules/system/main.ts";
 import { RequestMethod } from "@oh/utils";
 
+type FetchProps = {
+  method: RequestMethod;
+  pathname: string;
+  data?: unknown;
+  overrideEnabled?: boolean;
+  headers?: Record<string, string>;
+};
+
 export const auth = () => {
-  const load = async () => {
-    if (System.isDevelopment()) return;
+  let isEnabled = false;
+
+  const $checkToken = async () => {
     try {
-      await $fetch(RequestMethod.GET, "/tokens/validate");
+      const { valid } = await $fetch<any>({
+        method: RequestMethod.GET,
+        pathname: "/tokens/check",
+        overrideEnabled: true,
+      });
+      isEnabled = valid;
+      if (!valid) console.error("/!\\ Auth Token is not valid!");
     } catch (e) {
-      console.error("cannot connect to auth service!");
+      console.error("/!\\ Auth service is down!");
       console.error(e);
+      isEnabled = false;
     }
   };
 
-  const $fetch = async <Data>(
-    method: RequestMethod,
-    pathname: string,
-    data?: unknown,
-  ): Promise<Data> => {
-    const config = System.getConfig();
+  const load = async () => {
+    if (System.isDevelopment()) return;
 
-    const headers = new Headers();
-    headers.append("token-key", config.auth.key);
-    headers.append("token-service", "ONET");
+    Deno.cron("Check token", "*/30 * * * *", async () => {
+      await $checkToken();
+    });
+    await $checkToken();
+  };
+
+  const $fetch = async <Data>({
+    method,
+    pathname,
+    data,
+    headers = {},
+    overrideEnabled = false,
+  }: FetchProps): Promise<Data> => {
+    if (!isEnabled && !overrideEnabled) return null as Data;
+
+    const config = System.getConfig();
 
     const { status, data: responseData } = await fetch(
       `${config.auth.api}${pathname}`,
       {
         method,
         body: data ? JSON.stringify(data) : null,
-        headers,
+        headers: new Headers({
+          ...headers,
+          "app-token": config.auth.token,
+        }),
       },
     ).then((response) => response.json());
 
