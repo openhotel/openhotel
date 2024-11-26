@@ -67,7 +67,7 @@ export const privateRoomComponent: ContainerComponent = () => {
       y: size.height / 2 - roomBounds.height / 2,
     });
 
-    $bubbleChat.setPositionX(size.width / 2);
+    $bubbleChat.setPositionX(0);
   };
 
   global.events.on(TulipEvent.RESIZE, loadRoomPosition);
