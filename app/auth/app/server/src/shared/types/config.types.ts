@@ -2,9 +2,12 @@ export type ConfigTypes = {
   port: number;
   url: string;
   version: string;
-  development: boolean;
-  sessions: {
-    checkInterval: number;
+  times: {
+    accountTokenDays: number;
+    accountRefreshTokenDays: number;
+    accountWithoutVerificationDays: number;
+
+    connectionTokenMinutes: number;
   };
   database: {
     filename: string;

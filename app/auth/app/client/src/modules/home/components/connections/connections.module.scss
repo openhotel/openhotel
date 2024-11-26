@@ -1,0 +1,10 @@
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  .hotel {
+    background-color: var(--bg);
+    padding: 2rem 3rem;
+  }
+}

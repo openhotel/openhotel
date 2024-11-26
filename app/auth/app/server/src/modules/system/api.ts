@@ -1,11 +1,15 @@
-import { requestV2List } from "modules/api/v2/main.ts";
 import { appendCORSHeaders, getContentType, getCORSHeaders } from "@oh/utils";
 import { System } from "./main.ts";
+import { requestV3List } from "modules/api/v3/main.ts";
+import { REQUEST_KIND_COLOR_MAP } from "shared/consts/request.consts.ts";
 
 export const api = () => {
   const load = () => {
-    for (const request of requestV2List)
-      console.info(request.method, request.pathname);
+    for (const request of requestV3List)
+      console.log(
+        `%c${request.method} ${request.pathname}`,
+        `color: ${REQUEST_KIND_COLOR_MAP[request.kind]}`,
+      );
 
     const { development, version, port } = System.getConfig();
     const isDevelopment = development || version === "development";
@@ -51,7 +55,7 @@ export const api = () => {
             }
           }
 
-          const foundRequests = requestV2List.filter(
+          const foundRequests = requestV3List.filter(
             ($request) =>
               // $request.method === method &&
               $request.pathname === parsedUrl.pathname,

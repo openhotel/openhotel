@@ -1,31 +1,22 @@
 import React, { FormEvent, useCallback, useEffect, useState } from "react";
-import { CaptchaComponent, LinkComponent } from "shared/components";
-import { useApi } from "shared/hooks";
+import {
+  CaptchaComponent,
+  LinkComponent,
+  RedirectComponent,
+} from "shared/components";
+import { useAccount } from "shared/hooks";
 import styles from "./login.module.scss";
 import { useNavigate } from "react-router-dom";
+
 export const LoginComponent: React.FC = () => {
   const [submittedAt, setSubmittedAt] = useState<number>();
+  const [errorMessage, setErrorMessage] = useState<string>();
   const [captchaId, setCaptchaId] = useState<string>(null);
-  const [loaded, setLoaded] = useState<boolean>(false);
   const [showOTP, setShowOTP] = useState<boolean>(false);
   const [showCaptcha, setShowCaptcha] = useState<boolean>(false);
 
-  const { login, refreshSession, getTicketId } = useApi();
-  let navigate = useNavigate();
-
-  useEffect(() => {
-    if (window.location.pathname === "/logout") return;
-
-    refreshSession(getTicketId())
-      .then(({ redirectUrl }) => {
-        if (!redirectUrl) return navigate("/account");
-        window.location.href = redirectUrl;
-      })
-      .catch(() => {
-        setLoaded(true);
-        console.log("Cannot refresh session!");
-      });
-  }, []);
+  const { login, isLogged } = useAccount();
+  const navigate = useNavigate();
 
   const onSubmit = useCallback(
     async (event: FormEvent<HTMLFormElement>) => {
@@ -36,22 +27,20 @@ export const LoginComponent: React.FC = () => {
       const password = data.get("password") as string;
       const otpToken = data.get("otpToken") as string;
 
-      login(email, password, captchaId, getTicketId(), otpToken)
-        .then(({ redirectUrl }) => {
-          if (!redirectUrl) return navigate("/account");
-
-          window.location.href = redirectUrl;
-        })
-        .catch(({ status }) => {
+      login({ email, password, captchaId, otpToken })
+        .then(() => navigate("/"))
+        .catch(({ status, message }) => {
           if (status === 461 || status === 451) setShowCaptcha(true);
           if (status === 461 || status === 441) setShowOTP(true);
           setSubmittedAt(performance.now());
+          setErrorMessage(message);
         });
     },
-    [captchaId, getTicketId],
+    [captchaId, navigate, setSubmittedAt, setErrorMessage],
   );
 
-  if (!loaded) return <div>loading...</div>;
+  if (isLogged === null) return <div>Loading...</div>;
+  if (isLogged) return <RedirectComponent to="/" />;
 
   return (
     <div>
@@ -66,6 +55,7 @@ export const LoginComponent: React.FC = () => {
         )}
         {showOTP && <input name="otpToken" placeholder="otp" maxLength={6} />}
         <button type="submit">Login</button>
+        {errorMessage ? <label>{errorMessage}</label> : null}
       </form>
       <LinkComponent to="/register">/register</LinkComponent>
     </div>

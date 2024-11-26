@@ -15,7 +15,9 @@
   },
   "imports": {
     "@oh/queue": "jsr:@oh/queue@1.1.1",
-    "@oh/utils": "jsr:@oh/utils@1.3.3",
+    "@oh/utils": "jsr:@oh/utils@1.3.10",
+
+    "@da/bcrypt": "jsr:@da/bcrypt@1.0.0",
 
     "shared/": "./src/shared/",
     "modules/": "./src/modules/",
@@ -23,7 +25,6 @@
     "deno/": "https://deno.land/std@0.221.0/",
     "loadenv": "https://deno.land/x/loadenv@v1.0.1/mod.ts",
 
-    "bcrypt": "https://deno.land/x/bcrypt@v0.4.1/mod.ts",
     "nodemailer": "npm:nodemailer@6.9.15",
     "otp": "https://deno.land/x/otpauth@v9.3.3/dist/otpauth.esm.js"
   },

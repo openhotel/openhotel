@@ -1,23 +1,35 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
+import {
+  OtpComponent,
+  ConnectionsComponent,
+  LicenseComponent,
+  AccountComponent,
+  AdminComponent,
+  ActionsComponent,
+  BskyComponent,
+} from "./components";
+import { Outlet } from "react-router-dom";
+import { useAccount, UserProvider } from "shared/hooks";
 import { RedirectComponent } from "shared/components";
-import { useApi } from "shared/hooks";
 
 export const HomeComponent: React.FC = () => {
-  const [isReady, setIsReady] = useState(false);
-  const { refreshSession, getTicketId } = useApi();
+  const { isLogged } = useAccount();
 
-  useEffect(() => {
-    if (window.location.pathname === "/logout") return;
+  if (isLogged === null) return <div>Loading...</div>;
+  if (!isLogged) return <RedirectComponent to="/login" />;
 
-    refreshSession(getTicketId() ?? "refresh")
-      .then(({ redirectUrl }) => {
-        window.location.href = redirectUrl;
-      })
-      .catch(() => {
-        console.log("Cannot refresh session!");
-        setIsReady(true);
-      });
-  }, [refreshSession]);
-
-  return !isReady ? <div /> : <RedirectComponent to="/login" />;
+  return (
+    <UserProvider>
+      <div>
+        <AccountComponent />
+        <Outlet />
+        <OtpComponent />
+        <LicenseComponent />
+        <ConnectionsComponent />
+        <ActionsComponent />
+        <BskyComponent />
+        <AdminComponent />
+      </div>
+    </UserProvider>
+  );
 };

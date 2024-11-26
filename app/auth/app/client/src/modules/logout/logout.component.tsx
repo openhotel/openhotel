@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from "react";
-import { RedirectComponent } from "shared/components";
-import { useApi } from "shared/hooks";
+import React, { useEffect } from "react";
+import { useAccount } from "shared/hooks";
+import { useNavigate } from "react-router-dom";
 
 export const LogoutComponent: React.FC = () => {
-  const [isLogout, setIsLogout] = useState<boolean>(false);
+  const navigate = useNavigate();
 
-  const { logout } = useApi();
+  const { logout } = useAccount();
 
   useEffect(() => {
-    logout().then(() => {
-      setIsLogout(true);
-    });
+    logout()
+      .then(() => navigate("/login"))
+      .catch(() => navigate("/"));
   }, [logout]);
 
-  return isLogout ? <RedirectComponent to="/" /> : <div />;
+  return <div />;
 };

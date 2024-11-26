@@ -1,8 +1,0 @@
-# Claim Session
-POST http://localhost:2024/api/v2/server/register
-Content-Type: application/json
-
-{
-  "version": "v0.0.0",
-  "ip": "http://a.localhost:99/a"
-}

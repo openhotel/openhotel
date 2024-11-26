@@ -1,0 +1,15 @@
+#
+POST http://localhost:2024/api/v3/admin
+Content-Type: application/json
+account-id:	c1277daa-65a8-42fa-9c92-b47b3482deda
+token: tpOTecDoBDyUBX5a5KR97hMk2cBnQxORVVOSx1DvrOWbrXzqMG5JrbxhycB4sTEE
+
+###
+
+#
+POST http://localhost:2024/api/v3/admin?accountId=c1277daa-65a8-42fa-9c92-b47b3482deda
+Content-Type: application/json
+account-id: c1277daa-65a8-42fa-9c92-b47b3482deda
+token: xFvr9GWOoiXerVnwkrCnhtp7VyTKWerjuPv2yABpiYSa90xa5Rr2ORmKDPUKo3cJ
+
+###

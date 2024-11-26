@@ -5,8 +5,12 @@ export const CONFIG_DEFAULT: ConfigTypes = {
   url: "http://localhost:2024",
   version: "latest",
   development: false,
-  sessions: {
-    checkInterval: 30,
+  times: {
+    accountTokenDays: 1,
+    accountRefreshTokenDays: 7,
+    accountWithoutVerificationDays: 1,
+
+    connectionTokenMinutes: 20,
   },
   database: {
     filename: "database",

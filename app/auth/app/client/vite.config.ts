@@ -3,6 +3,7 @@ import reactRefresh from "@vitejs/plugin-react-refresh";
 import react from "@vitejs/plugin-react";
 
 export default defineConfig({
+  clearScreen: false,
   server: {
     port: 2024,
     proxy: {

@@ -1,0 +1,6 @@
+#
+PATCH http://localhost:2024/api/v3/user/@me/connection/ping?connectionToken=0cb9c82b-5d92-410c-9ec1-7b609820e133
+account-id: c1277daa-65a8-42fa-9c92-b47b3482deda
+token: PtKvZwl3CAwh8m798ERefzwmAcadxvBfEsynaCFh3lhEET6aYHwqebE6hOIadLLx
+
+###

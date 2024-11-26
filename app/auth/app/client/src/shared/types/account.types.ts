@@ -1,6 +1,16 @@
-export type Account = {
-  accountId: string;
-  username: string;
+export type AccountLoginProps = {
   email: string;
-  isAdmin?: boolean;
+  password: string;
+
+  otpToken?: string;
+  captchaId?: string;
+};
+
+export type AccountRegisterProps = {
+  email: string;
+  username: string;
+  password: string;
+  rePassword: string;
+
+  captchaId?: string;
 };

@@ -1,9 +1,0 @@
-# Ping
-POST http://localhost:2024/api/v2/account/ping
-Content-Type: application/json
-
-{
-  "accountId": "52107710-cad6-4780-9967-8ed7f61ffff5",
-  "ticketId": "32f2f8b5-7c81-4f43-8727-a7c4a14cbc29",
-  "server": "https://client.openhotel.club"
-}

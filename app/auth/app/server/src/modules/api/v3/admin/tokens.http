@@ -1,0 +1,28 @@
+#
+GET http://localhost:2024/api/v3/misc/tokens
+account-id:	c1277daa-65a8-42fa-9c92-b47b3482deda
+token: tpOTecDoBDyUBX5a5KR97hMk2cBnQxORVVOSx1DvrOWbrXzqMG5JrbxhycB4sTEE
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:132.0) Gecko/20100101 Firefox/132.0
+
+###
+
+#
+POST http://localhost:2024/api/v3/misc/tokens
+account-id:	c1277daa-65a8-42fa-9c92-b47b3482deda
+token: tpOTecDoBDyUBX5a5KR97hMk2cBnQxORVVOSx1DvrOWbrXzqMG5JrbxhycB4sTEE
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:132.0) Gecko/20100101 Firefox/132.0
+Content-Type: application/json
+
+{
+  "label": "test"
+}
+
+###
+
+#
+DELETE http://localhost:2024/api/v3/misc/tokens?id=wp3kOBtv
+account-id:	c1277daa-65a8-42fa-9c92-b47b3482deda
+token: tpOTecDoBDyUBX5a5KR97hMk2cBnQxORVVOSx1DvrOWbrXzqMG5JrbxhycB4sTEE
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:132.0) Gecko/20100101 Firefox/132.0
+
+###

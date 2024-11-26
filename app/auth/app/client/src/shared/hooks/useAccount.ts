@@ -1,79 +1,140 @@
 import { useApi } from "./useApi";
+import { RequestMethod } from "shared/enums";
+import { AccountLoginProps, AccountRegisterProps } from "shared/types";
+import { useCallback, useEffect, useState } from "react";
+import Cookies from "js-cookie";
 
 export const useAccount = () => {
-  const { getSessionId, getToken } = useApi();
+  const { fetch } = useApi();
 
-  const getHeaders = () => {
-    const headers = new Headers();
-    headers.append("sessionId", getSessionId());
-    headers.append("token", getToken());
+  const [isLogged, setIsLogged] = useState<boolean>(null);
 
-    return headers;
-  };
+  useEffect(() => {
+    refresh()
+      .then(() => setIsLogged(true))
+      .catch(() => setIsLogged(false));
+  }, []);
 
-  const getAccount = async () => {
-    const { data } = await fetch(`/api/v2/account`, {
-      headers: getHeaders(),
-    }).then((response) => response.json());
-    return data;
-  };
+  const getAccountHeaders = useCallback(
+    () => ({
+      "account-id": Cookies.get("account-id"),
+      token: Cookies.get("token"),
+    }),
+    [],
+  );
 
-  const otp = () => {
-    const get = async (): Promise<string> => {
-      const { data } = await fetch(`/api/v2/account/otp`, {
-        headers: getHeaders(),
-        method: "POST",
-      }).then((response) => response.json());
-
-      return data?.uri;
-    };
-
-    const verify = async (token: string): Promise<boolean> => {
-      const { status } = await fetch(
-        `/api/v2/account/otp/verify?token=${token}`,
-        {
-          headers: getHeaders(),
+  const login = useCallback(
+    async (body: AccountLoginProps) => {
+      const {
+        data: {
+          accountId,
+          token,
+          refreshToken,
+          durations: [tokenDuration, refreshTokenDuration],
         },
-      ).then((response) => response.json());
+      } = await fetch({
+        method: RequestMethod.POST,
+        pathname: "/account/login",
+        body,
+      });
 
-      return status === 200;
-    };
+      Cookies.set("account-id", accountId, {
+        expires: refreshTokenDuration,
+        sameSite: "strict",
+        secure: true,
+      });
+      Cookies.set("refresh-token", refreshToken, {
+        expires: refreshTokenDuration,
+        sameSite: "strict",
+        secure: true,
+      });
+      Cookies.set("token", token, {
+        expires: tokenDuration,
+        sameSite: "strict",
+        secure: true,
+      });
+    },
+    [fetch],
+  );
 
-    const remove = async () => {
-      await fetch(`/api/v2/account/otp`, {
-        headers: getHeaders(),
-        method: "DELETE",
-      }).then((response) => response.json());
-    };
+  const register = useCallback(
+    async (body: AccountRegisterProps) =>
+      fetch({
+        method: RequestMethod.POST,
+        pathname: "/account/register",
+        body,
+      }),
+    [fetch],
+  );
+  const logout = useCallback(async () => {
+    fetch({
+      method: RequestMethod.POST,
+      pathname: "/account/logout",
+      headers: getAccountHeaders(),
+    });
 
-    return {
-      get,
-      verify,
-      remove,
-    };
-  };
+    Cookies.remove("account-id");
+    Cookies.remove("refresh-token");
+    Cookies.remove("token");
+  }, [fetch, getAccountHeaders]);
 
-  const at = () => {
-    const create = async (did: string) => {
-      return await fetch(`/api/v2/at/create`, {
-        headers: getHeaders(),
-        method: "POST",
-        body: JSON.stringify({
-          did,
-        }),
-      }).then((response) => response.json());
-    };
+  const refresh = useCallback(async () => {
+    let accountId = Cookies.get("account-id");
+    let token = Cookies.get("token");
+    let refreshToken = Cookies.get("refresh-token");
 
-    return {
-      create,
-    };
-  };
+    if (!accountId || (!token && !refreshToken)) throw "Not logged";
+    if (accountId && token) return;
+
+    const { data } = await fetch({
+      method: RequestMethod.GET,
+      pathname: "/account/refresh",
+      headers: {
+        "account-id": Cookies.get("account-id"),
+        "refresh-token": Cookies.get("refresh-token"),
+      },
+    });
+
+    token = data.token;
+    refreshToken = data.refreshToken;
+    const [tokenDuration, refreshTokenDuration] = data.durations;
+
+    Cookies.set("account-id", accountId, {
+      expires: refreshTokenDuration,
+      sameSite: "strict",
+      secure: true,
+    });
+    Cookies.set("refresh-token", refreshToken, {
+      expires: refreshTokenDuration,
+      sameSite: "strict",
+      secure: true,
+    });
+    Cookies.set("token", token, {
+      expires: tokenDuration,
+      sameSite: "strict",
+      secure: true,
+    });
+  }, [fetch]);
+
+  const setAsAdmin = useCallback(() => {
+    return fetch({
+      method: RequestMethod.POST,
+      pathname: "/admin",
+      headers: getAccountHeaders(),
+    });
+  }, []);
 
   return {
-    getAccount,
-    getHeaders,
+    getAccountHeaders,
 
-    otp: otp(),
-    at: at(),
+    login,
+    register,
+    logout,
+
+    refresh,
+
+    isLogged,
+
+    setAsAdmin,
   };
 };

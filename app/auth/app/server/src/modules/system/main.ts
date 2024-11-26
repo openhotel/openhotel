@@ -4,11 +4,14 @@ import { getConfig as $getConfig, getDb, update } from "@oh/utils";
 import { captcha } from "./captcha.ts";
 import { email } from "./email.ts";
 import { otp } from "./otp.ts";
-import { tasks } from "./tasks.ts";
-import { sessions } from "./sessions.ts";
 import { CONFIG_DEFAULT } from "shared/consts/config.consts.ts";
-import { servers } from "./servers.ts";
-import { tokens } from "modules/system/tokens.ts";
+import { tokens } from "./tokens.ts";
+import { accounts } from "./accounts.ts";
+import { hosts } from "./hosts.ts";
+import { admins } from "./admins.ts";
+import { licenses } from "./licenses.ts";
+import { connections } from "./connections.ts";
+import { Scope } from "shared/enums/scopes.enums.ts";
 
 export const System = (() => {
   let $config: ConfigTypes;
@@ -18,10 +21,12 @@ export const System = (() => {
   const $captcha = captcha();
   const $email = email();
   const $otp = otp();
-  const $tasks = tasks();
-  const $sessions = sessions();
-  const $servers = servers();
   const $tokens = tokens();
+  const $accounts = accounts();
+  const $hosts = hosts();
+  const $admins = admins();
+  const $licenses = licenses();
+  const $connections = connections();
   let $db;
 
   const load = async (envs: Envs) => {
@@ -29,7 +34,7 @@ export const System = (() => {
     $envs = envs;
 
     if (
-      !$config.development &&
+      $config.version !== "development" &&
       (await update({
         targetVersion: "latest",
         version: envs.version,
@@ -42,12 +47,9 @@ export const System = (() => {
 
     $db = getDb({ pathname: `./${$config.database.filename}` });
 
-    $tasks.load();
     await $db.load();
     await $email.load();
     $api.load();
-
-    $sessions.load();
   };
 
   const getConfig = (): ConfigTypes => $config;
@@ -65,9 +67,11 @@ export const System = (() => {
     captcha: $captcha,
     email: $email,
     otp: $otp,
-    tasks: $tasks,
-    sessions: $sessions,
-    servers: $servers,
     tokens: $tokens,
+    accounts: $accounts,
+    hosts: $hosts,
+    admins: $admins,
+    licenses: $licenses,
+    connections: $connections,
   };
 })();

@@ -1,20 +1,15 @@
-import { RouterProvider, createBrowserRouter, Outlet } from "react-router-dom";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import React from "react";
 import { NotFoundComponent } from "../not-found";
 import { LoginComponent } from "modules/login";
 import { RegisterComponent } from "modules/register";
 import { HomeComponent } from "modules/home";
 import { RedirectComponent } from "shared/components";
-import { VerifyComponent } from "modules/verify";
 import { LogoutComponent } from "modules/logout";
-import { AccountComponent } from "modules/account";
-import {
-  MainLayoutComponent,
-  CardLayoutComponent,
-  AccountItemComponent,
-  NavItemComponent,
-  HotelIconComponent,
-} from "@oh/components";
+import { MainLayoutComponent, CardLayoutComponent } from "@oh/components";
+import { ConnectionComponent, PingComponent } from "modules/connection";
+import { AdminComponent } from "modules/admin";
+import { HomeNavigatorComponent } from "modules/home/components";
 
 const router = createBrowserRouter([
   {
@@ -28,28 +23,40 @@ const router = createBrowserRouter([
         element: <CardLayoutComponent children={<RegisterComponent />} />,
         path: "/register",
       },
-      {
-        element: <CardLayoutComponent children={<VerifyComponent />} />,
-        path: "/verify",
-      },
+      // {
+      //   element: <CardLayoutComponent children={<VerifyComponent />} />,
+      //   path: "/verify",
+      // },
       {
         path: "/logout",
         Component: () => <LogoutComponent />,
       },
       {
-        element: <MainLayoutComponent children={<Outlet />} />,
-        path: "/account",
-        children: [
-          {
-            path: "",
-            Component: () => <AccountComponent />,
-          },
-        ],
+        element: <CardLayoutComponent children={<ConnectionComponent />} />,
+        path: "/connection",
       },
+      // {
+      //   element: <MainLayoutComponent children={<Outlet />} />,
+      //   path: "/account",
+      //   children: [
+      //     {
+      //       path: "",
+      //       Component: () => <AccountComponent />,
+      //     },
+      //   ],
+      // },
+      { path: "/ping", element: <PingComponent /> },
+      { path: "/admin", element: <AdminComponent /> },
       {
-        path: "/",
-        Component: () => <HomeComponent />,
+        path: "/home",
+        element: (
+          <MainLayoutComponent
+            children={<HomeComponent />}
+            navigatorChildren={<HomeNavigatorComponent />}
+          />
+        ),
       },
+      { path: "/", element: <RedirectComponent to="/home" /> },
       {
         path: "/404",
         Component: () => <NotFoundComponent />,

@@ -1,0 +1,39 @@
+#
+POST http://localhost:2024/api/v3/user/@me/connection
+Content-Type: application/json
+account-id: c1277daa-65a8-42fa-9c92-b47b3482deda
+token: SUWszYh6xp7xFAv3hpy1fJwZisbzdcEs3PmUxvlqtaxhSdpjDzQWCDGmJDHkni81
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:132.0) Gecko/20100101 Firefox/132.0
+
+{
+  "state": "EbQVj1vhS6onZQM8gE0YKAQw6KwnLLuXvf41f7n0a5TAfwJVSI6hyYWr14r3w6b2EbQVj1vhS6onZQM8gE0YKAQw6KwnLLuXvf41f7n0a5TAfwJVSI6hyYWr14r3w6b2",
+  "scopes": [
+    "onet.messages.read",
+    "onet.messages.write",
+    "onet.friends.add"
+  ],
+  "redirectUrl": "https://dev.openhotel.club/session"
+}
+
+###
+
+#
+GET http://localhost:2024/api/v3/user/@me/connection
+account-id: c1277daa-65a8-42fa-9c92-b47b3482deda
+token: PtKvZwl3CAwh8m798ERefzwmAcadxvBfEsynaCFh3lhEET6aYHwqebE6hOIadLLx
+
+###
+
+#
+GET http://localhost:2024/api/v3/user/@me/connection?hostname=openhotel.club
+account-id: c1277daa-65a8-42fa-9c92-b47b3482deda
+token: xFvr9GWOoiXerVnwkrCnhtp7VyTKWerjuPv2yABpiYSa90xa5Rr2ORmKDPUKo3cJ
+
+###
+
+#
+DELETE http://localhost:2024/api/v3/user/@me/connection?hostname=openhotel.club
+account-id: c1277daa-65a8-42fa-9c92-b47b3482deda
+token: xFvr9GWOoiXerVnwkrCnhtp7VyTKWerjuPv2yABpiYSa90xa5Rr2ORmKDPUKo3cJ
+
+###

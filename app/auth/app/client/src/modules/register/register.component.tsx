@@ -4,15 +4,16 @@ import {
   LinkComponent,
   RedirectComponent,
 } from "shared/components";
-import { useApi } from "shared/hooks";
+import { useAccount } from "shared/hooks";
 import styles from "./register.module.scss";
+import { useNavigate } from "react-router-dom";
 
 export const RegisterComponent: React.FC = () => {
   const [submittedAt, setSubmittedAt] = useState<number>();
   const [captchaId, setCaptchaId] = useState<string>();
-  const [canRedirectToLogin, setCanRedirectToLogin] = useState<boolean>(false);
 
-  const { register } = useApi();
+  const { register, isLogged } = useAccount();
+  let navigate = useNavigate();
 
   const onSubmit = useCallback(
     async (event: FormEvent<HTMLFormElement>) => {
@@ -24,19 +25,18 @@ export const RegisterComponent: React.FC = () => {
       const password = data.get("password") as string;
       const rePassword = data.get("rePassword") as string;
 
-      register(email, username, password, rePassword, captchaId)
+      register({ email, username, password, rePassword, captchaId })
         .then(() => {
-          console.log(":D");
-          setCanRedirectToLogin(true);
+          navigate("/login");
         })
         .catch(() => {
           setSubmittedAt(performance.now());
         });
     },
-    [captchaId],
+    [captchaId, navigate],
   );
 
-  if (canRedirectToLogin) return <RedirectComponent to="/login" />;
+  if (isLogged) return <RedirectComponent to="/" />;
 
   return (
     <div>

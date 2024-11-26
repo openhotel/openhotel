@@ -1,0 +1,6 @@
+#
+GET http://localhost:2024/api/v3/tokens/check
+Content-Type: application/json
+app-token: pSeQeZ0Vd9OQkqG9.gnRGJLot00UltWkoEknjsENAqjc4ScmG
+
+###
