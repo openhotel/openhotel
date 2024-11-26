@@ -1,13 +1,14 @@
 import {
   container,
   ContainerComponent,
+  Event as TulipEvent,
   EventMode,
   global,
   textSprite,
-  Event as TulipEvent,
 } from "@tu/tulip";
 import { Hemisphere, SpriteSheetEnum, SystemEvent } from "shared/enums";
 import { System } from "system";
+import { CurrentUser } from "shared/types";
 
 export const infoComponent: ContainerComponent = () => {
   const $container = container({
@@ -47,13 +48,16 @@ export const infoComponent: ContainerComponent = () => {
   }
   {
     const $coords = textSprite({
-      text: `hem ${Hemisphere[System.coordinates.getHemisphere()].toLowerCase()}`,
+      text: `hem null`,
       spriteSheet: SpriteSheetEnum.DEFAULT_FONT,
       color: 0xffffff,
       position: {
         x: 4,
         y: 24,
       },
+    });
+    System.events.on(SystemEvent.CURRENT_USER_SET, (user: CurrentUser) => {
+      $coords.setText(`hem ${Hemisphere[user.hemisphere]}`);
     });
     $container.add($coords);
   }

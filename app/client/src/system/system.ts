@@ -9,7 +9,6 @@ import { loader } from "system/loader";
 import { api } from "system/api";
 import { $window } from "system/window";
 import { version } from "system/version";
-import { coordinates } from "system/coordinates";
 import { config } from "system/config";
 
 export const System = (() => {
@@ -22,7 +21,6 @@ export const System = (() => {
   const $events = events();
   const $api = api();
   const $version = version();
-  const $coordinates = coordinates();
 
   const $tasks = tasks();
   const $$window = $window();
@@ -45,7 +43,6 @@ export const System = (() => {
 
     await $proxy.connect();
 
-    await $coordinates.load();
     $loader.end();
 
     global.events.on(Event.KEY_DOWN, ({ ctrlKey, key }) => {
@@ -77,7 +74,6 @@ export const System = (() => {
     events: $events,
     api: $api,
     version: $version,
-    coordinates: $coordinates,
     config: $config,
 
     load,
