@@ -10,4 +10,6 @@ export enum TextureEnum {
   LOGO_FULL = "logo_full.png",
 
   FRAME_P = "frame_p.png",
+
+  HOTEL_ALPHA_V1 = "hotel/alpha-v1.png",
 }
