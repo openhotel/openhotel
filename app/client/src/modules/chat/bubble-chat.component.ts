@@ -3,7 +3,7 @@ import {
   ContainerComponent,
   DisplayObjectEvent,
   EventMode,
-  global
+  global,
 } from "@tu/tulip";
 import { Event } from "shared/enums";
 import { System } from "system";
