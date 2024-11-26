@@ -45,6 +45,7 @@ export const Proxy = (() => {
     $config = config;
     $envs = envs;
 
+    $coordinates.load(config);
     await $auth.load(config);
 
     for (const { event, func } of eventList)
