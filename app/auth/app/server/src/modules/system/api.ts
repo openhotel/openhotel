@@ -11,8 +11,8 @@ export const api = () => {
         `color: ${REQUEST_KIND_COLOR_MAP[request.kind]}`,
       );
 
-    const { development, version, port } = System.getConfig();
-    const isDevelopment = development || version === "development";
+    const { version, port } = System.getConfig();
+    const isDevelopment = version === "development";
     Deno.serve(
       {
         port: port * (isDevelopment ? 10 : 1),

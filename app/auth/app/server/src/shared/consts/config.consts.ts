@@ -4,7 +4,6 @@ export const CONFIG_DEFAULT: ConfigTypes = {
   port: 2024,
   url: "http://localhost:2024",
   version: "latest",
-  development: false,
   times: {
     accountTokenDays: 1,
     accountRefreshTokenDays: 7,
@@ -22,7 +21,7 @@ export const CONFIG_DEFAULT: ConfigTypes = {
     url: "",
   },
   email: {
-    enabled: true,
+    enabled: false,
     hostname: "",
     port: 587,
     username: "",
