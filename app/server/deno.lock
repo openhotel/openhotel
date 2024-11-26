@@ -5,7 +5,7 @@
     "jsr:@da/socket@2.3.0": "2.3.0",
     "jsr:@oh/pathfinding@2.0.3": "2.0.3",
     "jsr:@oh/queue@1.1.1": "1.1.1",
-    "jsr:@oh/utils@1.3.10": "1.3.10",
+    "jsr:@oh/utils@1.3.11": "1.3.11",
     "jsr:@oh/yaml@1.1.0": "1.1.0",
     "jsr:@std/fs@1.0.4": "1.0.4",
     "jsr:@std/path@1.0.6": "1.0.6",
@@ -27,8 +27,8 @@
     "@oh/queue@1.1.1": {
       "integrity": "8e8ec809202c48beaf436b3ea01b4c3a17f8c015ca686d906822482c9c881390"
     },
-    "@oh/utils@1.3.10": {
-      "integrity": "592a90888359f3a7b83899637c3470a5af7a45850f51a5f15c9fc0c489812cd8",
+    "@oh/utils@1.3.11": {
+      "integrity": "81eacf20b54743ad24b780bf165ba1b929e062d91c6a39eddb833d08cd9d2185",
       "dependencies": [
         "jsr:@da/bcrypt",
         "jsr:@oh/yaml",
@@ -485,7 +485,7 @@
       "jsr:@da/socket@2.3.0",
       "jsr:@oh/pathfinding@2.0.3",
       "jsr:@oh/queue@1.1.1",
-      "jsr:@oh/utils@1.3.10"
+      "jsr:@oh/utils@1.3.11"
     ]
   }
 }

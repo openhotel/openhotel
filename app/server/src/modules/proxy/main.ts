@@ -80,17 +80,7 @@ export const Proxy = (() => {
 
     server.on(
       "guest",
-      async ({
-        clientId,
-        connInfo,
-        protocols: [state, connectionToken],
-        headers: givenHeaders,
-      }) => {
-        const headers = new Headers({
-          ...givenHeaders,
-          "remote-address": connInfo.remoteAddr.hostname,
-        });
-
+      async ({ clientId, protocols: [state, connectionToken], headers }) => {
         const apiToken = getRandomString(32);
         const apiTokenHash = bcrypt.hashSync(apiToken, bcrypt.genSaltSync(8));
 
