@@ -141,7 +141,7 @@ export const privateRoomsComponent: ContainerComponent<Props> = (props) => {
   let reloadInterval;
 
   $container.on(DisplayObjectEvent.MOUNT, async () => {
-    loadRooms();
+    await loadRooms();
 
     reloadInterval = setInterval(() => {
       if (!$container.getVisible()) return;
