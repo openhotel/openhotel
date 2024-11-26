@@ -4,25 +4,23 @@ import {
   ConfigTypes,
   Envs,
   PrivateUser,
-  Ticket,
   WorkerProps,
 } from "shared/types/main.ts";
 import { getServerSocket, ServerClient } from "@da/socket";
 import { PROXY_CLIENT_EVENT_WHITELIST } from "shared/consts/main.ts";
-import { ProxyEvent } from "shared/enums/main.ts";
+import { ProxyEvent, Scope } from "shared/enums/main.ts";
 import { routesList } from "./router/main.ts";
 import { requestClient } from "./router/client.request.ts";
-import * as bcrypt from "bcrypt";
+import * as bcrypt from "@da/bcrypt";
 import {
   waitUntil,
   getRandomString,
   getURL,
   appendCORSHeaders,
-  RequestMethod,
   getIpFromRequest,
 } from "@oh/utils";
 import { eventList } from "./events/main.ts";
-import { auth } from "./auth.ts";
+import { auth } from "../shared/auth.ts";
 
 export const Proxy = (() => {
   const serverWorker = getChildWorker();
@@ -32,21 +30,20 @@ export const Proxy = (() => {
   let clientIdAccountIdMap: Record<string, string> = {};
   let userList: PrivateUser[] = [];
   let userTokenMap: Record<string, string> = {};
-  const ticketMap: Record<string, Ticket> = {};
-  const protocolToken = getRandomString(64);
   let userClientMap: Record<string, ServerClient> = {};
 
+  const state = getRandomString(64);
+
+  const $auth = auth();
   let server;
   let $config: ConfigTypes;
   let $envs: Envs;
 
-  const $auth = auth();
-
-  const load = async ({ envs, config, auth }: WorkerProps) => {
+  const load = async ({ envs, config }: WorkerProps) => {
     $config = config;
     $envs = envs;
 
-    await $auth.load(auth.serverId, auth.token);
+    await $auth.load(config);
 
     for (const { event, func } of eventList)
       serverWorker.on(event, (data: unknown) => func({ data }));
@@ -81,12 +78,7 @@ export const Proxy = (() => {
 
     server.on(
       "guest",
-      async ({
-        clientId,
-        protocols: [$protocolToken, ticketId, sessionId, token],
-        headers,
-      }) => {
-        let foundUser;
+      async ({ clientId, protocols: [state, connectionToken], headers }) => {
         const apiToken = getRandomString(32);
         const apiTokenHash = bcrypt.hashSync(apiToken, bcrypt.genSaltSync(8));
 
@@ -94,7 +86,7 @@ export const Proxy = (() => {
 
         userTokenMap[clientId] = apiToken;
         if (!config.auth.enabled) {
-          const username = ticketId;
+          const username = connectionToken;
           const accountId = crypto.randomUUID();
 
           userList.push({
@@ -102,49 +94,43 @@ export const Proxy = (() => {
             accountId,
             username,
             apiToken: apiTokenHash,
-            authToken: "AUTH_TOKEN",
+            auth: {
+              connectionToken: "AUTH_TOKEN",
+            },
             ip,
           });
           return true;
         }
 
-        if (
-          $protocolToken !== protocolToken &&
-          userList.length >= config.limits.players
-        )
+        if (state !== getState() && userList.length >= config.limits.players)
           return false;
 
-        const foundTicket = ticketMap[ticketId];
-        //if not found
-        if (!foundTicket) return false;
+        const { scopes: targetScopes } = await $auth.fetch({
+          url: "user/@me/scopes",
+          connectionToken,
+        });
+        if (!getScopes().every((scope) => targetScopes.includes(scope)))
+          return false;
 
-        const data = await $auth.fetch<any>(
-          RequestMethod.POST,
-          "/claim-session",
-          {
-            ticketId: foundTicket.ticketId,
-            ticketKey: foundTicket.ticketKey,
-            sessionId,
-            token,
-          },
-        );
+        const { accountId, username } = await $auth.fetch({
+          url: "user/@me",
+          connectionToken,
+        });
 
-        if (!data) return false;
-
-        foundUser = userList.find((user) => user.accountId === data.accountId);
+        const foundUser = userList.find((user) => user.accountId === accountId);
         if (foundUser) {
           userClientMap[foundUser.clientId]?.close();
-          foundUser.clientId = clientId;
-          foundUser.username = data.username;
-          foundUser.authToken = data.token;
-          return true;
+          userList = userList.filter((user) => user.accountId !== accountId);
         }
+
         userList.push({
           clientId,
-          accountId: data.accountId,
-          username: data.username,
+          accountId,
+          username,
           apiToken: apiTokenHash,
-          authToken: data.token,
+          auth: {
+            connectionToken,
+          },
           ip,
         });
         return true;
@@ -213,7 +199,6 @@ export const Proxy = (() => {
         if (!accountId) return;
 
         const foundUser = userList.find((user) => user.accountId === accountId);
-
         if (!foundUser) return;
 
         delete userClientMap[client.id];
@@ -244,12 +229,18 @@ export const Proxy = (() => {
   const getClient = (clientId: string) => userClientMap[clientId];
   const getRoom = (roomId: string) => server?.getRoom(roomId);
 
-  const getTicket = (ticketId: string): Ticket | null => ticketMap[ticketId];
-  const setTicket = (ticketId: string, ticketKey: string) =>
-    (ticketMap[ticketId] = { ticketId, ticketKey });
-  const deleteTicket = (ticketId: string) => delete ticketMap[ticketId];
+  const getState = (): string => state;
 
-  const getProtocolToken = (): string => protocolToken;
+  const getScopes = (): Scope[] => [
+    ...(getConfig().onet.enabled
+      ? [
+          Scope.ONET_FRIENDS_READ,
+          Scope.ONET_FRIENDS_WRITE,
+          Scope.ONET_MESSAGES_READ,
+          Scope.ONET_MESSAGES_WRITE,
+        ]
+      : []),
+  ];
 
   return {
     load,
@@ -268,11 +259,8 @@ export const Proxy = (() => {
     getClient,
     getRoom,
 
-    getTicket,
-    setTicket,
-    deleteTicket,
-
-    getProtocolToken,
+    getState,
+    getScopes,
 
     auth: $auth,
   };

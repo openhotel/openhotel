@@ -1,5 +1,5 @@
 import { ProxyEvent } from "shared/enums/main.ts";
-import * as bcrypt from "bcrypt";
+import * as bcrypt from "@da/bcrypt";
 import { getRandomString, getURL } from "@oh/utils";
 import { Proxy } from "modules/proxy/main.ts";
 

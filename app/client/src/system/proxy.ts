@@ -6,7 +6,6 @@ import {
 } from "shared/utils";
 import { Event } from "shared/enums";
 import { System } from "system/system";
-import { getPingUrl } from "shared/utils/auth.utils";
 
 export const proxy = () => {
   let isConnected: boolean = false;
@@ -19,11 +18,8 @@ export const proxy = () => {
   headers.append("Content-Type", "application/json");
 
   const params = new URLSearchParams(location.search);
-  let ticketId = params.get("ticketId");
-  let sessionId = params.get("sessionId");
+  let state = params.get("state");
   let token = params.get("token");
-  let accountId = params.get("accountId");
-  let protocolToken = localStorage.getItem("protocolToken");
   window.history.pushState(null, null, "/");
 
   const getRefreshSession = () => {
@@ -34,45 +30,29 @@ export const proxy = () => {
     }
   };
 
-  const canConnect = () => ticketId && sessionId && token && protocolToken;
+  const canConnect = () => state && token;
 
   const clearConnection = () => {
-    ticketId = null;
-    sessionId = null;
+    state = null;
     token = null;
-    protocolToken = null;
   };
 
-  const preConnect = async () => {
+  const preConnect = async (): Promise<boolean> => {
     System.loader.addText("Requesting connection...");
-    if (
-      System.version.isDevelopment() ||
-      canConnect() ||
-      !System.config.get().auth.enabled
-    )
-      return;
+
+    if (canConnect() || !System.config.get().auth.enabled) return true;
 
     const { status, data } = await fetch(
       `/request?version=${System.version.getVersion()}`,
     ).then((data) => data.json());
     if (status === 200) {
-      localStorage.setItem("protocolToken", data.protocolToken);
       window.location.href = data.redirectUrl;
-      return;
+      System.loader.addText("Redirecting...");
+      return false;
     }
     System.loader.addText("Something went wrong  :(");
+    return false;
   };
-
-  const $pingAuth = () =>
-    fetch(getPingUrl(), {
-      method: "POST",
-      headers,
-      body: JSON.stringify({
-        ticketId,
-        accountId,
-        server: location.origin,
-      }),
-    });
 
   const connect = async () =>
     new Promise<void>(async (resolve, reject) => {
@@ -80,24 +60,16 @@ export const proxy = () => {
         const config = System.config.get();
         if (isConnected) return;
         System.loader.addText("Connecting...");
-        const $isAuthDisabled =
-          System.version.isDevelopment() || !config.auth.enabled;
-
-        //prevent auth disconnection
-        if (!$isAuthDisabled && config.auth.pingCheck) {
-          setInterval($pingAuth, 30_000);
-          $pingAuth();
-        }
 
         $socket = getClientSocket({
           url: getWebSocketUrl(`${window.location.origin}/proxy`),
-          protocols: $isAuthDisabled
-            ? [
+          protocols: config.auth.enabled
+            ? [state, token]
+            : [
                 "development",
                 localStorage.getItem("username") ||
                   `player_${getRandomString(4)}`,
-              ]
-            : [protocolToken, ticketId, sessionId, token],
+              ],
           reconnect: false,
           silent: true,
         });
@@ -117,6 +89,15 @@ export const proxy = () => {
               );
           }
 
+          if (config.auth.enabled) {
+            const iframeElement = document.createElement("iframe");
+            iframeElement.src = `${config.auth.api}/ping?connectionId=${token.split(".")[1]}`;
+            iframeElement.width = String(0);
+            iframeElement.height = String(0);
+            iframeElement.style.border = "1px solid black";
+
+            document.body.append(iframeElement);
+          }
           resolve();
         });
         $socket.on("disconnected", () => {
@@ -124,11 +105,12 @@ export const proxy = () => {
           isConnected = false;
           reject();
           clearConnection();
-          if (System.version.isDevelopment()) connect();
+          System.loader.addText("Server is not reachable!");
         });
         await $socket.connect();
       } catch (e) {
-        System.loader.addText("Something went wrong :(");
+        console.error(e);
+        System.loader.addText("Something went extremely wrong :(");
       }
     });
 

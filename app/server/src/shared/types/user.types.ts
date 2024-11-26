@@ -9,7 +9,10 @@ export type PrivateUser = {
   language?: Language;
 
   apiToken: string;
-  authToken: string;
+
+  auth: {
+    connectionToken: string;
+  };
 
   ip: string;
 };

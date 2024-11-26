@@ -1,11 +1,20 @@
-import { getRandomString, getURL, RequestMethod } from "@oh/utils";
+import { getURL } from "@oh/utils";
 import { log } from "shared/utils/log.utils.ts";
 import { Proxy } from "modules/proxy/main.ts";
+import { Scope } from "shared/enums/scopes.enums.ts";
 
 export const getRequestRequest = {
   method: "GET",
   pathname: "/request",
   fn: async (request: Request): Promise<Response> => {
+    if (!(await Proxy.auth.isAuthEnabled()))
+      return Response.json(
+        {
+          error: 400,
+        },
+        { status: 400 },
+      );
+
     const { version } = Proxy.getEnvs();
     const config = Proxy.getConfig();
 
@@ -33,38 +42,29 @@ export const getRequestRequest = {
         { status: 406 },
       );
 
-    const ticketKey = getRandomString(64);
+    const { onet } = Proxy.getConfig();
+
+    const scopes = (
+      [
+        ...(onet.enabled
+          ? [
+              Scope.ONET_FRIENDS_READ,
+              Scope.ONET_FRIENDS_WRITE,
+              Scope.ONET_MESSAGES_READ,
+              Scope.ONET_MESSAGES_WRITE,
+            ]
+          : []),
+      ] as Scope[]
+    ).join(",");
+
+    const redirectUrl = `${config.auth.api}/connection?state=${Proxy.getState()}&redirectUrl=${config.auth.redirectUrl}${scopes ? `&scopes=${scopes}` : ``}`;
 
     try {
-      const data = await Proxy.auth.fetch<any>(
-        RequestMethod.POST,
-        `/create-ticket`,
-        {
-          ticketKey,
-          redirectUrl: config.auth.redirectUrl,
-        },
-      );
-
-      if (!data) throw "ERROR: Cannot create auth ticket!";
-
-      const { ticketId } = data;
-
-      Proxy.setTicket(ticketId, ticketKey);
-      setTimeout(
-        () => {
-          Proxy.deleteTicket(ticketId);
-        },
-        1000 * 60 * 60 * 2,
-      );
-
-      const authApiUrl = new URL(config.auth.api);
       return Response.json(
         {
           status: 200,
           data: {
-            ticketId,
-            redirectUrl: `${authApiUrl.origin}#ticketId=${ticketId}`,
-            protocolToken: Proxy.getProtocolToken(),
+            redirectUrl,
           },
         },
         { status: 200 },

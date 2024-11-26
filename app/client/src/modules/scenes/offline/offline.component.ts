@@ -80,23 +80,9 @@ export const offlineComponent: ContainerComponent = () => {
     });
     $button.setPivotX($button.getBounds().width / 2);
 
-    if (System.version.isDevelopment()) {
-      let timeout;
-      const connect = async () => {
-        try {
-          await System.proxy.connect();
-        } catch (e) {}
-        timeout = setTimeout(connect, 1000);
-      };
-
-      $container.on(DisplayObjectEvent.DESTROYED, () => {
-        clearTimeout(timeout);
-      });
-    }
-
-    $button.on(DisplayObjectEvent.POINTER_TAP, () => {
-      System.proxy.preConnect();
-      if (System.version.isDevelopment()) System.proxy.connect();
+    $button.on(DisplayObjectEvent.POINTER_TAP, async () => {
+      if ((await System.proxy.preConnect()) && System.version.isDevelopment())
+        await System.proxy.connect();
     });
 
     $card.add($button, $title, $human);

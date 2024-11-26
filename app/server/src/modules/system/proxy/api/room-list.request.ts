@@ -6,7 +6,6 @@ export const roomListRequest: ProxyRequestType = {
   pathname: "/room-list",
   method: RequestMethod.GET,
   func: ({ data, user }) => {
-    data.type;
     const rooms = System.game.rooms.getList().map((room) => ({
       id: room.getId(),
       title: room.getTitle(),

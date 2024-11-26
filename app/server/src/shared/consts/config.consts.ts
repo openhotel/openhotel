@@ -10,12 +10,12 @@ export const CONFIG_DEFAULT: ConfigTypes = {
   },
   auth: {
     enabled: true,
+    licenseToken: "",
     redirectUrl: "http://localhost:1994",
-    api: "https://auth.openhotel.club/api/v2/server",
-    pingCheck: true,
-    userDisconnectedEvent: true,
+    api: "https://auth.openhotel.club",
   },
   onet: {
     enabled: true,
+    api: "https://onet.openhotel.club",
   },
 };

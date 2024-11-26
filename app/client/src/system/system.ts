@@ -13,6 +13,7 @@ import { coordinates } from "system/coordinates";
 import { config } from "system/config";
 
 export const System = (() => {
+  const $config = config();
   const $locale = locale();
   const $loader = loader();
   const $textures = textures();
@@ -22,19 +23,20 @@ export const System = (() => {
   const $api = api();
   const $version = version();
   const $coordinates = coordinates();
-  const $config = config();
 
   const $tasks = tasks();
   const $$window = $window();
 
   const load = async () => {
+    await $config.load();
+
     await $version.load();
     $$window.load();
 
     await $textures.loadText();
     $loader.start();
 
-    await $proxy.preConnect();
+    if (!(await $proxy.preConnect())) return;
 
     await $locale.load();
     await $textures.load();

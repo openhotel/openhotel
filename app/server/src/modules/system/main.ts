@@ -6,7 +6,7 @@ import { tasks } from "./tasks.ts";
 import { CONFIG_DEFAULT } from "shared/consts/config.consts.ts";
 import { getConfig, update, getDb } from "@oh/utils";
 import { onet } from "./onet/main.ts";
-import { auth } from "./auth.ts";
+import { auth } from "modules/shared/auth.ts";
 
 export const System = (() => {
   let $config: ConfigTypes;
@@ -64,7 +64,7 @@ export const System = (() => {
 
     log("server");
 
-    await $auth.load();
+    await $auth.load($config, true);
     $proxy.load();
     await $db.load();
     await $game.load();
@@ -89,6 +89,5 @@ export const System = (() => {
     tasks: $tasks,
     db: $db,
     onet: $onet,
-    auth: $auth,
   };
 })();

@@ -40,7 +40,6 @@ export const proxy = () => {
   const load = () => {
     const config = System.getConfig();
     const envs = System.getEnvs();
-    const auth = System.auth.getAuth();
 
     $worker = getParentWorker({
       url: new URL("../../proxy/main.ts", import.meta.url).href,
@@ -48,7 +47,6 @@ export const proxy = () => {
     $worker.emit("start", {
       config,
       envs,
-      auth,
     } as WorkerProps);
 
     loadInternalEvents($worker);
