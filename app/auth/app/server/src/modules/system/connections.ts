@@ -1,12 +1,6 @@
 import { System } from "modules/system/main.ts";
 import * as bcrypt from "@da/bcrypt";
 import { generateToken, getTokenData } from "@oh/utils";
-import {
-  RequestType,
-  RequestMethod,
-  getRandomString,
-  getIpFromRequest,
-} from "@oh/utils";
 import { Scope } from "shared/enums/scopes.enums.ts";
 
 type GenerateProps = {
@@ -99,7 +93,6 @@ export const connections = () => {
         createdAt: Date.now(),
       });
 
-    console.log(scopes);
     return {
       connectionId,
       token,
@@ -200,7 +193,6 @@ export const connections = () => {
 
   const get = async (rawToken: string) => {
     const { id } = getTokenData(rawToken);
-    console.log(id, rawToken);
     return await System.db.get(["connections", id]);
   };
 
