@@ -4,6 +4,6 @@ import { ProxyEvent } from "shared/enums/main.ts";
 export const pointerTileEvent: ProxyEventType<any> = {
   event: ProxyEvent.POINTER_TILE,
   func: async ({ data: { position }, user }) => {
-    user.setTargetPosition(position);
+    await user.setTargetPosition(position);
   },
 };

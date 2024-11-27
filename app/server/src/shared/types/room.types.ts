@@ -39,8 +39,8 @@ export type RoomMutable = {
     accountId?: string,
   ) => Point3d[];
 
-  addFurniture: (furniture: RoomFurniture) => void;
-  removeFurniture: (furniture: RoomFurniture) => void;
+  addFurniture: (furniture: RoomFurniture) => Promise<void>;
+  removeFurniture: (furniture: RoomFurniture) => Promise<void>;
   getFurnitures: () => RoomFurniture[];
 
   getObject: () => Room;

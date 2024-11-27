@@ -42,9 +42,7 @@ export const furnitureFrameComponent: ContainerComponent<Props, Mutable> = ({
 
   const position = getPositionFromIsometricPosition(isometricPosition);
   const frameIsometricPosition = {
-    x:
-      (isNorthDirection ? -framePosition.x * 2 : +framePosition.x * 2) +
-      framePosition.y / 2 / TILE_WIDTH,
+    x: isNorthDirection ? framePosition.x * 2 : -framePosition.x * 2,
     y: -framePosition.y * 2 + framePosition.x,
   };
 

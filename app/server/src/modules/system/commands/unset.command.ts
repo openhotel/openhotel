@@ -15,7 +15,7 @@ export const unsetCommand: Command = {
     const roomId = user.getRoom();
     if (!roomId) return;
 
-    const room = System.game.rooms.get(roomId);
+    const room = await System.game.rooms.get(roomId);
     const furniture = room
       .getFurnitures()
       .find((furniture) => isPoint3dEqual(furniture.position, { x, y: 0, z }));
