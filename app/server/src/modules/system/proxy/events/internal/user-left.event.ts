@@ -5,9 +5,9 @@ import { log } from "shared/utils/main.ts";
 
 export const userLeftEvent: ProxyEventType<{ user: PrivateUser }> = {
   event: ProxyEvent.$USER_LEFT,
-  func: ({ data: { user } }) => {
+  func: async ({ data: { user } }) => {
     if (!user) return;
-    System.game.users.remove(user);
+    await System.game.users.remove(user);
 
     log(`${user.username} left!`);
   },

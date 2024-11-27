@@ -25,10 +25,10 @@ export const users = () => {
     System.tasks.add({
       type: TickerQueue.REPEAT,
       repeatEvery: MOVEMENT_BETWEEN_TILES_DURATION,
-      onFunc: () => {
+      onFunc: async () => {
         for (const accountId of Object.keys($userPathfindingMap)) {
           const user = get({ accountId });
-          const room = System.game.rooms.get(user.getRoom());
+          const room = await System.game.rooms.get(user.getRoom());
 
           let nextPosition = $userPathfindingMap[accountId].shift();
           if (!nextPosition) return;
@@ -145,8 +145,8 @@ export const users = () => {
       setPosition(null);
     };
 
-    const setTargetPosition = (targetPosition: Point3d) => {
-      const $room = System.game.rooms.get(getRoom());
+    const setTargetPosition = async (targetPosition: Point3d) => {
+      const $room = await System.game.rooms.get(getRoom());
       if (!$room) return;
 
       const pathfinding = $room.findPath(
@@ -237,11 +237,11 @@ export const users = () => {
     $privateUserMap[privateUser.accountId] = privateUser;
   };
 
-  const remove = (user: User) => {
+  const remove = async (user: User) => {
     const $user = $userMap[user.accountId];
     if (!$user) return;
 
-    const room = System.game.rooms.get($user.getRoom());
+    const room = await System.game.rooms.get($user.getRoom());
     room?.removeUser($user.getObject());
 
     delete $userMap[user.accountId];

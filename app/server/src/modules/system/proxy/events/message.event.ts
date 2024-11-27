@@ -8,7 +8,7 @@ import { getRandomNumberFromSeed } from "@oh/utils";
 export const messageEvent: ProxyEventType<{ message: string }> = {
   event: ProxyEvent.MESSAGE,
   func: async ({ user, data: { message } }) => {
-    const room = System.game.rooms.get(user.getRoom());
+    const room = await System.game.rooms.get(user.getRoom());
     if (!room) return;
 
     //Prevent spam the same message

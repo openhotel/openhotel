@@ -1,5 +1,4 @@
 import {
-  RawRoom,
   Room,
   RoomFurniture,
   RoomMutable,
@@ -15,15 +14,15 @@ import {
   getRoomSpawnPoint,
 } from "shared/utils/rooms.utils.ts";
 import { DEFAULT_ROOMS } from "shared/consts/main.ts";
-import { log } from "shared/utils/main.ts";
 import { Direction, Point3d, getRandomNumber, isPoint3dEqual } from "@oh/utils";
 
 export const rooms = () => {
-  let roomMap: Record<string, RoomMutable> = {};
   let roomUserMap: Record<string, string[]> = {};
 
   const $getRoom = (room: Room): RoomMutable => {
     let $room: Room = { ...room };
+
+    if (!roomUserMap[room.id]) roomUserMap[room.id] = [];
 
     const getId = () => room.id;
     const getTitle = () => room.title;
@@ -161,19 +160,19 @@ export const rooms = () => {
       return pathfinding;
     };
 
-    const addFurniture = (furniture: RoomFurniture) => {
+    const addFurniture = async (furniture: RoomFurniture) => {
       furniture.position = {
         ...furniture.position,
         y: getYFromPoint(furniture.position),
       };
       $room.furniture.push(furniture);
 
-      $save(room.id, { furniture: [furniture] });
+      await $save();
     };
-    const removeFurniture = (furniture: RoomFurniture) => {
+    const removeFurniture = async (furniture: RoomFurniture) => {
       $room.furniture = $room.furniture.filter((f) => f.uid !== furniture.uid);
 
-      $save(room.id, { furniture: $room.furniture }, false);
+      await $save();
     };
     const getFurnitures = (): RoomFurniture[] => $room.furniture;
 
@@ -204,6 +203,10 @@ export const rooms = () => {
         data,
       });
 
+    const $save = async () => {
+      await System.db.set(["rooms", $room.id], $room);
+    };
+
     return {
       getId,
       getTitle,
@@ -227,77 +230,58 @@ export const rooms = () => {
     };
   };
 
-  const create = (room: RawRoom) => {
-    let layout: RoomPoint[][] = room.layout.map((line) =>
-      line
-        .split("")
-        .map((value) =>
-          parseInt(value) ? parseInt(value) : (value as RoomPointEnum),
-        ),
-    );
-
-    roomMap[room.id] = $getRoom({
-      ...room,
-      layout,
-      spawnPoint: getRoomSpawnPoint(layout),
-      spawnDirection: getRoomSpawnDirection(layout),
-    });
-    roomUserMap[room.id] = [];
+  const get = async (roomId: string): Promise<RoomMutable | null> => {
+    try {
+      const roomData = await System.db.get(["rooms", roomId]);
+      if (!roomData) return null;
+      return $getRoom(roomData);
+    } catch (e) {
+      return null;
+    }
   };
 
-  const get = (roomId: string): RoomMutable | null => roomMap[roomId];
+  const getList = async (): Promise<RoomMutable[]> => {
+    return (await System.db.list({ prefix: ["rooms"] })).map((item) =>
+      $getRoom(item.value),
+    );
+  };
 
-  const getList = (): RoomMutable[] => Object.values(roomMap);
-
-  const getRandom = (): RoomMutable => {
-    const roomList = Object.values(roomMap);
+  const getRandom = async (): Promise<RoomMutable> => {
+    const roomList = await getList();
     const roomIndex = getRandomNumber(0, roomList.length - 1);
     return roomList[roomIndex];
   };
 
   const generateDefaultRooms = async () => {
-    for (const room of DEFAULT_ROOMS)
-      await System.db.set(["rooms", room.id], room);
+    for (const room of DEFAULT_ROOMS) {
+      let layout: RoomPoint[][] = room.layout.map((line) =>
+        line
+          .split("")
+          .map((value) =>
+            parseInt(value) ? parseInt(value) : (value as RoomPointEnum),
+          ),
+      );
+
+      const roomData = {
+        ...room,
+        layout,
+        spawnPoint: getRoomSpawnPoint(layout),
+        spawnDirection: getRoomSpawnDirection(layout),
+      };
+      await System.db.set(["rooms", room.id], roomData);
+    }
 
     return await System.db.list({ prefix: ["rooms"] });
   };
 
-  const $save = async (
-    roomId: string,
-    mutable: Partial<RawRoom>,
-    merge = true,
-  ) => {
-    const roomResult = await System.db.get(["rooms", roomId]);
-    if (!roomResult.value) {
-      console.error(`Room with id ${roomId} not found.`);
-      return;
-    }
-
-    const room = roomResult.value;
-    for (const key in mutable) {
-      if (merge && Array.isArray(room[key]) && Array.isArray(mutable[key])) {
-        room[key] = [...room[key], ...mutable[key]];
-      } else {
-        room[key] = mutable[key];
-      }
-    }
-    await System.db.set(["rooms", roomId], room);
-  };
-
   const load = async () => {
-    let rooms = await System.db.list({ prefix: ["rooms"] });
-    if (!rooms.length) rooms = await generateDefaultRooms();
-
-    for (const { value, key } of rooms) {
-      create(value);
-      log(`Loaded room ${key[1]}...`);
-    }
+    let rooms = await getList();
+    if (!rooms.length) await generateDefaultRooms();
   };
 
   return {
     load,
 
-    create,
     get,
     getList,
 

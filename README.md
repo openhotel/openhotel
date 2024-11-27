@@ -52,7 +52,8 @@
 
 - Run `deno task start`
 - If it's the first time running the project:
-  - On the browser, add a value on the localStorage with key `username` and value of your choice.
+  - Go to `./app/server/config.yml` and change the `version` to `development`. Restart the process.
+  - On the browser, add a localStorage item with key `username` and value of your choice.
   - Reload the browser
   - Go to `./app/server/users.yml` and add the username on the `op` list
   - Go to `Room 1` and use the command `/set flags@pirate 3 3 0 0 20` 🏴‍☠️

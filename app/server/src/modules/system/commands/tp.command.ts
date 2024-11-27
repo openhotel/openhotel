@@ -13,7 +13,7 @@ export const tpCommand: Command = {
 
     const roomId = user.getRoom();
     if (!roomId) return;
-    const room = System.game.rooms.get(roomId);
+    const room = await System.game.rooms.get(roomId);
 
     user.setPosition({ x, z });
 

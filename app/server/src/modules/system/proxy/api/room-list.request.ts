@@ -5,8 +5,9 @@ import { RequestMethod } from "@oh/utils";
 export const roomListRequest: ProxyRequestType = {
   pathname: "/room-list",
   method: RequestMethod.GET,
-  func: ({ data, user }) => {
-    const rooms = System.game.rooms.getList().map((room) => ({
+  func: async ({ data, user }) => {
+    const roomsData = await System.game.rooms.getList();
+    const rooms = roomsData.map((room) => ({
       id: room.getId(),
       title: room.getTitle(),
       description: room.getDescription(),

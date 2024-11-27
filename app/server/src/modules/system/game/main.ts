@@ -10,7 +10,7 @@ export const game = () => {
   const load = async () => {
     await $furniture.load();
     await $rooms.load();
-    $users.load();
+    await $users.load();
   };
 
   return {
