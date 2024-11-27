@@ -60,7 +60,7 @@ export type UserMutable = {
   getRoom: () => string | null;
   removeRoom: () => void;
 
-  setTargetPosition: (position: Point3d) => void;
+  setTargetPosition: (position: Point3d) => Promise<void>;
 
   getPathfinding: () => Point3d[];
 
