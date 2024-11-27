@@ -10,7 +10,7 @@ import {
 import { System } from "system";
 import { Event } from "shared/enums";
 import { inputComponent } from "shared/components";
-import { MAX_MESSAGES_HISTORY } from "shared/consts";
+import { MAX_MESSAGES_HISTORY, STORAGE_KEY } from "shared/consts";
 import { __ } from "shared/utils";
 
 type Mutable = {
@@ -24,7 +24,9 @@ export const chatInputComponent: ContainerComponent<{}, Mutable> = (props) => {
   let $typing = false;
   let $typingTimeout: number;
 
-  let $history: string[] = [];
+  let $history: string[] = JSON.parse(
+    localStorage.getItem(STORAGE_KEY) || "[]",
+  );
   let $historyIndex = -1;
 
   const setTyping = (text: string) => {
@@ -70,6 +72,7 @@ export const chatInputComponent: ContainerComponent<{}, Mutable> = (props) => {
         if ($history.length > MAX_MESSAGES_HISTORY) {
           $history.pop();
         }
+        localStorage.setItem(STORAGE_KEY, JSON.stringify($history));
       }
 
       System.proxy.emit(Event.MESSAGE, {
