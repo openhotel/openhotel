@@ -6,6 +6,7 @@
     "@std/path": "jsr:@std/path@1.0.6",
     "@std/fs": "jsr:@std/fs@1.0.4",
     "@std/yaml": "jsr:@std/yaml@1.0.5",
+    "@std/encoding": "jsr:@std/encoding@1.0.5",
 
     "@oh/yaml": "jsr:@oh/yaml@1.1.0",
     "@da/bcrypt": "jsr:@da/bcrypt@1.0.0",

@@ -4,6 +4,7 @@
     "jsr:@da/bcrypt@1.0.0": "1.0.0",
     "jsr:@oh/yaml@1.1.0": "1.1.0",
     "jsr:@std/assert@^1.0.7": "1.0.7",
+    "jsr:@std/encoding@1.0.5": "1.0.5",
     "jsr:@std/expect@*": "1.0.7",
     "jsr:@std/fs@1.0.4": "1.0.4",
     "jsr:@std/internal@^1.0.5": "1.0.5",
@@ -31,6 +32,9 @@
       "dependencies": [
         "jsr:@std/internal"
       ]
+    },
+    "@std/encoding@1.0.5": {
+      "integrity": "ecf363d4fc25bd85bd915ff6733a7e79b67e0e7806334af15f4645c569fefc04"
     },
     "@std/expect@1.0.7": {
       "integrity": "3904afa77cfe5c45dd2cd2c476e6fc5b6f57103d712890f0783d74c19d4b05a9",
@@ -80,6 +84,7 @@
     "dependencies": [
       "jsr:@da/bcrypt@1.0.0",
       "jsr:@oh/yaml@1.1.0",
+      "jsr:@std/encoding@1.0.5",
       "jsr:@std/fs@1.0.4",
       "jsr:@std/path@1.0.6",
       "jsr:@std/yaml@1.0.5",

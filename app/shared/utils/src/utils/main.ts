@@ -16,3 +16,4 @@ export * from "./request.utils.ts";
 export * from "./version.utils.ts";
 export * from "./zip.utils.ts";
 export * from "./tokens.utils.ts";
+export * from "./base64.utils.ts";
