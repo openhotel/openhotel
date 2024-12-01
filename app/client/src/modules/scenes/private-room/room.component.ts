@@ -212,7 +212,7 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = () => {
         const wallPosition = getPositionFromIsometricPosition({ x, z, y: 0 });
 
         const wallHeight = WALL_HEIGHT - y * TILE_Y_HEIGHT;
-        const wallMargin = 3;
+        const wallEdgeOffset  = 3;
 
         const zIndex = x + z;
 
@@ -225,7 +225,7 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = () => {
             const wall = wallComponent({
               axis: "x",
               zIndex: zIndex - 0.2,
-              pivot: { x: 5, y: WALL_HEIGHT - wallMargin },
+              pivot: { x: 5, y: WALL_HEIGHT - wallEdgeOffset  },
               position: wallPosition,
               tint: 0xc4d3dd,
               height: wallHeight,
@@ -236,7 +236,7 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = () => {
             const wall = wallComponent({
               axis: "z",
               zIndex: zIndex - 0.2,
-              pivot: { x: -25, y: WALL_HEIGHT - wallMargin },
+              pivot: { x: -25, y: WALL_HEIGHT - wallEdgeOffset  },
               position: wallPosition,
               tint: 0xc4d3dd,
               height: wallHeight,
@@ -260,7 +260,7 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = () => {
             const wall = wallComponent({
               axis: "x",
               zIndex: zIndex - 0.1,
-              pivot: { x: 5, y: WALL_HEIGHT - wallMargin },
+              pivot: { x: 5, y: WALL_HEIGHT - wallEdgeOffset  },
               position,
               tint: 0xc4d3dd,
               height: WALL_DOOR_HEIGHT,
@@ -271,7 +271,7 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = () => {
             const wall = wallComponent({
               axis: "z",
               zIndex: zIndex - 0.1,
-              pivot: { x: -25, y: WALL_HEIGHT - wallMargin },
+              pivot: { x: -25, y: WALL_HEIGHT - wallEdgeOffset  },
               position,
               tint: 0xc4d3dd,
               height: WALL_DOOR_HEIGHT,
