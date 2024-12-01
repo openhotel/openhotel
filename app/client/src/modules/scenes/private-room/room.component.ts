@@ -212,6 +212,8 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = () => {
         const wallPosition = getPositionFromIsometricPosition({ x, z, y: 0 });
 
         const wallHeight = WALL_HEIGHT - y * TILE_Y_HEIGHT;
+        const wallMargin = 3;
+
         const zIndex = x + z;
 
         //left side
@@ -223,7 +225,7 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = () => {
             const wall = wallComponent({
               axis: "x",
               zIndex: zIndex - 0.2,
-              pivot: { x: 5, y: 99 },
+              pivot: { x: 5, y: WALL_HEIGHT - wallMargin },
               position: wallPosition,
               tint: 0xc4d3dd,
               height: wallHeight,
@@ -234,7 +236,7 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = () => {
             const wall = wallComponent({
               axis: "z",
               zIndex: zIndex - 0.2,
-              pivot: { x: -25, y: 99 },
+              pivot: { x: -25, y: WALL_HEIGHT - wallMargin },
               position: wallPosition,
               tint: 0xc4d3dd,
               height: wallHeight,
@@ -247,7 +249,7 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = () => {
               texture: "wall-b",
               eventMode: EventMode.NONE,
               tint: 0xc4d3dd,
-              pivot: { x: -20, y: 102 },
+              pivot: { x: -20, y: WALL_HEIGHT },
               zIndex: zIndex - 0.1,
               position: wallPosition,
             });
@@ -258,7 +260,7 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = () => {
             const wall = wallComponent({
               axis: "x",
               zIndex: zIndex - 0.1,
-              pivot: { x: 5, y: 99 },
+              pivot: { x: 5, y: WALL_HEIGHT - wallMargin },
               position,
               tint: 0xc4d3dd,
               height: WALL_DOOR_HEIGHT,
@@ -269,7 +271,7 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = () => {
             const wall = wallComponent({
               axis: "z",
               zIndex: zIndex - 0.1,
-              pivot: { x: -25, y: 99 },
+              pivot: { x: -25, y: WALL_HEIGHT - wallMargin },
               position,
               tint: 0xc4d3dd,
               height: WALL_DOOR_HEIGHT,
