@@ -27,6 +27,8 @@ export enum Event {
 
   SYSTEM_MESSAGE = "system-message",
 
+  REDIRECT = "redirect",
+
   TEST = "test",
 
   CONNECTED = "connected",

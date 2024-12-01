@@ -20,6 +20,7 @@ export const proxy = () => {
   const params = new URLSearchParams(location.search);
   let state = params.get("state");
   let token = params.get("token");
+  let meta = params.get("meta");
   window.history.pushState(null, null, "/");
 
   const getRefreshSession = () => {
@@ -46,7 +47,10 @@ export const proxy = () => {
       `/request?version=${System.version.getVersion()}`,
     ).then((data) => data.json());
     if (status === 200) {
-      window.location.href = data.redirectUrl;
+      const redirectUrl = new URL(data.redirectUrl);
+      if (meta) redirectUrl.searchParams.append("meta", meta);
+
+      window.location.replace(redirectUrl);
       System.loader.addText("Redirecting...");
       return false;
     }
@@ -115,7 +119,7 @@ export const proxy = () => {
     });
 
   const loaded = () => {
-    $socket.emit("$$load", { p: performance.now() });
+    $socket.emit("$$load", { p: performance.now(), meta });
   };
 
   const emit = <Data>(event: Event, data: Data) => {

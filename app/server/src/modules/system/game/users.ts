@@ -183,6 +183,11 @@ export const users = () => {
     const getLanguage = () =>
       $privateUserMap[user.accountId].language ?? Language.EN;
 
+    const getMeta = () => $user.meta ?? null;
+
+    const isOP = async () =>
+      (await $getConfig()).op.users.includes(getUsername());
+
     const disconnect = () =>
       System.proxy.$emit(ProxyEvent.$DISCONNECT_USER, {
         clientId: $privateUserMap[user.accountId].clientId,
@@ -227,6 +232,10 @@ export const users = () => {
 
       setLanguage,
       getLanguage,
+
+      getMeta,
+
+      isOp: isOP,
 
       emit,
     };

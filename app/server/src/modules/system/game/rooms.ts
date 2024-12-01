@@ -14,7 +14,13 @@ import {
   getRoomSpawnPoint,
 } from "shared/utils/rooms.utils.ts";
 import { DEFAULT_ROOMS } from "shared/consts/main.ts";
-import { Direction, Point3d, getRandomNumber, isPoint3dEqual } from "@oh/utils";
+import {
+  Direction,
+  Point3d,
+  Point2d,
+  getRandomNumber,
+  isPoint3dEqual,
+} from "@oh/utils";
 
 export const rooms = () => {
   let roomUserMap: Record<string, string[]> = {};
@@ -31,12 +37,18 @@ export const rooms = () => {
     const getSpawnPoint = (): Point3d => room.spawnPoint;
     const getSpawnDirection = (): Direction => room.spawnDirection;
 
-    const addUser = (user: User) => {
+    const addUser = (user: User, position?: Point2d) => {
       const $user = System.game.users.get({ accountId: user.accountId });
       if (!$user) return;
 
+      let startPosition = getSpawnPoint();
+      if (position) {
+        startPosition = { x: position.x, y: 0, z: position.y };
+        startPosition.y = getYFromPoint(startPosition);
+      }
+
       $user.setRoom(room.id);
-      $user.setPosition(getSpawnPoint());
+      $user.setPosition(startPosition);
       $user.setBodyDirection(getSpawnDirection());
 
       //Add user to "room" internally

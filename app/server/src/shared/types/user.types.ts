@@ -29,6 +29,8 @@ export type User = {
   positionUpdatedAt?: number;
 
   bodyDirection?: Direction;
+
+  meta?: (string | number)[];
 };
 
 export type UsersConfig = {
@@ -71,6 +73,10 @@ export type UserMutable = {
 
   setLanguage: (language: Language) => void;
   getLanguage: () => Language;
+
+  getMeta: () => (number | string)[] | null;
+
+  isOp: () => Promise<boolean>;
 
   disconnect: () => void;
 
