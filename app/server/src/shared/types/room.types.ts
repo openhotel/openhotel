@@ -1,6 +1,6 @@
 import { RoomFurniture, User } from "shared/types/main.ts";
 import { ProxyEvent, RoomPointEnum } from "shared/enums/main.ts";
-import { Point3d, Direction } from "@oh/utils";
+import { Point3d, Point2d, Direction } from "@oh/utils";
 
 type BaseRoom = {
   id: string;
@@ -27,7 +27,7 @@ export type RoomMutable = {
   getTitle: () => string;
   getDescription: () => string;
 
-  addUser: (user: User) => void;
+  addUser: (user: User, position?: Point2d) => void;
   removeUser: (user: User) => void;
   getUsers: () => string[];
 

@@ -26,5 +26,9 @@ export const mainComponent = () => {
   });
   System.proxy.loaded();
 
+  System.proxy.on(Event.REDIRECT, ({ redirectUrl }) =>
+    window.location.replace(redirectUrl),
+  );
+
   return $container.getComponent(mainComponent);
 };

@@ -16,9 +16,7 @@ export const messageEvent: ProxyEventType<{ message: string }> = {
 
     log(`[${room.getId()}] ${user.getUsername()}: ${message}`);
 
-    const isOp = (await System.game.users.getConfig()).op.users.includes(
-      user.getUsername(),
-    );
+    const isOp = await user.isOp();
 
     if (isOp && executeCommand({ message, user })) return;
 

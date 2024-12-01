@@ -16,10 +16,7 @@ export const joinRoomEvent: ProxyEventType<{ roomId: string }> = {
     const { version: configVersion } = System.getConfig();
     if (configVersion === "development") return;
 
-    const isOp = (await System.game.users.getConfig()).op.users.includes(
-      user.getUsername(),
-    );
-    if (!isOp) return;
+    if (!(await user.isOp())) return;
 
     const { version } = System.getEnvs();
     const newVersion = await getLatestVersion({

@@ -46,6 +46,8 @@ export enum ProxyEvent {
   TYPING_END = "typing-end",
 
   SYSTEM_MESSAGE = "system-message",
+
+  REDIRECT = "redirect",
 }
 
 export enum OnetEvent {
