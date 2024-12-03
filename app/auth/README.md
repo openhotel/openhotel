@@ -18,8 +18,8 @@ Basic example with `OHAP` [/auth-example](https://github.com/openhotel/auth-exam
 - Install `deno >= 1.44`
 - Install `node >= 20`
 - Install `yarn`
--
 
 ### Start project
 
+- Run `deno task install`
 - Run `deno task start`
