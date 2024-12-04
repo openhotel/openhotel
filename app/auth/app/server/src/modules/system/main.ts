@@ -1,6 +1,6 @@
 import { api } from "./api.ts";
 import { ConfigTypes, Envs } from "shared/types/main.ts";
-import { getConfig as $getConfig, getDb, update } from "@oh/utils";
+import { getConfig as $getConfig, getDb, update, DbMutable } from "@oh/utils";
 import { captcha } from "./captcha.ts";
 import { email } from "./email.ts";
 import { otp } from "./otp.ts";
@@ -11,7 +11,7 @@ import { hosts } from "./hosts.ts";
 import { admins } from "./admins.ts";
 import { licenses } from "./licenses.ts";
 import { connections } from "./connections.ts";
-import { Scope } from "shared/enums/scopes.enums.ts";
+import { Migrations } from "modules/migrations/main.ts";
 
 export const System = (() => {
   let $config: ConfigTypes;
@@ -27,7 +27,7 @@ export const System = (() => {
   const $admins = admins();
   const $licenses = licenses();
   const $connections = connections();
-  let $db;
+  let $db: DbMutable;
 
   const load = async (envs: Envs) => {
     $config = await $getConfig<ConfigTypes>({ defaults: CONFIG_DEFAULT });
@@ -48,6 +48,8 @@ export const System = (() => {
     $db = getDb({ pathname: `./${$config.database.filename}` });
 
     await $db.load();
+    await Migrations.load($db);
+
     await $email.load();
     $api.load();
   };
