@@ -1,9 +1,66 @@
-.input {
-  color: var(--text-primary);
-  background-color: var(--bg-footer);
+@use "../../../styles/all.module" as *;
 
-  padding: 1rem 3rem;
-  border-radius: 0.5rem;
-
+.inputWrapper {
   display: inline-flex;
+  position: relative;
+  width: 100%;
+
+  .placeholder {
+    position: absolute;
+    top: 1.2rem;
+    left: 2.2rem;
+    color: var(--input-placeholder-c);
+    border-radius: 0.5rem;
+    padding: 0;
+    transition: padding, color, border, top, left, opacity;
+    transition-duration: 0.3s;
+  }
+
+  .input:not(:placeholder-shown) + label {
+    top: 0.2rem;
+    left: 2.2rem;
+    opacity: 1;
+  }
+
+  .input::placeholder {
+    opacity: 0;
+  }
+
+  .input {
+    background-color: var(--input-bg);
+    color: var(--input-c);
+    width: 100%;
+    border: 0.2rem solid transparent;
+
+    padding: 1rem 2rem;
+    border-radius: var(--border-radius);
+    outline: none;
+
+    display: inline-flex;
+
+    &.hasPlaceholder {
+      transition: padding;
+      transition-duration: 0.3s;
+
+      &:not(:placeholder-shown) {
+        padding-top: 1.7rem;
+        padding-bottom: 0.3rem;
+      }
+    }
+
+    &:active,
+    &:focus {
+      background-color: var(--input-focus-bg);
+      color: var(--input-focus-c);
+    }
+  }
+
+  &.bordered .input {
+    border: 0.2rem solid var(--input-bd);
+
+    &:active,
+    &:focus {
+      border: 0.2rem solid var(--input-focus-bd);
+    }
+  }
 }

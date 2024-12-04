@@ -7,6 +7,8 @@ import { useCallback, useRef, useState } from "react";
 import {
   ChevronDownIconComponent,
   CrossIconComponent,
+  BoxComponent,
+  BoxProps,
 } from "../../../components";
 
 type Option = {
@@ -17,25 +19,27 @@ type Option = {
 type Props = {
   name?: string;
   placeholder?: string;
-
   className?: string;
-
-  defaultOption?: Option;
+  bordered?: boolean;
+  defaultOption?: Option | string;
   options: Option[];
-
   onChange?: (option: Option) => void;
-};
+} & Partial<BoxProps>;
 
 export const SelectorComponent: React.FC<Props> = ({
   name,
   placeholder,
   className,
+  bordered,
   options,
   defaultOption,
   onChange = () => {},
+  ...boxProps
 }) => {
-  const [selectedOption, setSelectedOption] = useState<Option | null>(
-    defaultOption,
+  const [selectedOption, setSelectedOption] = useState<Option | null>(() =>
+    typeof defaultOption === "string"
+      ? (options.find((o) => o.key === defaultOption) ?? null)
+      : defaultOption,
   );
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
@@ -56,6 +60,7 @@ export const SelectorComponent: React.FC<Props> = ({
 
   const inputRef = useRef<HTMLInputElement>();
   const closeRef = useRef<HTMLInputElement>();
+  const modalRef = useRef<HTMLInputElement>();
 
   const onToggleOptions = useCallback(
     (event) => {
@@ -70,19 +75,39 @@ export const SelectorComponent: React.FC<Props> = ({
   }, []);
 
   return (
-    <div onClick={onContextClick} className={cn(styles.selector, className)}>
-      <div
-        onClick={onToggleOptions}
-        className={cn(styles.input, {
-          [styles.isOpen]: isOpen,
-        })}
-      >
+    <BoxComponent
+      onClick={onContextClick}
+      className={cn(
+        styles.selector,
+        className,
+        [styles.bordered, !!bordered],
+        [styles.isOpen, isOpen],
+      )}
+      {...boxProps}
+    >
+      <div onClick={onToggleOptions} className={cn(styles.select)}>
         <input
           ref={inputRef}
           name={name}
           className={styles.input}
           defaultValue={selectedOption?.key}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              setIsOpen((isOpen) => !isOpen);
+              e.preventDefault();
+            }
+          }}
+          onBlur={(e) => {
+            if (
+              modalRef.current &&
+              modalRef.current.contains(e.relatedTarget)
+            ) {
+              return;
+            }
+            setIsOpen(false);
+          }}
         />
+
         {selectedOption ? (
           <label className={styles.selection}>{selectedOption?.value}</label>
         ) : (
@@ -98,21 +123,26 @@ export const SelectorComponent: React.FC<Props> = ({
           <ChevronDownIconComponent />
         </div>
       </div>
+
       {isOpen ? (
-        <div className={styles.modal}>
+        <div ref={modalRef} className={styles.modal}>
           <div className={styles.options}>
             {options.map((option) => (
-              <div
+              <button
                 key={option.key}
-                className={styles.option}
+                type="button"
+                className={cn(styles.option, [
+                  styles.optionSelected,
+                  option.key === selectedOption?.key,
+                ])}
                 onClick={onChangeValue(option)}
               >
                 {option.value}
-              </div>
+              </button>
             ))}
           </div>
         </div>
       ) : null}
-    </div>
+    </BoxComponent>
   );
 };

@@ -1,27 +1,48 @@
+@use "../../../styles/all.module" as *;
+@use "sass:color";
+
 .selector {
   position: relative;
   user-select: none;
 
-  .input {
+  &.bordered .select {
+    border: 0.2rem solid var(--input-bd);
+  }
+
+  &.isOpen {
+  }
+
+  .select {
     display: flex;
-
-    color: var(--text-primary);
-    svg path {
-      fill: var(--text-primary);
-    }
-
-    background-color: var(--bg-footer);
-
-    gap: 1rem;
-    padding: 1rem 3rem;
-    border-radius: 0.5rem;
-
-    cursor: pointer;
-
     position: relative;
 
-    &.isOpen {
-      border-radius: 0.5rem 0.5rem 0 0;
+    gap: 1rem;
+    padding: 1rem 2rem;
+    cursor: pointer;
+
+    background-color: var(--input-bg);
+    border: 0.2rem solid transparent;
+    color: var(--input-c);
+    border-radius: var(--border-radius);
+    outline: none;
+
+    .input {
+      opacity: 0;
+      height: 100%;
+      position: absolute;
+      width: 100%;
+      left: 0;
+      top: 0;
+      background-color: transparent;
+      color: transparent;
+      border: 0.2rem solid transparent;
+      z-index: -1;
+    }
+
+    &:has(.input:focus-visible) {
+      color: var(--input-focus-c);
+      background: var(--input-focus-bg);
+      border-color: var(--input-focus-bd);
     }
 
     .clear {
@@ -46,64 +67,62 @@
     .selection {
       flex: 1;
     }
+
     .placeholder {
-      opacity: 0.55;
+      color: var(--input-placeholder-c);
     }
+
     .placeholder,
     .selection {
       height: 1.8rem;
-      cursor: pointer;
-    }
-    .input {
-      height: 100%;
-      position: absolute;
-      width: 100%;
-      left: 0;
-      top: 0;
-      background-color: transparent;
-      color: transparent;
-      z-index: -1;
-    }
-  }
-
-  .options {
-    .option {
       cursor: pointer;
     }
   }
 
   .modal {
     position: absolute;
-    color: var(--text-primary);
-
+    top: 5rem;
     width: 100%;
-
-    overflow: hidden;
-
-    background: rgba(0, 0, 0, 0.6);
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(5px);
-
-    border-radius: 0 0 0.5rem 0.5rem;
-
     z-index: 100;
 
-    @media (prefers-color-scheme: light) {
-      background: rgba(255, 255, 255, 0.8);
-    }
+    box-shadow: none;
+    backdrop-filter: blur(0.5rem);
+    border-radius: var(--border-radius);
+    background: color.adjust($light-3, $alpha: -0.8);
+
+    @include boxShadow();
 
     .options {
       display: flex;
       flex-direction: column;
 
       .option {
-        padding: 1rem 3rem;
+        padding: 1rem 2rem;
+        cursor: pointer;
+        text-align: left;
+        color: var(--select-modal-c);
+        background: var(--select-modal-bg);
 
-        &:hover {
-          background: rgba(255, 255, 255, 0.5);
+        &:first-child {
+          border-top-left-radius: var(--border-radius);
+          border-top-right-radius: var(--border-radius);
         }
+
+        &:last-child {
+          border-bottom-left-radius: var(--border-radius);
+          border-bottom-right-radius: var(--border-radius);
+        }
+
+        &.optionSelected,
+        &:hover {
+          color: var(--select-modal-hover-c);
+          background: var(--select-modal-hover-bg);
+        }
+
+        &:focus,
         &:active {
-          background: rgba(255, 255, 255, 0.75);
+          color: var(--select-modal-focus-c);
+          background: var(--select-modal-focus-bg);
         }
       }
     }

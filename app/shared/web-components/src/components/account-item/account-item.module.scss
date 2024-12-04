@@ -2,7 +2,7 @@
   border-radius: 0.75rem;
   padding: 1rem 3rem;
 
-  color: var(--text-primary);
+  color: var(--text-1-c);
 
   font-weight: bold;
   cursor: pointer;
@@ -11,14 +11,15 @@
   display: flex;
   gap: 1rem;
 
-  border: 2px solid var(--bg-main);
+  border: 2px solid var(--input-bd);
 
   &:hover,
   &.selected {
-    border: 2px solid var(--bg-primary);
+    border: 2px solid var(--input-hover-bd);
   }
 
-  &:active {
-    border: 2px solid var(--bg-secondary);
+  &:active,
+  &:focus {
+    border: 2px solid var(--input-focus-bd);
   }
 }

@@ -1,0 +1,70 @@
+@use "./consts.module" as *;
+
+@mixin web-only {
+  @media only screen and (min-width: $WEB_MIN_WIDTH) {
+    @content;
+  }
+}
+
+@mixin tablet-only {
+  @media only screen and (min-width: $TABLET_MIN_WIDTH) and (max-width: calc($WEB_MIN_WIDTH - 1px)) {
+    @content;
+  }
+}
+
+@mixin phone-only {
+  @media only screen and (max-width: calc($TABLET_MIN_WIDTH - 1px)) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media only screen and (max-width: calc($WEB_MIN_WIDTH - 1px)) {
+    @content;
+  }
+}
+
+@mixin responsive-width {
+  max-width: $WEB_MIN_WIDTH !important;
+  margin: auto;
+  @include tablet-only() {
+    width: $TABLET_MIN_WIDTH !important;
+  }
+  @include phone-only() {
+    width: 100% !important;
+  }
+}
+
+@mixin btn-color($btn_name) {
+  background-color: var(--#{$btn_name}-bg);
+  border-color: var(--#{$btn_name}-bd);
+  color: var(--#{$btn_name}-c);
+
+  &:hover {
+    background-color: var(--#{$btn_name}-hover-bg);
+    border-color: var(--#{$btn_name}-hover-bd);
+    color: var(--#{$btn_name}-hover-c);
+  }
+
+  &:active,
+  &:focus {
+    background-color: var(--#{$btn_name}-focus-bg);
+    border-color: var(--#{$btn_name}-focus-bd);
+    color: var(--#{$btn_name}-focus-c);
+  }
+}
+
+@mixin boxShadow() {
+  box-shadow:
+    rgba(0, 0, 0, 0.05) 0 0.0625rem 0.1875rem,
+    rgba(0, 0, 0, 0.05) 0 1.25rem 1.5625rem -0.3125rem,
+    rgba(0, 0, 0, 0.04) 0 0.625rem 0.625rem -0.3125rem,
+    rgba(14, 30, 37, 0.12) 0 0.2rem 0.4rem 0,
+    rgba(14, 30, 37, 0.32) 0 0.2rem 1.6rem 0;
+}
+
+@mixin textEllipsis() {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

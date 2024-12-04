@@ -1,6 +1,7 @@
 import { fn } from "@storybook/test";
 import { FormComponent } from "./form.component";
 import { InputComponent, SelectorComponent, ButtonComponent } from "../index";
+import { BoxComponent, CardComponent } from "../../../components";
 
 export default {
   title: "Components/Form",
@@ -14,6 +15,8 @@ export default {
 
 export const Primary = {
   args: {
+    m: "auto",
+    w: "40rem",
     validations: {
       username: ({ value, addError }) => {
         if (!value?.length) addError("Username cannot be empty");
@@ -35,6 +38,7 @@ export const Primary = {
     },
     children: (
       <>
+        <h1>Register</h1>
         <InputComponent name="username" placeholder="username" />
         <InputComponent
           name="password"
@@ -56,6 +60,20 @@ export const Primary = {
         />
         <ButtonComponent>Submit</ButtonComponent>
       </>
+    ),
+  },
+};
+
+export const CodeForm = {
+  args: {
+    m: "auto",
+    children: (
+      <CardComponent topSection="Submit code" w="30rem">
+        <BoxComponent p="2.5rem">
+          <InputComponent name="code" placeholder="code" mb="md" />
+          <ButtonComponent fullWidth>Submit</ButtonComponent>
+        </BoxComponent>
+      </CardComponent>
     ),
   },
 };

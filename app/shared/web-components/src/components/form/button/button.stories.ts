@@ -20,6 +20,13 @@ export const Primary = {
 export const ThreeDimensions = {
   args: {
     children: "Button",
-    buttonType: "3d",
+    variant: "3d",
+  },
+};
+
+export const FullWidth = {
+  args: {
+    children: "Button",
+    fullWidth: true,
   },
 };

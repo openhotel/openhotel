@@ -3,6 +3,10 @@ import { MainComponent } from "./main.component";
 export default {
   title: "Components/Layout/Main",
   component: MainComponent,
+  parameters: {
+    layout: "centered",
+    backgrounds: { default: "dark" },
+  },
 };
 
 export const Primary = {

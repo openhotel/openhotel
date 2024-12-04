@@ -1,8 +1,8 @@
-@use "../../../styles/colors.module.scss";
+@use "../../../styles/colors.module.scss" as *;
 
 .footer {
-  background-color: var(--bg-footer);
-  @include colors.setPrimaryTextColors();
+  background-color: var(--text-0-bg);
+  color: var(--text-0-c);
 
   display: flex;
   padding: 3rem 4rem;

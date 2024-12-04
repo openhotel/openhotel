@@ -1,0 +1,504 @@
+@use "./all.module" as *;
+@use "sass:color";
+
+:root {
+  // Border radius
+
+  --border-radius-md: 0.5rem;
+  --border-radius-lg: 0.75rem;
+  --border-radius-xl: 1.5rem;
+
+  --border-radius: var(--border-radius-md);
+
+  // Colors
+
+  @include defineColor("color-dark-0", $dark-0);
+  @include defineColor("color-dark-1", $dark-1);
+  @include defineColor("color-dark-2", $dark-2);
+  @include defineColor("color-dark-3", $dark-3);
+  @include defineColor("color-dark-4", $dark-4);
+  @include defineColor("color-dark-5", $dark-5);
+  @include defineColor("color-dark-6", $dark-6);
+  @include defineColor("color-dark-7", $dark-7);
+  @include defineColor("color-dark-8", $dark-8);
+  @include defineColor("color-dark-9", $dark-9);
+
+  @include defineColor("color-light-0", $light-0);
+  @include defineColor("color-light-1", $light-1);
+  @include defineColor("color-light-2", $light-2);
+  @include defineColor("color-light-3", $light-3);
+  @include defineColor("color-light-4", $light-4);
+  @include defineColor("color-light-5", $light-5);
+  @include defineColor("color-light-6", $light-6);
+  @include defineColor("color-light-7", $light-7);
+  @include defineColor("color-light-8", $light-8);
+  @include defineColor("color-light-9", $light-9);
+
+  @include defineColor("color-grey-0", $grey-0);
+  @include defineColor("color-grey-1", $grey-1);
+  @include defineColor("color-grey-2", $grey-2);
+  @include defineColor("color-grey-3", $grey-3);
+  @include defineColor("color-grey-4", $grey-4);
+  @include defineColor("color-grey-5", $grey-5);
+  @include defineColor("color-grey-6", $grey-6);
+  @include defineColor("color-grey-7", $grey-7);
+  @include defineColor("color-grey-8", $grey-8);
+  @include defineColor("color-grey-9", $grey-9);
+
+  @include defineColor("color-blue-0", $blue-0);
+  @include defineColor("color-blue-1", $blue-1);
+  @include defineColor("color-blue-2", $blue-2);
+  @include defineColor("color-blue-3", $blue-3);
+  @include defineColor("color-blue-4", $blue-4);
+  @include defineColor("color-blue-5", $blue-5);
+  @include defineColor("color-blue-6", $blue-6);
+  @include defineColor("color-blue-7", $blue-7);
+  @include defineColor("color-blue-8", $blue-8);
+  @include defineColor("color-blue-9", $blue-9);
+
+  @include defineColor("color-red-0", $red-0);
+  @include defineColor("color-red-1", $red-1);
+  @include defineColor("color-red-2", $red-2);
+  @include defineColor("color-red-3", $red-3);
+  @include defineColor("color-red-4", $red-4);
+  @include defineColor("color-red-5", $red-5);
+  @include defineColor("color-red-6", $red-6);
+  @include defineColor("color-red-7", $red-7);
+  @include defineColor("color-red-8", $red-8);
+  @include defineColor("color-red-9", $red-9);
+
+  @include defineColor("color-yellow-0", $yellow-0);
+  @include defineColor("color-yellow-1", $yellow-1);
+  @include defineColor("color-yellow-2", $yellow-2);
+  @include defineColor("color-yellow-3", $yellow-3);
+  @include defineColor("color-yellow-4", $yellow-4);
+  @include defineColor("color-yellow-5", $yellow-5);
+  @include defineColor("color-yellow-6", $yellow-6);
+  @include defineColor("color-yellow-7", $yellow-7);
+  @include defineColor("color-yellow-8", $yellow-8);
+  @include defineColor("color-yellow-9", $yellow-9);
+
+  @include defineColor("color-purple-0", $purple-0);
+  @include defineColor("color-purple-1", $purple-1);
+  @include defineColor("color-purple-2", $purple-2);
+  @include defineColor("color-purple-3", $purple-3);
+  @include defineColor("color-purple-4", $purple-4);
+  @include defineColor("color-purple-5", $purple-5);
+  @include defineColor("color-purple-6", $purple-6);
+  @include defineColor("color-purple-7", $purple-7);
+  @include defineColor("color-purple-8", $purple-8);
+  @include defineColor("color-purple-9", $purple-9);
+
+  // Text
+
+  @include defineLightColor(
+    "text-0",
+    var(--color-light-1),
+    var(--color-dark-5),
+    var(--color-light-0)
+  );
+  @include defineLightColor(
+    "text-1",
+    var(--color-light-6),
+    var(--color-dark-5),
+    var(--color-light-2)
+  );
+  @include defineLightColor(
+    "text-2",
+    var(--color-light-2),
+    var(--color-dark-5),
+    var(--color-light-4)
+  );
+  @include defineLightColor(
+    "text-3",
+    var(--color-light-0),
+    var(--color-dark-5),
+    var(--color-light-6)
+  );
+
+  @include defineDarkColor(
+    "text-0",
+    var(--color-dark-9),
+    var(--color-light-3),
+    var(--color-dark-8)
+  );
+  @include defineDarkColor(
+    "text-1",
+    var(--color-dark-8),
+    var(--color-light-2),
+    var(--color-dark-5)
+  );
+  @include defineDarkColor(
+    "text-2",
+    var(--color-dark-5),
+    var(--color-light-1),
+    var(--color-dark-6)
+  );
+  @include defineDarkColor(
+    "text-3",
+    var(--color-dark-6),
+    var(--color-light-1),
+    var(--color-dark-5)
+  );
+
+  // Buttons
+
+  @include defineLightColor(
+    "btn-blue",
+    var(--color-blue-5),
+    var(--color-light-1),
+    var(--color-blue-8)
+  );
+  @include defineLightColor(
+    "btn-blue-hover",
+    var(--color-blue-6),
+    var(--color-light-1),
+    var(--color-blue-9)
+  );
+  @include defineLightColor(
+    "btn-blue-focus",
+    var(--color-blue-4),
+    var(--color-light-1),
+    var(--color-blue-6)
+  );
+
+  @include defineDarkColor(
+    "btn-blue",
+    var(--color-blue-5),
+    var(--color-light-1),
+    var(--color-blue-8)
+  );
+  @include defineDarkColor(
+    "btn-blue-hover",
+    var(--color-blue-6),
+    var(--color-light-1),
+    var(--color-blue-9)
+  );
+  @include defineDarkColor(
+    "btn-blue-focus",
+    var(--color-blue-4),
+    var(--color-light-1),
+    var(--color-blue-6)
+  );
+
+  @include defineLightColor(
+    "btn-yellow",
+    var(--color-yellow-5),
+    var(--color-purple-3),
+    var(--color-yellow-8)
+  );
+  @include defineLightColor(
+    "btn-yellow-hover",
+    var(--color-yellow-6),
+    var(--color-purple-3),
+    var(--color-yellow-9)
+  );
+  @include defineLightColor(
+    "btn-yellow-focus",
+    var(--color-yellow-4),
+    var(--color-purple-3),
+    var(--color-yellow-6)
+  );
+
+  @include defineDarkColor(
+    "btn-yellow",
+    var(--color-yellow-5),
+    var(--color-purple-3),
+    var(--color-yellow-8)
+  );
+  @include defineDarkColor(
+    "btn-yellow-hover",
+    var(--color-yellow-6),
+    var(--color-purple-3),
+    var(--color-yellow-9)
+  );
+  @include defineDarkColor(
+    "btn-yellow-focus",
+    var(--color-yellow-4),
+    var(--color-purple-3),
+    var(--color-yellow-6)
+  );
+
+  @include defineLightColor(
+    "btn-grey",
+    var(--color-dark-2),
+    var(--color-light-1),
+    var(--color-dark-9)
+  );
+  @include defineLightColor(
+    "btn-grey-hover",
+    var(--color-dark-3),
+    var(--color-light-1),
+    var(--color-dark-6)
+  );
+  @include defineLightColor(
+    "btn-grey-focus",
+    var(--color-dark-0),
+    var(--color-light-1),
+    var(--color-dark-3)
+  );
+
+  @include defineDarkColor(
+    "btn-grey",
+    var(--color-dark-2),
+    var(--color-light-1),
+    var(--color-dark-5)
+  );
+  @include defineDarkColor(
+    "btn-grey-hover",
+    var(--color-dark-3),
+    var(--color-light-1),
+    var(--color-dark-5)
+  );
+  @include defineDarkColor(
+    "btn-grey-focus",
+    var(--color-dark-0),
+    var(--color-light-1),
+    var(--color-dark-5)
+  );
+
+  @include defineLightColor(
+    "btn-dark",
+    var(--color-light-6),
+    var(--color-dark-9),
+    var(--color-light-8)
+  );
+  @include defineLightColor(
+    "btn-dark-hover",
+    var(--color-light-7),
+    var(--color-dark-9),
+    var(--color-light-9)
+  );
+  @include defineLightColor(
+    "btn-dark-focus",
+    var(--color-light-5),
+    var(--color-dark-9),
+    var(--color-light-9)
+  );
+
+  @include defineDarkColor(
+    "btn-dark",
+    var(--color-dark-8),
+    var(--color-light-1),
+    var(--color-dark-9)
+  );
+  @include defineDarkColor(
+    "btn-dark-hover",
+    var(--color-dark-5),
+    var(--color-light-1),
+    var(--color-dark-9)
+  );
+  @include defineDarkColor(
+    "btn-dark-focus",
+    var(--color-dark-4),
+    var(--color-light-1),
+    var(--color-dark-9)
+  );
+
+  @include defineLightColor(
+    "btn-light",
+    var(--color-light-4),
+    var(--color-dark-5),
+    var(--color-light-7)
+  );
+  @include defineLightColor(
+    "btn-light-hover",
+    var(--color-light-6),
+    var(--color-dark-7),
+    var(--color-light-8)
+  );
+  @include defineLightColor(
+    "btn-light-focus",
+    var(--color-light-5),
+    var(--color-dark-5),
+    var(--color-light-8)
+  );
+
+  @include defineDarkColor(
+    "btn-light",
+    var(--color-light-6),
+    var(--color-dark-8),
+    var(--color-light-8)
+  );
+  @include defineDarkColor(
+    "btn-light-hover",
+    var(--color-light-4),
+    var(--color-dark-8),
+    var(--color-light-7)
+  );
+  @include defineDarkColor(
+    "btn-light-focus",
+    var(--color-light-5),
+    var(--color-dark-8),
+    var(--color-light-7)
+  );
+
+  // Inputs
+
+  @include defineLightColor(
+    "input",
+    var(--color-light-3),
+    var(--color-dark-9),
+    var(--color-light-4)
+  );
+  @include defineLightColor(
+    "input-hover",
+    var(--color-light-1),
+    var(--color-dark-9),
+    var(--color-blue-3)
+  );
+  @include defineLightColor(
+    "input-focus",
+    var(--color-light-3),
+    var(--color-dark-9),
+    var(--color-blue-3)
+  );
+  @include defineLightColor(
+    "input-placeholder",
+    transparent,
+    var(--color-dark-0),
+    transparent
+  );
+
+  // v1
+  //@include defineDarkColor(
+  //  "input",
+  //  var(--color-light-3),
+  //  var(--color-dark-9),
+  //  var(--color-light-7)
+  //);
+  //@include defineDarkColor(
+  //  "input-hover",
+  //  var(--color-light-1),
+  //  var(--color-dark-9),
+  //  var(--color-blue-3)
+  //);
+  //@include defineDarkColor(
+  //  "input-focus",
+  //  var(--color-light-3),
+  //  var(--color-dark-9),
+  //  var(--color-blue-3)
+  //);
+  //@include defineDarkColor(
+  //  "input-placeholder",
+  //  transparent,
+  //  var(--color-dark-0),
+  //  transparent
+  //);
+
+  // v2
+  @include defineDarkColor(
+    "input",
+    var(--color-dark-3),
+    var(--color-light-1),
+    var(--color-dark-7)
+  );
+  @include defineDarkColor(
+    "input-hover",
+    var(--color-dark-1),
+    var(--color-light-1),
+    var(--color-blue-3)
+  );
+  @include defineDarkColor(
+    "input-focus",
+    var(--color-dark-3),
+    var(--color-light-1),
+    var(--color-blue-3)
+  );
+  @include defineDarkColor(
+    "input-placeholder",
+    transparent,
+    var(--color-light-6),
+    transparent
+  );
+
+  // v3
+  //@include defineDarkColor(
+  //        "input",
+  //        var(--color-dark-9),
+  //        var(--color-light-1),
+  //        var(--color-dark-7)
+  //);
+  //@include defineDarkColor(
+  //        "input-hover",
+  //        var(--color-dark-9),
+  //        var(--color-light-1),
+  //        var(--color-blue-3)
+  //);
+  //@include defineDarkColor(
+  //        "input-focus",
+  //        var(--color-dark-9),
+  //        var(--color-light-1),
+  //        var(--color-blue-3)
+  //);
+  //@include defineDarkColor(
+  //        "input-placeholder",
+  //        transparent,
+  //        var(--color-light-9),
+  //        transparent
+  //);
+
+  // Select modal
+
+  @include defineLightColor(
+    "select-modal",
+    color.adjust($light-3, $alpha: -0.5),
+    var(--color-dark-9),
+    transparent
+  );
+  @include defineLightColor(
+    "select-modal-hover",
+    color.adjust($light-1, $alpha: -0.5),
+    var(--color-dark-9),
+    transparent
+  );
+  @include defineLightColor(
+    "select-modal-focus",
+    color.adjust($light-3, $alpha: -0.5),
+    var(--color-dark-9),
+    transparent
+  );
+
+  //@include defineDarkColor(
+  //  "select-modal",
+  //  color.adjust($light-3, $alpha: -0.5),
+  //  var(--color-dark-9),
+  //  transparent
+  //);
+  //@include defineDarkColor(
+  //  "select-modal-hover",
+  //  color.adjust($light-1, $alpha: -0.5),
+  //  var(--color-dark-9),
+  //  transparent
+  //);
+  //@include defineDarkColor(
+  //  "select-modal-focus",
+  //  color.adjust($light-3, $alpha: -0.5),
+  //  var(--color-dark-9),
+  //  transparent
+  //);
+
+  @include defineDarkColor(
+    "select-modal",
+    color.adjust($dark-9, $alpha: -0.5),
+    var(--color-light-1),
+    transparent
+  );
+  @include defineDarkColor(
+    "select-modal-hover",
+    color.adjust($dark-6, $alpha: -0.5),
+    var(--color-light-1),
+    transparent
+  );
+  @include defineDarkColor(
+    "select-modal-focus",
+    color.adjust($dark-4, $alpha: -0.5),
+    var(--color-light-1),
+    transparent
+  );
+
+  // Other
+
+  @include defineColor("text-danger", $red-5);
+  @include defineColor("outline-focus", $blue-3);
+}

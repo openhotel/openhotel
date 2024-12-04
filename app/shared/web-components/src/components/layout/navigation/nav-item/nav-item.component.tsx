@@ -3,12 +3,14 @@ import * as React from "react";
 // @ts-ignore
 import styles from "./nav-item.module.scss";
 import { cn } from "../../../../utils";
+import { BoxProps, ButtonComponent } from "../../../../components";
 
 type Props = {
   className?: string;
   selected?: boolean;
   icon?: React.ReactNode;
-} & React.HTMLProps<HTMLDivElement>;
+  children?: React.ReactNode;
+} & Partial<BoxProps>;
 
 export const NavItemComponent: React.FC<Props> = ({
   className,
@@ -18,14 +20,13 @@ export const NavItemComponent: React.FC<Props> = ({
   ...props
 }) => {
   return (
-    <div
-      className={cn(styles.navItem, className, {
-        [styles.selected]: Boolean(selected),
-      })}
+    <ButtonComponent
       {...props}
+      color={selected ? "blue" : "dark"}
+      className={cn(className, styles.navItem, [styles.selected, selected])}
     >
       {icon}
       <span className={styles.text}>{children}</span>
-    </div>
+    </ButtonComponent>
   );
 };

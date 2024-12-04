@@ -1,32 +1,12 @@
-.wrapper {
-  height: 100%;
-  width: 100%;
+.card {
+  min-width: 35rem;
+  min-height: 40rem;
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  &.centered {
+    margin: auto;
+  }
 
-  .card {
-    width: 35rem;
-    height: 40rem;
-    overflow: hidden;
-
-    .main {
-      display: flex;
-      flex-direction: column;
-      height: 100%;
-
-      .content,
-      .actions {
-        padding: 2rem 3rem;
-      }
-
-      .content {
-        flex: 1;
-        background-color: var(--bg-footer);
-      }
-      .actions {
-      }
-    }
+  > main {
+    padding: 2.5rem;
   }
 }

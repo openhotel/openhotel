@@ -1,4 +1,4 @@
-@use "../../../styles/colors.module.scss";
+@use "../../../styles/all.module.scss" as *;
 
 .bigCard {
   display: flex;
@@ -10,15 +10,10 @@
   width: calc(100% - ($margin * 2));
   height: calc(100% - ($margin * 2));
 
-  box-shadow:
-    rgba(14, 30, 37, 0.12) 0 2px 4px 0,
-    rgba(14, 30, 37, 0.32) 0 2px 16px 0;
+  @include boxShadow();
 
   max-width: 144rem;
-
   overflow: hidden;
-
-  background-color: var(--bg-card);
 
   .container {
     display: flex;
@@ -36,8 +31,8 @@
           border-top-left-radius: 1.5rem;
         }
 
-        background-color: var(--bg-main);
-        @include colors.setPrimaryTextColors();
+        background-color: var(--text-1-bg);
+        color: var(--text-1-c);
       }
     }
   }

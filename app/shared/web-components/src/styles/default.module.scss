@@ -1,0 +1,77 @@
+* {
+  font-size: 1.4rem;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  box-sizing: border-box;
+
+  button {
+    border-radius: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  input {
+    border: 0 solid;
+    padding: 0;
+  }
+
+  img {
+    vertical-align: middle;
+    image-rendering: crisp-edges;
+  }
+
+  h1 {
+    font-size: 3.2rem;
+  }
+
+  h2 {
+    font-size: 2.8rem;
+  }
+
+  h3 {
+    font-size: 2.2rem;
+  }
+
+  h4 {
+    font-size: 2rem;
+  }
+
+  // Override the default SVG color with the current font color
+  svg,
+  svg path {
+    fill: currentColor !important;
+  }
+}
+
+html {
+  font-size: 10px !important;
+
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  margin: 0 !important;
+  padding: 0 !important;
+
+  height: 100%;
+  width: 100%;
+
+  background-attachment: fixed;
+  background-size: cover;
+}
+
+#storybook-root {
+  width: 100%;
+  height: 100%;
+}
+
+a {
+  &:visited,
+  &:link {
+    color: var(--text-0-c);
+  }
+}
+
+#root {
+  height: 100%;
+}

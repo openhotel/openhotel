@@ -2,16 +2,13 @@
   display: flex;
   text-align: center;
   align-items: center;
-
+  color: var(--text-0-c);
+  background: var(--text-0-bg);
   text-decoration: none;
 
   gap: 1rem;
 
   a {
     display: contents;
-  }
-
-  svg path {
-    fill: var(--text-primary) !important;
   }
 }

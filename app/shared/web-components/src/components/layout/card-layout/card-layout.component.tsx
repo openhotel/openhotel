@@ -2,22 +2,42 @@ import * as React from "react";
 
 // @ts-ignore
 import styles from "./card-layout.module.scss";
-import { BackgroundComponent, CardComponent } from "../../../components";
-// import { cn } from "src/utils";
+import {
+  BackgroundComponent,
+  BoxProps,
+  CardComponent,
+} from "../../../components";
+import { cn } from "../../../utils";
 
-type Props = {} & React.HTMLProps<HTMLDivElement>;
+type Props = {
+  label?: React.ReactNode;
+  actions?: React.ReactNode;
+  centered?: boolean;
+  className?: string;
+} & Partial<BoxProps> &
+  React.HTMLProps<HTMLDivElement>;
 
-export const CardLayoutComponent: React.FC<Props> = ({ children }) => {
+export const CardLayoutComponent: React.FC<Props> = ({
+  label,
+  children,
+  actions,
+  centered,
+  className,
+  ...props
+}) => {
   return (
     <BackgroundComponent>
-      <div className={styles.wrapper}>
-        <CardComponent className={styles.card}>
-          <main className={styles.main}>
-            <div className={styles.content}>{children}</div>
-            <div className={styles.actions}>aha</div>
-          </main>
-        </CardComponent>
-      </div>
+      <CardComponent
+        {...props}
+        className={cn(
+          styles.card,
+          [styles.centered, centered ?? true],
+          className,
+        )}
+        topSection={label}
+        bottomSection={actions}
+        children={children}
+      />
     </BackgroundComponent>
   );
 };

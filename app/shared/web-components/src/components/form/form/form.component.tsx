@@ -4,6 +4,11 @@ import { FormEvent, useCallback, useState } from "react";
 // @ts-ignore
 import styles from "./form.module.scss";
 import { cn } from "../../../utils";
+import {
+  BoxProps,
+  boxPropsToStyle,
+  extractBoxProps,
+} from "../../../components";
 
 type ValidationFunction<Data = unknown> = (props: {
   value: string;
@@ -16,10 +21,11 @@ type Props = {
   onSubmit?: <Data = unknown>(data: Data) => void;
   onError?: (errors: string[]) => void;
   validations?: Record<string | "__custom", ValidationFunction>;
-} & React.DetailedHTMLProps<
-  React.FormHTMLAttributes<HTMLFormElement>,
-  HTMLFormElement
->;
+} & BoxProps &
+  React.DetailedHTMLProps<
+    React.FormHTMLAttributes<HTMLFormElement>,
+    HTMLFormElement
+  >;
 
 export const FormComponent: React.FC<Props> = ({
   className,
@@ -30,6 +36,8 @@ export const FormComponent: React.FC<Props> = ({
   ...props
 }) => {
   const [errors, setErrors] = useState<string[]>([]);
+  const [otherProps, boxProps] = extractBoxProps(props);
+  const style = boxPropsToStyle(boxProps);
 
   const $onSubmit = useCallback(
     async (event: FormEvent<HTMLFormElement>) => {
@@ -41,12 +49,13 @@ export const FormComponent: React.FC<Props> = ({
 
       const errorList: string[] = [];
 
-      for (const key of Object.keys(data))
+      for (const key of Object.keys(data)) {
         validations[key]?.({
           value: data[key],
           addError: (value) => errorList.push(value),
           data,
         });
+      }
 
       validations["__custom"]?.({
         value: null,
@@ -70,7 +79,8 @@ export const FormComponent: React.FC<Props> = ({
     <form
       onSubmit={$onSubmit}
       className={cn(styles.form, className)}
-      {...props}
+      style={style}
+      {...otherProps}
     >
       <div className={styles.inputs} onClick={onClickInputs}>
         {children}

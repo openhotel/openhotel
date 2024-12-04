@@ -16,7 +16,7 @@ export const Primary = {
   args: {
     headerChildren: (
       <>
-        <ButtonComponent buttonType="3d">
+        <ButtonComponent variant="3d" color="yellow">
           <span>Check In</span>
         </ButtonComponent>
         <AccountItemComponent username="pagoru" />

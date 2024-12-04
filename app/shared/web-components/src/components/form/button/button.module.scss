@@ -1,44 +1,67 @@
-.button {
-  display: inline-flex;
-  width: fit-content;
-  height: fit-content;
+@use "../../../styles/all.module" as *;
 
-  padding: 1rem 3rem;
-  border-radius: 0.5rem;
+.buttonWrapper {
+  .button {
+    display: inline-flex;
+    width: fit-content;
+    height: fit-content;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 3rem;
+    border-radius: var(--border-radius);
 
-  font-weight: bold;
-  cursor: pointer;
-  user-select: none;
+    font-weight: bold;
+    cursor: pointer;
+    user-select: none;
+    outline: none;
 
-  &.formButton {
-    background-color: var(--bg-primary);
-    color: var(--text-primary);
+    @include textEllipsis();
 
-    @media (prefers-color-scheme: light) {
-      color: var(--dark-text-primary);
-      svg path {
-        fill: var(--dark-text-primary);
+    > * {
+      flex-shrink: 0;
+    }
+
+    &:focus-visible {
+      outline: 0.2rem solid var(--outline-focus);
+    }
+
+    &.fullWidth {
+      width: 100%;
+      justify-content: center;
+    }
+
+    &.plainVariant {
+      border: none;
+    }
+
+    &.threeDVariant {
+      border-bottom: 0.2rem solid;
+
+      &:active {
+        border-bottom: 0;
+        border-top: 0.2rem solid;
       }
     }
 
-    &:hover,
-    &:active {
-      background-color: var(--bg-secondary);
-    }
-  }
-
-  &.threeButton {
-    background-color: #f1c72d;
-    border-bottom: 2px solid #d08d28;
-    color: #272536;
-
-    &:hover {
-      background-color: #f1b92d;
+    &.colorBlue {
+      @include btn-color("btn-blue");
     }
 
-    &:active {
-      border-bottom: 0;
-      border-top: 2px solid #d08d28;
+    &.colorYellow {
+      @include btn-color("btn-yellow");
+    }
+
+    &.colorGrey {
+      @include btn-color("btn-grey");
+    }
+
+    &.colorDark {
+      @include btn-color("btn-dark");
+    }
+
+    &.colorLight {
+      @include btn-color("btn-light");
     }
   }
 }

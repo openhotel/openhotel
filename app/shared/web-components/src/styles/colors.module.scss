@@ -1,6 +1,119 @@
-@mixin setPrimaryTextColors() {
-  color: var(--text-primary);
-  svg path {
-    fill: var(--text-primary);
+@use "sass:color";
+
+// Color palettes
+$dark-0: #616167;
+$dark-1: #57585d;
+$dark-2: #4e4f54;
+$dark-3: #43454a;
+$dark-4: #37393e;
+$dark-5: #2e3035;
+$dark-6: #28282d;
+$dark-7: #252529;
+$dark-8: #212224;
+$dark-9: #141418;
+
+$light-0: #ffffff;
+$light-1: #fcfcfc;
+$light-2: #efefef;
+$light-3: #dddde3;
+$light-4: #d7d7dd;
+$light-5: #d0d0d6;
+$light-6: #dbdbdb;
+$light-7: #b0b0b6;
+$light-8: #98989d;
+$light-9: #808085;
+
+$grey-0: #f8f9fa;
+$grey-1: #f1f3f5;
+$grey-2: #e9ecef;
+$grey-3: #dee2e6;
+$grey-4: #ced4da;
+$grey-5: #adb5bd;
+$grey-6: #868e96;
+$grey-7: #495057;
+$grey-8: #343a40;
+$grey-9: #212529;
+
+$blue-0: color.adjust(#2e518d, $lightness: 35%);
+$blue-1: color.adjust(#2e518d, $lightness: 27%);
+$blue-2: color.adjust(#2e518d, $lightness: 22%);
+$blue-3: color.adjust(#2e518d, $lightness: 16%);
+$blue-4: color.adjust(#2e518d, $lightness: 12%);
+$blue-5: color.adjust(#2e518d, $lightness: 6%);
+$blue-6: color.adjust(#2e518d, $lightness: 0%);
+$blue-7: color.adjust(#2e518d, $lightness: -10%);
+$blue-8: color.adjust(#2e518d, $lightness: -20%);
+$blue-9: color.adjust(#2e518d, $lightness: -30%);
+
+$red-0: #fff2f0;
+$red-1: #ffd3ce;
+$red-2: #ffb4ab;
+$red-3: #ff9186;
+$red-4: #ff685e;
+$red-5: #f93434;
+$red-6: #d70018;
+$red-7: #9d000f;
+$red-8: #640006;
+$red-9: #360002;
+
+$yellow-0: #fff5d6;
+$yellow-1: #ffecb2;
+$yellow-2: #ffe28a;
+$yellow-3: #ffd859;
+$yellow-4: #f9d041;
+$yellow-5: #f1c72d;
+$yellow-6: #e8b32f;
+$yellow-7: #dda030;
+$yellow-8: #d08d28;
+$yellow-9: #b5771c;
+
+$purple-0: #f4f4ff;
+$purple-1: #8d8ba0;
+$purple-2: #525063;
+$purple-3: #272536;
+$purple-4: #17122e;
+$purple-5: #170b40;
+$purple-6: #13063b;
+$purple-7: #0a002b;
+$purple-8: #020011;
+$purple-9: #000000;
+
+@mixin defineColor($name, $color) {
+  & {
+    --#{$name}: #{$color};
+  }
+}
+
+@mixin defineLightColor($name, $background, $color, $border) {
+  // Default light colors
+  & {
+    --#{$name}-bg: #{$background};
+    --#{$name}-c: #{$color};
+    --#{$name}-bd: #{$border};
+  }
+
+  // If manually selected light theme, use light colors
+  &.light-theme {
+    --#{$name}-bg: #{$background};
+    --#{$name}-c: #{$color};
+    --#{$name}-bd: #{$border};
+  }
+}
+
+@mixin defineDarkColor($name, $background, $color, $border) {
+  // Default dark colors
+  & {
+    @media screen and (prefers-color-scheme: dark) {
+      --#{$name}-bg: #{$background};
+      --#{$name}-c: #{$color};
+      --#{$name}-bd: #{$border};
+    }
+  }
+
+  // If manually selected dark theme, use dark colors
+  &.dark-theme {
+    --#{$name}-bg: #{$background};
+    --#{$name}-c: #{$color};
+    --#{$name}-bd: #{$border};
   }
 }
