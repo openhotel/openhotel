@@ -5,8 +5,8 @@ on:
   pull_request:
 
 jobs:
-  prettier:
-    name: "prettier"
+  build:
+    name: "build"
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -22,15 +22,10 @@ jobs:
       - run: yarn install --frozen-lockfile
 
       - name: run prettier checker
-        run: yarn prettier:check
-
-      - name: Use Deno Version ${{ matrix.deno-version }}
-        uses: denoland/setup-deno@v1
-        with:
-          deno-version: ${{ matrix.deno-version }}
+        run: yarn run prettier:check
 
       - name: run tests
-        run: yarn test
+        run: yarn run test
 
-      - name: Publish package check
-        run: npx jsr publish --allow-dirty --dry-run
+      - name: check publish
+        run: yarn run publish:check

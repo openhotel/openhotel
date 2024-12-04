@@ -4,9 +4,12 @@
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "prettier:check": "prettier -c ./",
-    "prettier:write": "prettier --write ."
+    "prettier:write": "prettier --write .",
+    "publish": "npx jsr publish --allow-dirty",
+    "publish:check": "npx jsr publish --allow-dirty --dry-run"
   },
   "devDependencies": {
+    "jsr": "^0.13.2",
     "@babel/core": "^7.26.0",
     "@babel/preset-env": "^7.26.0",
     "@babel/preset-typescript": "^7.26.0",

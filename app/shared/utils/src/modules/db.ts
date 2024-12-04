@@ -64,18 +64,18 @@ export const getDb = (
       console.log("> Migrations done!");
     };
 
-    const up = async (count = 1) => {
-      //TODO
-    };
-
-    const down = async (count = 1) => {
-      //TODO
-    };
+    // const up = async (count = 1) => {
+    //   //TODO
+    // };
+    //
+    // const down = async (count = 1) => {
+    //   //TODO
+    // };
 
     return {
       load,
-      up,
-      down,
+      // up,
+      // down,
     };
   })();
 

@@ -34,15 +34,15 @@ jobs:
       - run: yarn install --frozen-lockfile
 
       - name: run prettier checker
-        run: yarn prettier:check
+        run: yarn run prettier:check
+
+      - name: run tests
+        run: yarn run test
 
       - name: Use Deno Version ${{ matrix.deno-version }}
         uses: denoland/setup-deno@v1
         with:
           deno-version: ${{ matrix.deno-version }}
-
-      - name: run tests
-        run: yarn test
 
       - name: Add version to package.json
         uses: jaywcjlove/github-action-package@main
@@ -54,4 +54,4 @@ jobs:
             }
 
       - name: Publish package
-        run: npx jsr publish --allow-dirty
+        run: yarn run publish

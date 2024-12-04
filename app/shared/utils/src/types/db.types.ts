@@ -4,14 +4,15 @@ export type DbProps = {
 
 export type Migration = {
   id: string;
+  description?: string;
   up: (db: DbMutable) => Promise<void>;
   down: (db: DbMutable) => Promise<void>;
 };
 
 export type DbMigrationsMutable = {
   load: (migrations: Migration[]) => Promise<void>;
-  up: (count?: number) => Promise<void>;
-  down: (count?: number) => Promise<void>;
+  // up: (count?: number) => Promise<void>;
+  // down: (count?: number) => Promise<void>;
 };
 
 export type DbMutable = {
