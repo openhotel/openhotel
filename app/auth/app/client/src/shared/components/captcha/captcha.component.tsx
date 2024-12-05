@@ -1,5 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { CAPTCHA_ID, CAPTCHA_URL } from "shared/consts";
+import styles from "./captcha.module.scss";
+import login_styles from "../../../modules/login/login.module.scss";
 
 type Props = {
   submittedAt: number;
@@ -69,15 +71,14 @@ export const CaptchaComponent: React.FC<Props> = ({
   if (!captchaImage || isDone) return <div />;
 
   return (
-    <img
-      style={{
-        backgroundColor: "#ffffff",
-        cursor: "pointer",
-        width: "fit-content",
-      }}
-      src={captchaImage}
-      alt="captcha"
-      onClick={onClickCaptcha}
-    />
+    <div className={styles.captcha}>
+      <label className={styles.captcha_label}>Captcha</label>
+      <img
+        className={styles.captcha_image}
+        src={captchaImage}
+        alt="captcha"
+        onClick={onClickCaptcha}
+      />
+    </div>
   );
 };

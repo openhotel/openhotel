@@ -19,7 +19,7 @@ export const updateGetRequest: RequestType = {
     const { version } = System.getEnvs();
 
     const canUpdate =
-      version !== "DEVELOPMENT" &&
+      version !== "development" &&
       (await update({
         targetVersion: "latest",
         version,

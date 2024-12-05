@@ -1,5 +1,6 @@
 import React from "react";
 import { LinkComponent } from "shared/components";
+import { ButtonComponent } from "@oh/components";
 
 export const ActionsComponent = () => {
   return (
@@ -7,7 +8,7 @@ export const ActionsComponent = () => {
       <h2>Actions</h2>
       <div>
         <LinkComponent to="/logout">
-          <button>Logout</button>
+          <ButtonComponent>Logout</ButtonComponent>
         </LinkComponent>
       </div>
     </div>

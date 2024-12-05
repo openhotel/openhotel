@@ -1,5 +1,6 @@
 import React from "react";
 import { useUser } from "shared/hooks";
+import { ButtonComponent, InputComponent } from "@oh/components";
 
 type Props = {};
 
@@ -71,12 +72,10 @@ export const BskyComponent: React.FC<Props> = ({}) => {
             </b>
           </div>
           <br />
-          <input placeholder="bluesky account did" name="did" />
+          <InputComponent placeholder="bluesky account did" name="did" />
           <br />
           <br />
-          <button type="submit" style={{ cursor: "pointer" }}>
-            3. Submit
-          </button>
+          <ButtonComponent type="submit">3. Submit</ButtonComponent>
           <br />
           <br />
           <label>4. Click on 'Verify DNS Record'</label>

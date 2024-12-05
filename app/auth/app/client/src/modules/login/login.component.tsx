@@ -1,4 +1,4 @@
-import React, { FormEvent, useCallback, useEffect, useState } from "react";
+import React, { FormEvent, useCallback, useState } from "react";
 import {
   CaptchaComponent,
   LinkComponent,
@@ -7,6 +7,7 @@ import {
 import { useAccount } from "shared/hooks";
 import styles from "./login.module.scss";
 import { useNavigate } from "react-router-dom";
+import { ButtonComponent, InputComponent } from "@oh/components";
 
 export const LoginComponent: React.FC = () => {
   const [submittedAt, setSubmittedAt] = useState<number>();
@@ -34,6 +35,8 @@ export const LoginComponent: React.FC = () => {
           if (status === 461 || status === 441) setShowOTP(true);
           setSubmittedAt(performance.now());
           setErrorMessage(message);
+          if (status === 500)
+            setErrorMessage("Internal server error: " + message);
         });
     },
     [captchaId, navigate, setSubmittedAt, setErrorMessage],
@@ -43,21 +46,37 @@ export const LoginComponent: React.FC = () => {
   if (isLogged) return <RedirectComponent to="/" />;
 
   return (
-    <div>
+    <div className={styles.wrapper}>
       <form className={styles.form} onSubmit={onSubmit}>
-        <input name="email" placeholder="email" />
-        <input name="password" placeholder="password" type="password" />
+        <h1 className={styles.title}>Login</h1>
+        <InputComponent name="email" placeholder="Email" />
+        <InputComponent
+          name="password"
+          placeholder="Password"
+          type="password"
+        />
+
         {showCaptcha && (
           <CaptchaComponent
             submittedAt={submittedAt}
             onResolve={setCaptchaId}
           />
         )}
-        {showOTP && <input name="otpToken" placeholder="otp" maxLength={6} />}
-        <button type="submit">Login</button>
-        {errorMessage ? <label>{errorMessage}</label> : null}
+        {showOTP && (
+          <InputComponent
+            name="otpToken"
+            placeholder="One Time Password"
+            maxLength={6}
+          />
+        )}
+        <ButtonComponent fullWidth={true}>Login</ButtonComponent>
+        {errorMessage ? (
+          <label className={styles.error}>{errorMessage}</label>
+        ) : null}
       </form>
-      <LinkComponent to="/register">/register</LinkComponent>
+      <LinkComponent className={styles.link} to="/register">
+        No account? Register here.
+      </LinkComponent>
     </div>
   );
 };

@@ -2,6 +2,7 @@ import React, { useCallback, useState } from "react";
 import { useUser } from "shared/hooks";
 //@ts-ignore
 import styles from "./license.module.scss";
+import { ButtonComponent } from "@oh/components";
 
 export const LicenseComponent: React.FC = () => {
   const { getLicense } = useUser();
@@ -17,7 +18,9 @@ export const LicenseComponent: React.FC = () => {
       <h2>License</h2>
       <div>
         <div>Generating a new license will remove the old license.</div>
-        <button onClick={generateLicense}>Generate hotel license</button>
+        <ButtonComponent onClick={generateLicense}>
+          Generate hotel license
+        </ButtonComponent>
         {licenseToken ? (
           <div className={styles.license}>{licenseToken}</div>
         ) : null}

@@ -23,3 +23,4 @@ Basic example with `OHAP` [/auth-example](https://github.com/openhotel/auth-exam
 
 - Run `deno task install`
 - Run `deno task start`
+- Set `version` to `development` in `app/server/config.yml`

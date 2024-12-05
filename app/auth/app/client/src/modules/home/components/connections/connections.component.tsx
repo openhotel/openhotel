@@ -3,6 +3,7 @@ import { Connection } from "shared/types";
 //@ts-ignore
 import styles from "./connections.module.scss";
 import { useConnection } from "shared/hooks";
+import { ButtonComponent } from "@oh/components";
 
 type Props = {} & React.HTMLProps<HTMLDivElement>;
 
@@ -47,7 +48,9 @@ export const ConnectionsComponent: React.FC<Props> = () => {
               </>
             ) : null}
             <p>
-              <button onClick={onRemoveHost(connection)}>delete</button>
+              <ButtonComponent onClick={onRemoveHost(connection)}>
+                delete
+              </ButtonComponent>
             </p>
           </div>
         ))}

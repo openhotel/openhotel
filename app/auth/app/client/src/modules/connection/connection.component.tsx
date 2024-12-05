@@ -4,6 +4,7 @@ import { RedirectComponent } from "shared/components";
 import { useAccount, useConnection, useRedirect } from "shared/hooks";
 import { Hotel } from "shared/types";
 import { arraysMatch } from "shared/utils";
+import { ButtonComponent } from "@oh/components";
 
 export const ConnectionComponent: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -57,7 +58,7 @@ export const ConnectionComponent: React.FC = () => {
       <p>{redirectUrl}</p>
       <p>{scopes.join(", ")}</p>
 
-      <button onClick={onAddHost}>Continue...</button>
+      <ButtonComponent onClick={onAddHost}>Continue...</ButtonComponent>
     </div>
   );
 };

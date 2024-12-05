@@ -2,6 +2,7 @@ import { useAdmin } from "shared/hooks";
 import React, { FormEvent, useCallback, useState } from "react";
 //@ts-ignore
 import styles from "./tokens.module.scss";
+import { ButtonComponent, InputComponent } from "@oh/components";
 
 export const TokensComponent = () => {
   const { tokens, addToken, removeToken } = useAdmin();
@@ -39,12 +40,14 @@ export const TokensComponent = () => {
             {lastToken && index === tokens.length - 1 ? (
               <label>{lastToken}</label>
             ) : null}
-            <button onClick={onDelete(token.id)}>delete</button>
+            <ButtonComponent onClick={onDelete(token.id)}>
+              delete
+            </ButtonComponent>
           </div>
         ))}
         <form className={styles.item} onSubmit={onSubmit}>
-          <input placeholder="label" name="label" />
-          <button>Add</button>
+          <InputComponent placeholder="label" name="label" />
+          <ButtonComponent>Add</ButtonComponent>
         </form>
       </div>
     </div>
