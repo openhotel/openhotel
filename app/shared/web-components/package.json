@@ -35,7 +35,6 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "build": "vite build",
-    "dev": "deno --watch=./src -A ./dev.ts",
     "publish": "npx jsr publish --allow-dirty --allow-slow-types",
     "publish:check": "npx jsr publish --allow-dirty  --dry-run"
   }

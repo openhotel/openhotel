@@ -3,6 +3,7 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import dts from "vite-plugin-dts";
+import { build } from "./vite/plugins";
 
 export default defineConfig({
   plugins: [
@@ -10,6 +11,7 @@ export default defineConfig({
     dts({
       insertTypesEntry: true, // Generates a types entry file
     }),
+    build(),
   ],
   build: {
     lib: {
