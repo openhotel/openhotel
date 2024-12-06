@@ -1,5 +1,4 @@
 import { System } from "modules/system/main.ts";
-import { getTokenData } from "@oh/utils";
 import { Server, ServerMutable } from "shared/types/server.types.ts";
 import { eventList } from "./events/main.ts";
 import { Event } from "shared/enums/event.enums.ts";
@@ -26,7 +25,11 @@ export const servers = () => {
       data: Data = {} as Data,
     ) => getSocket().emit(event, data);
 
-    const getTokenId = () => getTokenData($server.licenseToken).id;
+    const getHotelData = () => $server.hotelData;
+
+    const getHotelId = () => $server.hotelId;
+    const getIntegrationId = () => $server.integrationId;
+
     const getToken = () => $server.licenseToken;
 
     const getObject = () => $server;
@@ -37,7 +40,11 @@ export const servers = () => {
       getSocket,
       emit,
 
-      getTokenId,
+      getHotelData,
+
+      getHotelId,
+      getIntegrationId,
+
       getToken,
 
       getObject,

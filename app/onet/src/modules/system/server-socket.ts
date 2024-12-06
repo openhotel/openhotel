@@ -1,6 +1,7 @@
 import { getServerSocket, ServerClient } from "@da/socket";
-import { RequestMethod, getTokenData } from "@oh/utils";
+import { RequestMethod } from "@oh/utils";
 import { System } from "modules/system/main.ts";
+import { HotelData } from "shared/types/server.types.ts";
 
 export const serverSocket = () => {
   let $server;
@@ -27,15 +28,32 @@ export const serverSocket = () => {
         protocols: string[];
         headers: Headers;
       }) => {
+        let $hotelId;
+        let $accountId;
+        let $integrationId;
+
+        let $hotelData;
+
         try {
-          const { valid } = await System.auth.fetch<{ valid: boolean }>({
+          const { hotelId, accountId, integrationId } =
+            await System.auth.fetch<any>({
+              method: RequestMethod.GET,
+              pathname: "/hotel/license",
+              headers: {
+                "license-token": licenseToken,
+              },
+            });
+          $hotelId = hotelId;
+          $accountId = accountId;
+          $integrationId = integrationId;
+
+          $hotelData = (await System.auth.fetch<any>({
             method: RequestMethod.GET,
-            pathname: "/hotels/check-license",
-            headers: {
-              "license-token": licenseToken,
-            },
-          });
-          if (!valid) return false;
+            pathname: `/hotel?hotelId=${$hotelId}&integrationId=${$integrationId}`,
+          })) as HotelData;
+
+          //TODO
+          // if($hotelData.type !== 'client') throw 'Integration is not '
         } catch (e) {
           return false;
         }
@@ -46,6 +64,12 @@ export const serverSocket = () => {
         System.servers.add({
           licenseToken,
           clientId,
+
+          hotelId: $hotelId,
+          accountId: $accountId,
+          integrationId: $integrationId,
+
+          hotelData: $hotelData,
         });
         return true;
       },
@@ -61,7 +85,9 @@ export const serverSocket = () => {
       delete serverClientMap[client.id];
 
       const foundServer = System.servers.get({ clientId: client.id });
-      console.log(`- bye ${client.id} '${foundServer?.getTokenId()}'`);
+      console.log(
+        `>: bye '${foundServer?.getHotelData()?.name}' (${foundServer?.getHotelId()})`,
+      );
       if (!foundServer) return;
 
       System.servers.remove(foundServer.getObject());
