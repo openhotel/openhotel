@@ -11,7 +11,7 @@ const deriveKey = async (key: string): Promise<CryptoKey> => {
 };
 
 export const encrypt = async (text: string, key: string): Promise<string> => {
-  const iv = crypto.getRandomValues(new Uint8Array(12));
+  const iv = new Uint8Array(12);
   const cryptoKey = await deriveKey(key);
 
   const encrypted = await crypto.subtle.encrypt(
