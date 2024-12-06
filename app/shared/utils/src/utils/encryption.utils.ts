@@ -4,42 +4,43 @@ const deriveKey = async (key: string): Promise<CryptoKey> => {
     new TextEncoder().encode(key),
   );
 
-  return crypto.subtle.importKey("raw", hashedKey, { name: "AES-GCM" }, false, [
-    "encrypt",
-    "decrypt",
-  ]);
+  return await crypto.subtle.importKey(
+    "raw",
+    hashedKey,
+    { name: "AES-CBC", length: 256 },
+    false,
+    ["encrypt", "decrypt"],
+  );
 };
 
 export const encrypt = async (text: string, key: string): Promise<string> => {
-  const iv = new Uint8Array(12);
+  const encoded = new TextEncoder().encode(text);
   const cryptoKey = await deriveKey(key);
 
+  const iv = new Uint8Array(16).fill(1);
   const encrypted = await crypto.subtle.encrypt(
-    { name: "AES-GCM", iv },
+    { name: "AES-CBC", length: 256, iv },
     cryptoKey,
-    new TextEncoder().encode(text),
+    encoded,
   );
-
-  return btoa(
-    String.fromCharCode(...iv) +
-      String.fromCharCode(...new Uint8Array(encrypted)),
-  );
+  return btoa(String.fromCharCode(...new Uint8Array(encrypted)));
 };
 
 export const decrypt = async (
   encryptedText: string,
   key: string,
 ): Promise<string> => {
-  const data = Uint8Array.from(atob(encryptedText), (c) => c.charCodeAt(0));
-  const iv = data.slice(0, 12);
-  const encryptedData = data.slice(12);
-  const cryptoKey = await deriveKey(key);
-
-  const decrypted = await crypto.subtle.decrypt(
-    { name: "AES-GCM", iv },
-    cryptoKey,
-    encryptedData,
+  const encrypted = Uint8Array.from(atob(encryptedText), (c) =>
+    c.charCodeAt(0),
   );
 
+  const cryptoKey = await deriveKey(key);
+
+  const iv = new Uint8Array(16).fill(1);
+  const decrypted = await crypto.subtle.decrypt(
+    { name: "AES-CBC", length: 256, iv },
+    cryptoKey,
+    encrypted,
+  );
   return new TextDecoder().decode(decrypted);
 };
