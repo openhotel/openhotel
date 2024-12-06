@@ -9,7 +9,6 @@ export type ConfigTypes = {
   auth: {
     enabled: boolean;
     licenseToken?: string;
-    redirectUrl: string;
     api: string;
   };
   onet: {
