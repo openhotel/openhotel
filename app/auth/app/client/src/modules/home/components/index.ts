@@ -6,3 +6,4 @@ export * from "./admin";
 export * from "./actions";
 export * from "./bsky";
 export * from "./navigator";
+export * from "./hotels";

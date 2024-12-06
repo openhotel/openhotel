@@ -1,0 +1,28 @@
+.hotel {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  .integration {
+    background-color: var(--text-3-bg);
+    padding: 2rem 3rem;
+    border-radius: 1rem;
+  }
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  .inputs {
+    display: flex;
+    gap: 1rem;
+  }
+}

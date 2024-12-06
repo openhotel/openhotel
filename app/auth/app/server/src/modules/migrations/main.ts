@@ -3,6 +3,7 @@ import { DbMutable } from "@oh/utils";
 const MIGRATION_LIST = [
   await import("./2024-12-04--15-10-test.migration.ts"),
   await import("./2024-12-04--15-14-test.migration.ts"),
+  await import("./2024-12-05--14-34-licenses.migration.ts"),
 ];
 
 export const Migrations = (() => {

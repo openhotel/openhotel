@@ -3,7 +3,7 @@ import { mainGetRequest } from "./main.request.ts";
 import { connectionRequestList } from "./connection/main.ts";
 import { scopesGetRequest } from "./scopes.request.ts";
 import { emailGetRequest } from "./email.request.ts";
-import { licenseRequestList } from "./license/main.ts";
+import { hotelRequestList } from "./hotel/main.ts";
 
 export const meRequestList: RequestType[] = getPathRequestList({
   requestList: [
@@ -11,7 +11,7 @@ export const meRequestList: RequestType[] = getPathRequestList({
     scopesGetRequest,
     emailGetRequest,
     ...connectionRequestList,
-    ...licenseRequestList,
+    ...hotelRequestList,
   ],
   pathname: "/@me",
 });

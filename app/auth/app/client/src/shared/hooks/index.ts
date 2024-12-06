@@ -6,3 +6,5 @@ export * from "./useOTP";
 export * from "./useConnection";
 export * from "./useAdmin";
 export * from "./useRedirect";
+export * from "./useHotel";
+export * from "./useHotels";

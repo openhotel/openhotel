@@ -8,10 +8,10 @@ export const useConnection = () => {
   const { getAccountHeaders } = useAccount();
 
   const remove = useCallback(
-    async (hostname: string) => {
+    async (hotelId: string, integrationId: string) => {
       return fetch({
         method: RequestMethod.DELETE,
-        pathname: `/user/@me/connection?hostname=${hostname}`,
+        pathname: `/user/@me/connection?hotelId=${hotelId}&integrationId=${integrationId}`,
         headers: getAccountHeaders(),
       });
     },
@@ -25,26 +25,34 @@ export const useConnection = () => {
       headers: getAccountHeaders(),
     });
 
-    return data.hosts;
-  }, []);
+    return data.connections;
+  }, [fetch]);
 
-  const get = useCallback(async (hostname: string) => {
-    const { data } = await fetch({
-      method: RequestMethod.GET,
-      pathname: `/user/@me/connection?hostname=${hostname}`,
-      headers: getAccountHeaders(),
-    });
+  const get = useCallback(
+    async (hotelId: string, integrationId: string) => {
+      const { data } = await fetch({
+        method: RequestMethod.GET,
+        pathname: `/user/@me/connection?hotelId=${hotelId}&integrationId=${integrationId}`,
+        headers: getAccountHeaders(),
+      });
 
-    return data.host;
-  }, []);
+      return data.connection;
+    },
+    [fetch],
+  );
 
   const add = useCallback(
-    async (state: string, redirectUrl: string, scopes: string[]) => {
+    async (
+      hotelId: string,
+      integrationId: string,
+      state: string,
+      scopes: string[],
+    ) => {
       return fetch({
         method: RequestMethod.POST,
         pathname: `/user/@me/connection`,
         headers: getAccountHeaders(),
-        body: { state, redirectUrl, scopes },
+        body: { hotelId, integrationId, state, scopes },
       });
     },
     [fetch, getAccountHeaders],

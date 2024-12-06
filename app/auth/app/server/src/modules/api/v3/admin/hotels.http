@@ -1,15 +1,15 @@
 #
-GET http://localhost:2024/api/v3/admin/hotels?hostname=openhotel.club
-Content-Type: application/json
+GET http://localhost:2024/api/v3/admin/hotels
 account-id: c1277daa-65a8-42fa-9c92-b47b3482deda
-token: xFvr9GWOoiXerVnwkrCnhtp7VyTKWerjuPv2yABpiYSa90xa5Rr2ORmKDPUKo3cJ
+token: TFbKQ6nhlmvpbQX9YuLYGfcO1pnsNZfCtQSbA1OWg8bAcbcJMtHB63SS2z9zGhfg
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:133.0) Gecko/20100101 Firefox/133.0
 
 ###
 
 #
-GET http://localhost:2024/api/v3/admin/hotels
-Content-Type: application/json
+DELETE http://localhost:2024/api/v3/admin/hotels?hotelId=8ca3e5b7-4411-4d31-acf3-5c8adcb1e117
 account-id: c1277daa-65a8-42fa-9c92-b47b3482deda
-token: xFvr9GWOoiXerVnwkrCnhtp7VyTKWerjuPv2yABpiYSa90xa5Rr2ORmKDPUKo3cJ
+token: TFbKQ6nhlmvpbQX9YuLYGfcO1pnsNZfCtQSbA1OWg8bAcbcJMtHB63SS2z9zGhfg
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:133.0) Gecko/20100101 Firefox/133.0
 
 ###

@@ -5,8 +5,5 @@ Content-Type: application/json
 {
 
   "email": "pagoru@gmail.com",
-  "password": "123456Abc*",
-  "otpToken": "259461",
-
-  "captchaId": "123"
+  "password": "pagoru123"
 }

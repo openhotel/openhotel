@@ -44,7 +44,7 @@ export const hasRequestAccess = async ({
   if (connectionToken && licenseToken)
     return (
       (await System.connections.verify(connectionToken, scopes)) &&
-      (await System.licenses.verify(licenseToken))
+      (await System.hotels.integrations.verify(licenseToken))
     );
 
   return false;

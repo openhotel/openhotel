@@ -9,10 +9,11 @@ export const UsersComponent = () => {
 
   return (
     <div className={styles.users}>
-      <h3>Users</h3>
+      <h3>Users ({users.length})</h3>
       <div className={styles.list}>
         {users.map((user) => (
           <div className={styles.item} key={user.accountId}>
+            <label>{user.accountId}</label>
             <label>{user.username}</label>
             <label title={user.email}>{getCensoredEmail(user.email)}</label>
             <label>{user.admin ? "ADMIN" : null}</label>

@@ -4,10 +4,13 @@ import {
   getRandomString,
   compareIps,
   getIpFromRequest,
+  getResponse,
+  HttpStatusCode,
 } from "@oh/utils";
 import { System } from "modules/system/main.ts";
 import * as bcrypt from "@da/bcrypt";
 import { RequestKind } from "shared/enums/request.enums.ts";
+import { hasRequestAccess } from "shared/utils/scope.utils.ts";
 
 export const refreshGetRequest: RequestType = {
   method: RequestMethod.GET,
@@ -16,6 +19,9 @@ export const refreshGetRequest: RequestType = {
   func: async (request: Request, url) => {
     const accountId = request.headers.get("account-id");
     let refreshToken = request.headers.get("refresh-token");
+
+    if (await hasRequestAccess({ request }))
+      return getResponse(HttpStatusCode.OK);
 
     if (!accountId || !refreshToken)
       return Response.json(

@@ -9,6 +9,9 @@ export type ConfigTypes = {
 
     connectionTokenMinutes: number;
   };
+  accounts: {
+    maxHotels: number;
+  };
   database: {
     filename: string;
   };

@@ -7,11 +7,10 @@ import { otp } from "./otp.ts";
 import { CONFIG_DEFAULT } from "shared/consts/config.consts.ts";
 import { tokens } from "./tokens.ts";
 import { accounts } from "./accounts.ts";
-import { hosts } from "./hosts.ts";
 import { admins } from "./admins.ts";
-import { licenses } from "./licenses.ts";
 import { connections } from "./connections.ts";
 import { Migrations } from "modules/migrations/main.ts";
+import { hotels } from "./hotels.ts";
 
 export const System = (() => {
   let $config: ConfigTypes;
@@ -23,10 +22,9 @@ export const System = (() => {
   const $otp = otp();
   const $tokens = tokens();
   const $accounts = accounts();
-  const $hosts = hosts();
   const $admins = admins();
-  const $licenses = licenses();
   const $connections = connections();
+  const $hotels = hotels();
   let $db: DbMutable;
 
   const load = async (envs: Envs) => {
@@ -71,9 +69,8 @@ export const System = (() => {
     otp: $otp,
     tokens: $tokens,
     accounts: $accounts,
-    hosts: $hosts,
     admins: $admins,
-    licenses: $licenses,
     connections: $connections,
+    hotels: $hotels,
   };
 })();

@@ -2,11 +2,11 @@ import React from "react";
 import {
   OtpComponent,
   ConnectionsComponent,
-  LicenseComponent,
   AccountComponent,
   AdminComponent,
   ActionsComponent,
   BskyComponent,
+  HotelsComponent,
 } from "./components";
 import { Outlet } from "react-router-dom";
 import { useAccount, UserProvider } from "shared/hooks";
@@ -24,7 +24,7 @@ export const HomeComponent: React.FC = () => {
         <AccountComponent />
         <Outlet />
         <OtpComponent />
-        <LicenseComponent />
+        <HotelsComponent />
         <ConnectionsComponent />
         <ActionsComponent />
         <BskyComponent />

@@ -16,29 +16,39 @@ export const hotelsGetRequest: RequestType = {
         },
       );
 
-    const hostname = url.searchParams.get("hostname");
-
-    const hosts = await System.hosts.getList();
-
-    if (hostname)
-      return Response.json(
-        {
-          status: 200,
-          data: {
-            host: hosts.find((host) => host.hostname === hostname),
-          },
-        },
-        {
-          status: 200,
-        },
-      );
+    const hotels = await System.hotels.getList();
 
     return Response.json(
       {
         status: 200,
         data: {
-          hosts,
+          hotels,
         },
+      },
+      { status: 200 },
+    );
+  },
+};
+
+export const hotelsDeleteRequest: RequestType = {
+  method: RequestMethod.DELETE,
+  pathname: "/hotels",
+  kind: RequestKind.ADMIN,
+  func: async (request, url) => {
+    if (!(await hasRequestAccess({ request, admin: true })))
+      return Response.json(
+        { status: 403 },
+        {
+          status: 403,
+        },
+      );
+
+    const hotelId = url.searchParams.get("hotelId");
+    await System.hotels.remove(hotelId);
+
+    return Response.json(
+      {
+        status: 200,
       },
       { status: 200 },
     );

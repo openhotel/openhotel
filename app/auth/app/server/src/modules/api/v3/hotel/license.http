@@ -1,0 +1,6 @@
+#
+GET http://localhost:2024/api/v3/hotel/license
+Content-Type: application/json
+license-token: lic.9CMv1RoKyzLoI4Or.O7ixVxIBEz9difDYpLBulV3jmi2y1wnc
+
+###

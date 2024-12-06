@@ -6,7 +6,7 @@ import {
   tokensGetRequest,
   tokensPostRequest,
 } from "./tokens.request.ts";
-import { hotelsGetRequest } from "./hotels.request.ts";
+import { hotelsDeleteRequest, hotelsGetRequest } from "./hotels.request.ts";
 import { usersGetRequest } from "./users.request.ts";
 
 export const adminRequestList: RequestType[] = getPathRequestList({
@@ -17,8 +17,9 @@ export const adminRequestList: RequestType[] = getPathRequestList({
     tokensDeleteRequest,
     tokensGetRequest,
     tokensPostRequest,
-    hotelsGetRequest,
     usersGetRequest,
+    hotelsGetRequest,
+    hotelsDeleteRequest,
   ],
   pathname: "/admin",
 });

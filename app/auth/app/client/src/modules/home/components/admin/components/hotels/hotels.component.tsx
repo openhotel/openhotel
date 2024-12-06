@@ -6,6 +6,7 @@ import styles from "./hotels.module.scss";
 export const HotelsComponent = () => {
   const { hotels } = useAdmin();
 
+  return <div />;
   return (
     <div className={styles.hotels}>
       <h3>Hotels</h3>

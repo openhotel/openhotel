@@ -1,0 +1,5 @@
+#
+GET http://localhost:2024/api/v3/hotel?hotelId=87f27cf8-49b4-4b48-942c-f0f33fe38424&integrationId=e62064b6-ab5a-49c3-ac44-743003c420ac
+Content-Type: application/json
+
+###

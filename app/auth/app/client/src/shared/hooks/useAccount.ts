@@ -3,9 +3,11 @@ import { RequestMethod } from "shared/enums";
 import { AccountLoginProps, AccountRegisterProps } from "shared/types";
 import { useCallback, useEffect, useState } from "react";
 import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
 
 export const useAccount = () => {
   const { fetch } = useApi();
+  const navigate = useNavigate();
 
   const [isLogged, setIsLogged] = useState<boolean>(null);
 
@@ -84,16 +86,17 @@ export const useAccount = () => {
     let refreshToken = Cookies.get("refresh-token");
 
     if (!accountId || (!token && !refreshToken)) throw "Not logged";
-    if (accountId && token) return;
 
     const { data } = await fetch({
       method: RequestMethod.GET,
       pathname: "/account/refresh",
       headers: {
         "account-id": Cookies.get("account-id"),
+        token: Cookies.get("token"),
         "refresh-token": Cookies.get("refresh-token"),
       },
     });
+    if (!data) return;
 
     token = data.token;
     refreshToken = data.refreshToken;

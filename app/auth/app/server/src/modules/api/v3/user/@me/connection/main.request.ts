@@ -1,4 +1,10 @@
-import { RequestType, RequestMethod, getIpFromRequest } from "@oh/utils";
+import {
+  RequestType,
+  RequestMethod,
+  getIpFromRequest,
+  getResponse,
+  HttpStatusCode,
+} from "@oh/utils";
 import { Scope } from "shared/enums/scopes.enums.ts";
 import { hasRequestAccess } from "shared/utils/scope.utils.ts";
 import { System } from "modules/system/main.ts";
@@ -10,81 +16,55 @@ export const mainPostRequest: RequestType = {
   kind: RequestKind.ACCOUNT,
   func: async (request, url) => {
     if (!(await hasRequestAccess({ request })))
-      return Response.json(
-        { status: 403 },
-        {
-          status: 403,
-        },
-      );
+      return getResponse(HttpStatusCode.FORBIDDEN);
 
-    const { state, scopes, redirectUrl } = await request.json();
+    const { state, scopes, hotelId, integrationId } = await request.json();
 
-    if (!redirectUrl)
-      return Response.json(
-        { status: 400, message: "Missing inputs" },
-        {
-          status: 400,
-        },
-      );
+    if (!hotelId || !integrationId)
+      return getResponse(HttpStatusCode.BAD_REQUEST, {
+        message: `Missing inputs!`,
+      });
 
     //Check scopes
     const validScopes: string[] = scopes.filter((scope) =>
       Object.values(Scope).includes(scope),
     );
     if (validScopes.length !== scopes.length)
-      return Response.json(
-        {
-          status: 400,
-          message: `Invalid scopes!`,
-        },
-        {
-          status: 400,
-        },
-      );
+      return getResponse(HttpStatusCode.BAD_REQUEST, {
+        message: `Invalid scopes!`,
+      });
 
-    let hostname = "";
+    const hotel = await System.hotels.get(hotelId);
+    if (!hotel) return getResponse(HttpStatusCode.BAD_REQUEST);
 
-    try {
-      hostname = new URL(redirectUrl).hostname;
-    } catch (e) {
-      return Response.json(
-        { status: 400, message: "Redirect URL is not valid!" },
-        {
-          status: 400,
-        },
-      );
-    }
+    const foundIntegration = hotel.integrations.find(
+      (integration) => integrationId === integration.integrationId,
+    );
+    if (!foundIntegration) return getResponse(HttpStatusCode.BAD_REQUEST);
 
     const account = await System.accounts.getFromRequest(request);
 
     const userAgent = request.headers.get("user-agent");
     const ip = getIpFromRequest(request);
 
-    const {
-      connectionId,
-      redirectUrl: redirect,
-      token,
-    } = await System.connections.generate({
+    const redirectUrl = await System.connections.generate({
+      hotelId,
+      integrationId,
+
       accountId: account.accountId,
       scopes,
       userAgent,
       ip,
-      hostname,
-      redirectUrl,
       state,
     });
 
-    return Response.json(
-      {
-        status: 200,
-        data: {
-          connectionId,
-          token,
-          redirectUrl: redirect,
-        },
+    if (!redirectUrl) return getResponse(HttpStatusCode.BAD_REQUEST);
+
+    return getResponse(HttpStatusCode.OK, {
+      data: {
+        redirectUrl,
       },
-      { status: 200 },
-    );
+    });
   },
 };
 
@@ -94,38 +74,38 @@ export const mainGetRequest: RequestType = {
   kind: RequestKind.ACCOUNT,
   func: async (request: Request, url) => {
     if (!(await hasRequestAccess({ request })))
-      return Response.json(
-        {
-          status: 403,
-        },
-        { status: 403 },
-      );
+      return getResponse(HttpStatusCode.FORBIDDEN);
+
+    const hotelId = url.searchParams.get("hotelId");
+    const integrationId = url.searchParams.get("integrationId");
 
     const account = await System.accounts.getFromRequest(request);
-    const hosts = await System.hosts.getListByAccountId(account.accountId);
+    const connections = await System.connections.getList(account.accountId);
 
-    const hostname = url.searchParams.get("hostname");
-    if (hostname) {
-      return Response.json(
-        {
-          status: 200,
-          data: { host: hosts.find((host) => host.hostname === hostname) },
-        },
-        {
-          status: 200,
-        },
-      );
+    if (!connections) return getResponse(HttpStatusCode.NOT_FOUND);
+
+    try {
+      if (hotelId && integrationId) {
+        const { connections: $connections, ...$connection } = connections.find(
+          (connection) => connection.hotelId === hotelId,
+        );
+        return getResponse(HttpStatusCode.OK, {
+          data: {
+            connection: {
+              ...$connection,
+              hotelName: $connection.name,
+              ...$connections.find(
+                (connection) => connection.integrationId === integrationId,
+              ),
+            },
+          },
+        });
+      }
+    } catch (e) {
+      return getResponse(HttpStatusCode.BAD_REQUEST);
     }
 
-    return Response.json(
-      {
-        status: 200,
-        data: { hosts },
-      },
-      {
-        status: 200,
-      },
-    );
+    return getResponse(HttpStatusCode.OK, { data: { connections } });
   },
 };
 
@@ -135,43 +115,23 @@ export const mainDeleteRequest: RequestType = {
   kind: RequestKind.ACCOUNT,
   func: async (request: Request, url) => {
     if (!(await hasRequestAccess({ request })))
-      return Response.json(
-        {
-          status: 403,
-        },
-        { status: 403 },
-      );
+      return getResponse(HttpStatusCode.FORBIDDEN);
 
     const account = await System.accounts.getFromRequest(request);
 
-    const hostname = url.searchParams.get("hostname");
-    if (!hostname)
-      return Response.json(
-        {
-          status: 400,
-        },
-        {
-          status: 400,
-        },
-      );
+    const hotelId = url.searchParams.get("hotelId");
+    const integrationId = url.searchParams.get("integrationId");
+    if (!hotelId || !integrationId)
+      return getResponse(HttpStatusCode.BAD_REQUEST);
 
-    if (!(await System.connections.remove(account.accountId, hostname)))
-      return Response.json(
-        {
-          status: 400,
-        },
-        {
-          status: 400,
-        },
-      );
-
-    return Response.json(
-      {
-        status: 200,
-      },
-      {
-        status: 200,
-      },
+    return getResponse(
+      (await System.connections.remove(
+        account.accountId,
+        hotelId,
+        integrationId,
+      ))
+        ? HttpStatusCode.OK
+        : HttpStatusCode.BAD_REQUEST,
     );
   },
 };

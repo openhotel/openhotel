@@ -1,15 +1,25 @@
-import { appendCORSHeaders, getContentType, getCORSHeaders } from "@oh/utils";
+import {
+  appendCORSHeaders,
+  getContentType,
+  getCORSHeaders,
+  RequestMethod,
+} from "@oh/utils";
 import { System } from "./main.ts";
 import { requestV3List } from "modules/api/v3/main.ts";
 import { REQUEST_KIND_COLOR_MAP } from "shared/consts/request.consts.ts";
 
 export const api = () => {
   const load = () => {
+    const maxLength = Math.max(
+      ...Object.values(RequestMethod).map((word: string) => word.length),
+    );
+    console.log();
     for (const request of requestV3List)
       console.log(
-        `%c${request.method} ${request.pathname}`,
+        `%c${request.method.padStart(maxLength)} | ${request.pathname}`,
         `color: ${REQUEST_KIND_COLOR_MAP[request.kind]}`,
       );
+    console.log();
 
     const { version, port } = System.getConfig();
     const isDevelopment = version === "development";
@@ -24,7 +34,7 @@ export const api = () => {
 
         try {
           const { url, method } = request;
-          if (method === "OPTIONS")
+          if (method === RequestMethod.OPTIONS)
             return new Response(null, {
               headers: getCORSHeaders(),
               status: 204,

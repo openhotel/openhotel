@@ -1,39 +1,35 @@
 #
 POST http://localhost:2024/api/v3/user/@me/connection
 Content-Type: application/json
-account-id: c1277daa-65a8-42fa-9c92-b47b3482deda
-token: SUWszYh6xp7xFAv3hpy1fJwZisbzdcEs3PmUxvlqtaxhSdpjDzQWCDGmJDHkni81
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:132.0) Gecko/20100101 Firefox/132.0
+account-id: b68e13d9-a9d0-4579-aff3-8ba3dac15a62
+token: dtKAZOizrwPzT2WXcdo7ZH2m1BCJNgsKdOb6lfrw8vbgk10cX1bVtjzOttJAOLs6
 
 {
-  "state": "EbQVj1vhS6onZQM8gE0YKAQw6KwnLLuXvf41f7n0a5TAfwJVSI6hyYWr14r3w6b2EbQVj1vhS6onZQM8gE0YKAQw6KwnLLuXvf41f7n0a5TAfwJVSI6hyYWr14r3w6b2",
-  "scopes": [
-    "onet.messages.read",
-    "onet.messages.write",
-    "onet.friends.add"
-  ],
-  "redirectUrl": "https://dev.openhotel.club/session"
+  "hotelId": "74dd4103-89ed-4880-a173-467224094135",
+  "integrationId": "58eb3031-0416-4e6d-8f0c-e841f79f27a3",
+  "state": "5juDd8Xes7WUmOg2Sqp2x342wJzqCDmjF2bZhAvGdMPPQXBO9C8kmnylP0qEv7MC",
+  "scopes": ["onet.messages.read"]
 }
 
 ###
 
 #
 GET http://localhost:2024/api/v3/user/@me/connection
-account-id: c1277daa-65a8-42fa-9c92-b47b3482deda
-token: PtKvZwl3CAwh8m798ERefzwmAcadxvBfEsynaCFh3lhEET6aYHwqebE6hOIadLLx
+account-id: b68e13d9-a9d0-4579-aff3-8ba3dac15a62
+token: dtKAZOizrwPzT2WXcdo7ZH2m1BCJNgsKdOb6lfrw8vbgk10cX1bVtjzOttJAOLs6
 
 ###
 
 #
-GET http://localhost:2024/api/v3/user/@me/connection?hostname=openhotel.club
-account-id: c1277daa-65a8-42fa-9c92-b47b3482deda
-token: xFvr9GWOoiXerVnwkrCnhtp7VyTKWerjuPv2yABpiYSa90xa5Rr2ORmKDPUKo3cJ
+GET http://localhost:2024/api/v3/user/@me/connection?hotelId=74dd4103-89ed-4880-a173-467224094135&integrationId=58eb3031-0416-4e6d-8f0c-e841f79f27a3
+account-id: b68e13d9-a9d0-4579-aff3-8ba3dac15a62
+token: dtKAZOizrwPzT2WXcdo7ZH2m1BCJNgsKdOb6lfrw8vbgk10cX1bVtjzOttJAOLs6
 
 ###
 
 #
-DELETE http://localhost:2024/api/v3/user/@me/connection?hostname=openhotel.club
-account-id: c1277daa-65a8-42fa-9c92-b47b3482deda
-token: xFvr9GWOoiXerVnwkrCnhtp7VyTKWerjuPv2yABpiYSa90xa5Rr2ORmKDPUKo3cJ
+DELETE http://localhost:2024/api/v3/user/@me/connection?hotelId=74dd4103-89ed-4880-a173-467224094135&integrationId=58eb3031-0416-4e6d-8f0c-e841f79f27a3
+account-id: b68e13d9-a9d0-4579-aff3-8ba3dac15a62
+token: dtKAZOizrwPzT2WXcdo7ZH2m1BCJNgsKdOb6lfrw8vbgk10cX1bVtjzOttJAOLs6
 
 ###

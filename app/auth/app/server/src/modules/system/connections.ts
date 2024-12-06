@@ -4,41 +4,43 @@ import { generateToken, getTokenData } from "@oh/utils";
 import { Scope } from "shared/enums/scopes.enums.ts";
 
 type GenerateProps = {
+  hotelId: string;
+  integrationId: string;
+
   accountId: string;
   userAgent: string;
   ip: string;
 
-  hostname: string;
   scopes: string[];
-  redirectUrl: string;
 
   state: string;
 };
 
 export const connections = () => {
   const generate = async ({
+    hotelId,
+    integrationId,
     accountId,
     userAgent,
     ip,
-    hostname,
     scopes: unfilteredScopes,
-    redirectUrl,
     state,
-  }: GenerateProps): Promise<{
-    connectionId: string;
-    token: string;
-    redirectUrl: string;
-  }> => {
+  }: GenerateProps): Promise<string> => {
+    const hotel = await System.hotels.get(hotelId);
+    if (!hotel) return;
+
+    const foundIntegration = hotel.integrations.find(
+      (integration) => integrationId === integration.integrationId,
+    );
+    if (!foundIntegration) return;
+
     const connectionsByAccountId = await System.db.get([
       "connectionsByAccountId",
       accountId,
     ]);
     //remove current connection if exists
     if (connectionsByAccountId)
-      await System.db.delete([
-        "connections",
-        connectionsByAccountId.connectionId,
-      ]);
+      await System.db.delete(["connections", connectionsByAccountId]);
 
     const { token, id: connectionId, tokenHash } = generateToken("con", 24, 32);
 
@@ -54,78 +56,88 @@ export const connections = () => {
     await System.db.set(
       ["connections", connectionId],
       {
+        connectionId,
+
+        hotelId,
+        integrationId,
+
+        accountId,
         userAgent,
         ip,
-        hostname,
-        accountId,
-        tokenHash,
+
         scopes,
-        redirectUrl,
+
+        tokenHash,
       },
       {
         expireIn,
       },
     );
+
+    await System.db.set(["connectionsByAccountId", accountId], connectionId, {
+      expireIn,
+    });
 
     await System.db.set(
-      ["connectionsByAccountId", accountId],
+      ["integrationsByHotelsByAccountId", accountId, hotelId, integrationId],
       {
-        connectionId,
-      },
-      {
-        expireIn,
+        accountId,
+
+        hotelId,
+        integrationId,
+
+        scopes,
+        updatedAt: Date.now(),
       },
     );
 
-    await System.db.set(["hostsByHostname", hostname, accountId], {
-      hostname,
-      updatedAt: Date.now(),
-    });
-    await System.db.set(["hostsByAccountId", accountId, hostname], {
-      hostname,
-      scopes,
-      updatedAt: Date.now(),
-    });
+    const url = new URL(foundIntegration.redirectUrl);
+    url.searchParams.append("state", state);
+    url.searchParams.append("token", token);
 
-    if (!(await System.db.get(["hosts", hostname])))
-      await System.db.set(["hosts", hostname], {
-        hostname,
-        createdAt: Date.now(),
-      });
+    if (scopes?.length) url.searchParams.append("scopes", scopes.join(","));
 
-    return {
-      connectionId,
-      token,
-      redirectUrl:
-        redirectUrl +
-        `?state=${state}&token=${token}${scopes?.length ? `&scopes=${scopes.join(",")}` : ""}`,
-    };
+    return url.href;
   };
 
   const remove = async (
     accountId: string,
-    hostname: string,
+    hotelId: string,
+    integrationId: string,
   ): Promise<boolean> => {
-    if (!(await System.db.get(["hostsByHostname", hostname, accountId])))
-      return false;
+    const hotel = await System.hotels.get(hotelId);
+    if (!hotel) return false;
 
-    const currentConnection = await System.db.get([
+    const integration = hotel.integrations.find(
+      (integration) => integrationId === integration.integrationId,
+    );
+    if (!integration) return false;
+
+    const currentConnectionId = await System.db.get([
       "connectionsByAccountId",
       accountId,
     ]);
 
-    if (currentConnection) {
+    if (currentConnectionId) {
       const connection = await System.db.get([
         "connections",
-        currentConnection.connectionId,
+        currentConnectionId,
       ]);
-      if (connection.hostname === hostname)
-        await System.db.delete(["connections", currentConnection.connectionId]);
+      //check if active connection is the same as the deleting one and remove it
+      if (
+        connection.hotelId === hotelId &&
+        connection.integrationId === integrationId
+      )
+        await System.db.delete(["connections", currentConnectionId]);
     }
 
     await System.db.delete(["connectionsByAccountId", accountId]);
-    await System.db.delete(["hostsByHostname", hostname, accountId]);
-    await System.db.delete(["hostsByAccountId", accountId, hostname]);
+    await System.db.delete([
+      "integrationsByHotelsByAccountId",
+      accountId,
+      hotelId,
+      integrationId,
+    ]);
 
     return true;
   };
@@ -160,7 +172,7 @@ export const connections = () => {
     if (
       !connectionId ||
       !connectionsByAccountId ||
-      connectionsByAccountId.connectionId !== connectionId
+      connectionsByAccountId !== connectionId
     )
       return null;
 
@@ -178,9 +190,7 @@ export const connections = () => {
 
     await System.db.set(
       ["connectionsByAccountId", connection.accountId],
-      {
-        connectionId,
-      },
+      connectionId,
       {
         expireIn,
       },
@@ -196,11 +206,81 @@ export const connections = () => {
     return await System.db.get(["connections", id]);
   };
 
+  const getList = async (accountId: string) => {
+    const connections = (
+      await System.db.list({
+        prefix: ["integrationsByHotelsByAccountId", accountId],
+      })
+    ).map(({ value }) => value);
+
+    //get active connection
+    const connectionsByAccountId = await System.db.get([
+      "connectionsByAccountId",
+      accountId,
+    ]);
+
+    let currentHotelId;
+    let currentIntegrationId;
+    if (connectionsByAccountId) {
+      const { hotelId, integrationId } = await System.db.get([
+        "connections",
+        connectionsByAccountId,
+      ]);
+      currentHotelId = hotelId;
+      currentIntegrationId = integrationId;
+    }
+
+    const connectionsList = [];
+
+    for (const connection of connections) {
+      const hotel = await System.hotels.get(connection.hotelId);
+      const ownerAccount = await System.accounts.get(hotel.accountId);
+
+      let foundHotel = connectionsList.find(
+        (hotel) => hotel.hotelId === connection.hotelId,
+      );
+
+      if (!foundHotel) {
+        connectionsList.push({
+          hotelId: connection.hotelId,
+          name: hotel.name,
+          owner: ownerAccount.username,
+          //TODO
+          verified: false,
+
+          connections: [],
+        });
+        foundHotel = connectionsList[connectionsList.length - 1];
+      }
+
+      const integration = hotel.integrations.find(
+        (integration) => integration.integrationId === connection.integrationId,
+      );
+
+      const connectionData = {
+        integrationId: connection.integrationId,
+        scopes: connection.scopes,
+        name: integration.name,
+        redirectUrl: integration.redirectUrl,
+        type: integration.type,
+        active: Boolean(
+          currentHotelId &&
+            currentIntegrationId &&
+            currentHotelId === connection.hotelId &&
+            currentIntegrationId === connection.integrationId,
+        ),
+      };
+      foundHotel.connections.push(connectionData);
+    }
+    return connectionsList;
+  };
+
   return {
     generate,
     verify,
     remove,
     ping,
     get,
+    getList,
   };
 };

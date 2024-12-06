@@ -11,6 +11,9 @@ export const CONFIG_DEFAULT: ConfigTypes = {
 
     connectionTokenMinutes: 20,
   },
+  accounts: {
+    maxHotels: 3,
+  },
   database: {
     filename: "database",
   },
