@@ -10,6 +10,7 @@ import { CardLayoutComponent, MainLayoutComponent } from "@oh/components";
 import { ConnectionComponent, PingComponent } from "modules/connection";
 import { AdminComponent } from "modules/admin";
 import { HomeNavigatorComponent } from "modules/home/components";
+import { VerifyComponent } from "modules/verify";
 
 const router = createBrowserRouter([
   {
@@ -49,6 +50,7 @@ const router = createBrowserRouter([
       //     },
       //   ],
       // },
+      { path: "/verify", element: <VerifyComponent /> },
       { path: "/ping", element: <PingComponent /> },
       { path: "/admin", element: <AdminComponent /> },
       {

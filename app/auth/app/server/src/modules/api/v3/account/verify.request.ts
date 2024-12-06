@@ -29,7 +29,10 @@ export const verifyGetRequest: RequestType = {
         },
       );
 
-    const account = await System.db.get(["accounts", accountByVerifyId]);
+    const account = await System.db.get([
+      "accounts",
+      accountByVerifyId.accountId,
+    ]);
     if (!account)
       return Response.json(
         { status: 403 },
@@ -53,7 +56,10 @@ export const verifyGetRequest: RequestType = {
 
     await System.db.delete(["accountsByVerifyId", id]);
 
-    await System.db.set(["accounts", account.accountId], account);
+    await System.db.set(["accounts", account.accountId], {
+      ...account,
+      verified: true,
+    });
     await System.db.set(["accountsByEmail", account.email], account.accountId);
     await System.db.set(
       ["accountsByUsername", account.username.toLowerCase()],

@@ -47,6 +47,14 @@ export const loginPostRequest: RequestType = {
         },
       );
 
+    if (!account.verified)
+      return Response.json(
+        { status: 403, message: "Your email is not verified!" },
+        {
+          status: 403,
+        },
+      );
+
     const result = bcrypt.compareSync(password, account.passwordHash);
 
     if (!result)

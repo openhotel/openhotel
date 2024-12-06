@@ -87,6 +87,7 @@ export const registerPostRequest: RequestType = {
         email,
         passwordHash: bcrypt.hashSync(password, bcrypt.genSaltSync(8)),
         createdAt: Date.now(),
+        verified: !isEmailVerificationEnabled,
       },
       isEmailVerificationEnabled ? { expireIn } : {},
     );

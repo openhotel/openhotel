@@ -127,12 +127,23 @@ export const useAccount = () => {
     });
   }, []);
 
+  const verify = useCallback(
+    async (id: string, token: string) => {
+      return await fetch({
+        method: RequestMethod.GET,
+        pathname: `/account/verify?id=${id}&token=${token}`,
+      });
+    },
+    [fetch],
+  );
+
   return {
     getAccountHeaders,
 
     login,
     register,
     logout,
+    verify,
 
     refresh,
 

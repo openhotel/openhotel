@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useApi } from "shared/hooks";
+import { useAccount } from "shared/hooks";
 import { useSearchParams } from "react-router-dom";
 import { RedirectComponent } from "shared/components";
 
 export const VerifyComponent: React.FC = () => {
-  const { verify } = useApi();
+  const { verify } = useAccount();
   const [searchParams] = useSearchParams();
 
   const [isVerified, setIsVerified] = useState(null);
