@@ -1,6 +1,6 @@
 import { RequestMethod } from "../enums/main.ts";
 
-export type RequestType<Data> = {
+export type RequestType<Data = undefined> = {
   pathname: string;
   method: RequestMethod;
   func: (
