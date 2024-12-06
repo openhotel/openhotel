@@ -8,6 +8,11 @@ type Props = {
 export const auth = () => {
   let $config: ConfigTypes;
 
+  let $hotelId: string;
+  let $integrationId: string;
+  //TODO permanent op
+  let $ownerId: string;
+
   const load = async (config: ConfigTypes, checkLicense: boolean = false) => {
     $config = config;
     if (checkLicense && !(await isAuthEnabled()))
@@ -18,10 +23,13 @@ export const auth = () => {
     if (!$config.auth.enabled) return true;
 
     try {
-      const { valid } = await $fetch({
-        url: "hotels/check-license",
+      const { hotelId, accountId, integrationId } = await $fetch({
+        url: "hotel/license",
       });
-      return valid;
+      $hotelId = hotelId;
+      $integrationId = integrationId;
+      $ownerId = accountId;
+      return true;
     } catch (e) {
       return false;
     }
@@ -43,10 +51,18 @@ export const auth = () => {
     return data;
   };
 
+  const getHotelId = () => $hotelId;
+  const getIntegrationId = () => $integrationId;
+  const getOwnerId = () => $ownerId;
+
   return {
     load,
     isAuthEnabled,
 
     fetch: $fetch,
+
+    getHotelId,
+    getIntegrationId,
+    getOwnerId,
   };
 };
