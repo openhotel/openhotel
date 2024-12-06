@@ -1,5 +1,4 @@
 import { getURL } from "@oh/utils";
-import { log } from "shared/utils/log.utils.ts";
 import { Proxy } from "modules/proxy/main.ts";
 import { Scope } from "shared/enums/scopes.enums.ts";
 
@@ -57,26 +56,25 @@ export const getRequestRequest = {
       ] as Scope[]
     ).join(",");
 
-    const redirectUrl = `${config.auth.api}/connection?state=${Proxy.getState()}&redirectUrl=${config.auth.redirectUrl}${scopes ? `&scopes=${scopes}` : ``}`;
+    const hotelId = Proxy.auth.getHotelId();
+    const integrationId = Proxy.auth.getIntegrationId();
 
-    try {
-      return Response.json(
-        {
-          status: 200,
-          data: {
-            redirectUrl,
-          },
+    const composedRedirectUrl = new URL(`${config.auth.api}/connection`);
+    composedRedirectUrl.searchParams.append("state", Proxy.getState());
+
+    if (hotelId) composedRedirectUrl.searchParams.append("hotelId", hotelId);
+    if (integrationId)
+      composedRedirectUrl.searchParams.append("integrationId", integrationId);
+    if (scopes) composedRedirectUrl.searchParams.append("scopes", scopes);
+
+    return Response.json(
+      {
+        status: 200,
+        data: {
+          redirectUrl: composedRedirectUrl.href,
         },
-        { status: 200 },
-      );
-    } catch (e) {
-      log(e);
-      return Response.json(
-        {
-          status: 500,
-        },
-        { status: 500 },
-      );
-    }
+      },
+      { status: 200 },
+    );
   },
 };
