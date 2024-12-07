@@ -1,4 +1,9 @@
-import { RequestType, RequestMethod } from "@oh/utils";
+import {
+  RequestType,
+  RequestMethod,
+  getResponse,
+  HttpStatusCode,
+} from "@oh/utils";
 import { hasRequestAccess } from "shared/utils/scope.utils.ts";
 import { RequestKind } from "shared/enums/request.enums.ts";
 import { System } from "modules/system/main.ts";
@@ -7,14 +12,9 @@ export const usersGetRequest: RequestType = {
   method: RequestMethod.GET,
   pathname: "/users",
   kind: RequestKind.ADMIN,
-  func: async (request, url) => {
+  func: async (request: Request, url: URL) => {
     if (!(await hasRequestAccess({ request })))
-      return Response.json(
-        {
-          status: 403,
-        },
-        { status: 403 },
-      );
+      return getResponse(HttpStatusCode.FORBIDDEN);
 
     const users = await Promise.all(
       (await System.accounts.getList()).map(async (account) => ({
@@ -28,37 +28,18 @@ export const usersGetRequest: RequestType = {
 
     const username = url.searchParams.get("username");
     if (username)
-      return Response.json(
-        {
-          status: 200,
-          data: {
-            user: users.find((account) => account.username === username),
-          },
-        },
-        {
-          status: 200,
-        },
-      );
+      return getResponse(HttpStatusCode.OK, {
+        user: users.find((account) => account.username === username),
+      });
 
     const accountId = url.searchParams.get("accountId");
     if (accountId)
-      return Response.json(
-        {
-          status: 200,
-          data: {
-            user: users.find((account) => account.accountId === accountId),
-          },
-        },
-        {
-          status: 200,
-        },
-      );
+      return getResponse(HttpStatusCode.OK, {
+        user: users.find((account) => account.accountId === accountId),
+      });
 
-    return Response.json(
-      { status: 200, data: { users } },
-      {
-        status: 200,
-      },
-    );
+    return getResponse(HttpStatusCode.OK, {
+      users,
+    });
   },
 };

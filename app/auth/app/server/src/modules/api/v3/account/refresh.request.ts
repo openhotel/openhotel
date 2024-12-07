@@ -16,7 +16,7 @@ export const refreshGetRequest: RequestType = {
   method: RequestMethod.GET,
   pathname: "/refresh",
   kind: RequestKind.ACCOUNT,
-  func: async (request: Request, url) => {
+  func: async (request: Request) => {
     const accountId = request.headers.get("account-id");
     let refreshToken = request.headers.get("refresh-token");
 
@@ -24,25 +24,14 @@ export const refreshGetRequest: RequestType = {
       return getResponse(HttpStatusCode.OK);
 
     if (!accountId || !refreshToken)
-      return Response.json(
-        { status: 403 },
-        {
-          status: 403,
-        },
-      );
+      return getResponse(HttpStatusCode.FORBIDDEN);
 
     const accountByRefreshToken = await System.db.get([
       "accountsByRefreshToken",
       accountId,
     ]);
 
-    if (!accountByRefreshToken)
-      return Response.json(
-        { status: 403 },
-        {
-          status: 403,
-        },
-      );
+    if (!accountByRefreshToken) return getResponse(HttpStatusCode.FORBIDDEN);
 
     const userAgent = request.headers.get("user-agent");
     const ip = getIpFromRequest(request);
@@ -51,35 +40,18 @@ export const refreshGetRequest: RequestType = {
       accountByRefreshToken.userAgent !== userAgent ||
       !compareIps(ip, accountByRefreshToken.ip)
     )
-      return Response.json(
-        { status: 403 },
-        {
-          status: 403,
-        },
-      );
+      return getResponse(HttpStatusCode.FORBIDDEN);
 
     const account = await System.db.get(["accounts", accountId]);
 
-    if (!account)
-      return Response.json(
-        { status: 403 },
-        {
-          status: 403,
-        },
-      );
+    if (!account) return getResponse(HttpStatusCode.FORBIDDEN);
 
     const result = bcrypt.compareSync(
       refreshToken,
       accountByRefreshToken.refreshTokenHash,
     );
 
-    if (!result)
-      return Response.json(
-        { status: 403 },
-        {
-          status: 403,
-        },
-      );
+    if (!result) return getResponse(HttpStatusCode.FORBIDDEN);
 
     const token = getRandomString(64);
     refreshToken = getRandomString(128);
@@ -111,17 +83,13 @@ export const refreshGetRequest: RequestType = {
       { expireIn: expireInRefreshToken },
     );
 
-    return Response.json(
-      {
-        status: 200,
-        data: {
-          accountId: account.accountId,
-          token,
-          refreshToken,
-          durations: [accountTokenDays, accountRefreshTokenDays],
-        },
+    return getResponse(HttpStatusCode.OK, {
+      data: {
+        accountId: account.accountId,
+        token,
+        refreshToken,
+        durations: [accountTokenDays, accountRefreshTokenDays],
       },
-      { status: 200 },
-    );
+    });
   },
 };

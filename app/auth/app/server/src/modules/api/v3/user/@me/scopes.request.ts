@@ -1,4 +1,9 @@
-import { RequestMethod, RequestType } from "@oh/utils";
+import {
+  RequestMethod,
+  RequestType,
+  getResponse,
+  HttpStatusCode,
+} from "@oh/utils";
 import { hasRequestAccess } from "shared/utils/scope.utils.ts";
 import { RequestKind } from "shared/enums/request.enums.ts";
 import { System } from "modules/system/main.ts";
@@ -7,45 +12,23 @@ export const scopesGetRequest: RequestType = {
   method: RequestMethod.GET,
   pathname: "/scopes",
   kind: RequestKind.CONNECTION,
-  func: async (request: Request, url) => {
+  func: async (request: Request) => {
     if (!(await hasRequestAccess({ request, scopes: [] })))
-      return Response.json(
-        {
-          status: 403,
-        },
-        { status: 403 },
-      );
+      return getResponse(HttpStatusCode.FORBIDDEN);
+
     const connectionToken = request.headers.get("connection-token");
 
     if (!connectionToken)
-      return Response.json(
-        {
-          status: 200,
-          data: {
-            scopes: ["*"],
-          },
-        },
-        { status: 200 },
-      );
+      return getResponse(HttpStatusCode.OK, { data: { scopes: ["*"] } });
 
     const connection = await System.connections.get(connectionToken);
 
-    if (!connection)
-      return Response.json(
-        {
-          status: 403,
-        },
-        { status: 403 },
-      );
+    if (!connection) return getResponse(HttpStatusCode.FORBIDDEN);
 
-    return Response.json(
-      {
-        status: 200,
-        data: {
-          scopes: connection.scopes,
-        },
+    return getResponse(HttpStatusCode.OK, {
+      data: {
+        scopes: connection.scopes,
       },
-      { status: 200 },
-    );
+    });
   },
 };

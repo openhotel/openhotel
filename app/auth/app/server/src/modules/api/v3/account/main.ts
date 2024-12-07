@@ -1,7 +1,7 @@
 import { RequestType, getPathRequestList } from "@oh/utils";
 
 import { loginPostRequest } from "./login.request.ts";
-import { registerPostRequest } from "./registerRequest.ts";
+import { registerPostRequest } from "./register.request.ts";
 import { verifyGetRequest } from "./verify.request.ts";
 import { refreshGetRequest } from "./refresh.request.ts";
 import { logoutPostRequest } from "./logout.request.ts";

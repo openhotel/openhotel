@@ -1,4 +1,9 @@
-import { RequestType, RequestMethod } from "@oh/utils";
+import {
+  RequestType,
+  RequestMethod,
+  getResponse,
+  HttpStatusCode,
+} from "@oh/utils";
 import { hasRequestAccess } from "shared/utils/scope.utils.ts";
 import { RequestKind } from "shared/enums/request.enums.ts";
 import { System } from "modules/system/main.ts";
@@ -7,29 +12,14 @@ export const mainGetRequest: RequestType = {
   method: RequestMethod.GET,
   pathname: "",
   kind: RequestKind.ACCOUNT,
-  func: async (request: Request, url) => {
+  func: async (request: Request) => {
     if (!(await hasRequestAccess({ request })))
-      return Response.json(
-        {
-          status: 403,
-        },
-        { status: 403 },
-      );
+      return getResponse(HttpStatusCode.FORBIDDEN);
 
     const account = await System.accounts.getFromRequest(request);
     const hotels = await System.hotels.getListByAccountId(account.accountId);
 
-    return Response.json(
-      {
-        status: 200,
-        data: {
-          hotels,
-        },
-      },
-      {
-        status: 200,
-      },
-    );
+    return getResponse(HttpStatusCode.OK, { data: { hotels } });
   },
 };
 
@@ -37,47 +27,24 @@ export const mainPostRequest: RequestType = {
   method: RequestMethod.POST,
   pathname: "",
   kind: RequestKind.ACCOUNT,
-  func: async (request: Request, url) => {
+  func: async (request: Request) => {
     if (!(await hasRequestAccess({ request })))
-      return Response.json(
-        {
-          status: 403,
-        },
-        { status: 403 },
-      );
+      return getResponse(HttpStatusCode.FORBIDDEN);
 
     const { name } = await request.json();
 
-    if (!name)
-      return Response.json(
-        {
-          status: 400,
-        },
-        { status: 400 },
-      );
+    if (!name) return getResponse(HttpStatusCode.BAD_REQUEST);
 
     const account = await System.accounts.getFromRequest(request);
     const response = await System.hotels.add(account.accountId, name);
 
-    if (!response)
-      return Response.json(
-        {
-          status: 406,
-        },
-        { status: 406 },
-      );
+    if (!response) return getResponse(HttpStatusCode.NOT_ACCEPTABLE);
 
-    return Response.json(
-      {
-        status: 200,
-        data: {
-          hotelId: response.hotelId,
-        },
+    return getResponse(HttpStatusCode.OK, {
+      data: {
+        hotelId: response.hotelId,
       },
-      {
-        status: 200,
-      },
-    );
+    });
   },
 };
 
@@ -85,46 +52,22 @@ export const mainPatchRequest: RequestType = {
   method: RequestMethod.PATCH,
   pathname: "",
   kind: RequestKind.ACCOUNT,
-  func: async (request: Request, url) => {
+  func: async (request: Request) => {
     if (!(await hasRequestAccess({ request })))
-      return Response.json(
-        {
-          status: 403,
-        },
-        { status: 403 },
-      );
+      return getResponse(HttpStatusCode.FORBIDDEN);
 
     const { hotelId, name } = await request.json();
 
-    if (!hotelId || !name)
-      return Response.json(
-        {
-          status: 400,
-        },
-        { status: 400 },
-      );
+    if (!hotelId || !name) return getResponse(HttpStatusCode.BAD_REQUEST);
 
     const account = await System.accounts.getFromRequest(request);
     const hotel = await System.hotels.get(hotelId);
     if (!hotel || hotel.accountId !== account.accountId)
-      return Response.json(
-        {
-          status: 400,
-        },
-        { status: 400 },
-      );
+      return getResponse(HttpStatusCode.BAD_REQUEST);
 
     const data = await System.hotels.update(hotelId, name);
 
-    return Response.json(
-      {
-        status: 200,
-        data,
-      },
-      {
-        status: 200,
-      },
-    );
+    return getResponse(HttpStatusCode.OK, data);
   },
 };
 
@@ -132,44 +75,20 @@ export const mainDeleteRequest: RequestType = {
   method: RequestMethod.DELETE,
   pathname: "",
   kind: RequestKind.ACCOUNT,
-  func: async (request: Request, url) => {
+  func: async (request: Request, url: URL) => {
     if (!(await hasRequestAccess({ request })))
-      return Response.json(
-        {
-          status: 403,
-        },
-        { status: 403 },
-      );
+      return getResponse(HttpStatusCode.FORBIDDEN);
 
     const hotelId = url.searchParams.get("hotelId");
-    if (!hotelId)
-      return Response.json(
-        {
-          status: 400,
-        },
-        { status: 400 },
-      );
+    if (!hotelId) return getResponse(HttpStatusCode.BAD_REQUEST);
 
     const account = await System.accounts.getFromRequest(request);
     const hotel = await System.hotels.get(hotelId);
     if (!hotel || hotel.accountId !== account.accountId)
-      return Response.json(
-        {
-          status: 400,
-        },
-        { status: 400 },
-      );
+      return getResponse(HttpStatusCode.BAD_REQUEST);
 
     await System.hotels.remove(hotelId);
 
-    return Response.json(
-      {
-        status: 200,
-        data: {},
-      },
-      {
-        status: 200,
-      },
-    );
+    return getResponse(HttpStatusCode.OK, { data: {} });
   },
 };

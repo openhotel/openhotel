@@ -1,4 +1,9 @@
-import { RequestType, RequestMethod } from "@oh/utils";
+import {
+  RequestType,
+  RequestMethod,
+  getResponse,
+  HttpStatusCode,
+} from "@oh/utils";
 import { RequestKind } from "shared/enums/request.enums.ts";
 import { hasRequestAccess } from "shared/utils/scope.utils.ts";
 import { System } from "modules/system/main.ts";
@@ -7,29 +12,16 @@ export const tokensGetRequest: RequestType = {
   method: RequestMethod.GET,
   pathname: "/tokens",
   kind: RequestKind.ADMIN,
-  func: async (request, url) => {
+  func: async (request: Request) => {
     if (!(await hasRequestAccess({ request, admin: true })))
-      return Response.json(
-        {
-          status: 403,
-        },
-        { status: 403 },
-      );
+      return getResponse(HttpStatusCode.FORBIDDEN);
 
     const tokens = (await System.tokens.getList()).map(({ id, label }) => ({
       id,
       label,
     }));
 
-    return Response.json(
-      {
-        status: 200,
-        data: { tokens },
-      },
-      {
-        status: 200,
-      },
-    );
+    return getResponse(HttpStatusCode.OK, { data: { tokens } });
   },
 };
 
@@ -37,40 +29,23 @@ export const tokensPostRequest: RequestType = {
   method: RequestMethod.POST,
   pathname: "/tokens",
   kind: RequestKind.ADMIN,
-  func: async (request, url) => {
+  func: async (request: Request) => {
     if (!(await hasRequestAccess({ request, admin: true })))
-      return Response.json(
-        {
-          status: 403,
-        },
-        { status: 403 },
-      );
+      return getResponse(HttpStatusCode.FORBIDDEN);
 
     const { label } = await request.json();
 
-    if (!label)
-      return Response.json(
-        {
-          status: 400,
-        },
-        { status: 400 },
-      );
+    if (!label) return getResponse(HttpStatusCode.BAD_REQUEST);
 
     const { id, token } = await System.tokens.generate(label);
 
-    return Response.json(
-      {
-        status: 200,
-        data: {
-          id,
-          label,
-          token,
-        },
+    return getResponse(HttpStatusCode.OK, {
+      data: {
+        id,
+        label,
+        token,
       },
-      {
-        status: 200,
-      },
-    );
+    });
   },
 };
 
@@ -78,33 +53,15 @@ export const tokensDeleteRequest: RequestType = {
   method: RequestMethod.DELETE,
   pathname: "/tokens",
   kind: RequestKind.ADMIN,
-  func: async (request, url) => {
+  func: async (request: Request, url: URL) => {
     if (!(await hasRequestAccess({ request, admin: true })))
-      return Response.json(
-        {
-          status: 403,
-        },
-        { status: 403 },
-      );
+      return getResponse(HttpStatusCode.FORBIDDEN);
 
     const id = url.searchParams.get("id");
-    if (!id)
-      return Response.json(
-        {
-          status: 400,
-        },
-        { status: 400 },
-      );
+    if (!id) return getResponse(HttpStatusCode.BAD_REQUEST);
 
     await System.tokens.remove(id);
 
-    return Response.json(
-      {
-        status: 200,
-      },
-      {
-        status: 200,
-      },
-    );
+    return getResponse(HttpStatusCode.OK);
   },
 };

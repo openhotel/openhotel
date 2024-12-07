@@ -1,4 +1,10 @@
-import { RequestType, RequestMethod, getRandomString } from "@oh/utils";
+import {
+  RequestType,
+  RequestMethod,
+  getRandomString,
+  getResponse,
+  HttpStatusCode,
+} from "@oh/utils";
 import { System } from "modules/system/main.ts";
 import * as bcrypt from "@da/bcrypt";
 import {
@@ -12,7 +18,7 @@ export const registerPostRequest: RequestType = {
   method: RequestMethod.POST,
   pathname: "/register",
   kind: RequestKind.PUBLIC,
-  func: async (request, url) => {
+  func: async (request: Request) => {
     const { email, username, password, rePassword, captchaId } =
       await request.json();
 
@@ -23,12 +29,9 @@ export const registerPostRequest: RequestType = {
       !password ||
       !rePassword
     )
-      return Response.json(
-        { status: 403, message: "Some input is missing or invalid captcha!" },
-        {
-          status: 403,
-        },
-      );
+      return getResponse(HttpStatusCode.FORBIDDEN, {
+        message: "Some input is missing or invalid captcha!",
+      });
 
     if (
       !new RegExp(EMAIL_REGEX).test(email) ||
@@ -36,12 +39,9 @@ export const registerPostRequest: RequestType = {
       !new RegExp(PASSWORD_REGEX).test(password) ||
       password !== rePassword
     )
-      return Response.json(
-        { status: 400, message: "Invalid email, username or password!" },
-        {
-          status: 400,
-        },
-      );
+      return getResponse(HttpStatusCode.BAD_REQUEST, {
+        message: "Invalid email, username or password!",
+      });
 
     const accountByUsername = await System.db.get([
       "accountsByUsername",
@@ -50,12 +50,9 @@ export const registerPostRequest: RequestType = {
     const accountByEmail = await System.db.get(["accountsByEmail", email]);
 
     if (accountByUsername || accountByEmail)
-      return Response.json(
-        { status: 409, message: "Username or email already in use!" },
-        {
-          status: 409,
-        },
-      );
+      return getResponse(HttpStatusCode.CONFLICT, {
+        message: "Username or email already in use!",
+      });
 
     const accountId = crypto.randomUUID();
 
@@ -122,13 +119,6 @@ export const registerPostRequest: RequestType = {
         : {},
     );
 
-    return Response.json(
-      {
-        status: 200,
-      },
-      {
-        status: 200,
-      },
-    );
+    return getResponse(HttpStatusCode.OK);
   },
 };

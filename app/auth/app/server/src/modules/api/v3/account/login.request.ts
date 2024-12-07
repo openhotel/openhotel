@@ -3,6 +3,8 @@ import {
   RequestMethod,
   getRandomString,
   getIpFromRequest,
+  getResponse,
+  HttpStatusCode,
 } from "@oh/utils";
 import { System } from "modules/system/main.ts";
 import * as bcrypt from "@da/bcrypt";
@@ -12,7 +14,7 @@ export const loginPostRequest: RequestType = {
   method: RequestMethod.POST,
   pathname: "/login",
   kind: RequestKind.PUBLIC,
-  func: async (request: Request, url) => {
+  func: async (request: Request) => {
     const {
       email,
       password,
@@ -22,60 +24,43 @@ export const loginPostRequest: RequestType = {
     } = await request.json();
 
     if (!email || !password)
-      return Response.json(
-        { status: 403, message: "Email or password not valid!" },
-        {
-          status: 403,
-        },
-      );
+      return getResponse(HttpStatusCode.FORBIDDEN, {
+        message: "Email or password not valid!",
+      });
 
     const accountByEmail = await System.db.get(["accountsByEmail", email]);
 
     if (!accountByEmail)
-      return Response.json(
-        { status: 403, message: "Email or password not valid!" },
-        {
-          status: 403,
-        },
-      );
+      return getResponse(HttpStatusCode.FORBIDDEN, {
+        message: "Email or password not valid!",
+      });
+
     const account = await System.db.get(["accounts", accountByEmail]);
     if (!account)
-      return Response.json(
-        { status: 403, message: "Contact an administrator!" },
-        {
-          status: 403,
-        },
-      );
+      return getResponse(HttpStatusCode.FORBIDDEN, {
+        message: "Contact an administrator!",
+      });
 
     if (!account.verified)
-      return Response.json(
-        { status: 403, message: "Your email is not verified!" },
-        {
-          status: 403,
-        },
-      );
+      return getResponse(HttpStatusCode.FORBIDDEN, {
+        message: "Your email is not verified!",
+      });
 
     const result = bcrypt.compareSync(password, account.passwordHash);
 
     if (!result)
-      return Response.json(
-        { status: 403, message: "Email or password not valid!" },
-        {
-          status: 403,
-        },
-      );
+      return getResponse(HttpStatusCode.FORBIDDEN, {
+        message: "Email or password not valid!",
+      });
 
     const accountByVerifyId = await System.db.get([
       "accountsByVerifyId",
       account.accountId,
     ]);
     if (accountByVerifyId)
-      return Response.json(
-        { status: 403, message: "Account is not verified!" },
-        {
-          status: 403,
-        },
-      );
+      return getResponse(HttpStatusCode.FORBIDDEN, {
+        message: "Account is not verified!",
+      });
 
     const accountOTP = await System.db.get([
       "otpByAccountId",
@@ -139,17 +124,13 @@ export const loginPostRequest: RequestType = {
       { expireIn: expireInRefreshToken },
     );
 
-    return Response.json(
-      {
-        status: 200,
-        data: {
-          accountId: account.accountId,
-          token,
-          refreshToken,
-          durations: [accountTokenDays, accountRefreshTokenDays],
-        },
+    return getResponse(HttpStatusCode.OK, {
+      data: {
+        accountId: account.accountId,
+        token,
+        refreshToken,
+        durations: [accountTokenDays, accountRefreshTokenDays],
       },
-      { status: 200 },
-    );
+    });
   },
 };

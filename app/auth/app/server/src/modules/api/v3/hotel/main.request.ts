@@ -11,7 +11,7 @@ export const mainGetRequest: RequestType = {
   method: RequestMethod.GET,
   pathname: "",
   kind: RequestKind.PUBLIC,
-  func: async (request, url) => {
+  func: async (request: Request, url: URL) => {
     const hotelId = url.searchParams.get("hotelId");
     const integrationId = url.searchParams.get("integrationId");
 

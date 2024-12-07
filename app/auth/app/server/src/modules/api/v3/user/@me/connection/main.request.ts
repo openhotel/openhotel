@@ -14,7 +14,7 @@ export const mainPostRequest: RequestType = {
   method: RequestMethod.POST,
   pathname: "",
   kind: RequestKind.ACCOUNT,
-  func: async (request, url) => {
+  func: async (request: Request) => {
     if (!(await hasRequestAccess({ request })))
       return getResponse(HttpStatusCode.FORBIDDEN);
 
@@ -72,7 +72,7 @@ export const mainGetRequest: RequestType = {
   method: RequestMethod.GET,
   pathname: "",
   kind: RequestKind.ACCOUNT,
-  func: async (request: Request, url) => {
+  func: async (request: Request, url: URL) => {
     if (!(await hasRequestAccess({ request })))
       return getResponse(HttpStatusCode.FORBIDDEN);
 
@@ -113,7 +113,7 @@ export const mainDeleteRequest: RequestType = {
   method: RequestMethod.DELETE,
   pathname: "",
   kind: RequestKind.ACCOUNT,
-  func: async (request: Request, url) => {
+  func: async (request: Request, url: URL) => {
     if (!(await hasRequestAccess({ request })))
       return getResponse(HttpStatusCode.FORBIDDEN);
 

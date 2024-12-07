@@ -1,4 +1,10 @@
-import { RequestType, RequestMethod, update } from "@oh/utils";
+import {
+  RequestType,
+  RequestMethod,
+  update,
+  getResponse,
+  HttpStatusCode,
+} from "@oh/utils";
 import { System } from "modules/system/main.ts";
 import { RequestKind } from "shared/enums/request.enums.ts";
 import { hasRequestAccess } from "shared/utils/scope.utils.ts";
@@ -7,14 +13,9 @@ export const updateGetRequest: RequestType = {
   method: RequestMethod.PATCH,
   pathname: "/update",
   kind: RequestKind.ADMIN,
-  func: async (request, url) => {
+  func: async (request: Request) => {
     if (!(await hasRequestAccess({ request, admin: true })))
-      return Response.json(
-        {
-          status: 403,
-        },
-        { status: 403 },
-      );
+      return getResponse(HttpStatusCode.FORBIDDEN);
 
     const { version } = System.getEnvs();
 
@@ -28,23 +29,12 @@ export const updateGetRequest: RequestType = {
         debug: console.debug,
       }));
 
-    if (!canUpdate)
-      return Response.json(
-        { status: 208 },
-        {
-          status: 208,
-        },
-      );
+    if (!canUpdate) return getResponse(HttpStatusCode.ALREADY_REPORTED);
 
     setTimeout(() => {
       Deno.exit();
     }, 100);
 
-    return Response.json(
-      { status: 200 },
-      {
-        status: 200,
-      },
-    );
+    return getResponse(HttpStatusCode.OK);
   },
 };
