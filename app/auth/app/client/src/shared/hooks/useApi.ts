@@ -38,8 +38,8 @@ export const useApi = () => {
         throw {
           status: data.status,
           message: response_text.length
-            ? "Invalid JSON response"
-            : "Empty response",
+            ? `${data.status}: Invalid JSON response`
+            : `${data.status}: Empty response`,
           response_text,
         };
       });

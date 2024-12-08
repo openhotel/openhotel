@@ -1,6 +1,11 @@
 import { useApi } from "./useApi";
 import { RequestMethod } from "shared/enums";
-import { AccountLoginProps, AccountRegisterProps } from "shared/types";
+import {
+  AccountChangePassProps,
+  AccountLoginProps,
+  AccountRecoverPassProps,
+  AccountRegisterProps,
+} from "shared/types";
 import { useCallback, useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
@@ -68,6 +73,7 @@ export const useAccount = () => {
       }),
     [fetch],
   );
+
   const logout = useCallback(async () => {
     fetch({
       method: RequestMethod.POST,
@@ -79,6 +85,26 @@ export const useAccount = () => {
     Cookies.remove("refresh-token");
     Cookies.remove("token");
   }, [fetch, getAccountHeaders]);
+
+  const recoverPassword = useCallback(
+    async (body: AccountRecoverPassProps) =>
+      fetch({
+        method: RequestMethod.POST,
+        pathname: "/account/recover-password",
+        body,
+      }),
+    [fetch],
+  );
+
+  const changePassword = useCallback(
+    async (body: AccountChangePassProps) =>
+      fetch({
+        method: RequestMethod.POST,
+        pathname: "/account/change-password",
+        body,
+      }),
+    [fetch],
+  );
 
   const refresh = useCallback(async () => {
     let accountId = Cookies.get("account-id");
@@ -144,6 +170,8 @@ export const useAccount = () => {
     register,
     logout,
     verify,
+    recoverPassword,
+    changePassword,
 
     refresh,
 

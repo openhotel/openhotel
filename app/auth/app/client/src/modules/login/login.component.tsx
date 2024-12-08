@@ -49,11 +49,12 @@ export const LoginComponent: React.FC = () => {
     <div className={styles.wrapper}>
       <form className={styles.form} onSubmit={onSubmit}>
         <h1 className={styles.title}>Login</h1>
-        <InputComponent name="email" placeholder="Email" />
+        <InputComponent name="email" placeholder="Email" autocomplete="email" />
         <InputComponent
           name="password"
           placeholder="Password"
           type="password"
+          autocomplete="current-password"
         />
 
         {showCaptcha && (
@@ -74,8 +75,13 @@ export const LoginComponent: React.FC = () => {
           <label className={styles.error}>{errorMessage}</label>
         ) : null}
       </form>
+
       <LinkComponent className={styles.link} to="/register">
         No account? Register here.
+      </LinkComponent>
+
+      <LinkComponent className={styles.recoverPass} to="/recover-password">
+        Forgot your password? Click here.
       </LinkComponent>
     </div>
   );

@@ -14,3 +14,13 @@ export type AccountRegisterProps = {
 
   captchaId?: string;
 };
+
+export type AccountRecoverPassProps = {
+  email: string;
+};
+
+export type AccountChangePassProps = {
+  token: string;
+  password: string;
+  rePassword: string;
+};

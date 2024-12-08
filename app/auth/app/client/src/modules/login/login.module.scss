@@ -19,12 +19,26 @@
     font-size: 2.2rem;
   }
 
+  .status {
+    display: block;
+    color: var(--text-1-c);
+    font-size: 0.9em;
+    padding-left: 1rem;
+  }
+
   .error {
     display: block;
     color: var(--text-danger);
     font-size: 0.9em;
     padding-left: 1rem;
   }
+}
+
+.recoverPass {
+  display: block;
+  margin-top: auto;
+  padding-top: 1rem;
+  text-align: center;
 }
 
 .link {
