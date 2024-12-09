@@ -29,17 +29,21 @@ export const usersGetRequest: RequestType = {
     const username = url.searchParams.get("username");
     if (username)
       return getResponse(HttpStatusCode.OK, {
-        user: users.find((account) => account.username === username),
+        data: {
+          user: users.find((account) => account.username === username),
+        },
       });
 
     const accountId = url.searchParams.get("accountId");
     if (accountId)
       return getResponse(HttpStatusCode.OK, {
-        user: users.find((account) => account.accountId === accountId),
+        data: {
+          user: users.find((account) => account.accountId === accountId),
+        },
       });
 
     return getResponse(HttpStatusCode.OK, {
-      users,
+      data: users,
     });
   },
 };
