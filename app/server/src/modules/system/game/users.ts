@@ -72,6 +72,9 @@ export const users = () => {
             nextPosition = $userPathfindingMap[accountId].shift();
           }
 
+          //check if next position is a teleport
+          // System.game.teleports.getLocal(room.getId(), nextPosition);
+
           //check if next position is free
           if (!room.isPointFree(nextPosition, user.getAccountId())) {
             delete $userPathfindingMap[accountId];

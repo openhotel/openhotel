@@ -6,8 +6,10 @@ import { human } from "./human";
 export const game = () => {
   const $furniture = furniture();
   const $human = human();
+  const $users = users();
 
   const load = async () => {
+    $users.load();
     await $furniture.load();
     await $human.load();
   };
@@ -16,7 +18,7 @@ export const game = () => {
     load,
 
     rooms: rooms(),
-    users: users(),
+    users: $users,
     furniture: $furniture,
     human: $human,
   };

@@ -13,13 +13,13 @@ import {
   getRoomSpawnDirection,
   getRoomSpawnPoint,
 } from "shared/utils/rooms.utils.ts";
-import { DEFAULT_ROOMS } from "shared/consts/main.ts";
+import { DEFAULT_ROOMS, WALKABLE_FURNITURE_TYPE } from "shared/consts/main.ts";
 import {
   Direction,
-  Point3d,
-  Point2d,
   getRandomNumber,
   isPoint3dEqual,
+  Point2d,
+  Point3d,
 } from "@oh/utils";
 
 export const rooms = () => {
@@ -116,7 +116,10 @@ export const rooms = () => {
           }) &&
           Boolean(
             !getFurnitures()
-              .filter((furniture) => furniture.type !== FurnitureType.FRAME)
+              .filter(
+                (furniture) =>
+                  !WALKABLE_FURNITURE_TYPE.includes(furniture.type),
+              )
               .find((furniture) =>
                 isPoint3dEqual(furniture.position, position),
               ),
@@ -144,7 +147,7 @@ export const rooms = () => {
       }
 
       for (const furniture of getFurnitures()) {
-        if (furniture.type === FurnitureType.FRAME) continue;
+        if (WALKABLE_FURNITURE_TYPE.includes(furniture.type)) continue;
         const position = furniture.position;
         roomLayout[position.z][position.x] = RoomPointEnum.EMPTY;
       }

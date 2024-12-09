@@ -10,13 +10,17 @@ import {
 import { FurnitureDirectionData, Point3d } from "shared/types";
 import { TILE_SIZE } from "shared/consts";
 import { System } from "system";
-import { CrossDirection, SystemEvent } from "shared/enums";
-import { getPositionFromIsometricPosition } from "shared/utils";
+import { CrossDirection, Event, SystemEvent } from "shared/enums";
+import {
+  getPositionFromIsometricPosition,
+  isPosition3dEqual,
+} from "shared/utils";
 
 type Props = {
   isometricPosition: Point3d;
   furniture: string;
   direction: CrossDirection;
+  interactive: boolean;
 };
 
 export type FurnitureMutable = {
@@ -30,7 +34,8 @@ export const furnitureComponent: ContainerComponent<Props, FurnitureMutable> = (
 
   const $$destroy = $component.$destroy;
 
-  const { furniture, direction, isometricPosition } = $component.getProps();
+  const { furniture, direction, isometricPosition, interactive } =
+    $component.getProps();
   const furnitureData = System.game.furniture.get(furniture);
 
   const furnitureDirectionData = furnitureData.direction[
@@ -68,6 +73,29 @@ export const furnitureComponent: ContainerComponent<Props, FurnitureMutable> = (
         spriteSheet: furnitureData.spriteSheet,
         texture,
         name: furnitureData.label,
+      });
+
+      // System.game.users.getCurrentUser().position
+
+      const currentUser = System.game.users.getCurrentUser();
+
+      if (
+        interactive &&
+        currentUser?.position &&
+        isPosition3dEqual(isometricPosition, currentUser?.position)
+      ) {
+        System.proxy.emit(Event.POINTER_INTERACTIVE, {
+          position: {
+            x: isometricPosition.x,
+            z: isometricPosition.z,
+          },
+        });
+      }
+      System.proxy.emit(Event.POINTER_TILE, {
+        position: {
+          x: isometricPosition.x,
+          z: isometricPosition.z,
+        },
       });
     });
     spriteList.push($sprite);

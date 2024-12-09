@@ -3,3 +3,4 @@ export * from "./event.consts.ts";
 export * from "./tiles.consts.ts";
 export * from "./rooms.consts.ts";
 export * from "./users.consts.ts";
+export * from "./furniture.consts.ts";
