@@ -53,8 +53,8 @@ export const refreshGetRequest: RequestType = {
 
     if (!result) return getResponse(HttpStatusCode.FORBIDDEN);
 
-    const token = getRandomString(64);
-    refreshToken = getRandomString(128);
+    const token = getRandomString(54);
+    refreshToken = getRandomString(64);
 
     const {
       times: { accountTokenDays, accountRefreshTokenDays },

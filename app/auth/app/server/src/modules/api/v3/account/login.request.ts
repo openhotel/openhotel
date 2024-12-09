@@ -91,8 +91,8 @@ export const loginPostRequest: RequestType = {
         },
       );
 
-    const token = getRandomString(64);
-    const refreshToken = getRandomString(128);
+    const token = getRandomString(54);
+    const refreshToken = getRandomString(64);
 
     const userAgent = request.headers.get("user-agent");
     const ip = getIpFromRequest(request);

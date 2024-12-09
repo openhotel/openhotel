@@ -174,6 +174,7 @@ export const PasswordComponent: React.FC = () => {
         placeholder="Password"
         type="password"
         autocomplete="new-password"
+        maxLength={64}
         value={pass1}
         onChange={(e) => setPass1((e.target as HTMLInputElement).value)}
         onBlur={check}
@@ -182,6 +183,7 @@ export const PasswordComponent: React.FC = () => {
         name="rePassword"
         placeholder="Repeat password"
         type="password"
+        maxLength={64}
         autocomplete="off"
         value={pass2}
         onChange={(e) => setPass2((e.target as HTMLInputElement).value)}
