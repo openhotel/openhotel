@@ -43,7 +43,7 @@ export const usersGetRequest: RequestType = {
       });
 
     return getResponse(HttpStatusCode.OK, {
-      data: users,
+      data: { users },
     });
   },
 };
