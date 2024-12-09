@@ -18,6 +18,9 @@ export const generateToken = (
   idLength: number,
   tokenLength: number,
 ): GenToken => {
+  //tokens cannot be more than 64 because bcrypt has a limit if 72
+  if (tokenLength > 64) tokenLength = 64;
+
   const id = getRandomString(idLength);
   const token = getRandomString(tokenLength);
   const tokenHash = bcrypt.hashSync(token, bcrypt.genSaltSync(8));
