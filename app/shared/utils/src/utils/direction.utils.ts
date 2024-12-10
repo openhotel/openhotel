@@ -19,3 +19,27 @@ export const getDirection = (
 
   return Direction.NONE;
 };
+
+export const getPointFromDirection = (direction: Direction): Point3d => {
+  switch (direction) {
+    case Direction.NORTH:
+      return { x: 0, y: 0, z: 1 };
+    case Direction.SOUTH:
+      return { x: 0, y: 0, z: -1 };
+    case Direction.EAST:
+      return { x: 1, y: 0, z: 0 };
+    case Direction.WEST:
+      return { x: -1, y: 0, z: 0 };
+    case Direction.NORTH_EAST:
+      return { x: 1, y: 0, z: 1 };
+    case Direction.NORTH_WEST:
+      return { x: -1, y: 0, z: 1 };
+    case Direction.SOUTH_EAST:
+      return { x: 1, y: 0, z: -1 };
+    case Direction.SOUTH_WEST:
+      return { x: -1, y: 0, z: -1 };
+    case Direction.NONE:
+    default:
+      return { x: 0, y: 0, z: 0 };
+  }
+};
