@@ -14,6 +14,7 @@
     padding: 0;
     transition: padding, color, border, top, left, opacity;
     transition-duration: 0.3s;
+    cursor: text;
   }
 
   .input:not(:placeholder-shown) + label {
