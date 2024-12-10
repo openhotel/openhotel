@@ -1,5 +1,5 @@
 import { Point3d } from "../types/main.ts";
-import { Direction } from "../enums/main.ts";
+import { CrossDirection, Direction } from "../enums/main.ts";
 
 export const getDirection = (
   currentPoint: Point3d,
@@ -39,6 +39,23 @@ export const getPointFromDirection = (direction: Direction): Point3d => {
     case Direction.SOUTH_WEST:
       return { x: -1, y: 0, z: -1 };
     case Direction.NONE:
+    default:
+      return { x: 0, y: 0, z: 0 };
+  }
+};
+
+export const getPointFromCrossDirection = (
+  direction: CrossDirection,
+): Point3d => {
+  switch (direction) {
+    case CrossDirection.NORTH:
+      return { x: 0, y: 0, z: 1 };
+    case CrossDirection.SOUTH:
+      return { x: 0, y: 0, z: -1 };
+    case CrossDirection.EAST:
+      return { x: 1, y: 0, z: 0 };
+    case CrossDirection.WEST:
+      return { x: -1, y: 0, z: 0 };
     default:
       return { x: 0, y: 0, z: 0 };
   }
