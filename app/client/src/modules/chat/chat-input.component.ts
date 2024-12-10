@@ -8,7 +8,7 @@ import {
   isDesktop,
 } from "@tu/tulip";
 import { System } from "system";
-import { Event } from "shared/enums";
+import { Event, SystemEvent } from "shared/enums";
 import { inputComponent } from "shared/components";
 import { MAX_MESSAGES_HISTORY, STORAGE_KEY } from "shared/consts";
 import { __ } from "shared/utils";
@@ -107,11 +107,19 @@ export const chatInputComponent: ContainerComponent<{}, Mutable> = (props) => {
     $container,
   );
 
+  const onRemoveChatInputAppendText = System.events.on(
+    SystemEvent.CHAT_INPUT_APPEND_TEXT,
+    (text: string) => {
+      $input.setValue($input.getValue() + text);
+    },
+  );
+
   $input.on(DisplayObjectEvent.CONTEXT_ENTER, () => ($focused = true));
   $input.on(DisplayObjectEvent.CONTEXT_LEAVE, () => ($focused = false));
 
   $container.on(DisplayObjectEvent.DESTROYED, () => {
     removeOnKeyUp();
+    onRemoveChatInputAppendText();
   });
 
   return $container.getComponent(chatInputComponent, {

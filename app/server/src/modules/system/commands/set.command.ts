@@ -2,7 +2,7 @@ import { Command, RoomFurniture } from "shared/types/main.ts";
 import { ProxyEvent } from "shared/enums/event.enum.ts";
 import { System } from "modules/system/main.ts";
 import { FurnitureType } from "shared/enums/furniture.enum.ts";
-import { getRandomString, CrossDirection } from "@oh/utils";
+import { CrossDirection } from "@oh/utils";
 
 export const setCommand: Command = {
   command: "set",
@@ -41,7 +41,7 @@ export const setCommand: Command = {
     const furniture: RoomFurniture = {
       id: furnitureId,
       type: $furniture.type,
-      uid: getRandomString(32),
+      uid: crypto.randomUUID(),
       direction,
       position: {
         x,
@@ -51,6 +51,8 @@ export const setCommand: Command = {
     };
 
     switch ($furniture.type) {
+      case FurnitureType.TELEPORT:
+        await System.game.teleports.setRoom(furniture.uid, roomId);
       case FurnitureType.FURNITURE:
         furniture.size = $furniture.size;
         break;
@@ -62,7 +64,7 @@ export const setCommand: Command = {
         break;
     }
 
-    room.addFurniture(furniture);
+    await room.addFurniture(furniture);
     room.emit(ProxyEvent.ADD_FURNITURE, {
       furniture,
     });

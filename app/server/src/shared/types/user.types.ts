@@ -29,6 +29,8 @@ export type User = {
   positionUpdatedAt?: number;
 
   bodyDirection?: Direction;
+
+  meta?: (string | number)[];
 };
 
 export type UsersConfig = {
@@ -60,6 +62,8 @@ export type UserMutable = {
   getRoom: () => string | null;
   removeRoom: () => void;
 
+  moveToRoom: (roomId: string) => Promise<void>;
+
   setTargetPosition: (position: Point3d) => Promise<void>;
 
   getPathfinding: () => Point3d[];
@@ -71,6 +75,10 @@ export type UserMutable = {
 
   setLanguage: (language: Language) => void;
   getLanguage: () => Language;
+
+  getMeta: () => (number | string)[] | null;
+
+  isOp: () => Promise<boolean>;
 
   disconnect: () => void;
 

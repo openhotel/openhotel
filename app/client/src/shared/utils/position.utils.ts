@@ -19,3 +19,8 @@ export const getIsometricPositionFromPosition = ({
     z: calculatedZ,
   };
 };
+
+export const isPosition3dEqual = (
+  { x: x1, z: z1 }: Pick<Point3d, "x" | "z">,
+  { x: x2, z: z2 }: Pick<Point3d, "x" | "z">,
+) => x1 === x2 && z1 === z2;

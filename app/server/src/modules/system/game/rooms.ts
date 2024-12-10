@@ -1,4 +1,5 @@
 import {
+  FindPathProps,
   Room,
   RoomFurniture,
   RoomMutable,
@@ -13,8 +14,14 @@ import {
   getRoomSpawnDirection,
   getRoomSpawnPoint,
 } from "shared/utils/rooms.utils.ts";
-import { DEFAULT_ROOMS } from "shared/consts/main.ts";
-import { Direction, Point3d, getRandomNumber, isPoint3dEqual } from "@oh/utils";
+import { DEFAULT_ROOMS, WALKABLE_FURNITURE_TYPE } from "shared/consts/main.ts";
+import {
+  Direction,
+  getRandomNumber,
+  isPoint3dEqual,
+  Point2d,
+  Point3d,
+} from "@oh/utils";
 
 export const rooms = () => {
   let roomUserMap: Record<string, string[]> = {};
@@ -31,12 +38,18 @@ export const rooms = () => {
     const getSpawnPoint = (): Point3d => room.spawnPoint;
     const getSpawnDirection = (): Direction => room.spawnDirection;
 
-    const addUser = (user: User) => {
+    const addUser = (user: User, position?: Point2d) => {
       const $user = System.game.users.get({ accountId: user.accountId });
       if (!$user) return;
 
+      let startPosition = getSpawnPoint();
+      if (position) {
+        startPosition = { x: position.x, y: 0, z: position.y };
+        startPosition.y = getYFromPoint(startPosition);
+      }
+
       $user.setRoom(room.id);
-      $user.setPosition(getSpawnPoint());
+      $user.setPosition(startPosition);
       $user.setBodyDirection(getSpawnDirection());
 
       //Add user to "room" internally
@@ -104,7 +117,10 @@ export const rooms = () => {
           }) &&
           Boolean(
             !getFurnitures()
-              .filter((furniture) => furniture.type !== FurnitureType.FRAME)
+              .filter(
+                (furniture) =>
+                  !WALKABLE_FURNITURE_TYPE.includes(furniture.type),
+              )
               .find((furniture) =>
                 isPoint3dEqual(furniture.position, position),
               ),
@@ -112,7 +128,7 @@ export const rooms = () => {
       );
     };
 
-    const findPath = (start: Point3d, end: Point3d, accountId?: string) => {
+    const findPath = ({ start, end, accountId }: FindPathProps) => {
       const roomLayout = structuredClone(room.layout);
       const roomUsers = getUsers().map(($accountId) =>
         System.game.users.get({ accountId: $accountId }),
@@ -132,8 +148,9 @@ export const rooms = () => {
       }
 
       for (const furniture of getFurnitures()) {
-        if (furniture.type === FurnitureType.FRAME) continue;
+        if (WALKABLE_FURNITURE_TYPE.includes(furniture.type)) continue;
         const position = furniture.position;
+        if (isPoint3dEqual(start, position)) continue;
         roomLayout[position.z][position.x] = RoomPointEnum.EMPTY;
       }
 

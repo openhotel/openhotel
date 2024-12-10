@@ -49,11 +49,11 @@ export const users = () => {
             !room?.isPointFree(nextPosition, user.getAccountId())
           ) {
             //calc new pathfinding
-            const pathfinding = room?.findPath(
-              user.getPosition(),
-              targetPosition,
-              user.getAccountId(),
-            );
+            const pathfinding = room?.findPath({
+              start: user.getPosition(),
+              end: targetPosition,
+              accountId: user.getAccountId(),
+            });
 
             //Path is not possible
             if (!pathfinding.length) {
@@ -71,6 +71,9 @@ export const users = () => {
             $userPathfindingMap[accountId] = pathfinding;
             nextPosition = $userPathfindingMap[accountId].shift();
           }
+
+          //check if next position is a teleport
+          // System.game.teleports.getLocal(room.getId(), nextPosition);
 
           //check if next position is free
           if (!room.isPointFree(nextPosition, user.getAccountId())) {
@@ -145,15 +148,23 @@ export const users = () => {
       setPosition(null);
     };
 
+    const moveToRoom = async (roomId: string) => {
+      const currentRoom = getRoom();
+      if (currentRoom)
+        (await System.game.rooms.get(currentRoom)).removeUser(getObject());
+
+      (await System.game.rooms.get(roomId))?.addUser?.(getObject());
+    };
+
     const setTargetPosition = async (targetPosition: Point3d) => {
       const $room = await System.game.rooms.get(getRoom());
       if (!$room) return;
 
-      const pathfinding = $room.findPath(
-        getPosition(),
-        targetPosition,
-        user.accountId,
-      );
+      const pathfinding = $room.findPath({
+        start: getPosition(),
+        end: targetPosition,
+        accountId: user.accountId,
+      });
 
       //if not pf do nothing
       if (!pathfinding.length) {
@@ -182,6 +193,11 @@ export const users = () => {
     };
     const getLanguage = () =>
       $privateUserMap[user.accountId].language ?? Language.EN;
+
+    const getMeta = () => $user.meta ?? null;
+
+    const isOP = async () =>
+      (await $getConfig()).op.users.includes(getUsername());
 
     const disconnect = () =>
       System.proxy.$emit(ProxyEvent.$DISCONNECT_USER, {
@@ -213,6 +229,8 @@ export const users = () => {
       getRoom,
       removeRoom,
 
+      moveToRoom,
+
       setTargetPosition,
 
       // setPathfinding,
@@ -227,6 +245,10 @@ export const users = () => {
 
       setLanguage,
       getLanguage,
+
+      getMeta,
+
+      isOp: isOP,
 
       emit,
     };
