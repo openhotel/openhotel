@@ -23,19 +23,19 @@ export const getDirection = (
 export const getPointFromDirection = (direction: Direction): Point3d => {
   switch (direction) {
     case Direction.NORTH:
-      return { x: 0, y: 0, z: 1 };
-    case Direction.SOUTH:
-      return { x: 0, y: 0, z: -1 };
-    case Direction.EAST:
       return { x: 1, y: 0, z: 0 };
-    case Direction.WEST:
+    case Direction.SOUTH:
       return { x: -1, y: 0, z: 0 };
+    case Direction.EAST:
+      return { x: 0, y: 0, z: 1 };
+    case Direction.WEST:
+      return { x: 0, y: 0, z: -1 };
     case Direction.NORTH_EAST:
       return { x: 1, y: 0, z: 1 };
     case Direction.NORTH_WEST:
-      return { x: -1, y: 0, z: 1 };
-    case Direction.SOUTH_EAST:
       return { x: 1, y: 0, z: -1 };
+    case Direction.SOUTH_EAST:
+      return { x: -1, y: 0, z: 1 };
     case Direction.SOUTH_WEST:
       return { x: -1, y: 0, z: -1 };
     case Direction.NONE:
@@ -49,14 +49,49 @@ export const getPointFromCrossDirection = (
 ): Point3d => {
   switch (direction) {
     case CrossDirection.NORTH:
-      return { x: 0, y: 0, z: 1 };
-    case CrossDirection.SOUTH:
-      return { x: 0, y: 0, z: -1 };
-    case CrossDirection.EAST:
       return { x: 1, y: 0, z: 0 };
-    case CrossDirection.WEST:
+    case CrossDirection.SOUTH:
       return { x: -1, y: 0, z: 0 };
+    case CrossDirection.EAST:
+      return { x: 0, y: 0, z: 1 };
+    case CrossDirection.WEST:
+      return { x: 0, y: 0, z: -1 };
     default:
       return { x: 0, y: 0, z: 0 };
   }
+};
+
+export const getDirectionFromCrossDirection = (
+  direction: CrossDirection,
+): Direction => {
+  switch (direction) {
+    case CrossDirection.NORTH:
+      return Direction.NORTH;
+    case CrossDirection.SOUTH:
+      return Direction.SOUTH;
+    case CrossDirection.EAST:
+      return Direction.EAST;
+    case CrossDirection.WEST:
+      return Direction.WEST;
+  }
+};
+
+export const getCrossDirectionFromDirection = (
+  direction: Direction,
+): CrossDirection | null => {
+  switch (direction) {
+    case Direction.NORTH:
+    case Direction.NORTH_EAST:
+      return CrossDirection.NORTH;
+    case Direction.SOUTH:
+    case Direction.SOUTH_WEST:
+      return CrossDirection.SOUTH;
+    case Direction.EAST:
+    case Direction.SOUTH_EAST:
+      return CrossDirection.EAST;
+    case Direction.WEST:
+    case Direction.NORTH_WEST:
+      return CrossDirection.WEST;
+  }
+  return null;
 };
