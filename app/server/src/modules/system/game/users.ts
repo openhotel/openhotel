@@ -1,4 +1,5 @@
 import {
+  CacheUser,
   PrivateUser,
   User,
   UserMutable,
@@ -232,9 +233,15 @@ export const users = () => {
     };
   };
 
-  const add = (user: User, privateUser: PrivateUser) => {
+  const add = async (user: User, privateUser: PrivateUser) => {
     $userMap[user.accountId] = $getUser(user);
     $privateUserMap[privateUser.accountId] = privateUser;
+
+    await System.db.set(["users", user.accountId], {
+      accountId: user.accountId,
+      username: user.username,
+    });
+    await System.db.set(["usersByUsername", user.username], user.accountId);
   };
 
   const remove = async (user: User) => {
@@ -260,12 +267,17 @@ export const users = () => {
   };
 
   const getList = () => Object.values($userMap);
+
+  const getCacheUser = async (accountId: string): Promise<CacheUser | null> =>
+    await System.db.get(["users", accountId]);
+
   const $getConfig = (): Promise<UsersConfig> => {
     return getConfig<UsersConfig>({
       defaults: USERS_CONFIG_DEFAULT,
       fileName: "users.yml",
     });
   };
+
   const setConfig = async (config: UsersConfig): Promise<void> => {
     await getConfig<UsersConfig>({
       values: config,
@@ -280,6 +292,8 @@ export const users = () => {
     remove,
     get,
     getList,
+
+    getCacheUser,
 
     getConfig: $getConfig,
     setConfig,

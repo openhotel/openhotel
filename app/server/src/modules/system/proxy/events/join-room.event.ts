@@ -11,7 +11,7 @@ export const joinRoomEvent: ProxyEventType<{ roomId: string }> = {
     if (currentRoom)
       (await System.game.rooms.get(currentRoom)).removeUser(user.getObject());
 
-    (await System.game.rooms.get(roomId))?.addUser?.(user.getObject());
+    await (await System.game.rooms.get(roomId))?.addUser?.(user.getObject());
 
     const { version: configVersion } = System.getConfig();
     if (configVersion === "development") return;

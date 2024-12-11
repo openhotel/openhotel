@@ -92,7 +92,7 @@ export const Proxy = (() => {
         userTokenMap[clientId] = apiToken;
         if (!config.auth.enabled) {
           const username = connectionToken;
-          const accountId = crypto.randomUUID();
+          const accountId = state;
 
           userList.push({
             clientId,

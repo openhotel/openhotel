@@ -1,6 +1,11 @@
 import { Point3d, Direction } from "@oh/utils";
 import { ProxyEvent, Language, Hemisphere } from "shared/enums/main.ts";
 
+export type CacheUser = {
+  accountId: string;
+  username: string;
+};
+
 export type PrivateUser = {
   accountId: string;
   username: string;
