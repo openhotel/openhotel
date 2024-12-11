@@ -9,6 +9,7 @@ import * as bcrypt from "@da/bcrypt";
 import { PASSWORD_REGEX } from "shared/consts/main.ts";
 import { RequestKind } from "shared/enums/request.enums.ts";
 import { Account } from "shared/types/account.types.ts";
+import { pepperPassword } from "shared/utils/pepper.utils.ts";
 
 export const changePasswordPostRequest: RequestType = {
   method: RequestMethod.POST,
@@ -48,7 +49,11 @@ export const changePasswordPostRequest: RequestType = {
       });
     }
 
-    account.passwordHash = bcrypt.hashSync(password, bcrypt.genSaltSync(8));
+    const passWithPepper = await pepperPassword(password);
+    account.passwordHash = bcrypt.hashSync(
+      passWithPepper,
+      bcrypt.genSaltSync(8),
+    );
 
     await System.db.set(["accounts", recoverRequest.accountId], account);
 
