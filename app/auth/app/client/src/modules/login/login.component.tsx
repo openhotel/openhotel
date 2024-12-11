@@ -49,12 +49,12 @@ export const LoginComponent: React.FC = () => {
     <div className={styles.wrapper}>
       <form className={styles.form} onSubmit={onSubmit}>
         <h1 className={styles.title}>Login</h1>
-        <InputComponent name="email" placeholder="Email" autocomplete="email" />
+        <InputComponent name="email" placeholder="Email" autoComplete="email" />
         <InputComponent
           name="password"
           placeholder="Password"
           type="password"
-          autocomplete="current-password"
+          autoComplete="current-password"
         />
 
         {showCaptcha && (

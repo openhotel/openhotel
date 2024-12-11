@@ -30,9 +30,12 @@ export const recoverPasswordPostRequest: RequestType = {
       return getResponse(HttpStatusCode.OK);
     }
 
-    const isEmailEnabled = System.getConfig().email.enabled;
+    const config = System.getConfig();
 
-    if (!isEmailEnabled) {
+    const isDevelopment = config.version === "development";
+    const isEmailEnabled = config.email.enabled;
+
+    if (!isEmailEnabled && !isDevelopment) {
       return getResponse(HttpStatusCode.FORBIDDEN, {
         message: "Disabled: cannot send email",
       });
@@ -43,13 +46,15 @@ export const recoverPasswordPostRequest: RequestType = {
 
     const verifyUrl = `${rootUrl}/change-password?token=${verifyToken}`;
 
-    console.debug("Sending email to", email, "with url", verifyUrl);
-    System.email.send(
-      email,
-      "Change your account password",
-      verifyUrl,
-      `<a href="${verifyUrl}">${verifyUrl}<p/>`,
-    );
+    if (isEmailEnabled) {
+      console.debug("Sending email to", email, "with url", verifyUrl);
+      System.email.send(
+        email,
+        "Change your account password",
+        verifyUrl,
+        `<a href="${verifyUrl}">${verifyUrl}<p/>`,
+      );
+    }
 
     await System.db.set(
       ["passRecoverRequests", verifyToken],
@@ -61,6 +66,11 @@ export const recoverPasswordPostRequest: RequestType = {
       },
       { expireIn: 60 * 60 * 1000 /* 1h */ },
     );
+
+    if (isDevelopment)
+      return getResponse(HttpStatusCode.OK, {
+        redirectUrl: verifyUrl,
+      });
 
     return getResponse(HttpStatusCode.OK);
   },

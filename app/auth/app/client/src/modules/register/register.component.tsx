@@ -90,7 +90,7 @@ const EmailComponent: React.FC = () => {
       <InputComponent
         name="email"
         placeholder="Email"
-        autocomplete="email"
+        autoComplete="email"
         value={email}
         onChange={(e) => setEmail((e.target as HTMLInputElement).value)}
         onBlur={check}
@@ -129,7 +129,7 @@ const UsernameComponent: React.FC = () => {
       <InputComponent
         name="username"
         placeholder="Username"
-        autocomplete="username"
+        autoComplete="username"
         value={username}
         onChange={(e) => setUsername((e.target as HTMLInputElement).value)}
         onBlur={check}
@@ -173,7 +173,7 @@ export const PasswordComponent: React.FC = () => {
         name="password"
         placeholder="Password"
         type="password"
-        autocomplete="new-password"
+        autoComplete="new-password"
         maxLength={64}
         value={pass1}
         onChange={(e) => setPass1((e.target as HTMLInputElement).value)}
@@ -184,7 +184,7 @@ export const PasswordComponent: React.FC = () => {
         placeholder="Repeat password"
         type="password"
         maxLength={64}
-        autocomplete="off"
+        autoComplete="off"
         value={pass2}
         onChange={(e) => setPass2((e.target as HTMLInputElement).value)}
         onBlur={check}

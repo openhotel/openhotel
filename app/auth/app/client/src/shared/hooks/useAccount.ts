@@ -8,11 +8,9 @@ import {
 } from "shared/types";
 import { useCallback, useEffect, useState } from "react";
 import Cookies from "js-cookie";
-import { useNavigate } from "react-router-dom";
 
 export const useAccount = () => {
   const { fetch } = useApi();
-  const navigate = useNavigate();
 
   const [isLogged, setIsLogged] = useState<boolean>(null);
 

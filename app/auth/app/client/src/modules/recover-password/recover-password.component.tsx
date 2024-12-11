@@ -1,8 +1,10 @@
 import React, { FormEvent, useCallback, useState } from "react";
-import styles from "../login/login.module.scss";
 import { ButtonComponent, InputComponent } from "@oh/components";
-import { LinkComponent } from "../../shared/components";
-import { useAccount } from "../../shared/hooks";
+import { LinkComponent } from "shared/components";
+import { useAccount } from "shared/hooks";
+
+//@ts-ignore
+import styles from "../login/login.module.scss";
 
 export const RecoverPasswordComponent: React.FC = () => {
   const [statusMessage, setStatusMessage] = useState<string>();
@@ -18,7 +20,9 @@ export const RecoverPasswordComponent: React.FC = () => {
       const email = data.get("email") as string;
 
       recoverPassword({ email })
-        .then(() => {
+        .then(({ redirectUrl, message }) => {
+          if (redirectUrl) window.location.replace(redirectUrl);
+
           setStatusMessage("Email sent");
           setErrorMessage("");
         })
