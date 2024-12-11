@@ -5,8 +5,8 @@ import { log } from "shared/utils/main.ts";
 
 export const userJoinedEvent: ProxyEventType<{ user: PrivateUser }> = {
   event: ProxyEvent.$USER_JOINED,
-  func: ({ data: { user } }) => {
-    System.game.users.add(
+  func: async ({ data: { user } }) => {
+    await System.game.users.add(
       {
         accountId: user.accountId,
         username: user.username,

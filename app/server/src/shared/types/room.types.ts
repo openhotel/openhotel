@@ -3,9 +3,11 @@ import { ProxyEvent, RoomPointEnum } from "shared/enums/main.ts";
 import { Point3d, Direction } from "@oh/utils";
 
 type BaseRoom = {
+  version: 1;
   id: string;
   title: string;
   description: string;
+  ownerId: string;
 };
 
 export type RawRoom = BaseRoom & {
@@ -27,7 +29,10 @@ export type RoomMutable = {
   getTitle: () => string;
   getDescription: () => string;
 
-  addUser: (user: User) => void;
+  getOwnerId: () => string;
+  getOwnerUsername: () => Promise<string | null>;
+
+  addUser: (user: User) => Promise<void>;
   removeUser: (user: User) => void;
   getUsers: () => string[];
 

@@ -8,7 +8,7 @@ import {
 import { bubbleChatComponent, systemMessageComponent } from "modules/chat";
 import { previewComponent, roomComponent } from ".";
 import { Size2d } from "shared/types";
-import { hotBarChatComponent } from "modules/interfaces";
+import { hotBarChatComponent, roomInfoComponent } from "modules/interfaces";
 import { System } from "system";
 import { SystemEvent } from "shared/enums";
 
@@ -30,7 +30,8 @@ export const privateRoomComponent: ContainerComponent = () => {
   const windowBounds = global.getApplication().window.getBounds();
 
   const hotBar = hotBarChatComponent();
-  $container.add(hotBar);
+  const roomInfo = roomInfoComponent();
+  $container.add(hotBar, roomInfo);
 
   const systemMessage = systemMessageComponent({
     position: {
