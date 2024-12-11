@@ -3,6 +3,7 @@
 database
 database-shm
 database-wal
+database-priv
 config.yml
 abc_config.yml
 node_modules

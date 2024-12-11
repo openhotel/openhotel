@@ -9,6 +9,7 @@ import {
 import { System } from "modules/system/main.ts";
 import * as bcrypt from "@da/bcrypt";
 import { RequestKind } from "shared/enums/request.enums.ts";
+import { pepperPassword } from "shared/utils/pepper.utils.ts";
 
 export const loginPostRequest: RequestType = {
   method: RequestMethod.POST,
@@ -46,7 +47,15 @@ export const loginPostRequest: RequestType = {
         message: "Your email is not verified!",
       });
 
-    const result = bcrypt.compareSync(password, account.passwordHash);
+    if (!account.passwordHash)
+      return getResponse(HttpStatusCode.FORBIDDEN, {
+        message: "Email or password not valid!",
+      });
+
+    const result = bcrypt.compareSync(
+      await pepperPassword(password),
+      account.passwordHash,
+    );
 
     if (!result)
       return getResponse(HttpStatusCode.FORBIDDEN, {
