@@ -1,19 +1,8 @@
-import {
-  Room,
-  RoomFurniture,
-  RoomMutable,
-  RoomPoint,
-  User,
-} from "shared/types/main.ts";
+import { Room, RoomFurniture, RoomMutable, User } from "shared/types/main.ts";
 import { FurnitureType, ProxyEvent, RoomPointEnum } from "shared/enums/main.ts";
 import { System } from "modules/system/main.ts";
 import { getInterpolatedPath } from "shared/utils/pathfinding.utils.ts";
-import {
-  getRoomGridLayout,
-  getRoomSpawnDirection,
-  getRoomSpawnPoint,
-} from "shared/utils/rooms.utils.ts";
-import { DEFAULT_ROOMS } from "shared/consts/main.ts";
+import { getRoomGridLayout } from "shared/utils/rooms.utils.ts";
 import { Direction, Point3d, getRandomNumber, isPoint3dEqual } from "@oh/utils";
 
 export const rooms = () => {
@@ -28,10 +17,17 @@ export const rooms = () => {
     const getTitle = () => room.title;
     const getDescription = () => room.description;
 
+    const getOwnerId = () => $room.ownerId;
+    const getOwnerUsername = async (): Promise<string | null> => {
+      const user = await System.game.users.getCacheUser(getOwnerId());
+      if (!user) return null;
+      return user.username;
+    };
+
     const getSpawnPoint = (): Point3d => room.spawnPoint;
     const getSpawnDirection = (): Direction => room.spawnDirection;
 
-    const addUser = (user: User) => {
+    const addUser = async (user: User) => {
       const $user = System.game.users.get({ accountId: user.accountId });
       if (!$user) return;
 
@@ -46,7 +42,12 @@ export const rooms = () => {
       });
 
       //Load room to user
-      $user.emit(ProxyEvent.LOAD_ROOM, { room: getObject() });
+      $user.emit(ProxyEvent.LOAD_ROOM, {
+        room: {
+          ...getObject(),
+          ownerUsername: await getOwnerUsername(),
+        },
+      });
 
       //Add user to room
       emit(ProxyEvent.ADD_HUMAN, { user: $user.getObject() });
@@ -212,6 +213,9 @@ export const rooms = () => {
       getTitle,
       getDescription,
 
+      getOwnerId,
+      getOwnerUsername,
+
       addUser,
       removeUser,
       getUsers,
@@ -252,36 +256,7 @@ export const rooms = () => {
     return roomList[roomIndex];
   };
 
-  const generateDefaultRooms = async () => {
-    for (const room of DEFAULT_ROOMS) {
-      let layout: RoomPoint[][] = room.layout.map((line) =>
-        line
-          .split("")
-          .map((value) =>
-            parseInt(value) ? parseInt(value) : (value as RoomPointEnum),
-          ),
-      );
-
-      const roomData = {
-        ...room,
-        layout,
-        spawnPoint: getRoomSpawnPoint(layout),
-        spawnDirection: getRoomSpawnDirection(layout),
-      };
-      await System.db.set(["rooms", room.id], roomData);
-    }
-
-    return await System.db.list({ prefix: ["rooms"] });
-  };
-
-  const load = async () => {
-    let rooms = await getList();
-    if (!rooms.length) await generateDefaultRooms();
-  };
-
   return {
-    load,
-
     get,
     getList,
 
