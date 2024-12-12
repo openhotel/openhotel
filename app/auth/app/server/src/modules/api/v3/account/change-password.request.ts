@@ -15,7 +15,7 @@ export const changePasswordPostRequest: RequestType = {
   method: RequestMethod.POST,
   pathname: "/change-password",
   kind: RequestKind.PUBLIC,
-  func: async (request, url) => {
+  func: async (request: Request) => {
     const { password, rePassword, token } = await request.json();
 
     if (!password || !rePassword || !token) {
@@ -38,7 +38,7 @@ export const changePasswordPostRequest: RequestType = {
       });
     }
 
-    const account: Account | undefined = await System.db.get([
+    const account = await System.db.get<Account>([
       "accounts",
       recoverRequest.accountId,
     ]);

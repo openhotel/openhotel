@@ -1,7 +1,7 @@
 export type Account = {
   accountId: string;
   username: string;
-  email: string;
+  emailHash: string;
   passwordHash: string;
   createdAt: Date;
 };

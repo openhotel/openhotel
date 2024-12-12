@@ -21,6 +21,7 @@ Basic example with `OHAP` [/auth-example](https://github.com/openhotel/auth-exam
 
 ### Start project
 
-- Run `deno task install`
-- Run `deno task start`
-- Set `version` to `development` in `app/server/config.yml`
+- Run `deno task install` to install dependencies.
+- Copy the `app/server/.env.example` file and rename it to `.env`. Then, configure it with your environment variables.
+- Run `deno task start` to start the server.
+- Set `version` to `development` in the `app/server/config.yml` file.

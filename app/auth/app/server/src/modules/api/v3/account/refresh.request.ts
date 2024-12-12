@@ -11,6 +11,7 @@ import { System } from "modules/system/main.ts";
 import * as bcrypt from "@da/bcrypt";
 import { RequestKind } from "shared/enums/request.enums.ts";
 import { hasRequestAccess } from "shared/utils/scope.utils.ts";
+import { Account } from "shared/types/account.types.ts";
 
 export const refreshGetRequest: RequestType = {
   method: RequestMethod.GET,
@@ -42,7 +43,7 @@ export const refreshGetRequest: RequestType = {
     )
       return getResponse(HttpStatusCode.FORBIDDEN);
 
-    const account = await System.db.get(["accounts", accountId]);
+    const account = await System.db.get<Account>(["accounts", accountId]);
 
     if (!account) return getResponse(HttpStatusCode.FORBIDDEN);
 

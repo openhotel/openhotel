@@ -14,6 +14,7 @@ import {
 } from "shared/consts/main.ts";
 import { RequestKind } from "shared/enums/request.enums.ts";
 import { pepperPassword } from "shared/utils/pepper.utils.ts";
+import { getEmailHash, getEncryptedEmail } from "shared/utils/account.utils.ts";
 
 export const registerPostRequest: RequestType = {
   method: RequestMethod.POST,
@@ -48,7 +49,9 @@ export const registerPostRequest: RequestType = {
       "accountsByUsername",
       username.toLowerCase(),
     ]);
-    const accountByEmail = await System.db.get(["accountsByEmail", email]);
+
+    const emailHash = await getEmailHash(email);
+    const accountByEmail = await System.db.get(["accountsByEmail", emailHash]);
 
     if (accountByUsername || accountByEmail)
       return getResponse(HttpStatusCode.CONFLICT, {
@@ -85,7 +88,7 @@ export const registerPostRequest: RequestType = {
       {
         accountId,
         username,
-        email,
+        emailHash,
         passwordHash,
         createdAt: Date.now(),
         verified: !isEmailVerificationEnabled,
@@ -105,7 +108,7 @@ export const registerPostRequest: RequestType = {
       },
     );
     await System.db.set(
-      ["accountsByEmail", email],
+      ["accountsByEmail", emailHash],
       accountId,
       isEmailVerificationEnabled
         ? {
@@ -122,6 +125,9 @@ export const registerPostRequest: RequestType = {
           }
         : {},
     );
+
+    const encryptedEmail = await getEncryptedEmail(email);
+    await System.db.set(["emailsByHash", emailHash], encryptedEmail);
 
     return getResponse(HttpStatusCode.OK);
   },

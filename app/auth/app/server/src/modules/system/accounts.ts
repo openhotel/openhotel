@@ -1,4 +1,5 @@
 import { System } from "modules/system/main.ts";
+import { Account } from "shared/types/account.types.ts";
 
 export const accounts = () => {
   const getList = async () =>
@@ -16,7 +17,7 @@ export const accounts = () => {
     return await get(accountId);
   };
 
-  const get = async (accountId: string) => {
+  const get = async (accountId: string): Promise<Account | undefined> => {
     return await System.db.get(["accounts", accountId]);
   };
 

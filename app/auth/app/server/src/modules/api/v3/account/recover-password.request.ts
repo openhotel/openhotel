@@ -8,12 +8,13 @@ import {
 import { System } from "modules/system/main.ts";
 import { EMAIL_REGEX } from "shared/consts/main.ts";
 import { RequestKind } from "shared/enums/request.enums.ts";
+import { getEmailByHash, getEmailHash } from "shared/utils/account.utils.ts";
 
 export const recoverPasswordPostRequest: RequestType = {
   method: RequestMethod.POST,
   pathname: "/recover-password",
   kind: RequestKind.PUBLIC,
-  func: async (request, url) => {
+  func: async (request: Request) => {
     const { email } = await request.json();
 
     if (!email || !new RegExp(EMAIL_REGEX).test(email)) {
@@ -22,7 +23,8 @@ export const recoverPasswordPostRequest: RequestType = {
       });
     }
 
-    const accountId = await System.db.get(["accountsByEmail", email]);
+    const emailHash = await getEmailHash(email);
+    const accountId = await System.db.get(["accountsByEmail", emailHash]);
 
     if (!accountId) {
       // Don't tell the client if the email exists or not, to prevent email enumeration
@@ -47,9 +49,11 @@ export const recoverPasswordPostRequest: RequestType = {
     const verifyUrl = `${rootUrl}/change-password?token=${verifyToken}`;
 
     if (isEmailEnabled) {
-      console.debug("Sending email to", email, "with url", verifyUrl);
+      const realEmail = await getEmailByHash(emailHash);
+
+      console.debug("Sending email to", realEmail, "with url", verifyUrl);
       System.email.send(
-        email,
+        realEmail,
         "Change your account password",
         verifyUrl,
         `<a href="${verifyUrl}">${verifyUrl}<p/>`,
@@ -60,7 +64,7 @@ export const recoverPasswordPostRequest: RequestType = {
       ["passRecoverRequests", verifyToken],
       {
         accountId,
-        email,
+        emailHash,
         token: verifyToken,
         createdAt: Date.now(),
       },
