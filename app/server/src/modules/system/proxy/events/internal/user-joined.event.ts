@@ -24,10 +24,6 @@ export const userJoinedEvent: ProxyEventType<{
       accountId: privateUser.accountId,
     });
 
-    //TODO process meta
-
-    if (!(await currentUser.isOp())) return;
-
     if (meta?.[0] === Meta.TELEPORT) {
       const teleport = await System.game.teleports.get(meta[1] as string);
 
