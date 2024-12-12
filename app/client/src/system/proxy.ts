@@ -20,7 +20,7 @@ export const proxy = () => {
   const params = new URLSearchParams(location.search);
   let state = params.get("state");
   let token = params.get("token");
-  window.history.pushState(null, null, "/");
+  let meta = params.get("meta");
 
   const getRefreshSession = () => {
     try {
@@ -46,7 +46,10 @@ export const proxy = () => {
       `/request?version=${System.version.getVersion()}`,
     ).then((data) => data.json());
     if (status === 200) {
-      window.location.href = data.redirectUrl;
+      const redirectUrl = new URL(data.redirectUrl);
+      if (meta) redirectUrl.searchParams.append("meta", meta);
+
+      window.location.replace(redirectUrl);
       System.loader.addText("Redirecting...");
       return false;
     }
@@ -60,6 +63,7 @@ export const proxy = () => {
         const config = System.config.get();
         if (isConnected) return;
         System.loader.addText("Connecting...");
+        window.history.pushState(null, null, "/");
 
         $socket = getClientSocket({
           url: getWebSocketUrl(`${window.location.origin}/proxy`),
@@ -116,7 +120,7 @@ export const proxy = () => {
     });
 
   const loaded = () => {
-    $socket.emit("$$load", { p: performance.now() });
+    $socket.emit("$$load", { p: performance.now(), meta });
   };
 
   const emit = <Data>(event: Event, data: Data) => {

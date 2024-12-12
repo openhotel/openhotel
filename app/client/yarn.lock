@@ -232,14 +232,6 @@
   resolved "https://registry.yarnpkg.com/@esbuild/win32-x64/-/win32-x64-0.21.5.tgz#acad351d582d157bb145535db2a6ff53dd514b5c"
   integrity sha512-tQd/1efJuzPC6rCFwEvLtci/xNFcTZknmXs98FYDfGE4wP9ClFV98nyKrzJKVPMhdDnjzLhdUyMX4PsQAPjwIw==
 
-"@jsr/tu__vite-tulip-plugin@1.0.15":
-  version "1.0.15"
-  resolved "https://npm.jsr.io/~/11/@jsr/tu__vite-tulip-plugin/1.0.15.tgz#7EC71614D8CE6BCE41B07F97AD15352AE1F2D5CA"
-  integrity sha512-aQQWPfppyhhS/fX0KEcyYTPfUBhLuXCVPTbe59DqgMC8rjlAPZ6DqVIEbMEyXmuaEBBpxDIub8h7lx1Z92xWrg==
-  dependencies:
-    picocolors "1.0.1"
-    vite "5.4.6"
-
 "@oh/queue@npm:@jsr/oh__queue@1.1.1":
   version "1.1.1"
   resolved "https://npm.jsr.io/~/11/@jsr/oh__queue/1.1.1.tgz#21717C8844623F337C8A8DC8DD4989C4476EDBA2"
@@ -337,15 +329,15 @@
   resolved "https://registry.yarnpkg.com/@rollup/rollup-win32-x64-msvc/-/rollup-win32-x64-msvc-4.22.4.tgz#3dd5d53e900df2a40841882c02e56f866c04d202"
   integrity sha512-j8pPKp53/lq9lMXN57S8cFz0MynJk8OWNuUnXct/9KCpKU7DgU3bYMJhwWmcqC0UU29p8Lr0/7KEVcaM6bf47Q==
 
-"@tu/tulip@npm:@jsr/tu__tulip@0.14.4":
-  version "0.14.4"
-  resolved "https://npm.jsr.io/~/11/@jsr/tu__tulip/0.14.4.tgz#378057D8DB82E428A71F47F63860D644CC9F91DA"
-  integrity sha512-HQFqbLcsZfsSgwzhCTQPHtIxnl7Ltvx2SxrnmuOg/xZxmt8NK0Wv5R1WDFN8iu/cJ2N7ON8Msl50IaVMLq/TXw==
+"@tu/tulip@npm:@jsr/tu__tulip@0.14.8":
+  version "0.14.8"
+  resolved "https://npm.jsr.io/~/11/@jsr/tu__tulip/0.14.8.tgz#F20BBE2F8DFA8AD57B72FB28CBBA09B26E74C78A"
+  integrity sha512-Fw93lPWwNANuxzM1eShwK1WIfXAbs1QmONNwoBB39mwEw/u92/jsUso+LRqAr5VajPACJ8Zu8EQUeMIiwwaCDw==
   dependencies:
-    "@jsr/tu__vite-tulip-plugin" "1.0.15"
+    "@tulib/vite-tulip-plugin" "1.0.15"
     howler "2.2.4"
     p2 "0.7.1"
-    pixi.js "8.4.1"
+    pixi.js "8.6.3"
 
 "@tulib/vite-tulip-plugin@1.0.15":
   version "1.0.15"
@@ -507,10 +499,10 @@ picocolors@^1.1.0:
   resolved "https://registry.yarnpkg.com/picocolors/-/picocolors-1.1.0.tgz#5358b76a78cde483ba5cef6a9dc9671440b27d59"
   integrity sha512-TQ92mBOW0l3LeMeyLV6mzy/kWr8lkd/hp3mTg7wYK7zJhuBStmGMBG0BdeDZS/dZx1IukaX6Bk11zcln25o1Aw==
 
-pixi.js@8.4.1:
-  version "8.4.1"
-  resolved "https://registry.yarnpkg.com/pixi.js/-/pixi.js-8.4.1.tgz#138c930ede851e3056f32ec08d6a1539caf187b7"
-  integrity sha512-3ZbEIkLYYi602UB5wuN7kPz3VsGHoJa6nxD8ustvMLRySxHAR9Z8tCAYY8ISgNplpPbaDw03B0yTD4/k9f6cAQ==
+pixi.js@8.6.3:
+  version "8.6.3"
+  resolved "https://registry.yarnpkg.com/pixi.js/-/pixi.js-8.6.3.tgz#56c4fb263a0e6a4f4f8c77de70ff8fdbdd547f34"
+  integrity sha512-yQcDd8UYdeUsk6TnzY2PFFtDeRMqQQX+MEUNX7iqshIRLW2BmpT9E4nw/y2MXWMZozQs/FfRNkaBPE6SsO1HBw==
   dependencies:
     "@pixi/colord" "^2.9.6"
     "@types/css-font-loading-module" "^0.0.12"
