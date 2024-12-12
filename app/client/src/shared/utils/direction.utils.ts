@@ -1,5 +1,5 @@
 import { Point3d } from "shared/types";
-import { Direction } from "shared/enums";
+import { Direction, CrossDirection } from "shared/enums";
 
 export const getDirection = (
   currentPoint: Point3d,
@@ -57,3 +57,23 @@ export const getNextDirection = (
     : direction === Direction.NORTH
       ? Direction.NORTH_WEST
       : direction - 1;
+
+export const getCrossDirectionFromDirection = (
+  direction: Direction,
+): CrossDirection | null => {
+  switch (direction) {
+    case Direction.NORTH:
+    case Direction.NORTH_EAST:
+      return CrossDirection.NORTH;
+    case Direction.SOUTH:
+    case Direction.SOUTH_WEST:
+      return CrossDirection.SOUTH;
+    case Direction.EAST:
+    case Direction.SOUTH_EAST:
+      return CrossDirection.EAST;
+    case Direction.WEST:
+    case Direction.NORTH_WEST:
+      return CrossDirection.WEST;
+  }
+  return null;
+};

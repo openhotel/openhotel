@@ -5,6 +5,7 @@ import { messageEvent } from "./message.event.ts";
 import { typingStartEvent } from "./typing-start.event.ts";
 import { typingEndEvent } from "./typing-end.event.ts";
 import { setLanguageEvent } from "./set-language.event.ts";
+import { pointerInteractiveEvent } from "./pointer-interactive.event.ts";
 export * from "./internal/main.ts";
 
 export const eventList: ProxyEventType[] = [
@@ -13,6 +14,7 @@ export const eventList: ProxyEventType[] = [
   joinRoomEvent,
 
   pointerTileEvent,
+  pointerInteractiveEvent,
 
   messageEvent,
 

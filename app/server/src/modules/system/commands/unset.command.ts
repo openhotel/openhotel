@@ -1,6 +1,6 @@
 import { Command } from "shared/types/main.ts";
 import { System } from "modules/system/main.ts";
-import { ProxyEvent } from "shared/enums/main.ts";
+import { FurnitureType, ProxyEvent } from "shared/enums/main.ts";
 import { __ } from "shared/utils/main.ts";
 import { isPoint3dEqual } from "@oh/utils";
 
@@ -30,7 +30,10 @@ export const unsetCommand: Command = {
       return;
     }
 
-    room.removeFurniture(furniture);
+    if (furniture.type === FurnitureType.TELEPORT)
+      System.game.teleports.removeRoom(furniture.id);
+
+    await room.removeFurniture(furniture);
     room.emit(ProxyEvent.REMOVE_FURNITURE, {
       furniture,
     });

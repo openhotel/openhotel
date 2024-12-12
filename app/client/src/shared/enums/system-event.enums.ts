@@ -11,4 +11,6 @@ export enum SystemEvent {
   CURSOR_COORDS,
 
   CURRENT_USER_SET,
+
+  CHAT_INPUT_APPEND_TEXT,
 }

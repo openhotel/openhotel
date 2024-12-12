@@ -1,0 +1,91 @@
+import { System } from "modules/system/main.ts";
+import { RequestMethod } from "@oh/utils";
+
+export const teleports = () => {
+  let previousTeleportId: string = null;
+
+  const setRoom = async (id: string, roomId: string) => {
+    await System.db.set(["teleportsRoom", id], roomId);
+  };
+
+  const removeRoom = async (id: string) => {
+    await System.db.delete(["teleportsRoom", id]);
+  };
+
+  const setLink = async (teleportId: string) => {
+    if (previousTeleportId === teleportId) return;
+
+    if (previousTeleportId) {
+      await System.db.set(["teleportsTo", previousTeleportId], teleportId);
+      await System.db.set(["teleportsTo", teleportId], previousTeleportId);
+      previousTeleportId = null;
+      return;
+    }
+    previousTeleportId = teleportId;
+  };
+
+  const get = async (id: string) => {
+    const to = await System.db.get(["teleportsTo", id]);
+    const roomId = await System.db.get(["teleportsRoom", id]);
+
+    return {
+      to,
+      roomId,
+    };
+  };
+
+  const remote = () => {
+    const setLink = async (
+      accountId: string,
+      roomId: string,
+      teleportId: string,
+      linkId?: string,
+    ) => {
+      const $linkId = linkId ?? crypto.randomUUID();
+
+      await System.onet.fetch({
+        pathname: "/teleports/link",
+        method: RequestMethod.POST,
+        body: {
+          accountId,
+          linkId: $linkId,
+          teleportId,
+        },
+      });
+
+      await setRoom(teleportId, roomId);
+      await System.db.set(["teleportsTo", teleportId], "onet");
+
+      return { linkId: $linkId };
+    };
+
+    const get = async (
+      teleportId: string,
+    ): Promise<{
+      teleportId: string;
+      hotelId: string;
+      integrationId: string;
+    }> => {
+      const { teleport } = await System.onet.fetch({
+        pathname: `/teleports/get?teleportId=${teleportId}`,
+        method: RequestMethod.GET,
+      });
+      return teleport;
+    };
+
+    return {
+      setLink,
+      get,
+    };
+  };
+
+  return {
+    setRoom,
+    removeRoom,
+
+    setLink,
+    get,
+
+    remote: remote(),
+  };
+};

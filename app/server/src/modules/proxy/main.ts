@@ -13,11 +13,11 @@ import { routesList } from "./router/main.ts";
 import { requestClient } from "./router/client.request.ts";
 import * as bcrypt from "@da/bcrypt";
 import {
-  waitUntil,
   getRandomString,
   getURL,
   appendCORSHeaders,
   getIpFromRequest,
+  decodeBase64,
 } from "@oh/utils";
 import { eventList } from "./events/main.ts";
 import { auth } from "../shared/auth.ts";
@@ -112,14 +112,14 @@ export const Proxy = (() => {
           return false;
 
         const { scopes: targetScopes } = await $auth.fetch({
-          url: "user/@me/scopes",
+          url: "/user/@me/scopes",
           connectionToken,
         });
         if (!getScopes().every((scope) => targetScopes.includes(scope)))
           return false;
 
         const { accountId, username } = await $auth.fetch({
-          url: "user/@me",
+          url: "/user/@me",
           connectionToken,
         });
 
@@ -152,7 +152,7 @@ export const Proxy = (() => {
         if (!foundUser) return client?.close();
 
         let hasLoad = false;
-        client.on(ProxyEvent.$LOAD, () => {
+        client.on(ProxyEvent.$LOAD, ({ meta }) => {
           if (hasLoad) return;
           hasLoad = true;
 
@@ -164,12 +164,11 @@ export const Proxy = (() => {
             },
           });
           delete userTokenMap[foundUser.clientId];
+
+          serverWorker.emit(ProxyEvent.$USER_JOINED, {
+            data: { user: foundUser, meta: meta ? decodeBase64(meta) : null },
+          });
         });
-        // Wait if current user is connected to be disconnected
-        await waitUntil(
-          () =>
-            !Object.values(clientIdAccountIdMap).includes(foundUser.accountId),
-        );
         // Assign the accountId to the clientId. accountId can only be once as value.
         clientIdAccountIdMap[client?.id] = foundUser.accountId;
 

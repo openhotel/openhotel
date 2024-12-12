@@ -24,7 +24,7 @@ export const auth = () => {
 
     try {
       const { hotelId, accountId, integrationId } = await $fetch({
-        url: "hotel/license",
+        url: "/hotel/license",
       });
       $hotelId = hotelId;
       $integrationId = integrationId;
@@ -36,9 +36,10 @@ export const auth = () => {
   };
 
   const $fetch = async ({ url, connectionToken }: Props) => {
-    const { data } = await (
-      await fetch(`${$config.auth.api}/api/v3/${url}`, {
+    const { status, data } = await (
+      await fetch(`${$config.auth.api}/api/v3${url}`, {
         headers: new Headers({
+          "Content-Type": "application/json",
           "license-token": $config.auth.licenseToken,
           ...(connectionToken
             ? {

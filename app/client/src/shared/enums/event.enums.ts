@@ -20,12 +20,15 @@ export enum Event {
   INTERACT_FURNITURE = "interact-furniture",
 
   POINTER_TILE = "pointer-tile",
+  POINTER_INTERACTIVE = "pointer-interactive",
 
   MESSAGE = "message",
   TYPING_START = "typing-start",
   TYPING_END = "typing-end",
 
   SYSTEM_MESSAGE = "system-message",
+
+  REDIRECT = "redirect",
 
   TEST = "test",
 

@@ -52,7 +52,10 @@ export const systemMessageComponent: ContainerComponent = ({ position }) => {
 
   const removeOnSystemMessage = System.proxy.on<SystemMessageEvent>(
     Event.SYSTEM_MESSAGE,
-    ({ message }) => onNewMessage(message),
+    ({ message }) => {
+      onNewMessage(message);
+      console.debug(message);
+    },
   );
 
   $container.on(DisplayObjectEvent.DESTROYED, () => {

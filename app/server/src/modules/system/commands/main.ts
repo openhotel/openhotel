@@ -15,6 +15,7 @@ import { tpCommand } from "./tp.command.ts";
 import { setCommand } from "./set.command.ts";
 import { helpCommand } from "./help.command.ts";
 import { unsetCommand } from "./unset.command.ts";
+import { teleportCommand } from "./teleport.command.ts";
 
 export const commandList = [
   stopCommand,
@@ -37,6 +38,8 @@ export const commandList = [
   unsetCommand,
 
   helpCommand,
+
+  teleportCommand,
 ];
 
 export const executeCommand = ({
@@ -55,7 +58,11 @@ export const executeCommand = ({
 
   log(`Command /${foundCommand.command} executed by ${user.getUsername()}!`);
   _.shift();
-  foundCommand.func({ user, args: _ } as any);
+  try {
+    foundCommand.func({ user, args: _ } as any);
+  } catch (e) {
+    console.error(`Something went wrong with command ${message}`);
+  }
 
   return true;
 };
