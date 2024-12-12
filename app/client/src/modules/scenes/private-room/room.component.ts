@@ -357,12 +357,16 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = () => {
       } of furniture) {
         let $furniture;
         switch (type) {
+          //@ts-ignore
+          case FurnitureType.TELEPORT:
           case FurnitureType.FURNITURE:
             $furniture = furnitureComponent({
               furniture: id,
               isometricPosition: position,
               id: uid,
               direction,
+              // @ts-ignore
+              interactive: type === FurnitureType.TELEPORT,
             });
             $container.add(...$furniture.getSpriteList());
             break;

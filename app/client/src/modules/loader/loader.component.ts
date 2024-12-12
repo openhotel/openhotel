@@ -101,7 +101,6 @@ export const loaderComponent = () => {
   });
 
   onPercentage((percentage) => {
-    // console.log(percentage);
     $graphicsLoadingBar.setRectangle(
       ($loaderSize.width - 4) * percentage,
       10 - 4,

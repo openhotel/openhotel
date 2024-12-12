@@ -6,9 +6,17 @@ import {
   global,
   textSprite,
 } from "@tu/tulip";
-import { Hemisphere, SpriteSheetEnum, SystemEvent } from "shared/enums";
+import {
+  CrossDirection,
+  Direction,
+  Event,
+  Hemisphere,
+  SpriteSheetEnum,
+  SystemEvent,
+} from "shared/enums";
 import { System } from "system";
-import { CurrentUser } from "shared/types";
+import { CurrentUser, Point3d } from "shared/types";
+import { getCrossDirectionFromDirection, getDirection } from "shared/utils";
 
 export const infoComponent: ContainerComponent = () => {
   const $container = container({
@@ -61,21 +69,73 @@ export const infoComponent: ContainerComponent = () => {
     });
     $container.add($coords);
   }
-  {
-    const $coords = textSprite({
-      text: "0.0.0",
-      spriteSheet: SpriteSheetEnum.DEFAULT_FONT,
-      color: 0xffffff,
-      position: {
-        x: 4,
-        y: 34,
-      },
-    });
-    System.events.on(SystemEvent.CURSOR_COORDS, ({ position }) => {
-      $coords.setText(`${position.x}.${position.y}.${position.z}`);
-    });
-    $container.add($coords);
-  }
+  const $coords = textSprite({
+    text: "null",
+    spriteSheet: SpriteSheetEnum.DEFAULT_FONT,
+    color: 0xffffff,
+    position: {
+      x: 4,
+      y: 34,
+    },
+  });
+  let $humanPosition: Point3d = { x: 0, y: 0, z: 0 };
+  System.events.on(SystemEvent.CURSOR_COORDS, ({ position }) => {
+    const cursorDirection = getDirection($humanPosition, position);
+    const crossDirection = getCrossDirectionFromDirection(cursorDirection);
+
+    $coords.setText(
+      `cursor: ${position.x}.${position.y}.${position.z} - ${Direction[cursorDirection]} (${cursorDirection}) ${CrossDirection[crossDirection]} (${crossDirection})`,
+    );
+  });
+  $container.add($coords);
+
+  //--------------------------------------
+  const $direction = textSprite({
+    text: "null",
+    spriteSheet: SpriteSheetEnum.DEFAULT_FONT,
+    color: 0xffffff,
+    position: {
+      x: 4,
+      y: 44,
+    },
+  });
+
+  const setDirectionText = (position: Point3d, direction: Direction) => {
+    const crossDirection = getCrossDirectionFromDirection(direction);
+
+    $humanPosition = position;
+    $direction.setText(
+      `human: ${position.x}.${position.y}.${position.z} - ${Direction[direction]} (${direction}) ${CrossDirection[crossDirection]} (${crossDirection})`,
+    );
+  };
+
+  const getCurrentAccountId = () =>
+    System.game.users.getCurrentUser()?.accountId;
+
+  System.proxy.on<any>(
+    Event.MOVE_HUMAN,
+    ({ accountId, bodyDirection, position }) => {
+      if (getCurrentAccountId() !== accountId) return;
+
+      setDirectionText(position, bodyDirection);
+    },
+  );
+
+  System.proxy.on<any>(
+    Event.ADD_HUMAN,
+    ({ user: { accountId, bodyDirection, position } }) => {
+      if (getCurrentAccountId() !== accountId) return;
+
+      setDirectionText(position, bodyDirection);
+    },
+  );
+
+  System.proxy.on<any>(Event.LEAVE_ROOM, () => {
+    $direction.setText(`null`);
+    $coords.setText(`null`);
+  });
+
+  $container.add($direction);
 
   return $container.getComponent(infoComponent);
 };

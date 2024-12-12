@@ -24,6 +24,12 @@ export type Room = BaseRoom & {
 
 export type RoomPoint = number | string | RoomPointEnum;
 
+export type FindPathProps = {
+  start: Point3d;
+  end: Point3d;
+  accountId?: string;
+};
+
 export type RoomMutable = {
   getId: () => string;
   getTitle: () => string;
@@ -32,17 +38,13 @@ export type RoomMutable = {
   getOwnerId: () => string;
   getOwnerUsername: () => Promise<string | null>;
 
-  addUser: (user: User) => Promise<void>;
+  addUser: (user: User, position?: Point3d) => Promise<void>;
   removeUser: (user: User) => void;
   getUsers: () => string[];
 
   getPoint: (point: Point3d) => RoomPoint;
   isPointFree: (point: Point3d, accountId?: string) => boolean;
-  findPath: (
-    start: Point3d,
-    endPoint: Point3d,
-    accountId?: string,
-  ) => Point3d[];
+  findPath: (props: FindPathProps) => Point3d[];
 
   addFurniture: (furniture: RoomFurniture) => Promise<void>;
   removeFurniture: (furniture: RoomFurniture) => Promise<void>;

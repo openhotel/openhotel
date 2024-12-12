@@ -91,5 +91,6 @@ export const System = (() => {
     tasks: $tasks,
     db: $db,
     onet: $onet,
+    auth: $auth,
   };
 })();

@@ -49,8 +49,11 @@ export const getRequestRequest = {
           ? [
               Scope.ONET_FRIENDS_READ,
               Scope.ONET_FRIENDS_WRITE,
+
               Scope.ONET_MESSAGES_READ,
               Scope.ONET_MESSAGES_WRITE,
+
+              Scope.ONET_TELEPORTS_LINK,
             ]
           : []),
       ] as Scope[]

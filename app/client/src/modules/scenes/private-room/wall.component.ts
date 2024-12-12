@@ -4,19 +4,17 @@ import { SpriteSheetEnum } from "shared/enums";
 type Props = {
   axis: "x" | "z";
   height: number;
-  tint: number;
 };
 
 export const wallComponent: ContainerComponent<Props> = (props) => {
   const $container = container<Props>(props);
 
-  const { axis, height, tint } = $container.getProps();
+  const { axis, height } = $container.getProps();
 
   const top = sprite({
     spriteSheet: SpriteSheetEnum.ROOM,
     texture: `wall-${axis}-top`,
     eventMode: EventMode.NONE,
-    tint,
     pivot: { x: 0, y: 0 },
   });
   const topHeight = top.getBounds().height;
@@ -26,16 +24,15 @@ export const wallComponent: ContainerComponent<Props> = (props) => {
     spriteSheet: SpriteSheetEnum.ROOM,
     texture: `wall-${axis}-mid`,
     eventMode: EventMode.NONE,
-    tint,
-    pivot: { x: 0, y: -topHeight },
+    pivot: { x: 0, y: 0 },
+    position: { x: 0, y: topHeight },
   });
-  mid.getDisplayObject({ __preventWarning: true }).bounds.maxY = $wallHeight;
+  mid.getDisplayObject({ __preventWarning: true }).height = $wallHeight;
 
   const bottom = sprite({
     spriteSheet: SpriteSheetEnum.ROOM,
     texture: `wall-${axis}-bottom`,
     eventMode: EventMode.NONE,
-    tint,
     pivot: { x: 0, y: -topHeight - $wallHeight },
   });
   $container.add(top, mid, bottom);

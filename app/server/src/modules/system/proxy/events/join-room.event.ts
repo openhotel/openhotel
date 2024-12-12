@@ -7,19 +7,12 @@ import { getLatestVersion } from "@oh/utils";
 export const joinRoomEvent: ProxyEventType<{ roomId: string }> = {
   event: ProxyEvent.JOIN_ROOM,
   func: async ({ data: { roomId }, user }) => {
-    const currentRoom = user.getRoom();
-    if (currentRoom)
-      (await System.game.rooms.get(currentRoom)).removeUser(user.getObject());
-
-    await (await System.game.rooms.get(roomId))?.addUser?.(user.getObject());
+    await user.moveToRoom(roomId);
 
     const { version: configVersion } = System.getConfig();
     if (configVersion === "development") return;
 
-    const isOp = (await System.game.users.getConfig()).op.users.includes(
-      user.getUsername(),
-    );
-    if (!isOp) return;
+    if (!(await user.isOp())) return;
 
     const { version } = System.getEnvs();
     const newVersion = await getLatestVersion({
