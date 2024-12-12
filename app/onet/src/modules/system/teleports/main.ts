@@ -35,10 +35,13 @@ export const teleports = () => {
     hotelId: string;
     integrationId: string;
   } | null> => {
-    const teleportData = (await System.db.get(["teleport", teleportId])) as any;
     const teleportsTo = (await System.db.get([
       "teleportsTo",
       teleportId,
+    ])) as any;
+    const teleportData = (await System.db.get([
+      "teleport",
+      teleportsTo,
     ])) as any;
 
     if (!teleportsTo || !teleportData) return null;
