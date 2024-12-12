@@ -3,3 +3,6 @@ node_modules
 .vite
 config.yml
 build
+database
+database-wal
+database-shm

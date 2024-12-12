@@ -1,9 +1,9 @@
 import { Event } from "shared/enums/event.enums.ts";
-import { ServerMutable } from "shared/types/server.types.ts";
+import { HotelMutable } from "shared/types/hotel.types.ts";
 
 type FuncProps<Data> = {
   data?: Data;
-  server: ServerMutable;
+  hotel: HotelMutable;
 };
 
 export type EventType<Data extends unknown = undefined> = {

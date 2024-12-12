@@ -2,7 +2,7 @@ import { System } from "modules/system/main.ts";
 import { RequestMethod } from "@oh/utils";
 
 type FetchProps = {
-  method: RequestMethod;
+  method?: RequestMethod;
   pathname: string;
   data?: unknown;
   overrideEnabled?: boolean;
@@ -38,7 +38,7 @@ export const auth = () => {
   };
 
   const $fetch = async <Data>({
-    method,
+    method = RequestMethod.GET,
     pathname,
     data,
     headers = {},

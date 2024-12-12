@@ -3,9 +3,9 @@ import { Event } from "shared/enums/event.enums.ts";
 
 export const welcomeEvent: EventType<any> = {
   event: Event.WELCOME,
-  func: ({ server, data }) => {
+  func: ({ hotel, data }) => {
     console.log(
-      `>: welcome '${server.getHotelData().name}' (${server.getHotelId()})`,
+      `>: welcome '${hotel.getHotelData().name}' (${hotel.getHotelId()})`,
       data,
     );
   },

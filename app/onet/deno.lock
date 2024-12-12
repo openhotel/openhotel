@@ -1,10 +1,11 @@
 {
   "version": "4",
   "specifiers": {
-    "jsr:@da/bcrypt@1.0.0": "1.0.0",
+    "jsr:@da/bcrypt@1.0.1": "1.0.1",
     "jsr:@da/socket@2.3.0": "2.3.0",
-    "jsr:@oh/utils@1.3.10": "1.3.10",
+    "jsr:@oh/utils@1.3.23": "1.3.23",
     "jsr:@oh/yaml@1.1.0": "1.1.0",
+    "jsr:@std/encoding@1.0.5": "1.0.5",
     "jsr:@std/fs@1.0.4": "1.0.4",
     "jsr:@std/path@1.0.6": "1.0.6",
     "jsr:@std/path@^1.0.6": "1.0.6",
@@ -14,17 +15,18 @@
     "npm:prettier@3.3.3": "3.3.3"
   },
   "jsr": {
-    "@da/bcrypt@1.0.0": {
-      "integrity": "615d5875bf153c825e98f3d065b24ec3de78051f5a8f352e1fea792228ac1060"
+    "@da/bcrypt@1.0.1": {
+      "integrity": "d2172d3acbcff52e0465557a1a48b1ff1c92df08c90712dae5372255a8c45eb3"
     },
     "@da/socket@2.3.0": {
       "integrity": "837038107dd08654b8cff848f55e82c2919acd22d83b3508ad19d725e43b124c"
     },
-    "@oh/utils@1.3.10": {
-      "integrity": "592a90888359f3a7b83899637c3470a5af7a45850f51a5f15c9fc0c489812cd8",
+    "@oh/utils@1.3.23": {
+      "integrity": "ae9aea1dbe1815cad7cc9c410358b2a2d34512186b9be8878b1beb3e1312b98d",
       "dependencies": [
         "jsr:@da/bcrypt",
         "jsr:@oh/yaml",
+        "jsr:@std/encoding",
         "jsr:@std/fs",
         "jsr:@std/path@1.0.6",
         "jsr:@std/yaml",
@@ -39,6 +41,9 @@
         "jsr:@std/path@1.0.6",
         "jsr:@std/yaml"
       ]
+    },
+    "@std/encoding@1.0.5": {
+      "integrity": "ecf363d4fc25bd85bd915ff6733a7e79b67e0e7806334af15f4645c569fefc04"
     },
     "@std/fs@1.0.4": {
       "integrity": "2907d32d8d1d9e540588fd5fe0ec21ee638134bd51df327ad4e443aaef07123c",
@@ -78,9 +83,10 @@
   },
   "workspace": {
     "dependencies": [
+      "jsr:@da/bcrypt@1.0.1",
       "jsr:@da/socket@2.3.0",
       "jsr:@oh/queue@1.1.1",
-      "jsr:@oh/utils@1.3.10"
+      "jsr:@oh/utils@1.3.23"
     ],
     "packageJson": {
       "dependencies": [

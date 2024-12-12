@@ -1,19 +1,23 @@
 import { ConfigTypes, Envs } from "shared/types/main.ts";
-import { getConfig as $getConfig, update } from "@oh/utils";
+import { getConfig as $getConfig, update, getDb, DbMutable } from "@oh/utils";
 import { CONFIG_DEFAULTS } from "shared/consts/config.consts.ts";
+import { Migrations } from "modules/migrations/main.ts";
 import { api } from "./api.ts";
 import { serverSocket } from "./server-socket.ts";
 import { auth } from "./auth.ts";
-import { servers } from "./servers/main.ts";
+import { hotels } from "./hotels/main.ts";
+import { teleports } from "./teleports/main.ts";
 
 export const System = (() => {
   let $config: ConfigTypes;
   let $envs: Envs;
 
+  const $db: DbMutable = getDb({ pathname: `./database` });
   const $api = api();
   const $serverSocket = serverSocket();
   const $auth = auth();
-  const $servers = servers();
+  const $hotels = hotels();
+  const $teleports = teleports();
 
   const load = async (envs: Envs) => {
     $envs = envs;
@@ -41,6 +45,8 @@ export const System = (() => {
       );
 
     await $auth.load();
+    await $db.load();
+    await Migrations.load($db);
     $api.load();
     $serverSocket.load($config.port, $api.onRequest);
   };
@@ -56,9 +62,11 @@ export const System = (() => {
     getEnvs,
     isDevelopment,
 
+    db: $db,
     api: $api,
     auth: $auth,
     serverSocket: $serverSocket,
-    servers: $servers,
+    hotels: $hotels,
+    teleports: $teleports,
   };
 })();

@@ -1,7 +1,7 @@
 import { getServerSocket, ServerClient } from "@da/socket";
 import { RequestMethod } from "@oh/utils";
 import { System } from "modules/system/main.ts";
-import { HotelData } from "shared/types/server.types.ts";
+import { HotelData } from "shared/types/hotel.types.ts";
 
 export const serverSocket = () => {
   let $server;
@@ -22,7 +22,7 @@ export const serverSocket = () => {
       "guest",
       async ({
         clientId,
-        protocols: [licenseToken],
+        protocols: [currentHotelId, licenseToken],
       }: {
         clientId: string;
         protocols: string[];
@@ -43,6 +43,8 @@ export const serverSocket = () => {
                 "license-token": licenseToken,
               },
             });
+          if (hotelId !== currentHotelId) return false;
+
           $hotelId = hotelId;
           $accountId = accountId;
           $integrationId = integrationId;
@@ -58,10 +60,10 @@ export const serverSocket = () => {
           return false;
         }
 
-        const foundServer = System.servers.get({ licenseToken });
+        const foundServer = System.hotels.get({ hotelId: $hotelId });
         if (foundServer) foundServer.getSocket()?.close();
 
-        System.servers.add({
+        System.hotels.add({
           licenseToken,
           clientId,
 
@@ -75,7 +77,7 @@ export const serverSocket = () => {
       },
     );
     $server.on("connected", (client: ServerClient) => {
-      const foundServer = System.servers.get({ clientId: client.id });
+      const foundServer = System.hotels.get({ clientId: client.id });
       if (!foundServer) client.close();
 
       serverClientMap[client.id] = client;
@@ -84,13 +86,13 @@ export const serverSocket = () => {
     $server.on("disconnected", (client: ServerClient) => {
       delete serverClientMap[client.id];
 
-      const foundServer = System.servers.get({ clientId: client.id });
+      const foundServer = System.hotels.get({ clientId: client.id });
       console.log(
         `>: bye '${foundServer?.getHotelData()?.name}' (${foundServer?.getHotelId()})`,
       );
       if (!foundServer) return;
 
-      System.servers.remove(foundServer.getObject());
+      System.hotels.remove(foundServer.getObject());
     });
   };
 

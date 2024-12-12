@@ -1,5 +1,6 @@
 import { ServerClient } from "@da/socket";
 import { Event } from "shared/enums/event.enums.ts";
+import { Scope } from "shared/enums/scope.enums.ts";
 
 export type HotelData = {
   name: string;
@@ -8,7 +9,7 @@ export type HotelData = {
   type: "web" | "client";
 };
 
-export type Server = {
+export type Hotel = {
   clientId: string;
   licenseToken: string;
 
@@ -19,7 +20,7 @@ export type Server = {
   hotelData: HotelData;
 };
 
-export type ServerMutable = {
+export type HotelMutable = {
   load: () => void;
 
   getSocket: () => ServerClient;
@@ -31,5 +32,9 @@ export type ServerMutable = {
   getHotelId: () => string;
   getIntegrationId: () => string;
 
-  getObject: () => Server;
+  verify: (apiToken: string) => boolean;
+
+  hasAccountScopes: (accountId: string, scopes: Scope[]) => Promise<boolean>;
+
+  getObject: () => Hotel;
 };
