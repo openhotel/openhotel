@@ -35,13 +35,8 @@ export const connections = () => {
     );
     if (!foundIntegration) return;
 
-    const connectionsByAccountId = await System.db.get([
-      "connectionsByAccountId",
-      accountId,
-    ]);
     //remove current connection if exists
-    if (connectionsByAccountId)
-      await System.db.delete(["connections", connectionsByAccountId]);
+    await System.db.delete(["connections", accountId]);
 
     const { token, id: connectionId, tokenHash } = generateToken("con", 24, 32);
 
@@ -54,8 +49,11 @@ export const connections = () => {
       Object.values(Scope).includes(scope as Scope),
     );
 
+    await System.db.set(["accountByConnectionId", connectionId], accountId, {
+      expireIn,
+    });
     await System.db.set(
-      ["connections", connectionId],
+      ["connections", accountId],
       {
         connectionId,
 
@@ -74,10 +72,6 @@ export const connections = () => {
         expireIn,
       },
     );
-
-    await System.db.set(["connectionsByAccountId", accountId], connectionId, {
-      expireIn,
-    });
 
     await System.db.set(
       ["integrationsByHotelsByAccountId", accountId, hotelId, integrationId],
@@ -114,25 +108,15 @@ export const connections = () => {
     );
     if (!integration) return false;
 
-    const currentConnectionId = await System.db.get([
-      "connectionsByAccountId",
-      accountId,
-    ]);
+    const connection = await System.db.get(["connections", accountId]);
+    //check if active connection is the same as the deleting one and remove it
+    if (
+      connection &&
+      connection.hotelId === hotelId &&
+      connection.integrationId === integrationId
+    )
+      await System.db.delete(["connections", accountId]);
 
-    if (currentConnectionId) {
-      const connection = await System.db.get([
-        "connections",
-        currentConnectionId,
-      ]);
-      //check if active connection is the same as the deleting one and remove it
-      if (
-        connection.hotelId === hotelId &&
-        connection.integrationId === integrationId
-      )
-        await System.db.delete(["connections", currentConnectionId]);
-    }
-
-    await System.db.delete(["connectionsByAccountId", accountId]);
     await System.db.delete([
       "integrationsByHotelsByAccountId",
       accountId,
@@ -152,7 +136,13 @@ export const connections = () => {
     const { id: connectionId, token } = getTokenData(rawToken);
     if (!connectionId || !token) return false;
 
-    const foundConnection = await System.db.get(["connections", connectionId]);
+    const accountId = await System.db.get([
+      "accountByConnectionId",
+      connectionId,
+    ]);
+    if (!accountId) return false;
+
+    const foundConnection = await System.db.get(["connections", accountId]);
     if (!foundConnection) return false;
 
     return (
@@ -165,37 +155,20 @@ export const connections = () => {
     accountId: string,
     connectionId: string,
   ): Promise<null | { estimatedNextPingIn: number }> => {
-    const connectionsByAccountId = await System.db.get([
-      "connectionsByAccountId",
-      accountId,
-    ]);
-
-    if (
-      !connectionId ||
-      !connectionsByAccountId ||
-      connectionsByAccountId !== connectionId
-    )
-      return null;
-
-    const connection = await System.db.get(["connections", connectionId]);
-    if (!connection) return null;
+    const connection = await System.db.get(["connections", accountId]);
+    if (!connection || connection.connectionId !== connectionId) return null;
 
     const {
       times: { connectionTokenMinutes },
     } = System.getConfig();
     const expireIn = connectionTokenMinutes * 60 * 1000;
 
-    await System.db.set(["connections", connectionId], connection, {
+    await System.db.set(["connections", accountId], connection, {
       expireIn,
     });
-
-    await System.db.set(
-      ["connectionsByAccountId", connection.accountId],
-      connectionId,
-      {
-        expireIn,
-      },
-    );
+    await System.db.set(["accountByConnectionId", connectionId], accountId, {
+      expireIn,
+    });
 
     const estimatedNextPingIn = expireIn / 2;
 
@@ -203,19 +176,18 @@ export const connections = () => {
   };
 
   const get = async (rawToken: string): Promise<Connection> => {
-    const { id } = getTokenData(rawToken);
-    return await System.db.get(["connections", id]);
+    const { id: connectionId } = getTokenData(rawToken);
+    const accountId = await System.db.get([
+      "accountByConnectionId",
+      connectionId,
+    ]);
+    return await System.db.get(["connections", accountId]);
   };
 
   const getConnection = async (
     accountId: string,
   ): Promise<Connection | null> => {
-    const connectionsByAccountId = await System.db.get([
-      "connectionsByAccountId",
-      accountId,
-    ]);
-    if (!connectionsByAccountId) return null;
-    return await System.db.get(["connections", connectionsByAccountId]);
+    return await System.db.get(["connections", accountId]);
   };
 
   const getList = async (accountId: string) => {
@@ -226,20 +198,13 @@ export const connections = () => {
     ).map(({ value }) => value);
 
     //get active connection
-    const connectionsByAccountId = await System.db.get([
-      "connectionsByAccountId",
-      accountId,
-    ]);
 
     let currentHotelId;
     let currentIntegrationId;
-    if (connectionsByAccountId) {
-      const { hotelId, integrationId } = await System.db.get([
-        "connections",
-        connectionsByAccountId,
-      ]);
-      currentHotelId = hotelId;
-      currentIntegrationId = integrationId;
+    const connection = await System.db.get(["connections", accountId]);
+    if (connection) {
+      currentHotelId = connection.hotelId;
+      currentIntegrationId = connection.integrationId;
     }
 
     const connectionsList = [];

@@ -58,7 +58,7 @@ export const ConnectionComponent: React.FC = () => {
     } catch (e) {
       navigate("/");
     }
-  }, [isLogged, setConnection, setRedirect]);
+  }, [isLogged, setConnection]);
 
   if (isLogged !== null && !isLogged) return <RedirectComponent to="/login" />;
   if (connection === undefined) return <div>loading...</div>;
