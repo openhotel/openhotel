@@ -2,6 +2,7 @@ import { System } from "modules/system/main.ts";
 import * as bcrypt from "@da/bcrypt";
 import { generateToken, getTokenData } from "@oh/utils";
 import { Scope } from "shared/enums/scopes.enums.ts";
+import { Connection } from "shared/types/connection.types.ts";
 
 type GenerateProps = {
   hotelId: string;
@@ -68,7 +69,7 @@ export const connections = () => {
         scopes,
 
         tokenHash,
-      },
+      } as Connection,
       {
         expireIn,
       },
@@ -201,9 +202,20 @@ export const connections = () => {
     return { estimatedNextPingIn };
   };
 
-  const get = async (rawToken: string) => {
+  const get = async (rawToken: string): Promise<Connection> => {
     const { id } = getTokenData(rawToken);
     return await System.db.get(["connections", id]);
+  };
+
+  const getConnection = async (
+    accountId: string,
+  ): Promise<Connection | null> => {
+    const connectionsByAccountId = await System.db.get([
+      "connectionsByAccountId",
+      accountId,
+    ]);
+    if (!connectionsByAccountId) return null;
+    return await System.db.get(["connections", connectionsByAccountId]);
   };
 
   const getList = async (accountId: string) => {
@@ -281,6 +293,7 @@ export const connections = () => {
     remove,
     ping,
     get,
+    getConnection,
     getList,
   };
 };

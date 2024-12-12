@@ -3,7 +3,7 @@ export const useRedirect = () => {
     localStorage.setItem("lastRedirect", redirectUrl);
   };
   const navigate = () => {
-    window.location.href = localStorage.getItem("lastRedirect");
+    window.location.replace(localStorage.getItem("lastRedirect"));
   };
 
   return {

@@ -5,5 +5,6 @@ export const getMainHotelUrl = () =>
   import.meta.env.DEV ? DEV_MAIN_SERVER_URL : MAIN_SERVER_URL;
 
 export const redirectToFallbackRedirectUrl = () =>
-  (window.location.href =
-    localStorage.getItem("fallbackRedirectUrl") || getMainHotelUrl());
+  window.location.replace(
+    localStorage.getItem("fallbackRedirectUrl") || getMainHotelUrl(),
+  );

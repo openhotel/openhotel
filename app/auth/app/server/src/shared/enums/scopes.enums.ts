@@ -4,4 +4,6 @@ export enum Scope {
 
   ONET_FRIENDS_READ = "onet.friends.read",
   ONET_FRIENDS_WRITE = "onet.friends.write",
+
+  ONET_TELEPORTS_LINK = "onet.teleports.link",
 }
