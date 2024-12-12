@@ -52,13 +52,13 @@ export const ConnectionComponent: React.FC = () => {
         });
         get(hotelId, integrationId).then((connection) => {
           if (arraysMatch(connection.scopes, scopes)) return onAddHost();
-          redirectTo(connection.redirectUrl);
+          setRedirect(connection.redirectUrl);
         });
       });
     } catch (e) {
       navigate("/");
     }
-  }, [isLogged, setConnection]);
+  }, [isLogged, setConnection, setRedirect]);
 
   if (isLogged !== null && !isLogged) return <RedirectComponent to="/login" />;
   if (connection === undefined) return <div>loading...</div>;
