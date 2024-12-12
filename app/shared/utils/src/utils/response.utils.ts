@@ -15,6 +15,6 @@ import { HttpStatusCode } from "../enums/http-status-code.enums.ts";
  * Returns a JSON response with { "status": 200, "data": { "message": "Request successful" } }
  */
 export const getResponse = <Data>(
-  status: HttpStatusCode,
+  status: HttpStatusCode | number,
   data?: Data,
 ): Response => Response.json({ status, ...(data || {}) }, { status });

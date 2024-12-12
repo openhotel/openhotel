@@ -17,29 +17,33 @@ export const encrypt = async (text: string, key: string): Promise<string> => {
   const encoded = new TextEncoder().encode(text);
   const cryptoKey = await deriveKey(key);
 
-  const iv = new Uint8Array(16).fill(1);
-
+  const iv = crypto.getRandomValues(new Uint8Array(12));
   const encrypted = await crypto.subtle.encrypt(
-    { name: "AES-GCM", length: 256, iv },
+    { name: "AES-GCM", iv },
     cryptoKey,
     encoded,
   );
 
-  return btoa(String.fromCharCode(...new Uint8Array(encrypted)));
+  const ivAndEncrypted = new Uint8Array(iv.length + encrypted.byteLength);
+  ivAndEncrypted.set(iv);
+  ivAndEncrypted.set(new Uint8Array(encrypted), iv.length);
+  return btoa(String.fromCharCode(...ivAndEncrypted));
 };
 
 export const decrypt = async (
   encryptedText: string,
   key: string,
 ): Promise<string> => {
-  const encrypted = Uint8Array.from(atob(encryptedText), (c) =>
+  const ivAndEncrypted = Uint8Array.from(atob(encryptedText), (c) =>
     c.charCodeAt(0),
   );
+
+  const iv = ivAndEncrypted.slice(0, 12);
+  const encrypted = ivAndEncrypted.slice(12);
   const cryptoKey = await deriveKey(key);
 
-  const iv = new Uint8Array(16).fill(1);
   const decrypted = await crypto.subtle.decrypt(
-    { name: "AES-GCM", length: 256, iv },
+    { name: "AES-GCM", iv },
     cryptoKey,
     encrypted,
   );
