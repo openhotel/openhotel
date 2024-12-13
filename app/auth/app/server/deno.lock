@@ -3,7 +3,7 @@
   "specifiers": {
     "jsr:@da/bcrypt@1.0.1": "1.0.1",
     "jsr:@oh/queue@1.1.1": "1.1.1",
-    "jsr:@oh/utils@1.3.23": "1.3.23",
+    "jsr:@oh/utils@1.3.24": "1.3.24",
     "jsr:@oh/yaml@1.1.0": "1.1.0",
     "jsr:@std/encoding@1.0.5": "1.0.5",
     "jsr:@std/fs@1.0.4": "1.0.4",
@@ -21,8 +21,8 @@
     "@oh/queue@1.1.1": {
       "integrity": "8e8ec809202c48beaf436b3ea01b4c3a17f8c015ca686d906822482c9c881390"
     },
-    "@oh/utils@1.3.23": {
-      "integrity": "ae9aea1dbe1815cad7cc9c410358b2a2d34512186b9be8878b1beb3e1312b98d",
+    "@oh/utils@1.3.24": {
+      "integrity": "0a5b7945250d2f1e80ca89bdae38b79ada89c91ef3f8ccf34eead5ad18853cff",
       "dependencies": [
         "jsr:@da/bcrypt",
         "jsr:@oh/yaml",
@@ -212,7 +212,7 @@
     "dependencies": [
       "jsr:@da/bcrypt@1.0.1",
       "jsr:@oh/queue@1.1.1",
-      "jsr:@oh/utils@1.3.23",
+      "jsr:@oh/utils@1.3.24",
       "npm:nodemailer@6.9.15"
     ]
   }
