@@ -17,6 +17,8 @@ export type PrivateUser = {
 
   hemisphere: Hemisphere;
 
+  admin?: boolean;
+
   auth: {
     connectionToken: string;
   };

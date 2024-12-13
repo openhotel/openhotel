@@ -198,6 +198,8 @@ export const users = () => {
     const getMeta = () => $user.meta ?? null;
 
     const isOP = async () =>
+      System.auth.getOwnerId() === user.accountId ||
+      $privateUserMap[user.accountId].admin ||
       (await $getConfig()).op.users.includes(getUsername());
 
     const disconnect = () =>
