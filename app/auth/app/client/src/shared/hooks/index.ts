@@ -8,3 +8,4 @@ export * from "./useAdmin";
 export * from "./useRedirect";
 export * from "./useHotel";
 export * from "./useHotels";
+export * from "./useCookies";

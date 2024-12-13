@@ -7,10 +7,11 @@ import {
   AccountRegisterProps,
 } from "shared/types";
 import { useCallback, useEffect, useState } from "react";
-import Cookies from "js-cookie";
+import { useCookies } from "./useCookies";
 
 export const useAccount = () => {
   const { fetch } = useApi();
+  const { set: setCookie, get: getCookie, remove: removeCookie } = useCookies();
 
   const [isLogged, setIsLogged] = useState<boolean>(null);
 
@@ -22,10 +23,10 @@ export const useAccount = () => {
 
   const getAccountHeaders = useCallback(
     () => ({
-      "account-id": Cookies.get("account-id"),
-      token: Cookies.get("token"),
+      "account-id": getCookie("account-id"),
+      token: getCookie("token"),
     }),
-    [],
+    [getCookie],
   );
 
   const login = useCallback(
@@ -43,23 +44,11 @@ export const useAccount = () => {
         body,
       });
 
-      Cookies.set("account-id", accountId, {
-        expires: refreshTokenDuration,
-        sameSite: "None",
-        secure: true,
-      });
-      Cookies.set("refresh-token", refreshToken, {
-        expires: refreshTokenDuration,
-        sameSite: "None",
-        secure: true,
-      });
-      Cookies.set("token", token, {
-        expires: tokenDuration,
-        sameSite: "None",
-        secure: true,
-      });
+      setCookie("account-id", accountId, refreshTokenDuration);
+      setCookie("refresh-token", refreshToken, refreshTokenDuration);
+      setCookie("token", token, tokenDuration);
     },
-    [fetch],
+    [fetch, setCookie],
   );
 
   const register = useCallback(
@@ -79,10 +68,10 @@ export const useAccount = () => {
       headers: getAccountHeaders(),
     });
 
-    Cookies.remove("account-id");
-    Cookies.remove("refresh-token");
-    Cookies.remove("token");
-  }, [fetch, getAccountHeaders]);
+    removeCookie("account-id");
+    removeCookie("refresh-token");
+    removeCookie("token");
+  }, [fetch, getAccountHeaders, removeCookie]);
 
   const recoverPassword = useCallback(
     async (body: AccountRecoverPassProps) =>
@@ -105,9 +94,9 @@ export const useAccount = () => {
   );
 
   const refresh = useCallback(async () => {
-    let accountId = Cookies.get("account-id");
-    let token = Cookies.get("token");
-    let refreshToken = Cookies.get("refresh-token");
+    let accountId = getCookie("account-id");
+    let token = getCookie("token");
+    let refreshToken = getCookie("refresh-token");
 
     if (!accountId || (!token && !refreshToken)) throw "Not logged";
 
@@ -115,9 +104,9 @@ export const useAccount = () => {
       method: RequestMethod.GET,
       pathname: "/account/refresh",
       headers: {
-        "account-id": Cookies.get("account-id"),
-        token: Cookies.get("token"),
-        "refresh-token": Cookies.get("refresh-token"),
+        "account-id": getCookie("account-id"),
+        token: getCookie("token"),
+        "refresh-token": getCookie("refresh-token"),
       },
     });
     if (!data) return;
@@ -126,23 +115,12 @@ export const useAccount = () => {
     refreshToken = data.refreshToken;
     const [tokenDuration, refreshTokenDuration] = data.durations;
 
-    Cookies.set("account-id", accountId, {
-      expires: refreshTokenDuration,
-      sameSite: "None",
-      secure: true,
-    });
-    Cookies.set("refresh-token", refreshToken, {
-      expires: refreshTokenDuration,
-      sameSite: "None",
-      secure: true,
-    });
-    Cookies.set("token", token, {
-      expires: tokenDuration,
-      sameSite: "None",
-      secure: true,
-    });
-  }, [fetch]);
+    setCookie("account-id", accountId, refreshTokenDuration);
+    setCookie("refresh-token", refreshToken, refreshTokenDuration);
+    setCookie("token", token, tokenDuration);
+  }, [fetch, setCookie, getCookie]);
 
+  console.log(getCookie("account-id"));
   const setAsAdmin = useCallback(() => {
     return fetch({
       method: RequestMethod.POST,
