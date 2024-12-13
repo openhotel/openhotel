@@ -120,7 +120,6 @@ export const useAccount = () => {
     setCookie("token", token, tokenDuration);
   }, [fetch, setCookie, getCookie]);
 
-  console.log(getCookie("account-id"));
   const setAsAdmin = useCallback(() => {
     return fetch({
       method: RequestMethod.POST,
