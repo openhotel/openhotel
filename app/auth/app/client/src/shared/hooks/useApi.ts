@@ -17,6 +17,7 @@ export const useApi = () => {
           "Content-Type": "application/json",
         }),
         body: body ? JSON.stringify(body) : undefined,
+        credentials: "include",
       }).then(async (data) => {
         const contentType = data.headers.get("content-type");
 
