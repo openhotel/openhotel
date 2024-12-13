@@ -3,7 +3,7 @@ import { appendCORSHeaders, getCORSHeaders } from "../cors.utils.ts";
 
 const corsHeaders = [
   ["Access-Control-Allow-Origin", "*"],
-  ["Access-Control-Allow-Methods", "GET, POST, PUT", "DELETE"],
+  ["Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE"],
   [
     "Access-Control-Allow-Headers",
     "Origin, X-Requested-With, Content-Type, Accept",
@@ -18,6 +18,7 @@ describe("utils", () => {
 
     describe("getCORSHeaders", () => {
       it("returns headers with CORS solved", () => {
+        console.log(getCORSHeaders());
         expect(getCORSHeaders()).toEqual(headers);
       });
     });
