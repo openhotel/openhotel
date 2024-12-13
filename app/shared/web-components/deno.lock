@@ -90,6 +90,7 @@
         "npm:react-dom@18.3.1",
         "npm:react@18.3.1",
         "npm:sass@^1.80.4",
+        "npm:storybook-dark-mode@^4.0.2",
         "npm:storybook@8.3.6",
         "npm:vite-plugin-dts@4.3.0",
         "npm:vite@^5.4.10"

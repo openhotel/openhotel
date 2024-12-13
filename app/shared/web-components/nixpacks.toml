@@ -1,0 +1,5 @@
+[start]
+runImage = 'node:23-alpine'
+
+[build]
+runtime = "node"
