@@ -1,5 +1,7 @@
-[start]
-runImage = 'node:23-alpine'
+providers = ["node"]
 
-[build]
-runtime = "node"
+[phases.install]
+cmds = ["yarn install --frozen-lockfile"]
+
+[phases.build]
+cmds = ["yarn run build-storybook"]
