@@ -17,14 +17,19 @@ export const usersGetRequest: RequestType = {
     if (!(await hasRequestAccess({ request })))
       return getResponse(HttpStatusCode.FORBIDDEN);
 
-    const users = await Promise.all(
-      (await System.accounts.getList()).map(async (account) => ({
-        accountId: account.accountId,
-        username: account.username,
-        email: await getEmailByHash(account.emailHash),
-        admin: Boolean(await System.admins.get(account.accountId)),
-        otp: await System.otp.isOTPVerified(account.accountId),
-      })),
+    const users = (
+      await Promise.all(
+        (await System.accounts.getList()).map(async (account) => ({
+          accountId: account.accountId,
+          username: account.username,
+          email: await getEmailByHash(account.emailHash),
+          admin: Boolean(await System.admins.get(account.accountId)),
+          otp: await System.otp.isOTPVerified(account.accountId),
+          createdAt: account.createdAt,
+        })),
+      )
+    ).sort((userA: any, userB: any) =>
+      userA.createdAt > userB.createdAt ? -1 : 1,
     );
 
     const username = url.searchParams.get("username");

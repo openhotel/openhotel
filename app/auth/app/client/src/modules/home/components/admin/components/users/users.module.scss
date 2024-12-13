@@ -9,6 +9,11 @@
       gap: 1rem;
       background-color: var(--text-2-bg);
       padding: 1rem 2rem;
+
+      &.admin {
+        background-color: var(--color-yellow-2);
+        color: var(--color-dark-9);
+      }
     }
   }
 }
