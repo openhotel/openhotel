@@ -45,19 +45,19 @@ export const useApi = () => {
           if (status !== 200) return reject({ status });
           Cookies.set("sessionId", data.sessionId, {
             expires: 7,
-            sameSite: "strict",
+            sameSite: "None",
             secure: true,
           });
           Cookies.set("refreshToken", data.refreshToken, {
             expires: 7,
-            sameSite: "strict",
+            sameSite: "None",
             secure: true,
           });
           if (data.redirectUrl) setFallbackRedirectUrl(data.redirectUrl);
           else
             Cookies.set("token", data.token, {
               expires: 1,
-              sameSite: "strict",
+              sameSite: "None",
               secure: true,
             });
           resolve(data);
@@ -89,19 +89,19 @@ export const useApi = () => {
           if (status === 200) {
             Cookies.set("sessionId", sessionId, {
               expires: 7,
-              sameSite: "strict",
+              sameSite: "None",
               secure: true,
             });
             Cookies.set("refreshToken", data.refreshToken, {
               expires: 7,
-              sameSite: "strict",
+              sameSite: "None",
               secure: true,
             });
             if (data.redirectUrl) setFallbackRedirectUrl(data.redirectUrl);
             else
               Cookies.set("token", data.token, {
                 expires: 1,
-                sameSite: "strict",
+                sameSite: "None",
                 secure: true,
               });
             return resolve(data);
