@@ -4,4 +4,4 @@ providers = ["node"]
 cmds = ["yarn install --frozen-lockfile"]
 
 [phases.build]
-cmds = ["yarn run build-storybook"]
+cmds = ["yarn run build", "yarn run build-storybook"]
