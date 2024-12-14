@@ -34,11 +34,14 @@ export const api = () => {
 
         try {
           const { url, method } = request;
-          if (method === RequestMethod.OPTIONS)
+          if (method === RequestMethod.OPTIONS) {
+            const headers = getCORSHeaders() as Headers;
+            headers.set("Access-Control-Allow-Origin", System.getConfig().url);
             return new Response(null, {
               headers: getCORSHeaders(),
               status: 204,
             });
+          }
 
           const parsedUrl = new URL(url);
 
@@ -76,6 +79,10 @@ export const api = () => {
           if (foundMethodRequest) {
             const response = await foundMethodRequest.func(request, parsedUrl);
             appendCORSHeaders(response.headers);
+            response.headers.set(
+              "Access-Control-Allow-Origin",
+              System.getConfig().url,
+            );
             return response;
           }
           if (foundRequests.length)
