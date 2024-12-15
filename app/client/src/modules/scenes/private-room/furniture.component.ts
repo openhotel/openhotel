@@ -11,10 +11,7 @@ import { FurnitureDirectionData, Point3d } from "shared/types";
 import { TILE_SIZE } from "shared/consts";
 import { System } from "system";
 import { CrossDirection, Event, SystemEvent } from "shared/enums";
-import {
-  getPositionFromIsometricPosition,
-  isPosition3dEqual,
-} from "shared/utils";
+import { getPositionFromIsometricPosition } from "shared/utils";
 
 type Props = {
   id: string;
