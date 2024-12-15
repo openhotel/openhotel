@@ -10,7 +10,8 @@ export const accounts = () => {
     const connectionToken = headers.get("connection-token");
 
     if (!accountId && connectionToken) {
-      const connection = await System.connections.get(connectionToken);
+      const connection =
+        await System.connections.getConnectionByRawToken(connectionToken);
       accountId = connection.accountId;
     }
 

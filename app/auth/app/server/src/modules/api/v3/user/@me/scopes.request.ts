@@ -21,7 +21,8 @@ export const scopesGetRequest: RequestType = {
     if (!connectionToken)
       return getResponse(HttpStatusCode.OK, { data: { scopes: ["*"] } });
 
-    const connection = await System.connections.get(connectionToken);
+    const connection =
+      await System.connections.getConnectionByRawToken(connectionToken);
 
     if (!connection) return getResponse(HttpStatusCode.FORBIDDEN);
 

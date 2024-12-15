@@ -35,8 +35,6 @@ export const api = () => {
         try {
           const { url, method } = request;
           if (method === RequestMethod.OPTIONS) {
-            const headers = getCORSHeaders() as Headers;
-            headers.set("Access-Control-Allow-Origin", System.getConfig().url);
             return new Response(null, {
               headers: getCORSHeaders(),
               status: 204,
@@ -61,7 +59,7 @@ export const api = () => {
                 await Deno.readTextFile(`./client/index.html`),
                 {
                   headers: {
-                    "Content-Type": "text/html",
+                    "content-type": "text/html",
                   },
                 },
               );
@@ -79,10 +77,6 @@ export const api = () => {
           if (foundMethodRequest) {
             const response = await foundMethodRequest.func(request, parsedUrl);
             appendCORSHeaders(response.headers);
-            response.headers.set(
-              "Access-Control-Allow-Origin",
-              System.getConfig().url,
-            );
             return response;
           }
           if (foundRequests.length)

@@ -152,31 +152,32 @@ export const connections = () => {
   };
 
   const ping = async (
-    accountId: string,
-    connectionId: string,
-  ): Promise<null | { estimatedNextPingIn: number }> => {
-    const connection = await System.db.get(["connections", accountId]);
-    if (!connection || connection.connectionId !== connectionId) return null;
-
+    connection: Connection,
+  ): Promise<{ estimatedNextPingIn: number }> => {
     const {
       times: { connectionTokenMinutes },
     } = System.getConfig();
     const expireIn = connectionTokenMinutes * 60 * 1000;
 
-    await System.db.set(["connections", accountId], connection, {
+    await System.db.set(["connections", connection.accountId], connection, {
       expireIn,
     });
-    await System.db.set(["accountByConnectionId", connectionId], accountId, {
-      expireIn,
-    });
+    await System.db.set(
+      ["accountByConnectionId", connection.connectionId],
+      connection.accountId,
+      {
+        expireIn,
+      },
+    );
 
     const estimatedNextPingIn = expireIn / 2;
 
     return { estimatedNextPingIn };
   };
 
-  const get = async (rawToken: string): Promise<Connection> => {
-    const { id: connectionId } = getTokenData(rawToken);
+  const getConnectionByConnection = async (
+    connectionId: string,
+  ): Promise<Connection> => {
     const accountId = await System.db.get([
       "accountByConnectionId",
       connectionId,
@@ -184,7 +185,14 @@ export const connections = () => {
     return await System.db.get(["connections", accountId]);
   };
 
-  const getConnection = async (
+  const getConnectionByRawToken = async (
+    rawToken: string,
+  ): Promise<Connection> => {
+    const { id: connectionId } = getTokenData(rawToken);
+    return await getConnectionByConnection(connectionId);
+  };
+
+  const getConnectionByAccount = async (
     accountId: string,
   ): Promise<Connection | null> => {
     return await System.db.get(["connections", accountId]);
@@ -257,8 +265,10 @@ export const connections = () => {
     verify,
     remove,
     ping,
-    get,
-    getConnection,
     getList,
+
+    getConnectionByConnection,
+    getConnectionByRawToken,
+    getConnectionByAccount,
   };
 };

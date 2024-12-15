@@ -4,9 +4,8 @@ export const useCookies = () => {
   const set = (key: string, value: string, expires?: number) => {
     Cookies.set(key, value, {
       expires,
-      sameSite: "None",
+      sameSite: "none",
       secure: true,
-      partitioned: true,
     });
   };
 
