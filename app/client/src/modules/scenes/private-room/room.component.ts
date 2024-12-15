@@ -372,6 +372,7 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = () => {
             break;
           case FurnitureType.FRAME:
             $furniture = furnitureFrameComponent({
+              id: uid,
               direction,
               furniture: id,
               isometricPosition: position,
