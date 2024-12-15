@@ -2,8 +2,6 @@ import { System } from "modules/system/main.ts";
 import { RequestMethod } from "@oh/utils";
 
 export const teleports = () => {
-  let previousTeleportId: string = null;
-
   const setRoom = async (id: string, roomId: string) => {
     await System.db.set(["teleportsRoom", id], roomId);
   };
@@ -12,21 +10,16 @@ export const teleports = () => {
     await System.db.delete(["teleportsRoom", id]);
   };
 
-  const setLink = async (teleportId: string) => {
-    if (previousTeleportId === teleportId) return;
-
-    if (previousTeleportId) {
-      await System.db.set(["teleportsTo", previousTeleportId], teleportId);
-      await System.db.set(["teleportsTo", teleportId], previousTeleportId);
-      previousTeleportId = null;
-      return;
-    }
-    previousTeleportId = teleportId;
+  const setLink = async (teleportIdA: string, teleportIdB: string) => {
+    await System.db.set(["teleportsTo", teleportIdA], teleportIdB);
+    await System.db.set(["teleportsTo", teleportIdB], teleportIdA);
   };
 
   const get = async (id: string) => {
     const to = await System.db.get(["teleportsTo", id]);
     const roomId = await System.db.get(["teleportsRoom", id]);
+
+    if (!to || !roomId) return null;
 
     return {
       to,
