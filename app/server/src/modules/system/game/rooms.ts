@@ -9,13 +9,7 @@ import { ProxyEvent, RoomPointEnum } from "shared/enums/main.ts";
 import { System } from "modules/system/main.ts";
 import { getInterpolatedPath } from "shared/utils/pathfinding.utils.ts";
 import { WALKABLE_FURNITURE_TYPE } from "shared/consts/main.ts";
-import {
-  Direction,
-  getRandomNumber,
-  isPoint3dEqual,
-  Point2d,
-  Point3d,
-} from "@oh/utils";
+import { Direction, getRandomNumber, isPoint3dEqual, Point3d } from "@oh/utils";
 import { getRoomGridLayout } from "shared/utils/rooms.utils.ts";
 
 export const rooms = () => {
@@ -147,6 +141,10 @@ export const rooms = () => {
         if (accountId && user?.getAccountId() === accountId) continue;
 
         const position = user.getPosition();
+
+        //ignore if a human is in the same position of you because x (teleports, tp...)
+        if (isPoint3dEqual(position, start)) continue;
+
         //if spawn, ignore
         if (getPoint(position) === RoomPointEnum.SPAWN) continue;
 
@@ -158,6 +156,10 @@ export const rooms = () => {
         if (WALKABLE_FURNITURE_TYPE.includes(furniture.type)) continue;
         const position = furniture.position;
         if (isPoint3dEqual(start, position)) continue;
+
+        //ignore if a human is in the same position of furniture because x (chairs, teleports, tp...)
+        if (isPoint3dEqual(position, start)) continue;
+
         roomLayout[position.z][position.x] = RoomPointEnum.EMPTY;
       }
 
