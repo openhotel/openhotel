@@ -6,12 +6,13 @@ import {
   sprite,
 } from "@tu/tulip";
 import { FurnitureDirectionData, Point2d, Point3d } from "shared/types";
-import { TILE_SIZE, TILE_WIDTH } from "shared/consts";
+import { TILE_SIZE } from "shared/consts";
 import { System } from "system";
 import { CrossDirection, SystemEvent } from "shared/enums";
 import { getPositionFromIsometricPosition } from "shared/utils";
 
 type Props = {
+  id: string;
   isometricPosition: Point3d;
   framePosition: Point2d;
   furniture: string;
@@ -21,6 +22,7 @@ type Props = {
 type Mutable = {};
 
 export const furnitureFrameComponent: ContainerComponent<Props, Mutable> = ({
+  id,
   furniture,
   direction,
   isometricPosition,
@@ -62,7 +64,11 @@ export const furnitureFrameComponent: ContainerComponent<Props, Mutable> = ({
     cursor: Cursor.POINTER,
     hitArea,
   });
-  $sprite.on(DisplayObjectEvent.POINTER_TAP, () => {
+  $sprite.on(DisplayObjectEvent.POINTER_TAP, (event: MouseEvent) => {
+    if (event.shiftKey) {
+      System.events.emit(SystemEvent.CHAT_INPUT_APPEND_TEXT, id);
+      return;
+    }
     System.events.emit(SystemEvent.SHOW_PREVIEW, {
       type: "furniture",
       spriteSheet: furnitureData.spriteSheet,
