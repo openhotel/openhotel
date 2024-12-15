@@ -45,7 +45,7 @@ export const pointerInteractiveEvent: ProxyEventType<any> = {
       const teleportFrom = await System.game.teleports.get(
         teleportFurniture.uid,
       );
-      if (!teleportFrom.to) return moveToPosition();
+      if (!teleportFrom?.to) return moveToPosition();
 
       if (teleportFrom.to === "onet") {
         try {
