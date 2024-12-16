@@ -4,6 +4,7 @@ import {
   Event as TulipEvent,
   EventMode,
   global,
+  HorizontalAlign,
   textSprite,
 } from "@tu/tulip";
 import {
@@ -17,66 +18,84 @@ import {
 import { System } from "system";
 import { CurrentUser, Point3d } from "shared/types";
 import { getCrossDirectionFromDirection, getDirection } from "shared/utils";
+import { TextSpriteMutable } from "@tu/tulip/_dist";
 
 export const infoComponent: ContainerComponent = () => {
   const $container = container({
     zIndex: 10,
     eventMode: EventMode.NONE,
+    pivot: {
+      y: -4,
+      x: -4,
+    },
+    visible: localStorage.getItem("info") === "1",
   });
 
-  {
-    const $fps = textSprite({
-      text: `0 FPS`,
-      spriteSheet: SpriteSheetEnum.DEFAULT_FONT,
-      color: 0xffffff,
-      position: {
-        x: 4,
-        y: 4,
-      },
-    });
-    global.events.on(TulipEvent.FPS, ({ fps }) => {
-      $fps.setText(`${fps} FPS`);
-    });
-    $container.add($fps);
-  }
-  {
-    const isDevelopment = System.version.isDevelopment();
-    const $version = textSprite({
-      text: isDevelopment
-        ? "development"
-        : `${System.version.getVersion()}-alpha`,
-      spriteSheet: SpriteSheetEnum.DEFAULT_FONT,
-      color: 0xffffff,
-      position: {
-        x: 4,
-        y: 14,
-      },
-    });
-    $container.add($version);
-  }
-  {
-    const $coords = textSprite({
-      text: `hem null`,
-      spriteSheet: SpriteSheetEnum.DEFAULT_FONT,
-      color: 0xffffff,
-      position: {
-        x: 4,
-        y: 24,
-      },
-    });
-    System.events.on(SystemEvent.CURRENT_USER_SET, (user: CurrentUser) => {
-      $coords.setText(`hem ${Hemisphere[user.hemisphere]}`);
-    });
-    $container.add($coords);
-  }
-  const $coords = textSprite({
-    text: "null",
+  const textSpriteConfig = {
     spriteSheet: SpriteSheetEnum.DEFAULT_FONT,
     color: 0xffffff,
-    position: {
-      x: 4,
-      y: 34,
+    horizontalAlign: HorizontalAlign.RIGHT,
+    backgroundPadding: {
+      top: 2,
+      right: 4,
+      bottom: 2,
+      left: 4,
     },
+    backgroundAlpha: 0.5,
+    backgroundColor: 0,
+  };
+
+  const $fps = textSprite({
+    text: `0 FPS`,
+    position: {
+      x: 0,
+      y: 4,
+    },
+    ...textSpriteConfig,
+  });
+  global.events.on(TulipEvent.FPS, ({ fps }) => {
+    $fps.setText(`${fps} FPS`);
+    $reload();
+  });
+  $container.add($fps);
+  //--------------------------------------
+
+  const isDevelopment = System.version.isDevelopment();
+  const $version = textSprite({
+    text: isDevelopment
+      ? "development"
+      : `${System.version.getVersion()}-alpha`,
+    position: {
+      x: 0,
+      y: 15,
+    },
+    ...textSpriteConfig,
+  });
+  $container.add($version);
+  //--------------------------------------
+
+  const $hem = textSprite({
+    text: `hem null`,
+    position: {
+      x: 0,
+      y: 26,
+    },
+    ...textSpriteConfig,
+  });
+  System.events.on(SystemEvent.CURRENT_USER_SET, (user: CurrentUser) => {
+    $hem.setText(`hem ${Hemisphere[user.hemisphere]}`);
+    $reload();
+  });
+  $container.add($hem);
+  //--------------------------------------
+
+  const $coords = textSprite({
+    text: "null",
+    position: {
+      x: 0,
+      y: 37,
+    },
+    ...textSpriteConfig,
   });
   let $humanPosition: Point3d = { x: 0, y: 0, z: 0 };
   System.events.on(SystemEvent.CURSOR_COORDS, ({ position }) => {
@@ -86,19 +105,21 @@ export const infoComponent: ContainerComponent = () => {
     $coords.setText(
       `cursor: ${position.x}.${position.y}.${position.z} - ${Direction[cursorDirection]} (${cursorDirection}) ${CrossDirection[crossDirection]} (${crossDirection})`,
     );
+    $reload();
   });
   $container.add($coords);
-
   //--------------------------------------
+
   const $direction = textSprite({
     text: "null",
-    spriteSheet: SpriteSheetEnum.DEFAULT_FONT,
-    color: 0xffffff,
     position: {
-      x: 4,
-      y: 44,
+      x: 0,
+      y: 48,
     },
+    ...textSpriteConfig,
   });
+
+  $container.add($direction);
 
   const setDirectionText = (position: Point3d, direction: Direction) => {
     const crossDirection = getCrossDirectionFromDirection(direction);
@@ -107,6 +128,7 @@ export const infoComponent: ContainerComponent = () => {
     $direction.setText(
       `human: ${position.x}.${position.y}.${position.z} - ${Direction[direction]} (${direction}) ${CrossDirection[crossDirection]} (${crossDirection})`,
     );
+    $reload();
   };
 
   const getCurrentAccountId = () =>
@@ -133,9 +155,27 @@ export const infoComponent: ContainerComponent = () => {
   System.proxy.on<any>(Event.LEAVE_ROOM, () => {
     $direction.setText(`null`);
     $coords.setText(`null`);
+    $reload();
   });
 
-  $container.add($direction);
+  const $reload = () => {
+    $container.setPivotX(-global.getApplication().window.getBounds().width + 4);
+    for (const $child of $container.getChildren() as TextSpriteMutable[])
+      $child.setPivotX($child.getBounds().width);
+  };
+
+  $reload();
+  global.events.on(TulipEvent.RESIZE, () => {
+    $reload();
+  });
+
+  global.events.on(TulipEvent.KEY_UP, ({ key }: KeyboardEvent) => {
+    if (key === "F1") {
+      const isEnabled = localStorage.getItem("info") === "1";
+      localStorage.setItem("info", isEnabled ? "0" : "1");
+      $container.setVisible(!isEnabled);
+    }
+  });
 
   return $container.getComponent(infoComponent);
 };

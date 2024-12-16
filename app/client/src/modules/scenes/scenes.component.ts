@@ -6,6 +6,7 @@ import { offlineComponent } from "./offline";
 import { privateRoomComponent } from "./private-room";
 import { LoadRoomEvent } from "shared/types";
 import { interfacesComponent } from "./interfaces";
+import { wait } from "shared/utils";
 
 export const scenesComponent: ContainerComponent = () => {
   const $container = container({
@@ -17,13 +18,16 @@ export const scenesComponent: ContainerComponent = () => {
   let $privateRoom: ContainerMutable | undefined;
   let $homeScene: ContainerMutable | undefined;
 
-  System.proxy.on<LoadRoomEvent>(Event.LOAD_ROOM, ({ room }) => {
+  System.proxy.on<LoadRoomEvent>(Event.LOAD_ROOM, async ({ room }) => {
     System.game.rooms.set(room);
 
     $container.remove($homeScene);
 
     $privateRoom = $privateRoom ?? privateRoomComponent();
     $container.add($privateRoom);
+
+    await wait(1250);
+    $interfaces.setVisible(true);
   });
 
   const $offlineScene = offlineComponent();

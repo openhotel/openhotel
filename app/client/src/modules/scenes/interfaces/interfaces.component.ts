@@ -1,4 +1,5 @@
 import {
+  ContainerMutable,
   Cursor,
   DisplayObjectEvent,
   draggableContainer,
@@ -9,12 +10,13 @@ import { navigatorModalComponent } from "modules/interfaces";
 import { System } from "system";
 import { SystemEvent } from "shared/enums";
 
-export const interfacesComponent = () => {
+export const interfacesComponent: ContainerMutable<{}, any> = (props) => {
   const $container = draggableContainer({
     zIndex: 100,
     grabCursor: Cursor.GRAB,
     grabbingCursor: Cursor.GRABBING,
     size: global.window.getBounds(),
+    ...props,
   });
 
   const $navigator = navigatorModalComponent();
