@@ -175,9 +175,6 @@ export const Proxy = (() => {
         clientIdAccountIdMap[client?.id] = foundUser.accountId;
 
         userClientMap[foundUser.clientId] = client;
-        serverWorker.emit(ProxyEvent.$USER_JOINED, {
-          data: { user: foundUser },
-        });
 
         client.on(ProxyEvent.$USER_DATA, ({ event, message }) => {
           try {
