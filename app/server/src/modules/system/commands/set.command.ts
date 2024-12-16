@@ -39,9 +39,9 @@ export const setCommand: Command = {
     const room = await System.game.rooms.get(roomId);
 
     const furniture: RoomFurniture = {
-      id: furnitureId,
+      furnitureId,
       type: $furniture.type,
-      uid: crypto.randomUUID(),
+      id: crypto.randomUUID(),
       direction,
       position: {
         x,
@@ -52,7 +52,7 @@ export const setCommand: Command = {
 
     switch ($furniture.type) {
       case FurnitureType.TELEPORT:
-        await System.game.teleports.setRoom(furniture.uid, roomId);
+        await System.game.teleports.setRoom(furniture.id, roomId);
       case FurnitureType.FURNITURE:
         furniture.size = $furniture.size;
         break;

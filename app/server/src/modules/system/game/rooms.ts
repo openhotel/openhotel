@@ -196,7 +196,7 @@ export const rooms = () => {
       await $save();
     };
     const removeFurniture = async (furniture: RoomFurniture) => {
-      $room.furniture = $room.furniture.filter((f) => f.uid !== furniture.uid);
+      $room.furniture = $room.furniture.filter((f) => f.id !== furniture.id);
 
       await $save();
     };
