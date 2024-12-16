@@ -30,7 +30,7 @@ export const changePasswordPostRequest: RequestType = {
       });
     }
 
-    const recoverRequest = await System.db.get(["passRecoverRequests", token]);
+    const recoverRequest = await System.db.get(["passwordRecover", token]);
 
     if (!recoverRequest) {
       return getResponse(HttpStatusCode.BAD_REQUEST, {
@@ -57,7 +57,7 @@ export const changePasswordPostRequest: RequestType = {
 
     await System.db.set(["accounts", recoverRequest.accountId], account);
 
-    await System.db.delete(["passRecoverRequests", token]);
+    await System.db.delete(["passwordRecover", token]);
 
     return getResponse(HttpStatusCode.OK);
   },

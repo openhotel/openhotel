@@ -43,6 +43,14 @@ export const recoverPasswordPostRequest: RequestType = {
       });
     }
 
+    if (
+      !isDevelopment &&
+      (await System.db.get(["passwordRecoverByAccount", accountId]))
+    )
+      return getResponse(HttpStatusCode.TOO_MANY_REQUESTS, {
+        message: "Too many requests...",
+      });
+
     const verifyToken = getRandomString(16);
     const { url: rootUrl } = System.getConfig();
 
@@ -60,16 +68,21 @@ export const recoverPasswordPostRequest: RequestType = {
       );
     }
 
+    const expireIn = 60 * 60 * 1000; /* 1h */
+
     await System.db.set(
-      ["passRecoverRequests", verifyToken],
+      ["passwordRecover", verifyToken],
       {
         accountId,
         emailHash,
         token: verifyToken,
         createdAt: Date.now(),
       },
-      { expireIn: 60 * 60 * 1000 /* 1h */ },
+      { expireIn },
     );
+    await System.db.set(["passwordRecoverByAccount", accountId], verifyToken, {
+      expireIn,
+    });
 
     if (isDevelopment)
       return getResponse(HttpStatusCode.OK, {
