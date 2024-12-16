@@ -5,13 +5,17 @@ import {
   Event,
   global,
   sprite,
-  textSprite,
   Size,
+  graphics,
+  GraphicType,
+  Env,
 } from "@tu/tulip";
 import { logoComponent } from "modules/main";
-import { hotBarComponent } from "modules/interfaces";
 import { System } from "system";
-import { SpriteSheetEnum, SystemEvent, TextureEnum } from "shared/enums";
+import { SystemEvent, TextureEnum } from "shared/enums";
+import { hotBarComponent } from "modules/interfaces";
+import { BLACK_BAR_HEIGHT } from "shared/consts";
+import { wait } from "shared/utils";
 
 type Props = {};
 
@@ -21,21 +25,19 @@ export const homeComponent: ContainerComponent<Props> = () => {
   });
 
   const $logo = logoComponent();
-  $logo.setPosition({ x: 10, y: 20 });
-
-  const { name, description } = System.config.get();
-
-  const $name = textSprite({
-    spriteSheet: SpriteSheetEnum.BOLD_FONT,
-    text: name,
+  $logo.setPosition({
+    x: 5,
+    y: 5,
   });
-  $name.setPosition({ x: 60, y: 90 });
-  const $description = textSprite({
-    spriteSheet: SpriteSheetEnum.DEFAULT_FONT,
-    text: description,
+
+  const height = BLACK_BAR_HEIGHT + global.envs.get(Env.SAFE_AREA_INSET_BOTTOM);
+  const upperBar = graphics({
+    type: GraphicType.RECTANGLE,
+    width: 20,
+    height: height + 2,
+    tint: 0x0,
   });
-  $description.setPosition({ x: 60, y: 98 });
-  $container.add($name, $description);
+  $container.add(upperBar);
 
   const $hotBar = hotBarComponent();
   $container.add($logo, $hotBar);
@@ -51,15 +53,17 @@ export const homeComponent: ContainerComponent<Props> = () => {
       x: backgroundBounds.width / 2 - size.width / 2,
       y: backgroundBounds.height / 2 - size.height / 2,
     });
+    upperBar.setRectangle(size.width, height + 2);
   };
   $rePositionBackground(global.getApplication().window.getBounds());
   $container.add(background);
 
   let $removeOnResize;
-  $container.on(DisplayObjectEvent.MOUNT, (e) => {
-    System.events.emit(SystemEvent.SHOW_NAVIGATOR_MODAL);
-
+  $container.on(DisplayObjectEvent.MOUNT, async (e) => {
     $removeOnResize = global.events.on(Event.RESIZE, $rePositionBackground);
+
+    if (System.config.get().version !== "development") await wait(1250);
+    System.events.emit(SystemEvent.SHOW_NAVIGATOR_MODAL);
   });
   $container.on(DisplayObjectEvent.UNMOUNT, (e) => {
     $removeOnResize();
