@@ -15,7 +15,7 @@ type Props = {
   id: string;
   isometricPosition: Point3d;
   framePosition: Point2d;
-  furniture: string;
+  furnitureId: string;
   direction: CrossDirection;
 };
 
@@ -23,12 +23,12 @@ type Mutable = {};
 
 export const furnitureFrameComponent: ContainerComponent<Props, Mutable> = ({
   id,
-  furniture,
+  furnitureId,
   direction,
   isometricPosition,
   framePosition,
 }) => {
-  const furnitureData = System.game.furniture.get(furniture);
+  const furnitureData = System.game.furniture.get(furnitureId);
 
   const furnitureDirectionData = furnitureData.direction[
     direction

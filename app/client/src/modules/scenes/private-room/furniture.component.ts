@@ -16,7 +16,7 @@ import { getPositionFromIsometricPosition } from "shared/utils";
 type Props = {
   id: string;
   isometricPosition: Point3d;
-  furniture: string;
+  furnitureId: string;
   direction: CrossDirection;
   interactive: boolean;
 };
@@ -32,9 +32,9 @@ export const furnitureComponent: ContainerComponent<Props, FurnitureMutable> = (
 
   const $$destroy = $component.$destroy;
 
-  const { furniture, direction, isometricPosition, interactive, id } =
+  const { furnitureId, direction, isometricPosition, interactive, id } =
     $component.getProps();
-  const furnitureData = System.game.furniture.get(furniture);
+  const furnitureData = System.game.furniture.get(furnitureId);
 
   const furnitureDirectionData = furnitureData.direction[
     direction

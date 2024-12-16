@@ -349,7 +349,7 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = () => {
     const $addFurniture = (...furniture: RoomFurniture[]) => {
       for (const {
         id,
-        uid,
+        furnitureId,
         position,
         direction,
         type,
@@ -361,9 +361,9 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = () => {
           case FurnitureType.TELEPORT:
           case FurnitureType.FURNITURE:
             $furniture = furnitureComponent({
-              furniture: id,
+              furnitureId,
               isometricPosition: position,
-              id: uid,
+              id,
               direction,
               // @ts-ignore
               interactive: type === FurnitureType.TELEPORT,
@@ -372,9 +372,9 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = () => {
             break;
           case FurnitureType.FRAME:
             $furniture = furnitureFrameComponent({
-              id: uid,
+              id,
               direction,
-              furniture: id,
+              furnitureId,
               isometricPosition: position,
               framePosition: (props as RoomFurnitureFrame).framePosition,
             });
@@ -382,15 +382,15 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = () => {
             break;
         }
 
-        furnituresMap[uid] = $furniture;
+        furnituresMap[id] = $furniture;
       }
     };
 
     const $removeFurniture = (furniture: RoomFurniture) => {
-      if (furnituresMap[furniture.uid]) {
+      if (furnituresMap[furniture.id]) {
         //@ts-ignore
-        furnituresMap[furniture.uid].$destroy();
-        delete furnituresMap[furniture.uid];
+        furnituresMap[furniture.id].$destroy();
+        delete furnituresMap[furniture.id];
       }
     };
 
