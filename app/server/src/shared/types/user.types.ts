@@ -90,4 +90,6 @@ export type UserMutable = {
   disconnect: () => void;
 
   emit: <Data extends any>(event: ProxyEvent, data?: Data) => void;
+
+  log: (...data: string[]) => Promise<void>;
 };

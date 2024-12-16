@@ -1,7 +1,6 @@
 import { ProxyEventType, PrivateUser } from "shared/types/main.ts";
 import { Meta, ProxyEvent } from "shared/enums/main.ts";
 import { System } from "modules/system/main.ts";
-import { log } from "shared/utils/main.ts";
 import { getDirection, getPointFromCrossDirection } from "@oh/utils";
 
 export const userJoinedEvent: ProxyEventType<{
@@ -18,7 +17,6 @@ export const userJoinedEvent: ProxyEventType<{
       },
       privateUser,
     );
-    log(`${privateUser.username} joined!`);
 
     const currentUser = System.game.users.get({
       accountId: privateUser.accountId,
