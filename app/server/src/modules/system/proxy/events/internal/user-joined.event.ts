@@ -31,7 +31,7 @@ export const userJoinedEvent: ProxyEventType<{
       if (!room) return;
       const furniture = room.getFurnitures();
       const teleportFurniture = furniture.find(
-        (furniture) => furniture.uid === meta[1],
+        (furniture) => furniture.id === meta[1],
       );
 
       if (!teleportFurniture) return;

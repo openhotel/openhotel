@@ -34,8 +34,8 @@ export type FurnitureData = {
 };
 
 export type Furniture = {
-  uid: string;
   id: string;
+  furnitureId: string;
 };
 
 export type RoomFurniture = {
