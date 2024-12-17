@@ -1,6 +1,5 @@
 import { loaderComponent } from "modules/loader";
 import { global } from "@tu/tulip";
-import { mainComponent } from "modules/main";
 
 type AddItemsProps = {
   startLabel: string;
@@ -25,7 +24,6 @@ export const loader = () => {
 
   const end = () => {
     console.info("<< Loading completed!");
-    global.getApplication().add(mainComponent());
     global.getApplication().remove($loaderComponent);
   };
 

@@ -125,10 +125,12 @@ export const privateRoomsComponent: ContainerComponent<Props> = (props) => {
       });
       $container.add($background, $joinRoomText);
 
-      $container.on(DisplayObjectEvent.POINTER_TAP, () => {
-        System.proxy.emit(Event.JOIN_ROOM, {
+      $container.on(DisplayObjectEvent.POINTER_TAP, async () => {
+        System.loader.start();
+        System.proxy.emit(Event.PRE_JOIN_ROOM, {
           roomId: room.id,
         });
+
         System.events.emit(SystemEvent.HIDE_NAVIGATOR_MODAL);
       });
       targetRoomTextList.push($container);

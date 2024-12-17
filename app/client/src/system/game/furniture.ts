@@ -11,11 +11,15 @@ import { System } from "system/system";
 export const furniture = () => {
   const $furnitureMap: Record<string, FurnitureData> = {};
 
-  const load = async () => {
-    const furniture = await fetch("/data/furniture.yml")
-      .then((data) => data.text())
-      .then(parse);
-    const spriteSheet: string[] = furniture.map(
+  let $furniture: string[] = [];
+
+  const loadFurniture = async (...furniture: string[]) => {
+    const uniqueFurniture = [...new Set(furniture)].filter(
+      (furnitureId) =>
+        !$furnitureMap[furnitureId] || !$furniture.includes(furnitureId),
+    );
+
+    const spriteSheet: string[] = uniqueFurniture.map(
       (furnitureId: string) => `/data/${furnitureId}/sheet.json`,
     );
 
@@ -71,11 +75,22 @@ export const furniture = () => {
     });
   };
 
+  const load = async () => {
+    $furniture = await fetch("/data/furniture.yml")
+      .then((data) => data.text())
+      .then(parse);
+  };
+
   const get = (furnitureId: string): FurnitureData | null =>
     $furnitureMap[furnitureId];
 
+  const exists = (furnitureId: string): boolean =>
+    Boolean($furniture.includes(furnitureId));
+
   return {
     load,
+    loadFurniture,
     get,
+    exists,
   };
 };

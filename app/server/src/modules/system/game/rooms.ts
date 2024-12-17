@@ -78,7 +78,7 @@ export const rooms = () => {
 
       roomUserMap[room.id].push($user.getAccountId());
     };
-    const removeUser = (user: User) => {
+    const removeUser = (user: User, moveToAnotherRoom: boolean = false) => {
       const $user = System.game.users.get({ accountId: user.accountId });
       if (!$user) return;
 
@@ -96,7 +96,7 @@ export const rooms = () => {
         roomId: room.id,
       });
       //Disconnect user from current room
-      $user.emit(ProxyEvent.LEAVE_ROOM);
+      $user.emit(ProxyEvent.LEAVE_ROOM, { moveToAnotherRoom });
       //Remove user human from the room to existing users
       emit(ProxyEvent.REMOVE_HUMAN, { accountId: $user.getAccountId() });
     };
