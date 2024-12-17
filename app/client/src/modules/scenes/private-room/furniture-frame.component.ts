@@ -67,6 +67,7 @@ export const furnitureFrameComponent: ContainerComponent<Props, Mutable> = ({
   $sprite.on(DisplayObjectEvent.POINTER_TAP, (event: MouseEvent) => {
     if (event.shiftKey) {
       System.events.emit(SystemEvent.CHAT_INPUT_APPEND_TEXT, id);
+      console.info(id);
       return;
     }
     System.events.emit(SystemEvent.SHOW_PREVIEW, {
