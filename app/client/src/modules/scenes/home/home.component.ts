@@ -63,10 +63,13 @@ export const homeComponent: ContainerComponent<Props> = () => {
     $removeOnResize = global.events.on(Event.RESIZE, $rePositionBackground);
 
     if (System.config.get().version !== "development") await wait(1250);
+    if (!$container.isMounted()) return;
+
     System.events.emit(SystemEvent.SHOW_NAVIGATOR_MODAL);
   });
   $container.on(DisplayObjectEvent.UNMOUNT, (e) => {
     $removeOnResize();
+    System.events.emit(SystemEvent.HIDE_NAVIGATOR_MODAL);
   });
 
   return $container.getComponent(homeComponent);
