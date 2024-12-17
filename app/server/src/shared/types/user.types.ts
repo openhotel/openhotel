@@ -69,6 +69,7 @@ export type UserMutable = {
   getRoom: () => string | null;
   removeRoom: () => void;
 
+  preMoveToRoom: (roomId: string) => Promise<void>;
   moveToRoom: (roomId: string) => Promise<void>;
 
   setTargetPosition: (position: Point3d) => Promise<void>;

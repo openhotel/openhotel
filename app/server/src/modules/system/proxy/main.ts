@@ -20,6 +20,7 @@ type WorkerApiProps = {
   eventName: string;
   pathname: string;
   method: RequestMethod;
+  url: string;
 };
 
 type EmitProps<Data> = {
@@ -72,7 +73,14 @@ export const proxy = () => {
 
     $worker.on(
       ProxyEvent.$USER_API_DATA,
-      async ({ pathname, eventName, data, user, method }: WorkerApiProps) => {
+      async ({
+        pathname,
+        eventName,
+        data,
+        user,
+        method,
+        url,
+      }: WorkerApiProps) => {
         try {
           const foundRequest = requestList.find(
             (request) =>
@@ -80,10 +88,13 @@ export const proxy = () => {
           );
           if (!foundRequest) return $worker.emit(eventName, { status: 404 });
 
-          const response = await foundRequest.func({
-            user: System.game.users.get({ accountId: user.accountId }),
-            data,
-          });
+          const response = await foundRequest.func(
+            {
+              user: System.game.users.get({ accountId: user.accountId }),
+              data,
+            },
+            new URL(url),
+          );
 
           $worker.emit(eventName, response);
         } catch (e) {

@@ -3,7 +3,6 @@ import { System } from "system";
 import { Event } from "shared/enums";
 import { scenesComponent } from "modules/scenes";
 import { infoComponent } from "modules/interfaces";
-import { vignetteTransitionComponent } from "./vignette-transition.component";
 
 export const mainComponent = () => {
   const $container = container({
@@ -16,8 +15,6 @@ export const mainComponent = () => {
   $container.add($pageContainer, $infoContainer);
 
   let $scene;
-
-  $container.add(vignetteTransitionComponent());
 
   System.proxy.on<any>(Event.WELCOME, async ({ user }) => {
     System.game.users.setCurrentUser(user);

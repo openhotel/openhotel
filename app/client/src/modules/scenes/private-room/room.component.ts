@@ -95,7 +95,7 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = () => {
   };
 
   $container.on(DisplayObjectEvent.REMOVED, onRemove);
-  $container.on(DisplayObjectEvent.ADDED, () => {
+  $container.on(DisplayObjectEvent.ADDED, async () => {
     removeOnAddHuman = System.proxy.on<any>(Event.ADD_HUMAN, ({ user }) => {
       const human = humanComponent({ user });
       humanList.push(human);
@@ -133,10 +133,11 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = () => {
         human.setIsometricPosition(position);
       },
     );
+
     removeOnAddFurniture = System.proxy.on<any>(
       Event.ADD_FURNITURE,
-      ({ furniture }) => {
-        $addFurniture(furniture);
+      async ({ furniture }) => {
+        await $addFurniture(furniture);
       },
     );
     removeOnRemoveFurniture = System.proxy.on<any>(
@@ -346,7 +347,10 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = () => {
     }
 
     //rooms
-    const $addFurniture = (...furniture: RoomFurniture[]) => {
+    const $addFurniture = async (...furniture: RoomFurniture[]) => {
+      await System.game.furniture.loadFurniture(
+        ...furniture.map(($furniture) => $furniture.furnitureId),
+      );
       for (const {
         id,
         furnitureId,
@@ -394,7 +398,7 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = () => {
       }
     };
 
-    $addFurniture(...furniture);
+    await $addFurniture(...furniture);
   });
 
   return $container.getComponent(roomComponent, {
