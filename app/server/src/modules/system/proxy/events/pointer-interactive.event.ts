@@ -48,6 +48,7 @@ export const pointerInteractiveEvent: ProxyEventType<any> = {
       if (!teleportFrom?.to) return moveToPosition();
 
       if (teleportFrom.to === "onet") {
+        moveToPosition();
         try {
           const teleport = await System.game.teleports.remote.get(
             teleportFurniture.id,
@@ -63,10 +64,8 @@ export const pointerInteractiveEvent: ProxyEventType<any> = {
           );
 
           user.emit(ProxyEvent.REDIRECT, { redirectUrl: redirectUrl.href });
-          return;
-        } catch (e) {
-          return moveToPosition();
-        }
+        } catch (e) {}
+        return;
       }
 
       const teleportTo = await System.game.teleports.get(teleportFrom.to);
