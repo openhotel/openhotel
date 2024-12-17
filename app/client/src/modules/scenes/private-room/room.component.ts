@@ -359,6 +359,11 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = () => {
         type,
         ...props
       } of furniture) {
+        if (!System.game.furniture.exists(furnitureId)) {
+          console.error(`Furniture '${furnitureId}' does not exist!`);
+          continue;
+        }
+
         let $furniture;
         switch (type) {
           //@ts-ignore
