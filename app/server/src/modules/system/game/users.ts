@@ -147,10 +147,24 @@ export const users = () => {
       setPosition(null);
     };
 
+    const preMoveToRoom = async (roomId: string) => {
+      const foundRoom = await System.game.rooms.get(roomId);
+
+      emit(ProxyEvent.PRE_JOIN_ROOM, {
+        room: {
+          id: foundRoom.getId(),
+          furniture: foundRoom.getFurnitures(),
+        },
+      });
+    };
+
     const moveToRoom = async (roomId: string) => {
       const currentRoom = getRoom();
       if (currentRoom)
-        (await System.game.rooms.get(currentRoom)).removeUser(getObject());
+        (await System.game.rooms.get(currentRoom)).removeUser(
+          getObject(),
+          true,
+        );
 
       await (await System.game.rooms.get(roomId))?.addUser?.(getObject());
     };
@@ -241,6 +255,7 @@ export const users = () => {
       getRoom,
       removeRoom,
 
+      preMoveToRoom,
       moveToRoom,
 
       setTargetPosition,

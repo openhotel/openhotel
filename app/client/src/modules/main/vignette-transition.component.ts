@@ -15,7 +15,7 @@ const DELTA_MULTIPLIER = 0.35;
 
 export const vignetteTransitionComponent = () => {
   const $container = container({
-    zIndex: 20,
+    zIndex: 100,
   });
 
   const size = global.getApplication().window.getBounds();
@@ -55,6 +55,8 @@ export const vignetteTransitionComponent = () => {
       type: TickerQueue.DURATION,
       duration: 750,
       onFunc: (delta) => {
+        if (!upperRectangle.isMounted() || !belowRectangle.isMounted()) return;
+
         upperRectangle.setPositionY((y) => y - delta * DELTA_MULTIPLIER);
         belowRectangle.setPositionY((y) => y + delta * DELTA_MULTIPLIER);
       },

@@ -41,6 +41,7 @@ export const getApiRequest = {
           eventName,
           pathname,
           method,
+          url: request.url,
         });
 
         Proxy.getServerWorker().on(eventName, ({ status, data }) => {

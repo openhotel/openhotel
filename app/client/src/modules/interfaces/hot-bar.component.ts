@@ -51,6 +51,8 @@ export const hotBarComponent: ContainerComponent<Props> = () => {
     System.tasks.add({
       type: TickerQueue.CUSTOM,
       onFunc: (delta) => {
+        if (!itemContainer.isMounted()) return;
+
         itemContainer.setPivotY((y) => y + delta * DELTA_MULTIPLIER);
         if (itemContainer.getPivot().y >= -5) return true;
       },

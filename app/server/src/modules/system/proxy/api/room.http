@@ -1,0 +1,2 @@
+#
+GET http://localhost:1994/proxy/api/room?roomId=68c431dc-0d3e-4f89-aaf2-1f91e28a29cc

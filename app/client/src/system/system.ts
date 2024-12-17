@@ -10,6 +10,7 @@ import { api } from "system/api";
 import { $window } from "system/window";
 import { version } from "system/version";
 import { config } from "system/config";
+import { mainComponent } from "modules/main";
 
 export const System = (() => {
   const $config = config();
@@ -44,6 +45,7 @@ export const System = (() => {
     await $proxy.connect();
 
     $loader.end();
+    global.getApplication().add(mainComponent());
 
     global.events.on(Event.KEY_DOWN, ({ ctrlKey, key }) => {
       const lowerCaseKey = key.toLowerCase();

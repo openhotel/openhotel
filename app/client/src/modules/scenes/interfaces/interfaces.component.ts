@@ -12,7 +12,7 @@ import { SystemEvent } from "shared/enums";
 
 export const interfacesComponent: ContainerMutable<{}, any> = (props) => {
   const $container = draggableContainer({
-    zIndex: 100,
+    zIndex: 50,
     grabCursor: Cursor.GRAB,
     grabbingCursor: Cursor.GRABBING,
     size: global.window.getBounds(),

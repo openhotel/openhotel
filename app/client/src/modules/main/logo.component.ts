@@ -1,10 +1,4 @@
-import {
-  SpriteComponent,
-  sprite,
-  DisplayObjectEvent,
-  global,
-  Event,
-} from "@tu/tulip";
+import { SpriteComponent, sprite, DisplayObjectEvent } from "@tu/tulip";
 import { TextureEnum } from "shared/enums";
 import { wait } from "shared/utils";
 import { System } from "system";
@@ -26,6 +20,7 @@ export const logoComponent: SpriteComponent = () => {
     System.tasks.add({
       type: TickerQueue.CUSTOM,
       onFunc: (delta) => {
+        if (!$logo.isMounted()) return;
         $logo.setPivotY((y) => y - delta * 0.25);
         if (0 >= $logo.getPivot().y) return true;
       },
