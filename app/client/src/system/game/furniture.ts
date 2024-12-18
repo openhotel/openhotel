@@ -1,9 +1,10 @@
 import {
-  FurnitureData,
-  FurnitureDirectionDataMap,
   CrossDirectionKeys,
+  FurnitureData,
+  FurnitureDirectionData,
+  FurnitureDirectionDataMap,
 } from "shared/types";
-import { CrossDirection, FurnitureType } from "shared/enums";
+import { CrossDirection, FurnitureType, SpriteSheetEnum } from "shared/enums";
 import { global } from "@tu/tulip";
 import { parse } from "yaml";
 import { System } from "system/system";
@@ -87,10 +88,94 @@ export const furniture = () => {
   const exists = (furnitureId: string): boolean =>
     Boolean($furniture.includes(furnitureId));
 
+  const getUnloaded = (type: FurnitureType): FurnitureData => {
+    if (type === FurnitureType.FRAME) {
+      const furnitureDirectionNorth: FurnitureDirectionData = {
+        textures: [
+          {
+            texture: "frame-north",
+            bounds: {
+              width: 0,
+              height: 0,
+            },
+            pivot: {
+              x: -12,
+              y: -19,
+            },
+            zIndex: 0,
+            hitArea: [],
+          },
+        ],
+      };
+      const furnitureDirectionEast: FurnitureDirectionData = {
+        textures: [
+          {
+            texture: "frame-east",
+            bounds: {
+              width: 0,
+              height: 0,
+            },
+            pivot: {
+              x: -12,
+              y: -19,
+            },
+            zIndex: 0,
+            hitArea: [],
+          },
+        ],
+      };
+      return {
+        id: "unloaded",
+        direction: {
+          [CrossDirection.NORTH]: furnitureDirectionNorth,
+          [CrossDirection.EAST]: furnitureDirectionEast,
+          [CrossDirection.SOUTH]: furnitureDirectionNorth,
+          [CrossDirection.WEST]: furnitureDirectionEast,
+        },
+        description: "asd",
+        label: "asd",
+        spriteSheet: SpriteSheetEnum.FURNITURE_UNLOADED,
+        type,
+      };
+    }
+
+    const furnitureDirection: FurnitureDirectionData = {
+      textures: [
+        {
+          texture: "box",
+          bounds: {
+            width: 0,
+            height: 0,
+          },
+          pivot: {
+            x: -24,
+            y: -38,
+          },
+          zIndex: 0,
+          hitArea: [],
+        },
+      ],
+    };
+    return {
+      id: "unloaded",
+      direction: {
+        [CrossDirection.NORTH]: furnitureDirection,
+        [CrossDirection.EAST]: furnitureDirection,
+        [CrossDirection.SOUTH]: furnitureDirection,
+        [CrossDirection.WEST]: furnitureDirection,
+      },
+      description: "asd",
+      label: "asd",
+      spriteSheet: SpriteSheetEnum.FURNITURE_UNLOADED,
+      type,
+    };
+  };
+
   return {
     load,
     loadFurniture,
     get,
+    getUnloaded,
     exists,
   };
 };

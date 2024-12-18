@@ -9,4 +9,6 @@ export enum SpriteSheetEnum {
 
   UI = "ui/sheet.json",
   NAVIGATOR = "navigator/sheet.json",
+
+  FURNITURE_UNLOADED = "furniture/unloaded/sheet.json",
 }
