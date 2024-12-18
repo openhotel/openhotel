@@ -10,7 +10,12 @@ import {
 import { FurnitureDirectionData, Point3d } from "shared/types";
 import { TILE_SIZE } from "shared/consts";
 import { System } from "system";
-import { CrossDirection, Event, SystemEvent } from "shared/enums";
+import {
+  CrossDirection,
+  Event,
+  FurnitureType,
+  SystemEvent,
+} from "shared/enums";
 import { getPositionFromIsometricPosition } from "shared/utils";
 
 type Props = {
@@ -34,7 +39,10 @@ export const furnitureComponent: ContainerComponent<Props, FurnitureMutable> = (
 
   const { furnitureId, direction, isometricPosition, interactive, id } =
     $component.getProps();
-  const furnitureData = System.game.furniture.get(furnitureId);
+  // const furnitureData = System.game.furniture.get(furnitureId);
+  const furnitureData = System.game.furniture.getUnloaded(
+    FurnitureType.FURNITURE,
+  );
 
   const furnitureDirectionData = furnitureData.direction[
     direction
