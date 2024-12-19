@@ -77,9 +77,15 @@ export const hotBarComponent: ContainerComponent<Props> = () => {
       });
   };
 
-  $container.on(DisplayObjectEvent.ADDED, () => {
+  let $onRemoveResize;
+
+  $container.on(DisplayObjectEvent.MOUNT, () => {
     resize(global.getApplication().window.getBounds());
-    global.events.on(Event.RESIZE, resize);
+    $onRemoveResize = global.events.on(Event.RESIZE, resize);
+  });
+
+  $container.on(DisplayObjectEvent.UNMOUNT, () => {
+    $onRemoveResize?.();
   });
 
   return $container.getComponent(hotBarComponent);
