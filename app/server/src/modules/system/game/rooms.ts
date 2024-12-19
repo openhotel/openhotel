@@ -5,7 +5,7 @@ import {
   RoomMutable,
   User,
 } from "shared/types/main.ts";
-import { ProxyEvent, RoomPointEnum } from "shared/enums/main.ts";
+import { FurnitureType, ProxyEvent, RoomPointEnum } from "shared/enums/main.ts";
 import { System } from "modules/system/main.ts";
 import { getInterpolatedPath } from "shared/utils/pathfinding.utils.ts";
 import { WALKABLE_FURNITURE_TYPE } from "shared/consts/main.ts";
@@ -197,6 +197,9 @@ export const rooms = () => {
     };
     const removeFurniture = async (furniture: RoomFurniture) => {
       $room.furniture = $room.furniture.filter((f) => f.id !== furniture.id);
+
+      if (furniture.type === FurnitureType.TELEPORT)
+        await System.game.teleports.removeRoom(furniture.id);
 
       await $save();
     };
