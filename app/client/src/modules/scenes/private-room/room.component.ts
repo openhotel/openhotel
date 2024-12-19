@@ -348,50 +348,33 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = () => {
 
     //rooms
     const $addFurniture = async (...furniture: RoomFurniture[]) => {
-      await System.game.furniture.loadFurniture(
-        ...furniture.map(($furniture) => $furniture.furnitureId),
-      );
-      for (const {
-        id,
-        furnitureId,
-        position,
-        direction,
-        type,
-        ...props
-      } of furniture) {
-        if (!System.game.furniture.exists(furnitureId)) {
-          console.error(`Furniture '${furnitureId}' does not exist!`);
-          continue;
-        }
+      // await System.game.furniture.loadFurniture(
+      //   ...furniture.map(($furniture) => $furniture.furnitureId),
+      // );
+      console.log(furniture);
+      for (const $furniture of furniture) {
+        // if (!System.game.furniture.exists(furnitureId)) {
+        //   console.error(`Furniture '${furnitureId}' does not exist!`);
+        //   continue;
+        // }
 
-        let $furniture;
-        switch (type) {
-          //@ts-ignore
+        let $furnitureComponent;
+        switch ($furniture.type) {
           case FurnitureType.TELEPORT:
           case FurnitureType.FURNITURE:
-            $furniture = furnitureComponent({
-              furnitureId,
-              isometricPosition: position,
-              id,
-              direction,
-              // @ts-ignore
-              interactive: type === FurnitureType.TELEPORT,
+            $furnitureComponent = furnitureComponent({
+              furniture: $furniture,
             });
-            $container.add(...$furniture.getSpriteList());
             break;
           case FurnitureType.FRAME:
-            $furniture = furnitureFrameComponent({
-              id,
-              direction,
-              furnitureId,
-              isometricPosition: position,
-              framePosition: (props as RoomFurnitureFrame).framePosition,
+            $furnitureComponent = furnitureFrameComponent({
+              furniture: $furniture,
             });
-            $container.add($furniture);
             break;
         }
+        $container.add(...$furnitureComponent.getSpriteList());
 
-        furnituresMap[id] = $furniture;
+        furnituresMap[$furniture.id] = $furnitureComponent;
       }
     };
 

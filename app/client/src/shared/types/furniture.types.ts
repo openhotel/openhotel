@@ -20,12 +20,10 @@ export type FurnitureDirectionDataMap = Record<
 >;
 
 export type FurnitureData = {
-  id: string;
-  type: FurnitureType;
+  furnitureId: string;
   label: string;
   description: string;
   spriteSheet: string;
-  size?: Size3d;
   direction: FurnitureDirectionDataMap;
 };
 
@@ -37,7 +35,7 @@ export type BaseFurniture = {
 };
 
 export type RoomFurnitureBase = {
-  type: FurnitureType.FURNITURE;
+  type: FurnitureType.FURNITURE | FurnitureType.TELEPORT;
   size: Size3d;
 } & BaseFurniture;
 

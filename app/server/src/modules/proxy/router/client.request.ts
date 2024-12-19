@@ -1,4 +1,4 @@
-import { getContentType, getURL } from "@oh/utils";
+import { getContentType, getURL, wait } from "@oh/utils";
 import { ConfigTypes } from "shared/types/config.types.ts";
 
 export const requestClient = async (request: Request, config: ConfigTypes) => {
@@ -13,6 +13,7 @@ export const requestClient = async (request: Request, config: ConfigTypes) => {
     }
     if (pathname.startsWith("/data")) {
       try {
+        await wait(1000);
         //removes "/data"
         const targetPathname = pathname.substring(5);
         const fileData = await Deno.readFile(

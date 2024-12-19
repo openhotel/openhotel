@@ -1,5 +1,5 @@
 import { Room } from "shared/types";
-import { System } from "system/system";
+// import { System } from "system/system";
 
 export const rooms = () => {
   let $room: Room | null = null;
@@ -7,14 +7,18 @@ export const rooms = () => {
 
   const preload = async (room: Room) => {
     $preRoom = room;
-    await System.game.furniture.loadFurniture(
-      ...[...new Set(room.furniture.map(({ furnitureId }) => furnitureId))],
-    );
+    // await System.game.furniture.loadFurniture(
+    //   ...[...new Set(room.furniture.map(({ furnitureId }) => furnitureId))],
+    // );
   };
 
   const load = async (room: Room) => {
     $room = room;
     $preRoom = null;
+
+    // await System.game.furniture.loadFurniture(
+    //   ...[...new Set(room.furniture.map(({ furnitureId }) => furnitureId))],
+    // );
   };
 
   const get = () => $room;

@@ -3,8 +3,14 @@ import {
   FurnitureData,
   FurnitureDirectionData,
   FurnitureDirectionDataMap,
+  RoomFurniture,
 } from "shared/types";
-import { CrossDirection, FurnitureType, SpriteSheetEnum } from "shared/enums";
+import {
+  CrossDirection,
+  FurnitureType,
+  SpriteSheetEnum,
+  SystemEvent,
+} from "shared/enums";
 import { global } from "@tu/tulip";
 import { parse } from "yaml";
 import { System } from "system/system";
@@ -42,13 +48,9 @@ export const furniture = () => {
           .then(parse);
 
         $furnitureMap[furnitureId] = {
-          id: furnitureId,
+          furnitureId,
           spriteSheet: `/data/${furnitureId}/sheet.json`,
-          type: FurnitureType[
-            furnitureData.type.toUpperCase() ?? "FURNITURE"
-          ] as unknown as FurnitureType,
           label: furnitureData.label,
-          size: furnitureData?.size,
           description: furnitureData.description,
           direction: Object.keys(
             furnitureData.direction,
@@ -88,7 +90,7 @@ export const furniture = () => {
   const exists = (furnitureId: string): boolean =>
     Boolean($furniture.includes(furnitureId));
 
-  const getUnloaded = (type: FurnitureType): FurnitureData => {
+  const getDummy = (type: FurnitureType): FurnitureData => {
     if (type === FurnitureType.FRAME) {
       const furnitureDirectionNorth: FurnitureDirectionData = {
         textures: [
@@ -125,7 +127,7 @@ export const furniture = () => {
         ],
       };
       return {
-        id: "unloaded",
+        furnitureId: "unloaded",
         direction: {
           [CrossDirection.NORTH]: furnitureDirectionNorth,
           [CrossDirection.EAST]: furnitureDirectionEast,
@@ -135,7 +137,6 @@ export const furniture = () => {
         description: "asd",
         label: "asd",
         spriteSheet: SpriteSheetEnum.FURNITURE_UNLOADED,
-        type,
       };
     }
 
@@ -157,7 +158,7 @@ export const furniture = () => {
       ],
     };
     return {
-      id: "unloaded",
+      furnitureId: "unloaded",
       direction: {
         [CrossDirection.NORTH]: furnitureDirection,
         [CrossDirection.EAST]: furnitureDirection,
@@ -167,15 +168,22 @@ export const furniture = () => {
       description: "asd",
       label: "asd",
       spriteSheet: SpriteSheetEnum.FURNITURE_UNLOADED,
-      type,
     };
+  };
+
+  const getFurniture = ({ furnitureId, type }: RoomFurniture) => {
+    System.events.emit(SystemEvent.FURNITURE_TEXTURE_LOAD + `@` + furnitureId, {
+      furnitureData: {} as FurnitureData,
+    });
   };
 
   return {
     load,
     loadFurniture,
     get,
-    getUnloaded,
+    getDummy,
     exists,
+
+    getFurniture,
   };
 };
