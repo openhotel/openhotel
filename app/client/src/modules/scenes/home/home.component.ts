@@ -10,8 +10,6 @@ import {
   GraphicType,
   Env,
   textSprite,
-  VerticalAlign,
-  HorizontalAlign,
 } from "@tu/tulip";
 import { logoComponent } from "modules/main";
 import { System } from "system";
