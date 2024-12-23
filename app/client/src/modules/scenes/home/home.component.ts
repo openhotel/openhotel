@@ -41,17 +41,15 @@ export const homeComponent: ContainerComponent<Props> = () => {
   $container.add(upperBar);
 
   const $hotBar = hotBarComponent();
-  const hotBarBounds = $hotBar.getBounds();
   $container.add($logo, $hotBar);
 
-  const windowBounds = global.getApplication().window.getBounds();
   const onlineUsers = textSprite({
-    text: "Online guests: 0",
+    text: "0 guests online",
     spriteSheet: SpriteSheetEnum.DEFAULT_FONT,
     color: 0xffffff,
     position: {
-      x: 5,
-      y: windowBounds.height - hotBarBounds.height,
+      x: 0,
+      y: 18,
     },
     backgroundPadding: {
       top: 2,
@@ -61,16 +59,19 @@ export const homeComponent: ContainerComponent<Props> = () => {
     },
     backgroundAlpha: 0.5,
     backgroundColor: 0,
+    visible: false,
   });
+  const $rePositionOnlineUsers = (size: Size) => {
+    onlineUsers.setPositionX(
+      size.width / 2 - onlineUsers.getBounds().width / 2,
+    );
+  };
 
   const loadUsersOnline = async () => {
-    const targetRoomTextList = [];
     const { count } = await System.api.fetch<{
       count: number;
-    }>("/user-online", {
-      type: "private",
-    });
-    onlineUsers.setText(`Online guests: ${count}`);
+    }>("/online-users");
+    onlineUsers.setText(`${count} guest${count === 1 ? "" : "s"} online`);
   };
   $container.add(onlineUsers);
 
@@ -86,9 +87,8 @@ export const homeComponent: ContainerComponent<Props> = () => {
       y: backgroundBounds.height / 2 - size.height / 2,
     });
     upperBar.setRectangle(size.width, height + 2);
-    onlineUsers.setPositionY(size.height - hotBarBounds.height);
+    $rePositionOnlineUsers(size);
   };
-  $rePositionBackground(global.getApplication().window.getBounds());
   $container.add(background);
 
   let $removeOnResize;
@@ -99,13 +99,15 @@ export const homeComponent: ContainerComponent<Props> = () => {
     await loadUsersOnline();
 
     reloadInterval = setInterval(() => {
-      if (!$container.getVisible()) return;
+      if (!$container.isMounted()) return;
       loadUsersOnline();
     }, 30_000);
 
-    if (System.config.get().version !== "development") await wait(1250);
+    if (System.config.get().version !== "development") await wait(1_250);
     if (!$container.isMounted()) return;
 
+    onlineUsers.setVisible(true);
+    $rePositionBackground(global.getApplication().window.getBounds());
     System.events.emit(SystemEvent.SHOW_NAVIGATOR_MODAL);
   });
   $container.on(DisplayObjectEvent.UNMOUNT, (e) => {
