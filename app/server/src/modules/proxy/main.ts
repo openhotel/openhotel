@@ -104,6 +104,7 @@ export const Proxy = (() => {
             },
             ip,
             hemisphere,
+            admin: true,
           });
           return true;
         }
@@ -118,7 +119,7 @@ export const Proxy = (() => {
         if (!getScopes().every((scope) => targetScopes.includes(scope)))
           return false;
 
-        const { accountId, username } = await $auth.fetch({
+        const { accountId, username, admin } = await $auth.fetch({
           url: "/user/@me",
           connectionToken,
         });
@@ -139,6 +140,7 @@ export const Proxy = (() => {
           },
           ip,
           hemisphere,
+          admin,
         });
         return true;
       },
@@ -173,9 +175,6 @@ export const Proxy = (() => {
         clientIdAccountIdMap[client?.id] = foundUser.accountId;
 
         userClientMap[foundUser.clientId] = client;
-        serverWorker.emit(ProxyEvent.$USER_JOINED, {
-          data: { user: foundUser },
-        });
 
         client.on(ProxyEvent.$USER_DATA, ({ event, message }) => {
           try {

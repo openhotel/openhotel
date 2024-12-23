@@ -10,15 +10,21 @@ import {
 } from "@tu/tulip";
 import { Size2d } from "shared/types";
 import { hotBarItemsComponent } from "./hot-bar-items.component";
+import { BLACK_BAR_HEIGHT } from "shared/consts";
+import { wait } from "shared/utils";
+import { System } from "system";
+import { TickerQueue } from "@oh/queue";
 
 type Props = {};
+
+const DELTA_MULTIPLIER = 0.25;
 
 export const hotBarComponent: ContainerComponent<Props> = () => {
   const $container = container({
     zIndex: 10,
   });
 
-  const height = 30 + global.envs.get(Env.SAFE_AREA_INSET_BOTTOM);
+  const height = BLACK_BAR_HEIGHT + global.envs.get(Env.SAFE_AREA_INSET_BOTTOM);
 
   const bg = graphics({
     type: GraphicType.RECTANGLE,
@@ -33,7 +39,25 @@ export const hotBarComponent: ContainerComponent<Props> = () => {
     ({ vale: safeAreaInsetBottom }) => {},
   );
 
-  const itemContainer = hotBarItemsComponent();
+  const itemContainer = hotBarItemsComponent({
+    pivot: {
+      x: 0,
+      y: -50,
+    },
+  });
+
+  $container.on(DisplayObjectEvent.MOUNT, async () => {
+    await wait(1250);
+    System.tasks.add({
+      type: TickerQueue.CUSTOM,
+      onFunc: (delta) => {
+        if (!itemContainer.isMounted()) return;
+
+        itemContainer.setPivotY((y) => y + delta * DELTA_MULTIPLIER);
+        if (itemContainer.getPivot().y >= -5) return true;
+      },
+    });
+  });
   $container.add(itemContainer);
 
   const resize = (size: Size2d) => {
@@ -53,9 +77,15 @@ export const hotBarComponent: ContainerComponent<Props> = () => {
       });
   };
 
-  $container.on(DisplayObjectEvent.ADDED, () => {
+  let $onRemoveResize;
+
+  $container.on(DisplayObjectEvent.MOUNT, () => {
     resize(global.getApplication().window.getBounds());
-    global.events.on(Event.RESIZE, resize);
+    $onRemoveResize = global.events.on(Event.RESIZE, resize);
+  });
+
+  $container.on(DisplayObjectEvent.UNMOUNT, () => {
+    $onRemoveResize?.();
   });
 
   return $container.getComponent(hotBarComponent);

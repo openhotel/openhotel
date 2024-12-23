@@ -7,16 +7,17 @@ export const teleportCommand: Command = {
   command: "teleport",
   func: async ({ user, args }) => {
     const [type, ...moreArgs] = args as string[];
-    const room = await System.game.rooms.get(user.getRoom());
 
-    const [teleportId] = moreArgs as string[];
-    const furniture = room.getFurnitures();
-    const teleport = furniture.find((furni) => furni.uid === teleportId);
-    if (!teleport) return;
+    const [teleportIdA, teleportIdB] = moreArgs as string[];
+    const teleportA = System.game.teleports.get(teleportIdA);
+    if (!teleportA) return;
 
     switch (type) {
       case "link":
-        await System.game.teleports.setLink(teleportId);
+        const teleportB = System.game.teleports.get(teleportIdB);
+        if (!teleportB) return;
+
+        await System.game.teleports.setLink(teleportIdA, teleportIdB);
         break;
       case "remote":
         if (!System.getConfig().onet.enabled) return;
@@ -26,7 +27,7 @@ export const teleportCommand: Command = {
         const { linkId } = await System.game.teleports.remote.setLink(
           user.getAccountId(),
           user.getRoom(),
-          teleportId,
+          teleportIdA,
           $linkId ?? undefined,
         );
 

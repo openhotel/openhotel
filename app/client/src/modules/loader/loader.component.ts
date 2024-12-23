@@ -24,7 +24,7 @@ export const loaderComponent = () => {
     type: GraphicType.RECTANGLE,
     ...bounds,
     tint: 0,
-    alpha: 0.5,
+    alpha: 1,
   });
   $container.add($background);
 

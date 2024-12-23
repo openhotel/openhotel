@@ -5,17 +5,11 @@ import {
   RoomMutable,
   User,
 } from "shared/types/main.ts";
-import { ProxyEvent, RoomPointEnum } from "shared/enums/main.ts";
+import { FurnitureType, ProxyEvent, RoomPointEnum } from "shared/enums/main.ts";
 import { System } from "modules/system/main.ts";
 import { getInterpolatedPath } from "shared/utils/pathfinding.utils.ts";
 import { WALKABLE_FURNITURE_TYPE } from "shared/consts/main.ts";
-import {
-  Direction,
-  getRandomNumber,
-  isPoint3dEqual,
-  Point2d,
-  Point3d,
-} from "@oh/utils";
+import { Direction, getRandomNumber, isPoint3dEqual, Point3d } from "@oh/utils";
 import { getRoomGridLayout } from "shared/utils/rooms.utils.ts";
 
 export const rooms = () => {
@@ -84,7 +78,7 @@ export const rooms = () => {
 
       roomUserMap[room.id].push($user.getAccountId());
     };
-    const removeUser = (user: User) => {
+    const removeUser = (user: User, moveToAnotherRoom: boolean = false) => {
       const $user = System.game.users.get({ accountId: user.accountId });
       if (!$user) return;
 
@@ -102,7 +96,7 @@ export const rooms = () => {
         roomId: room.id,
       });
       //Disconnect user from current room
-      $user.emit(ProxyEvent.LEAVE_ROOM);
+      $user.emit(ProxyEvent.LEAVE_ROOM, { moveToAnotherRoom });
       //Remove user human from the room to existing users
       emit(ProxyEvent.REMOVE_HUMAN, { accountId: $user.getAccountId() });
     };
@@ -147,6 +141,10 @@ export const rooms = () => {
         if (accountId && user?.getAccountId() === accountId) continue;
 
         const position = user.getPosition();
+
+        //ignore if a human is in the same position of you because x (teleports, tp...)
+        if (isPoint3dEqual(position, start)) continue;
+
         //if spawn, ignore
         if (getPoint(position) === RoomPointEnum.SPAWN) continue;
 
@@ -158,6 +156,10 @@ export const rooms = () => {
         if (WALKABLE_FURNITURE_TYPE.includes(furniture.type)) continue;
         const position = furniture.position;
         if (isPoint3dEqual(start, position)) continue;
+
+        //ignore if a human is in the same position of furniture because x (chairs, teleports, tp...)
+        if (isPoint3dEqual(position, start)) continue;
+
         roomLayout[position.z][position.x] = RoomPointEnum.EMPTY;
       }
 
@@ -194,7 +196,10 @@ export const rooms = () => {
       await $save();
     };
     const removeFurniture = async (furniture: RoomFurniture) => {
-      $room.furniture = $room.furniture.filter((f) => f.uid !== furniture.uid);
+      $room.furniture = $room.furniture.filter((f) => f.id !== furniture.id);
+
+      if (furniture.type === FurnitureType.TELEPORT)
+        await System.game.teleports.removeRoom(furniture.id);
 
       await $save();
     };

@@ -17,6 +17,8 @@ export type PrivateUser = {
 
   hemisphere: Hemisphere;
 
+  admin?: boolean;
+
   auth: {
     connectionToken: string;
   };
@@ -67,6 +69,7 @@ export type UserMutable = {
   getRoom: () => string | null;
   removeRoom: () => void;
 
+  preMoveToRoom: (roomId: string) => Promise<void>;
   moveToRoom: (roomId: string) => Promise<void>;
 
   setTargetPosition: (position: Point3d) => Promise<void>;
@@ -88,4 +91,6 @@ export type UserMutable = {
   disconnect: () => void;
 
   emit: <Data extends any>(event: ProxyEvent, data?: Data) => void;
+
+  log: (...data: string[]) => Promise<void>;
 };

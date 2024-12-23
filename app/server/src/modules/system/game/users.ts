@@ -14,6 +14,7 @@ import { USERS_CONFIG_DEFAULT } from "shared/consts/users.consts.ts";
 import { TickerQueue } from "@oh/queue";
 import { Direction, getDirection, getConfig, Point3d } from "@oh/utils";
 import { exists } from "deno/fs/mod.ts";
+import { log as $log } from "shared/utils/log.utils.ts";
 
 export const users = () => {
   let $privateUserMap: Record<string, PrivateUser> = {};
@@ -73,9 +74,6 @@ export const users = () => {
             nextPosition = $userPathfindingMap[accountId].shift();
           }
 
-          //check if next position is a teleport
-          // System.game.teleports.getLocal(room.getId(), nextPosition);
-
           //check if next position is free
           if (!room.isPointFree(nextPosition, user.getAccountId())) {
             delete $userPathfindingMap[accountId];
@@ -124,7 +122,7 @@ export const users = () => {
     if (!user) return null;
     let $user: User = { ...user };
 
-    const getId = () => user.accountId;
+    const getAccountId = () => user.accountId;
     const getUsername = () => user.username;
 
     const setPosition = (position: Point3d) => {
@@ -149,10 +147,24 @@ export const users = () => {
       setPosition(null);
     };
 
+    const preMoveToRoom = async (roomId: string) => {
+      const foundRoom = await System.game.rooms.get(roomId);
+
+      emit(ProxyEvent.PRE_JOIN_ROOM, {
+        room: {
+          id: foundRoom.getId(),
+          furniture: foundRoom.getFurnitures(),
+        },
+      });
+    };
+
     const moveToRoom = async (roomId: string) => {
       const currentRoom = getRoom();
       if (currentRoom)
-        (await System.game.rooms.get(currentRoom)).removeUser(getObject());
+        (await System.game.rooms.get(currentRoom)).removeUser(
+          getObject(),
+          true,
+        );
 
       await (await System.game.rooms.get(roomId))?.addUser?.(getObject());
     };
@@ -198,6 +210,8 @@ export const users = () => {
     const getMeta = () => $user.meta ?? null;
 
     const isOP = async () =>
+      System.auth.getOwnerId() === user.accountId ||
+      $privateUserMap[user.accountId].admin ||
       (await $getConfig()).op.users.includes(getUsername());
 
     const disconnect = () =>
@@ -211,12 +225,23 @@ export const users = () => {
     ) =>
       System.proxy.emit({
         event,
-        users: getId(),
+        users: getAccountId(),
         data,
       });
 
+    const log = async (...data: string[]) => {
+      const createdAt = Date.now();
+      const accountId = getAccountId();
+      await System.db.set(["usersLogs", accountId, createdAt], {
+        accountId,
+        createdAt,
+        data,
+      });
+      $log(`${getUsername()} ${data.join(" ")}`);
+    };
+
     return {
-      getAccountId: getId,
+      getAccountId,
       getUsername,
 
       setPosition,
@@ -230,6 +255,7 @@ export const users = () => {
       getRoom,
       removeRoom,
 
+      preMoveToRoom,
       moveToRoom,
 
       setTargetPosition,
@@ -252,11 +278,15 @@ export const users = () => {
       isOp: isOP,
 
       emit,
+
+      log,
     };
   };
 
   const add = async (user: User, privateUser: PrivateUser) => {
-    $userMap[user.accountId] = $getUser(user);
+    const $user = $getUser(user);
+    $userMap[user.accountId] = $user;
+
     $privateUserMap[privateUser.accountId] = privateUser;
 
     await System.db.set(["users", user.accountId], {
@@ -264,6 +294,8 @@ export const users = () => {
       username: user.username,
     });
     await System.db.set(["usersByUsername", user.username], user.accountId);
+
+    await $user.log("joined");
   };
 
   const remove = async (user: User) => {
@@ -276,6 +308,8 @@ export const users = () => {
     delete $userMap[user.accountId];
     delete $privateUserMap[user.accountId];
     delete $userPathfindingMap[user.accountId];
+
+    await $user.log("left");
   };
 
   const get = ({

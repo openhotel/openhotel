@@ -95,7 +95,7 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = () => {
   };
 
   $container.on(DisplayObjectEvent.REMOVED, onRemove);
-  $container.on(DisplayObjectEvent.ADDED, () => {
+  $container.on(DisplayObjectEvent.ADDED, async () => {
     removeOnAddHuman = System.proxy.on<any>(Event.ADD_HUMAN, ({ user }) => {
       const human = humanComponent({ user });
       humanList.push(human);
@@ -133,10 +133,11 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = () => {
         human.setIsometricPosition(position);
       },
     );
+
     removeOnAddFurniture = System.proxy.on<any>(
       Event.ADD_FURNITURE,
-      ({ furniture }) => {
-        $addFurniture(furniture);
+      async ({ furniture }) => {
+        await $addFurniture(furniture);
       },
     );
     removeOnRemoveFurniture = System.proxy.on<any>(
@@ -346,24 +347,32 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = () => {
     }
 
     //rooms
-    const $addFurniture = (...furniture: RoomFurniture[]) => {
+    const $addFurniture = async (...furniture: RoomFurniture[]) => {
+      await System.game.furniture.loadFurniture(
+        ...furniture.map(($furniture) => $furniture.furnitureId),
+      );
       for (const {
         id,
-        uid,
+        furnitureId,
         position,
         direction,
         type,
         ...props
       } of furniture) {
+        if (!System.game.furniture.exists(furnitureId)) {
+          console.error(`Furniture '${furnitureId}' does not exist!`);
+          continue;
+        }
+
         let $furniture;
         switch (type) {
           //@ts-ignore
           case FurnitureType.TELEPORT:
           case FurnitureType.FURNITURE:
             $furniture = furnitureComponent({
-              furniture: id,
+              furnitureId,
               isometricPosition: position,
-              id: uid,
+              id,
               direction,
               // @ts-ignore
               interactive: type === FurnitureType.TELEPORT,
@@ -372,8 +381,9 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = () => {
             break;
           case FurnitureType.FRAME:
             $furniture = furnitureFrameComponent({
+              id,
               direction,
-              furniture: id,
+              furnitureId,
               isometricPosition: position,
               framePosition: (props as RoomFurnitureFrame).framePosition,
             });
@@ -381,19 +391,19 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = () => {
             break;
         }
 
-        furnituresMap[uid] = $furniture;
+        furnituresMap[id] = $furniture;
       }
     };
 
     const $removeFurniture = (furniture: RoomFurniture) => {
-      if (furnituresMap[furniture.uid]) {
+      if (furnituresMap[furniture.id]) {
         //@ts-ignore
-        furnituresMap[furniture.uid].$destroy();
-        delete furnituresMap[furniture.uid];
+        furnituresMap[furniture.id].$destroy();
+        delete furnituresMap[furniture.id];
       }
     };
 
-    $addFurniture(...furniture);
+    await $addFurniture(...furniture);
   });
 
   return $container.getComponent(roomComponent, {

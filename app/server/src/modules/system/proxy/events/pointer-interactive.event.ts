@@ -43,14 +43,15 @@ export const pointerInteractiveEvent: ProxyEventType<any> = {
 
     if (teleportFurniture) {
       const teleportFrom = await System.game.teleports.get(
-        teleportFurniture.uid,
+        teleportFurniture.id,
       );
-      if (!teleportFrom.to) return moveToPosition();
+      if (!teleportFrom?.to) return moveToPosition();
 
       if (teleportFrom.to === "onet") {
+        moveToPosition();
         try {
           const teleport = await System.game.teleports.remote.get(
-            teleportFurniture.uid,
+            teleportFurniture.id,
           );
           const targetHotel = await System.auth.fetch({
             url: `/hotel?hotelId=${teleport.hotelId}&integrationId=${teleport.integrationId}`,
@@ -63,10 +64,8 @@ export const pointerInteractiveEvent: ProxyEventType<any> = {
           );
 
           user.emit(ProxyEvent.REDIRECT, { redirectUrl: redirectUrl.href });
-          return;
-        } catch (e) {
-          return moveToPosition();
-        }
+        } catch (e) {}
+        return;
       }
 
       const teleportTo = await System.game.teleports.get(teleportFrom.to);
@@ -86,7 +85,7 @@ export const pointerInteractiveEvent: ProxyEventType<any> = {
 
       teleportFurniture = room
         .getFurnitures()
-        .find((furniture) => furniture.uid === teleportFrom.to);
+        .find((furniture) => furniture.id === teleportFrom.to);
 
       const teleportPosition = teleportFurniture.position;
 

@@ -30,8 +30,8 @@ export type FurnitureData = {
 };
 
 export type BaseFurniture = {
-  uid: string;
   id: string;
+  furnitureId: string;
   position: Point3d;
   direction: CrossDirection;
 };

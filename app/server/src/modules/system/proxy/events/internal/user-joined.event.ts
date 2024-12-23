@@ -1,7 +1,6 @@
 import { ProxyEventType, PrivateUser } from "shared/types/main.ts";
 import { Meta, ProxyEvent } from "shared/enums/main.ts";
 import { System } from "modules/system/main.ts";
-import { log } from "shared/utils/main.ts";
 import { getDirection, getPointFromCrossDirection } from "@oh/utils";
 
 export const userJoinedEvent: ProxyEventType<{
@@ -18,15 +17,10 @@ export const userJoinedEvent: ProxyEventType<{
       },
       privateUser,
     );
-    log(`${privateUser.username} joined!`);
 
     const currentUser = System.game.users.get({
       accountId: privateUser.accountId,
     });
-
-    //TODO process meta
-
-    if (!(await currentUser.isOp())) return;
 
     if (meta?.[0] === Meta.TELEPORT) {
       const teleport = await System.game.teleports.get(meta[1] as string);
@@ -35,7 +29,7 @@ export const userJoinedEvent: ProxyEventType<{
       if (!room) return;
       const furniture = room.getFurnitures();
       const teleportFurniture = furniture.find(
-        (furniture) => furniture.uid === meta[1],
+        (furniture) => furniture.id === meta[1],
       );
 
       if (!teleportFurniture) return;
