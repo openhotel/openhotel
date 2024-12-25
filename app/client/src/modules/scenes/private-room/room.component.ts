@@ -19,7 +19,7 @@ import {
   SpriteSheetEnum,
   SystemEvent,
 } from "shared/enums";
-import { RoomFurniture, RoomFurnitureFrame } from "shared/types";
+import { RoomFurniture } from "shared/types";
 import { System } from "system";
 import { humanComponent, HumanMutable } from "modules/human";
 import {
@@ -29,8 +29,13 @@ import {
   WALL_HEIGHT,
 } from "shared/consts";
 import { wallComponent } from "./wall.component";
-import { furnitureComponent, FurnitureMutable } from "./furniture.component";
-import { furnitureFrameComponent } from "./furniture-frame.component";
+import {
+  dummyFurnitureComponent,
+  dummyFurnitureFrameComponent,
+  furnitureComponent,
+  furnitureFrameComponent,
+  FurnitureMutable,
+} from "./furniture";
 
 type Props = {};
 
@@ -59,17 +64,6 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = () => {
         $container.setPivotY(position.y - WALL_HEIGHT);
     },
   );
-  // $container.setPosition({ x: 230, y: 100 });
-
-  // const $coords = textSprite({
-  //   spriteSheet: SpriteSheetEnum.DEFAULT_FONT,
-  //   text: "0.0",
-  //   position: {
-  //     x: 180,
-  //     y: 300,
-  //   },
-  // });
-  // $container.add($coords);
 
   let humanList: ContainerMutable<{}, HumanMutable>[] = [];
 
@@ -136,8 +130,8 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = () => {
 
     removeOnAddFurniture = System.proxy.on<any>(
       Event.ADD_FURNITURE,
-      async ({ furniture }) => {
-        await $addFurniture(furniture);
+      ({ furniture }) => {
+        $addFurniture(furniture);
       },
     );
     removeOnRemoveFurniture = System.proxy.on<any>(
@@ -347,51 +341,62 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = () => {
     }
 
     //rooms
-    const $addFurniture = async (...furniture: RoomFurniture[]) => {
-      await System.game.furniture.loadFurniture(
-        ...furniture.map(($furniture) => $furniture.furnitureId),
+    const $addFurniture = (...furniture: RoomFurniture[]) => {
+      System.game.furniture.loadFurniture(
+        ...furniture.map(({ furnitureId }) => furnitureId),
       );
-      for (const {
-        id,
-        furnitureId,
-        position,
-        direction,
-        type,
-        ...props
-      } of furniture) {
-        if (!System.game.furniture.exists(furnitureId)) {
-          console.error(`Furniture '${furnitureId}' does not exist!`);
+
+      for (const $furniture of furniture) {
+        if (!System.game.furniture.exists($furniture.furnitureId)) {
+          console.error(
+            `Furniture '${$furniture.furnitureId}' does not exist!`,
+          );
           continue;
         }
 
-        let $furniture;
-        switch (type) {
-          //@ts-ignore
+        let $furnitureComponent;
+        switch ($furniture.type) {
           case FurnitureType.TELEPORT:
           case FurnitureType.FURNITURE:
-            $furniture = furnitureComponent({
-              furnitureId,
-              isometricPosition: position,
-              id,
-              direction,
-              // @ts-ignore
-              interactive: type === FurnitureType.TELEPORT,
+            $furnitureComponent = dummyFurnitureComponent({
+              point: $furniture.position,
             });
-            $container.add(...$furniture.getSpriteList());
             break;
           case FurnitureType.FRAME:
-            $furniture = furnitureFrameComponent({
-              id,
-              direction,
-              furnitureId,
-              isometricPosition: position,
-              framePosition: (props as RoomFurnitureFrame).framePosition,
+            $furnitureComponent = dummyFurnitureFrameComponent({
+              point: $furniture.position,
+              framePosition: $furniture.framePosition,
+              direction: $furniture.direction,
             });
-            $container.add($furniture);
             break;
         }
+        const spriteList = $furnitureComponent.getSpriteList();
+        $container.add(...spriteList);
+        furnituresMap[$furniture.id] = $furnitureComponent;
 
-        furnituresMap[id] = $furniture;
+        System.events.once(
+          SystemEvent.FURNITURE_TEXTURE_LOAD + `@` + $furniture.furnitureId,
+          () => {
+            $container.remove(...spriteList);
+
+            let $furnitureComponent;
+            switch ($furniture.type) {
+              case FurnitureType.TELEPORT:
+              case FurnitureType.FURNITURE:
+                $furnitureComponent = furnitureComponent({
+                  furniture: $furniture,
+                });
+                break;
+              case FurnitureType.FRAME:
+                $furnitureComponent = furnitureFrameComponent({
+                  furniture: $furniture,
+                });
+                break;
+            }
+            $container.add(...$furnitureComponent.getSpriteList());
+            furnituresMap[$furniture.id] = $furnitureComponent;
+          },
+        );
       }
     };
 
@@ -403,7 +408,7 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = () => {
       }
     };
 
-    await $addFurniture(...furniture);
+    $addFurniture(...furniture);
   });
 
   return $container.getComponent(roomComponent, {

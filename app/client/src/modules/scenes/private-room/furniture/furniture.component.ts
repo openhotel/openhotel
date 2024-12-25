@@ -7,18 +7,14 @@ import {
   sprite,
   SpriteMutable,
 } from "@tu/tulip";
-import { FurnitureDirectionData, Point3d } from "shared/types";
+import { FurnitureDirectionData, RoomFurniture } from "shared/types";
 import { TILE_SIZE } from "shared/consts";
 import { System } from "system";
-import { CrossDirection, Event, SystemEvent } from "shared/enums";
+import { Event, FurnitureType, SystemEvent } from "shared/enums";
 import { getPositionFromIsometricPosition } from "shared/utils";
 
 type Props = {
-  id: string;
-  isometricPosition: Point3d;
-  furnitureId: string;
-  direction: CrossDirection;
-  interactive: boolean;
+  furniture: RoomFurniture;
 };
 
 export type FurnitureMutable = {
@@ -32,16 +28,15 @@ export const furnitureComponent: ContainerComponent<Props, FurnitureMutable> = (
 
   const $$destroy = $component.$destroy;
 
-  const { furnitureId, direction, isometricPosition, interactive, id } =
-    $component.getProps();
+  const { furniture } = $component.getProps();
+  const { furnitureId, direction, id, position, type } = furniture;
   const furnitureData = System.game.furniture.get(furnitureId);
 
   const furnitureDirectionData = furnitureData.direction[
     direction
   ] as FurnitureDirectionData;
 
-  const positionZIndex =
-    isometricPosition.x + isometricPosition.z - isometricPosition.y;
+  const positionZIndex = position.x + position.z - position.y;
 
   const spriteList: SpriteMutable[] = [];
 
@@ -55,7 +50,7 @@ export const furnitureComponent: ContainerComponent<Props, FurnitureMutable> = (
     const $sprite = sprite({
       spriteSheet: furnitureData.spriteSheet,
       texture,
-      position: getPositionFromIsometricPosition(isometricPosition),
+      position: getPositionFromIsometricPosition(position),
       zIndex: positionZIndex + zIndex + 0.1,
       pivot: {
         x: bounds.width / 2 - pivot.x - TILE_SIZE.width / 2,
@@ -67,7 +62,7 @@ export const furnitureComponent: ContainerComponent<Props, FurnitureMutable> = (
     });
     $sprite.on(DisplayObjectEvent.POINTER_ENTER, () => {
       System.events.emit(SystemEvent.CURSOR_COORDS, {
-        position: isometricPosition,
+        position,
       });
     });
     $sprite.on(DisplayObjectEvent.POINTER_TAP, (event: MouseEvent) => {
@@ -84,22 +79,18 @@ export const furnitureComponent: ContainerComponent<Props, FurnitureMutable> = (
         name: furnitureData.label,
       });
 
-      // System.game.users.getCurrentUser().position
-
-      // const currentUser = System.game.users.getCurrentUser();
-
-      if (interactive) {
+      if (type === FurnitureType.TELEPORT) {
         System.proxy.emit(Event.POINTER_INTERACTIVE, {
           position: {
-            x: isometricPosition.x,
-            z: isometricPosition.z,
+            x: position.x,
+            z: position.z,
           },
         });
       }
       System.proxy.emit(Event.POINTER_TILE, {
         position: {
-          x: isometricPosition.x,
-          z: isometricPosition.z,
+          x: position.x,
+          z: position.z,
         },
       });
     });

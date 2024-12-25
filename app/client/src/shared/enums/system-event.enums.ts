@@ -13,4 +13,6 @@ export enum SystemEvent {
   CURRENT_USER_SET,
 
   CHAT_INPUT_APPEND_TEXT,
+
+  FURNITURE_TEXTURE_LOAD,
 }
