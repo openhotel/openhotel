@@ -22,7 +22,10 @@ export const logoComponent: SpriteComponent = () => {
       onFunc: (delta) => {
         if (!$logo.isMounted()) return;
         $logo.setPivotY((y) => y - delta * 0.25);
-        if (0 >= $logo.getPivot().y) return true;
+        if (0 >= $logo.getPivot().y) {
+          $logo.setPivotY(0);
+          return true;
+        }
       },
     });
   });

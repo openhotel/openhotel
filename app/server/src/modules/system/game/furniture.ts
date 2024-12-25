@@ -11,37 +11,48 @@ export const furniture = () => {
   let $catalog: Catalog;
   const $furnitureMap: Record<string, FurnitureData> = {};
 
+  const unzipZipFile = async (dirEntry: Deno.DirEntry, path: string = "") => {
+    if (dirEntry.name === ".data") return;
+
+    if (!dirEntry.isFile) {
+      for await (const childEntry of Deno.readDir(
+        `./assets/furniture/${dirEntry.name}`,
+      ))
+        await unzipZipFile(childEntry, `${dirEntry.name}/`);
+    }
+    if (!dirEntry.name.includes(".zip")) return;
+
+    const destName = `./assets/furniture/.data/${dirEntry.name}`.replace(
+      ".zip",
+      "",
+    );
+
+    try {
+      await Deno.stat(destName);
+    } catch (e) {
+      await createDirectoryIfNotExists(destName);
+
+      await decompress(`./assets/furniture/${path + dirEntry.name}`, destName);
+    }
+
+    const furnitureData = await readYaml(`${destName}/data.yml`);
+
+    if ($furnitureMap[furnitureData.id])
+      throw Error(`Furniture with id ${furnitureData.id} already exists!`);
+
+    $furnitureMap[furnitureData.id] = {
+      ...furnitureData,
+      type: FurnitureType[
+        furnitureData.type.toUpperCase() ?? "FURNITURE"
+      ] as unknown as FurnitureType,
+    };
+  };
+
   const load = async () => {
     await createDirectoryIfNotExists("./assets/furniture/.data/");
 
-    for await (const dirEntry of Deno.readDir("./assets/furniture")) {
-      if (!dirEntry.isFile || !dirEntry.name.includes(".zip")) continue;
-
-      const destName = `./assets/furniture/.data/${dirEntry.name}`.replace(
-        ".zip",
-        "",
-      );
-
-      try {
-        await Deno.stat(destName);
-      } catch (e) {
-        await createDirectoryIfNotExists(destName);
-
-        await decompress(`./assets/furniture/${dirEntry.name}`, destName);
-      }
-
-      const furnitureData = await readYaml(`${destName}/data.yml`);
-
-      if ($furnitureMap[furnitureData.id])
-        throw Error(`Furniture with id ${furnitureData.id} already exists!`);
-
-      $furnitureMap[furnitureData.id] = {
-        ...furnitureData,
-        type: FurnitureType[
-          furnitureData.type.toUpperCase() ?? "FURNITURE"
-        ] as unknown as FurnitureType,
-      };
-    }
+    for await (const dirEntry of Deno.readDir("./assets/furniture"))
+      await unzipZipFile(dirEntry);
 
     await writeYaml(
       "./assets/furniture/.data/furniture.yml",
