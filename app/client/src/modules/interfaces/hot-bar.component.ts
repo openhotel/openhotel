@@ -54,7 +54,10 @@ export const hotBarComponent: ContainerComponent<Props> = () => {
         if (!itemContainer.isMounted()) return;
 
         itemContainer.setPivotY((y) => y + delta * DELTA_MULTIPLIER);
-        if (itemContainer.getPivot().y >= -5) return true;
+        if (itemContainer.getPivot().y >= -5) {
+          itemContainer.setPivotY(-5);
+          return true;
+        }
       },
     });
   });
