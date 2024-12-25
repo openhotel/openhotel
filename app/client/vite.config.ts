@@ -6,7 +6,7 @@ import { build } from "./vite/index.ts";
 // https://github.com/openhotel/openhotel/issues/469
 const PROXY_URL =
   process.platform === "win32"
-    ? "http://172.0.0.1:19940"
+    ? "http://127.0.0.1:19940"
     : "http://localhost:19940";
 
 export default defineConfig({
