@@ -1,9 +1,9 @@
 import {
+  CrossDirectionKeys,
   FurnitureData,
   FurnitureDirectionDataMap,
-  CrossDirectionKeys,
 } from "shared/types";
-import { CrossDirection, FurnitureType } from "shared/enums";
+import { CrossDirection, SystemEvent } from "shared/enums";
 import { global } from "@tu/tulip";
 import { parse } from "yaml";
 import { System } from "system/system";
@@ -23,31 +23,20 @@ export const furniture = () => {
       (furnitureId: string) => `/data/${furnitureId}/sheet.json`,
     );
 
-    const furnitureLoader = System.loader.addItems({
-      items: furniture.map((furnitureId) => furnitureId.split("@").join(" ")),
-      startLabel: "Loading furniture...",
-      endLabel: "Furniture loaded!",
-      prefix: "Loading",
-      suffix: "furniture",
-    });
-
     await global.spriteSheets.load({
       spriteSheet,
       onLoad: async (furnitureSpriteSheetId) => {
         const furnitureId = furnitureSpriteSheetId.split("/")[2];
+        if ($furnitureMap[furnitureId]) return;
 
         const furnitureData = await fetch(`data/${furnitureId}/data.yml`)
           .then((data) => data.text())
           .then(parse);
 
         $furnitureMap[furnitureId] = {
-          id: furnitureId,
+          furnitureId,
           spriteSheet: `/data/${furnitureId}/sheet.json`,
-          type: FurnitureType[
-            furnitureData.type.toUpperCase() ?? "FURNITURE"
-          ] as unknown as FurnitureType,
           label: furnitureData.label,
-          size: furnitureData?.size,
           description: furnitureData.description,
           direction: Object.keys(
             furnitureData.direction,
@@ -70,7 +59,9 @@ export const furniture = () => {
             {} as FurnitureDirectionDataMap,
           ),
         };
-        furnitureLoader.resolve(furnitureId.split("@").join(" "));
+        System.events.emit(
+          SystemEvent.FURNITURE_TEXTURE_LOAD + `@` + furnitureId,
+        );
       },
     });
   };

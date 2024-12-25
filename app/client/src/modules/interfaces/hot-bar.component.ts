@@ -34,11 +34,6 @@ export const hotBarComponent: ContainerComponent<Props> = () => {
   });
   $container.add(bg);
 
-  global.events.on(
-    Event.SAFE_AREA_INSET_BOTTOM,
-    ({ vale: safeAreaInsetBottom }) => {},
-  );
-
   const itemContainer = hotBarItemsComponent({
     pivot: {
       x: 0,
