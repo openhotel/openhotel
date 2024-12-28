@@ -9,10 +9,13 @@ type FuncProps = {
 type Response = {
   status: number;
   data?: any;
+  headers?: Record<string, string>;
 };
 
 export type ProxyRequestType = {
-  pathname: string;
+  match?: RegExp;
+  pathname?: string;
   method: RequestMethod;
+  public?: boolean;
   func: (data: FuncProps, url: URL) => Promise<Response> | Response;
 };

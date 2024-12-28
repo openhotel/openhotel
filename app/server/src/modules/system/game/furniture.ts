@@ -1,19 +1,14 @@
-import {
-  readYaml,
-  writeYaml,
-  createDirectoryIfNotExists,
-  decompress,
-} from "@oh/utils";
+import { readYaml, writeYaml, createDirectoryIfNotExists } from "@oh/utils";
 import { Catalog, FurnitureData } from "shared/types/main.ts";
-import { FurnitureType } from "shared/enums/furniture.enum.ts";
+import { BlobReader, BlobWriter, ZipReader } from "@zip-js";
+import { parse } from "@std/yaml";
+import { System } from "modules/system/main.ts";
 
 export const furniture = () => {
   let $catalog: Catalog;
-  const $furnitureMap: Record<string, FurnitureData> = {};
+  // const $furnitureMap: Record<string, FurnitureData> = {};
 
   const unzipZipFile = async (dirEntry: Deno.DirEntry, path: string = "") => {
-    if (dirEntry.name === ".data") return;
-
     if (!dirEntry.isFile) {
       for await (const childEntry of Deno.readDir(
         `./assets/furniture/${dirEntry.name}`,
@@ -22,42 +17,75 @@ export const furniture = () => {
     }
     if (!dirEntry.name.includes(".zip")) return;
 
-    const destName = `./assets/furniture/.data/${dirEntry.name}`.replace(
-      ".zip",
-      "",
-    );
+    const furniturePathname = `./assets/furniture/${path + dirEntry.name}`;
 
-    try {
-      await Deno.stat(destName);
-    } catch (e) {
-      await createDirectoryIfNotExists(destName);
+    const file = await Deno.readFile(furniturePathname);
 
-      await decompress(`./assets/furniture/${path + dirEntry.name}`, destName);
+    const blob = new Blob([file]);
+    const blobReader = new BlobReader(blob);
+    const zipReader = new ZipReader(blobReader);
+
+    const files = await zipReader.getEntries();
+
+    const dataFile = files.find(($file) => $file.filename === "data.yml");
+    const sheetFile = files.find(($file) => $file.filename === "sheet.json");
+    const spriteFile = files.find(($file) => $file.filename === "sprite.png");
+    // const langFile = files.find($file => $file.filename === 'lang.yml');
+
+    const missingFiles = [
+      dataFile ? "data.yml" : null,
+      sheetFile ? "sheet.json" : null,
+      spriteFile ? "sprite.png" : null,
+    ].filter(Boolean);
+
+    if (!missingFiles.length) {
+      console.error(
+        `Furniture ${dirEntry.name} is missing (${missingFiles.join(",")}) files!`,
+      );
+      return;
     }
 
-    const furnitureData = await readYaml(`${destName}/data.yml`);
+    // data
+    const furnitureBlob = await dataFile.getData(new BlobWriter());
+    const furnitureUint8Array = new Uint8Array(
+      await furnitureBlob.arrayBuffer(),
+    );
+    const furnitureData = await parse(await furnitureBlob.text());
 
-    if ($furnitureMap[furnitureData.id])
-      throw Error(`Furniture with id ${furnitureData.id} already exists!`);
+    if (isNaN(furnitureData.version)) {
+      console.error(
+        `! Furniture with id (${furnitureData.id}) has an incorrect version!`,
+      );
+      return;
+    }
 
-    $furnitureMap[furnitureData.id] = {
-      ...furnitureData,
-      type: FurnitureType[
-        furnitureData.type.toUpperCase() ?? "FURNITURE"
-      ] as unknown as FurnitureType,
-    };
+    // sheet
+    const sheetBlob = await sheetFile.getData(new BlobWriter());
+    const sheetUint8Array = new Uint8Array(await sheetBlob.arrayBuffer());
+
+    // sprite
+    const spriteBlob = await spriteFile.getData(new BlobWriter());
+    const spriteUint8Array = new Uint8Array(await spriteBlob.arrayBuffer());
+
+    const alreadyExists = await get(furnitureData.id);
+
+    System.db.set(
+      ["furnitureData", furnitureData.id],
+      [furnitureUint8Array, sheetUint8Array, spriteUint8Array],
+    );
+    console.log(
+      `- Furniture ${furnitureData.id} ${alreadyExists ? "updated" : "loaded"}!`,
+    );
   };
 
   const load = async () => {
     await createDirectoryIfNotExists("./assets/furniture/.data/");
 
+    console.log("> Loading furniture...");
     for await (const dirEntry of Deno.readDir("./assets/furniture"))
       await unzipZipFile(dirEntry);
+    console.log("> Furniture loaded!");
 
-    await writeYaml(
-      "./assets/furniture/.data/furniture.yml",
-      Object.keys($furnitureMap),
-    );
     const catalogDir = "./assets/catalog.yml";
     try {
       $catalog = await readYaml(catalogDir);
@@ -71,9 +99,35 @@ export const furniture = () => {
 
   const getCatalog = (): Catalog => $catalog;
 
-  const getList = (): FurnitureData[] => Object.values($furnitureMap);
-  const get = (furnitureId: string): FurnitureData | null =>
-    $furnitureMap[furnitureId];
+  const getList = async (): Promise<FurnitureData[]> => {
+    const decoder = new TextDecoder();
+    return (await System.db.list({ prefix: ["furnitureData"] })).map(
+      ({ value: [data], key }) => {
+        console.log(key);
+        return parse(decoder.decode(data));
+      },
+    );
+  };
+  const get = async (furnitureId: string): Promise<FurnitureData | null> => {
+    const decoder = new TextDecoder();
+    const data = await System.db.get(["furnitureData", furnitureId]);
+    if (!data) return null;
+
+    return parse(decoder.decode(data[0]));
+  };
+  const getData = async (
+    furnitureId: string,
+  ): Promise<[FurnitureData, any, string] | null> => {
+    const decoder = new TextDecoder();
+    const data = await System.db.get(["furnitureData", furnitureId]);
+    if (!data) return null;
+
+    return [
+      parse(decoder.decode(data[0])),
+      JSON.parse(decoder.decode(data[1])),
+      data[2],
+    ];
+  };
 
   return {
     load,
@@ -81,5 +135,6 @@ export const furniture = () => {
     getCatalog,
     getList,
     get,
+    getData,
   };
 };
