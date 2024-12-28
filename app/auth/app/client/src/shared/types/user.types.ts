@@ -5,4 +5,5 @@ export type User = {
   email: string;
   admin?: boolean;
   otp?: boolean;
+  verified?: boolean;
 };

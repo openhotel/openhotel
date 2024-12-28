@@ -26,6 +26,7 @@ export const usersGetRequest: RequestType = {
           admin: Boolean(await System.admins.get(account.accountId)),
           otp: await System.otp.isOTPVerified(account.accountId),
           createdAt: account.createdAt,
+          verified: account.verified,
         })),
       )
     ).sort((userA: any, userB: any) =>
