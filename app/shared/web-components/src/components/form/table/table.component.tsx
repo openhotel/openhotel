@@ -45,7 +45,7 @@ export const TableComponent: React.FC<Props> = ({
         ? data
         : data.filter((object) =>
             Object.values(object).some((text) =>
-              text?.includes(searchFilterText),
+              text?.includes?.(searchFilterText),
             ),
           ),
     [data, searchFilterText],
