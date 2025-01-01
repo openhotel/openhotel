@@ -5,68 +5,68 @@ import dayjs from "dayjs";
 
 //@ts-ignore
 import styles from "./users.module.scss";
+import { TableComponent } from "@oh/components";
 
 export const UsersComponent = () => {
   const { users } = useAdmin();
 
-  const verifiedUsers = useMemo(
-    () => users.filter(($user) => $user.verified),
-    [users],
-  );
   const today = dayjs(Date.now());
-
-  const temporalUsers = useMemo(
-    () =>
-      users
-        .filter(($user) => !$user.verified)
-        .map(($user) => {
-          const expireAt = dayjs($user.createdAt).add(1, "day");
-          const remainingMinutes = expireAt.diff(today, "minutes");
-
-          return {
-            ...$user,
-            remainingTime: `${Math.floor(remainingMinutes / 60)} hours ${remainingMinutes % 60} minutes`,
-          };
-        }),
-    [users, today],
-  );
 
   return (
     <div className={styles.users}>
-      <div>
-        <h3>Users ({verifiedUsers.length})</h3>
-        <div className={styles.list}>
-          {verifiedUsers.map((user) => (
-            <div
-              className={cn(styles.item, {
-                [styles.admin]: user.admin,
-              })}
-              key={user.accountId}
-            >
-              <label>{new Date(user.createdAt).toISOString()}</label>
-              <label>{user.accountId}</label>
-              <label>{user.username}</label>
-              <label title={user.email}>{getCensoredEmail(user.email)}</label>
-              <label>{user.otp ? "2FA" : null}</label>
-              <label>{user.admin ? "ADMIN" : null}</label>
-            </div>
-          ))}
-        </div>
-      </div>
-      <div>
-        <h3>Temp Users ({temporalUsers.length})</h3>
-        <div className={styles.list}>
-          {temporalUsers.map((user) => (
-            <div className={styles.item} key={user.accountId}>
-              <label>{new Date(user.createdAt).toISOString()}</label>
-              <label>{user.accountId}</label>
-              <label>{user.username}</label>
-              <label title={user.email}>{getCensoredEmail(user.email)}</label>
-              <div>{user.remainingTime} remaining</div>
-            </div>
-          ))}
-        </div>
-      </div>
+      <TableComponent
+        title="Users"
+        searchable={true}
+        pageRows={20}
+        data={users.map((user) => {
+          const expireAt = dayjs(user.createdAt).add(1, "day");
+          const remainingMinutes = expireAt.diff(today, "minutes");
+
+          return {
+            ...user,
+            admin: user.admin ? "✔️" : "❌",
+            otp: user.otp ? "✔️" : "❌",
+            verified: user.verified
+              ? "✔️"
+              : `❌ ${Math.floor(remainingMinutes / 60)} hours ${remainingMinutes % 60} minutes`,
+          };
+        })}
+        columns={[
+          {
+            key: "accountId",
+            label: "Account Id",
+          },
+          {
+            sortable: true,
+            key: "createdAt",
+            label: "Created At",
+          },
+          {
+            key: "email",
+            label: "Email",
+          },
+          {
+            sortable: true,
+            key: "username",
+            label: "Username",
+          },
+          {
+            sortable: true,
+            key: "admin",
+            label: "Admin",
+          },
+          {
+            sortable: true,
+            key: "otp",
+            label: "2FA",
+          },
+          {
+            sortable: true,
+            key: "verified",
+            label: "Verified",
+          },
+        ]}
+      />
     </div>
   );
 };
