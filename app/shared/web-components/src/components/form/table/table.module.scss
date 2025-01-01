@@ -1,0 +1,88 @@
+@use "../../../styles/all.module" as *;
+
+.table {
+  background-color: var(--text-0-bg);
+  border-radius: var(--border-radius-lg);
+  overflow: scroll;
+
+  .title {
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+    padding: 1rem 2rem;
+
+    label {
+      line-height: 2.6rem;
+    }
+    .wrapperInput {
+      width: auto !important;
+
+      .input {
+        padding: 0.25rem 1rem;
+        width: auto !important;
+      }
+    }
+  }
+
+  .columns {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    //margin: 0 1rem;
+
+    .column {
+      width: 100%;
+
+      .item {
+        padding: 1rem 2rem;
+        background-color: var(--text-2-bg);
+
+        &.header {
+          font-weight: bold;
+          background-color: var(--text-1-bg);
+          color: var(--text-1-c);
+
+          display: flex;
+          gap: 1rem;
+
+          .sortable {
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            cursor: pointer;
+
+            .sortUpIcon {
+              position: absolute;
+              top: -10px;
+            }
+            .sortDownIcon {
+              position: absolute;
+              top: 4px;
+            }
+            .sortDisabled {
+              color: #413f3f;
+            }
+            svg {
+              width: 1.5rem;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .navigation {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem 2rem;
+
+    .button {
+      padding: 0.5rem 2rem;
+    }
+    .number {
+      line-height: 2.6rem;
+      letter-spacing: 0.5rem;
+    }
+  }
+}

@@ -5,5 +5,6 @@ export * from "./github-icon.component";
 export * from "./hotel-icon.component";
 export * from "./cross-icon.component";
 export * from "./chevron-down-icon.component";
+export * from "./chevron-up-icon.component";
 
 export * from "./cc";

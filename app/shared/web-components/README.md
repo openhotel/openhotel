@@ -12,3 +12,8 @@
 - Install `deno >= 2.0`
 - Install `yarn`
 - Run `yarn`
+
+### Run storybook
+
+- Run `yarn build`
+- Run `yarn storybook`

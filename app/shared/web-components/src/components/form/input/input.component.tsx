@@ -8,6 +8,7 @@ import { BoxComponent, BoxProps, extractBoxProps } from "../../../components";
 
 type Props = {
   className?: string;
+  wrapperClassName?: string;
   placeholder?: string;
   bordered?: boolean;
 } & Partial<BoxProps> &
@@ -15,6 +16,7 @@ type Props = {
 
 export const InputComponent: React.FC<Props> = ({
   className,
+  wrapperClassName,
   placeholder,
   bordered,
   ...props
@@ -25,7 +27,10 @@ export const InputComponent: React.FC<Props> = ({
   return (
     <BoxComponent
       {...boxProps}
-      className={cn(styles.inputWrapper, [styles.bordered, !!bordered])}
+      className={cn(styles.inputWrapper, wrapperClassName, [
+        styles.bordered,
+        !!bordered,
+      ])}
     >
       <input
         id={id}
