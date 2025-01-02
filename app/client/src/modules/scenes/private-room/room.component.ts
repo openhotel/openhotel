@@ -347,13 +347,6 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = () => {
       );
 
       for (const $furniture of furniture) {
-        if (!System.game.furniture.exists($furniture.furnitureId)) {
-          console.error(
-            `Furniture '${$furniture.furnitureId}' does not exist!`,
-          );
-          continue;
-        }
-
         let $furnitureComponent;
         switch ($furniture.type) {
           case FurnitureType.TELEPORT:

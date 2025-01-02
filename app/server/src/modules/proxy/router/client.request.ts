@@ -11,22 +11,6 @@ export const requestClient = async (request: Request, config: ConfigTypes) => {
     if (!pathname.startsWith(ROOT_DIR_PATH)) {
       return new Response("404", { status: 404 });
     }
-    if (pathname.startsWith("/data")) {
-      try {
-        //removes "/data"
-        const targetPathname = pathname.substring(5);
-        const fileData = await Deno.readFile(
-          "./assets/furniture/.data" + targetPathname,
-        );
-
-        return new Response(fileData, {
-          headers: {
-            "Content-Type": getContentType(targetPathname),
-          },
-        });
-      } catch (e) {}
-      return new Response("404", { status: 404 });
-    }
 
     const filePath = pathname.replace("/", "");
     const targetFile = "./client/" + (filePath || "index.html");

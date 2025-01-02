@@ -84,13 +84,22 @@ export const proxy = () => {
         try {
           const foundRequest = requestList.find(
             (request) =>
-              request.pathname === pathname && request.method === method,
+              (request?.pathname === pathname ||
+                request?.match?.test?.(pathname)) &&
+              request.method === method,
           );
           if (!foundRequest) return $worker.emit(eventName, { status: 404 });
 
+          if (!foundRequest.public && !user)
+            return $worker.emit(eventName, {
+              status: 403,
+            });
+
           const response = await foundRequest.func(
             {
-              user: System.game.users.get({ accountId: user.accountId }),
+              user: user
+                ? System.game.users.get({ accountId: user.accountId })
+                : null,
               data,
             },
             new URL(url),

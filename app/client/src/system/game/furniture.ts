@@ -3,39 +3,35 @@ import {
   FurnitureData,
   FurnitureDirectionDataMap,
 } from "shared/types";
-import { CrossDirection, SystemEvent } from "shared/enums";
 import { global } from "@tu/tulip";
-import { parse } from "yaml";
 import { System } from "system/system";
+import { CrossDirection, SystemEvent } from "shared/enums";
 
 export const furniture = () => {
   const $furnitureMap: Record<string, FurnitureData> = {};
 
-  let $furniture: string[] = [];
-
   const loadFurniture = async (...furniture: string[]) => {
     const uniqueFurniture = [...new Set(furniture)].filter(
-      (furnitureId) =>
-        !$furnitureMap[furnitureId] || !$furniture.includes(furnitureId),
+      (furnitureId) => !$furnitureMap[furnitureId],
     );
 
-    const spriteSheet: string[] = uniqueFurniture.map(
-      (furnitureId: string) => `/data/${furnitureId}/sheet.json`,
+    const spriteSheet: string[] = uniqueFurniture.map((furnitureId: string) =>
+      System.api.getPath(`/furniture/${furnitureId}/sheet.json`),
     );
 
     await global.spriteSheets.load({
       spriteSheet,
       onLoad: async (furnitureSpriteSheetId) => {
-        const furnitureId = furnitureSpriteSheetId.split("/")[2];
+        const furnitureId = furnitureSpriteSheetId.split("/")[3];
         if ($furnitureMap[furnitureId]) return;
 
-        const furnitureData = await fetch(`data/${furnitureId}/data.yml`)
-          .then((data) => data.text())
-          .then(parse);
+        const furnitureData = await fetch(
+          System.api.getPath(`/furniture/${furnitureId}`),
+        ).then((data) => data.json());
 
         $furnitureMap[furnitureId] = {
           furnitureId,
-          spriteSheet: `/data/${furnitureId}/sheet.json`,
+          spriteSheet: furnitureSpriteSheetId,
           label: furnitureData.label,
           description: furnitureData.description,
           direction: Object.keys(
@@ -66,22 +62,14 @@ export const furniture = () => {
     });
   };
 
-  const load = async () => {
-    $furniture = await fetch("/data/furniture.yml")
-      .then((data) => data.text())
-      .then(parse);
-  };
+  const load = async () => {};
 
   const get = (furnitureId: string): FurnitureData | null =>
     $furnitureMap[furnitureId];
-
-  const exists = (furnitureId: string): boolean =>
-    Boolean($furniture.includes(furnitureId));
 
   return {
     load,
     loadFurniture,
     get,
-    exists,
   };
 };
