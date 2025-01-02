@@ -18,20 +18,12 @@ export const getApiRequest = {
         bcrypt.compareSync(token, user.apiToken),
     );
 
-    if (!user)
-      return Response.json(
-        {
-          status: 403,
-        },
-        { status: 403 },
-      );
-
     let data = {};
     const { searchParams, pathname: currentPathname } = getURL(request.url);
     for (const [key, value] of searchParams as any) data[key] = value;
 
     const pathname = currentPathname.replace("/proxy", "").replace("/api", "");
-    const eventName = user.accountId + getRandomString(8);
+    const eventName = user?.accountId + getRandomString(32);
 
     try {
       return await new Promise<Response>((resolve) => {
@@ -44,8 +36,15 @@ export const getApiRequest = {
           url: request.url,
         });
 
-        Proxy.getServerWorker().on(eventName, ({ status, data }) => {
-          resolve(Response.json({ status, data }, { status }));
+        Proxy.getServerWorker().on(eventName, ({ status, data, headers }) => {
+          resolve(
+            headers
+              ? new Response(data, {
+                  status,
+                  headers,
+                })
+              : Response.json({ status, data }, { status }),
+          );
         });
       });
     } catch (e) {

@@ -22,7 +22,7 @@ export const setCommand: Command = {
     if (CrossDirection.NORTH > direction || direction > CrossDirection.WEST)
       return;
 
-    const $furniture = System.game.furniture.get(furnitureId);
+    const $furniture = await System.game.furniture.get(furnitureId);
     if (!$furniture) return;
 
     if (!$furniture.direction[CrossDirection[direction].toLowerCase()]) return;

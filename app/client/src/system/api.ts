@@ -4,6 +4,7 @@ export const api = () => {
   const $fetch = async <Data>(
     pathname: string,
     data: Record<string | number, string | number | boolean> = {},
+    ignoreStatus: boolean = false,
   ): Promise<Data> => {
     const { accountId, apiToken } = System.game.users.getCurrentUser();
     const searchParams = new URLSearchParams();
@@ -13,21 +14,29 @@ export const api = () => {
     headers.append("accountId", accountId);
     headers.append("token", apiToken);
 
-    const isDevelopment = System.version.isDevelopment();
-
     const params = searchParams.toString();
-    const { status, data: responseData } = await fetch(
-      `${isDevelopment ? "proxy" : ""}/api${pathname}${params ? `?${params}` : ""}`,
+    const $data = await fetch(
+      getPath(pathname + (params ? `?${params}` : "")),
       {
         headers,
       },
     ).then((response) => response.json());
 
+    if (ignoreStatus) return $data as Data;
+
+    const { status, data: responseData } = $data;
     if (!status) throw Error(`Status ${status}!`);
 
     return responseData as Data;
   };
+
+  const getPath = (pathname: string) => {
+    const isDevelopment = System.version.isDevelopment();
+    return `${isDevelopment ? "proxy" : ""}/api${pathname}`;
+  };
+
   return {
     fetch: $fetch,
+    getPath,
   };
 };

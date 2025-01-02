@@ -1,0 +1,14 @@
+#
+GET http://localhost:1994/proxy/api/furniture/teleports@telephone
+
+###
+
+#
+GET http://localhost:1994/proxy/api/furniture/teleports@telephone/sheet.json
+
+###
+
+#
+GET http://localhost:1994/proxy/api/furniture/teleports@telephone/sprite.png
+
+###
