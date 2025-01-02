@@ -3,7 +3,7 @@ import { getProcessedEnvs } from "shared/utils/main.ts";
 import { System } from "modules/system/main.ts";
 
 const envs = getProcessedEnvs({
-  version: "v20.0.0",
+  version: "__VERSION__",
 });
 
 await loadEnv();
