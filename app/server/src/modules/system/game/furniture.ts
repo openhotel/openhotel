@@ -1,9 +1,10 @@
-import { readYaml, writeYaml, createDirectoryIfNotExists } from "@oh/utils";
+import { createDirectoryIfNotExists, readYaml, writeYaml } from "@oh/utils";
 import { Catalog, FurnitureData } from "shared/types/main.ts";
 import { BlobReader, BlobWriter, ZipReader } from "@zip-js/data-uri";
 import { parse } from "@std/yaml";
 import { System } from "modules/system/main.ts";
 import { log } from "shared/utils/log.utils.ts";
+import { FurnitureType } from "shared/enums/furniture.enum.ts";
 
 export const furniture = () => {
   let $catalog: Catalog;
@@ -106,10 +107,15 @@ export const furniture = () => {
 
   const getCatalog = (): Catalog => $catalog;
 
+  const $mapFurnitureData = (furnitureData: any): FurnitureData => ({
+    ...furnitureData,
+    type: FurnitureType[furnitureData.type.toUpperCase()],
+  });
+
   const getList = async (): Promise<FurnitureData[]> => {
     const decoder = new TextDecoder();
     return (await System.db.list({ prefix: ["furnitureData"] })).map(
-      ({ value: [data] }) => parse(decoder.decode(data)),
+      ({ value: [data] }) => $mapFurnitureData(parse(decoder.decode(data))),
     );
   };
   const get = async (furnitureId: string): Promise<FurnitureData | null> => {
@@ -117,7 +123,7 @@ export const furniture = () => {
     const data = await System.db.get(["furnitureData", furnitureId]);
     if (!data) return null;
 
-    return parse(decoder.decode(data[0]));
+    return $mapFurnitureData(parse(decoder.decode(data[0])));
   };
   const getData = async (
     furnitureId: string,
@@ -127,7 +133,7 @@ export const furniture = () => {
     if (!data) return null;
 
     return [
-      parse(decoder.decode(data[0])),
+      $mapFurnitureData(parse(decoder.decode(data[0]))),
       JSON.parse(decoder.decode(data[1])),
       data[2],
     ];
