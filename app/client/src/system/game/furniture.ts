@@ -16,17 +16,19 @@ export const furniture = () => {
     );
 
     const spriteSheet: string[] = uniqueFurniture.map((furnitureId: string) =>
-      System.api.getPath(`/furniture/${furnitureId}/sheet.json`),
+      System.api.getPath(`/furniture/sheet.json?furnitureId=${furnitureId}`),
     );
 
     await global.spriteSheets.load({
       spriteSheet,
       onLoad: async (furnitureSpriteSheetId) => {
-        const furnitureId = furnitureSpriteSheetId.split("/")[3];
+        const furnitureId = new URLSearchParams(
+          furnitureSpriteSheetId.split("?")[1],
+        ).get("furnitureId");
         if ($furnitureMap[furnitureId]) return;
 
         const furnitureData = await fetch(
-          System.api.getPath(`/furniture/${furnitureId}`),
+          System.api.getPath(`/furniture?furnitureId=${furnitureId}`),
         ).then((data) => data.json());
 
         $furnitureMap[furnitureId] = {
