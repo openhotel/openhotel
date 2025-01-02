@@ -103,11 +103,15 @@ export const homeComponent: ContainerComponent<Props> = () => {
       loadUsersOnline();
     }, 30_000);
 
+    const size = global.getApplication().window.getBounds();
+    $rePositionBackground(size);
+
     if (System.config.get().version !== "development") await wait(1_250);
     if (!$container.isMounted()) return;
 
     onlineUsers.setVisible(true);
-    $rePositionBackground(global.getApplication().window.getBounds());
+    $rePositionOnlineUsers(size);
+
     System.events.emit(SystemEvent.SHOW_NAVIGATOR_MODAL);
   });
   $container.on(DisplayObjectEvent.UNMOUNT, (e) => {
