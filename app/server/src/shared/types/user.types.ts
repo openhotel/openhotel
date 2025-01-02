@@ -1,5 +1,10 @@
 import { Point3d, Direction } from "@oh/utils";
-import { ProxyEvent, Language, Hemisphere } from "shared/enums/main.ts";
+import {
+  ProxyEvent,
+  Language,
+  Hemisphere,
+  UserAction,
+} from "shared/enums/main.ts";
 
 export type CacheUser = {
   accountId: string;
@@ -68,6 +73,9 @@ export type UserMutable = {
   setRoom: (roomId: string) => void;
   getRoom: () => string | null;
   removeRoom: () => void;
+
+  setAction: (action: UserAction | null) => void;
+  getAction: () => UserAction | null;
 
   preMoveToRoom: (roomId: string) => Promise<void>;
   moveToRoom: (roomId: string) => Promise<void>;

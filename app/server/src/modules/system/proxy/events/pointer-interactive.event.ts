@@ -1,5 +1,10 @@
 import { ProxyEventType } from "shared/types/main.ts";
-import { FurnitureType, Meta, ProxyEvent } from "shared/enums/main.ts";
+import {
+  FurnitureType,
+  Meta,
+  ProxyEvent,
+  UserAction,
+} from "shared/enums/main.ts";
 import {
   encodeBase64,
   getDirection,
@@ -39,9 +44,12 @@ export const pointerInteractiveEvent: ProxyEventType<any> = {
         position,
         bodyDirection: targetBodyDirection,
       });
+      user.setAction(null);
     };
 
-    if (teleportFurniture) {
+    if (teleportFurniture && user.getAction() !== UserAction.TELEPORTING) {
+      user.setAction(UserAction.TELEPORTING);
+
       const teleportFrom = await System.game.teleports.get(
         teleportFurniture.id,
       );
@@ -93,6 +101,8 @@ export const pointerInteractiveEvent: ProxyEventType<any> = {
         type: TickerQueue.DELAY,
         delay: MOVEMENT_BETWEEN_TILES_DURATION,
         onDone: async () => {
+          user.setAction(null);
+
           if (!isSameRoom) await user.moveToRoom(teleportTo.roomId);
 
           user.setPosition(teleportPosition);

@@ -39,7 +39,7 @@ export type RoomMutable = {
   getOwnerUsername: () => Promise<string | null>;
 
   addUser: (user: User, position?: Point3d) => Promise<void>;
-  removeUser: (user: User) => void;
+  removeUser: (user: User, moveToAnotherRoom?: boolean) => void;
   getUsers: () => string[];
 
   getPoint: (point: Point3d) => RoomPoint;
