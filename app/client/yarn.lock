@@ -329,10 +329,10 @@
   resolved "https://registry.yarnpkg.com/@rollup/rollup-win32-x64-msvc/-/rollup-win32-x64-msvc-4.22.4.tgz#3dd5d53e900df2a40841882c02e56f866c04d202"
   integrity sha512-j8pPKp53/lq9lMXN57S8cFz0MynJk8OWNuUnXct/9KCpKU7DgU3bYMJhwWmcqC0UU29p8Lr0/7KEVcaM6bf47Q==
 
-"@tu/tulip@npm:@jsr/tu__tulip@0.14.8":
-  version "0.14.8"
-  resolved "https://npm.jsr.io/~/11/@jsr/tu__tulip/0.14.8.tgz#F20BBE2F8DFA8AD57B72FB28CBBA09B26E74C78A"
-  integrity sha512-Fw93lPWwNANuxzM1eShwK1WIfXAbs1QmONNwoBB39mwEw/u92/jsUso+LRqAr5VajPACJ8Zu8EQUeMIiwwaCDw==
+"@tu/tulip@npm:@jsr/tu__tulip@0.14.9":
+  version "0.14.9"
+  resolved "https://npm.jsr.io/~/11/@jsr/tu__tulip/0.14.9.tgz#DD59B25BC4D55740FA18EFC46A5B959950A01551"
+  integrity sha512-Yx36x1dSqXk1xrb7j0LmTIQ2HoQltY3fez4+R7i3CLo2/z1XcogCXgymL5lkCVFgJyO4diw7kk337OekMLpfQQ==
   dependencies:
     "@tulib/vite-tulip-plugin" "1.0.15"
     howler "2.2.4"
