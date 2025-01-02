@@ -7,7 +7,7 @@
     "compile": "deno compile -A --unstable-kv --no-check --include=./src/shared/workers.ts",
 
     "compile:windows": "deno task compile --target=x86_64-pc-windows-msvc --output ./build/server_windows ./mod.ts",
-    "compile:linux": "deno task compile --target=x86_64-unknown-linux-gnu --output ./build/server_linux ./mod.ts",
+    "compile:linux": "deno task compile --unstable --target=x86_64-unknown-linux-gnu --output ./build/server_linux ./mod.ts",
     "compile:linux_aarch64": "deno task compile --target=aarch64-unknown-linux-gnu --output ./build/server_linux_aarch64 ./mod.ts",
     "compile:darwin": "deno task compile --target=x86_64-apple-darwin --output ./build/server_darwin ./mod.ts",
     "compile:current": "deno task compile --output ./server ./mod.ts",
