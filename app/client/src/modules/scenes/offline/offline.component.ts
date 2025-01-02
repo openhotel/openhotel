@@ -8,12 +8,10 @@ import {
   graphics,
   GraphicType,
   Size,
-  sprite,
   textSprite,
 } from "@tu/tulip";
 import { SpriteSheetEnum, SystemEvent } from "shared/enums";
 import { buttonComponent } from "shared/components";
-import { TextureEnum } from "shared/enums";
 import { __ } from "shared/utils";
 import { System } from "system";
 
@@ -46,19 +44,13 @@ export const offlineComponent: ContainerComponent = () => {
   });
   $container.add($card);
 
-  const $human = sprite({
-    texture: TextureEnum.HUMAN_DEV,
-  });
-  $human.setPivotX($human.getBounds().width);
-  $human.setTint(0xefcfb1);
-
   const $title = textSprite({
     text: __("You have been disconnected from the server!"),
     spriteSheet: SpriteSheetEnum.DEFAULT_FONT,
     color: 0xffffff,
     position: {
       x: 0,
-      y: 80,
+      y: 0,
     },
   });
   $title.setPivotX($title.getBounds().width / 2);
@@ -68,7 +60,7 @@ export const offlineComponent: ContainerComponent = () => {
     width: 100,
     position: {
       x: 0,
-      y: 100,
+      y: 20,
     },
     eventMode: EventMode.STATIC,
   });
@@ -78,7 +70,7 @@ export const offlineComponent: ContainerComponent = () => {
     window.location.reload();
   });
 
-  $card.add($button, $title, $human);
+  $card.add($button, $title);
 
   const $resize = (size: Size) => {
     const { width, height } = size;
@@ -97,6 +89,7 @@ export const offlineComponent: ContainerComponent = () => {
     ({ visible }) => {
       if (!visible) return;
 
+      $resize(global.getApplication().window.getBounds());
       $removeOnResize = global.events.on(Event.RESIZE, $resize);
       System.events.emit(SystemEvent.HIDE_MODALS);
     },
