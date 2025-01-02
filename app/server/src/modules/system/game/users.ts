@@ -15,6 +15,7 @@ import { TickerQueue } from "@oh/queue";
 import { Direction, getDirection, getConfig, Point3d } from "@oh/utils";
 import { exists } from "deno/fs/mod.ts";
 import { log as $log } from "shared/utils/log.utils.ts";
+import { UserAction } from "shared/enums/user.enums.ts";
 
 export const users = () => {
   let $privateUserMap: Record<string, PrivateUser> = {};
@@ -122,6 +123,8 @@ export const users = () => {
     if (!user) return null;
     let $user: User = { ...user };
 
+    let $userAction: UserAction | null = null;
+
     const getAccountId = () => user.accountId;
     const getUsername = () => user.username;
 
@@ -146,6 +149,11 @@ export const users = () => {
       setRoom(null);
       setPosition(null);
     };
+
+    const setAction = (action: UserAction | null) => {
+      $userAction = action;
+    };
+    const getAction = () => $userAction;
 
     const preMoveToRoom = async (roomId: string) => {
       const foundRoom = await System.game.rooms.get(roomId);
@@ -254,6 +262,9 @@ export const users = () => {
       setRoom,
       getRoom,
       removeRoom,
+
+      setAction,
+      getAction,
 
       preMoveToRoom,
       moveToRoom,
