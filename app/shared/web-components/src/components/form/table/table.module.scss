@@ -1,9 +1,11 @@
 @use "../../../styles/all.module" as *;
 
-.table {
+.wrapper {
   background-color: var(--text-0-bg);
   border-radius: var(--border-radius-lg);
   overflow: scroll;
+
+  @include boxShadow();
 
   .title {
     display: flex;
@@ -23,6 +25,64 @@
       }
     }
   }
+  .table {
+    border-collapse: collapse;
+    border: none;
+
+    th,
+    td {
+      width: 1%;
+      padding: 0;
+      margin: 0;
+    }
+
+    .header {
+      tr {
+        th {
+          text-align: left;
+          .item {
+            font-weight: bold;
+            background-color: var(--text-1-bg);
+            color: var(--text-1-c);
+            padding: 1rem 2rem;
+
+            display: flex;
+            gap: 1rem;
+
+            .sortable {
+              display: flex;
+              flex-direction: column;
+              position: relative;
+              cursor: pointer;
+
+              .sortUpIcon {
+                position: absolute;
+                top: -10px;
+              }
+              .sortDownIcon {
+                position: absolute;
+                top: 4px;
+              }
+              .sortDisabled {
+                color: #413f3f;
+              }
+              svg {
+                width: 1.5rem;
+              }
+            }
+          }
+        }
+      }
+    }
+    .body {
+      tr {
+        td {
+          padding: 1rem 2rem;
+          background-color: var(--text-2-bg);
+        }
+      }
+    }
+  }
 
   .columns {
     height: 100%;
@@ -37,37 +97,6 @@
       .item {
         padding: 1rem 2rem;
         background-color: var(--text-2-bg);
-
-        &.header {
-          font-weight: bold;
-          background-color: var(--text-1-bg);
-          color: var(--text-1-c);
-
-          display: flex;
-          gap: 1rem;
-
-          .sortable {
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            cursor: pointer;
-
-            .sortUpIcon {
-              position: absolute;
-              top: -10px;
-            }
-            .sortDownIcon {
-              position: absolute;
-              top: 4px;
-            }
-            .sortDisabled {
-              color: #413f3f;
-            }
-            svg {
-              width: 1.5rem;
-            }
-          }
-        }
       }
     }
   }

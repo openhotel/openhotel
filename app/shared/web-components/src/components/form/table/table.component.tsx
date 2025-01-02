@@ -19,6 +19,7 @@ type Column = {
 };
 
 type Props = {
+  className?: string;
   title?: string;
   data: DataRow[];
   columns: Column[];
@@ -28,6 +29,7 @@ type Props = {
 };
 
 export const TableComponent: React.FC<Props> = ({
+  className,
   title = null,
   data = [],
   columns = [],
@@ -126,7 +128,7 @@ export const TableComponent: React.FC<Props> = ({
   );
 
   return (
-    <div className={styles.table}>
+    <div className={cn(styles.wrapper, className)}>
       {searchable || title ? (
         <div className={styles.title}>
           {title ? (
@@ -148,12 +150,12 @@ export const TableComponent: React.FC<Props> = ({
           )}
         </div>
       ) : null}
-      <div className={styles.columnsWrapper}>
-        <div className={styles.columns}>
-          {columns.map(($column) => {
-            return (
-              <div key={$column.key} className={styles.column}>
-                <div className={cn(styles.item, styles.header)}>
+      <table className={styles.table}>
+        <thead className={styles.header}>
+          <tr>
+            {columns.map(($column) => (
+              <th key={$column.key + "header"}>
+                <div className={styles.item}>
                   <label>{$column?.label ?? $column.key}</label>
                   {$column.sortable ? (
                     <div
@@ -173,16 +175,22 @@ export const TableComponent: React.FC<Props> = ({
                     </div>
                   ) : null}
                 </div>
-                {currentData.map(($row) => (
-                  <div key={$row.id + $column.key} className={styles.item}>
-                    {$row[$column.key]}
-                  </div>
-                ))}
-              </div>
-            );
-          })}
-        </div>
-      </div>
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody className={styles.body}>
+          {currentData.map(($row) => (
+            <tr key={$row.id + "row"}>
+              {columns.map(($column) => (
+                <td key={$row.id + $column.key + "row-column"}>
+                  {$row[$column.key]}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
       {pageRows ? (
         <div className={styles.navigation}>
           <ButtonComponent
