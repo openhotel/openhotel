@@ -1,8 +1,9 @@
 import { readYaml, writeYaml, createDirectoryIfNotExists } from "@oh/utils";
 import { Catalog, FurnitureData } from "shared/types/main.ts";
-import { BlobReader, BlobWriter, ZipReader } from "@zip-js";
+import { BlobReader, BlobWriter, ZipReader } from "@zip-js/data-uri";
 import { parse } from "@std/yaml";
 import { System } from "modules/system/main.ts";
+import { log } from "shared/utils/log.utils.ts";
 
 export const furniture = () => {
   let $catalog: Catalog;
@@ -39,7 +40,7 @@ export const furniture = () => {
     ].filter(Boolean);
 
     if (!missingFiles.length) {
-      console.error(
+      log(
         `Furniture ${dirEntry.name} is missing (${missingFiles.join(",")}) files!`,
       );
       return;
@@ -53,17 +54,15 @@ export const furniture = () => {
     const furnitureData = await parse(await furnitureBlob.text());
 
     if (isNaN(furnitureData.version)) {
-      console.error(
-        `! Furniture (${furnitureData.id}) has an incorrect version!`,
-      );
+      log(`! Furniture (${furnitureData.id}) has an incorrect version!`);
       return;
     }
 
     const foundFurniture = await get(furnitureData.id);
 
-    const versionUpdateText = `[${foundFurniture.version} >= ${furnitureData.version}]`;
-    if (foundFurniture.version >= furnitureData.version) {
-      console.error(
+    const versionUpdateText = `[${foundFurniture?.version} >= ${furnitureData.version}]`;
+    if (foundFurniture?.version >= furnitureData.version) {
+      log(
         `! Furniture (${furnitureData.id}) is already in latest version ${versionUpdateText}!`,
       );
       return;
@@ -81,18 +80,18 @@ export const furniture = () => {
       ["furnitureData", furnitureData.id],
       [furnitureUint8Array, sheetUint8Array, spriteUint8Array],
     );
-    console.log(
+    log(
       `- Furniture (${furnitureData.id}) ${foundFurniture ? "updated" : "loaded"} ${versionUpdateText}!`,
     );
   };
 
   const load = async () => {
     await createDirectoryIfNotExists("./assets/furniture/.data/");
+    log("> Loading furniture...");
 
-    console.log("> Loading furniture...");
     for await (const dirEntry of Deno.readDir("./assets/furniture"))
       await unzipZipFile(dirEntry);
-    console.log("> Furniture loaded!");
+    log("> Furniture loaded!");
 
     const catalogDir = "./assets/catalog.yml";
     try {
@@ -110,10 +109,7 @@ export const furniture = () => {
   const getList = async (): Promise<FurnitureData[]> => {
     const decoder = new TextDecoder();
     return (await System.db.list({ prefix: ["furnitureData"] })).map(
-      ({ value: [data], key }) => {
-        console.log(key);
-        return parse(decoder.decode(data));
-      },
+      ({ value: [data] }) => parse(decoder.decode(data)),
     );
   };
   const get = async (furnitureId: string): Promise<FurnitureData | null> => {
