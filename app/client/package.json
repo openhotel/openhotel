@@ -14,7 +14,7 @@
   "dependencies": {
     "@tulib/vite-tulip-plugin": "1.0.15",
     "@oh/queue": "npm:@jsr/oh__queue@1.1.1",
-    "@tu/tulip": "npm:@jsr/tu__tulip@0.14.8",
+    "@tu/tulip": "npm:@jsr/tu__tulip@0.14.9",
     "yaml": "2.5.0"
   },
   "packageManager": "yarn@1.22.22"

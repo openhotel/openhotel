@@ -3,11 +3,12 @@ import { System } from "modules/system/main.ts";
 import { RequestMethod, getContentType } from "@oh/utils";
 
 export const furnitureRequest: ProxyRequestType = {
-  match: /\/furniture\/([\w@-]+)(\/(sheet\.json|sprite\.png))?/,
+  match: /\/furniture(\/(sheet\.json|sprite\.png))?/,
   method: RequestMethod.GET,
   public: true,
   func: async ({}, url) => {
-    const [, , , , furnitureId, fileType] = url.pathname.split("/");
+    const fileType = url.pathname.split("/").reverse()[0];
+    const furnitureId = url.searchParams.get("furnitureId");
 
     const [data, sheet, sprite] =
       await System.game.furniture.getData(furnitureId);
