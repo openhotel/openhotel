@@ -54,7 +54,17 @@ export const furniture = () => {
 
     if (isNaN(furnitureData.version)) {
       console.error(
-        `! Furniture with id (${furnitureData.id}) has an incorrect version!`,
+        `! Furniture (${furnitureData.id}) has an incorrect version!`,
+      );
+      return;
+    }
+
+    const foundFurniture = await get(furnitureData.id);
+
+    const versionUpdateText = `[${foundFurniture.version} >= ${furnitureData.version}]`;
+    if (foundFurniture.version >= furnitureData.version) {
+      console.error(
+        `! Furniture (${furnitureData.id}) is already in latest version ${versionUpdateText}!`,
       );
       return;
     }
@@ -67,14 +77,12 @@ export const furniture = () => {
     const spriteBlob = await spriteFile.getData(new BlobWriter());
     const spriteUint8Array = new Uint8Array(await spriteBlob.arrayBuffer());
 
-    const alreadyExists = await get(furnitureData.id);
-
     System.db.set(
       ["furnitureData", furnitureData.id],
       [furnitureUint8Array, sheetUint8Array, spriteUint8Array],
     );
     console.log(
-      `- Furniture ${furnitureData.id} ${alreadyExists ? "updated" : "loaded"}!`,
+      `- Furniture (${furnitureData.id}) ${foundFurniture ? "updated" : "loaded"} ${versionUpdateText}!`,
     );
   };
 
