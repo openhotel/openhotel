@@ -76,9 +76,9 @@
     }
     .body {
       tr {
+        background-color: var(--text-2-bg);
         td {
           padding: 1rem 2rem;
-          background-color: var(--text-2-bg);
         }
       }
     }

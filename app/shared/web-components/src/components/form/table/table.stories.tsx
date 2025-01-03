@@ -1,5 +1,6 @@
 import { fn } from "@storybook/test";
 import { TableComponent } from "./table.component";
+import * as React from "react";
 
 export default {
   title: "Components/Form/Table",
@@ -13,6 +14,26 @@ export default {
 
 export const Primary = {
   args: {
+    rowFunc: ($row, columns) => {
+      if ($row.name !== "Pablo") return null;
+
+      return (
+        <tr key={$row.id + "row"}>
+          {columns.map(($column) => (
+            <td
+              key={$row.id + $column.key + "row-column"}
+              style={{
+                backgroundColor: "yellow",
+                color: "black",
+                fontWeight: "bold",
+              }}
+            >
+              {$row[$column.key]}
+            </td>
+          ))}
+        </tr>
+      );
+    },
     columns: [
       {
         key: "name",

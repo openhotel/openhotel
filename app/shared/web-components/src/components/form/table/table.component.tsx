@@ -26,6 +26,8 @@ type Props = {
   searchable?: boolean;
   pageRows?: number;
   defaultPage?: number;
+
+  rowFunc: (data: DataRow, columns: Column[]) => React.ReactNode | null;
 };
 
 export const TableComponent: React.FC<Props> = ({
@@ -36,6 +38,7 @@ export const TableComponent: React.FC<Props> = ({
   pageRows,
   defaultPage = 0,
   searchable = false,
+  rowFunc,
 }) => {
   const [pageIndex, setPageIndex] = useState(defaultPage);
   const [searchFilterText, setSearchFilterText] = useState<string>("");
@@ -180,15 +183,20 @@ export const TableComponent: React.FC<Props> = ({
           </tr>
         </thead>
         <tbody className={styles.body}>
-          {currentData.map(($row) => (
-            <tr key={$row.id + "row"}>
-              {columns.map(($column) => (
-                <td key={$row.id + $column.key + "row-column"}>
-                  {$row[$column.key]}
-                </td>
-              ))}
-            </tr>
-          ))}
+          {currentData.map(($row) => {
+            const rowFuncElement = rowFunc?.($row, columns);
+            if (rowFuncElement) return rowFuncElement;
+
+            return (
+              <tr key={$row.id + "row"}>
+                {columns.map(($column) => (
+                  <td key={$row.id + $column.key + "row-column"}>
+                    {$row[$column.key]}
+                  </td>
+                ))}
+              </tr>
+            );
+          })}
         </tbody>
       </table>
       {pageRows ? (
