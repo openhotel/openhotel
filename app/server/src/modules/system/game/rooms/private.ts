@@ -14,13 +14,12 @@ import { Direction, getRandomNumber, isPoint3dEqual, Point3d } from "@oh/utils";
 import { Grid } from "@oh/pathfinding";
 import { getBaseRoomGrid } from "shared/utils/rooms.utils.ts";
 
-export const rooms = () => {
-  let roomUserMap: Record<string, string[]> = {};
-
-  const $getRoom = (room: Room): RoomMutable => {
+const getRoom =
+  (roomUserMap: Record<string, string[]>) =>
+  (room: Room): RoomMutable => {
     let $room: Room = { ...room };
 
-    if (!roomUserMap[room.id]) roomUserMap[room.id] = [];
+    if (!roomUserMap[$room.id]) roomUserMap[$room.id] = [];
 
     const $baseRoomGrid: RoomPoint[][] = getBaseRoomGrid($room.layout);
 
@@ -263,6 +262,11 @@ export const rooms = () => {
       emit,
     };
   };
+
+export const $private = () => {
+  let roomUserMap: Record<string, string[]> = {};
+
+  const $getRoom = getRoom(roomUserMap);
 
   const get = async (roomId: string): Promise<RoomMutable | null> => {
     try {
