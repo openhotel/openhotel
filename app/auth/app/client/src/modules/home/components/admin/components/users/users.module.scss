@@ -1,19 +1,12 @@
 .users {
-  .list {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
+  .row {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 
-    .item {
-      display: flex;
-      gap: 1rem;
-      background-color: var(--text-2-bg);
-      padding: 1rem 2rem;
-
-      &.admin {
-        background-color: var(--color-yellow-2);
-        color: var(--color-dark-9);
-      }
+    &.admin {
+      background-color: var(--color-yellow-2) !important;
+      color: var(--color-dark-9) !important;
     }
   }
 }
