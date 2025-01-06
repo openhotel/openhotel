@@ -47,6 +47,7 @@ export type RoomMutable = {
   findPath: (props: FindPathProps) => Point3d[];
 
   addFurniture: (furniture: RoomFurniture) => Promise<void>;
+  updateFurniture: (furniture: RoomFurniture) => Promise<void>;
   removeFurniture: (furniture: RoomFurniture) => Promise<void>;
   getFurnitures: () => RoomFurniture[];
 

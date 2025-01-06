@@ -26,75 +26,80 @@ export const furnitureComponent: ContainerComponent<Props, FurnitureMutable> = (
 ) => {
   const $component = component<Props, FurnitureMutable>(props);
 
-  const $$destroy = $component.$destroy;
-
   const { furniture } = $component.getProps();
   const { furnitureId, direction, id, position, type } = furniture;
-  const furnitureData = System.game.furniture.get(furnitureId);
 
-  const furnitureDirectionData = furnitureData.direction[
-    direction
-  ] as FurnitureDirectionData;
-
-  const positionZIndex = position.x + position.z - position.y;
+  const $$destroy = $component.$destroy;
 
   const spriteList: SpriteMutable[] = [];
 
-  for (const {
-    texture,
-    bounds,
-    pivot,
-    zIndex,
-    hitArea,
-  } of furnitureDirectionData.textures) {
-    const $sprite = sprite({
-      spriteSheet: furnitureData.spriteSheet,
-      texture,
-      position: getPositionFromIsometricPosition(position),
-      zIndex: positionZIndex + zIndex + 0.1,
-      pivot: {
-        x: bounds.width / 2 - pivot.x - TILE_SIZE.width / 2,
-        y: bounds.height - pivot.y - TILE_SIZE.height / 2,
-      },
-      eventMode: EventMode.STATIC,
-      cursor: Cursor.POINTER,
-      hitArea,
-    });
-    $sprite.on(DisplayObjectEvent.POINTER_ENTER, () => {
-      System.events.emit(SystemEvent.CURSOR_COORDS, {
-        position,
-      });
-    });
-    $sprite.on(DisplayObjectEvent.POINTER_TAP, (event: MouseEvent) => {
-      if (event.shiftKey) {
-        System.events.emit(SystemEvent.CHAT_INPUT_APPEND_TEXT, id);
-        console.info(id);
-        return;
-      }
+  try {
+    const furnitureData = System.game.furniture.get(furnitureId);
 
-      System.events.emit(SystemEvent.SHOW_PREVIEW, {
-        type: "furniture",
+    const furnitureDirectionData = furnitureData.direction[
+      direction
+    ] as FurnitureDirectionData;
+
+    const positionZIndex = position.x + position.z - position.y;
+
+    for (const {
+      texture,
+      bounds,
+      pivot,
+      zIndex,
+      hitArea,
+    } of furnitureDirectionData.textures) {
+      const $sprite = sprite({
         spriteSheet: furnitureData.spriteSheet,
         texture,
-        name: furnitureData.label,
+        position: getPositionFromIsometricPosition(position),
+        zIndex: positionZIndex + zIndex + 0.1,
+        pivot: {
+          x: bounds.width / 2 - pivot.x - TILE_SIZE.width / 2,
+          y: bounds.height - pivot.y - TILE_SIZE.height / 2,
+        },
+        eventMode: EventMode.STATIC,
+        cursor: Cursor.POINTER,
+        hitArea,
       });
+      $sprite.on(DisplayObjectEvent.POINTER_ENTER, () => {
+        System.events.emit(SystemEvent.CURSOR_COORDS, {
+          position,
+        });
+      });
+      $sprite.on(DisplayObjectEvent.POINTER_TAP, (event: MouseEvent) => {
+        if (event.shiftKey) {
+          System.events.emit(SystemEvent.CHAT_INPUT_APPEND_TEXT, id);
+          console.info(id);
+          return;
+        }
 
-      if (type === FurnitureType.TELEPORT) {
-        System.proxy.emit(Event.POINTER_INTERACTIVE, {
+        System.events.emit(SystemEvent.SHOW_PREVIEW, {
+          type: "furniture",
+          spriteSheet: furnitureData.spriteSheet,
+          texture,
+          name: furnitureData.label,
+        });
+
+        if (type === FurnitureType.TELEPORT) {
+          System.proxy.emit(Event.POINTER_INTERACTIVE, {
+            position: {
+              x: position.x,
+              z: position.z,
+            },
+          });
+        }
+        System.proxy.emit(Event.POINTER_TILE, {
           position: {
             x: position.x,
             z: position.z,
           },
         });
-      }
-      System.proxy.emit(Event.POINTER_TILE, {
-        position: {
-          x: position.x,
-          z: position.z,
-        },
       });
-    });
-    spriteList.push($sprite);
+      spriteList.push($sprite);
+    }
+  } catch (e) {
+    console.error(`Something went wrong with furniture '${id}'`);
   }
 
   return $component.getComponent(furnitureComponent, {

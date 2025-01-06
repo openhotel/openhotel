@@ -17,6 +17,8 @@ import { helpCommand } from "./help.command.ts";
 import { unsetCommand } from "./unset.command.ts";
 import { teleportCommand } from "./teleport.command.ts";
 import { clearCommand } from "./clear.command.ts";
+import { rotateCommand } from "./rotate.command.ts";
+import { moveCommand } from "./move.command.ts";
 
 export const commandList = [
   stopCommand,
@@ -43,6 +45,9 @@ export const commandList = [
   teleportCommand,
 
   clearCommand,
+
+  rotateCommand,
+  moveCommand,
 ];
 
 export const executeCommand = ({
