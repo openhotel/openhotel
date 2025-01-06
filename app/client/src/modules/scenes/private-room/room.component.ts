@@ -74,6 +74,7 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = () => {
   let removeOnSetPositionHuman;
   let removeOnStopHuman;
   let removeOnAddFurniture;
+  let removeOnUpdateFurniture;
   let removeOnRemoveFurniture;
 
   const onRemove = () => {
@@ -85,6 +86,7 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = () => {
     removeOnStopHuman?.();
 
     removeOnAddFurniture?.();
+    removeOnUpdateFurniture?.();
     removeOnRemoveFurniture?.();
   };
 
@@ -132,6 +134,12 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = () => {
       Event.ADD_FURNITURE,
       ({ furniture }) => {
         $addFurniture(furniture);
+      },
+    );
+    removeOnUpdateFurniture = System.proxy.on<any>(
+      Event.UPDATE_FURNITURE,
+      ({ furniture }) => {
+        $updateFurniture(furniture);
       },
     );
     removeOnRemoveFurniture = System.proxy.on<any>(
@@ -391,6 +399,12 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = () => {
           },
         );
       }
+    };
+
+    const $updateFurniture = (furniture: RoomFurniture) => {
+      const furnitureComponent = furnituresMap[furniture.id];
+      if (furnitureComponent) $removeFurniture(furniture);
+      $addFurniture(furniture);
     };
 
     const $removeFurniture = (furniture: RoomFurniture) => {

@@ -195,6 +195,17 @@ export const rooms = () => {
 
       await $save();
     };
+    const updateFurniture = async (furniture: RoomFurniture) => {
+      furniture.position = {
+        ...furniture.position,
+        y: getYFromPoint(furniture.position),
+      };
+      $room.furniture = $room.furniture.map(($furniture) =>
+        furniture.id === $furniture.id ? furniture : $furniture,
+      );
+
+      await $save();
+    };
     const removeFurniture = async (furniture: RoomFurniture) => {
       $room.furniture = $room.furniture.filter((f) => f.id !== furniture.id);
 
@@ -253,6 +264,7 @@ export const rooms = () => {
       findPath,
 
       addFurniture,
+      updateFurniture,
       removeFurniture,
       getFurnitures,
 
