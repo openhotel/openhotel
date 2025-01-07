@@ -1,0 +1,37 @@
+@use "../../../styles/all.module" as *;
+
+.inputWrapper {
+  display: inline-flex;
+  position: relative;
+  width: 100%;
+  gap: 1rem;
+
+  .input {
+    display: none;
+  }
+
+  label {
+    cursor: pointer;
+    line-height: 2rem;
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    align-content: center;
+
+    padding: 1rem 2rem;
+    border-radius: var(--border-radius);
+
+    @include btn-color("btn-dark");
+
+    span {
+      line-height: 2.25rem;
+    }
+  }
+
+  .files {
+    line-height: 4rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}

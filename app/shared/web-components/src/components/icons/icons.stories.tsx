@@ -6,6 +6,7 @@ import { HotelIconComponent } from "./hotel-icon.component";
 import { CrossIconComponent } from "./cross-icon.component";
 import { ChevronDownIconComponent } from "./chevron-down-icon.component";
 import { ChevronUpIconComponent } from "./chevron-up-icon.component";
+import { UploadIconComponent } from "./upload-icon.component";
 
 import { CCIconComponent, BYIconComponent, NCEUIconComponent } from "./cc";
 
@@ -24,6 +25,7 @@ export const Hotel = () => <HotelIconComponent />;
 export const Cross = () => <CrossIconComponent />;
 export const ChevronDown = () => <ChevronDownIconComponent />;
 export const ChevronUp = () => <ChevronUpIconComponent />;
+export const Upload = () => <UploadIconComponent />;
 
 export const CC = () => <CCIconComponent />;
 export const BY = () => <BYIconComponent />;
