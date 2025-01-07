@@ -11,24 +11,30 @@ import {
   UploadIconComponent,
 } from "../../../components";
 
-type Props = {
-  className?: string;
-} & Partial<BoxProps> &
-  React.HTMLProps<HTMLInputElement>;
+type Props = Partial<BoxProps> &
+  React.HTMLProps<HTMLInputElement> & {
+    className?: string;
+    onChange?: (files: File[]) => void;
+  };
 
 export const FileInputComponent: React.FC<Props> = ({
   className,
   placeholder,
+  onChange,
   ...props
 }) => {
   const id = useId();
   const [otherProps, boxProps] = extractBoxProps<Props>(props);
   const [files, setFiles] = useState<string[]>([]);
 
-  const $onChange = useCallback((event) => {
-    console.log(Array.from(event.target.files));
-    setFiles(Array.from(event.target.files).map((file: File) => file.name));
-  }, []);
+  const $onChange = useCallback(
+    (event) => {
+      const files = Array.from(event.target.files) as File[];
+      setFiles(files.map((file: File) => file.name));
+      onChange && onChange(files);
+    },
+    [onChange],
+  );
 
   return (
     <BoxComponent {...boxProps} className={cn(styles.inputWrapper, className)}>
