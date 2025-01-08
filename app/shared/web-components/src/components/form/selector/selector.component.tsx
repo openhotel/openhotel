@@ -83,6 +83,7 @@ export const SelectorComponent: React.FC<Props> = ({
         [styles.bordered, Boolean(bordered)],
         [styles.isOpen, isOpen],
         [styles.isSelected, Boolean(selectedOption)],
+        [styles.hasPlaceholder, Boolean(placeholder)],
       )}
       {...boxProps}
     >
