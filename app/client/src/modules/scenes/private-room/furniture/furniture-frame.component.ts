@@ -31,6 +31,8 @@ export const furnitureFrameComponent: ContainerComponent<Props, Mutable> = (
   } = $component.getProps();
   const furnitureData = System.game.furniture.get(furnitureId);
 
+  const $$destroy = $component.$destroy;
+
   const furnitureDirectionData = furnitureData.direction[
     direction
   ] as FurnitureDirectionData;
@@ -80,5 +82,9 @@ export const furnitureFrameComponent: ContainerComponent<Props, Mutable> = (
 
   return $component.getComponent(furnitureFrameComponent, {
     getSpriteList: () => [$sprite],
+    $destroy: () => {
+      $sprite.$destroy();
+      $$destroy();
+    },
   });
 };
