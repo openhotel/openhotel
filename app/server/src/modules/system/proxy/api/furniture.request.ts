@@ -10,8 +10,14 @@ export const furnitureRequest: ProxyRequestType = {
     const fileType = url.pathname.split("/").reverse()[0];
     const furnitureId = url.searchParams.get("furnitureId");
 
-    const [data, sheet, sprite] =
-      await System.game.furniture.getData(furnitureId);
+    const furnitureData = await System.game.furniture.getData(furnitureId);
+    if (!furnitureData) {
+      return {
+        status: 404,
+      };
+    }
+
+    const [data, sheet, sprite] = furnitureData;
 
     switch (fileType) {
       case "sheet.json":
