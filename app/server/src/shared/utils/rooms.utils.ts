@@ -54,3 +54,33 @@ export const getRoomSpawnDirection = (layout: RoomPoint[][]): Direction => {
 
   return Direction.NORTH_EAST;
 };
+
+export const isWallRenderable = (
+  layout: RoomPoint[][],
+  position: Point3d,
+  isX: boolean,
+): boolean => {
+  const { x, z } = position;
+  if (!layout[z]) return false;
+  if (
+    layout[z][x] === RoomPointEnum.SPAWN ||
+    layout[z][x] === RoomPointEnum.EMPTY
+  )
+    return false;
+
+  if (
+    (!isX && layout[z][x - 1] === RoomPointEnum.SPAWN) ||
+    (isX && layout[z - 1] && layout[z - 1][x] === RoomPointEnum.SPAWN)
+  )
+    return false;
+
+  for (let j = isX ? 1 : 0; j < z + 1; j++) {
+    for (let i = isX ? 0 : 1; i < x + 1; i++) {
+      const currentPoint = layout[z - j][x - i];
+      // @ts-ignore
+      if (!isNaN(parseInt(currentPoint))) return false;
+    }
+  }
+
+  return true;
+};

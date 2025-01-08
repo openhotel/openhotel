@@ -3,6 +3,8 @@ import { ProxyEvent } from "shared/enums/event.enum.ts";
 import { System } from "modules/system/main.ts";
 import { FurnitureType } from "shared/enums/furniture.enum.ts";
 import { CrossDirection } from "@oh/utils";
+import { RoomPointEnum } from "shared/enums/room.enums.ts";
+import { isWallRenderable } from "shared/utils/rooms.utils.ts";
 
 export const setCommand: Command = {
   command: "set",
@@ -50,9 +52,22 @@ export const setCommand: Command = {
       },
     };
 
+    const roomPoint = room.getPoint(furniture.position);
+    if (roomPoint === RoomPointEnum.EMPTY || roomPoint === RoomPointEnum.SPAWN)
+      return;
+    if (furniture.type === FurnitureType.FRAME) {
+      const layout = room.getObject().layout;
+      if (
+        !isWallRenderable(layout, furniture.position, true) &&
+        !isWallRenderable(layout, furniture.position, false)
+      )
+        return;
+    }
+
     switch ($furniture.type) {
       case FurnitureType.TELEPORT:
         await System.game.teleports.setRoom(furniture.id, roomId);
+        break;
       case FurnitureType.FURNITURE:
         furniture.size = $furniture.size;
         break;
