@@ -85,13 +85,15 @@ export const FormComponent: React.FC<Props> = ({
       <div className={styles.inputs} onClick={onClickInputs}>
         {children}
       </div>
-      <div className={styles.errors}>
-        {errors.map((error) => (
-          <label key={error} className={styles.error}>
-            {error}
-          </label>
-        ))}
-      </div>
+      {errors?.length ? (
+        <div className={styles.errors}>
+          {errors.map((error) => (
+            <label key={error} className={styles.error}>
+              {error}
+            </label>
+          ))}
+        </div>
+      ) : null}
     </form>
   );
 };
