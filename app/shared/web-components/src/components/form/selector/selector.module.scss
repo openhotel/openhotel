@@ -4,6 +4,7 @@
 .selector {
   position: relative;
   user-select: none;
+  width: 100%;
 
   &.bordered .select {
     border: 0.2rem solid var(--input-bd);
