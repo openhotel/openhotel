@@ -1,4 +1,4 @@
-import { createDirectoryIfNotExists, readYaml, writeYaml } from "@oh/utils";
+import { readYaml, writeYaml } from "@oh/utils";
 import { Catalog, FurnitureData } from "shared/types/main.ts";
 import { BlobReader, BlobWriter, ZipReader } from "@zip-js/data-uri";
 import { parse } from "@std/yaml";
@@ -87,7 +87,6 @@ export const furniture = () => {
   };
 
   const load = async () => {
-    await createDirectoryIfNotExists("./assets/furniture/.data/");
     log("> Loading furniture...");
 
     for await (const dirEntry of Deno.readDir("./assets/furniture"))
@@ -128,10 +127,11 @@ export const furniture = () => {
   const getData = async (
     furnitureId: string,
   ): Promise<[FurnitureData, any, string] | null> => {
-    const decoder = new TextDecoder();
+    if (!furnitureId) return null;
     const data = await System.db.get(["furnitureData", furnitureId]);
     if (!data) return null;
 
+    const decoder = new TextDecoder();
     return [
       $mapFurnitureData(parse(decoder.decode(data[0]))),
       JSON.parse(decoder.decode(data[1])),
