@@ -80,8 +80,9 @@ export const SelectorComponent: React.FC<Props> = ({
       className={cn(
         styles.selector,
         className,
-        [styles.bordered, !!bordered],
+        [styles.bordered, Boolean(bordered)],
         [styles.isOpen, isOpen],
+        [styles.isSelected, Boolean(selectedOption)],
       )}
       {...boxProps}
     >
@@ -110,9 +111,8 @@ export const SelectorComponent: React.FC<Props> = ({
 
         {selectedOption ? (
           <label className={styles.selection}>{selectedOption?.value}</label>
-        ) : (
-          <label className={styles.placeholder}>{placeholder}</label>
-        )}
+        ) : null}
+        <label className={styles.placeholder}>{placeholder}</label>
 
         {selectedOption ? (
           <div ref={closeRef} className={styles.clear} onClick={onClickClear}>
