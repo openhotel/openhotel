@@ -15,9 +15,19 @@ export const Primary = {
   args: {
     placeholder: "placeholder",
     options: [
-      { key: 1, value: "One" },
-      { key: 2, value: "Two or something something" },
-      { key: 3, value: "Threeeee" },
+      {
+        key: 6,
+        value: "One",
+      },
+      {
+        key: 5,
+        value: "Two or something something",
+      },
+      {
+        key: 3,
+        value: "Threeeee",
+      },
     ],
+    defaultOption: 4,
   },
 };

@@ -3,7 +3,7 @@ import * as React from "react";
 // @ts-ignore
 import styles from "./selector.module.scss";
 import { cn } from "../../../utils";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   ChevronDownIconComponent,
   CrossIconComponent,
@@ -21,6 +21,7 @@ type Props = {
   placeholder?: string;
   className?: string;
   bordered?: boolean;
+  //it can work as selected option if changed
   defaultOption?: Option | string;
   options: Option[];
   onChange?: (option: Option) => void;
@@ -36,12 +37,22 @@ export const SelectorComponent: React.FC<Props> = ({
   onChange = () => {},
   ...boxProps
 }) => {
-  const [selectedOption, setSelectedOption] = useState<Option | null>(() =>
-    typeof defaultOption === "string"
-      ? (options.find((o) => o.key === defaultOption) ?? null)
-      : defaultOption,
+  const getDefaultOption = useCallback(
+    () =>
+      typeof defaultOption !== "object"
+        ? (options.find((o) => o.key === defaultOption) ?? null)
+        : defaultOption,
+    [defaultOption, options],
+  );
+
+  const [selectedOption, setSelectedOption] = useState<Option | null>(
+    getDefaultOption(),
   );
   const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  useEffect(() => {
+    setSelectedOption(getDefaultOption());
+  }, [options, getDefaultOption]);
 
   const onChangeValue = useCallback(
     (option: Option) => () => {
