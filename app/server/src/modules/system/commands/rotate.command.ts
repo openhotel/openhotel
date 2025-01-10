@@ -19,8 +19,6 @@ export const rotateCommand: Command = {
       .getFurnitures()
       .find((furniture) => furniture.id === id);
 
-    console.log(room.getFurnitures())
-
     if (!furniture) {
       user.emit(ProxyEvent.SYSTEM_MESSAGE, {
         message: __(user.getLanguage())("Furniture not found!"),

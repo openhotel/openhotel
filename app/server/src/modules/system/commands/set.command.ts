@@ -21,7 +21,6 @@ export const setCommand: Command = {
       number,
       number,
     ];
-    console.log(furnitureId, x, z, direction, wallX, wallY)
     if (!furnitureId || isNaN(x) || isNaN(z) || isNaN(direction)) return;
 
     if (CrossDirection.NORTH > direction || direction > CrossDirection.WEST)
