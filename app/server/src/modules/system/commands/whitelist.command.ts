@@ -58,10 +58,7 @@ const list = (config: UsersConfig, _: string[], user: UserMutable) => {
 
 export const whitelistCommand: Command = {
   command: "whitelist",
-  usages: [
-    "<add|remove> <username>",
-    "<on|off|list>",
-  ],
+  usages: ["<add|remove> <username>", "<on|off|list>"],
   description: "command.whitelist.description",
   func: async ({ user, args }) => {
     const action = args[0] as ListActions;

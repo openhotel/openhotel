@@ -21,9 +21,9 @@
   "Available commands: {{commands}}": "Comandos disponibles: {{commands}}",
   "Furniture not found on {{x}},{{z}}": "Furniture no encontrado en {{x}},{{z}}",
   "Command not found": "Comando no encontrado",
-  "{{command}}: {{description}}" : "{{command}}: {{description}}",
-  "No description available" : "No hay descripción disponible",
-  "Invalid arguments. None of the following usages matched: {{usages}}" : "Argumentos inválidos. Ninguno de los siguientes usos coincidió: {{usages}}",
+  "{{command}}: {{description}}": "{{command}}: {{description}}",
+  "No description available": "No hay descripción disponible",
+  "Invalid arguments. None of the following usages matched: {{usages}}": "Argumentos inválidos. Ninguno de los siguientes usos coincidió: {{usages}}",
 
   "command.ban.description": "Banea a un usuario",
   "command.blacklist.description": "Administra la lista negra",

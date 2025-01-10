@@ -19,9 +19,9 @@ import { teleportCommand } from "./teleport.command.ts";
 import { clearCommand } from "./clear.command.ts";
 import { rotateCommand } from "./rotate.command.ts";
 import { moveCommand } from "./move.command.ts";
-import {ProxyEvent} from "../../../shared/enums/event.enum.ts";
-import {validateCommandUsages} from "../../../shared/utils/commands.utils.ts";
-import {__} from "../../../shared/utils/languages.utils.ts";
+import { ProxyEvent } from "../../../shared/enums/event.enum.ts";
+import { validateCommandUsages } from "../../../shared/utils/commands.utils.ts";
+import { __ } from "../../../shared/utils/languages.utils.ts";
 
 export const commandList = [
   stopCommand,
@@ -78,7 +78,7 @@ export const executeCommand = ({
   const usages = foundCommand.usages || [];
 
   if (usages.length > 0) {
-    const validation = validateCommandUsages( foundCommand, _, user );
+    const validation = validateCommandUsages(foundCommand, _, user);
     if (!validation.isValid) {
       user.emit(ProxyEvent.SYSTEM_MESSAGE, {
         message: `${validation.errorMessage}`,
