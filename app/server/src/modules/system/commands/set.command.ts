@@ -8,6 +8,8 @@ import { isWallRenderable } from "shared/utils/rooms.utils.ts";
 
 export const setCommand: Command = {
   command: "set",
+  usages: ["<furniture_id> <x> <z> <direction> [wallX] [wallY]"],
+  description: "command.set.description",
   func: async ({ user, args }) => {
     if (3 > args.length) return;
 
@@ -19,6 +21,7 @@ export const setCommand: Command = {
       number,
       number,
     ];
+    console.log(furnitureId, x, z, direction, wallX, wallY)
     if (!furnitureId || isNaN(x) || isNaN(z) || isNaN(direction)) return;
 
     if (CrossDirection.NORTH > direction || direction > CrossDirection.WEST)

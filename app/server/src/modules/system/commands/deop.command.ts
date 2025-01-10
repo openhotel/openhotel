@@ -5,6 +5,8 @@ import { System } from "modules/system/main.ts";
 
 export const deopCommand: Command = {
   command: "deop",
+  usages: ["<username>"],
+  description: "commands.deop.description",
   func: async ({ user, args }) => {
     const username = args[0] as string;
     if (!username) return;
@@ -13,6 +15,9 @@ export const deopCommand: Command = {
     config.op.users = config.op.users.filter((u) => u !== username);
 
     await System.game.users.setConfig(config);
+
+    const position = user.getPosition();
+    console.log(position);
 
     user.emit(ProxyEvent.SYSTEM_MESSAGE, {
       message: __(user.getLanguage())("User {{username}} is no longer op", {

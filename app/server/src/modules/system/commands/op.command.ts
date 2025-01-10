@@ -5,7 +5,9 @@ import { System } from "modules/system/main.ts";
 
 export const opCommand: Command = {
   command: "op",
-  func: async ({ user, args }) => {
+  usages: ["<username>"],
+  description: "command.op.description",
+  func: async function ({ user, args }) {
     const username = args[0] as string;
     if (!username) return;
 

@@ -5,6 +5,9 @@ import { __ } from "shared/utils/languages.utils.ts";
 
 export const teleportCommand: Command = {
   command: "teleport",
+  usages: ["link <teleportIdA> <teleportIdB>",
+           "remote <teleportIdA> <linkId>"],
+  description: "command.teleport.description",
   func: async ({ user, args }) => {
     const [type, ...moreArgs] = args as string[];
 

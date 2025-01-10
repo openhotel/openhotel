@@ -5,7 +5,31 @@ import { __ } from "shared/utils/main.ts";
 
 export const helpCommand: Command = {
   command: "help",
-  func: async ({ user }) => {
+  usages: [
+      "",
+      "<command>",
+  ],
+  description: "command.help.description",
+  func: async ({ user, args }) => {
+    if (args.length === 1) {
+        const command = args[0] as string;
+        const cmd = commandList.find((c) => c.command === command);
+        if (!cmd) {
+            user.emit(ProxyEvent.SYSTEM_MESSAGE, {
+            message: __(user.getLanguage())("Command not found"),
+            });
+            return;
+        }
+
+        user.emit(ProxyEvent.SYSTEM_MESSAGE, {
+            message: __(user.getLanguage())("{{command}}: {{description}}", {
+                command: cmd.command,
+                description: __(user.getLanguage())(cmd.description), // Translate description
+            }),
+        });
+        return;
+    }
+
     user.emit(ProxyEvent.SYSTEM_MESSAGE, {
       message: __(user.getLanguage())("Available commands: {{commands}}", {
         commands: commandList
