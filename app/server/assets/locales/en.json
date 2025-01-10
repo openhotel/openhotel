@@ -22,6 +22,7 @@
   "Furniture not found on {{x}},{{z}}": "Furniture not found on {{x}},{{z}}",
   "Command not found": "Command not found",
   "{{command}}: {{description}}" : "{{command}}: {{description}}",
+  "No description available": "No description available",
   "Invalid arguments. None of the following usages matched: {{usages}}": "Invalid arguments. None of the following usages matched: {{usages}}",
 
   "command.ban.description": "Bans a user",

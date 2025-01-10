@@ -21,10 +21,12 @@ export const helpCommand: Command = {
             return;
         }
 
+        const description = cmd.description ? __(user.getLanguage())(cmd.description) : __(user.getLanguage())("No description available");
+
         user.emit(ProxyEvent.SYSTEM_MESSAGE, {
             message: __(user.getLanguage())("{{command}}: {{description}}", {
                 command: cmd.command,
-                description: __(user.getLanguage())(cmd.description), // Translate description
+                description: description,
             }),
         });
         return;
