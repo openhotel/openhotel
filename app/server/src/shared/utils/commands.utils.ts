@@ -10,28 +10,20 @@ export const validateCommandUsages = (
   const argsRegex = /<[^>]+>|\[[^\]]+\]|\S+/g; // Matches "<...>", "[...]", "<...|...|...>", "[...|...|...]" and literals
   for (const usage of foundCommand.usages) {
     const usageTokens = usage.match(argsRegex);
-
     if (!usageTokens) {
       if (args.length === 0) return { isValid: true };
-      continue; // Try the next usage pattern
+      continue;
     }
 
     let valid = true;
+    let argIndex = 0;
+
     for (let i = 0; i < usageTokens.length; i++) {
       const token = usageTokens[i];
-      const arg = args[i];
-
-      // Check if token is a literal keyword (e.g., "link" or "remote")
-      if (!token.startsWith("<") && !token.startsWith("[")) {
-        if (token !== arg) {
-          valid = false;
-          break;
-        }
-        continue;
-      }
-
       const isOptional = token.startsWith("[") && token.endsWith("]");
       const cleanToken = token.replace(/[<>\[\]]/g, "");
+      const choices = cleanToken.split("|");
+      const arg = args[argIndex];
 
       if (arg === undefined) {
         if (!isOptional) {
@@ -41,15 +33,27 @@ export const validateCommandUsages = (
         continue;
       }
 
-      // Validate against choices (e.g., "<on|off|list>")
-      const choices = cleanToken.split("|");
-      if (choices.length > 1 && !choices.includes(arg)) {
-        valid = false;
-        break;
+      // Literal keyword check
+      if (!token.startsWith("<") && !token.startsWith("[")) {
+        if (token !== arg) {
+          valid = false;
+          break;
+        }
+        argIndex++;
+        continue;
       }
+
+      // Choice validation
+      if (choices.length > 1) {
+        if (!choices.includes(arg)) {
+          valid = false;
+          break;
+        }
+      }
+      argIndex++;
     }
 
-    if (valid && args.length === usageTokens.length) {
+    if (valid && argIndex === args.length) {
       return { isValid: true };
     }
   }
