@@ -5,6 +5,8 @@ import { FurnitureType } from "shared/enums/furniture.enum.ts";
 import { CrossDirection } from "@oh/utils";
 import { RoomPointEnum } from "shared/enums/room.enums.ts";
 import { isWallRenderable } from "shared/utils/rooms.utils.ts";
+import { WALL_HEIGHT } from "shared/consts/wall.consts.ts";
+import { TILE_Y_HEIGHT } from "shared/consts/tiles.consts.ts";
 
 export const setCommand: Command = {
   command: "set",
@@ -57,17 +59,26 @@ export const setCommand: Command = {
       return;
     if (furniture.type === FurnitureType.FRAME) {
       const layout = room.getObject().layout;
-      if (
-        !isWallRenderable(layout, furniture.position, true) &&
-        !isWallRenderable(layout, furniture.position, false)
-      )
-        return;
+      const isWallX = isWallRenderable(layout, furniture.position, true);
+      const isWallZ = isWallRenderable(layout, furniture.position, false);
+
+      if (!isWallX && !isWallZ) return;
+
+      // TODO: sacar altura
+      console.log(roomPoint);
+      const previewY = -((parseInt(roomPoint + "") ?? 1) - 1);
+      const y = Math.floor(previewY);
+
+      const wallHeight = WALL_HEIGHT - y * TILE_Y_HEIGHT;
+      console.log({ wallHeight });
+      if (wallY > wallHeight) return;
+      // altura wallX wallY
     }
 
     switch ($furniture.type) {
       case FurnitureType.TELEPORT:
         await System.game.teleports.setRoom(furniture.id, roomId);
-        break;
+      // Not add break, it's not a bug, it's a feature!!
       case FurnitureType.FURNITURE:
         furniture.size = $furniture.size;
         break;
