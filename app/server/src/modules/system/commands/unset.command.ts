@@ -5,6 +5,8 @@ import { __ } from "shared/utils/main.ts";
 
 export const unsetCommand: Command = {
   command: "unset",
+  usages: ["<furniture_id>"],
+  description: "command.unset.description",
   func: async ({ user, args }) => {
     if (1 !== args.length) return;
 

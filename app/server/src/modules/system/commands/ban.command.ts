@@ -5,6 +5,8 @@ import { ProxyEvent } from "shared/enums/main.ts";
 
 export const banCommand: Command = {
   command: "ban",
+  usages: ["<username>"],
+  description: "command.ban.description",
   func: async ({ user, args }) => {
     const username = args[0] as string;
     if (!username) return;

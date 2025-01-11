@@ -58,6 +58,8 @@ const list = (config: UsersConfig, _: string[], user: UserMutable) => {
 
 export const blacklistCommand: Command = {
   command: "blacklist",
+  usages: ["<add|remove> <username>", "<on|off|list>"],
+  description: "commmands.blacklist.description",
   func: async ({ user, args }) => {
     const action = args[0] as ListActions;
     if (!action) return;

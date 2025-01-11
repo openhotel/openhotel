@@ -4,6 +4,8 @@ import { System } from "modules/system/main.ts";
 
 export const clearCommand: Command = {
   command: "clear",
+  usages: [""],
+  description: "command.clear.description",
   func: async ({ user, args }) => {
     const roomId = user.getRoom();
     if (!roomId) return;

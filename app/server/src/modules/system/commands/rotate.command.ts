@@ -6,6 +6,8 @@ import { CrossDirection } from "@oh/utils";
 
 export const rotateCommand: Command = {
   command: "rotate",
+  usages: ["<furniture_id> <true|false>"],
+  description: "command.rotate.description",
   func: async ({ user, args }) => {
     const [id, clockwise] = args as [string, string];
 

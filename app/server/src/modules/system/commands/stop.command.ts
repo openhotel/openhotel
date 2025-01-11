@@ -4,6 +4,8 @@ import { __ } from "shared/utils/main.ts";
 
 export const stopCommand: Command = {
   command: "stop",
+  usages: [""],
+  description: "command.stop.description",
   func: ({ user }) => {
     user.emit(ProxyEvent.SYSTEM_MESSAGE, {
       message: __(user.getLanguage())("Stopping server..."),

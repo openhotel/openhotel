@@ -5,6 +5,8 @@ import { __ } from "shared/utils/main.ts";
 
 export const updateCommand: Command = {
   command: "update",
+  usages: [""],
+  description: "command.update.description",
   func: async ({ user }) => {
     System.proxy.$emit(ProxyEvent.$UPDATE);
     user.emit(ProxyEvent.SYSTEM_MESSAGE, {
