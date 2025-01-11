@@ -60,7 +60,7 @@ export const confirmModalComponent: ContainerComponent<Props> = (props) => {
   });
 
   const title = textSprite({
-    text: props.title,
+    text: props.title.toUpperCase(),
     spriteSheet: SpriteSheetEnum.BOLD_FONT,
     size: {
       width: modalBounds.width - 9,
@@ -73,7 +73,7 @@ export const confirmModalComponent: ContainerComponent<Props> = (props) => {
     text: props.description,
     spriteSheet: SpriteSheetEnum.DEFAULT_FONT,
     size: {
-      width: modalBounds.width - 9,
+      width: modalBounds.width - 24,
       height: modalBounds.height - 100,
     },
     color: 0,
@@ -110,20 +110,22 @@ export const confirmModalComponent: ContainerComponent<Props> = (props) => {
       y: modalPosition.y + 3,
     });
     title.setPosition({
-      x: modalPosition.x + 6,
+      x: modalPosition.x + 12,
       y: modalPosition.y + 25,
     });
+    const titlePosition = title.getPosition();
     description.setPosition({
-      x: modalPosition.x + 6,
-      y: modalPosition.y + 40,
+      x: titlePosition.x,
+      y: titlePosition.y + 15,
     });
     confirmButton.setPosition({
       x: modalPosition.x + modalBounds.width - 70,
       y: modalPosition.y + modalBounds.height - 25,
     });
+    const confirmButtonPosition = confirmButton.getPosition();
     cancelButton.setPosition({
-      x: modalPosition.x + modalBounds.width - 150,
-      y: modalPosition.y + modalBounds.height - 25,
+      x: confirmButtonPosition.x - 70,
+      y: confirmButtonPosition.y,
     });
   };
 
