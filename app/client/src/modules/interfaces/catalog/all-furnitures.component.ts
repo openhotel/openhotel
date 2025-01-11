@@ -81,12 +81,7 @@ export const allFurnituresComponent: ContainerComponent<Props> = (props) => {
       if (!System.game.furniture.isLoaded(furniture.id))
         await System.game.furniture.loadFurniture(furniture.id);
 
-      const spriteSheet = System.api.getPath(
-        `/furniture/sheet.json?furnitureId=${furniture.id}`,
-      );
-      const furnitureData = await fetch(
-        System.api.getPath(`/furniture?furnitureId=${furniture.id}`),
-      ).then((data) => data.json());
+      const furnitureData = System.game.furniture.get(furniture.id);
 
       const iconTexture = furnitureData.icon.texture;
       const iconBounds = furnitureData.icon.bounds;
@@ -106,7 +101,7 @@ export const allFurnituresComponent: ContainerComponent<Props> = (props) => {
 
       $spriteList.add($spriteContainer);
       const $sprite = sprite({
-        spriteSheet: spriteSheet,
+        spriteSheet: furnitureData.spriteSheet,
         texture: iconTexture,
         position: {
           x: 0,
@@ -144,7 +139,7 @@ export const allFurnituresComponent: ContainerComponent<Props> = (props) => {
     }
   };
 
-  $container.on(DisplayObjectEvent.MOUNT, async () => {
+  $container.on(DisplayObjectEvent.ADDED, async () => {
     await loadFurnitures();
   });
 

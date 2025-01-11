@@ -36,6 +36,7 @@ export const furniture = () => {
           spriteSheet: furnitureSpriteSheetId,
           label: furnitureData.label,
           description: furnitureData.description,
+          icon: furnitureData.icon,
           direction: Object.keys(
             furnitureData.direction,
           ).reduce<FurnitureDirectionDataMap>(
