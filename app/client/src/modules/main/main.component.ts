@@ -28,9 +28,9 @@ export const mainComponent = () => {
 
   System.proxy.on(Event.REDIRECT, ({ redirectUrl }) => {
     const confirmModal = confirmModalComponent({
-      title: "REDIRECTED",
-      description: "You are being redirected to an external site or hotel. Are you sure you want to proceed?",
-      label: "Go!",
+      title: "See you later",
+      description: "You are about to leave this room being redirected to an external site or hotel. Are you sure you want to proceed?",
+      label: "Continue",
       onConfirm: () => window.location.replace(redirectUrl),
     });
     $container.add(confirmModal);
