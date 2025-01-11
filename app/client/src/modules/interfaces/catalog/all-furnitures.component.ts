@@ -138,10 +138,8 @@ export const allFurnituresComponent: ContainerComponent<Props> = (props) => {
       $spriteContainer.add($text);
 
       $spriteContainer.on(DisplayObjectEvent.POINTER_TAP, (event: MouseEvent) => {
-        if (event.shiftKey) {
-          System.events.emit(SystemEvent.CHAT_INPUT_APPEND_TEXT, furniture.id);
-          return;
-        }
+        System.events.emit(SystemEvent.CHAT_INPUT_APPEND_TEXT, furniture.id);
+        return;
       });
     }
   };

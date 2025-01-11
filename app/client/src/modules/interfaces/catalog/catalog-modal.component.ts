@@ -11,12 +11,13 @@ import {
 import { CatalogCategory, SpriteSheetEnum, SystemEvent } from "shared/enums";
 import { System } from "system";
 import { allFurnituresComponent } from "./all-furnitures.component";
-import { CATALOG_CATEGORY_SPRITE_MAP } from "../../../shared/consts/catalog.consts";
+import { CATALOG_CATEGORY_SPRITE_MAP } from "shared/consts/catalog.consts";
 
 type Props = {
   visible: boolean;
 };
 
+// TODO: Change all NAVIGATOR sprite sheets to CATALOG (or make common one for these modals)
 export const catalogModalComponent: ContainerComponent<Props> = (
   { visible } = { visible: false },
 ) => {
