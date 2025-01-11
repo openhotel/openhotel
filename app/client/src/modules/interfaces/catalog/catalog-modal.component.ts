@@ -89,7 +89,10 @@ export const catalogModalComponent: ContainerComponent<Props> = (
     }>("/furniture-list", {});
 
     const categoryComponentMap: Record<CatalogCategory, any> = {
-      [CatalogCategory.ALL]: allFurnituresComponent({ size: contentSize, furnitures}),
+      [CatalogCategory.ALL]: allFurnituresComponent({
+        size: contentSize,
+        furnitures,
+      }),
     };
 
     let selectedCategory: CatalogCategory = CatalogCategory.ALL;
@@ -106,9 +109,9 @@ export const catalogModalComponent: ContainerComponent<Props> = (
     });
     $container.add(selectionTabItem);
     for (
-        let categoryIndex = 0;
-        categoryIndex < Object.keys(CATALOG_CATEGORY_SPRITE_MAP).length;
-        categoryIndex++
+      let categoryIndex = 0;
+      categoryIndex < Object.keys(CATALOG_CATEGORY_SPRITE_MAP).length;
+      categoryIndex++
     ) {
       const texture = CATALOG_CATEGORY_SPRITE_MAP[categoryIndex];
       const tabItem = sprite({
@@ -125,8 +128,8 @@ export const catalogModalComponent: ContainerComponent<Props> = (
       tabItem.on(DisplayObjectEvent.POINTER_TAP, () => {
         selectionTabItem.setPositionY(20 + categoryIndex * 26);
         selectionTabItem.setTexture(
-            categoryIndex === 0 ? "selector-top" : "selector",
-            SpriteSheetEnum.NAVIGATOR,
+          categoryIndex === 0 ? "selector-top" : "selector",
+          SpriteSheetEnum.NAVIGATOR,
         );
 
         $content.remove(categoryComponentMap[selectedCategory]);
@@ -145,7 +148,7 @@ export const catalogModalComponent: ContainerComponent<Props> = (
       });
       $container.add(tabItem, tabItemTexture);
     }
-  }
+  };
 
   const $content = container({
     position: {

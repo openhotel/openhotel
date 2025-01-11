@@ -70,7 +70,8 @@ export const furniture = () => {
   const get = (furnitureId: string): FurnitureData | null =>
     $furnitureMap[furnitureId];
 
-  const isLoaded = (furnitureId: string): boolean => !!$furnitureMap[furnitureId];
+  const isLoaded = (furnitureId: string): boolean =>
+    !!$furnitureMap[furnitureId];
 
   return {
     load,

@@ -8,7 +8,7 @@ import {
   sprite,
   textSprite,
 } from "@tu/tulip";
-import {SpriteSheetEnum, SystemEvent} from "shared/enums";
+import { SpriteSheetEnum, SystemEvent } from "shared/enums";
 import { System } from "system";
 import { Size2d } from "shared/types";
 
@@ -122,7 +122,7 @@ export const allFurnituresComponent: ContainerComponent<Props> = (props) => {
         color: 0,
         position: {
           x: Math.max(30, iconBounds.width + 5),
-          y:  iconBounds.height / 2 - 2,
+          y: iconBounds.height / 2 - 2,
         },
         eventMode: EventMode.STATIC,
         cursor: Cursor.POINTER,
@@ -132,10 +132,13 @@ export const allFurnituresComponent: ContainerComponent<Props> = (props) => {
       $spriteContainer.add($sprite);
       $spriteContainer.add($text);
 
-      $spriteContainer.on(DisplayObjectEvent.POINTER_TAP, (event: MouseEvent) => {
-        System.events.emit(SystemEvent.CHAT_INPUT_APPEND_TEXT, furniture.id);
-        return;
-      });
+      $spriteContainer.on(
+        DisplayObjectEvent.POINTER_TAP,
+        (event: MouseEvent) => {
+          System.events.emit(SystemEvent.CHAT_INPUT_APPEND_TEXT, furniture.id);
+          return;
+        },
+      );
     }
   };
 
