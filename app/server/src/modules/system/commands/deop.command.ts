@@ -5,6 +5,8 @@ import { System } from "modules/system/main.ts";
 
 export const deopCommand: Command = {
   command: "deop",
+  usages: ["<username>"],
+  description: "commands.deop.description",
   func: async ({ user, args }) => {
     const username = args[0] as string;
     if (!username) return;
