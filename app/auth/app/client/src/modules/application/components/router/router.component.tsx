@@ -3,13 +3,13 @@ import React from "react";
 import { NotFoundComponent } from "../not-found";
 import { LoginComponent } from "modules/login";
 import { RegisterComponent } from "modules/register";
-import { HomeComponent } from "modules/home";
+import { HomeComponent, HomeNavigatorComponent } from "modules/home";
 import { RedirectComponent } from "shared/components";
 import { LogoutComponent } from "modules/logout";
-import { CardLayoutComponent, MainLayoutComponent } from "@oh/components";
+import { CardLayoutComponent } from "modules/application/components/card-layout";
+import { MainLayoutComponent } from "@oh/components";
 import { ConnectionComponent, PingComponent } from "modules/connection";
 import { AdminComponent } from "modules/admin";
-import { HomeNavigatorComponent } from "modules/home/components";
 import { RecoverPasswordComponent } from "modules/recover-password";
 import { ChangePasswordComponent } from "modules/change-password";
 import { VerifyComponent } from "modules/verify";
@@ -20,31 +20,33 @@ const router = createBrowserRouter([
     children: [
       {
         element: (
-          <CardLayoutComponent mih="20rem" children={<LoginComponent />} />
+          <CardLayoutComponent mih="20rem">
+            <LoginComponent />
+          </CardLayoutComponent>
         ),
         path: "/login",
       },
       {
         element: (
-          <CardLayoutComponent
-            mih="20rem"
-            children={<RecoverPasswordComponent />}
-          />
+          <CardLayoutComponent mih="20rem">
+            <RecoverPasswordComponent />
+          </CardLayoutComponent>
         ),
         path: "/recover-password",
       },
       {
         element: (
-          <CardLayoutComponent
-            mih="20rem"
-            children={<ChangePasswordComponent />}
-          />
+          <CardLayoutComponent mih="20rem">
+            <ChangePasswordComponent />
+          </CardLayoutComponent>
         ),
         path: "/change-password",
       },
       {
         element: (
-          <CardLayoutComponent mih="30rem" children={<RegisterComponent />} />
+          <CardLayoutComponent mih="30rem">
+            <RegisterComponent />
+          </CardLayoutComponent>
         ),
         path: "/register",
       },
@@ -57,7 +59,11 @@ const router = createBrowserRouter([
         Component: () => <LogoutComponent />,
       },
       {
-        element: <CardLayoutComponent children={<ConnectionComponent />} />,
+        element: (
+          <CardLayoutComponent>
+            <ConnectionComponent />
+          </CardLayoutComponent>
+        ),
         path: "/connection",
       },
       // {
@@ -93,5 +99,6 @@ const router = createBrowserRouter([
 ]);
 
 export const RouterComponent: React.FC<any> = ({ children }) => (
+  //@ts-ignore
   <RouterProvider router={router}>${children}</RouterProvider>
 );

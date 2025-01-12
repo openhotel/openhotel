@@ -37,7 +37,7 @@ export const IntegrationComponent: React.FC<Props> = ({
   return (
     <div className={cn(styles.integration, className)}>
       <label>
-        {integration.name} - {integration.integrationId}
+        {integration.name} - {integration.integrationId} - {integration.type}
       </label>
       <a href={integration.redirectUrl} target="_blank">
         {integration.redirectUrl}

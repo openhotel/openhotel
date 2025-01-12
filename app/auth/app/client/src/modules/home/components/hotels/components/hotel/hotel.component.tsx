@@ -1,6 +1,16 @@
-import React, { FormEvent, useCallback } from "react";
+import React, {
+  FormEvent,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { Hotel } from "shared/types";
-import { ButtonComponent, InputComponent } from "@oh/components";
+import {
+  ButtonComponent,
+  InputComponent,
+  SelectorComponent,
+} from "@oh/components";
 import { IntegrationComponent } from "../integration/integration.component";
 import { cn } from "shared/utils";
 
@@ -27,6 +37,19 @@ export const HotelComponent: React.FC<Props> = ({
     integrations: { create: createIntegration },
   } = useHotels();
 
+  const [integrationOptions, setIntegrationOptions] = useState<string[]>([]);
+
+  useEffect(() => {
+    const currentIntegrationTypes = hotel.integrations.map(
+      (integration) => integration.type,
+    );
+    setIntegrationOptions(
+      ["client", "web"].filter(
+        (type) => !currentIntegrationTypes.includes(type),
+      ),
+    );
+  }, [hotel, setIntegrationOptions]);
+
   const onSubmitIntegration = useCallback(
     async (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault();
@@ -36,17 +59,29 @@ export const HotelComponent: React.FC<Props> = ({
       const redirectUrl = data.get("redirectUrl") as string;
       const type = data.get("type") as string;
 
-      if (!name || !redirectUrl || !type) return;
+      if (
+        !name ||
+        !redirectUrl ||
+        !type ||
+        !integrationOptions.length ||
+        !integrationOptions.includes(type)
+      )
+        return;
 
       createIntegration(hotel.hotelId, name, redirectUrl, type).then(refresh);
     },
-    [hotel, createIntegration, refresh],
+    [hotel, createIntegration, refresh, integrationOptions],
   );
 
   const onRemove = useCallback(async () => {
     await remove(hotel.hotelId);
     refresh();
   }, [hotel, remove, refresh]);
+
+  const integrationSelectorOptions = useMemo(
+    () => integrationOptions.map((type) => ({ key: type, value: type })),
+    [integrationOptions],
+  );
 
   return (
     <div className={cn(styles.hotel, className)}>
@@ -64,19 +99,22 @@ export const HotelComponent: React.FC<Props> = ({
             onRemove={onRemoveIntegration(integration.integrationId)}
           />
         ))}
-        <div className={styles.integration}>
-          <form className={styles.form} onSubmit={onSubmitIntegration}>
-            <div className={styles.inputs}>
-              <InputComponent placeholder="name" name="name" />
-              <InputComponent placeholder="redirectUrl" name="redirectUrl" />
-              <select name="type">
-                <option>web</option>
-                <option>client</option>
-              </select>
-            </div>
-            <ButtonComponent>Add integration</ButtonComponent>
-          </form>
-        </div>
+        {integrationOptions?.length ? (
+          <div className={styles.integration}>
+            <form className={styles.form} onSubmit={onSubmitIntegration}>
+              <div className={styles.inputs}>
+                <InputComponent placeholder="name" name="name" />
+                <InputComponent placeholder="redirectUrl" name="redirectUrl" />
+                <SelectorComponent
+                  placeholder="type"
+                  name="type"
+                  options={integrationSelectorOptions}
+                />
+              </div>
+              <ButtonComponent>Add integration</ButtonComponent>
+            </form>
+          </div>
+        ) : null}
       </div>
       <ButtonComponent onClick={onRemove} style={{ backgroundColor: "gray" }}>
         delete

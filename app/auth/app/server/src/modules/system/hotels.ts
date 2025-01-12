@@ -17,6 +17,17 @@ export const hotels = () => {
     );
   };
 
+  const getAccountsByIntegrationId = async (
+    hotelId: string,
+    integrationId: string,
+  ) => {
+    return (
+      await System.db.list({
+        prefix: ["integrationsByHotelsByAccountId"],
+      })
+    ).filter(({ key }) => key[2] === hotelId && key[3] === integrationId);
+  };
+
   const getListByAccountId = async (accountId: string) => {
     const hotelsIdList =
       (await System.db.get(["hotelsByAccountId", accountId])) || [];
@@ -28,12 +39,10 @@ export const hotels = () => {
         hotel.integrations = await Promise.all(
           hotel.integrations.map(async (integration) => {
             const accounts = (
-              await System.db.list({
-                prefix: ["integrationsByHotelsByAccountId"],
-              })
-            ).filter(
-              ({ key }) =>
-                key[2] === hotelId && key[3] === integration.integrationId,
+              await getAccountsByIntegrationId(
+                hotelId,
+                integration.integrationId,
+              )
             ).length;
             return { ...integration, accounts };
           }),
@@ -222,6 +231,7 @@ export const hotels = () => {
     getList,
     remove,
     getListByAccountId,
+    getAccountsByIntegrationId,
 
     integrations,
   };
