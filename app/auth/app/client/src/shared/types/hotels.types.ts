@@ -2,6 +2,7 @@ export type Hotel = {
   accountId: string;
   hotelId: string;
   name: string;
+  public: boolean;
 
   integrations: HotelIntegration[];
 };

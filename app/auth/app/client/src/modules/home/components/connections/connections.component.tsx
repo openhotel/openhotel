@@ -26,8 +26,6 @@ export const ConnectionsComponent: React.FC<Props> = () => {
     [],
   );
 
-  // console.log(connections);
-  // return <div />;
   return (
     <div>
       <h2>Connections</h2>

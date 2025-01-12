@@ -26,6 +26,11 @@ type Props = {
   refresh: () => void;
 } & React.HTMLProps<HTMLDivElement>;
 
+const PUBLIC_PRIVATE_OPTIONS = ["public", "private"].map((value) => ({
+  key: value,
+  value,
+}));
+
 export const HotelComponent: React.FC<Props> = ({
   hotel,
   className,
@@ -35,6 +40,7 @@ export const HotelComponent: React.FC<Props> = ({
   const {
     remove,
     integrations: { create: createIntegration },
+    update,
   } = useHotels();
 
   const [integrationOptions, setIntegrationOptions] = useState<string[]>([]);
@@ -83,11 +89,32 @@ export const HotelComponent: React.FC<Props> = ({
     [integrationOptions],
   );
 
+  const publicSelectedOption = useMemo(
+    () =>
+      PUBLIC_PRIVATE_OPTIONS.find(
+        ({ key }) => (hotel.public ? "public" : "private") === key,
+      ),
+    [hotel],
+  );
+
+  const onChangePublicSelector = useCallback(
+    (option) => {
+      update(hotel.hotelId, hotel.name, option?.key === "public");
+    },
+    [update, hotel],
+  );
+
   return (
     <div className={cn(styles.hotel, className)}>
       <label>
         {hotel.name} - {hotel.hotelId}
       </label>
+      <SelectorComponent
+        placeholder="Visibility"
+        defaultOption={publicSelectedOption}
+        options={PUBLIC_PRIVATE_OPTIONS}
+        onChange={onChangePublicSelector}
+      />
       <div>integrations:</div>
       <div className={styles.list}>
         {hotel.integrations.map((integration) => (

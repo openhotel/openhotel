@@ -34,14 +34,15 @@ export const useHotels = () => {
   );
 
   const update = useCallback(
-    async (hotelId: string, name: string) => {
+    async (hotelId: string, name: string, $public: boolean) => {
       const { data } = await fetch({
-        method: RequestMethod.POST,
+        method: RequestMethod.PATCH,
         pathname: `/user/@me/hotel`,
         headers: getAccountHeaders(),
         body: {
           hotelId,
           name,
+          public: $public,
         },
       });
 

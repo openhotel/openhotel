@@ -57,7 +57,7 @@ export const hotels = () => {
     return await System.db.get(["hotels", hotelId]);
   };
 
-  const add = async (accountId: string, name: string) => {
+  const add = async (accountId: string, name: string, $public: boolean) => {
     const hotelId = crypto.randomUUID();
 
     await System.db.set(["hotels", hotelId], {
@@ -65,6 +65,8 @@ export const hotels = () => {
       name,
       accountId,
       integrations: [],
+      public: $public,
+      createdAt: Date.now(),
     });
 
     const hotelsIdList =
@@ -81,13 +83,14 @@ export const hotels = () => {
     };
   };
 
-  const update = async (hotelId: string, name: string) => {
+  const update = async (hotelId: string, name: string, $public: boolean) => {
     const hotel = await getHotel(hotelId);
     if (!hotel) return;
 
     const data = {
       ...hotel,
       name,
+      public: $public,
     };
 
     await System.db.set(["hotels", hotelId], data);
