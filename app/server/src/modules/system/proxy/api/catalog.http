@@ -1,0 +1,8 @@
+#
+GET http://localhost:1994/proxy/api/catalog/alpha
+
+###
+#
+GET http://localhost:1994/proxy/api/catalog/flags
+
+###

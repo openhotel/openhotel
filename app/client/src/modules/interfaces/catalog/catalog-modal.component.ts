@@ -10,14 +10,13 @@ import {
 } from "@tu/tulip";
 import { CatalogCategory, SpriteSheetEnum, SystemEvent } from "shared/enums";
 import { System } from "system";
-import { allFurnituresComponent } from "./all-furnitures.component";
-import { CATALOG_CATEGORY_SPRITE_MAP } from "shared/consts/catalog.consts";
+import { CATALOG_CATEGORY_PARAMS_MAP } from "shared/consts/catalog.consts";
+import { catalogSectionComponent } from "./catalog-section.component";
 
 type Props = {
   visible: boolean;
 };
 
-// TODO: Change all NAVIGATOR sprite sheets to CATALOG (or make common one for these modals)
 export const catalogModalComponent: ContainerComponent<Props> = (
   { visible } = { visible: false },
 ) => {
@@ -26,7 +25,7 @@ export const catalogModalComponent: ContainerComponent<Props> = (
     sortableChildren: true,
   });
   const base = sprite({
-    spriteSheet: SpriteSheetEnum.NAVIGATOR,
+    spriteSheet: SpriteSheetEnum.CATALOG,
     texture: "modal",
   });
   $container.add(base);
@@ -63,7 +62,7 @@ export const catalogModalComponent: ContainerComponent<Props> = (
   $container.add(draggable, close);
 
   const content = sprite({
-    spriteSheet: SpriteSheetEnum.NAVIGATOR,
+    spriteSheet: SpriteSheetEnum.CATALOG,
     texture: "content",
     position: {
       x: 37,
@@ -80,26 +79,25 @@ export const catalogModalComponent: ContainerComponent<Props> = (
   };
 
   const loadComponents = async () => {
-    const { furnitures } = await System.api.fetch<{
-      furnitures: {
-        id: string;
-        type: string;
-        label: string;
-      }[];
-    }>("/furniture-list", {});
+    const categoryComponentMap: Record<CatalogCategory, any> = Object.keys(
+      CATALOG_CATEGORY_PARAMS_MAP,
+    ).reduce(
+      (acc, category) => {
+        const { label } = CATALOG_CATEGORY_PARAMS_MAP[category];
+        acc[category] = catalogSectionComponent({
+          size: contentSize,
+          label: label,
+        });
+        return acc;
+      },
+      {} as Record<CatalogCategory, any>,
+    );
 
-    const categoryComponentMap: Record<CatalogCategory, any> = {
-      [CatalogCategory.ALL]: allFurnituresComponent({
-        size: contentSize,
-        furnitures,
-      }),
-    };
-
-    let selectedCategory: CatalogCategory = CatalogCategory.ALL;
+    let selectedCategory: CatalogCategory = CatalogCategory.ALPHA;
     $content.add(categoryComponentMap[selectedCategory]);
 
     const selectionTabItem = sprite({
-      spriteSheet: SpriteSheetEnum.NAVIGATOR,
+      spriteSheet: SpriteSheetEnum.CATALOG,
       texture: (selectedCategory as number) === 0 ? "selector-top" : "selector",
       position: {
         x: 6,
@@ -110,12 +108,12 @@ export const catalogModalComponent: ContainerComponent<Props> = (
     $container.add(selectionTabItem);
     for (
       let categoryIndex = 0;
-      categoryIndex < Object.keys(CATALOG_CATEGORY_SPRITE_MAP).length;
+      categoryIndex < Object.keys(CATALOG_CATEGORY_PARAMS_MAP).length;
       categoryIndex++
     ) {
-      const texture = CATALOG_CATEGORY_SPRITE_MAP[categoryIndex];
+      const texture = CATALOG_CATEGORY_PARAMS_MAP[categoryIndex].sprite;
       const tabItem = sprite({
-        spriteSheet: SpriteSheetEnum.NAVIGATOR,
+        spriteSheet: SpriteSheetEnum.CATALOG,
         texture: "selector-disabled",
         position: {
           x: 6,
@@ -129,7 +127,7 @@ export const catalogModalComponent: ContainerComponent<Props> = (
         selectionTabItem.setPositionY(20 + categoryIndex * 26);
         selectionTabItem.setTexture(
           categoryIndex === 0 ? "selector-top" : "selector",
-          SpriteSheetEnum.NAVIGATOR,
+          SpriteSheetEnum.CATALOG,
         );
 
         $content.remove(categoryComponentMap[selectedCategory]);
@@ -137,7 +135,7 @@ export const catalogModalComponent: ContainerComponent<Props> = (
         $content.add(categoryComponentMap[selectedCategory]);
       });
       const tabItemTexture = sprite({
-        spriteSheet: SpriteSheetEnum.NAVIGATOR,
+        spriteSheet: SpriteSheetEnum.CATALOG,
         texture,
         position: {
           x: 12,

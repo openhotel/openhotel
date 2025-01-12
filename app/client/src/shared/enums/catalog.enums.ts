@@ -1,3 +1,8 @@
 export enum CatalogCategory {
-  ALL,
+  ALPHA,
+  FLAGS,
+
+  TELEPORTS,
+  TOYS,
+  XMAS,
 }

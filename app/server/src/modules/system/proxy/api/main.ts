@@ -3,14 +3,12 @@ import { roomListRequest } from "./room-list.request.ts";
 import { roomRequest } from "./room.request.ts";
 import { onlineUsersRequest } from "./online-users.request.ts";
 import { furnitureRequest } from "./furniture.request.ts";
-import { furnitureListRequest } from "./furniture-list.request.ts";
+import { catalogRequest } from "./catalog.request.ts";
 
 export const requestList: ProxyRequestType[] = [
   roomListRequest,
   roomRequest,
   onlineUsersRequest,
-
-  // Order matters because furnitureRequest also matches furnitureListRequest path
-  furnitureListRequest,
+  catalogRequest,
   furnitureRequest,
 ];
