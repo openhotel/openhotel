@@ -36,24 +36,39 @@ export const confirmModalComponent: ContainerComponent<Props> = (props) => {
     eventMode: EventMode.STATIC,
     withContext: true,
   });
-  background.focus();
+  $container.add(background);
   const { width, height } = global.getApplication().window.getBounds();
   background.setRectangle(width, height);
+
+  const $card = container({
+    position: {
+      x: width / 2,
+      y: height / 2,
+    },
+  });
 
   const modal = sprite({
     spriteSheet: SpriteSheetEnum.NAVIGATOR,
     texture: "modal",
   });
-  const modalBounds = modal.getBounds();
+
+  $card.setPivotX(modal.getBounds().width / 2);
+  $card.setPivotY(modal.getBounds().height / 2);
+  $container.add($card);
+
 
   const close = graphics({
     type: GraphicType.RECTANGLE,
-    width: 16,
-    height: 16,
+    width: 14,
+    height: 14,
     tint: 0xff00ff,
     eventMode: EventMode.STATIC,
     alpha: 0,
     cursor: Cursor.POINTER,
+    position: {
+      x: modal.getBounds().width - 25,
+      y: 3,
+    },
   });
   close.on(DisplayObjectEvent.POINTER_TAP, () => {
     $container.$destroy();
@@ -62,8 +77,12 @@ export const confirmModalComponent: ContainerComponent<Props> = (props) => {
   const title = textSprite({
     text: props.title.toUpperCase(),
     spriteSheet: SpriteSheetEnum.BOLD_FONT,
+    position: {
+      x: 12,
+      y: 25
+    },
     size: {
-      width: modalBounds.width - 9,
+      width: modal.getBounds().width - 25,
       height: 7,
     },
     color: 0,
@@ -72,9 +91,13 @@ export const confirmModalComponent: ContainerComponent<Props> = (props) => {
   const description = textSprite({
     text: props.description,
     spriteSheet: SpriteSheetEnum.DEFAULT_FONT,
+    position: {
+      x: 12,
+      y: 40,
+    },
     size: {
-      width: modalBounds.width - 24,
-      height: modalBounds.height - 100,
+      width: modal.getBounds().width - 25,
+      height: modal.getBounds().height - 80,
     },
     color: 0,
   });
@@ -82,6 +105,10 @@ export const confirmModalComponent: ContainerComponent<Props> = (props) => {
   const confirmButton = buttonComponent({
     text: props.label,
     width: 50,
+    position: {
+      x: modal.getBounds().width - 70,
+      y: modal.getBounds().height - 25,
+    },
   });
   confirmButton.on(DisplayObjectEvent.POINTER_TAP, async () => {
     props.onConfirm();
@@ -90,42 +117,23 @@ export const confirmModalComponent: ContainerComponent<Props> = (props) => {
   const cancelButton = buttonComponent({
     text: 'Cancel',
     width: 50,
+    position: {
+      x: confirmButton.getPosition().x - 70,
+      y: confirmButton.getPosition().y,
+    },
   });
   cancelButton.on(DisplayObjectEvent.POINTER_TAP, async () => {
     $container.$destroy();
   });
 
-  $container.add(background, modal, close, title, description, confirmButton, cancelButton);
+  $card.add(modal, close, title, description, confirmButton, cancelButton);
 
   const $resize = (size: Size) => {
     const { width, height } = size;
     background.setRectangle(width, height);
-    modal.setPosition({
-      x: Math.abs(modalBounds.width / 2 - width / 2),
-      y: Math.abs(modalBounds.height / 2 - height / 2),
-    });
-    const modalPosition = modal.getPosition();
-    close.setPosition({
-      x: modalPosition.x + modalBounds.width - 25,
-      y: modalPosition.y + 3,
-    });
-    title.setPosition({
-      x: modalPosition.x + 12,
-      y: modalPosition.y + 25,
-    });
-    const titlePosition = title.getPosition();
-    description.setPosition({
-      x: titlePosition.x,
-      y: titlePosition.y + 15,
-    });
-    confirmButton.setPosition({
-      x: modalPosition.x + modalBounds.width - 70,
-      y: modalPosition.y + modalBounds.height - 25,
-    });
-    const confirmButtonPosition = confirmButton.getPosition();
-    cancelButton.setPosition({
-      x: confirmButtonPosition.x - 70,
-      y: confirmButtonPosition.y,
+    $card.setPosition({
+      x: width / 2,
+      y: height / 2,
     });
   };
 
