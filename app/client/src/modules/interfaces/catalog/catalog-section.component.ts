@@ -12,7 +12,7 @@ import {
 import { SpriteSheetEnum, SystemEvent } from "shared/enums";
 import { System } from "system";
 import { Size2d } from "shared/types";
-import { DEFAULT_FURNITURE } from "../../../shared/consts/furniture.consts";
+import { DEFAULT_FURNITURE } from "shared/consts/furniture.consts";
 
 type Props = {
   size: Size2d;

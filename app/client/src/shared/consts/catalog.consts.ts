@@ -6,7 +6,6 @@ type Params = {
 };
 
 export const CATALOG_CATEGORY_PARAMS_MAP: Record<CatalogCategory, Params> = {
-  // TODO: Add other categories and change icon
   [CatalogCategory.ALPHA]: {
     sprite: "icon-alpha",
     label: "alpha",

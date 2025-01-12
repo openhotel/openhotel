@@ -12,7 +12,6 @@ import {
 import { Event, SpriteSheetEnum, SystemEvent } from "shared/enums";
 import { System } from "system";
 import { Size2d } from "shared/types";
-import { createLogger } from "vite";
 
 type Props = {
   size: Size2d;
