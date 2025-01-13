@@ -1,19 +1,112 @@
 import { useAdmin } from "shared/hooks";
-import React from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { cn, getCensoredEmail } from "shared/utils";
 import dayjs from "dayjs";
+import {
+  TableComponent,
+  FormComponent,
+  InputComponent,
+  CrossIconComponent,
+  ButtonComponent,
+  SelectorComponent,
+} from "@oh/components";
+import { User } from "shared/types";
+import { EMAIL_REGEX, USERNAME_REGEX } from "shared/consts";
 
 //@ts-ignore
 import styles from "./users.module.scss";
-import { TableComponent } from "@oh/components";
 
 export const UsersComponent = () => {
-  const { users } = useAdmin();
+  const { users, updateUser, refresh } = useAdmin();
+
+  const [selectedUser, setSelectedUser] = useState<User>();
 
   const today = dayjs(Date.now());
 
+  const onSubmitUpdateUser = useCallback(
+    async ({ username, email, createdAt, admin }: any) => {
+      if (
+        !new RegExp(USERNAME_REGEX).test(username) ||
+        !new RegExp(EMAIL_REGEX).test(email)
+      )
+        return;
+
+      const user: User = {
+        accountId: selectedUser.accountId,
+        username,
+        email,
+        createdAt: dayjs(createdAt).valueOf(),
+        admin: selectedUser.admin,
+      };
+      console.log(user);
+
+      await updateUser(user);
+      refresh();
+    },
+    [selectedUser, updateUser],
+  );
+
+  const adminOptions = useMemo(
+    () => ["true", "false"].map((key) => ({ key, value: key })),
+    [],
+  );
+  const selectedAdminOption = useMemo(
+    () =>
+      adminOptions.find(({ key }) =>
+        selectedUser?.admin ? "true" : "false" === key,
+      ),
+    [selectedUser, adminOptions],
+  );
+
   return (
     <div className={styles.users}>
+      {selectedUser ? (
+        <FormComponent
+          className={styles.selectedForm}
+          onSubmit={onSubmitUpdateUser}
+        >
+          <div className={styles.header}>
+            <label>Selected user</label>
+            <CrossIconComponent
+              className={styles.icon}
+              onClick={() => setSelectedUser(null)}
+            />
+          </div>
+          <label>{selectedUser.accountId}</label>
+          <div className={styles.formRow}>
+            <InputComponent
+              name="username"
+              placeholder="username"
+              defaultValue={selectedUser.username}
+            />
+            <InputComponent
+              name="email"
+              placeholder="email"
+              defaultValue={selectedUser.email}
+            />
+          </div>
+          <div className={styles.formRow}>
+            <InputComponent
+              name="createdAt"
+              placeholder="createdAt"
+              defaultValue={selectedUser.createdAt}
+            />
+            <SelectorComponent
+              name="admin"
+              placeholder="admin"
+              options={adminOptions}
+              defaultOption={selectedAdminOption}
+              onChange={(option) =>
+                setSelectedUser((user) => ({
+                  ...user,
+                  admin: option?.key === "true",
+                }))
+              }
+            />
+          </div>
+          <ButtonComponent>Update</ButtonComponent>
+        </FormComponent>
+      ) : null}
       <TableComponent
         title="Users"
         searchable={true}
@@ -25,6 +118,7 @@ export const UsersComponent = () => {
               className={cn(styles.row, {
                 [styles.admin]: $row.admin,
               })}
+              onClick={() => setSelectedUser($row)}
             >
               {columns.map(($column) => {
                 const title = $row[$column.key];

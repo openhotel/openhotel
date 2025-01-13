@@ -5,7 +5,6 @@ import {
   RedirectComponent,
 } from "shared/components";
 import { useAccount } from "shared/hooks";
-import login_styles from "../login/login.module.scss";
 import { useNavigate } from "react-router-dom";
 import { ButtonComponent, InputComponent } from "@oh/components";
 import {
@@ -13,9 +12,11 @@ import {
   PASSWORD_MIN_LEN,
   USERNAME_MAX_LEN,
   USERNAME_MIN_LEN,
-  USERNAME_VALID_CHARS,
-} from "../../shared/consts/account.consts";
-import styles from "../login/login.module.scss";
+  USERNAME_REGEX,
+} from "shared/consts";
+
+//@ts-ignore
+import login_styles from "../login/login.module.scss";
 
 export const RegisterComponent: React.FC = () => {
   const [submittedAt, setSubmittedAt] = useState<number>();
@@ -121,7 +122,7 @@ const UsernameComponent: React.FC = () => {
     setTooShort(username.length < USERNAME_MIN_LEN);
     setTooLong(username.length > USERNAME_MAX_LEN);
 
-    setInvalidChars(!new RegExp(USERNAME_VALID_CHARS).test(username));
+    setInvalidChars(!new RegExp(USERNAME_REGEX).test(username));
   };
 
   return (

@@ -14,7 +14,7 @@ export const usersGetRequest: RequestType = {
   pathname: "/users",
   kind: RequestKind.ADMIN,
   func: async (request: Request, url: URL) => {
-    if (!(await hasRequestAccess({ request })))
+    if (!(await hasRequestAccess({ request, admin: true })))
       return getResponse(HttpStatusCode.FORBIDDEN);
 
     const users = (

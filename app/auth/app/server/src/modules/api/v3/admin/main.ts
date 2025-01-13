@@ -8,6 +8,7 @@ import {
 } from "./tokens.request.ts";
 import { hotelsDeleteRequest, hotelsGetRequest } from "./hotels.request.ts";
 import { usersGetRequest } from "./users.request.ts";
+import { userPatchRequest } from "./user.request.ts";
 
 export const adminRequestList: RequestType[] = getPathRequestList({
   requestList: [
@@ -18,6 +19,7 @@ export const adminRequestList: RequestType[] = getPathRequestList({
     tokensGetRequest,
     tokensPostRequest,
     usersGetRequest,
+    userPatchRequest,
     hotelsGetRequest,
     hotelsDeleteRequest,
   ],

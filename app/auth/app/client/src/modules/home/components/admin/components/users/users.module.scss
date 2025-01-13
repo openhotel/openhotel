@@ -1,8 +1,35 @@
+@import "../../../../../../shared/styles/consts.module";
+
 .users {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  .selectedForm {
+    padding: 2rem;
+    background-color: var(--text-2-bg);
+    border-radius: 1rem;
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+
+      .icon {
+        height: 2rem;
+        cursor: pointer;
+      }
+    }
+    .formRow {
+      display: flex;
+      gap: 1rem;
+    }
+  }
+
   .row {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    cursor: pointer;
 
     &.admin {
       background-color: var(--color-yellow-2) !important;

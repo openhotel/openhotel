@@ -1,7 +1,7 @@
 export const USERNAME_MIN_LEN = 3;
 export const USERNAME_MAX_LEN = 16;
 
-export const USERNAME_VALID_CHARS = /^[a-zA-Z0-9_]+$/;
+export const USERNAME_REGEX = /^[a-zA-Z0-9_]{3,16}$/;
 
 export const PASSWORD_MIN_LEN = 8;
 

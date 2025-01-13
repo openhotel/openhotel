@@ -19,6 +19,10 @@ type AdminState = {
   removeToken: (id: string) => Promise<void>;
 
   update: () => Promise<void>;
+
+  updateUser: (user: User) => Promise<void>;
+
+  refresh: () => void;
 };
 
 const AdminContext = React.createContext<AdminState>(undefined);
@@ -44,6 +48,18 @@ export const AdminProvider: React.FunctionComponent<ProviderProps> = ({
       headers: getAccountHeaders(),
     });
   }, [fetch, getAccountHeaders]);
+
+  const updateUser = useCallback(
+    (user: User) => {
+      return fetch({
+        method: RequestMethod.PATCH,
+        pathname: "/admin/user",
+        headers: getAccountHeaders(),
+        body: user,
+      });
+    },
+    [fetch, getAccountHeaders],
+  );
 
   const fetchTokens = useCallback(async () => {
     return fetch({
@@ -105,22 +121,30 @@ export const AdminProvider: React.FunctionComponent<ProviderProps> = ({
     });
   }, []);
 
-  useEffect(() => {
+  const refresh = useCallback(() => {
     fetchUsers().then((response) => setUsers(response.data.users));
     fetchTokens().then((response) => setTokens(response.data.tokens));
     fetchHotels().then((response) => setHotels(response.data.hosts));
   }, [fetchUsers, fetchTokens, fetchHotels, setUsers, setTokens, setHotels]);
 
+  useEffect(() => {
+    refresh();
+  }, [refresh]);
+
   return (
     <AdminContext.Provider
       value={{
         users,
+        updateUser,
+
         tokens,
         hotels,
 
         addToken,
         removeToken,
         update,
+
+        refresh,
       }}
       children={children}
     />
