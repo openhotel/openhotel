@@ -36,6 +36,7 @@ export const furniture = () => {
           spriteSheet: furnitureSpriteSheetId,
           label: furnitureData.label,
           description: furnitureData.description,
+          icon: furnitureData.icon,
           direction: Object.keys(
             furnitureData.direction,
           ).reduce<FurnitureDirectionDataMap>(
@@ -69,9 +70,13 @@ export const furniture = () => {
   const get = (furnitureId: string): FurnitureData | null =>
     $furnitureMap[furnitureId];
 
+  const isLoaded = (furnitureId: string): boolean =>
+    !!$furnitureMap[furnitureId];
+
   return {
     load,
     loadFurniture,
     get,
+    isLoaded,
   };
 };

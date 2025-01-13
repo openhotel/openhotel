@@ -5,3 +5,4 @@ export * from "./info.component";
 export * from "./room-info.component";
 
 export * from "./navigator";
+export * from "./catalog";

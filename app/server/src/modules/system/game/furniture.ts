@@ -106,6 +106,18 @@ export const furniture = () => {
 
   const getCatalog = (): Catalog => $catalog;
 
+  const getCatalogFurniture = async (category: string) => {
+    const catalog = getCatalog();
+    const catalogCategory = catalog.categories.find(
+      ($category) => $category.id === category,
+    );
+    if (!catalogCategory) {
+      return [];
+    }
+
+    return catalogCategory.furniture;
+  };
+
   const $mapFurnitureData = (furnitureData: any): FurnitureData => ({
     ...furnitureData,
     type: FurnitureType[furnitureData.type.toUpperCase()],
@@ -143,6 +155,7 @@ export const furniture = () => {
     load,
 
     getCatalog,
+    getCatalogFurniture,
     getList,
     get,
     getData,
