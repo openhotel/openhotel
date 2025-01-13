@@ -90,7 +90,7 @@ export const catalogSectionComponent: ContainerComponent<Props> = (props) => {
     let currentY = 0;
     const padding = 8;
 
-    const path = `/catalog/${label}`;
+    const path = `/catalog?category=${label}`;
     const { catalogFurniture } = await System.api.fetch<{
       catalogFurniture: any;
     }>(path, {});

@@ -109,7 +109,7 @@ export const furniture = () => {
   const getCatalogFurniture = async (category: string) => {
     const catalog = getCatalog();
     const catalogCategory = catalog.categories.find(
-      (cat) => cat.id === category,
+      ($category) => $category.id === category,
     );
     if (!catalogCategory) {
       return [];

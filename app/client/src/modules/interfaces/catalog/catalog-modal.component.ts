@@ -161,7 +161,7 @@ export const catalogModalComponent: ContainerComponent<Props> = (
   let removeOnHideCatalogModal;
   let removeOnToggleCatalogModal;
 
-  $container.on(DisplayObjectEvent.ADDED, () => {
+  $container.on(DisplayObjectEvent.ADDED, async () => {
     removeOnToggleCatalogModal = System.events.on(
       SystemEvent.TOGGLE_CATALOG_MODAL,
       () => {
@@ -180,17 +180,13 @@ export const catalogModalComponent: ContainerComponent<Props> = (
         $container.setVisible(false);
       },
     );
+    await loadComponents();
   });
 
   $container.on(DisplayObjectEvent.REMOVED, () => {
     removeOnShowCatalogModal();
     removeOnHideCatalogModal();
     removeOnToggleCatalogModal();
-  });
-
-  // Components need to load asynchronously so the furniture list can be fetched once per CatalogModal and passed to the children
-  $container.on(DisplayObjectEvent.ADDED, async () => {
-    await loadComponents();
   });
 
   return $container.getComponent(catalogModalComponent);

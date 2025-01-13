@@ -1,13 +1,13 @@
 import { ProxyRequestType } from "shared/types/api.types.ts";
 import { System } from "modules/system/main.ts";
-import { RequestMethod, getContentType } from "@oh/utils";
+import { RequestMethod } from "@oh/utils";
 
 export const catalogRequest: ProxyRequestType = {
-  match: /\/catalog/,
+  pathname: "/catalog",
   method: RequestMethod.GET,
   public: true,
   func: async ({}, url) => {
-    const category = url.pathname.split("/").reverse()[0];
+    const category = url.searchParams.get("category");
 
     const catalog = System.game.furniture.getCatalog();
 

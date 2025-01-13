@@ -1,8 +1,8 @@
 #
-GET http://localhost:1994/proxy/api/catalog/alpha
+GET http://localhost:1994/proxy/api/catalog?category=alpha
 
 ###
 #
-GET http://localhost:1994/proxy/api/catalog/flags
+GET http://localhost:1994/proxy/api/catalog?category=flags
 
 ###
