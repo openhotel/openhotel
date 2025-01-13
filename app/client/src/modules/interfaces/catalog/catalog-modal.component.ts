@@ -184,9 +184,9 @@ export const catalogModalComponent: ContainerComponent<Props> = (
   });
 
   $container.on(DisplayObjectEvent.REMOVED, () => {
-    removeOnShowCatalogModal();
-    removeOnHideCatalogModal();
-    removeOnToggleCatalogModal();
+    removeOnShowCatalogModal?.();
+    removeOnHideCatalogModal?.();
+    removeOnToggleCatalogModal?.();
   });
 
   return $container.getComponent(catalogModalComponent);
