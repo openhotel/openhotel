@@ -1,7 +1,5 @@
-import { FurnitureData } from "./furniture.types.ts";
-
 export type CatalogFurniture = {
-  furniture: FurnitureData;
+  id: string;
   price: number;
 };
 

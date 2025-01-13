@@ -11,3 +11,51 @@ categories:
         price: 0
       - id: alpha@a-24
         price: 0
+  - id: flags
+    label: Flags
+    enabled: true
+    furniture:
+      - id: flags@country-spain
+        price: 0
+      - id: flags@europe
+        price: 0
+      - id: flags@pirate
+        price: 0
+      - id: flags@pride-aromanticism
+        price: 0
+      - id: flags@pride-asexual
+        price: 0
+      - id: flags@pride-bi
+        price: 0
+      - id: flags@pride-intersex
+        price: 0
+      - id: flags@pride-lesbian
+        price: 0
+      - id: flags@pride-lgtb
+        price: 0
+      - id: flags@pride-non-binary
+        price: 0
+      - id: flags@pride-pansexuality
+        price: 0
+      - id: flags@pride-trans
+        price: 0
+  - id: teleports
+    label: Teleports
+    enabled: true
+    furniture:
+      - id: teleports@telephone
+        price: 0
+  - id: toys
+    label: Toys
+    enabled: true
+    furniture:
+      - id: toys@octopus-0
+        price: 0
+  - id: xmas
+    label: Xmas Collection
+    enabled: true
+    furniture:
+      - id: xmas@tree-0
+        price: 0
+      - id: xmas@tree-1
+        price: 0
