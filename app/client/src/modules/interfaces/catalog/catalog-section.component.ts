@@ -99,78 +99,81 @@ export const catalogSectionComponent: ContainerComponent<Props> = (props) => {
       ...catalogFurniture.map((furniture) => furniture.id),
     );
 
-    for (const furniture of catalogFurniture) {
-      const { id, price } = furniture;
+    // TODO - remove for loop once we check the fix works
+    for (let i = 0; i < 20; i++) {
+      for (const furniture of catalogFurniture) {
+        const { id, price } = furniture;
 
-      const furnitureData = System.game.furniture.get(id);
+        const furnitureData = System.game.furniture.get(id);
 
-      const textures = Object.keys(
-        global.spriteSheets.get(furnitureData.spriteSheet).textures,
-      );
+        const textures = Object.keys(
+          global.spriteSheets.get(furnitureData.spriteSheet).textures,
+        );
 
-      let { texture, bounds } = furnitureData.icon;
-      let spriteSheet = furnitureData.spriteSheet;
+        let { texture, bounds } = furnitureData.icon;
+        let spriteSheet = furnitureData.spriteSheet;
 
-      if (!textures.includes(texture)) {
-        await System.game.furniture.loadFurniture(DEFAULT_FURNITURE);
-        const defaultSpriteSheetObject =
-          System.game.furniture.get(DEFAULT_FURNITURE);
-        texture = defaultSpriteSheetObject.icon.texture;
-        bounds = defaultSpriteSheetObject.icon.bounds;
-        spriteSheet = defaultSpriteSheetObject.spriteSheet;
+        if (!textures.includes(texture)) {
+          await System.game.furniture.loadFurniture(DEFAULT_FURNITURE);
+          const defaultSpriteSheetObject =
+            System.game.furniture.get(DEFAULT_FURNITURE);
+          texture = defaultSpriteSheetObject.icon.texture;
+          bounds = defaultSpriteSheetObject.icon.bounds;
+          spriteSheet = defaultSpriteSheetObject.spriteSheet;
+        }
+
+        const $furnitureContainer = container({
+          size: {
+            width: size.width,
+            height: bounds.height + padding,
+          },
+          position: {
+            x: 0,
+            y: currentY,
+          },
+          eventMode: EventMode.STATIC,
+          cursor: Cursor.POINTER,
+        });
+
+        $furnitureList.add($furnitureContainer);
+
+        const $sprite = sprite({
+          spriteSheet: spriteSheet,
+          texture: texture,
+          position: {
+            x: 0,
+            y: 0,
+          },
+          bounds: bounds,
+          pivot: {
+            x: 0,
+            y: 0,
+          },
+          eventMode: EventMode.STATIC,
+          cursor: Cursor.POINTER,
+        });
+
+        const $text = textSprite({
+          text: furniture.id,
+          spriteSheet: SpriteSheetEnum.DEFAULT_FONT,
+          color: 0,
+          position: {
+            x: Math.max(30, bounds.width + 5),
+            y: bounds.height / 2 - 2,
+          },
+          eventMode: EventMode.STATIC,
+          cursor: Cursor.POINTER,
+        });
+
+        currentY += bounds.height + padding;
+        $furnitureContainer.add($sprite);
+        $furnitureContainer.add($text);
+
+        $furnitureContainer.on(DisplayObjectEvent.POINTER_TAP, () => {
+          System.events.emit(SystemEvent.CHAT_INPUT_APPEND_TEXT, furniture.id);
+          return;
+        });
       }
-
-      const $furnitureContainer = container({
-        size: {
-          width: size.width,
-          height: bounds.height + padding,
-        },
-        position: {
-          x: 0,
-          y: currentY,
-        },
-        eventMode: EventMode.STATIC,
-        cursor: Cursor.POINTER,
-      });
-
-      $furnitureList.add($furnitureContainer);
-
-      const $sprite = sprite({
-        spriteSheet: spriteSheet,
-        texture: texture,
-        position: {
-          x: 0,
-          y: 0,
-        },
-        bounds: bounds,
-        pivot: {
-          x: 0,
-          y: 0,
-        },
-        eventMode: EventMode.STATIC,
-        cursor: Cursor.POINTER,
-      });
-
-      const $text = textSprite({
-        text: furniture.id,
-        spriteSheet: SpriteSheetEnum.DEFAULT_FONT,
-        color: 0,
-        position: {
-          x: Math.max(30, bounds.width + 5),
-          y: bounds.height / 2 - 2,
-        },
-        eventMode: EventMode.STATIC,
-        cursor: Cursor.POINTER,
-      });
-
-      currentY += bounds.height + padding;
-      $furnitureContainer.add($sprite);
-      $furnitureContainer.add($text);
-
-      $furnitureContainer.on(DisplayObjectEvent.POINTER_TAP, () => {
-        System.events.emit(SystemEvent.CHAT_INPUT_APPEND_TEXT, furniture.id);
-        return;
-      });
     }
     $container.remove($loadingText);
   };
