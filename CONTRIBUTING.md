@@ -116,7 +116,7 @@ We welcome pull requests! Here’s how to ensure a smooth process:
 
 ## Have Questions? Join Our Discord!
 
-If you have any further questions, need clarification, or just want to connect with the community, join our [Discord server](https://discord.gg/). We’re happy to help and always open to feedback and collaboration!
+If you have any further questions, need clarification, or just want to connect with the community, join our [Discord server](https://discord.com/invite/qBZfPdNWUj). We’re happy to help and always open to feedback and collaboration!
 
 ---
 
