@@ -136,9 +136,15 @@ export const navigatorModalComponent: ContainerComponent<Props> = (
         SpriteSheetEnum.NAVIGATOR,
       );
 
-      $content.remove(categoryComponentMap[selectedCategory]);
+      categoryComponentMap[selectedCategory].setVisible(false);
       selectedCategory = categoryIndex;
-      $content.add(categoryComponentMap[selectedCategory]);
+      const isAlreadyAdded = $content
+        .getChildren()
+        .includes(categoryComponentMap[selectedCategory]);
+      if (!isAlreadyAdded) {
+        $content.add(categoryComponentMap[selectedCategory]);
+      }
+      categoryComponentMap[selectedCategory].setVisible(true);
     });
     const tabItemTexture = sprite({
       spriteSheet: SpriteSheetEnum.NAVIGATOR,
