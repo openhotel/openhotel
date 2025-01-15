@@ -147,12 +147,19 @@ export const confirmModalComponent: ContainerComponent<Props> = (props) => {
   };
 
   let $removeOnResize;
-  $container.on(DisplayObjectEvent.MOUNT, async (e) => {
+  let $removeOnHideConfirmModal;
+  $container.on(DisplayObjectEvent.ADDED, async (e) => {
+    $removeOnHideConfirmModal = System.events.on(
+      SystemEvent.HIDE_CONFIRM_MODAL,
+      () => {
+        $container.$destroy();
+      },
+    );
     $resize(global.getApplication().window.getBounds());
     $removeOnResize = global.events.on(Event.RESIZE, $resize);
-    System.events.emit(SystemEvent.HIDE_MODALS);
   });
-  $container.on(DisplayObjectEvent.UNMOUNT, (e) => {
+  $container.on(DisplayObjectEvent.REMOVED, (e) => {
+    $removeOnHideConfirmModal();
     $removeOnResize();
   });
   return $container.getComponent(confirmModalComponent);

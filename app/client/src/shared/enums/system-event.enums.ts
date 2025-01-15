@@ -19,4 +19,6 @@ export enum SystemEvent {
   CHAT_INPUT_APPEND_TEXT,
 
   FURNITURE_TEXTURE_LOAD,
+
+  HIDE_CONFIRM_MODAL,
 }
