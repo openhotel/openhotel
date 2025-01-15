@@ -10,6 +10,7 @@ import { api } from "system/api";
 import { $window } from "system/window";
 import { version } from "system/version";
 import { config } from "system/config";
+import { contributors } from "system/contributors";
 import { mainComponent } from "modules/main";
 
 export const System = (() => {
@@ -22,6 +23,7 @@ export const System = (() => {
   const $events = events();
   const $api = api();
   const $version = version();
+  const $contributors = contributors();
 
   const $tasks = tasks();
   const $$window = $window();
@@ -36,6 +38,8 @@ export const System = (() => {
     $loader.start();
 
     if (!(await $proxy.preConnect())) return;
+
+    await $contributors.load();
 
     await $locale.load();
     await $textures.load();
@@ -77,6 +81,7 @@ export const System = (() => {
     api: $api,
     version: $version,
     config: $config,
+    contributors: $contributors,
 
     load,
   };
