@@ -47,7 +47,7 @@ export const confirmModalComponent: ContainerComponent<Props> = (props) => {
   });
 
   const modal = sprite({
-    spriteSheet: SpriteSheetEnum.navigatorModalComponent,
+    spriteSheet: SpriteSheetEnum.CONFIRM_MODAL,
     texture: "modal",
   });
 
