@@ -74,9 +74,9 @@ We accept contributions of all sizes! Examples include:
 
 ### Art Contributions
 
-Open Hotel uses a pixel art style for its assets, and it uses metadata to define some of the properties of the assets. We strongly recommend taking a look at our proprietary [Asset Editor](https://github.com/openhotel/asset-editor) repository to create compatible assets. Some examples of contributions include:
+Open Hotel uses a pixel art style for its assets, and it uses metadata to define some of the properties of the assets. We strongly recommend taking a look at our [Asset Editor](https://github.com/openhotel/asset-editor) repository to create compatible assets. Some examples of contributions include:
 
-- Icons, sprites, furniture...
+- Icons, sprites, furniture, character clothes...
 - UI/UX improvements.
 - Backgrounds, tiles, and other visual elements.
 
