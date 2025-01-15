@@ -245,7 +245,7 @@ export const humanComponent: ContainerComponent<Props, Mutable> = (props) => {
     const lastY = $isometricPosition.y;
     $isometricPosition = targetIsometricPosition;
 
-    if (isDirectionToFront(direction)) $calcZIndex();
+    $calcZIndex();
 
     return new Promise<void>(async (resolve) => {
       lastMovementAnimationId = System.tasks.add({
