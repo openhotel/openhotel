@@ -15,8 +15,9 @@ import { logoComponent } from "modules/main";
 import { System } from "system";
 import { SystemEvent, TextureEnum, SpriteSheetEnum } from "shared/enums";
 import { hotBarComponent } from "modules/interfaces";
-import { BLACK_BAR_HEIGHT } from "shared/consts";
+import { BLACK_BAR_HEIGHT, CONTRIBUTOR_LOOP_TIME } from "shared/consts";
 import { wait } from "shared/utils";
+import { TickerQueue } from "@oh/queue";
 
 type Props = {};
 
@@ -81,6 +82,41 @@ export const homeComponent: ContainerComponent<Props> = () => {
   });
   const backgroundBounds = background.getBounds();
 
+  let creatorIndex = 1;
+  let contributorIndex = 0;
+  const creators = System.contributors.getCreators();
+  const contributors = System.contributors.getContributors();
+  const $contributorContainer = container({
+    pivot: {
+      x: -10,
+      y: 55,
+    },
+  });
+  $container.add($contributorContainer);
+  const $contributorsText = textSprite({
+    text: `Created by ${creators[0].login}`,
+    spriteSheet: SpriteSheetEnum.DEFAULT_FONT,
+    position: {
+      x: 0,
+      y: 0,
+    },
+    backgroundColor: 0x0,
+    backgroundAlpha: 0.25,
+    backgroundPadding: {
+      bottom: 2,
+      top: 2,
+      left: 4,
+      right: 4,
+    },
+
+    color: 0xffffff,
+  });
+  $contributorContainer.add($contributorsText);
+
+  const $rePositionContributions = (size: Size) => {
+    $contributorContainer.setPositionY(size.height);
+  };
+
   const $rePositionBackground = (size: Size) => {
     background.setPivot({
       x: backgroundBounds.width / 2 - size.width / 2,
@@ -88,11 +124,14 @@ export const homeComponent: ContainerComponent<Props> = () => {
     });
     upperBar.setRectangle(size.width, height + 2);
     $rePositionOnlineUsers(size);
+    $rePositionContributions(size);
   };
   $container.add(background);
 
   let $removeOnResize;
   let reloadInterval;
+  let repeatContributorsTaskId;
+
   $container.on(DisplayObjectEvent.MOUNT, async (e) => {
     $removeOnResize = global.events.on(Event.RESIZE, $rePositionBackground);
 
@@ -113,11 +152,36 @@ export const homeComponent: ContainerComponent<Props> = () => {
     $rePositionOnlineUsers(size);
 
     System.events.emit(SystemEvent.SHOW_NAVIGATOR_MODAL);
+
+    repeatContributorsTaskId = System.tasks.add({
+      type: TickerQueue.REPEAT,
+      repeatEvery: CONTRIBUTOR_LOOP_TIME,
+      repeats: Number.MAX_SAFE_INTEGER,
+      onFunc: () => {
+        if (creators.length > creatorIndex) {
+          $contributorsText.setText(
+            `Created by ${creators[creatorIndex].login}`,
+          );
+          creatorIndex++;
+        } else if (contributors.length > contributorIndex) {
+          $contributorsText.setText(
+            `Contributed by ${contributors[contributorIndex].login}`,
+          );
+          contributorIndex++;
+        }
+        if (contributorIndex >= contributors.length) {
+          creatorIndex = 0;
+          contributorIndex = 0;
+        }
+      },
+    });
   });
   $container.on(DisplayObjectEvent.UNMOUNT, (e) => {
     $removeOnResize();
     clearInterval(reloadInterval);
     System.events.emit(SystemEvent.HIDE_NAVIGATOR_MODAL);
+
+    System.tasks.remove(repeatContributorsTaskId);
   });
 
   return $container.getComponent(homeComponent);

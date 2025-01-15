@@ -1,4 +1,5 @@
 # Contributing to Open Hotel
+
 🌟 Thank you for your interest in contributing to Open Hotel! 🌟
 
 The following guidelines are here to help you contribute to Open Hotel, a project dedicated to creating a free and customizable virtual hotel experience. These are suggestions, not strict rules, so use your best judgment when contributing!
@@ -10,11 +11,11 @@ The following guidelines are here to help you contribute to Open Hotel, a projec
 - [Before Contributing](#before-contributing)
 - [Code of Conduct](#code-of-conduct)
 - [How Can I Contribute?](#how-can-i-contribute)
-    - [Reporting Bugs](#reporting-bugs)
-    - [Suggesting Features](#suggesting-features)
-    - [Code Contributions](#code-contributions)
-    - [Art Contributions](#art-contributions)
-    - [Pull Requests](#pull-requests)
+  - [Reporting Bugs](#reporting-bugs)
+  - [Suggesting Features](#suggesting-features)
+  - [Code Contributions](#code-contributions)
+  - [Art Contributions](#art-contributions)
+  - [Pull Requests](#pull-requests)
 - [Coding Guidelines](#coding-guidelines)
 - [Have Questions? Join Our Discord!](#have-questions-join-our-discord)
 - [License](#license)
@@ -49,10 +50,10 @@ If you encounter a bug:
 
 1. Search [existing issues](https://github.com/openhotel/openhotel/issues) to see if it’s already reported.
 2. If not, [create a new issue](https://github.com/openhotel/openhotel/issues/new). Include:
-    - A clear and descriptive title.
-    - Steps to reproduce the bug.
-    - Expected vs. actual behavior.
-    - Your operating system, browser version, and any logs if applicable.
+   - A clear and descriptive title.
+   - Steps to reproduce the bug.
+   - Expected vs. actual behavior.
+   - Your operating system, browser version, and any logs if applicable.
 
 ### Suggesting Features
 
@@ -60,9 +61,9 @@ We welcome feature suggestions! To propose a feature:
 
 1. Check [existing issues](https://github.com/openhotel/openhotel/issues) to ensure it hasn’t been suggested.
 2. [Open a new issue](https://github.com/openhotel/openhotel/issues/new) and include:
-    - A detailed description of the feature.
-    - Why this feature would benefit users.
-    - Any implementation ideas (optional).
+   - A detailed description of the feature.
+   - Why this feature would benefit users.
+   - Any implementation ideas (optional).
 
 ### Code Contributions
 
@@ -87,11 +88,11 @@ Make sure any artistic contributions align with the overall aesthetic and respec
 We welcome pull requests! Here’s how to ensure a smooth process:
 
 - Use the following convention for PR titles: `type: descriptive text - fix #XXX`. Here:
-    - `type` should be descriptive (e.g., `feat` for features, `fix` for bug fixes, `art` for art-focused PRs).
-    - `XXX` refers to the related issue (if there is one).
-    - Examples:
-        - `feat: Add user profile customization - fix #12` (On merge, issue 12 will be closed automatically)
-        - `fix: Bug where character doesn’t move - fix #42` (On merge, issue 42 will be closed automatically)
+  - `type` should be descriptive (e.g., `feat` for features, `fix` for bug fixes, `art` for art-focused PRs).
+  - `XXX` refers to the related issue (if there is one).
+  - Examples:
+    - `feat: Add user profile customization - fix #12` (On merge, issue 12 will be closed automatically)
+    - `fix: Bug where character doesn’t move - fix #42` (On merge, issue 42 will be closed automatically)
 - Ensure your branch is up-to-date with the latest `master` branch before opening a pull request.
 - Provide a clear description of your changes in the pull request body.
 - Add tests if applicable.
@@ -125,4 +126,3 @@ If you have any further questions, need clarification, or just want to connect w
 By contributing, you agree that your contributions will be licensed under the same [CC BY-NC-SA 4.0](./LICENSE) license as the project. Please read the [LICENSE](./LICENSE) and [README](./README.md) carefully. Any use of this project or derivative work for commercial purposes is strictly forbidden and will be prosecuted.
 
 Thank you for contributing to Open Hotel! Let’s build something amazing together. 🌟
-
