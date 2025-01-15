@@ -158,7 +158,7 @@ export const confirmModalComponent: ContainerComponent<Props> = (props) => {
     $resize(global.getApplication().window.getBounds());
     $removeOnResize = global.events.on(Event.RESIZE, $resize);
   });
-  $container.on(DisplayObjectEvent.REMOVED, (e) => {
+  $container.on(DisplayObjectEvent.DESTROYED, (e) => {
     $removeOnHideConfirmModal();
     $removeOnResize();
   });
