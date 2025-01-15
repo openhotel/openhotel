@@ -3,6 +3,7 @@ import { System } from "system";
 import { Event } from "shared/enums";
 import { scenesComponent } from "modules/scenes";
 import { infoComponent, confirmModalComponent } from "modules/interfaces";
+import { __ } from "shared/utils";
 
 export const mainComponent = () => {
   const $container = container({
@@ -28,8 +29,8 @@ export const mainComponent = () => {
 
   System.proxy.on(Event.REDIRECT, ({ redirectUrl }) => {
     const confirmModal = confirmModalComponent({
-      title: "See you later",
-      description: "You are about to leave this room being redirected to an external site or hotel. Are you sure you want to proceed?",
+      title: __("See you later"),
+      description: `${__("You are about to leave this room being redirected to an external site or hotel")}. ${__("Are you sure you want to proceed?")}`,
       onConfirm: () => window.location.replace(redirectUrl),
     });
     $container.add(confirmModal);
