@@ -18,7 +18,6 @@ import { System } from "system";
 type Props = {
   title: string;
   description: string;
-  label: string;
   onConfirm: () => void;
 };
 

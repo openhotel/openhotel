@@ -30,7 +30,6 @@ export const mainComponent = () => {
     const confirmModal = confirmModalComponent({
       title: "See you later",
       description: "You are about to leave this room being redirected to an external site or hotel. Are you sure you want to proceed?",
-      label: "Continue",
       onConfirm: () => window.location.replace(redirectUrl),
     });
     $container.add(confirmModal);
