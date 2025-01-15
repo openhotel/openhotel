@@ -6,3 +6,4 @@ export * from "./room-info.component";
 export * from "./confirm-modal.component";
 
 export * from "./navigator";
+export * from "./catalog";

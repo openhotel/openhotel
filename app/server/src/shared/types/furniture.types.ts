@@ -4,6 +4,7 @@ import {
   CrossDirection,
   Size3d,
   CrossDirectionKeys,
+  Size2d,
 } from "@oh/utils";
 import { FurnitureType } from "../enums/main.ts";
 
@@ -32,6 +33,10 @@ export type FurnitureData = {
   description: string;
   size?: Size3d;
   direction: FurnitureDirectionDataMap;
+  icon: {
+    texture: string;
+    bounds: Size2d;
+  };
 };
 
 export type Furniture = {

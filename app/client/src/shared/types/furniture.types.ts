@@ -25,6 +25,10 @@ export type FurnitureData = {
   description: string;
   spriteSheet: string;
   direction: FurnitureDirectionDataMap;
+  icon: {
+    texture: string;
+    bounds: Size2d;
+  };
 };
 
 export type BaseFurniture = {

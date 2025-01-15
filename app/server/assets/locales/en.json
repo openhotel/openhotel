@@ -19,5 +19,27 @@
   "There is no users on the whitelist": "There is no users on the whitelist",
   "New version {{newVersion}} available!": "New version {{newVersion}} available!",
   "Available commands: {{commands}}": "Available commands: {{commands}}",
-  "Furniture not found on {{x}},{{z}}": "Furniture not found on {{x}},{{z}}"
+  "Furniture not found on {{x}},{{z}}": "Furniture not found on {{x}},{{z}}",
+  "Command not found": "Command not found",
+  "{{command}}: {{description}}": "{{command}}: {{description}}",
+  "No description available": "No description available",
+  "Invalid arguments. None of the following usages matched: {{usages}}": "Invalid arguments. None of the following usages matched: {{usages}}",
+
+  "command.ban.description": "Bans a user",
+  "command.blacklist.description": "Manages the blacklist",
+  "command.clear.description": "Clears all furnitures from the room",
+  "command.deop.description": "Revokes operator status from a user",
+  "command.help.description": "Shows a list of available commands or information about a specific command",
+  "command.kick.description": "Kicks a user",
+  "command.move.description": "Moves a furniture to a new position",
+  "command.op.description": "Grants operator status to a user",
+  "command.rotate.description": "Rotates a furniture",
+  "command.set.description": "Sets a furniture in the room",
+  "command.stop.description": "Stops the server",
+  "command.teleport.description": "Links two teleports or links a teleport to a remote teleport",
+  "command.tp.description": "Teleports yourself to a location",
+  "command.unban.description": "Unbans a user",
+  "command.unset.description": "Removes a furniture from the room",
+  "command.update.description": "Checks for new versions and updates the server",
+  "command.whitelist.description": "Manages the whitelist"
 }

@@ -5,6 +5,8 @@ import { System } from "modules/system/main.ts";
 
 export const unbanCommand: Command = {
   command: "unban",
+  usages: ["<username>"],
+  description: "command.unban.description",
   func: async ({ user, args }) => {
     const username = args[0] as string;
     if (!username) return;
