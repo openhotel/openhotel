@@ -55,7 +55,6 @@ export const confirmModalComponent: ContainerComponent<Props> = (props) => {
   $card.setPivotY(modal.getBounds().height / 2);
   $container.add($card);
 
-
   const close = graphics({
     type: GraphicType.RECTANGLE,
     width: 14,
@@ -78,7 +77,7 @@ export const confirmModalComponent: ContainerComponent<Props> = (props) => {
     spriteSheet: SpriteSheetEnum.BOLD_FONT,
     position: {
       x: 12,
-      y: 8
+      y: 8,
     },
     size: {
       width: modal.getBounds().width - 25,
@@ -115,8 +114,8 @@ export const confirmModalComponent: ContainerComponent<Props> = (props) => {
     },
   });
   confirm.on(DisplayObjectEvent.POINTER_TAP, async () => {
-     props.onConfirm();
-   });
+    props.onConfirm();
+  });
 
   const cancel = graphics({
     type: GraphicType.RECTANGLE,
@@ -132,8 +131,8 @@ export const confirmModalComponent: ContainerComponent<Props> = (props) => {
     },
   });
   cancel.on(DisplayObjectEvent.POINTER_TAP, async () => {
-     $container.$destroy();
-   });
+    $container.$destroy();
+  });
 
   $card.add(modal, close, title, description, confirm, cancel);
 
