@@ -48,7 +48,7 @@ export const confirmModalComponent: ContainerComponent<Props> = (props) => {
   });
 
   const modal = sprite({
-    spriteSheet: SpriteSheetEnum.NAVIGATOR,
+    spriteSheet: SpriteSheetEnum.CONFIRMATION_MODAL,
     texture: "modal",
   });
 
@@ -79,7 +79,7 @@ export const confirmModalComponent: ContainerComponent<Props> = (props) => {
     spriteSheet: SpriteSheetEnum.BOLD_FONT,
     position: {
       x: 12,
-      y: 25
+      y: 8
     },
     size: {
       width: modal.getBounds().width - 25,
@@ -93,7 +93,7 @@ export const confirmModalComponent: ContainerComponent<Props> = (props) => {
     spriteSheet: SpriteSheetEnum.DEFAULT_FONT,
     position: {
       x: 12,
-      y: 40,
+      y: 30,
     },
     size: {
       width: modal.getBounds().width - 25,
@@ -102,31 +102,41 @@ export const confirmModalComponent: ContainerComponent<Props> = (props) => {
     color: 0,
   });
 
-  const confirmButton = buttonComponent({
-    text: props.label,
-    width: 50,
+  const confirm = graphics({
+    type: GraphicType.RECTANGLE,
+    width: 40,
+    height: 30,
+    tint: 0xff00ff,
+    eventMode: EventMode.STATIC,
+    alpha: 0,
+    cursor: Cursor.POINTER,
     position: {
-      x: modal.getBounds().width - 70,
-      y: modal.getBounds().height - 25,
+      x: modal.getBounds().width - 50,
+      y: modal.getBounds().height - 40,
     },
   });
-  confirmButton.on(DisplayObjectEvent.POINTER_TAP, async () => {
-    props.onConfirm();
-  });
+  confirm.on(DisplayObjectEvent.POINTER_TAP, async () => {
+     props.onConfirm();
+   });
 
-  const cancelButton = buttonComponent({
-    text: 'Cancel',
-    width: 50,
+  const cancel = graphics({
+    type: GraphicType.RECTANGLE,
+    width: 40,
+    height: 30,
+    tint: 0xff00ff,
+    eventMode: EventMode.STATIC,
+    alpha: 0,
+    cursor: Cursor.POINTER,
     position: {
-      x: confirmButton.getPosition().x - 70,
-      y: confirmButton.getPosition().y,
+      x: confirm.getPosition().x - 45,
+      y: confirm.getPosition().y,
     },
   });
-  cancelButton.on(DisplayObjectEvent.POINTER_TAP, async () => {
-    $container.$destroy();
-  });
+  cancel.on(DisplayObjectEvent.POINTER_TAP, async () => {
+     $container.$destroy();
+   });
 
-  $card.add(modal, close, title, description, confirmButton, cancelButton);
+  $card.add(modal, close, title, description, confirm, cancel);
 
   const $resize = (size: Size) => {
     const { width, height } = size;

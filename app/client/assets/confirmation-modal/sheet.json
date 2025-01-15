@@ -1,0 +1,17 @@
+{
+    "frames": {
+      "modal": {
+        "frame": { "x": 0, "y": 0, "w": 209, "h": 139 },
+        "anchor": { "x": 0, "y": 0 },
+        "sourceSize": { "w": 209, "h": 139 }
+      }
+    },
+    "animations": {},
+    "meta": {
+      "format": "RGBA8888",
+      "image": "sprite.png",
+      "size": { "w": 209, "h": 139 },
+      "scale": 1
+    }
+  }
+  
