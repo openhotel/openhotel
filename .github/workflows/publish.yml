@@ -30,7 +30,7 @@ jobs:
             core.setOutput('version', tag.split("-")[0])
 
       - name: Build
-        run: deno task build --debug --target=* --version=${{ steps.set_version.outputs.tag }} --zip
+        run: deno task build --debug --target=* --version=${{ steps.set_version.outputs.tag }} --zip --release
 
       - name: "Upload to release"
         uses: svenstaro/upload-release-action@v2

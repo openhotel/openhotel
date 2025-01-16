@@ -25,7 +25,9 @@ try {
   });
 } catch (_) {}
 
-let { version, target, client, server, zip, debug } = parseArgs(Deno.args);
+let { version, target, client, server, zip, debug, release } = parseArgs(
+  Deno.args,
+);
 
 if (target && target !== "*" && !VALID_TARGET_LIST.includes(target))
   throw `Target '${target}' is not valid!`;
@@ -41,8 +43,7 @@ log(
   "yellow",
 );
 
-if (!version)
-  version = `999.0.0-rc.${getRandomNumber(1, 9)}${getRandomNumber(1, 9)}${getRandomNumber(0, 9)}${getRandomNumber(0, 9)}`;
+if (!version) version = `1.0.0`;
 
 log(`Version: ${version}`, "yellow");
 
@@ -102,10 +103,9 @@ if (compileAll || server) {
     await Deno.remove($temporalModPath);
   } catch (_) {}
 
-  const serverMod = (await Deno.readTextFile($permanentModPath)).replace(
-    "__VERSION__",
-    version,
-  );
+  const serverMod = (await Deno.readTextFile($permanentModPath))
+    .replace("__VERSION__", version)
+    .replace(`"__UPGRADE__"`, Boolean(release) ? "true" : "false");
 
   log(`Server - Moving assets...`, "gray");
   async function copyDir(src: string, dest: string) {

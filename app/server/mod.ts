@@ -4,6 +4,8 @@ import { System } from "modules/system/main.ts";
 
 const envs = getProcessedEnvs({
   version: "__VERSION__",
+  //@ts-ignore
+  upgrade: "__UPGRADE__",
 });
 
 await loadEnv();
