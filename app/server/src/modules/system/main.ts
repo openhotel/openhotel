@@ -43,6 +43,8 @@ export const System = (() => {
     });
 
     // Check for an update if true, close the server
+
+    console.info($config.version, envs.version);
     if (
       !isDevelopment &&
       (await update({

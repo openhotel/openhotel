@@ -60,6 +60,10 @@
 
 ---
 
+### Build project
+
+- Run `deno task build`
+
 ### TODO: Coding practices
 
 - Enable prettier on save

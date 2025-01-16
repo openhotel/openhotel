@@ -28,11 +28,10 @@ export default defineConfig({
   plugins: [tsconfigPaths(), plugin(), build()],
   publicDir: "assets/",
   build: {
-    outDir: "./build",
-    emptyOutDir: true, // also necessary
+    outDir: "../../build/client",
+    emptyOutDir: false, // also necessary
   },
   define: {
-    //@ts-ignore
-    __APP_VERSION: JSON.stringify(process.env.npm_package_version),
+    __APP_VERSION: `{ "version": "__VERSION__" }`,
   },
 });

@@ -7,12 +7,16 @@
 
     "start": "deno task start:client & deno task start:server",
     "start:client": "cd app/client && yarn start",
-    "start:client:prod": "cd app/client && yarn preview",
     "start:server": "cd app/server && deno task start",
-    "start:server:prod:linux": "cd app/server && deno task start:prod:linux",
 
-    "build": "deno task build:client & deno task build:server",
-    "build:client": "cd app/client && yarn build",
-    "build:server": "cd app/server && deno task build"
-  }
+    "start:build:linux": "cd ./build && ./server_linux",
+
+    "build": "deno run -A ./build.ts"
+  },
+  "imports": {
+    "@oh/utils": "jsr:@oh/utils@1.3.25",
+    "@std/cli/parse-args": "jsr:@std/cli/parse-args",
+    "vite": "npm:vite@5.2.14"
+  },
+  "nodeModulesDir": "auto"
 }
