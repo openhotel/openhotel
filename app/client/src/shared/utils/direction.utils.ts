@@ -23,6 +23,9 @@ export const getDirection = (
 export const isDirectionToFront = (direction: Direction): boolean =>
   [Direction.NORTH, Direction.NORTH_EAST, Direction.EAST].includes(direction);
 
+export const isDirectionFrontToBack = (direction: Direction): boolean =>
+  direction === Direction.SOUTH_WEST;
+
 export const getDirectionInitials = (direction: Direction): string => {
   switch (direction) {
     case Direction.NORTH:

@@ -11,7 +11,7 @@ import {
 } from "@tu/tulip";
 import {
   getPositionFromIsometricPosition,
-  isDirectionToFront,
+  isDirectionFrontToBack,
 } from "shared/utils";
 import { Point3d, User } from "shared/types";
 import {
@@ -245,7 +245,7 @@ export const humanComponent: ContainerComponent<Props, Mutable> = (props) => {
     const lastY = $isometricPosition.y;
     $isometricPosition = targetIsometricPosition;
 
-    $calcZIndex();
+    if (!isDirectionFrontToBack(direction)) $calcZIndex();
 
     return new Promise<void>(async (resolve) => {
       lastMovementAnimationId = System.tasks.add({

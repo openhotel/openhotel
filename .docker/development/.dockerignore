@@ -1,0 +1,9 @@
+node_modules
+*.log
+dist
+build
+
+app/client/node_modules
+app/server/node_modules
+.docker
+.dockerignore
