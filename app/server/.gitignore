@@ -6,3 +6,4 @@ server-database
 server-database-shm
 server-database-wal
 server.key
+$mod.ts
