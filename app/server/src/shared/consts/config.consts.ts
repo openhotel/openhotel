@@ -9,12 +9,12 @@ export const CONFIG_DEFAULT: ConfigTypes = {
     players: 100,
   },
   auth: {
-    enabled: true,
+    enabled: false,
     licenseToken: "",
     api: "https://auth.openhotel.club",
   },
   onet: {
-    enabled: true,
+    enabled: false,
     api: "https://onet.openhotel.club",
   },
 };
