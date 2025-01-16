@@ -6,6 +6,6 @@ export const build = (): Plugin => ({
   apply: "build",
   closeBundle: async () => {
     console.log("Running build script...");
-    await writeContributors("./build/contributors.yml");
+    await writeContributors("../../build/client/contributors.yml");
   },
 });
