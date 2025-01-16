@@ -69,7 +69,6 @@ export const setCommand: Command = {
     switch ($furniture.type) {
       case FurnitureType.TELEPORT:
         await System.game.teleports.setRoom(furniture.id, roomId);
-        break;
       case FurnitureType.FURNITURE:
         furniture.size = $furniture.size;
         break;
