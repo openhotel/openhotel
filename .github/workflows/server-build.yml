@@ -21,5 +21,9 @@ jobs:
         with:
           deno-version: v2.x.x
 
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 20.x
+
       - name: Build
         run: deno task build --debug --target=* --server --zip
