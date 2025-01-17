@@ -59,7 +59,11 @@ if (compileAll || client) {
     args: ["task", "install"],
     stdout: debug ? "inherit" : "piped",
   });
-  await commandInstall.spawn().status;
+  const installChild = await commandInstall.spawn();
+
+  console.log();
+  if (!(await installChild.status).success)
+    throw new Error("Install had an error!");
 
   const clientPath = "./app/client";
   const $permanentViteConfigPath = `${clientPath}/vite.config.ts`;
@@ -83,9 +87,10 @@ if (compileAll || client) {
     stdout: debug ? "inherit" : "piped",
   });
   const child = command.spawn();
-  const status = await child.status;
-  console.log(`Command exited with status: ${status.code}`);
-  log(`Client - Build with status code (${status.code})!`, "green");
+
+  if (!(await child.status).success)
+    throw new Error("Client - Build had an error!");
+  log(`Client - Build was successful!`, "green");
 
   try {
     await Deno.remove($temporalViteConfigPath);
@@ -163,8 +168,9 @@ if (compileAll || server) {
     });
     let child = command.spawn();
 
-    let status = await child.status;
-    log(`Server - Build with status code (${status.code})!`, "green");
+    if (!(await child.status).success)
+      throw new Error("Server - Build had an error!");
+    log(`Server - Build was successful!`, "green");
 
     if (zip) {
       log(`Server - Zipping ${$targetName}.zip...`);
@@ -192,8 +198,10 @@ if (compileAll || server) {
         stdout: debug ? "inherit" : "piped",
       });
       child = zipCommand.spawn();
-      status = await child.status;
-      log(`Server - Zip with status code (${status.code})!`, "green");
+
+      if (!(await child.status).success)
+        throw new Error("Server - Zip had an error!");
+      log(`Server - Zip was successful!`, "green");
     }
   }
 
