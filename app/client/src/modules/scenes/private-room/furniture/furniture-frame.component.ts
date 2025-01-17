@@ -26,9 +26,8 @@ export const furnitureFrameComponent: ContainerComponent<Props, Mutable> = (
 ) => {
   const $component = component<Props, Mutable>(props);
 
-  const {
-    furniture: { furnitureId, direction, id, position, framePosition },
-  } = $component.getProps();
+  const { furniture } = $component.getProps();
+  const { furnitureId, direction, id, position, framePosition } = furniture;
   const furnitureData = System.game.furniture.get(furnitureId);
 
   const $$destroy = $component.$destroy;
@@ -74,9 +73,7 @@ export const furnitureFrameComponent: ContainerComponent<Props, Mutable> = (
     }
     System.events.emit(SystemEvent.SHOW_PREVIEW, {
       type: "furniture",
-      spriteSheet: furnitureData.spriteSheet,
-      texture,
-      name: furnitureData.label,
+      furniture,
     });
   });
 

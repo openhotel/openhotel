@@ -76,9 +76,7 @@ export const furnitureComponent: ContainerComponent<Props, FurnitureMutable> = (
 
         System.events.emit(SystemEvent.SHOW_PREVIEW, {
           type: "furniture",
-          spriteSheet: furnitureData.spriteSheet,
-          texture,
-          name: furnitureData.label,
+          furniture,
         });
 
         if (type === FurnitureType.TELEPORT) {
