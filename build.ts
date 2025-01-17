@@ -61,7 +61,6 @@ if (compileAll || client) {
   });
   const installChild = await commandInstall.spawn();
 
-  console.log();
   if (!(await installChild.status).success)
     throw new Error("Install had an error!");
 
