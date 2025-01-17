@@ -43,6 +43,10 @@ export const listRequest: RequestType = {
               ).length
             : 0;
 
+          //if hotel is a ghost town, filter it out
+          if ((!client && !web) || clientAccounts + webAccounts === 0)
+            return null;
+
           return {
             name: hotel.name,
             owner: owner.username,
@@ -61,7 +65,8 @@ export const listRequest: RequestType = {
                 }
               : null,
           };
-        }),
+        })
+        .filter(Boolean),
     );
     return getResponse(HttpStatusCode.OK, {
       data: {
