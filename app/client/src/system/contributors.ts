@@ -13,11 +13,10 @@ export const contributors = () => {
           ...contributor,
           creator: OWNER_LIST.includes(contributor.login),
         }))
-        .sort((contributorA: Contributor, contributorB: Contributor) =>
-          contributorA.contributions > contributorB.contributions ||
-          contributorA.creator
-            ? -1
-            : 1,
+        .sort(
+          (contributorA: Contributor, contributorB: Contributor) =>
+            Number(contributorB.creator) - Number(contributorA.creator) ||
+            contributorB.contributions - contributorA.contributions,
         );
     } catch (e) {
       contributors = DEFAULT_CONTRIBUTOR_LIST;
