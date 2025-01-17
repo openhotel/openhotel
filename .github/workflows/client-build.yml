@@ -3,9 +3,11 @@ on:
   push:
     branches: [master]
     paths:
+      - .github/**
       - app/client/**
   pull_request:
     paths:
+      - .github/**
       - app/client/**
 
 jobs:
