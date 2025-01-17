@@ -47,6 +47,15 @@ if (!version) version = `1.0.0`;
 
 log(`Version: ${version}`, "yellow");
 
+const commandInstall = new Deno.Command(Deno.execPath(), {
+  args: ["task", "install"],
+  stdout: debug ? "inherit" : "piped",
+});
+const installChild = await commandInstall.spawn();
+
+if (!(await installChild.status).success)
+  throw new Error("Install had an error!");
+
 const outputPath = "../../build";
 
 const compileAll = !client && !server;
@@ -54,15 +63,6 @@ const compileAll = !client && !server;
 //client build
 if (compileAll || client) {
   log(`Client - Compiling...`, "gray");
-
-  const commandInstall = new Deno.Command(Deno.execPath(), {
-    args: ["task", "install"],
-    stdout: debug ? "inherit" : "piped",
-  });
-  const installChild = await commandInstall.spawn();
-
-  if (!(await installChild.status).success)
-    throw new Error("Install had an error!");
 
   const clientPath = "./app/client";
   const $permanentViteConfigPath = `${clientPath}/vite.config.ts`;
