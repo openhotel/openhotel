@@ -14,13 +14,7 @@ import {
   isDirectionFrontToBack,
 } from "shared/utils";
 import { Point3d, User } from "shared/types";
-import {
-  Direction,
-  Event,
-  SpriteSheetEnum,
-  SystemEvent,
-  TextureEnum,
-} from "shared/enums";
+import { Direction, Event, SpriteSheetEnum, SystemEvent } from "shared/enums";
 import {
   MOVEMENT_BETWEEN_TILES_DURATION,
   TILE_SIZE,
@@ -275,8 +269,7 @@ export const humanComponent: ContainerComponent<Props, Mutable> = (props) => {
   $container.on(DisplayObjectEvent.POINTER_TAP, () => {
     System.events.emit(SystemEvent.SHOW_PREVIEW, {
       type: "human",
-      texture: TextureEnum.HUMAN_DEV,
-      name: user.username,
+      user,
     });
   });
 
