@@ -5,7 +5,7 @@ import { CrossDirection } from "@oh/utils";
 
 export const demoCommand: Command = {
   command: "demo",
-  usages: ["[true|false]"],
+  usages: [""],
   description: "command.demo.description",
   func: async ({ user, args }) => {
     const room1 = await System.game.rooms.getByName("Room 1");
