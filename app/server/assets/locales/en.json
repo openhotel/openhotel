@@ -24,6 +24,7 @@
   "{{command}}: {{description}}": "{{command}}: {{description}}",
   "No description available": "No description available",
   "Invalid arguments. None of the following usages matched: {{usages}}": "Invalid arguments. None of the following usages matched: {{usages}}",
+  "You don't have permission to use this command": "You don't have permission to use this command",
 
   "command.ban.description": "Bans a user",
   "command.blacklist.description": "Manages the blacklist",

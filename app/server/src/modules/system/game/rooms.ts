@@ -290,6 +290,11 @@ export const rooms = () => {
     );
   };
 
+  const getByName = async (name: string): Promise<RoomMutable | null> => {
+    const roomList = await getList();
+    return roomList.find((room) => room.getTitle() === name) || null;
+  };
+
   const getRandom = async (): Promise<RoomMutable> => {
     const roomList = await getList();
     const roomIndex = getRandomNumber(0, roomList.length - 1);
@@ -299,6 +304,7 @@ export const rooms = () => {
   return {
     get,
     getList,
+    getByName,
 
     getRandom,
   };
