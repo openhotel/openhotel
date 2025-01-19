@@ -28,7 +28,7 @@
   "command.ban.description": "Banea a un usuario",
   "command.blacklist.description": "Administra la lista negra",
   "command.clear.description": "Elimina todos los muebles de la sala",
-  "command.demo.description": "Puebl la Room 1 con muchos muebles",
+  "command.demo.description": "Puebla la Room 1 con muchos muebles",
   "command.deop.description": "Revoca el estado de operador a un usuario",
   "command.help.description": "Muestra una lista de comandos disponibles o información sobre un comando específico",
   "command.kick.description": "Expulsa a un usuario",
