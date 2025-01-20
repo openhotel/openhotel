@@ -28,6 +28,7 @@
   "command.ban.description": "Bans a user",
   "command.blacklist.description": "Manages the blacklist",
   "command.clear.description": "Clears all furnitures from the room",
+  "command.demo.description": "Populates Room 1 with many furniture",
   "command.deop.description": "Revokes operator status from a user",
   "command.help.description": "Shows a list of available commands or information about a specific command",
   "command.kick.description": "Kicks a user",
