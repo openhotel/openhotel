@@ -18,7 +18,6 @@ type WorkerApiProps = {
   user: PrivateUser;
   data: Record<string, string>;
   eventName: string;
-  pathname: string;
   method: RequestMethod;
   url: string;
 };
@@ -73,36 +72,34 @@ export const proxy = () => {
 
     $worker.on(
       ProxyEvent.$USER_API_DATA,
-      async ({
-        pathname,
-        eventName,
-        data,
-        user,
-        method,
-        url,
-      }: WorkerApiProps) => {
+      async ({ eventName, data, user, method, url }: WorkerApiProps) => {
         try {
-          const foundRequest = requestList.find(
-            (request) =>
-              (request?.pathname === pathname ||
-                request?.match?.test?.(pathname)) &&
-              request.method === method,
+          const parsedUrl = new URL(url);
+          const foundRequests = requestList.filter(
+            ($request) =>
+              $request?.pathname === parsedUrl.pathname ||
+              $request?.match?.test?.(parsedUrl.pathname),
           );
-          if (!foundRequest) return $worker.emit(eventName, { status: 404 });
+          const foundMethodRequest = foundRequests.find(
+            ($request) => $request.method === method,
+          );
 
-          if (!foundRequest.public && !user)
+          if (!foundMethodRequest)
+            return $worker.emit(eventName, { status: 404 });
+
+          if (!foundMethodRequest.public && !user)
             return $worker.emit(eventName, {
               status: 403,
             });
 
-          const response = await foundRequest.func(
+          const response = await foundMethodRequest.func(
             {
               user: user
                 ? System.game.users.get({ accountId: user.accountId })
                 : null,
               data,
             },
-            new URL(url),
+            parsedUrl,
           );
 
           $worker.emit(eventName, response);

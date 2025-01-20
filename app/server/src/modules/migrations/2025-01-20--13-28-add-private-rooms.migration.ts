@@ -1,43 +1,27 @@
 import { Migration, DbMutable, getRandomString } from "@oh/utils";
-import { PrivateRawRoom, RoomPoint } from "shared/types/main.ts";
-import {
-  getRoomSpawnDirection,
-  getRoomSpawnPoint,
-} from "shared/utils/rooms.utils.ts";
-import { RoomPointEnum } from "shared/enums/room.enums.ts";
+import { PrivateRawRoom } from "shared/types/main.ts";
 
 export default {
-  id: "2024-12-11--23-00-add-rooms",
-  description: "Add initial rooms",
+  id: "2024-01-20--13-28-private-rooms",
+  description: "Add private rooms to different table + max users",
   up: async (db: DbMutable) => {
-    const removeAllItems = async (id: string) => {
-      const { items } = await db.list({ prefix: [id] });
-      for (const { key } of items) await db.delete(key);
-    };
-
-    // Remove all previous rooms
-    await removeAllItems("rooms");
-
-    //Generate the new rooms
-    for (const room of DEFAULT_ROOMS) {
-      let layout: RoomPoint[][] = room.layout.map((line) =>
-        line
-          .split("")
-          .map((value) =>
-            parseInt(value) ? parseInt(value) : (value as RoomPointEnum),
-          ),
-      );
-
-      const roomData = {
-        ...room,
-        layout,
-        spawnPoint: getRoomSpawnPoint(layout),
-        spawnDirection: getRoomSpawnDirection(layout),
-      };
-      await db.set(["rooms", room.id], roomData);
+    for (const { key, value } of await db.list({ prefix: ["rooms"] })) {
+      await db.set(["rooms", "private", value.id], {
+        ...value,
+        maxUsers: 10,
+      });
+      await db.delete(key);
     }
   },
-  down: async (db: DbMutable) => {},
+  down: async (db: DbMutable) => {
+    for (const { key, value } of await db.list({
+      prefix: ["rooms", "private"],
+    })) {
+      delete value.maxUsers;
+      await db.set(["rooms", value.id], value);
+      await db.delete(key);
+    }
+  },
 } as Migration;
 
 const OWNER_ID = "edd8081d-d160-4bf4-b89b-133d046c87ff";

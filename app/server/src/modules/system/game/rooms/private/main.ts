@@ -1,8 +1,9 @@
 import {
   FindPathProps,
-  Room,
+  PrivateRoom,
   RoomFurniture,
-  RoomMutable,
+  PrivateRoomMutable,
+  RoomPoint,
   User,
 } from "shared/types/main.ts";
 import { FurnitureType, ProxyEvent, RoomPointEnum } from "shared/enums/main.ts";
@@ -10,15 +11,18 @@ import { System } from "modules/system/main.ts";
 import { getInterpolatedPath } from "shared/utils/pathfinding.utils.ts";
 import { WALKABLE_FURNITURE_TYPE } from "shared/consts/main.ts";
 import { Direction, getRandomNumber, isPoint3dEqual, Point3d } from "@oh/utils";
-import { getRoomGridLayout } from "shared/utils/rooms.utils.ts";
+import { Grid } from "@oh/pathfinding";
+import { getBaseRoomGrid } from "shared/utils/rooms.utils.ts";
+import { pathfinding } from "./pathfinding.ts";
 
-export const rooms = () => {
-  let roomUserMap: Record<string, string[]> = {};
-
-  const $getRoom = (room: Room): RoomMutable => {
-    let $room: Room = { ...room };
+const getRoom =
+  (roomUserMap: Record<string, string[]>, $pathfinding) =>
+  (room: PrivateRoom): PrivateRoomMutable => {
+    let $room: PrivateRoom = { ...room };
 
     if (!roomUserMap[room.id]) roomUserMap[room.id] = [];
+
+    const $baseRoomGrid: RoomPoint[][] = getBaseRoomGrid($room.layout);
 
     const getId = () => room.id;
     const getTitle = () => room.title;
@@ -84,6 +88,8 @@ export const rooms = () => {
 
       const $accountId = $user.getAccountId();
 
+      $pathfinding.remove(user.accountId);
+
       $user.removeRoom();
 
       roomUserMap[room.id] = roomUserMap[room.id].filter(
@@ -117,7 +123,7 @@ export const rooms = () => {
             return isPoint3dEqual(user.getPosition(), position, true);
           }) &&
           Boolean(
-            !getFurnitures()
+            !getFurniture()
               .filter(
                 (furniture) =>
                   !WALKABLE_FURNITURE_TYPE.includes(furniture.type),
@@ -130,7 +136,7 @@ export const rooms = () => {
     };
 
     const findPath = ({ start, end, accountId }: FindPathProps) => {
-      const roomLayout = structuredClone(room.layout);
+      const roomLayout = structuredClone($baseRoomGrid);
       const roomUsers = getUsers().map(($accountId) =>
         System.game.users.get({ accountId: $accountId }),
       );
@@ -152,18 +158,16 @@ export const rooms = () => {
         roomLayout[position.z][position.x] = RoomPointEnum.EMPTY;
       }
 
-      for (const furniture of getFurnitures()) {
+      for (const furniture of getFurniture()) {
         if (WALKABLE_FURNITURE_TYPE.includes(furniture.type)) continue;
         const position = furniture.position;
-        if (isPoint3dEqual(start, position)) continue;
-
         //ignore if a human is in the same position of furniture because x (chairs, teleports, tp...)
         if (isPoint3dEqual(position, start)) continue;
 
         roomLayout[position.z][position.x] = RoomPointEnum.EMPTY;
       }
 
-      const grid = getRoomGridLayout(roomLayout);
+      const grid = Grid.from(roomLayout);
 
       const path = grid
         .findPath(
@@ -214,7 +218,7 @@ export const rooms = () => {
 
       await $save();
     };
-    const getFurnitures = (): RoomFurniture[] => $room.furniture;
+    const getFurniture = (): RoomFurniture[] => $room.furniture;
 
     const getYFromPoint = (point: Partial<Point3d>): number | null => {
       if (!room?.layout?.[point.z]) return null;
@@ -244,10 +248,12 @@ export const rooms = () => {
       });
 
     const $save = async () => {
-      await System.db.set(["rooms", $room.id], $room);
+      await System.db.set(["rooms", "private", $room.id], $room);
     };
 
     return {
+      type: "private",
+
       getId,
       getTitle,
       getDescription,
@@ -266,7 +272,7 @@ export const rooms = () => {
       addFurniture,
       updateFurniture,
       removeFurniture,
-      getFurnitures,
+      getFurniture,
 
       getObject,
 
@@ -274,9 +280,20 @@ export const rooms = () => {
     };
   };
 
-  const get = async (roomId: string): Promise<RoomMutable | null> => {
+export const $private = () => {
+  let roomUserMap: Record<string, string[]> = {};
+
+  const $pathfinding = pathfinding();
+
+  const $getRoom = getRoom(roomUserMap, $pathfinding);
+
+  const load = () => {
+    $pathfinding.load();
+  };
+
+  const get = async (roomId: string): Promise<PrivateRoomMutable | null> => {
     try {
-      const roomData = await System.db.get(["rooms", roomId]);
+      const roomData = await System.db.get(["rooms", "private", roomId]);
       if (!roomData) return null;
       return $getRoom(roomData);
     } catch (e) {
@@ -284,31 +301,38 @@ export const rooms = () => {
     }
   };
 
-  const getList = async (): Promise<RoomMutable[]> => {
-    const { items } = await System.db.list({ prefix: ["rooms"] });
-    return items.map((item) => $getRoom(item.value));
+  const getList = async (): Promise<PrivateRoomMutable[]> => {
+    return (await System.db.list({ prefix: ["rooms", "private"] })).map(
+      (item) => $getRoom(item.value),
+    );
   };
 
-  const getByName = async (name: string): Promise<RoomMutable | null> => {
+  const getByName = async (
+    name: string,
+  ): Promise<PrivateRoomMutable | null> => {
     const roomList = await getList();
     return roomList.find((room) => room.getTitle() === name) || null;
   };
 
-  const getRandom = async (): Promise<RoomMutable> => {
+  const getRandom = async (): Promise<PrivateRoomMutable> => {
     const roomList = await getList();
     const roomIndex = getRandomNumber(0, roomList.length - 1);
     return roomList[roomIndex];
   };
 
-  const add = async (room: Room) => {
-    await System.db.set(["rooms", room.id], room);
+  const add = async (room: PrivateRoom) => {
+    await System.db.set(["rooms", "private", room.id], room);
   };
   return {
+    load,
+
     get,
     getList,
     getByName,
 
     getRandom,
+
+    pathfinding: $pathfinding,
 
     add,
   };

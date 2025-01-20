@@ -7,12 +7,10 @@ import {
 } from "shared/types/main.ts";
 import { System } from "modules/system/main.ts";
 import { ProxyEvent } from "shared/enums/event.enum.ts";
-import { MOVEMENT_BETWEEN_TILES_DURATION } from "shared/consts/tiles.consts.ts";
 import { Language } from "shared/enums/languages.enum.ts";
 import { RoomPointEnum } from "shared/enums/room.enums.ts";
 import { USERS_CONFIG_DEFAULT } from "shared/consts/users.consts.ts";
-import { TickerQueue } from "@oh/queue";
-import { Direction, getDirection, getConfig, Point3d } from "@oh/utils";
+import { Direction, getConfig, Point3d } from "@oh/utils";
 import { exists } from "deno/fs/mod.ts";
 import { log as $log } from "shared/utils/log.utils.ts";
 import { UserAction } from "shared/enums/user.enums.ts";
@@ -21,86 +19,11 @@ export const users = () => {
   let $privateUserMap: Record<string, PrivateUser> = {};
   let $userMap: Record<string, UserMutable> = {};
 
-  let $userPathfindingMap: Record<string, Point3d[]> = {};
+  // let $userPathfindingMap: Record<string, Point3d[]> = {};
   let $userLastMessageMap: Record<string, string> = {};
   let $userLastWhisperMap: Record<string, string> = {};
 
   const load = async () => {
-    System.tasks.add({
-      type: TickerQueue.REPEAT,
-      repeatEvery: MOVEMENT_BETWEEN_TILES_DURATION,
-      onFunc: async () => {
-        for (const accountId of Object.keys($userPathfindingMap)) {
-          const user = get({ accountId });
-          const room = await System.game.rooms.get(user.getRoom());
-
-          let nextPosition = $userPathfindingMap[accountId].shift();
-          if (!nextPosition) return;
-          const targetPosition =
-            $userPathfindingMap[accountId][
-              $userPathfindingMap[accountId].length - 1
-            ];
-
-          //check if next position is spawn, exit <<
-          if (room.getPoint(nextPosition) === RoomPointEnum.SPAWN) {
-            room.removeUser(user.getObject());
-            return;
-          }
-
-          //check if targetPosition exists and if it's not free
-          if (
-            targetPosition &&
-            !room?.isPointFree(nextPosition, user.getAccountId())
-          ) {
-            //calc new pathfinding
-            const pathfinding = room?.findPath({
-              start: user.getPosition(),
-              end: targetPosition,
-              accountId: user.getAccountId(),
-            });
-
-            //Path is not possible
-            if (!pathfinding.length) {
-              //if target position is spawn, exit <<
-              if (room.getPoint(targetPosition) === RoomPointEnum.SPAWN) {
-                room.removeUser(user.getObject());
-                return;
-              }
-
-              delete $userPathfindingMap[accountId];
-              return;
-            }
-
-            //set new pathfinding and next position
-            $userPathfindingMap[accountId] = pathfinding;
-            nextPosition = $userPathfindingMap[accountId].shift();
-          }
-
-          //check if next position is free
-          if (!room.isPointFree(nextPosition, user.getAccountId())) {
-            delete $userPathfindingMap[accountId];
-            return;
-          }
-
-          const targetBodyDirection = getDirection(
-            user.getPosition(),
-            nextPosition,
-          );
-          //set next position (reserve it)
-          user.setPosition(nextPosition);
-          user.setBodyDirection(targetBodyDirection);
-          room.emit(ProxyEvent.MOVE_HUMAN, {
-            accountId: user.getAccountId(),
-            position: nextPosition,
-            bodyDirection: targetBodyDirection,
-          });
-
-          //check if there's no more pathfinding
-          if (!targetPosition) delete $userPathfindingMap[accountId];
-        }
-      },
-    });
-
     // Check config file
     const config = await exists("./users.yml");
     if (!config) {
@@ -142,14 +65,19 @@ export const users = () => {
     const getBodyDirection = (): Direction => $user?.bodyDirection;
 
     const setRoom = (roomId: string) => {
+      $clearPathfinding();
       $user.roomId = roomId;
-      delete $userPathfindingMap[user.accountId];
     };
     const getRoom = (): string => $user.roomId;
     const removeRoom = () => {
       setRoom(null);
       setPosition(null);
       setLastWhisper(null);
+    };
+
+    const $clearPathfinding = () => {
+      System.game.rooms.private.pathfinding.remove(getAccountId());
+      // System.game.rooms.public.pathfinding.remove(getAccountId());
     };
 
     const setAction = (action: UserAction | null) => {
@@ -159,24 +87,25 @@ export const users = () => {
 
     const preMoveToRoom = async (roomId: string) => {
       const foundRoom = await System.game.rooms.get(roomId);
+      if (foundRoom.type !== "private") return;
 
       emit(ProxyEvent.PRE_JOIN_ROOM, {
         room: {
           id: foundRoom.getId(),
-          furniture: foundRoom.getFurnitures(),
+          furniture: foundRoom.getFurniture(),
         },
       });
     };
 
     const moveToRoom = async (roomId: string) => {
       const currentRoom = getRoom();
-      if (currentRoom)
-        (await System.game.rooms.get(currentRoom)).removeUser(
-          getObject(),
-          true,
-        );
+      if (currentRoom) {
+        const room = await System.game.rooms.get(currentRoom);
+        room?.removeUser?.(getObject(), true);
+      }
 
-      await (await System.game.rooms.get(roomId))?.addUser?.(getObject());
+      const targetRoom = await System.game.rooms.get(roomId);
+      await targetRoom?.addUser?.(getObject());
     };
 
     const setTargetPosition = async (targetPosition: Point3d) => {
@@ -197,11 +126,11 @@ export const users = () => {
         return;
       }
 
-      $userPathfindingMap[user.accountId] = pathfinding;
+      System.game.rooms.private.pathfinding.set(getAccountId(), pathfinding);
     };
 
     const getPathfinding = (): Point3d[] =>
-      $userPathfindingMap[user.accountId] || [];
+      System.game.rooms.private.pathfinding.get(getAccountId()) || [];
 
     const setLastMessage = (message: string) => {
       $userLastMessageMap[user.accountId] = message;
@@ -334,7 +263,6 @@ export const users = () => {
 
     delete $userMap[user.accountId];
     delete $privateUserMap[user.accountId];
-    delete $userPathfindingMap[user.accountId];
 
     await $user.log("left");
   };
