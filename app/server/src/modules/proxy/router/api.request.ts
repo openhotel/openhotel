@@ -19,7 +19,7 @@ export const getApiRequest = {
     );
 
     let data = {};
-    const { searchParams, pathname: currentPathname } = getURL(request.url);
+    const { searchParams } = getURL(request.url);
     for (const [key, value] of searchParams as any) data[key] = value;
 
     if (request.body) {
@@ -28,7 +28,6 @@ export const getApiRequest = {
       };
     }
 
-    const pathname = currentPathname.replace("/proxy", "").replace("/api", "");
     const eventName = user?.accountId + getRandomString(32);
 
     try {
@@ -37,9 +36,8 @@ export const getApiRequest = {
           user,
           data,
           eventName,
-          pathname,
           method,
-          url: request.url,
+          url: request.url.replace("/proxy", "").replace("/api", ""),
         });
 
         Proxy.getServerWorker().on(eventName, ({ status, data, headers }) => {

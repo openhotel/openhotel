@@ -19,7 +19,7 @@ export const roomRequest: ProxyRequestType = {
         status: 404,
       };
 
-    const foundRoom = await System.game.rooms.get(roomId);
+    const foundRoom = await System.game.rooms.private.get(roomId);
     if (!foundRoom)
       return {
         status: 404,
@@ -31,7 +31,7 @@ export const roomRequest: ProxyRequestType = {
         room: {
           furniture: [
             ...new Set(
-              foundRoom.getFurnitures().map(({ furnitureId }) => furnitureId),
+              foundRoom.getFurniture().map(({ furnitureId }) => furnitureId),
             ),
           ],
         },
