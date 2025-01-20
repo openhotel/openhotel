@@ -25,9 +25,9 @@ export const userJoinedEvent: ProxyEventType<{
     if (meta?.[0] === Meta.TELEPORT) {
       const teleport = await System.game.teleports.get(meta[1] as string);
 
-      const room = await System.game.rooms.get(teleport.roomId);
+      const room = await System.game.rooms.private.get(teleport.roomId);
       if (!room) return;
-      const furniture = room.getFurnitures();
+      const furniture = room.getFurniture();
       const teleportFurniture = furniture.find(
         (furniture) => furniture.id === meta[1],
       );

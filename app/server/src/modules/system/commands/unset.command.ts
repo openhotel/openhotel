@@ -17,8 +17,10 @@ export const unsetCommand: Command = {
     if (!roomId) return;
 
     const room = await System.game.rooms.get(roomId);
+    if (room.type !== "private") return;
+
     const furniture = room
-      .getFurnitures()
+      .getFurniture()
       .find((furniture) => furniture.id === id);
 
     if (!furniture) {
