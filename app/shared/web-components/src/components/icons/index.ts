@@ -7,5 +7,8 @@ export * from "./cross-icon.component";
 export * from "./chevron-down-icon.component";
 export * from "./chevron-up-icon.component";
 export * from "./upload-icon.component";
+export * from "./connections-icon.component";
+export * from "./account-icon.component";
+export * from "./admin-icon.component";
 
 export * from "./cc";
