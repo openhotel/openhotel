@@ -27,7 +27,7 @@ export const ConnectionsComponent: React.FC<Props> = () => {
   );
 
   return (
-    <div>
+    <div className={styles.connections}>
       <h2>Connections</h2>
       <div className={styles.list}>
         {connections.map((hotelConnection) => (

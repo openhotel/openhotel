@@ -3,20 +3,30 @@ import React from "react";
 import { NotFoundComponent } from "../not-found";
 import { LoginComponent } from "modules/login";
 import { RegisterComponent } from "modules/register";
-import { HomeComponent, HomeNavigatorComponent } from "modules/home";
+import {
+  AccountComponent,
+  AdminComponent,
+  BskyComponent,
+  ConnectionsComponent,
+  HomeComponent,
+  HomeNavigatorComponent,
+  HotelsComponent,
+} from "modules/home";
 import { RedirectComponent } from "shared/components";
 import { LogoutComponent } from "modules/logout";
 import { CardLayoutComponent } from "modules/application/components/card-layout";
 import { MainLayoutComponent } from "@oh/components";
 import { ConnectionComponent, PingComponent } from "modules/connection";
-import { AdminComponent } from "modules/admin";
+import { ClaimAdminComponent } from "modules/admin";
 import { RecoverPasswordComponent } from "modules/recover-password";
 import { ChangePasswordComponent } from "modules/change-password";
 import { VerifyComponent } from "modules/verify";
+import { ProvidersComponent } from "modules/application/components/providers";
 
 const router = createBrowserRouter([
   {
     path: "/",
+    element: <ProvidersComponent />,
     children: [
       {
         element: (
@@ -50,10 +60,6 @@ const router = createBrowserRouter([
         ),
         path: "/register",
       },
-      // {
-      //   element: <CardLayoutComponent children={<VerifyComponent />} />,
-      //   path: "/verify",
-      // },
       {
         path: "/logout",
         Component: () => <LogoutComponent />,
@@ -66,21 +72,57 @@ const router = createBrowserRouter([
         ),
         path: "/connection",
       },
-      // {
-      //   element: <MainLayoutComponent children={<Outlet />} />,
-      //   path: "/account",
-      //   children: [
-      //     {
-      //       path: "",
-      //       Component: () => <AccountComponent />,
-      //     },
-      //   ],
-      // },
       { path: "/verify", element: <VerifyComponent /> },
       { path: "/ping", element: <PingComponent /> },
-      { path: "/admin", element: <AdminComponent /> },
+      //pages
       {
-        path: "/home",
+        path: "/account",
+        element: (
+          <MainLayoutComponent
+            children={<AccountComponent />}
+            navigatorChildren={<HomeNavigatorComponent />}
+          />
+        ),
+      },
+      {
+        path: "/account/hotels",
+        element: (
+          <MainLayoutComponent
+            children={<HotelsComponent />}
+            navigatorChildren={<HomeNavigatorComponent />}
+          />
+        ),
+      },
+      {
+        path: "/account/connections",
+        element: (
+          <MainLayoutComponent
+            children={<ConnectionsComponent />}
+            navigatorChildren={<HomeNavigatorComponent />}
+          />
+        ),
+      },
+      {
+        path: "/account/bsky",
+        element: (
+          <MainLayoutComponent
+            children={<BskyComponent />}
+            navigatorChildren={<HomeNavigatorComponent />}
+          />
+        ),
+      },
+      {
+        path: "/admin",
+        element: (
+          <MainLayoutComponent
+            children={<AdminComponent />}
+            navigatorChildren={<HomeNavigatorComponent />}
+          />
+        ),
+      },
+      { path: "/admin/claim", element: <ClaimAdminComponent /> },
+      {
+        path: "/",
         element: (
           <MainLayoutComponent
             children={<HomeComponent />}
@@ -88,7 +130,6 @@ const router = createBrowserRouter([
           />
         ),
       },
-      { path: "/", element: <RedirectComponent to="/home" /> },
       {
         path: "/404",
         Component: () => <NotFoundComponent />,

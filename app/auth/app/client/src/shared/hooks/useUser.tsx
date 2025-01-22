@@ -15,6 +15,7 @@ type UserState = {
   user: User | null;
 
   getLicense: () => Promise<string>;
+  initUser: () => Promise<void>;
 };
 
 const UserContext = React.createContext<UserState>(undefined);
@@ -27,7 +28,7 @@ export const UserProvider: React.FunctionComponent<ProviderProps> = ({
   children,
 }) => {
   const { fetch } = useApi();
-  const { getAccountHeaders } = useAccount();
+  const { getAccountHeaders, isLogged } = useAccount();
   const navigate = useNavigate();
 
   const [user, setUser] = useState<User | null>(null);
@@ -58,17 +59,27 @@ export const UserProvider: React.FunctionComponent<ProviderProps> = ({
     return data.licenseToken;
   }, [fetch, getAccountHeaders]);
 
+  const initUser = useCallback(
+    () =>
+      fetchUser()
+        .then(setUser)
+        .catch(() => navigate("/login")),
+    [fetchUser, setUser, navigate],
+  );
+
   useEffect(() => {
-    fetchUser()
-      .then(setUser)
-      .catch(() => navigate("/login"));
-  }, [fetchUser]);
+    if (!isLogged || user) return;
+    console.log("init");
+    initUser();
+  }, [user, isLogged, initUser]);
 
   return (
     <UserContext.Provider
       value={{
         user,
         getLicense,
+
+        initUser,
       }}
       children={children}
     />

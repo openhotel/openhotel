@@ -1,15 +1,5 @@
 import React from "react";
-import {
-  OtpComponent,
-  ConnectionsComponent,
-  AccountComponent,
-  AdminComponent,
-  ActionsComponent,
-  BskyComponent,
-  HotelsComponent,
-} from "./components";
-import { Outlet } from "react-router-dom";
-import { useAccount, UserProvider } from "shared/hooks";
+import { useAccount } from "shared/hooks";
 import { RedirectComponent } from "shared/components";
 
 export const HomeComponent: React.FC = () => {
@@ -19,17 +9,9 @@ export const HomeComponent: React.FC = () => {
   if (!isLogged) return <RedirectComponent to="/login" />;
 
   return (
-    <UserProvider>
-      <div>
-        <AccountComponent />
-        <Outlet />
-        <OtpComponent />
-        <HotelsComponent />
-        <ConnectionsComponent />
-        <ActionsComponent />
-        <BskyComponent />
-        <AdminComponent />
-      </div>
-    </UserProvider>
+    <div>
+      <h1>Home</h1>
+      <label>Welcome to OpenHotel Auth!</label>
+    </div>
   );
 };

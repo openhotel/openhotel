@@ -12,7 +12,6 @@ export const AccountComponent = () => {
       <h2>Account</h2>
       <p title={user?.email}>{getCensoredEmail(user?.email)}</p>
       <p title={user?.accountId}>{user?.username}</p>
-      <p>{user?.admin ? "ADMIN" : null}</p>
     </div>
   );
 };
