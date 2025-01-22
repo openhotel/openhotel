@@ -15,7 +15,9 @@ export const recoverPasswordPostRequest: RequestType = {
   pathname: "/recover-password",
   kind: RequestKind.PUBLIC,
   func: async (request: Request) => {
-    const { email } = await request.json();
+    let { email } = await request.json();
+
+    email = email?.toLowerCase();
 
     if (!email || !new RegExp(EMAIL_REGEX).test(email)) {
       return getResponse(HttpStatusCode.BAD_REQUEST, {

@@ -18,13 +18,14 @@ export const userPatchRequest: RequestType = {
     if (!(await hasRequestAccess({ request, admin: true })))
       return getResponse(HttpStatusCode.FORBIDDEN);
 
-    const { accountId, username, email, createdAt, admin } =
-      await request.json();
+    let { accountId, username, email, createdAt, admin } = await request.json();
 
     if (!accountId || !username || !email || !createdAt)
       return getResponse(HttpStatusCode.FORBIDDEN, {
         message: "Some input is missing!",
       });
+
+    email = email.toLowerCase();
 
     if (
       !new RegExp(EMAIL_REGEX).test(email) ||

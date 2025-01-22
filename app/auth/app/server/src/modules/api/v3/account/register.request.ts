@@ -21,7 +21,7 @@ export const registerPostRequest: RequestType = {
   pathname: "/register",
   kind: RequestKind.PUBLIC,
   func: async (request: Request) => {
-    const { email, username, password, rePassword, captchaId } =
+    let { email, username, password, rePassword, captchaId } =
       await request.json();
 
     if (
@@ -34,6 +34,8 @@ export const registerPostRequest: RequestType = {
       return getResponse(HttpStatusCode.FORBIDDEN, {
         message: "Some input is missing or invalid captcha!",
       });
+
+    email = email.toLowerCase();
 
     if (
       !new RegExp(EMAIL_REGEX).test(email) ||
