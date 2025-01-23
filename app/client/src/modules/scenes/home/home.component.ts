@@ -45,9 +45,11 @@ export const homeComponent: ContainerComponent<Props> = () => {
   const $rePositionSocials = (size: Size) => {
     $socialsComponent.setPosition({
       x: size.width - $socialsComponent.getBounds().width - 5,
-      y: upperBar.getBounds().height / 2 - $socialsComponent.getBounds().height / 2,
+      y:
+        upperBar.getBounds().height / 2 -
+        $socialsComponent.getBounds().height / 2,
     });
-  }
+  };
 
   const $hotBar = hotBarComponent();
   $container.add($logo, $hotBar, $socialsComponent);

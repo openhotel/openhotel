@@ -26,9 +26,9 @@
       "sourceSize": { "w": 21, "h": 21 }
     },
     "bluesky-white": {
-        "frame": { "x": 47, "y": 24, "w": 21, "h": 21 },
-        "anchor": { "x": 0, "y": 0 },
-        "sourceSize": { "w": 21, "h": 21 }
+      "frame": { "x": 47, "y": 24, "w": 21, "h": 21 },
+      "anchor": { "x": 0, "y": 0 },
+      "sourceSize": { "w": 21, "h": 21 }
     }
   },
   "animations": {},
