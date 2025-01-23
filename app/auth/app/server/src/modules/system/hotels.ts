@@ -14,7 +14,7 @@ export const hotels = () => {
   ) => {
     return (
       await System.db.list({
-        prefix: ["integrationsByHotelsByAccountId"],
+        prefix: ["integrationsByAccountId"],
       })
     ).filter(({ key }) => key[2] === hotelId && key[3] === integrationId);
   };
@@ -100,8 +100,16 @@ export const hotels = () => {
       hotelsIdList.filter(($hotelId: string) => hotelId !== $hotelId),
     );
 
-    for (const { integrationId } of hotel.integrations)
+    for (const { integrationId } of hotel.integrations) {
+      const accounts = await getAccountsByIntegrationId(hotelId, integrationId);
+
+      for (const {
+        value: { accountId },
+      } of accounts)
+        await System.connections.remove(accountId, hotelId, integrationId);
+
       await System.db.delete(["hotelsByConnectId", integrationId]);
+    }
 
     await System.db.delete(["hotels", hotelId]);
   };
