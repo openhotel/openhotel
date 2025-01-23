@@ -1,11 +1,14 @@
 import { Command } from "shared/types/main.ts";
 import { System } from "modules/system/main.ts";
 import { ProxyEvent } from "shared/enums/event.enum.ts";
-import { __ } from "shared/utils/languages.utils.ts";
 
 export const teleportCommand: Command = {
   command: "teleport",
-  usages: ["link <teleportIdA> <teleportIdB>", "remote <teleportIdA> <linkId>"],
+  usages: [
+    "link <teleportIdA> <teleportIdB>",
+    "remote <teleportId>",
+    "remote <teleportId> <linkId>",
+  ],
   description: "command.teleport.description",
   func: async ({ user, args }) => {
     const [type, ...moreArgs] = args as string[];
