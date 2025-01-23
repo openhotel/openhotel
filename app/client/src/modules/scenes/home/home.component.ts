@@ -44,7 +44,7 @@ export const homeComponent: ContainerComponent<Props> = () => {
   const $socialsComponent = socialsComponent();
   const $rePositionSocials = (size: Size) => {
     $socialsComponent.setPosition({
-      x: size.width - $socialsComponent.getBounds().width - 5,
+      x: size.width - $socialsComponent.getBounds().width - 10,
       y:
         upperBar.getBounds().height / 2 -
         $socialsComponent.getBounds().height / 2,
