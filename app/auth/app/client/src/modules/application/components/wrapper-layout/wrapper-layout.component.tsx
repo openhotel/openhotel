@@ -14,7 +14,6 @@ export const WrapperLayoutComponent = ({ children }: Props) => {
 
   useEffect(() => {
     if (!isLogged || user) return;
-    console.log("init");
     initUser();
   }, [user, isLogged, initUser]);
 

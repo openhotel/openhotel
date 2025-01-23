@@ -79,19 +79,37 @@ export const AdminUsersComponent = () => {
               <InputComponent
                 name="username"
                 placeholder="username"
-                defaultValue={selectedUser.username}
+                value={selectedUser.username}
+                onChange={(event) =>
+                  setSelectedUser((user) => ({
+                    ...user,
+                    username: event.target.value,
+                  }))
+                }
               />
               <InputComponent
                 name="email"
                 placeholder="email"
-                defaultValue={selectedUser.email}
+                value={selectedUser.email}
+                onChange={(event) =>
+                  setSelectedUser((user) => ({
+                    ...user,
+                    email: event.target.value,
+                  }))
+                }
               />
             </div>
             <div className={styles.formRow}>
               <InputComponent
                 name="createdAt"
                 placeholder="createdAt"
-                defaultValue={selectedUser.createdAt}
+                value={selectedUser.createdAt}
+                onChange={(event) =>
+                  setSelectedUser((user) => ({
+                    ...user,
+                    createdAt: event.target.value,
+                  }))
+                }
               />
               <SelectorComponent
                 name="admin"
@@ -116,7 +134,7 @@ export const AdminUsersComponent = () => {
           rowFunc={($row, columns) => {
             return (
               <tr
-                key={$row.id + "row"}
+                key={$row.accountId + "row"}
                 className={cn(styles.row, {
                   [styles.admin]: $row.admin,
                 })}
