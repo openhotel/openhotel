@@ -1,0 +1,41 @@
+{
+  "frames": {
+    "discord": {
+      "frame": { "x": 1, "y": 1, "w": 21, "h": 21 },
+      "anchor": { "x": 0, "y": 0 },
+      "sourceSize": { "w": 21, "h": 21 }
+    },
+    "discord-white": {
+      "frame": { "x": 1, "y": 24, "w": 21, "h": 21 },
+      "anchor": { "x": 0, "y": 0 },
+      "sourceSize": { "w": 21, "h": 21 }
+    },
+    "github": {
+      "frame": { "x": 24, "y": 1, "w": 21, "h": 21 },
+      "anchor": { "x": 0, "y": 0 },
+      "sourceSize": { "w": 21, "h": 21 }
+    },
+    "github-white": {
+      "frame": { "x": 24, "y": 24, "w": 21, "h": 21 },
+      "anchor": { "x": 0, "y": 0 },
+      "sourceSize": { "w": 21, "h": 21 }
+    },
+    "bluesky": {
+      "frame": { "x": 47, "y": 1, "w": 21, "h": 21 },
+      "anchor": { "x": 0, "y": 0 },
+      "sourceSize": { "w": 21, "h": 21 }
+    },
+    "bluesky-white": {
+        "frame": { "x": 47, "y": 24, "w": 21, "h": 21 },
+        "anchor": { "x": 0, "y": 0 },
+        "sourceSize": { "w": 21, "h": 21 }
+    }
+  },
+  "animations": {},
+  "meta": {
+    "format": "RGBA8888",
+    "image": "sprite.png",
+    "size": { "w": 115, "h": 46 },
+    "scale": 1
+  }
+}

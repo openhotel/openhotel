@@ -11,7 +11,7 @@ import {
   Env,
   textSprite,
 } from "@tu/tulip";
-import { logoComponent } from "modules/main";
+import { logoComponent, socialsComponent } from "modules/main";
 import { System } from "system";
 import { SystemEvent, TextureEnum, SpriteSheetEnum } from "shared/enums";
 import { hotBarComponent } from "modules/interfaces";
@@ -41,8 +41,16 @@ export const homeComponent: ContainerComponent<Props> = () => {
   });
   $container.add(upperBar);
 
+  const $socialsComponent = socialsComponent();
+  const $rePositionSocials = (size: Size) => {
+    $socialsComponent.setPosition({
+      x: size.width - $socialsComponent.getBounds().width - 5,
+      y: upperBar.getBounds().height / 2 - $socialsComponent.getBounds().height / 2,
+    });
+  }
+
   const $hotBar = hotBarComponent();
-  $container.add($logo, $hotBar);
+  $container.add($logo, $hotBar, $socialsComponent);
 
   const onlineUsers = textSprite({
     text: "0 guests online",
@@ -125,6 +133,7 @@ export const homeComponent: ContainerComponent<Props> = () => {
     upperBar.setRectangle(size.width, height + 2);
     $rePositionOnlineUsers(size);
     $rePositionContributions(size);
+    $rePositionSocials(size);
   };
   $container.add(background);
 
