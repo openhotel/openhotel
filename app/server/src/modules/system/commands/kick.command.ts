@@ -12,7 +12,7 @@ export const kickCommand: Command = {
     if (!username) return;
 
     const kickUser = System.game.users.get({ username });
-    if (!kickUser) return;
+    if (!kickUser || (await kickUser.isOp())) return;
 
     kickUser.disconnect();
 
