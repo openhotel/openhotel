@@ -8,15 +8,6 @@ export const hotels = () => {
     return hotelList.map(({ value }) => value);
   };
 
-  const getPrivateList = async () => {
-    const list = await getList();
-    return await Promise.all(
-      list.map((hotel) => {
-        return hotel;
-      }),
-    );
-  };
-
   const getAccountsByIntegrationId = async (
     hotelId: string,
     integrationId: string,

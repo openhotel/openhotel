@@ -1,77 +1,71 @@
-import React, { FormEvent, useCallback, useEffect, useState } from "react";
-import { Hotel } from "shared/types";
 import { useHotels } from "shared/hooks";
-import { ButtonComponent, InputComponent } from "@oh/components";
-import { HotelComponent } from "./components";
-
+import React, { useEffect, useState } from "react";
 //@ts-ignore
 import styles from "./hotels.module.scss";
+import { PublicHotel } from "shared/types";
+import { ButtonComponent } from "@oh/components";
+import { LinkComponent } from "shared/components";
 
-type Props = {} & React.HTMLProps<HTMLDivElement>;
+export const HotelsComponent = () => {
+  const { getList } = useHotels();
 
-export const HotelsComponent: React.FC<Props> = () => {
-  const { get, create } = useHotels();
-
-  const [hotels, setHotels] = useState<Hotel[]>([]);
-
-  const $reload = useCallback(() => get().then(setHotels), [get, setHotels]);
+  const [hotels, setHotels] = useState<PublicHotel[]>([]);
 
   useEffect(() => {
-    $reload();
-  }, []);
-
-  const onRemoveIntegration = useCallback(
-    (hotelId: string) => (integrationId: string) => () => {
-      setHotels((hotels) =>
-        hotels.map((hotel) =>
-          hotel.hotelId === hotelId
-            ? {
-                ...hotel,
-                integrations: hotel.integrations.filter(
-                  (integration) => integration.integrationId !== integrationId,
-                ),
-              }
-            : hotel,
-        ),
-      );
-    },
-    [setHotels],
-  );
-
-  const onSubmitHotel = useCallback(
-    async (event: FormEvent<HTMLFormElement>) => {
-      event.preventDefault();
-
-      const data = new FormData(event.target as unknown as HTMLFormElement);
-      const name = data.get("name") as string;
-
-      if (!name) return;
-
-      create(name).then($reload);
-    },
-    [$reload],
-  );
+    getList().then(setHotels);
+  }, [getList]);
 
   return (
-    <div>
-      <h2>Hotels</h2>
+    <div className={styles.hotels}>
+      <h2>Public Hotels</h2>
       <div className={styles.list}>
         {hotels.map((hotel) => (
-          <HotelComponent
-            key={hotel.hotelId}
-            className={styles.hotel}
-            hotel={hotel}
-            onRemoveIntegration={onRemoveIntegration(hotel.hotelId)}
-            refresh={$reload}
-          />
+          <div className={styles.hotel} key={hotel.id}>
+            <div
+              className={styles.header}
+              style={{
+                backgroundImage: `url(hotel/hotel-background.webp)`,
+              }}
+            >
+              <div
+                className={styles.logo}
+                style={{
+                  backgroundImage: `url(hotel/hotel-logo.webp)`,
+                }}
+              />
+              <i className={styles.owner}>by {hotel.owner}</i>
+              <div className={styles.gradient} />
+            </div>
+            <div className={styles.content}>
+              {hotel.web ? (
+                <div className={styles.contentItem}>
+                  <div className={styles.contentHeader}>
+                    <label>{hotel.web.accounts} accounts</label>
+                  </div>
+                  <div>
+                    <LinkComponent to={hotel.web.url} target="_blank">
+                      <ButtonComponent variant="3d">
+                        Visit the website!
+                      </ButtonComponent>
+                    </LinkComponent>
+                  </div>
+                </div>
+              ) : null}
+              {hotel.client ? (
+                <div className={styles.contentItem}>
+                  <div className={styles.contentHeader}>
+                    <label>{hotel.client.accounts} accounts</label>
+                  </div>
+                  <LinkComponent to={hotel.client.url} target="_blank">
+                    <ButtonComponent color="yellow" variant="3d">
+                      Check in!
+                    </ButtonComponent>
+                  </LinkComponent>
+                </div>
+              ) : null}
+            </div>
+          </div>
         ))}
-
-        <div className={styles.hotel} onSubmit={onSubmitHotel}>
-          <form className={styles.form}>
-            <InputComponent placeholder="name" name="name" />
-            <ButtonComponent>Add hotel</ButtonComponent>
-          </form>
-        </div>
       </div>
     </div>
   );

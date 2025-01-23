@@ -49,6 +49,7 @@ export const listRequest: RequestType = {
               return null;
 
             return {
+              id: hotel.hotelId,
               name: hotel.name,
               owner: owner.username,
               client: client

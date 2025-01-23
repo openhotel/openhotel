@@ -28,7 +28,7 @@ export const UserProvider: React.FunctionComponent<ProviderProps> = ({
   children,
 }) => {
   const { fetch } = useApi();
-  const { getAccountHeaders, isLogged } = useAccount();
+  const { getAccountHeaders } = useAccount();
   const navigate = useNavigate();
 
   const [user, setUser] = useState<User | null>(null);
@@ -66,12 +66,6 @@ export const UserProvider: React.FunctionComponent<ProviderProps> = ({
         .catch(() => navigate("/login")),
     [fetchUser, setUser, navigate],
   );
-
-  useEffect(() => {
-    if (!isLogged || user) return;
-    console.log("init");
-    initUser();
-  }, [user, isLogged, initUser]);
 
   return (
     <UserContext.Provider

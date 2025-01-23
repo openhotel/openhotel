@@ -4,7 +4,7 @@ import React, { FormEvent, useCallback, useState } from "react";
 import styles from "./tokens.module.scss";
 import { ButtonComponent, InputComponent } from "@oh/components";
 
-export const TokensComponent = () => {
+export const AdminTokensComponent = () => {
   const { tokens, addToken, removeToken } = useAdmin();
 
   const [lastToken, setLastToken] = useState<string>(null);
@@ -31,7 +31,7 @@ export const TokensComponent = () => {
 
   return (
     <div className={styles.tokens}>
-      <h3>Tokens</h3>
+      <h2>Tokens</h2>
       <div className={styles.list}>
         {tokens.map((token, index) => (
           <div className={styles.item} key={token.id}>

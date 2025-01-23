@@ -17,6 +17,15 @@ export const hotelsGetRequest: RequestType = {
       return getResponse(HttpStatusCode.FORBIDDEN);
 
     const hotels = await System.hotels.getList();
+    for (const hotel of hotels) {
+      for (const integration of hotel.integrations) {
+        integration.connections =
+          await System.connections.getListByHotelIdIntegrationId(
+            hotel.hotelId,
+            integration.integrationId,
+          );
+      }
+    }
 
     return getResponse(HttpStatusCode.OK, {
       data: {

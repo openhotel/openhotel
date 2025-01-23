@@ -2,7 +2,7 @@ import { useAdmin, useApi } from "shared/hooks";
 import React, { useCallback, useEffect, useState } from "react";
 import { ButtonComponent } from "@oh/components";
 
-export const ActionsComponent = () => {
+export const AdminActionsComponent = () => {
   const { getVersion } = useApi();
   const { update } = useAdmin();
 
@@ -20,7 +20,7 @@ export const ActionsComponent = () => {
 
   return (
     <div>
-      <h3>Actions</h3>
+      <h2>Actions</h2>
       <div>
         <p>{version}</p>
         <ButtonComponent onClick={onUpdate}>Update</ButtonComponent>

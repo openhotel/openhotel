@@ -3,25 +3,30 @@ import React from "react";
 import { NotFoundComponent } from "../not-found";
 import { LoginComponent } from "modules/login";
 import { RegisterComponent } from "modules/register";
-import {
-  AccountComponent,
-  AdminComponent,
-  BskyComponent,
-  ConnectionsComponent,
-  HomeComponent,
-  HomeNavigatorComponent,
-  HotelsComponent,
-} from "modules/home";
+import { HomeComponent, HotelsComponent } from "modules/home";
 import { RedirectComponent } from "shared/components";
 import { LogoutComponent } from "modules/logout";
 import { CardLayoutComponent } from "modules/application/components/card-layout";
-import { MainLayoutComponent } from "@oh/components";
 import { ConnectionComponent, PingComponent } from "modules/connection";
-import { ClaimAdminComponent } from "modules/admin";
-import { RecoverPasswordComponent } from "modules/recover-password";
-import { ChangePasswordComponent } from "modules/change-password";
+import { Outlet } from "react-router";
 import { VerifyComponent } from "modules/verify";
+import { ChangePasswordComponent } from "modules/change-password";
+import { RecoverPasswordComponent } from "modules/recover-password";
 import { ProvidersComponent } from "modules/application/components/providers";
+import {
+  AccountComponent,
+  BskyComponent,
+  ConnectionsComponent,
+  MyHotelsComponent,
+} from "modules/account";
+import {
+  AdminClaimComponent,
+  AdminComponent,
+  AdminHotelsComponent,
+  AdminUsersComponent,
+} from "modules/admin";
+import { AdminProvider } from "shared/hooks";
+import { WrapperLayoutComponent } from "modules/application";
 
 const router = createBrowserRouter([
   {
@@ -78,57 +83,74 @@ const router = createBrowserRouter([
       {
         path: "/account",
         element: (
-          <MainLayoutComponent
-            children={<AccountComponent />}
-            navigatorChildren={<HomeNavigatorComponent />}
-          />
+          <WrapperLayoutComponent>
+            <Outlet />
+          </WrapperLayoutComponent>
         ),
-      },
-      {
-        path: "/account/hotels",
-        element: (
-          <MainLayoutComponent
-            children={<HotelsComponent />}
-            navigatorChildren={<HomeNavigatorComponent />}
-          />
-        ),
-      },
-      {
-        path: "/account/connections",
-        element: (
-          <MainLayoutComponent
-            children={<ConnectionsComponent />}
-            navigatorChildren={<HomeNavigatorComponent />}
-          />
-        ),
-      },
-      {
-        path: "/account/bsky",
-        element: (
-          <MainLayoutComponent
-            children={<BskyComponent />}
-            navigatorChildren={<HomeNavigatorComponent />}
-          />
-        ),
+        children: [
+          {
+            path: "",
+            element: <AccountComponent />,
+          },
+          {
+            path: "my-hotels",
+            element: <MyHotelsComponent />,
+          },
+          {
+            path: "connections",
+            element: <ConnectionsComponent />,
+          },
+          {
+            path: "bsky",
+            element: <BskyComponent />,
+          },
+        ],
       },
       {
         path: "/admin",
         element: (
-          <MainLayoutComponent
-            children={<AdminComponent />}
-            navigatorChildren={<HomeNavigatorComponent />}
-          />
+          <WrapperLayoutComponent>
+            <AdminProvider>
+              <Outlet />
+            </AdminProvider>
+          </WrapperLayoutComponent>
         ),
+        children: [
+          {
+            path: "",
+            element: <AdminComponent />,
+          },
+          {
+            path: "hotels",
+            element: <AdminHotelsComponent />,
+          },
+          {
+            path: "users",
+            element: <AdminUsersComponent />,
+          },
+          {
+            path: "claim",
+            element: <AdminClaimComponent />,
+          },
+        ],
       },
-      { path: "/admin/claim", element: <ClaimAdminComponent /> },
       {
         path: "/",
         element: (
-          <MainLayoutComponent
-            children={<HomeComponent />}
-            navigatorChildren={<HomeNavigatorComponent />}
-          />
+          <WrapperLayoutComponent>
+            <Outlet />
+          </WrapperLayoutComponent>
         ),
+        children: [
+          {
+            path: "hotels",
+            element: <HotelsComponent />,
+          },
+          {
+            path: "",
+            element: <HomeComponent />,
+          },
+        ],
       },
       {
         path: "/404",

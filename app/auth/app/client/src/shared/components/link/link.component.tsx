@@ -5,10 +5,21 @@ type Props = {
   to: string;
   children: React.ReactNode;
   className?: string;
+  target?: string;
 };
 
-export const LinkComponent: React.FC<Props> = ({ to, children, className }) => {
+export const LinkComponent: React.FC<Props> = ({
+  to,
+  children,
+  className,
+  target,
+}) => {
   return (
-    <Link className={className} to={to + location.hash} children={children} />
+    <Link
+      className={className}
+      to={to + location.hash}
+      children={children}
+      target={target}
+    />
   );
 };

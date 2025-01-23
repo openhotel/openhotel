@@ -16,7 +16,7 @@ import { cn } from "shared/utils";
 
 //@ts-ignore
 import styles from "./hotel.module.scss";
-import { useHotels } from "shared/hooks";
+import { useMyHotels } from "shared/hooks";
 
 type Props = {
   hotel: Hotel;
@@ -41,7 +41,7 @@ export const HotelComponent: React.FC<Props> = ({
     remove,
     integrations: { create: createIntegration },
     update,
-  } = useHotels();
+  } = useMyHotels();
 
   const [integrationOptions, setIntegrationOptions] = useState<string[]>([]);
 

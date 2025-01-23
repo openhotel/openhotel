@@ -9,6 +9,9 @@ const MIGRATION_LIST = [
   await import("./2024-12-12--01-51-mail-encryption.migration.ts"),
   await import("./2024-12-13--12-57-created-at-accounts.migration.ts"),
   await import("./2025-01-12--21-05-private-hotels.migration.ts"),
+  await import(
+    "./2025-01-23--15-15-remove-integrations-by-hotels-by-account-id.migration.ts"
+  ),
 ];
 
 export const Migrations = (() => {

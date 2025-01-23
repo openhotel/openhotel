@@ -74,7 +74,7 @@ export const connections = () => {
     );
 
     await System.db.set(
-      ["integrationsByHotelsByAccountId", accountId, hotelId, integrationId],
+      ["integrationsByAccountId", accountId, hotelId, integrationId],
       {
         accountId,
 
@@ -84,6 +84,10 @@ export const connections = () => {
         scopes,
         updatedAt: Date.now(),
       },
+    );
+    await System.db.set(
+      ["integrationsByHotelsByAccountId", hotelId, integrationId, accountId],
+      accountId,
     );
 
     const url = new URL(foundIntegration.redirectUrl);
@@ -118,10 +122,16 @@ export const connections = () => {
       await System.db.delete(["connections", accountId]);
 
     await System.db.delete([
-      "integrationsByHotelsByAccountId",
+      "integrationsByAccountId",
       accountId,
       hotelId,
       integrationId,
+    ]);
+    await System.db.delete([
+      "integrationsByHotelsByAccountId",
+      hotelId,
+      integrationId,
+      accountId,
     ]);
 
     return true;
@@ -201,7 +211,7 @@ export const connections = () => {
   const getList = async (accountId: string) => {
     const connections = (
       await System.db.list({
-        prefix: ["integrationsByHotelsByAccountId", accountId],
+        prefix: ["integrationsByAccountId", accountId],
       })
     ).map(({ value }) => value);
 
@@ -260,12 +270,36 @@ export const connections = () => {
     return connectionsList;
   };
 
+  const getListByHotelIdIntegrationId = async (
+    hotelId: string,
+    integrationId: string,
+  ) => {
+    const accountList = (
+      await System.db.list({
+        prefix: ["integrationsByHotelsByAccountId", hotelId, integrationId],
+      })
+    ).map(({ value: accountId }) => accountId);
+
+    const connections = (
+      await System.db.getMany(
+        accountList.map((accountId) => [
+          "integrationsByAccountId",
+          accountId,
+          hotelId,
+          integrationId,
+        ]),
+      )
+    ).map(({ value }) => value);
+    return connections;
+  };
+
   return {
     generate,
     verify,
     remove,
     ping,
     getList,
+    getListByHotelIdIntegrationId,
 
     getConnectionByConnection,
     getConnectionByRawToken,

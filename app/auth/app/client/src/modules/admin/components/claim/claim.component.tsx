@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useAccount } from "shared/hooks";
 import { useNavigate } from "react-router-dom";
 
-export const ClaimAdminComponent: React.FC = () => {
+export const AdminClaimComponent: React.FC = () => {
   const { isLogged, setAsAdmin } = useAccount();
   let navigate = useNavigate();
 

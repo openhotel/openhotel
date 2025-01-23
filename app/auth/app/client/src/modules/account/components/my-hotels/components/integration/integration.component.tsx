@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from "react";
 import { Hotel, HotelIntegration } from "shared/types";
-import { useHotels } from "shared/hooks";
+import { useMyHotels } from "shared/hooks";
 import { ButtonComponent } from "@oh/components";
 import { cn } from "shared/utils";
 
@@ -21,7 +21,7 @@ export const IntegrationComponent: React.FC<Props> = ({
 }) => {
   const {
     integrations: { generate, remove },
-  } = useHotels();
+  } = useMyHotels();
   const [licenseToken, setLicenseToken] = useState<string>(null);
 
   const onGenerateLicense = useCallback(async () => {

@@ -7,13 +7,13 @@ import React, {
 } from "react";
 import { useApi } from "shared/hooks/useApi";
 import { useAccount } from "shared/hooks/useAccount";
-import { Hotel, Token, User } from "shared/types";
+import { PrivateHotel, Token, User } from "shared/types";
 import { RequestMethod } from "shared/enums";
 
 type AdminState = {
   users: User[];
   tokens: Token[];
-  hotels: Hotel[];
+  hotels: PrivateHotel[];
 
   addToken: (label: string) => Promise<string>;
   removeToken: (id: string) => Promise<void>;
@@ -39,7 +39,7 @@ export const AdminProvider: React.FunctionComponent<ProviderProps> = ({
 
   const [users, setUsers] = useState<User[]>([]);
   const [tokens, setTokens] = useState<Token[]>([]);
-  const [hotels, setHotels] = useState<any[]>([]);
+  const [hotels, setHotels] = useState<PrivateHotel[]>([]);
 
   const fetchUsers = useCallback(async () => {
     return fetch({
@@ -124,7 +124,7 @@ export const AdminProvider: React.FunctionComponent<ProviderProps> = ({
   const refresh = useCallback(() => {
     fetchUsers().then((response) => setUsers(response.data.users));
     fetchTokens().then((response) => setTokens(response.data.tokens));
-    fetchHotels().then((response) => setHotels(response.data.hosts));
+    fetchHotels().then((response) => setHotels(response.data.hotels));
   }, [fetchUsers, fetchTokens, fetchHotels, setUsers, setTokens, setHotels]);
 
   useEffect(() => {
