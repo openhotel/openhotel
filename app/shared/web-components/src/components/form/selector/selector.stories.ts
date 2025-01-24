@@ -28,6 +28,34 @@ export const Primary = {
         value: "Threeeee",
       },
     ],
-    defaultOption: 4,
+    defaultOption: {
+      key: 3,
+      value: "Threeeee",
+    },
+  },
+};
+
+export const NonClearable = {
+  args: {
+    placeholder: "placeholder",
+    options: [
+      {
+        key: 6,
+        value: "One",
+      },
+      {
+        key: 5,
+        value: "Two or something something",
+      },
+      {
+        key: 3,
+        value: "Threeeee",
+      },
+    ],
+    defaultOption: {
+      key: 3,
+      value: "Threeeee",
+    },
+    clearable: false,
   },
 };

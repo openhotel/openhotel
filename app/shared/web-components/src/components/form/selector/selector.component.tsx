@@ -25,6 +25,7 @@ type Props = {
   defaultOption?: Option | string;
   options: Option[];
   onChange?: (option: Option) => void;
+  clearable?: boolean;
 } & Partial<BoxProps>;
 
 export const SelectorComponent: React.FC<Props> = ({
@@ -35,6 +36,7 @@ export const SelectorComponent: React.FC<Props> = ({
   options,
   defaultOption,
   onChange = () => {},
+  clearable = true,
   ...boxProps
 }) => {
   const getDefaultOption = useCallback(
@@ -51,7 +53,7 @@ export const SelectorComponent: React.FC<Props> = ({
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   useEffect(() => {
-    setSelectedOption(getDefaultOption());
+    setSelectedOption(getDefaultOption() ?? (clearable ? null : options[0]));
   }, [options, getDefaultOption]);
 
   const onChangeValue = useCallback(
@@ -126,7 +128,7 @@ export const SelectorComponent: React.FC<Props> = ({
         ) : null}
         <label className={styles.placeholder}>{placeholder}</label>
 
-        {selectedOption ? (
+        {clearable && selectedOption ? (
           <div ref={closeRef} className={styles.clear} onClick={onClickClear}>
             <CrossIconComponent />
           </div>
