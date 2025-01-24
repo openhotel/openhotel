@@ -3,9 +3,11 @@ on:
   push:
     branches: [master]
     paths:
+      - .github/**
       - app/client/**
   pull_request:
     paths:
+      - .github/**
       - app/client/**
 
 jobs:
@@ -25,9 +27,12 @@ jobs:
         with:
           node-version: 20.x
 
+      - name: Enable Corepack
+        run: corepack enable
+
       - name: Install dependencies
         working-directory: ./app/client
-        run: yarn install --frozen-lockfile
+        run: yarn install --immutable
 
       - name: Build
         working-directory: ./app/client
