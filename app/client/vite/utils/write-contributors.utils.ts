@@ -47,12 +47,12 @@ export const fetchContributors = async () => {
 };
 
 export const writeContributors = async (path: string) => {
-  const contributors: Contributor[] = await fetchContributors();
-  const humanContributors = contributors.filter((c) => c.type !== "Bot");
-
   try {
+    const contributors: Contributor[] = await fetchContributors();
+    const humanContributors = contributors.filter((c) => c.type !== "Bot");
+
     await writeFile(path, stringify(humanContributors), "utf8");
   } catch (error) {
-    console.error("Error writing file:", error);
+    console.warn("Error trying to fetch and write contributors!");
   }
 };

@@ -47,6 +47,7 @@ export const System = (() => {
     console.info($config.version, envs.version);
     if (
       !isDevelopment &&
+      envs.upgrade &&
       (await update({
         targetVersion: $config.version,
         version: envs.version,

@@ -331,6 +331,7 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = () => {
               z,
             },
           });
+          System.events.emit(SystemEvent.HIDE_PREVIEW);
         });
         pol.on(DisplayObjectEvent.POINTER_ENTER, () => {
           $tilePreview.setPosition(previewPosition);

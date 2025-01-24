@@ -25,7 +25,9 @@ try {
   });
 } catch (_) {}
 
-let { version, target, client, server, zip, debug } = parseArgs(Deno.args);
+let { version, target, client, server, zip, debug, release } = parseArgs(
+  Deno.args,
+);
 
 if (target && target !== "*" && !VALID_TARGET_LIST.includes(target))
   throw `Target '${target}' is not valid!`;
@@ -41,10 +43,18 @@ log(
   "yellow",
 );
 
-if (!version)
-  version = `999.0.0-rc.${getRandomNumber(1, 9)}${getRandomNumber(1, 9)}${getRandomNumber(0, 9)}${getRandomNumber(0, 9)}`;
+if (!version) version = `1.0.0`;
 
 log(`Version: ${version}`, "yellow");
+
+const commandInstall = new Deno.Command(Deno.execPath(), {
+  args: ["task", "install"],
+  stdout: debug ? "inherit" : "piped",
+});
+const installChild = await commandInstall.spawn();
+
+if (!(await installChild.status).success)
+  throw new Error("Install had an error!");
 
 const outputPath = "../../build";
 
@@ -53,12 +63,6 @@ const compileAll = !client && !server;
 //client build
 if (compileAll || client) {
   log(`Client - Compiling...`, "gray");
-
-  const commandInstall = new Deno.Command(Deno.execPath(), {
-    args: ["task", "install"],
-    stdout: debug ? "inherit" : "piped",
-  });
-  await commandInstall.spawn().status;
 
   const clientPath = "./app/client";
   const $permanentViteConfigPath = `${clientPath}/vite.config.ts`;
@@ -82,9 +86,10 @@ if (compileAll || client) {
     stdout: debug ? "inherit" : "piped",
   });
   const child = command.spawn();
-  const status = await child.status;
-  console.log(`Command exited with status: ${status.code}`);
-  log(`Client - Build with status code (${status.code})!`, "green");
+
+  if (!(await child.status).success)
+    throw new Error("Client - Build had an error!");
+  log(`Client - Build was successful!`, "green");
 
   try {
     await Deno.remove($temporalViteConfigPath);
@@ -102,10 +107,9 @@ if (compileAll || server) {
     await Deno.remove($temporalModPath);
   } catch (_) {}
 
-  const serverMod = (await Deno.readTextFile($permanentModPath)).replace(
-    "__VERSION__",
-    version,
-  );
+  const serverMod = (await Deno.readTextFile($permanentModPath))
+    .replace("__VERSION__", version)
+    .replace(`"__UPGRADE__"`, Boolean(release) ? "true" : "false");
 
   log(`Server - Moving assets...`, "gray");
   async function copyDir(src: string, dest: string) {
@@ -163,8 +167,9 @@ if (compileAll || server) {
     });
     let child = command.spawn();
 
-    let status = await child.status;
-    log(`Server - Build with status code (${status.code})!`, "green");
+    if (!(await child.status).success)
+      throw new Error("Server - Build had an error!");
+    log(`Server - Build was successful!`, "green");
 
     if (zip) {
       log(`Server - Zipping ${$targetName}.zip...`);
@@ -192,8 +197,10 @@ if (compileAll || server) {
         stdout: debug ? "inherit" : "piped",
       });
       child = zipCommand.spawn();
-      status = await child.status;
-      log(`Server - Zip with status code (${status.code})!`, "green");
+
+      if (!(await child.status).success)
+        throw new Error("Server - Zip had an error!");
+      log(`Server - Zip was successful!`, "green");
     }
   }
 
