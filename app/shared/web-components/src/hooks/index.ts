@@ -1,1 +1,2 @@
-export * from "./useClickOutside";
+export * from "./use-click-outside";
+export * from "./use-modal";

@@ -1,7 +1,6 @@
 @use "../../../styles/colors.module.scss" as *;
 
 .background {
-  background-color: var(--text-3-bg);
   color: var(--text-3-c);
   display: flex;
   flex-direction: column;
@@ -10,4 +9,9 @@
   height: 100%;
 
   overflow: hidden auto;
+
+  background-color: #fcfcfc66;
+  @media screen and (prefers-color-scheme: dark) {
+    background-color: rgba(20, 20, 24, 0.83);
+  }
 }

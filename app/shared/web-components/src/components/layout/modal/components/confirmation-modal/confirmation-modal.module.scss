@@ -1,0 +1,34 @@
+.modal {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  max-width: 40rem;
+
+  .header {
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--text-2-bg);
+
+    .title {
+      margin-left: 2.4rem;
+      width: 100%;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .icon {
+      cursor: pointer;
+    }
+  }
+  .description {
+    text-align: center;
+    padding: 2rem 2rem 1rem;
+  }
+  .actions {
+    display: flex;
+    justify-content: space-evenly;
+    padding: 1rem;
+  }
+}
