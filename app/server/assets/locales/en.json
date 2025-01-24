@@ -44,5 +44,8 @@
   "command.update.description": "Checks for new versions and updates the server",
   "command.whitelist.description": "Manages the whitelist",
 
-  "Demo command is not configured in {{room}}": "Demo command is not configured in {{room}}"
+  "Demo command is not configured in {{room}}": "Demo command is not configured in {{room}}",
+  "The furniture cannot be placed at position {{x}},{{z}}": "The furniture cannot be placed at position {{x}},{{z}}",
+  "Frames need to be attached to the wall": "Frames need to be attached to the wall",
+  "Frames cannot exceed the height of the wall": "Frames cannot exceed the height of the wall"
 }

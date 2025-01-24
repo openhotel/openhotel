@@ -44,5 +44,8 @@
   "command.update.description": "Comprueba nuevas versiones y actualiza el servidor",
   "command.whitelist.description": "Administra la lista blanca",
 
-  "Demo command is not configured in {{room}}": "Comando demo no esta configurado en {{room}}"
+  "Demo command is not configured in {{room}}": "Comando demo no esta configurado en {{room}}",
+  "The furniture cannot be placed at position {{x}},{{z}}": "No puede ponerse en la posicion {{x}},{{z}}",
+  "Frames need to be attached to the wall": "Los cuadros necesitan estar pegados a la pared",
+  "Frames cannot exceed the height of the wall": "Los cuadros no pueden superar la altura de la pared"
 }

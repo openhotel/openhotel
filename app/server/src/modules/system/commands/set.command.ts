@@ -7,6 +7,7 @@ import { RoomPointEnum } from "shared/enums/room.enums.ts";
 import { isWallRenderable } from "shared/utils/rooms.utils.ts";
 import { WALL_HEIGHT } from "shared/consts/wall.consts.ts";
 import { TILE_Y_HEIGHT } from "shared/consts/tiles.consts.ts";
+import { __ } from "shared/utils/languages.utils.ts";
 
 export const setCommand: Command = {
   command: "set",
@@ -57,24 +58,56 @@ export const setCommand: Command = {
     };
 
     const roomPoint = room.getPoint(furniture.position);
-    if (roomPoint === RoomPointEnum.EMPTY || roomPoint === RoomPointEnum.SPAWN)
+    if (
+      roomPoint === RoomPointEnum.EMPTY ||
+      roomPoint === RoomPointEnum.SPAWN
+    ) {
+      user.emit(ProxyEvent.SYSTEM_MESSAGE, {
+        message: __(user.getLanguage())(
+          "The furniture cannot be placed at position {{x}},{{z}}",
+          { x, z },
+        ),
+      });
       return;
+    }
+
     if (furniture.type === FurnitureType.FRAME) {
       const layout = room.getObject().layout;
       const isWallX = isWallRenderable(layout, furniture.position, true);
       const isWallZ = isWallRenderable(layout, furniture.position, false);
 
-      if (!isWallX && !isWallZ) return;
+      if (!isWallX && !isWallZ) {
+        user.emit(ProxyEvent.SYSTEM_MESSAGE, {
+          message: __(user.getLanguage())(
+            "Frames need to be attached to the wall",
+          ),
+        });
+        return;
+      }
 
-      // TODO: sacar altura
-      console.log(roomPoint);
+      // TODO: check this pagoru
+      const frameHeight =
+        $furniture.direction[CrossDirection[direction].toLowerCase()]
+          .textures[0].bounds.height;
+
       const previewY = -((parseInt(roomPoint + "") ?? 1) - 1);
       const y = Math.floor(previewY);
 
-      const wallHeight = WALL_HEIGHT - y * TILE_Y_HEIGHT;
-      console.log({ wallHeight });
-      if (wallY > wallHeight) return;
-      // altura wallX wallY
+      // 17 -> 15 topHeight wall + 2 padding
+      const wallHeight = WALL_HEIGHT - y * TILE_Y_HEIGHT - 17;
+
+      const positionY = wallY;
+      const limitHeight = wallHeight - frameHeight;
+      console.log({ positionY, wallHeight, limitHeight });
+
+      if (positionY > limitHeight) {
+        user.emit(ProxyEvent.SYSTEM_MESSAGE, {
+          message: __(user.getLanguage())(
+            "Frames cannot exceed the height of the wall",
+          ),
+        });
+        return;
+      }
     }
 
     switch ($furniture.type) {
