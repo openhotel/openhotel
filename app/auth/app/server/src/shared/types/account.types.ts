@@ -4,4 +4,5 @@ export type Account = {
   emailHash: string;
   passwordHash: string;
   createdAt: Date;
+  verified: boolean;
 };

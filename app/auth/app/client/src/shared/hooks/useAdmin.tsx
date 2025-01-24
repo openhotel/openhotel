@@ -21,6 +21,7 @@ type AdminState = {
   update: () => Promise<void>;
 
   updateUser: (user: User) => Promise<void>;
+  resendVerificationUser: (accountId: string) => Promise<void>;
 
   refresh: () => void;
 };
@@ -56,6 +57,18 @@ export const AdminProvider: React.FunctionComponent<ProviderProps> = ({
         pathname: "/admin/user",
         headers: getAccountHeaders(),
         body: user,
+      });
+    },
+    [fetch, getAccountHeaders],
+  );
+
+  const resendVerificationUser = useCallback(
+    (accountId: string) => {
+      return fetch({
+        method: RequestMethod.POST,
+        pathname: "/admin/user/resendVerification",
+        headers: getAccountHeaders(),
+        body: { accountId },
       });
     },
     [fetch, getAccountHeaders],
@@ -136,6 +149,7 @@ export const AdminProvider: React.FunctionComponent<ProviderProps> = ({
       value={{
         users,
         updateUser,
+        resendVerificationUser,
 
         tokens,
         hotels,

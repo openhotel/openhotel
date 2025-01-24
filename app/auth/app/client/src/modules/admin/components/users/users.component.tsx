@@ -17,7 +17,7 @@ import { EMAIL_REGEX, USERNAME_REGEX } from "shared/consts";
 import styles from "./users.module.scss";
 
 export const AdminUsersComponent = () => {
-  const { users, updateUser, refresh } = useAdmin();
+  const { users, updateUser, refresh, resendVerificationUser } = useAdmin();
 
   const [selectedUser, setSelectedUser] = useState<User>();
 
@@ -38,12 +38,16 @@ export const AdminUsersComponent = () => {
         createdAt: dayjs(createdAt).valueOf(),
         admin: selectedUser.admin,
       };
-      console.log(user);
 
       await updateUser(user);
       refresh();
     },
     [selectedUser, updateUser],
+  );
+
+  const onResendVerificationEmail = useCallback(
+    async () => await resendVerificationUser(selectedUser.accountId),
+    [selectedUser, resendVerificationUser],
   );
 
   const adminOptions = useMemo(
@@ -63,69 +67,76 @@ export const AdminUsersComponent = () => {
       <h2>Users</h2>
       <div className={styles.users}>
         {selectedUser ? (
-          <FormComponent
-            className={styles.selectedForm}
-            onSubmit={onSubmitUpdateUser}
-          >
-            <div className={styles.header}>
-              <label>Selected user</label>
-              <CrossIconComponent
-                className={styles.icon}
-                onClick={() => setSelectedUser(null)}
-              />
-            </div>
-            <label>{selectedUser.accountId}</label>
-            <div className={styles.formRow}>
-              <InputComponent
-                name="username"
-                placeholder="username"
-                value={selectedUser.username}
-                onChange={(event) =>
-                  setSelectedUser((user) => ({
-                    ...user,
-                    username: event.target.value,
-                  }))
-                }
-              />
-              <InputComponent
-                name="email"
-                placeholder="email"
-                value={selectedUser.email}
-                onChange={(event) =>
-                  setSelectedUser((user) => ({
-                    ...user,
-                    email: event.target.value,
-                  }))
-                }
-              />
-            </div>
-            <div className={styles.formRow}>
-              <InputComponent
-                name="createdAt"
-                placeholder="createdAt"
-                value={selectedUser.createdAt}
-                onChange={(event) =>
-                  setSelectedUser((user) => ({
-                    ...user,
-                    createdAt: event.target.value,
-                  }))
-                }
-              />
-              <SelectorComponent
-                name="admin"
-                placeholder="admin"
-                options={adminOptions}
-                defaultOption={selectedAdminOption}
-                onChange={(option) =>
-                  setSelectedUser((user) => ({
-                    ...user,
-                    admin: option?.key === "true",
-                  }))
-                }
-              />
-            </div>
-            <ButtonComponent>Update</ButtonComponent>
-          </FormComponent>
+          <div className={styles.selectedForm}>
+            <FormComponent onSubmit={onSubmitUpdateUser}>
+              <div className={styles.header}>
+                <label>Selected user</label>
+                <CrossIconComponent
+                  className={styles.icon}
+                  onClick={() => setSelectedUser(null)}
+                />
+              </div>
+              <label>{selectedUser.accountId}</label>
+              <div className={styles.formRow}>
+                <InputComponent
+                  name="username"
+                  placeholder="username"
+                  value={selectedUser.username}
+                  onChange={(event) =>
+                    setSelectedUser((user) => ({
+                      ...user,
+                      username: event.target.value,
+                    }))
+                  }
+                />
+                <InputComponent
+                  name="email"
+                  placeholder="email"
+                  value={selectedUser.email}
+                  onChange={(event) =>
+                    setSelectedUser((user) => ({
+                      ...user,
+                      email: event.target.value,
+                    }))
+                  }
+                />
+              </div>
+              <div className={styles.formRow}>
+                <InputComponent
+                  name="createdAt"
+                  placeholder="createdAt"
+                  value={selectedUser.createdAt}
+                  onChange={(event) =>
+                    setSelectedUser((user) => ({
+                      ...user,
+                      createdAt: event.target.value,
+                    }))
+                  }
+                />
+                <SelectorComponent
+                  name="admin"
+                  placeholder="admin"
+                  options={adminOptions}
+                  defaultOption={selectedAdminOption}
+                  onChange={(option) =>
+                    setSelectedUser((user) => ({
+                      ...user,
+                      admin: option?.key === "true",
+                    }))
+                  }
+                />
+              </div>
+              <ButtonComponent>Update</ButtonComponent>
+            </FormComponent>
+            {selectedUser.verified !== "✅" ? (
+              <ButtonComponent
+                color="yellow"
+                onClick={onResendVerificationEmail}
+              >
+                Resend verification email
+              </ButtonComponent>
+            ) : null}
+          </div>
         ) : null}
         <TableComponent
           title="Users"

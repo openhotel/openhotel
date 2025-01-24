@@ -9,6 +9,9 @@
     padding: 2rem;
     background-color: var(--text-2-bg);
     border-radius: 1rem;
+    gap: 1rem;
+    display: flex;
+    flex-direction: column;
 
     .header {
       display: flex;

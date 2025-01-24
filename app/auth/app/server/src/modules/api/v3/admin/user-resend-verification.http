@@ -1,0 +1,7 @@
+#
+POST http://localhost:2024/api/v3/admin/user/resendVerification
+Content-Type: application/json
+
+{
+    "accountId": "afe54871-9afd-471f-ad25-331bc7253670"
+}

@@ -9,6 +9,7 @@ import {
 import { hotelsDeleteRequest, hotelsGetRequest } from "./hotels.request.ts";
 import { usersGetRequest } from "./users.request.ts";
 import { userPatchRequest } from "./user.request.ts";
+import { userResendVerificationRequest } from "./user-resend-verification.request.ts";
 
 export const adminRequestList: RequestType[] = getPathRequestList({
   requestList: [
@@ -20,6 +21,7 @@ export const adminRequestList: RequestType[] = getPathRequestList({
     tokensPostRequest,
     usersGetRequest,
     userPatchRequest,
+    userResendVerificationRequest,
     hotelsGetRequest,
     hotelsDeleteRequest,
   ],
