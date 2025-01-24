@@ -1,6 +1,6 @@
 {
   "tasks": {
-    "install": "deno task install:base --frozen-lockfile & deno task install:client --frozen-lockfile",
+    "install": "corepack enable && (deno task install:base --immutable & deno task install:client --immutable)",
     "install:force": "deno task install:base & deno task install:client",
     "install:base": "yarn install",
     "install:client": "cd app/client && yarn install",
