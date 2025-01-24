@@ -3,9 +3,11 @@ on:
   push:
     branches: [master]
     paths:
+      - .github/**
       - app/server/**
   pull_request:
     paths:
+      - .github/**
       - app/server/**
 
 jobs:
@@ -16,14 +18,14 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-        with:
-          sparse-checkout: "app/server"
-          sparse-checkout-cone-mode: false
 
       - uses: denoland/setup-deno@v1
         with:
-          deno-version: vx.x.x
+          deno-version: v2.x.x
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
 
       - name: Build
-        working-directory: ./app/server
-        run: deno task build
+        run: deno task build --debug --target=* --server --zip

@@ -6,6 +6,8 @@ import { CrossDirection } from "@oh/utils";
 
 export const moveCommand: Command = {
   command: "move",
+  usages: ["<furniture_id> <x> <z> <direction> [wallX] [wallY]"],
+  description: "command.move.description",
   func: async ({ user, args }) => {
     const [id, x, z, direction, wallX, wallY] = args as [
       string,

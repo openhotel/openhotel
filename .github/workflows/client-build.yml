@@ -3,9 +3,11 @@ on:
   push:
     branches: [master]
     paths:
+      - .github/**
       - app/client/**
   pull_request:
     paths:
+      - .github/**
       - app/client/**
 
 jobs:
@@ -16,19 +18,14 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-        with:
-          sparse-checkout: "app/client"
-          sparse-checkout-cone-mode: false
 
-      - name: Install Node.js, NPM and Yarn
-        uses: actions/setup-node@v1
+      - uses: denoland/setup-deno@v1
+        with:
+          deno-version: v2.x.x
+
+      - uses: actions/setup-node@v4
         with:
           node-version: 20.x
 
-      - name: Install dependencies
-        working-directory: ./app/client
-        run: yarn install --frozen-lockfile
-
       - name: Build
-        working-directory: ./app/client
-        run: yarn run build
+        run: deno task build --debug --target=* --client --zip

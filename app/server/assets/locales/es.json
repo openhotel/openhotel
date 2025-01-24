@@ -19,5 +19,30 @@
   "There is no users on the whitelist": "No hay usuarios en la lista blanca",
   "New version {{newVersion}} available!": "Nueva versión {{newVersion}} disponible!",
   "Available commands: {{commands}}": "Comandos disponibles: {{commands}}",
-  "Furniture not found on {{x}},{{z}}": "Furniture no encontrado en {{x}},{{z}}"
+  "Furniture not found on {{x}},{{z}}": "Furniture no encontrado en {{x}},{{z}}",
+  "Command not found": "Comando no encontrado",
+  "{{command}}: {{description}}": "{{command}}: {{description}}",
+  "No description available": "No hay descripción disponible",
+  "Invalid arguments. None of the following usages matched: {{usages}}": "Argumentos inválidos. Ninguno de los siguientes usos coincidió: {{usages}}",
+
+  "command.ban.description": "Banea a un usuario",
+  "command.blacklist.description": "Administra la lista negra",
+  "command.clear.description": "Elimina todos los muebles de la sala",
+  "command.demo.description": "Puebla la Room 1 con muchos muebles",
+  "command.deop.description": "Revoca el estado de operador a un usuario",
+  "command.help.description": "Muestra una lista de comandos disponibles o información sobre un comando específico",
+  "command.kick.description": "Expulsa a un usuario",
+  "command.move.description": "Mueve un mueble a una nueva posición",
+  "command.op.description": "Concede el estado de operador a un usuario",
+  "command.rotate.description": "Rota un mueble",
+  "command.set.description": "Coloca un mueble en la sala",
+  "command.stop.description": "Detiene el servidor",
+  "command.teleport.description": "Vincula dos teletransportadores o vincula un teletransportador a un teletransportador remoto",
+  "command.tp.description": "Te teletransporta a ti mismo",
+  "command.unban.description": "Desbanea a un usuario",
+  "command.unset.description": "Elimina un mueble de la sala",
+  "command.update.description": "Comprueba nuevas versiones y actualiza el servidor",
+  "command.whitelist.description": "Administra la lista blanca",
+
+  "Demo command is not configured in {{room}}": "Comando demo no esta configurado en {{room}}"
 }

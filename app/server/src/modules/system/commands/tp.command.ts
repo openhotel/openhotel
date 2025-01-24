@@ -4,6 +4,8 @@ import { System } from "modules/system/main.ts";
 
 export const tpCommand: Command = {
   command: "tp",
+  usages: ["<x> <z>"],
+  description: "command.tp.description",
   func: async ({ user, args }) => {
     if (args.length !== 2) return;
 

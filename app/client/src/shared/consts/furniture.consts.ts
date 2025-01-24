@@ -79,3 +79,5 @@ export const DUMMY_FURNITURE_FRAME_DATA: FurnitureData = {
   label: "",
   spriteSheet: SpriteSheetEnum.FURNITURE_DUMMY,
 };
+
+export const DEFAULT_FURNITURE = "default@furniture";

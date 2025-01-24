@@ -4,3 +4,4 @@ export * from "./chat.consts";
 export * from "./preview.consts";
 export * from "./navigator.consts";
 export * from "./home.consts";
+export * from "./contributors.consts";

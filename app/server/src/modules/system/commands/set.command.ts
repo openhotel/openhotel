@@ -10,6 +10,8 @@ import { TILE_Y_HEIGHT } from "shared/consts/tiles.consts.ts";
 
 export const setCommand: Command = {
   command: "set",
+  usages: ["<furniture_id> <x> <z> <direction> [wallX] [wallY]"],
+  description: "command.set.description",
   func: async ({ user, args }) => {
     if (3 > args.length) return;
 

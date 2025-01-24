@@ -40,6 +40,9 @@ export const hotBarItemsComponent: ContainerComponent<Props> = (props) => {
     eventMode: EventMode.STATIC,
     cursor: Cursor.POINTER,
   });
+  catalogIcon.on(DisplayObjectEvent.POINTER_TAP, () => {
+    System.events.emit(SystemEvent.TOGGLE_CATALOG_MODAL);
+  });
 
   // inventory
   const boxIcon = boxIconComponent({

@@ -1,10 +1,9 @@
 {
   "type": "module",
+  "version": "1.2.3",
   "license": "CC BY-NC-SA 4.0",
   "scripts": {
-    "start": "vite --host",
-    "build": "vite build",
-    "preview": "vite preview"
+    "start": "vite --host"
   },
   "devDependencies": {
     "@rollup/plugin-alias": "5.1.0",
@@ -14,7 +13,7 @@
   "dependencies": {
     "@tulib/vite-tulip-plugin": "1.0.15",
     "@oh/queue": "npm:@jsr/oh__queue@1.1.1",
-    "@tu/tulip": "npm:@jsr/tu__tulip@0.14.9",
+    "@tu/tulip": "npm:@jsr/tu__tulip@0.14.12",
     "yaml": "2.5.0"
   },
   "packageManager": "yarn@1.22.22"

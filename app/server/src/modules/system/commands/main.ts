@@ -19,6 +19,10 @@ import { teleportCommand } from "./teleport.command.ts";
 import { clearCommand } from "./clear.command.ts";
 import { rotateCommand } from "./rotate.command.ts";
 import { moveCommand } from "./move.command.ts";
+import { demoCommand } from "./demo.command.ts";
+import { ProxyEvent } from "shared/enums/event.enum.ts";
+import { validateCommandUsages } from "shared/utils/commands.utils.ts";
+import { __ } from "shared/utils/languages.utils.ts";
 
 export const commandList = [
   stopCommand,
@@ -41,6 +45,7 @@ export const commandList = [
   unsetCommand,
 
   helpCommand,
+  demoCommand,
 
   teleportCommand,
 
@@ -62,10 +67,28 @@ export const executeCommand = ({
   const { _ } = parseArgs(message.substring(1, message.length).split(" "));
 
   const foundCommand = commandList.find(({ command }) => _[0] === command);
-  if (!foundCommand) return true;
+  if (!foundCommand) {
+    user.emit(ProxyEvent.SYSTEM_MESSAGE, {
+      message: __(user.getLanguage())("Command not found"),
+    });
+    return true;
+  }
 
   log(`Command /${foundCommand.command} executed by ${user.getUsername()}!`);
   _.shift();
+
+  const usages = foundCommand.usages || [];
+
+  if (usages.length > 0) {
+    const validation = validateCommandUsages(foundCommand, _, user);
+    if (!validation.isValid) {
+      user.emit(ProxyEvent.SYSTEM_MESSAGE, {
+        message: `${validation.errorMessage}`,
+      });
+      return true;
+    }
+  }
+
   try {
     foundCommand.func({ user, args: _ } as any);
   } catch (e) {

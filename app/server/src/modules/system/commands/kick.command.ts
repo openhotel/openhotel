@@ -5,12 +5,14 @@ import { __ } from "shared/utils/main.ts";
 
 export const kickCommand: Command = {
   command: "kick",
+  usages: ["<username>"],
+  description: "command.kick.description",
   func: async ({ user, args }) => {
     const username = args[0] as string;
     if (!username) return;
 
     const kickUser = System.game.users.get({ username });
-    if (!kickUser) return;
+    if (!kickUser || (await kickUser.isOp())) return;
 
     kickUser.disconnect();
 

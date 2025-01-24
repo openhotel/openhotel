@@ -11,16 +11,10 @@ import {
 } from "@tu/tulip";
 import {
   getPositionFromIsometricPosition,
-  isDirectionToFront,
+  isDirectionFrontToBack,
 } from "shared/utils";
 import { Point3d, User } from "shared/types";
-import {
-  Direction,
-  Event,
-  SpriteSheetEnum,
-  SystemEvent,
-  TextureEnum,
-} from "shared/enums";
+import { Direction, Event, SpriteSheetEnum, SystemEvent } from "shared/enums";
 import {
   MOVEMENT_BETWEEN_TILES_DURATION,
   TILE_SIZE,
@@ -162,7 +156,8 @@ export const humanComponent: ContainerComponent<Props, Mutable> = (props) => {
     $container.setZIndex(
       Math.ceil($isometricPosition.x) +
         Math.ceil($isometricPosition.z) -
-        $isometricPosition.y,
+        $isometricPosition.y +
+        1,
     );
   };
 
@@ -187,8 +182,6 @@ export const humanComponent: ContainerComponent<Props, Mutable> = (props) => {
 
     let incrementX = 0;
     let incrementZ = 0;
-    //@ts-ignore
-    let forceZIndex = 0;
 
     $direction = direction;
     switch (direction) {
@@ -211,8 +204,6 @@ export const humanComponent: ContainerComponent<Props, Mutable> = (props) => {
         positionXFunc = (x) => x - 4;
         incrementX -= 1;
         incrementZ += 1;
-        // fixes passing below tile
-        forceZIndex = 1;
         break;
       case Direction.SOUTH:
         positionXFunc = (x) => x - 2;
@@ -233,8 +224,6 @@ export const humanComponent: ContainerComponent<Props, Mutable> = (props) => {
         positionXFunc = (x) => x + 4;
         incrementX += 1;
         incrementZ -= 1;
-        // fixes passing below tile
-        forceZIndex = 1;
         break;
     }
     $rerender();
@@ -250,7 +239,7 @@ export const humanComponent: ContainerComponent<Props, Mutable> = (props) => {
     const lastY = $isometricPosition.y;
     $isometricPosition = targetIsometricPosition;
 
-    if (isDirectionToFront(direction)) $calcZIndex();
+    if (!isDirectionFrontToBack(direction)) $calcZIndex();
 
     return new Promise<void>(async (resolve) => {
       lastMovementAnimationId = System.tasks.add({
@@ -280,8 +269,7 @@ export const humanComponent: ContainerComponent<Props, Mutable> = (props) => {
   $container.on(DisplayObjectEvent.POINTER_TAP, () => {
     System.events.emit(SystemEvent.SHOW_PREVIEW, {
       type: "human",
-      texture: TextureEnum.HUMAN_DEV,
-      name: user.username,
+      user,
     });
   });
 

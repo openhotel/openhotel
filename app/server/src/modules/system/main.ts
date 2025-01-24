@@ -43,8 +43,11 @@ export const System = (() => {
     });
 
     // Check for an update if true, close the server
+
+    console.info($config.version, envs.version);
     if (
       !isDevelopment &&
+      envs.upgrade &&
       (await update({
         targetVersion: $config.version,
         version: envs.version,
