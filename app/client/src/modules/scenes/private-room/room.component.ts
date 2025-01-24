@@ -323,7 +323,8 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = () => {
           position: previewPosition,
         });
 
-        pol.on(DisplayObjectEvent.POINTER_UP, () => {
+        pol.on(DisplayObjectEvent.POINTER_UP, (event) => {
+          if (event.button !== 0) return;
           global.context.blur();
           System.proxy.emit(Event.POINTER_TILE, {
             position: {

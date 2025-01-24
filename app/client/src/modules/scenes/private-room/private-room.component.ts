@@ -3,6 +3,7 @@ import {
   ContainerComponent,
   DisplayObjectEvent,
   Event as TulipEvent,
+  EventMode,
   global,
 } from "@tu/tulip";
 import { bubbleChatComponent, systemMessageComponent } from "modules/chat";
@@ -59,6 +60,54 @@ export const privateRoomComponent: ContainerComponent = () => {
   let $room;
   let $bubbleChat;
 
+  let $roomScene = container({
+    sortableChildren: true,
+    eventMode: EventMode.STATIC,
+  });
+  const pixiPageContainer = $roomScene.getDisplayObject({
+    __preventWarning: true,
+  });
+  let isDragging = false;
+  let dragStart = { x: 0, y: 0 };
+  let containerStart = { x: 0, y: 0 };
+
+  $container.add($roomScene);
+
+  $roomScene.on(DisplayObjectEvent.POINTER_DOWN, (event) => {
+    if (event.button !== 1) return;
+    isDragging = true;
+    dragStart = { x: event.global.x, y: event.global.y };
+    containerStart = { x: pixiPageContainer.x, y: pixiPageContainer.y };
+  });
+
+  $roomScene.on(DisplayObjectEvent.POINTER_MOVE, (event) => {
+    if (!isDragging) return;
+
+    const deltaX = event.global.x - dragStart.x;
+    const deltaY = event.global.y - dragStart.y;
+
+    let newX = Math.floor(containerStart.x + deltaX);
+    let newY = Math.floor(containerStart.y + deltaY);
+
+    const margin = 100;
+    const minX = -pixiPageContainer.width / 2 + margin;
+    const maxX = pixiPageContainer.width / 2 - margin;
+    const minY = -pixiPageContainer.height / 2 + margin;
+    const maxY = pixiPageContainer.height / 2 - margin;
+
+    pixiPageContainer.x = Math.max(minX, Math.min(newX, maxX));
+    pixiPageContainer.y = Math.max(minY, Math.min(newY, maxY));
+  });
+
+  $roomScene.on(DisplayObjectEvent.POINTER_UP, (event) => {
+    if (event.button !== 1) return;
+    isDragging = false;
+  });
+
+  $roomScene.on(DisplayObjectEvent.POINTER_LEAVE, () => {
+    isDragging = false;
+  });
+
   const loadRoomPosition = () => {
     const size = global.getApplication().window.getBounds();
     const roomBounds = $room.getBounds();
@@ -74,13 +123,13 @@ export const privateRoomComponent: ContainerComponent = () => {
   global.events.on(TulipEvent.RESIZE, loadRoomPosition);
 
   $container.on(DisplayObjectEvent.MOUNT, () => {
-    if ($room) $container.remove($room);
+    if ($room) $roomScene.remove($room);
     $room = roomComponent();
-    $container.add($room);
+    $roomScene.add($room);
 
-    if ($bubbleChat) $container.remove($bubbleChat);
+    if ($bubbleChat) $roomScene.remove($bubbleChat);
     $bubbleChat = bubbleChatComponent({ room: $room });
-    $container.add($bubbleChat);
+    $roomScene.add($bubbleChat);
     loadRoomPosition();
 
     System.events.emit(SystemEvent.HIDE_NAVIGATOR_MODAL);
