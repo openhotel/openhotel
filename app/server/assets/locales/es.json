@@ -42,5 +42,7 @@
   "command.unban.description": "Desbanea a un usuario",
   "command.unset.description": "Elimina un mueble de la sala",
   "command.update.description": "Comprueba nuevas versiones y actualiza el servidor",
-  "command.whitelist.description": "Administra la lista blanca"
+  "command.whitelist.description": "Administra la lista blanca",
+
+  "Demo command is not configured in {{room}}": "Comando demo no esta configurado en {{room}}"
 }

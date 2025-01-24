@@ -42,5 +42,7 @@
   "command.unban.description": "Unbans a user",
   "command.unset.description": "Removes a furniture from the room",
   "command.update.description": "Checks for new versions and updates the server",
-  "command.whitelist.description": "Manages the whitelist"
+  "command.whitelist.description": "Manages the whitelist",
+
+  "Demo command is not configured in {{room}}": "Demo command is not configured in {{room}}"
 }
