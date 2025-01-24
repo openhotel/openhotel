@@ -18,7 +18,8 @@
     user-select: none;
   }
 
-  .input:not(:placeholder-shown) + label {
+  .input:not(:placeholder-shown) + .placeholder,
+  .input:-webkit-autofill + .placeholder {
     top: 0.2rem;
     left: 2.2rem;
     opacity: 1;
@@ -44,7 +45,8 @@
       transition: padding;
       transition-duration: 0.3s;
 
-      &:not(:placeholder-shown) {
+      &:not(:placeholder-shown),
+      :-webkit-autofill {
         padding-top: 1.7rem;
         padding-bottom: 0.3rem;
       }
@@ -64,5 +66,11 @@
     &:focus {
       border: 0.2rem solid var(--input-focus-bd);
     }
+  }
+
+  // Weird hack to style autofill color in Chrome
+  .input:-webkit-autofill {
+    box-shadow: 0 0 0 1000px var(--input-bg) inset;
+    -webkit-text-fill-color: var(--input-c);
   }
 }
