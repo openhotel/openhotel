@@ -5,8 +5,8 @@ import {
   ModalComponent,
 } from "../../../../../components";
 
-import styles from "./confirmation-modal.module.scss";
 //@ts-ignore
+import styles from "./confirmation-modal.module.scss";
 
 type Props = {
   title?: string;

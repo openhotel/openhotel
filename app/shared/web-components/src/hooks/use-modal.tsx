@@ -5,11 +5,7 @@ import React, {
   useContext,
   useRef,
 } from "react";
-import {
-  ModalBackgroundComponent,
-  ModalComponent,
-  ModalLayoutComponent,
-} from "../components";
+import { ModalBackgroundComponent, ModalLayoutComponent } from "../components";
 import { createRoot } from "react-dom/client";
 
 type ModalState = {

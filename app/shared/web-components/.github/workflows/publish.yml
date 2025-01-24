@@ -27,11 +27,16 @@ jobs:
             core.setOutput('tag', tag)
             console.log(tag)
 
-      - uses: actions/setup-node@v4
+      - name: Install Node.js, NPM and Yarn
+        uses: actions/setup-node@v1
         with:
-          node-version: "22.x"
-          registry-url: "https://registry.npmjs.org"
-      - run: yarn install --frozen-lockfile
+          node-version: 22.x
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Install dependencies
+        run: yarn install --immutable
 
       - name: run prettier checker
         run: yarn prettier:check
