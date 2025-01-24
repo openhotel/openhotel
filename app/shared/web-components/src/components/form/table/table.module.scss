@@ -3,7 +3,7 @@
 .wrapper {
   background-color: var(--text-0-bg);
   border-radius: var(--border-radius-lg);
-  overflow: scroll;
+  overflow: auto;
 
   @include boxShadow();
 
