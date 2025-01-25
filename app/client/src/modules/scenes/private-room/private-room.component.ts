@@ -12,6 +12,7 @@ import { Size2d } from "shared/types";
 import { hotBarChatComponent, roomInfoComponent } from "modules/interfaces";
 import { System } from "system";
 import { SystemEvent } from "shared/enums";
+import {allowCameraPanning} from "../../../shared/utils/camera-panning.utils";
 
 const CHAT_PADDING = {
   x: 12,
@@ -64,49 +65,9 @@ export const privateRoomComponent: ContainerComponent = () => {
     sortableChildren: true,
     eventMode: EventMode.STATIC,
   });
-  const pixiPageContainer = $roomScene.getDisplayObject({
-    __preventWarning: true,
-  });
-  let isDragging = false;
-  let dragStart = { x: 0, y: 0 };
-  let containerStart = { x: 0, y: 0 };
-
+  const margin = 100;
+  allowCameraPanning($roomScene, margin);
   $container.add($roomScene);
-
-  $roomScene.on(DisplayObjectEvent.POINTER_DOWN, (event) => {
-    if (event.button !== 1) return;
-    isDragging = true;
-    dragStart = { x: event.global.x, y: event.global.y };
-    containerStart = { x: pixiPageContainer.x, y: pixiPageContainer.y };
-  });
-
-  $roomScene.on(DisplayObjectEvent.POINTER_MOVE, (event) => {
-    if (!isDragging) return;
-
-    const deltaX = event.global.x - dragStart.x;
-    const deltaY = event.global.y - dragStart.y;
-
-    let newX = Math.floor(containerStart.x + deltaX);
-    let newY = Math.floor(containerStart.y + deltaY);
-
-    const margin = 100;
-    const minX = -pixiPageContainer.width / 2 + margin;
-    const maxX = pixiPageContainer.width / 2 - margin;
-    const minY = -pixiPageContainer.height / 2 + margin;
-    const maxY = pixiPageContainer.height / 2 - margin;
-
-    pixiPageContainer.x = Math.max(minX, Math.min(newX, maxX));
-    pixiPageContainer.y = Math.max(minY, Math.min(newY, maxY));
-  });
-
-  $roomScene.on(DisplayObjectEvent.POINTER_UP, (event) => {
-    if (event.button !== 1) return;
-    isDragging = false;
-  });
-
-  $roomScene.on(DisplayObjectEvent.POINTER_LEAVE, () => {
-    isDragging = false;
-  });
 
   const loadRoomPosition = () => {
     const size = global.getApplication().window.getBounds();
