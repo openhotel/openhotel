@@ -5,16 +5,13 @@ export function allowCameraPanning(component, margin = 0) {
   let dragStart = { x: 0, y: 0 };
   let containerStart = { x: 0, y: 0 };
 
-  const pixiContainer = component.getDisplayObject({
-    __preventWarning: true,
-  });
-
   component.on(DisplayObjectEvent.POINTER_DOWN, (event) => {
     event.stopPropagation();
     if (event.button !== 0) return;
     isDragging = true;
     dragStart = { x: event.global.x, y: event.global.y };
-    containerStart = { x: pixiContainer.x, y: pixiContainer.y };
+
+    containerStart = component.getGlobalPosition();
   });
 
   component.on(DisplayObjectEvent.POINTER_MOVE, (event) => {
@@ -26,13 +23,15 @@ export function allowCameraPanning(component, margin = 0) {
     let newX = Math.floor(containerStart.x + deltaX);
     let newY = Math.floor(containerStart.y + deltaY);
 
-    const minX = -pixiContainer.width / 2 + margin;
-    const maxX = pixiContainer.width / 2 - margin;
-    const minY = -pixiContainer.height / 2 + margin;
-    const maxY = pixiContainer.height / 2 - margin;
+    const {width, height} = component.getBounds();
 
-    pixiContainer.x = Math.max(minX, Math.min(newX, maxX));
-    pixiContainer.y = Math.max(minY, Math.min(newY, maxY));
+    const minX = -width / 2 + margin;
+    const maxX = width / 2 - margin;
+    const minY = -height / 2 + margin;
+    const maxY = height / 2 - margin;
+
+    component.setPositionX(Math.max(minX, Math.min(newX, maxX)));
+    component.setPositionY(Math.max(minY, Math.min(newY, maxY)));
   });
 
   component.on(DisplayObjectEvent.POINTER_UP, (event) => {
