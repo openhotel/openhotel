@@ -32,10 +32,14 @@ export const helpCommand: Command = {
       return;
     }
 
+    const isOp = await user.isOp();
+
     user.emit(ProxyEvent.SYSTEM_MESSAGE, {
       message: __(user.getLanguage())("Available commands: {{commands}}", {
         commands: commandList
-          .filter((c) => c.command !== "help")
+          .filter((c) =>
+            c.command !== "help" && !isOp ? c.role === CommandRoles.USER : true,
+          )
           .map((c) => c.command)
           .join(", "),
       }),
