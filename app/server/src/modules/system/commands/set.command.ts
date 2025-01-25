@@ -1,4 +1,4 @@
-import { Command, RoomFurniture } from "shared/types/main.ts";
+import { Command, CommandRoles, RoomFurniture } from "shared/types/main.ts";
 import { ProxyEvent } from "shared/enums/event.enum.ts";
 import { System } from "modules/system/main.ts";
 import { FurnitureType } from "shared/enums/furniture.enum.ts";
@@ -11,6 +11,7 @@ import { __ } from "shared/utils/languages.utils.ts";
 
 export const setCommand: Command = {
   command: "set",
+  role: CommandRoles.OP,
   usages: ["<furniture_id> <x> <z> <direction> [wallX] [wallY]"],
   description: "command.set.description",
   func: async ({ user, args }) => {

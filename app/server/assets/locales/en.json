@@ -43,8 +43,10 @@
   "command.unset.description": "Removes a furniture from the room",
   "command.update.description": "Checks for new versions and updates the server",
   "command.whitelist.description": "Manages the whitelist",
+  "command.whisper.description": "Sends a private message to a user",
 
   "Demo command is not configured in {{room}}": "Demo command is not configured in {{room}}",
+  "Insufficient permissions": "Insufficient permissions",
   "The furniture cannot be placed at position {{x}},{{z}}": "The furniture cannot be placed at position {{x}},{{z}}",
   "Frames need to be attached to the wall": "Frames need to be attached to the wall",
   "Frames cannot exceed the height of the wall": "Frames cannot exceed the height of the wall"
