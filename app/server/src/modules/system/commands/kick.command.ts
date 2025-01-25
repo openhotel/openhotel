@@ -1,11 +1,12 @@
 import { System } from "modules/system/main.ts";
-import { Command } from "shared/types/main.ts";
+import { Command, CommandRoles } from "shared/types/main.ts";
 import { ProxyEvent } from "shared/enums/main.ts";
 import { __ } from "shared/utils/main.ts";
 
 export const kickCommand: Command = {
   command: "kick",
   usages: ["<username>"],
+  role: CommandRoles.OP,
   description: "command.kick.description",
   func: async ({ user, args }) => {
     const username = args[0] as string;
