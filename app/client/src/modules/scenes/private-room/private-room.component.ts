@@ -12,7 +12,7 @@ import { Size2d } from "shared/types";
 import { hotBarChatComponent, roomInfoComponent } from "modules/interfaces";
 import { System } from "system";
 import { SystemEvent } from "shared/enums";
-import {allowCameraPanning} from "../../../shared/utils/camera-panning.utils";
+import { allowCameraPanning } from "shared/utils/camera-panning.utils";
 
 const CHAT_PADDING = {
   x: 12,

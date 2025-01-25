@@ -1,29 +1,40 @@
 import {
-    container,
-    ContainerComponent,
-    ContainerMutable,
-    Cursor,
-    DisplayObjectEvent,
-    DisplayObjectMutable,
-    EventMode,
-    global,
-    graphics,
-    GraphicType,
-    sprite,
+  container,
+  ContainerComponent,
+  ContainerMutable,
+  Cursor,
+  DisplayObjectEvent,
+  DisplayObjectMutable,
+  EventMode,
+  global,
+  graphics,
+  GraphicType,
+  sprite,
 } from "@tu/tulip";
-import {getPositionFromIsometricPosition, getTilePolygon} from "shared/utils";
-import {Event, FurnitureType, RoomPointEnum, SpriteSheetEnum, SystemEvent,} from "shared/enums";
-import {RoomFurniture} from "shared/types";
-import {System} from "system";
-import {humanComponent, HumanMutable} from "modules/human";
-import {STEP_TILE_HEIGHT, TILE_Y_HEIGHT, WALL_DOOR_HEIGHT, WALL_HEIGHT,} from "shared/consts";
-import {wallComponent} from "./wall.component";
+import { getPositionFromIsometricPosition, getTilePolygon } from "shared/utils";
 import {
-    dummyFurnitureComponent,
-    dummyFurnitureFrameComponent,
-    furnitureComponent,
-    furnitureFrameComponent,
-    FurnitureMutable,
+  Event,
+  FurnitureType,
+  RoomPointEnum,
+  SpriteSheetEnum,
+  SystemEvent,
+} from "shared/enums";
+import { RoomFurniture } from "shared/types";
+import { System } from "system";
+import { humanComponent, HumanMutable } from "modules/human";
+import {
+  STEP_TILE_HEIGHT,
+  TILE_Y_HEIGHT,
+  WALL_DOOR_HEIGHT,
+  WALL_HEIGHT,
+} from "shared/consts";
+import { wallComponent } from "./wall.component";
+import {
+  dummyFurnitureComponent,
+  dummyFurnitureFrameComponent,
+  furnitureComponent,
+  furnitureFrameComponent,
+  FurnitureMutable,
 } from "./furniture";
 
 type Props = {};
@@ -338,12 +349,8 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = () => {
         );
 
         // Allows the user to move the camera around the room
-        pol.on(DisplayObjectEvent.POINTER_DOWN, () =>
-            canMove = true
-        );
-        pol.on(DisplayObjectEvent.POINTER_MOVE, () =>
-            canMove = false
-        );
+        pol.on(DisplayObjectEvent.POINTER_DOWN, () => (canMove = true));
+        pol.on(DisplayObjectEvent.POINTER_MOVE, () => (canMove = false));
         $container.add(pol);
       }
     }
