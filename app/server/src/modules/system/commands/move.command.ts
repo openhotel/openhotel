@@ -1,4 +1,4 @@
-import { Command } from "shared/types/main.ts";
+import { Command, CommandRoles } from "shared/types/main.ts";
 import { System } from "modules/system/main.ts";
 import { FurnitureType, ProxyEvent } from "shared/enums/main.ts";
 import { __ } from "shared/utils/main.ts";
@@ -6,6 +6,7 @@ import { CrossDirection } from "@oh/utils";
 
 export const moveCommand: Command = {
   command: "move",
+  role: CommandRoles.OP,
   usages: ["<furniture_id> <x> <z> <direction> [wallX] [wallY]"],
   description: "command.move.description",
   func: async ({ user, args }) => {
