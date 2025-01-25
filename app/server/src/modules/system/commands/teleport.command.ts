@@ -1,9 +1,10 @@
-import { Command } from "shared/types/main.ts";
+import { Command, CommandRoles } from "shared/types/main.ts";
 import { System } from "modules/system/main.ts";
 import { ProxyEvent } from "shared/enums/event.enum.ts";
 
 export const teleportCommand: Command = {
   command: "teleport",
+  role: CommandRoles.OP,
   usages: [
     "link <teleportIdA> <teleportIdB>",
     "remote <teleportId>",

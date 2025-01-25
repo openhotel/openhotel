@@ -23,6 +23,8 @@ import { demoCommand } from "./demo.command.ts";
 import { ProxyEvent } from "shared/enums/event.enum.ts";
 import { validateCommandUsages } from "shared/utils/commands.utils.ts";
 import { __ } from "shared/utils/languages.utils.ts";
+import { whisperCommand } from "./whisper.command.ts";
+import { CommandRoles } from "shared/types/commands.types.ts";
 
 export const commandList = [
   stopCommand,
@@ -53,9 +55,11 @@ export const commandList = [
 
   rotateCommand,
   moveCommand,
+
+  whisperCommand,
 ];
 
-export const executeCommand = ({
+export const executeCommand = async ({
   message,
   user,
 }: {
@@ -66,10 +70,22 @@ export const executeCommand = ({
 
   const { _ } = parseArgs(message.substring(1, message.length).split(" "));
 
-  const foundCommand = commandList.find(({ command }) => _[0] === command);
+  const foundCommand = commandList.find(({ command }) => {
+    if (typeof command === "string") return _[0] === command;
+    return command.find((c) => _[0] === c);
+  });
+
   if (!foundCommand) {
     user.emit(ProxyEvent.SYSTEM_MESSAGE, {
       message: __(user.getLanguage())("Command not found"),
+    });
+    return true;
+  }
+
+  const isOp = await user.isOp();
+  if (foundCommand.role === CommandRoles.OP && !isOp) {
+    user.emit(ProxyEvent.SYSTEM_MESSAGE, {
+      message: __(user.getLanguage())("Insufficient permissions"),
     });
     return true;
   }

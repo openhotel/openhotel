@@ -1,6 +1,7 @@
 import { __ } from "shared/utils/main.ts";
 import {
   Command,
+  CommandRoles,
   ListActions,
   UserMutable,
   UsersConfig,
@@ -58,6 +59,7 @@ const list = (config: UsersConfig, _: string[], user: UserMutable) => {
 
 export const whitelistCommand: Command = {
   command: "whitelist",
+  role: CommandRoles.OP,
   usages: ["<add|remove> <username>", "<on|off|list>"],
   description: "command.whitelist.description",
   func: async ({ user, args }) => {

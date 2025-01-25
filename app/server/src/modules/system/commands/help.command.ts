@@ -1,4 +1,4 @@
-import { Command } from "shared/types/main.ts";
+import { Command, CommandRoles } from "shared/types/main.ts";
 import { ProxyEvent } from "shared/enums/main.ts";
 import { commandList } from "./main.ts";
 import { __ } from "shared/utils/main.ts";
@@ -6,6 +6,7 @@ import { __ } from "shared/utils/main.ts";
 export const helpCommand: Command = {
   command: "help",
   usages: ["", "<command>"],
+  role: CommandRoles.USER,
   description: "command.help.description",
   func: async ({ user, args }) => {
     if (args.length === 1) {

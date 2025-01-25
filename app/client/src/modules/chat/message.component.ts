@@ -10,9 +10,14 @@ import { SpriteSheetEnum } from "shared/enums";
 type Mutable = {};
 
 export const messageComponent: ContainerComponent<
-  { username: string; color: number; message: string },
+  {
+    username: string;
+    color: number;
+    message: string;
+    backgroundColor?: number;
+  },
   Mutable
-> = ({ username, color, message }) => {
+> = ({ username, color, message, backgroundColor }) => {
   const $container = container<{}, Mutable>({
     sortableChildren: true,
   });
@@ -60,6 +65,7 @@ export const messageComponent: ContainerComponent<
     width,
     height,
     zIndex: -2,
+    ...(backgroundColor ? { tint: backgroundColor } : {}),
   });
   $container.add($bubbleBackground);
   const $bubbleOver = nineSliceSprite({
