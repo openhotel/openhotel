@@ -1,29 +1,30 @@
-import { DisplayObjectEvent } from "@tu/tulip";
+import { global, Event } from "@tu/tulip";
 
 export function allowCameraPanning(component, margin = 0) {
   let isDragging = false;
   let dragStart = { x: 0, y: 0 };
   let containerStart = { x: 0, y: 0 };
 
-  component.on(DisplayObjectEvent.POINTER_DOWN, (event) => {
-    event.stopPropagation();
+  global.events.on(Event.POINTER_DOWN, (event) => {
     if (event.button !== 0) return;
     isDragging = true;
-    dragStart = { x: event.global.x, y: event.global.y };
+    dragStart = { x: event.x, y: event.y };
 
     containerStart = component.getGlobalPosition();
   });
 
-  component.on(DisplayObjectEvent.POINTER_MOVE, (event) => {
+  global.events.on(Event.POINTER_MOVE, (event) => {
     if (!isDragging) return;
 
-    const deltaX = event.global.x - dragStart.x;
-    const deltaY = event.global.y - dragStart.y;
+    // TODO get this from application
+    const scale = 2;
+    const deltaX = (event.clientX - dragStart.x) / scale;
+    const deltaY = (event.clientY - dragStart.y) / scale;
 
     let newX = Math.floor(containerStart.x + deltaX);
     let newY = Math.floor(containerStart.y + deltaY);
 
-    const {width, height} = component.getBounds();
+    const { width, height } = component.getBounds();
 
     const minX = -width / 2 + margin;
     const maxX = width / 2 - margin;
@@ -34,12 +35,8 @@ export function allowCameraPanning(component, margin = 0) {
     component.setPositionY(Math.max(minY, Math.min(newY, maxY)));
   });
 
-  component.on(DisplayObjectEvent.POINTER_UP, (event) => {
+  global.events.on(Event.POINTER_UP, (event) => {
     if (event.button !== 0) return;
-    isDragging = false;
-  });
-
-  component.on(DisplayObjectEvent.POINTER_LEAVE, () => {
     isDragging = false;
   });
 }
