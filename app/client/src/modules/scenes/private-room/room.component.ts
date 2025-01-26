@@ -323,7 +323,10 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = () => {
           position: previewPosition,
         });
 
-        pol.on(DisplayObjectEvent.POINTER_UP, () => {
+        let canMove = false;
+
+        pol.on(DisplayObjectEvent.POINTER_TAP, (event) => {
+          if (event.button !== 0 || !canMove) return;
           global.context.blur();
           System.proxy.emit(Event.POINTER_TILE, {
             position: {
@@ -345,6 +348,9 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = () => {
           $tilePreview.setVisible(false),
         );
 
+        // Allows the user to move the camera around the room
+        pol.on(DisplayObjectEvent.POINTER_DOWN, () => (canMove = true));
+        pol.on(DisplayObjectEvent.POINTER_MOVE, () => (canMove = false));
         $container.add(pol);
       }
     }

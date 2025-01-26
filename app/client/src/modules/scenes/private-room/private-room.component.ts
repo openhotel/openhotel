@@ -3,6 +3,7 @@ import {
   ContainerComponent,
   DisplayObjectEvent,
   Event as TulipEvent,
+  EventMode,
   global,
 } from "@tu/tulip";
 import { bubbleChatComponent, systemMessageComponent } from "modules/chat";
@@ -59,6 +60,13 @@ export const privateRoomComponent: ContainerComponent = () => {
   let $room;
   let $bubbleChat;
 
+  let $roomScene = container({
+    sortableChildren: true,
+    eventMode: EventMode.STATIC,
+  });
+
+  $container.add($roomScene);
+
   const loadRoomPosition = () => {
     const size = global.getApplication().window.getBounds();
     const roomBounds = $room.getBounds();
@@ -73,17 +81,68 @@ export const privateRoomComponent: ContainerComponent = () => {
 
   global.events.on(TulipEvent.RESIZE, loadRoomPosition);
 
-  $container.on(DisplayObjectEvent.MOUNT, () => {
-    if ($room) $container.remove($room);
-    $room = roomComponent();
-    $container.add($room);
+  let onRemovePointerDown;
+  let onRemovePointerMove;
+  let onRemovePointerUp;
 
-    if ($bubbleChat) $container.remove($bubbleChat);
+  $container.on(DisplayObjectEvent.MOUNT, () => {
+    if ($room) $roomScene.remove($room);
+    $room = roomComponent();
+    $roomScene.add($room);
+
+    if ($bubbleChat) $roomScene.remove($bubbleChat);
     $bubbleChat = bubbleChatComponent({ room: $room });
-    $container.add($bubbleChat);
+    $roomScene.add($bubbleChat);
     loadRoomPosition();
 
+    const margin = 100;
+    let isDragging = false;
+    let dragStart = { x: 0, y: 0 };
+    let containerStart = { x: 0, y: 0 };
+
+    onRemovePointerDown = global.events.on(TulipEvent.POINTER_DOWN, (event) => {
+      if (event.button !== 0) return;
+      isDragging = true;
+      dragStart = { x: event.x, y: event.y };
+
+      containerStart = $roomScene.getGlobalPosition();
+    });
+
+    onRemovePointerMove = global.events.on(TulipEvent.POINTER_MOVE, (event) => {
+      if (!isDragging) return;
+
+      const scale = global.window.getScale();
+      const deltaX = (event.clientX - dragStart.x) / scale;
+      const deltaY = (event.clientY - dragStart.y) / scale;
+
+      let newX = Math.floor(containerStart.x + deltaX);
+      let newY = Math.floor(containerStart.y + deltaY);
+
+      const { width, height } = $roomScene.getBounds();
+
+      const minX = -width / 2 + margin;
+      const maxX = width / 2 - margin;
+      const minY = -height / 2 + margin;
+      const maxY = height / 2 - margin;
+
+      $roomScene.setPosition({
+        x: Math.max(minX, Math.min(newX, maxX)),
+        y: Math.max(minY, Math.min(newY, maxY)),
+      });
+    });
+
+    onRemovePointerUp = global.events.on(TulipEvent.POINTER_UP, (event) => {
+      if (event.button !== 0) return;
+      isDragging = false;
+    });
+
     System.events.emit(SystemEvent.HIDE_NAVIGATOR_MODAL);
+  });
+
+  $container.on(DisplayObjectEvent.UNMOUNT, () => {
+    onRemovePointerDown?.();
+    onRemovePointerMove?.();
+    onRemovePointerUp?.();
   });
 
   return $container.getComponent(privateRoomComponent);
