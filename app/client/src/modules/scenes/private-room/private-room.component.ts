@@ -140,9 +140,9 @@ export const privateRoomComponent: ContainerComponent = () => {
   });
 
   $container.on(DisplayObjectEvent.UNMOUNT, () => {
-    onRemovePointerDown();
-    onRemovePointerMove();
-    onRemovePointerUp();
+    onRemovePointerDown?.();
+    onRemovePointerMove?.();
+    onRemovePointerUp?.();
   });
 
   return $container.getComponent(privateRoomComponent);
