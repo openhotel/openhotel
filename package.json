@@ -5,7 +5,7 @@
   },
   "devDependencies": {
     "prettier": "3.4.2",
-    "vite": "5.4.12"
+    "vite": "6.0.11"
   },
   "packageManager": "yarn@4.6.0"
 }
