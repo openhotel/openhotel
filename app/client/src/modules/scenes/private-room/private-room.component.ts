@@ -2,7 +2,6 @@ import {
   container,
   ContainerComponent,
   DisplayObjectEvent,
-  Event,
   Event as TulipEvent,
   EventMode,
   global,
@@ -13,7 +12,6 @@ import { Size2d } from "shared/types";
 import { hotBarChatComponent, roomInfoComponent } from "modules/interfaces";
 import { System } from "system";
 import { SystemEvent } from "shared/enums";
-import { allowCameraPanning } from "shared/utils/camera-panning.utils";
 
 const CHAT_PADDING = {
   x: 12,
@@ -72,7 +70,7 @@ export const privateRoomComponent: ContainerComponent = () => {
   let dragStart = { x: 0, y: 0 };
   let containerStart = { x: 0, y: 0 };
 
-  global.events.on(Event.POINTER_DOWN, (event) => {
+  global.events.on(TulipEvent.POINTER_DOWN, (event) => {
     if (event.button !== 0) return;
     isDragging = true;
     dragStart = { x: event.x, y: event.y };
@@ -80,7 +78,7 @@ export const privateRoomComponent: ContainerComponent = () => {
     containerStart = $roomScene.getGlobalPosition();
   });
 
-  global.events.on(Event.POINTER_MOVE, (event) => {
+  global.events.on(TulipEvent.POINTER_MOVE, (event) => {
     if (!isDragging) return;
 
     const scale = global.window.getScale();
@@ -103,7 +101,7 @@ export const privateRoomComponent: ContainerComponent = () => {
     });
   });
 
-  global.events.on(Event.POINTER_UP, (event) => {
+  global.events.on(TulipEvent.POINTER_UP, (event) => {
     if (event.button !== 0) return;
     isDragging = false;
   });
