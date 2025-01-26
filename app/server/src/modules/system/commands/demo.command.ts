@@ -1,8 +1,13 @@
 import { System } from "../main.ts";
-import { Command, RoomFurniture, RoomMutable } from "shared/types/main.ts";
+import {
+  Command,
+  CommandRoles,
+  RoomFurniture,
+  RoomMutable,
+} from "shared/types/main.ts";
 import { FurnitureType, ProxyEvent } from "shared/enums/main.ts";
 import { CrossDirection } from "@oh/utils";
-import { __ } from "../../../shared/utils/languages.utils.ts";
+import { __ } from "shared/utils/languages.utils.ts";
 
 const fillDemoRoom = async (room: RoomMutable) => {
   const list = await System.game.furniture.getList();
@@ -170,6 +175,7 @@ const fillRoom1 = async (room: RoomMutable) => {
 export const demoCommand: Command = {
   command: "demo",
   usages: [""],
+  role: CommandRoles.OP,
   description: "command.demo.description",
   func: async ({ user }) => {
     const roomId = user.getRoom();

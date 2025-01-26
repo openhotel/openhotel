@@ -1,11 +1,12 @@
 import { __ } from "shared/utils/main.ts";
 import { System } from "../main.ts";
-import { Command } from "shared/types/main.ts";
+import { Command, CommandRoles } from "shared/types/main.ts";
 import { ProxyEvent } from "shared/enums/main.ts";
 
 export const banCommand: Command = {
   command: "ban",
   usages: ["<username>"],
+  role: CommandRoles.OP,
   description: "command.ban.description",
   func: async ({ user, args }) => {
     const username = args[0] as string;
