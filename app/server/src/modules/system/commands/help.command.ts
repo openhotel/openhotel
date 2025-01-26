@@ -1,4 +1,4 @@
-import { Command } from "shared/types/main.ts";
+import { Command, CommandRoles } from "shared/types/main.ts";
 import { ProxyEvent } from "shared/enums/main.ts";
 import { commandList } from "./main.ts";
 import { __ } from "shared/utils/main.ts";
@@ -6,6 +6,7 @@ import { __ } from "shared/utils/main.ts";
 export const helpCommand: Command = {
   command: "help",
   usages: ["", "<command>"],
+  role: CommandRoles.USER,
   description: "command.help.description",
   func: async ({ user, args }) => {
     if (args.length === 1) {
@@ -31,10 +32,14 @@ export const helpCommand: Command = {
       return;
     }
 
+    const isOp = await user.isOp();
+
     user.emit(ProxyEvent.SYSTEM_MESSAGE, {
       message: __(user.getLanguage())("Available commands: {{commands}}", {
         commands: commandList
-          .filter((c) => c.command !== "help")
+          .filter((c) =>
+            c.command !== "help" && !isOp ? c.role === CommandRoles.USER : true,
+          )
           .map((c) => c.command)
           .join(", "),
       }),

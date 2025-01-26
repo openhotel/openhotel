@@ -24,6 +24,7 @@ export enum Event {
   POINTER_INTERACTIVE = "pointer-interactive",
 
   MESSAGE = "message",
+  WHISPER_MESSAGE = "whisper-messsage",
   TYPING_START = "typing-start",
   TYPING_END = "typing-end",
 
