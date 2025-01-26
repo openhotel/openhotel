@@ -16,9 +16,10 @@ export const messageEvent: ProxyEventType<{ message: string }> = {
 
     log(`[${room.getId()}] ${user.getUsername()}: ${message}`);
 
-    const isOp = await user.isOp();
+    const isCommand = await executeCommand({ message, user });
+    if (isCommand) return;
 
-    if (isOp && executeCommand({ message, user })) return;
+    const isOp = await user.isOp();
 
     user.setLastMessage(message);
     room.emit(ProxyEvent.MESSAGE, {
