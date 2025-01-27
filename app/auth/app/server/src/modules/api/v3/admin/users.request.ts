@@ -28,6 +28,8 @@ export const usersGetRequest: RequestType = {
           createdAt: account.createdAt,
           verified: account.verified,
           languages: account.languages,
+          githubLogin: (await System.db.get(["github", account.accountId]))
+            ?.login,
         })),
       )
     ).sort((userA: any, userB: any) =>
