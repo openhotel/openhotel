@@ -6,6 +6,7 @@ on:
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  CHGLOG_VERSION: "0.15.4"
 
 jobs:
   build:
@@ -32,6 +33,28 @@ jobs:
             const tag = context.ref.substring(10).replace('v', '')
             core.setOutput('tag', tag)
             core.setOutput('version', tag.split("-")[0])
+
+      - name: Install git-chglog
+        run: |
+          wget https://github.com/git-chglog/git-chglog/releases/download/v${{ env.CHGLOG_VERSION }}/git-chglog_${{ env.CHGLOG_VERSION }}_linux_amd64.tar.gz
+          tar -xzf git-chglog_${{ env.CHGLOG_VERSION }}_linux_amd64.tar.gz
+          sudo mv git-chglog /usr/local/bin/
+          rm git-chglog_${{ env.CHGLOG_VERSION }}_linux_amd64.tar.gz
+
+      - name: Generate CHANGELOG
+        run: |
+          git fetch --tags
+          latest_tag=$(git describe --tags --abbrev=0)
+          previous_tag=$(git describe --tags --abbrev=0 "$latest_tag^" || echo "")
+          git-chglog -o CHANGELOG.md ${previous_tag:+$previous_tag..}$latest_tag
+
+      - name: Commit and push CHANGELOG
+        run: |
+          git add CHANGELOG.md
+          COMMIT_MSG="chore: update release notes for $latest_tag\n\n"
+          COMMIT_MSG+="- Contributors: $(git log $previous_tag..$latest_tag --format='%aN' | sort -u | tr '\n' ' ')"
+          git commit -m "$COMMIT_MSG"
+          git push
 
       - name: Build
         run: deno task build --debug --target=* --version=${{ steps.set_version.outputs.tag }} --zip --release
