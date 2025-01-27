@@ -9,6 +9,7 @@ export const useApi = () => {
       pathname,
       body,
       headers = {},
+      cache = true,
     }: Request) => {
       const response = await fetch(`/api/v3${pathname}`, {
         method,
@@ -18,6 +19,7 @@ export const useApi = () => {
         }),
         body: body ? JSON.stringify(body) : undefined,
         credentials: "include",
+        cache: cache ? "default" : "no-store",
       }).then(async (data) => {
         const contentType = data.headers.get("content-type");
 

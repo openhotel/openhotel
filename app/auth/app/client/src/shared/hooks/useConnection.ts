@@ -26,7 +26,7 @@ export const useConnection = () => {
     });
 
     return data.connections;
-  }, [fetch]);
+  }, [fetch, getAccountHeaders]);
 
   const get = useCallback(
     async (hotelId: string, integrationId: string) => {
@@ -38,7 +38,7 @@ export const useConnection = () => {
 
       return data.connection;
     },
-    [fetch],
+    [fetch, getAccountHeaders],
   );
 
   const add = useCallback(
@@ -58,15 +58,18 @@ export const useConnection = () => {
     [fetch, getAccountHeaders],
   );
 
-  const ping = useCallback(async (connectionId: string) => {
-    const { data } = await fetch({
-      method: RequestMethod.PATCH,
-      pathname: `/user/@me/connection/ping?connectionId=${connectionId}`,
-      headers: getAccountHeaders(),
-    });
+  const ping = useCallback(
+    async (connectionId: string) => {
+      const { data } = await fetch({
+        method: RequestMethod.PATCH,
+        pathname: `/user/@me/connection/ping?connectionId=${connectionId}`,
+        headers: getAccountHeaders(),
+      });
 
-    return data;
-  }, []);
+      return data;
+    },
+    [fetch, getAccountHeaders],
+  );
 
   return {
     add,

@@ -1,0 +1,38 @@
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background-color: var(--text-2-bg);
+  padding: 1rem;
+  border-radius: 1rem;
+
+  & > label {
+    font-weight: bold;
+    margin: 1rem;
+  }
+
+  .list {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    gap: 1rem;
+
+    .item {
+      display: flex;
+      width: 100%;
+      gap: 1rem;
+
+      &.nonForm {
+        background-color: var(--text-3-bg);
+        padding: 0 0 0 2rem;
+        justify-content: space-between;
+        line-height: 4rem;
+        border-radius: 0.5rem;
+      }
+
+      button {
+        height: 100%;
+      }
+    }
+  }
+}

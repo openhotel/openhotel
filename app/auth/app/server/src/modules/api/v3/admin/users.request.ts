@@ -27,6 +27,7 @@ export const usersGetRequest: RequestType = {
           otp: await System.otp.isOTPVerified(account.accountId),
           createdAt: account.createdAt,
           verified: account.verified,
+          languages: account.languages,
         })),
       )
     ).sort((userA: any, userB: any) =>

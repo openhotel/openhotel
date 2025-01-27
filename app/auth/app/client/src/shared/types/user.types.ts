@@ -3,6 +3,8 @@ export type User = {
   accountId: string;
   username: string;
   email: string;
+  languages: string[];
+
   admin?: boolean;
   otp?: boolean;
   verified?: boolean;

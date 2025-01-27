@@ -1,7 +1,8 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { CAPTCHA_ID, CAPTCHA_URL } from "shared/consts";
+
+//@ts-ignore
 import styles from "./captcha.module.scss";
-import login_styles from "../../../modules/login/login.module.scss";
 
 type Props = {
   submittedAt: number;

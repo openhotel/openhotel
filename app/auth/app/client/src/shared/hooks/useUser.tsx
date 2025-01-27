@@ -1,10 +1,4 @@
-import React, {
-  ReactNode,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import React, { ReactNode, useCallback, useContext, useState } from "react";
 import { User } from "shared/types";
 import { useApi } from "shared/hooks/useApi";
 import { useAccount } from "shared/hooks/useAccount";
@@ -16,6 +10,10 @@ type UserState = {
 
   getLicense: () => Promise<string>;
   initUser: () => Promise<void>;
+
+  update: (data: { languages: string[] }) => void;
+
+  clear: () => void;
 };
 
 const UserContext = React.createContext<UserState>(undefined);
@@ -67,6 +65,23 @@ export const UserProvider: React.FunctionComponent<ProviderProps> = ({
     [fetchUser, setUser, navigate],
   );
 
+  const update = useCallback(
+    (body: { languages: string[] }) =>
+      fetch({
+        method: RequestMethod.PATCH,
+        pathname: "/user/@me",
+        headers: getAccountHeaders(),
+        body,
+      })
+        .then(initUser)
+        .catch(() => navigate("/login")),
+    [fetchUser, setUser, navigate, getAccountHeaders],
+  );
+
+  const clear = useCallback(() => {
+    setUser(null);
+  }, [setUser]);
+
   return (
     <UserContext.Provider
       value={{
@@ -74,6 +89,10 @@ export const UserProvider: React.FunctionComponent<ProviderProps> = ({
         getLicense,
 
         initUser,
+
+        update,
+
+        clear,
       }}
       children={children}
     />

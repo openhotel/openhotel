@@ -5,4 +5,5 @@ export type Account = {
   passwordHash: string;
   createdAt: Date;
   verified: boolean;
+  languages: string[];
 };

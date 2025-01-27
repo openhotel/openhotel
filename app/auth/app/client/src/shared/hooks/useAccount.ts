@@ -15,12 +15,6 @@ export const useAccount = () => {
 
   const [isLogged, setIsLogged] = useState<boolean>(null);
 
-  useEffect(() => {
-    refresh()
-      .then(() => setIsLogged(true))
-      .catch(() => setIsLogged(false));
-  }, []);
-
   const getAccountHeaders = useCallback(
     () => ({
       "account-id": getCookie("account-id"),
@@ -42,6 +36,7 @@ export const useAccount = () => {
         method: RequestMethod.POST,
         pathname: "/account/login",
         body,
+        cache: false,
       });
 
       setCookie("account-id", accountId, refreshTokenDuration);
@@ -57,6 +52,7 @@ export const useAccount = () => {
         method: RequestMethod.POST,
         pathname: "/account/register",
         body,
+        cache: false,
       }),
     [fetch],
   );
@@ -66,11 +62,14 @@ export const useAccount = () => {
       method: RequestMethod.POST,
       pathname: "/account/logout",
       headers: getAccountHeaders(),
+      cache: false,
     });
 
     removeCookie("account-id");
     removeCookie("refresh-token");
     removeCookie("token");
+
+    setIsLogged(null);
   }, [fetch, getAccountHeaders, removeCookie]);
 
   const recoverPassword = useCallback(
@@ -79,6 +78,7 @@ export const useAccount = () => {
         method: RequestMethod.POST,
         pathname: "/account/recover-password",
         body,
+        cache: false,
       }),
     [fetch],
   );
@@ -89,6 +89,7 @@ export const useAccount = () => {
         method: RequestMethod.POST,
         pathname: "/account/change-password",
         body,
+        cache: false,
       }),
     [fetch],
   );
@@ -108,6 +109,7 @@ export const useAccount = () => {
         token: getCookie("token"),
         "refresh-token": getCookie("refresh-token"),
       },
+      cache: false,
     });
     if (!data) return;
 
@@ -125,18 +127,26 @@ export const useAccount = () => {
       method: RequestMethod.POST,
       pathname: "/admin",
       headers: getAccountHeaders(),
+      cache: false,
     });
-  }, []);
+  }, [getAccountHeaders]);
 
   const verify = useCallback(
     async (id: string, token: string) => {
       return await fetch({
         method: RequestMethod.GET,
         pathname: `/account/verify?id=${id}&token=${token}`,
+        cache: false,
       });
     },
     [fetch],
   );
+
+  useEffect(() => {
+    refresh()
+      .then(() => setIsLogged(true))
+      .catch(() => setIsLogged(false));
+  }, []);
 
   return {
     getAccountHeaders,

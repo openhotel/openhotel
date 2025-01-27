@@ -7,6 +7,7 @@ import { hotelRequestList } from "./hotel/main.ts";
 import { userRequestList } from "./user/main.ts";
 import { tokensRequestList } from "./tokens/main.ts";
 import { adminRequestList } from "./admin/main.ts";
+import { dataRequestList } from "./data/main.ts";
 
 export const requestV3List: RequestType[] = getPathRequestList({
   requestList: [
@@ -17,6 +18,7 @@ export const requestV3List: RequestType[] = getPathRequestList({
     ...userRequestList,
     ...tokensRequestList,
     ...adminRequestList,
+    ...dataRequestList,
   ],
   pathname: "/api/v3",
 });

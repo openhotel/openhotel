@@ -11,6 +11,7 @@ import {
   PASSWORD_REGEX,
   EMAIL_REGEX,
   USERNAME_REGEX,
+  LANGUAGE_LIST,
 } from "shared/consts/main.ts";
 import { RequestKind } from "shared/enums/request.enums.ts";
 import { pepperPassword } from "shared/utils/pepper.utils.ts";
@@ -21,7 +22,7 @@ export const registerPostRequest: RequestType = {
   pathname: "/register",
   kind: RequestKind.PUBLIC,
   func: async (request: Request) => {
-    let { email, username, password, rePassword, captchaId } =
+    let { email, username, password, rePassword, languages, captchaId } =
       await request.json();
 
     if (
@@ -29,10 +30,16 @@ export const registerPostRequest: RequestType = {
       !email ||
       !username ||
       !password ||
+      !languages?.length ||
       !rePassword
     )
       return getResponse(HttpStatusCode.FORBIDDEN, {
         message: "Some input is missing or invalid captcha!",
+      });
+
+    if (languages.find((language) => !LANGUAGE_LIST.includes(language)))
+      return getResponse(HttpStatusCode.BAD_REQUEST, {
+        message: "Language is not valid!",
       });
 
     email = email.toLowerCase();
@@ -92,7 +99,9 @@ export const registerPostRequest: RequestType = {
         username,
         emailHash,
         passwordHash,
+        languages,
         createdAt: Date.now(),
+        updatedAt: Date.now(),
         verified: !isEmailVerificationEnabled,
       },
       isEmailVerificationEnabled ? { expireIn } : {},

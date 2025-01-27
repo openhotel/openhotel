@@ -1,10 +1,15 @@
 import React, { FormEvent, useCallback, useState } from "react";
-import styles from "../login/login.module.scss";
 import { ButtonComponent } from "@oh/components";
-import { LinkComponent, RedirectComponent } from "../../shared/components";
-import { useAccount } from "../../shared/hooks";
-import { PasswordComponent } from "../register";
+import {
+  LinkComponent,
+  PasswordComponent,
+  RedirectComponent,
+} from "shared/components";
+import { useAccount } from "shared/hooks";
 import { useNavigate } from "react-router-dom";
+
+//@ts-ignore
+import styles from "./change-password.module.scss";
 
 export const ChangePasswordComponent: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState<string>();

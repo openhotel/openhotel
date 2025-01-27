@@ -12,6 +12,8 @@ export type AccountRegisterProps = {
   password: string;
   rePassword: string;
 
+  languages: string[];
+
   captchaId?: string;
 };
 

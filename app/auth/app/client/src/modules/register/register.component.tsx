@@ -1,22 +1,23 @@
-import React, { FormEvent, useCallback, useState } from "react";
+import React, {
+  FormEvent,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import {
   CaptchaComponent,
   LinkComponent,
+  PasswordComponent,
   RedirectComponent,
 } from "shared/components";
-import { useAccount } from "shared/hooks";
+import { useAccount, useLanguages } from "shared/hooks";
 import { useNavigate } from "react-router-dom";
-import { ButtonComponent, InputComponent } from "@oh/components";
-import {
-  EMAIL_REGEX,
-  PASSWORD_MIN_LEN,
-  USERNAME_MAX_LEN,
-  USERNAME_MIN_LEN,
-  USERNAME_REGEX,
-} from "shared/consts";
+import { ButtonComponent, SelectorComponent } from "@oh/components";
+import { EmailComponent, UsernameComponent } from "./components";
 
 //@ts-ignore
-import login_styles from "../login/login.module.scss";
+import styles from "./register.module.scss";
 
 export const RegisterComponent: React.FC = () => {
   const [submittedAt, setSubmittedAt] = useState<number>();
@@ -25,6 +26,17 @@ export const RegisterComponent: React.FC = () => {
 
   const { register, isLogged } = useAccount();
   let navigate = useNavigate();
+
+  const { fetchLanguages, languages } = useLanguages();
+
+  useEffect(() => {
+    fetchLanguages();
+  }, [fetchLanguages]);
+
+  const languageOptions = useMemo(
+    () => languages.map((language) => ({ key: language, value: language })),
+    [languages],
+  );
 
   const onSubmit = useCallback(
     async (event: FormEvent<HTMLFormElement>) => {
@@ -35,8 +47,24 @@ export const RegisterComponent: React.FC = () => {
       const username = data.get("username") as string;
       const password = data.get("password") as string;
       const rePassword = data.get("rePassword") as string;
+      const language = data.get("language") as string;
 
-      register({ email, username, password, rePassword, captchaId })
+      console.log({
+        email,
+        username,
+        password,
+        rePassword,
+        captchaId,
+        languages: [language],
+      });
+      register({
+        email,
+        username,
+        password,
+        rePassword,
+        captchaId,
+        languages: [language],
+      })
         .then(() => {
           navigate("/login");
         })
@@ -53,155 +81,29 @@ export const RegisterComponent: React.FC = () => {
   if (isLogged) return <RedirectComponent to="/" />;
 
   return (
-    <div className={login_styles.wrapper}>
-      <form className={login_styles.form} onSubmit={onSubmit}>
-        <h1 className={login_styles.title}>Register</h1>
+    <div className={styles.wrapper}>
+      <form className={styles.form} onSubmit={onSubmit}>
+        <h1 className={styles.title}>Register</h1>
         <EmailComponent />
         <UsernameComponent />
         <PasswordComponent />
+        <SelectorComponent
+          placeholder="Language"
+          name="language"
+          options={languageOptions}
+          clearable={false}
+        />
         <CaptchaComponent submittedAt={submittedAt} onResolve={setCaptchaId} />
         <ButtonComponent fullWidth>Register</ButtonComponent>
         {errorMessage ? (
-          <label key="backend-error" className={login_styles.error}>
+          <label key="backend-error" className={styles.error}>
             {errorMessage}
           </label>
         ) : null}
       </form>
-      <LinkComponent className={login_styles.link} to="/login">
+      <LinkComponent className={styles.link} to="/login">
         Already registered? Login here.
       </LinkComponent>
     </div>
-  );
-};
-
-const EmailComponent: React.FC = () => {
-  const [email, setEmail] = useState("");
-  const [invalid, setInvalid] = useState(false);
-
-  const check = () => {
-    if (email === "") {
-      setInvalid(false);
-      return;
-    }
-    setInvalid(!new RegExp(EMAIL_REGEX).test(email));
-  };
-
-  return (
-    <>
-      <InputComponent
-        name="email"
-        placeholder="Email"
-        autoComplete="email"
-        value={email}
-        onChange={(e) => setEmail((e.target as HTMLInputElement).value)}
-        onBlur={check}
-      />
-
-      {invalid ? (
-        <label key="error-invalid" className={login_styles.error}>
-          Invalid email
-        </label>
-      ) : null}
-    </>
-  );
-};
-
-const UsernameComponent: React.FC = () => {
-  const [username, setUsername] = useState("");
-  const [tooShort, setTooShort] = useState(false);
-  const [invalidChars, setInvalidChars] = useState(false);
-  const [tooLong, setTooLong] = useState(false);
-
-  const check = () => {
-    if (username === "") {
-      setTooShort(false);
-      setTooLong(false);
-      setInvalidChars(false);
-      return;
-    }
-    setTooShort(username.length < USERNAME_MIN_LEN);
-    setTooLong(username.length > USERNAME_MAX_LEN);
-
-    setInvalidChars(!new RegExp(USERNAME_REGEX).test(username));
-  };
-
-  return (
-    <>
-      <InputComponent
-        name="username"
-        placeholder="Username"
-        autoComplete="username"
-        value={username}
-        onChange={(e) => setUsername((e.target as HTMLInputElement).value)}
-        onBlur={check}
-      />
-
-      {tooShort ? (
-        <label key="error-short" className={login_styles.error}>
-          Username is too short
-        </label>
-      ) : null}
-
-      {tooLong ? (
-        <label key="error-long" className={login_styles.error}>
-          Username is too long
-        </label>
-      ) : null}
-
-      {invalidChars ? (
-        <label key="error-invalid" className={login_styles.error}>
-          Username contains invalid characters
-        </label>
-      ) : null}
-    </>
-  );
-};
-
-export const PasswordComponent: React.FC = () => {
-  const [pass1, setPass1] = useState("");
-  const [pass2, setPass2] = useState("");
-  const [passMatch, setPassMatch] = useState(true);
-  const [passTooShort, setPassTooShort] = useState(false);
-
-  const check = () => {
-    setPassMatch(pass1 === pass2 || pass2 === "");
-    setPassTooShort(pass1 && pass1.length < PASSWORD_MIN_LEN);
-  };
-
-  return (
-    <>
-      <InputComponent
-        name="password"
-        placeholder="Password"
-        type="password"
-        autoComplete="new-password"
-        maxLength={64}
-        value={pass1}
-        onChange={(e) => setPass1((e.target as HTMLInputElement).value)}
-        onBlur={check}
-      />
-      <InputComponent
-        name="rePassword"
-        placeholder="Repeat password"
-        type="password"
-        maxLength={64}
-        autoComplete="off"
-        value={pass2}
-        onChange={(e) => setPass2((e.target as HTMLInputElement).value)}
-        onBlur={check}
-      />
-
-      {!passMatch ? (
-        <label key="error-match" className={login_styles.error}>
-          Passwords don't match
-        </label>
-      ) : null}
-
-      {passTooShort ? (
-        <label key="error-short" className={login_styles.error}>
-          Password is too short
-        </label>
-      ) : null}
-    </>
   );
 };

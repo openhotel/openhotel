@@ -10,3 +10,4 @@ export * from "./useHotel";
 export * from "./useMyHotels";
 export * from "./useCookies";
 export * from "./useHotels";
+export * from "./useLanguages";
