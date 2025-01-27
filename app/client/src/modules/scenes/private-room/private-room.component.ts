@@ -86,6 +86,7 @@ export const privateRoomComponent: ContainerComponent = () => {
   let onRemovePointerUp;
 
   $container.on(DisplayObjectEvent.MOUNT, () => {
+    $roomScene.setPosition({ x: 0, y: 0 });
     if ($room) $roomScene.remove($room);
     $room = roomComponent();
     $roomScene.add($room);
