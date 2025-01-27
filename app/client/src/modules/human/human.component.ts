@@ -252,10 +252,17 @@ export const humanComponent: ContainerComponent<Props, Mutable> = (props) => {
           if (repeatIndex === TILE_WIDTH / 2)
             targetY = targetIsometricPosition.y - lastY;
 
+          const { x, y } = $container.getPosition();
+
           $container.setPositionX(positionXFunc);
           $container.setPositionY(
             (y) => positionYFunc(y) - targetY * TILE_Y_HEIGHT,
           );
+
+          const newPos = $container.getPosition();
+
+          console.log("Diff", newPos.x - x, newPos.y - y);
+
           repeatIndex++;
         },
         onDone: () => {

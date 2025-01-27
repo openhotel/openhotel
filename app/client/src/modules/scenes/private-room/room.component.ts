@@ -337,6 +337,22 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = () => {
           System.events.emit(SystemEvent.HIDE_PREVIEW);
         });
         pol.on(DisplayObjectEvent.POINTER_ENTER, () => {
+          let texture;
+          let pivotPosition;
+
+          if (isXStairs) {
+            texture = "stairs-x-preview";
+            pivotPosition = { x: 0, y: 7 };
+          } else if (isZStairs) {
+            texture = "stairs-z-preview";
+            pivotPosition = { x: 0, y: 6 };
+          } else {
+            texture = "tile_preview";
+            pivotPosition = { x: -2, y: 0 };
+          }
+          $tilePreview.setTexture(texture, SpriteSheetEnum.ROOM);
+          $tilePreview.setPivot(pivotPosition);
+
           $tilePreview.setPosition(previewPosition);
           $tilePreview.setZIndex(zIndex - 0.05);
           $tilePreview.setVisible(true);
