@@ -47,7 +47,7 @@ export const HotelsComponent = () => {
                   <a className={styles.owner}>by {hotel.owner}</a>
                 </span>
                 <label>
-                  founded at {dayjs(hotel.createdAt).format("DD MMM YYYY")}
+                  founded on {dayjs(hotel.createdAt).format("DD MMM YYYY")}
                 </label>
                 <a>
                   {hotel.accounts} user{hotel.accounts === 1 ? "" : "s"} already
