@@ -4,6 +4,8 @@ import { getCensoredEmail } from "shared/utils";
 import { GithubComponent, LanguagesComponent } from "./components";
 //@ts-ignore
 import styles from "./account.module.scss";
+import { ButtonComponent } from "@oh/components";
+import { LinkComponent } from "shared/components";
 
 export const AccountComponent = () => {
   const { user } = useUser();
@@ -17,6 +19,11 @@ export const AccountComponent = () => {
       <label title={user?.accountId}>{user?.username}</label>
       <LanguagesComponent />
       <GithubComponent />
+      <div className={styles.delete}>
+        <LinkComponent to="/account/delete">
+          <ButtonComponent color="grey">Delete account</ButtonComponent>
+        </LinkComponent>
+      </div>
     </div>
   );
 };

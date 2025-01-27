@@ -17,6 +17,7 @@ import {
   AccountComponent,
   BskyComponent,
   ConnectionsComponent,
+  DeleteComponent,
   GithubComponent,
   MyHotelsComponent,
 } from "modules/account";
@@ -108,6 +109,10 @@ const router = createBrowserRouter([
           {
             path: "github",
             element: <GithubComponent />,
+          },
+          {
+            path: "delete",
+            element: <DeleteComponent />,
           },
         ],
       },

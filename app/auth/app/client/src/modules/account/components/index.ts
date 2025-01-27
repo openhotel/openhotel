@@ -6,3 +6,4 @@ export * from "./otp";
 export * from "./navigator";
 export * from "./languages";
 export * from "./github";
+export * from "./delete";

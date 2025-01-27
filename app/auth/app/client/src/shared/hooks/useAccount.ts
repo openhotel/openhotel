@@ -129,7 +129,7 @@ export const useAccount = () => {
       headers: getAccountHeaders(),
       cache: false,
     });
-  }, [getAccountHeaders]);
+  }, [fetch, getAccountHeaders]);
 
   const verify = useCallback(
     async (id: string, token: string) => {
@@ -141,6 +141,20 @@ export const useAccount = () => {
     },
     [fetch],
   );
+
+  const __deleteAccount = useCallback(async () => {
+    await fetch({
+      method: RequestMethod.DELETE,
+      pathname: `/account`,
+      headers: getAccountHeaders(),
+    });
+
+    removeCookie("account-id");
+    removeCookie("refresh-token");
+    removeCookie("token");
+
+    setIsLogged(null);
+  }, [fetch, getAccountHeaders]);
 
   useEffect(() => {
     refresh()
@@ -163,5 +177,7 @@ export const useAccount = () => {
     isLogged,
 
     setAsAdmin,
+
+    __deleteAccount,
   };
 };

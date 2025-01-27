@@ -9,9 +9,12 @@ import { otpRequestList } from "./otp/main.ts";
 import { miscRequestList } from "./misc/main.ts";
 import { recoverPasswordPostRequest } from "./recover-password.request.ts";
 import { changePasswordPostRequest } from "./change-password.request.ts";
+import { accountDeleteRequest } from "./main.request.ts";
 
 export const accountRequestList: RequestType[] = getPathRequestList({
   requestList: [
+    accountDeleteRequest,
+
     loginPostRequest,
     registerPostRequest,
     verifyGetRequest,
