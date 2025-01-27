@@ -21,13 +21,14 @@ export type HotelIntegration = {
 export type PublicHotelIntegration = {
   name: string;
   url: string;
-  accounts: number;
 } | null;
 
 export type PublicHotel = {
   id: string;
   name: string;
   owner: string;
+  accounts: number;
+  createdAt: number;
   client: PublicHotelIntegration;
   web: PublicHotelIntegration;
 };

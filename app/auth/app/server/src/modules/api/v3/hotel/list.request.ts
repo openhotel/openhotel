@@ -27,43 +27,44 @@ export const listRequest: RequestType = {
               (integration) => integration.type === "web",
             );
 
-            const clientAccounts = client
-              ? (
-                  await System.hotels.getAccountsByIntegrationId(
-                    hotel.hotelId,
-                    client.integrationId,
-                  )
-                ).length
-              : 0;
-            const webAccounts = web
-              ? (
-                  await System.hotels.getAccountsByIntegrationId(
-                    hotel.hotelId,
-                    web.integrationId,
-                  )
-                ).length
-              : 0;
+            const accounts = [
+              ...new Set(
+                [
+                  ...(client
+                    ? await System.hotels.getAccountsByIntegrationId(
+                        hotel.hotelId,
+                        client.integrationId,
+                      )
+                    : []),
+                  ...(web
+                    ? await System.hotels.getAccountsByIntegrationId(
+                        hotel.hotelId,
+                        web.integrationId,
+                      )
+                    : []),
+                ].map(({ value }) => value.accountId),
+              ),
+            ];
 
             //if hotel is a ghost town, filter it out
-            if ((!client && !web) || clientAccounts + webAccounts === 0)
-              return null;
+            if ((!client && !web) || accounts.length === 0) return null;
 
             return {
               id: hotel.hotelId,
               name: hotel.name,
               owner: owner.username,
+              accounts: accounts.length,
+              createdAt: hotel.createdAt,
               client: client
                 ? {
                     name: client.name,
                     url: client.redirectUrl,
-                    accounts: clientAccounts,
                   }
                 : null,
               web: web
                 ? {
                     name: web.name,
                     url: web.redirectUrl,
-                    accounts: webAccounts,
                   }
                 : null,
             };

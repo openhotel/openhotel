@@ -5,6 +5,7 @@ import styles from "./hotels.module.scss";
 import { PublicHotel } from "shared/types";
 import { ButtonComponent } from "@oh/components";
 import { LinkComponent } from "shared/components";
+import dayjs from "dayjs";
 
 export const HotelsComponent = () => {
   const { getList } = useHotels();
@@ -12,7 +13,11 @@ export const HotelsComponent = () => {
   const [hotels, setHotels] = useState<PublicHotel[]>([]);
 
   useEffect(() => {
-    getList().then(setHotels);
+    getList().then((hotels) =>
+      setHotels(
+        hotels.sort((hotelA, hotelB) => hotelB.accounts - hotelA.accounts),
+      ),
+    );
   }, [getList]);
 
   return (
@@ -33,36 +38,42 @@ export const HotelsComponent = () => {
                   backgroundImage: `url(hotel/hotel-logo.webp)`,
                 }}
               />
-              <i className={styles.owner}>by {hotel.owner}</i>
               <div className={styles.gradient} />
             </div>
             <div className={styles.content}>
-              {hotel.web ? (
-                <div className={styles.contentItem}>
-                  <div className={styles.contentHeader}>
-                    <label>{hotel.web.accounts} accounts</label>
-                  </div>
-                  <div>
+              <div className={styles.contentHeader}>
+                <span>
+                  <b>{hotel.name} </b>
+                  <a className={styles.owner}>by {hotel.owner}</a>
+                </span>
+                <label>
+                  founded at {dayjs(hotel.createdAt).format("DD MMM YYYY")}
+                </label>
+                <a>
+                  {hotel.accounts} account{hotel.accounts === 1 ? "" : "s"}{" "}
+                  already joined!
+                </a>
+              </div>
+              <div className={styles.contentActions}>
+                {hotel.web ? (
+                  <div className={styles.action}>
                     <LinkComponent to={hotel.web.url} target="_blank">
                       <ButtonComponent variant="3d">
                         Visit the website!
                       </ButtonComponent>
                     </LinkComponent>
                   </div>
-                </div>
-              ) : null}
-              {hotel.client ? (
-                <div className={styles.contentItem}>
-                  <div className={styles.contentHeader}>
-                    <label>{hotel.client.accounts} accounts</label>
+                ) : null}
+                {hotel.client ? (
+                  <div className={styles.action}>
+                    <LinkComponent to={hotel.client.url} target="_blank">
+                      <ButtonComponent color="yellow" variant="3d">
+                        Check in!
+                      </ButtonComponent>
+                    </LinkComponent>
                   </div>
-                  <LinkComponent to={hotel.client.url} target="_blank">
-                    <ButtonComponent color="yellow" variant="3d">
-                      Check in!
-                    </ButtonComponent>
-                  </LinkComponent>
-                </div>
-              ) : null}
+                ) : null}
+              </div>
             </div>
           </div>
         ))}
