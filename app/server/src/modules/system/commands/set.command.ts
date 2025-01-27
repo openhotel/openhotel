@@ -86,25 +86,21 @@ export const setCommand: Command = {
         return;
       }
 
-      // TODO: check this pagoru
-      const frameHeight =
-        $furniture.direction[CrossDirection[direction].toLowerCase()]
-          .textures[0].bounds.height;
+      // TODO: Default to 34 until furniture metadata is fully updated -> https://github.com/openhotel/asset-editor/issues/14
+      const frameHeight = $furniture?.bounds?.height || 34;
 
       const previewY = -((parseInt(roomPoint + "") ?? 1) - 1);
       const y = Math.floor(previewY);
-
-      // 17 -> 15 topHeight wall + 2 padding
-      const wallHeight = WALL_HEIGHT - y * TILE_Y_HEIGHT - 17;
-
-      const positionY = wallY;
+      const wallHeight = WALL_HEIGHT - y * TILE_Y_HEIGHT;
       const limitHeight = wallHeight - frameHeight;
-      console.log({ positionY, wallHeight, limitHeight });
 
-      if (positionY > limitHeight) {
+      if (wallY > limitHeight) {
         user.emit(ProxyEvent.SYSTEM_MESSAGE, {
           message: __(user.getLanguage())(
-            "Frames cannot exceed the height of the wall",
+            "Frames cannot exceed the height of the wall ({{height}})",
+            {
+              height: limitHeight,
+            },
           ),
         });
         return;

@@ -49,5 +49,5 @@
   "Insufficient permissions": "Insufficient permissions",
   "The furniture cannot be placed at position {{x}},{{z}}": "The furniture cannot be placed at position {{x}},{{z}}",
   "Frames need to be attached to the wall": "Frames need to be attached to the wall",
-  "Frames cannot exceed the height of the wall": "Frames cannot exceed the height of the wall"
+  "Frames cannot exceed the height of the wall": "Frames cannot exceed the height of the wall ({{height}})"
 }
