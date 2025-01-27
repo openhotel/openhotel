@@ -22,9 +22,32 @@ export const accounts = () => {
     return await System.db.get(["accounts", accountId]);
   };
 
+  const remove = async (accountId: string) => {
+    const account = await get(accountId);
+
+    await System.db.delete(["accounts", accountId]);
+    await System.db.delete(["accountsByEmail", account.emailHash]);
+    await System.db.delete(["accountsByRefreshToken", accountId]);
+    await System.db.delete(["accountsByToken", accountId]);
+    await System.db.delete(["accountsByUsername", account.username]);
+
+    await System.db.delete(["emailsByHash", account.emailHash]);
+
+    await System.db.delete(["github", accountId]);
+    await System.db.delete(["githubState", accountId]);
+
+    await System.connections.removeAll(accountId);
+    await System.hotels.removeAll(accountId);
+
+    await System.db.delete(["hotelsByAccountId", accountId]);
+
+    await System.admins.remove(accountId);
+  };
+
   return {
     getList,
     get,
     getFromRequest,
+    remove,
   };
 };

@@ -48,6 +48,23 @@ export const System = (() => {
     await $db.load();
     await Migrations.load($db);
 
+    {
+      try {
+        const entries = [];
+        for (const entry of await $db.list({ prefix: [] })) {
+          // Fetch all entries
+          entries.push({
+            key: JSON.stringify(entry.key),
+            value: JSON.stringify(entry.value)?.substring(0, 8),
+          });
+        }
+
+        console.table(entries); // Format as a table
+        console.log(`Total entries: ${entries.length}`);
+      } finally {
+      }
+    }
+
     await $email.load();
     $api.load();
   };

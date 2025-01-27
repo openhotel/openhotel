@@ -10,11 +10,26 @@ import { System } from "modules/system/main.ts";
 import { EMAIL_REGEX, USERNAME_REGEX } from "shared/consts/main.ts";
 import { getEmailHash, getEncryptedEmail } from "shared/utils/account.utils.ts";
 
+export const userDeleteRequest: RequestType = {
+  method: RequestMethod.DELETE,
+  pathname: "/user",
+  kind: RequestKind.ADMIN,
+  func: async (request: Request) => {
+    if (!(await hasRequestAccess({ request, admin: true })))
+      return getResponse(HttpStatusCode.FORBIDDEN);
+
+    let { accountId } = await request.json();
+    await System.accounts.remove(accountId);
+
+    return getResponse(HttpStatusCode.OK);
+  },
+};
+
 export const userPatchRequest: RequestType = {
   method: RequestMethod.PATCH,
   pathname: "/user",
   kind: RequestKind.ADMIN,
-  func: async (request: Request, url: URL) => {
+  func: async (request: Request) => {
     if (!(await hasRequestAccess({ request, admin: true })))
       return getResponse(HttpStatusCode.FORBIDDEN);
 

@@ -50,8 +50,8 @@ export const HotelsComponent = () => {
                   founded at {dayjs(hotel.createdAt).format("DD MMM YYYY")}
                 </label>
                 <a>
-                  {hotel.accounts} account{hotel.accounts === 1 ? "" : "s"}{" "}
-                  already joined!
+                  {hotel.accounts} user{hotel.accounts === 1 ? "" : "s"} already
+                  joined!
                 </a>
               </div>
               <div className={styles.contentActions}>

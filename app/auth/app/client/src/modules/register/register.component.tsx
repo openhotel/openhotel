@@ -49,14 +49,6 @@ export const RegisterComponent: React.FC = () => {
       const rePassword = data.get("rePassword") as string;
       const language = data.get("language") as string;
 
-      console.log({
-        email,
-        username,
-        password,
-        rePassword,
-        captchaId,
-        languages: [language],
-      });
       register({
         email,
         username,

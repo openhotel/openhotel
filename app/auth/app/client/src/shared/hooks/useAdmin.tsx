@@ -21,6 +21,7 @@ type AdminState = {
   update: () => Promise<void>;
 
   updateUser: (user: User) => Promise<void>;
+  deleteUser: (user: User) => Promise<void>;
   resendVerificationUser: (accountId: string) => Promise<void>;
 
   refresh: () => void;
@@ -54,6 +55,18 @@ export const AdminProvider: React.FunctionComponent<ProviderProps> = ({
     (user: User) => {
       return fetch({
         method: RequestMethod.PATCH,
+        pathname: "/admin/user",
+        headers: getAccountHeaders(),
+        body: user,
+      });
+    },
+    [fetch, getAccountHeaders],
+  );
+
+  const deleteUser = useCallback(
+    (user: User) => {
+      return fetch({
+        method: RequestMethod.DELETE,
         pathname: "/admin/user",
         headers: getAccountHeaders(),
         body: user,
@@ -149,6 +162,7 @@ export const AdminProvider: React.FunctionComponent<ProviderProps> = ({
       value={{
         users,
         updateUser,
+        deleteUser,
         resendVerificationUser,
 
         tokens,

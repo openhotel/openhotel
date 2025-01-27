@@ -65,15 +65,6 @@ export const loginPostRequest: RequestType = {
         message: "Email or password not valid!",
       });
 
-    const accountByVerifyId = await System.db.get([
-      "accountsByVerifyId",
-      account.accountId,
-    ]);
-    if (accountByVerifyId)
-      return getResponse(HttpStatusCode.FORBIDDEN, {
-        message: "Account is not verified!",
-      });
-
     const accountOTP = await System.db.get([
       "otpByAccountId",
       account.accountId,

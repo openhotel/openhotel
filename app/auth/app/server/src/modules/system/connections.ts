@@ -293,10 +293,24 @@ export const connections = () => {
     return connections;
   };
 
+  const removeAll = async (accountId: string) => {
+    await System.db.delete(["connections", accountId]);
+
+    const connections = (
+      await System.db.list({
+        prefix: ["integrationsByAccountId", accountId],
+      })
+    ).map(({ value }) => value);
+
+    for (const connection of connections)
+      await remove(accountId, connection.hotelId, connection.integrationId);
+  };
+
   return {
     generate,
     verify,
     remove,
+    removeAll,
     ping,
     getList,
     getListByHotelIdIntegrationId,

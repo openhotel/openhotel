@@ -9,17 +9,21 @@ import {
   CrossIconComponent,
   ButtonComponent,
   SelectorComponent,
+  ConfirmationModalComponent,
 } from "@oh/components";
 import { User } from "shared/types";
 import { EMAIL_REGEX, USERNAME_REGEX } from "shared/consts";
 
 //@ts-ignore
 import styles from "./users.module.scss";
+import { useModal } from "@oh/components";
 
 export const AdminUsersComponent = () => {
-  const { users, updateUser, refresh, resendVerificationUser } = useAdmin();
+  const { users, updateUser, deleteUser, refresh, resendVerificationUser } =
+    useAdmin();
 
   const [selectedUser, setSelectedUser] = useState<User>();
+  const { open, close } = useModal();
 
   const today = dayjs(Date.now());
 
@@ -37,6 +41,7 @@ export const AdminUsersComponent = () => {
         email,
         createdAt: dayjs(createdAt).valueOf(),
         admin: selectedUser.admin,
+        languages: selectedUser.languages,
       };
 
       await updateUser(user);
@@ -61,6 +66,10 @@ export const AdminUsersComponent = () => {
       ),
     [selectedUser, adminOptions],
   );
+  const $onRemoveAccount = useCallback(async () => {
+    await deleteUser(selectedUser);
+    refresh();
+  }, [deleteUser, selectedUser]);
 
   return (
     <div>
@@ -126,16 +135,37 @@ export const AdminUsersComponent = () => {
                   }
                 />
               </div>
-              <ButtonComponent>Update</ButtonComponent>
+              <div className={styles.actions}>
+                {selectedUser.admin ? null : (
+                  <ButtonComponent
+                    color="grey"
+                    onClick={() =>
+                      open({
+                        children: (
+                          <ConfirmationModalComponent
+                            description={`Are you sure you want to delete ${selectedUser.username}'s account?`}
+                            onClose={close}
+                            onConfirm={$onRemoveAccount}
+                          />
+                        ),
+                      })
+                    }
+                  >
+                    Delete
+                  </ButtonComponent>
+                )}
+                {/*//@ts-ignore*/}
+                {selectedUser.verified !== "✅" ? (
+                  <ButtonComponent
+                    color="yellow"
+                    onClick={onResendVerificationEmail}
+                  >
+                    Resend verification email
+                  </ButtonComponent>
+                ) : null}
+                <ButtonComponent>Update</ButtonComponent>
+              </div>
             </FormComponent>
-            {selectedUser.verified !== "✅" ? (
-              <ButtonComponent
-                color="yellow"
-                onClick={onResendVerificationEmail}
-              >
-                Resend verification email
-              </ButtonComponent>
-            ) : null}
           </div>
         ) : null}
         <TableComponent
@@ -181,6 +211,7 @@ export const AdminUsersComponent = () => {
               verified: user.verified
                 ? "✅"
                 : `⏳ ${Math.floor(remainingMinutes / 60)} hours ${remainingMinutes % 60} minutes`,
+              githubLogin: user.githubLogin,
               createdAt: dayjs(user.createdAt).format("YYYY/MM/DD HH:mm:ss"),
             };
           })}
@@ -207,6 +238,11 @@ export const AdminUsersComponent = () => {
               sortable: true,
               key: "otp",
               label: "2FA",
+            },
+            {
+              sortable: true,
+              key: "githubLogin",
+              label: "github",
             },
             {
               sortable: true,
