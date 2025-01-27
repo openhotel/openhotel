@@ -25,9 +25,17 @@ export type FurnitureDirectionDataMap = Record<
   FurnitureDirectionData
 >;
 
+export type FurnitureBounds = {
+  width: number;
+  height: number;
+  depth: number;
+};
+
 export type FurnitureData = {
   version: string;
   id: string;
+
+  bounds?: FurnitureBounds;
   type: FurnitureType;
   label: string;
   description: string;
