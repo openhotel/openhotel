@@ -42,9 +42,10 @@ export const dummyFurnitureFrameComponent: ContainerComponent<
   const isNorthDirection = direction === CrossDirection.NORTH;
 
   const $position = getPositionFromIsometricPosition(point);
+  // TODO: Check 'x' calculation for isometric positioning logic
   const frameIsometricPosition = {
     x: isNorthDirection ? framePosition.x * 2 : -framePosition.x * 2,
-    y: -framePosition.y * 2 + framePosition.x,
+    y: -framePosition.y + framePosition.x,
   };
 
   const $sprite = sprite({
