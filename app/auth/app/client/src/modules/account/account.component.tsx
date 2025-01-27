@@ -1,7 +1,9 @@
 import { useUser } from "shared/hooks";
 import React from "react";
 import { getCensoredEmail } from "shared/utils";
-import { LanguagesComponent } from "./components";
+import { GithubComponent, LanguagesComponent } from "./components";
+//@ts-ignore
+import styles from "./account.module.scss";
 
 export const AccountComponent = () => {
   const { user } = useUser();
@@ -9,11 +11,12 @@ export const AccountComponent = () => {
   if (!user) return <div>loading...</div>;
 
   return (
-    <div>
+    <div className={styles.content}>
       <h2>Account</h2>
-      <p title={user?.email}>{getCensoredEmail(user?.email)}</p>
-      <p title={user?.accountId}>{user?.username}</p>
+      <label title={user?.email}>{getCensoredEmail(user?.email)}</label>
+      <label title={user?.accountId}>{user?.username}</label>
       <LanguagesComponent />
+      <GithubComponent />
     </div>
   );
 };

@@ -8,4 +8,5 @@ export type User = {
   admin?: boolean;
   otp?: boolean;
   verified?: boolean;
+  githubLogin?: string;
 };

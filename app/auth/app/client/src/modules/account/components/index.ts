@@ -5,3 +5,4 @@ export * from "./my-hotels";
 export * from "./otp";
 export * from "./navigator";
 export * from "./languages";
+export * from "./github";

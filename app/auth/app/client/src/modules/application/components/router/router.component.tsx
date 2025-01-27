@@ -17,6 +17,7 @@ import {
   AccountComponent,
   BskyComponent,
   ConnectionsComponent,
+  GithubComponent,
   MyHotelsComponent,
 } from "modules/account";
 import {
@@ -103,6 +104,10 @@ const router = createBrowserRouter([
           {
             path: "bsky",
             element: <BskyComponent />,
+          },
+          {
+            path: "github",
+            element: <GithubComponent />,
           },
         ],
       },

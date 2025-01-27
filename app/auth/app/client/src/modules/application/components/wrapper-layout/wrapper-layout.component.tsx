@@ -10,12 +10,12 @@ type Props = {
 
 export const WrapperLayoutComponent = ({ children }: Props) => {
   const { isLogged } = useAccount();
-  const { user, initUser } = useUser();
+  const { user, refresh } = useUser();
 
   useEffect(() => {
     if (!isLogged || user) return;
-    initUser();
-  }, [user, isLogged, initUser]);
+    refresh();
+  }, [user, isLogged, refresh]);
 
   if (isLogged === null) return <div>Loading...</div>;
   if (!isLogged) return <RedirectComponent to="/login" />;

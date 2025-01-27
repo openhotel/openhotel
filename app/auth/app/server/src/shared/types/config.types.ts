@@ -28,4 +28,9 @@ export type ConfigTypes = {
     username: string;
     password: string;
   };
+  github: {
+    enabled: boolean;
+    clientId: string;
+    clientSecret: string;
+  };
 };

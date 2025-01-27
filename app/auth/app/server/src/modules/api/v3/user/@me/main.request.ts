@@ -20,11 +20,14 @@ export const mainGetRequest: RequestType = {
     const account = await System.accounts.getFromRequest(request);
     const admin = Boolean(await System.admins.get(account.accountId));
 
+    const githubData = await System.db.get(["github", account.accountId]);
+
     return getResponse(HttpStatusCode.OK, {
       data: {
         accountId: account.accountId,
         username: account.username,
         languages: account.languages,
+        ...(githubData?.login ? { githubLogin: githubData?.login } : {}),
         ...(admin ? { admin } : {}),
       },
     });

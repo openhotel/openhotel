@@ -9,7 +9,7 @@ type UserState = {
   user: User | null;
 
   getLicense: () => Promise<string>;
-  initUser: () => Promise<void>;
+  refresh: () => Promise<void>;
 
   update: (data: { languages: string[] }) => void;
 
@@ -57,7 +57,7 @@ export const UserProvider: React.FunctionComponent<ProviderProps> = ({
     return data.licenseToken;
   }, [fetch, getAccountHeaders]);
 
-  const initUser = useCallback(
+  const refresh = useCallback(
     () =>
       fetchUser()
         .then(setUser)
@@ -73,9 +73,9 @@ export const UserProvider: React.FunctionComponent<ProviderProps> = ({
         headers: getAccountHeaders(),
         body,
       })
-        .then(initUser)
+        .then(refresh)
         .catch(() => navigate("/login")),
-    [fetchUser, setUser, navigate, getAccountHeaders],
+    [fetchUser, navigate, getAccountHeaders],
   );
 
   const clear = useCallback(() => {
@@ -88,7 +88,7 @@ export const UserProvider: React.FunctionComponent<ProviderProps> = ({
         user,
         getLicense,
 
-        initUser,
+        refresh,
 
         update,
 

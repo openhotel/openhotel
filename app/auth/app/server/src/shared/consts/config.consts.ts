@@ -30,4 +30,9 @@ export const CONFIG_DEFAULT: ConfigTypes = {
     username: "",
     password: "",
   },
+  github: {
+    enabled: false,
+    clientId: "",
+    clientSecret: "",
+  },
 };
