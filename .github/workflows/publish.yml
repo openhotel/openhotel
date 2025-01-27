@@ -50,6 +50,8 @@ jobs:
 
       - name: Commit and push CHANGELOG
         run: |
+          git config user.name "OpenHotel Actions"
+          git config user.email "actions@openhotel.club"
           git add CHANGELOG.md
           COMMIT_MSG="chore: update release notes for $latest_tag\n\n"
           COMMIT_MSG+="- Contributors: $(git log $previous_tag..$latest_tag --format='%aN' | sort -u | tr '\n' ' ')"
