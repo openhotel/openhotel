@@ -1,4 +1,4 @@
-import { Command } from "shared/types/main.ts";
+import { Command, CommandRoles } from "shared/types/main.ts";
 import { System } from "modules/system/main.ts";
 import { FurnitureType, ProxyEvent } from "shared/enums/main.ts";
 import { __ } from "shared/utils/main.ts";
@@ -6,6 +6,7 @@ import { CrossDirection } from "@oh/utils";
 
 export const rotateCommand: Command = {
   command: "rotate",
+  role: CommandRoles.OP,
   usages: ["<furniture_id> <true|false>"],
   description: "command.rotate.description",
   func: async ({ user, args }) => {

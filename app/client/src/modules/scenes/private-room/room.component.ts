@@ -11,7 +11,11 @@ import {
   GraphicType,
   sprite,
 } from "@tu/tulip";
-import { getPositionFromIsometricPosition, getTilePolygon } from "shared/utils";
+import {
+  getPositionFromIsometricPosition,
+  getTilePolygon,
+  waitUntil,
+} from "shared/utils";
 import {
   Event,
   FurnitureType,
@@ -111,12 +115,13 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = () => {
     );
     removeOnMoveHuman = System.proxy.on<any>(
       Event.MOVE_HUMAN,
-      ({ accountId, position, bodyDirection }) => {
+      async ({ accountId, position, bodyDirection }) => {
         const human = humanList.find(
           (human) => human.getUser().accountId === accountId,
         );
 
-        human.moveTo(position, bodyDirection);
+        await waitUntil(() => !human.isMoving());
+        await human.moveTo(position, bodyDirection);
       },
     );
     removeOnSetPositionHuman = System.proxy.on<any>(
@@ -323,7 +328,10 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = () => {
           position: previewPosition,
         });
 
-        pol.on(DisplayObjectEvent.POINTER_UP, () => {
+        let canMove = false;
+
+        pol.on(DisplayObjectEvent.POINTER_TAP, (event) => {
+          if (event.button !== 0 || !canMove) return;
           global.context.blur();
           System.proxy.emit(Event.POINTER_TILE, {
             position: {
@@ -334,6 +342,22 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = () => {
           System.events.emit(SystemEvent.HIDE_PREVIEW);
         });
         pol.on(DisplayObjectEvent.POINTER_ENTER, () => {
+          let texture;
+          let pivotPosition;
+
+          if (isXStairs) {
+            texture = "stairs-x-preview";
+            pivotPosition = { x: 0, y: 7 };
+          } else if (isZStairs) {
+            texture = "stairs-z-preview";
+            pivotPosition = { x: 0, y: 6 };
+          } else {
+            texture = "tile_preview";
+            pivotPosition = { x: -2, y: 0 };
+          }
+          $tilePreview.setTexture(texture, SpriteSheetEnum.ROOM);
+          $tilePreview.setPivot(pivotPosition);
+
           $tilePreview.setPosition(previewPosition);
           $tilePreview.setZIndex(zIndex - 0.05);
           $tilePreview.setVisible(true);
@@ -345,6 +369,9 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = () => {
           $tilePreview.setVisible(false),
         );
 
+        // Allows the user to move the camera around the room
+        pol.on(DisplayObjectEvent.POINTER_DOWN, () => (canMove = true));
+        pol.on(DisplayObjectEvent.POINTER_MOVE, () => (canMove = false));
         $container.add(pol);
       }
     }

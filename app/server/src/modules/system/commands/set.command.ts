@@ -1,13 +1,17 @@
-import { Command, RoomFurniture } from "shared/types/main.ts";
+import { Command, CommandRoles, RoomFurniture } from "shared/types/main.ts";
 import { ProxyEvent } from "shared/enums/event.enum.ts";
 import { System } from "modules/system/main.ts";
 import { FurnitureType } from "shared/enums/furniture.enum.ts";
 import { CrossDirection } from "@oh/utils";
 import { RoomPointEnum } from "shared/enums/room.enums.ts";
 import { isWallRenderable } from "shared/utils/rooms.utils.ts";
+import { WALL_HEIGHT } from "shared/consts/wall.consts.ts";
+import { TILE_Y_HEIGHT } from "shared/consts/tiles.consts.ts";
+import { __ } from "shared/utils/languages.utils.ts";
 
 export const setCommand: Command = {
   command: "set",
+  role: CommandRoles.OP,
   usages: ["<furniture_id> <x> <z> <direction> [wallX] [wallY]"],
   description: "command.set.description",
   func: async ({ user, args }) => {
@@ -55,20 +59,58 @@ export const setCommand: Command = {
     };
 
     const roomPoint = room.getPoint(furniture.position);
-    if (roomPoint === RoomPointEnum.EMPTY || roomPoint === RoomPointEnum.SPAWN)
+    if (
+      roomPoint === RoomPointEnum.EMPTY ||
+      roomPoint === RoomPointEnum.SPAWN
+    ) {
+      user.emit(ProxyEvent.SYSTEM_MESSAGE, {
+        message: __(user.getLanguage())(
+          "The furniture cannot be placed at position {{x}},{{z}}",
+          { x, z },
+        ),
+      });
       return;
+    }
+
     if (furniture.type === FurnitureType.FRAME) {
       const layout = room.getObject().layout;
-      if (
-        !isWallRenderable(layout, furniture.position, true) &&
-        !isWallRenderable(layout, furniture.position, false)
-      )
+      const isWallX = isWallRenderable(layout, furniture.position, true);
+      const isWallZ = isWallRenderable(layout, furniture.position, false);
+
+      if (!isWallX && !isWallZ) {
+        user.emit(ProxyEvent.SYSTEM_MESSAGE, {
+          message: __(user.getLanguage())(
+            "Frames need to be attached to the wall",
+          ),
+        });
         return;
+      }
+
+      // TODO: Default to 34 until furniture metadata is fully updated -> https://github.com/openhotel/asset-editor/issues/14
+      const frameHeight = $furniture?.bounds?.height || 34;
+
+      const previewY = -((parseInt(roomPoint + "") ?? 1) - 1);
+      const y = Math.floor(previewY);
+      const wallHeight = WALL_HEIGHT - y * TILE_Y_HEIGHT;
+      const limitHeight = wallHeight - frameHeight;
+
+      if (wallY > limitHeight) {
+        user.emit(ProxyEvent.SYSTEM_MESSAGE, {
+          message: __(user.getLanguage())(
+            "Frames cannot exceed the height of the wall ({{height}})",
+            {
+              height: limitHeight,
+            },
+          ),
+        });
+        return;
+      }
     }
 
     switch ($furniture.type) {
       case FurnitureType.TELEPORT:
         await System.game.teleports.setRoom(furniture.id, roomId);
+      // Not add break, it's not a bug, it's a feature!!
       case FurnitureType.FURNITURE:
         furniture.size = $furniture.size;
         break;

@@ -34,6 +34,7 @@ type Mutable = {
   getIsometricPosition: () => Point3d;
   setBodyDirection: (direction: Direction) => void;
   moveTo: (position: Point3d, direction: Direction) => Promise<void>;
+  isMoving: () => boolean;
   cancelMovement: () => void;
   getUser: () => { accountId: string; username: string };
 };
@@ -54,6 +55,7 @@ export const humanComponent: ContainerComponent<Props, Mutable> = (props) => {
 
   const { user } = $container.getProps();
 
+  let $isMoving = false;
   let $isometricPosition: Point3d;
   let $direction: Direction = Direction.NORTH;
 
@@ -175,6 +177,7 @@ export const humanComponent: ContainerComponent<Props, Mutable> = (props) => {
   let lastMovementAnimationId;
   //TODO Move this to a util
   const moveTo = (point: Point3d, direction: Direction) => {
+    $isMoving = true;
     System.tasks.remove(lastMovementAnimationId);
 
     let positionXFunc: (x: number) => number = (x) => x;
@@ -261,6 +264,7 @@ export const humanComponent: ContainerComponent<Props, Mutable> = (props) => {
         onDone: () => {
           $calcIsometricPosition();
           resolve();
+          $isMoving = false;
         },
       });
     });
@@ -284,6 +288,7 @@ export const humanComponent: ContainerComponent<Props, Mutable> = (props) => {
     getIsometricPosition,
     setBodyDirection,
     moveTo,
+    isMoving: () => $isMoving,
     getUser: () => user,
   });
 };
