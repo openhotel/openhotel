@@ -48,10 +48,10 @@ jobs:
 
       - name: Generate CHANGELOG
         run: |
-          git fetch --tags
+          git fetch --tags --force
           latest_tag=$(git describe --tags --abbrev=0)
           previous_tag=$(git describe --tags --abbrev=0 "$latest_tag^" || echo "")
-          git-chglog -o CHANGELOG.md ${previous_tag:+$previous_tag..}$latest_tag
+          git-chglog -o CHANGELOG.md "$previous_tag..$latest_tag"
 
       - name: Create Branch and Commit
         run: |
@@ -75,8 +75,8 @@ jobs:
           branch_name="chore/changelog-$latest_tag"
 
           gh pr create \
-            --title "chore: Update CHANGELOG for $latest_tag" \
-            --body "Automated CHANGELOG update for release $latest_tag. Please review and merge." \
+            --title "chore: Update changelog for $latest_tag" \
+            --body "Automated changelog update for release $latest_tag. Please review and merge." \
             --base master \
             --head "$branch_name"
 
