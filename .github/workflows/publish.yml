@@ -52,11 +52,19 @@ jobs:
         run: |
           git config user.name "OpenHotel Actions"
           git config user.email "actions@openhotel.club"
+
+          git fetch --tags --force
+          latest_tag=$(git describe --tags --abbrev=0)
+          previous_tag=$(git describe --tags --abbrev=0 "$latest_tag^" 2>/dev/null || echo "")
+
+          git checkout master
+
+          contributors=$(git log --format="%aN" "$previous_tag".."$latest_tag" | sort -u | tr '\n' ', ')
+          COMMIT_MSG=$'chore: update release notes for '"$latest_tag"$'\n\n- Contributors: '"$contributors"
+
           git add CHANGELOG.md
-          COMMIT_MSG="chore: update release notes for $latest_tag\n\n"
-          COMMIT_MSG+="- Contributors: $(git log $previous_tag..$latest_tag --format='%aN' | sort -u | tr '\n' ' ')"
           git commit -m "$COMMIT_MSG"
-          git push
+          git push origin master
 
       - name: Build
         run: deno task build --debug --target=* --version=${{ steps.set_version.outputs.tag }} --zip --release
