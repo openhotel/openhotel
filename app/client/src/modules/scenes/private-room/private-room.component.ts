@@ -84,6 +84,8 @@ export const privateRoomComponent: ContainerComponent = () => {
   let onRemovePointerDown;
   let onRemovePointerMove;
   let onRemovePointerUp;
+  let onRemoveEnableCamera;
+  let onRemoveDisableCamera;
 
   $container.on(DisplayObjectEvent.MOUNT, () => {
     $roomScene.setPosition({ x: 0, y: 0 });
@@ -96,13 +98,28 @@ export const privateRoomComponent: ContainerComponent = () => {
     $roomScene.add($bubbleChat);
     loadRoomPosition();
 
+    let isEnabled = true;
     const margin = 100;
     let isDragging = false;
     let dragStart = { x: 0, y: 0 };
     let containerStart = { x: 0, y: 0 };
 
+    onRemoveEnableCamera = System.events.on(
+      SystemEvent.ENABLE_CAMERA_MOVEMENT,
+      () => {
+        isEnabled = true;
+      },
+    );
+
+    onRemoveDisableCamera = System.events.on(
+      SystemEvent.DISABLE_CAMERA_MOVEMENT,
+      () => {
+        isEnabled = false;
+      },
+    );
+
     onRemovePointerDown = global.events.on(TulipEvent.POINTER_DOWN, (event) => {
-      if (event.button !== 0) return;
+      if (!isEnabled || event.button !== 0) return;
       isDragging = true;
       dragStart = { x: event.x, y: event.y };
 
@@ -144,6 +161,8 @@ export const privateRoomComponent: ContainerComponent = () => {
     onRemovePointerDown?.();
     onRemovePointerMove?.();
     onRemovePointerUp?.();
+    onRemoveEnableCamera?.();
+    onRemoveDisableCamera?.();
   });
 
   return $container.getComponent(privateRoomComponent);
