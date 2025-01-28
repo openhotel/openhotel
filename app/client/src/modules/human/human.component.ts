@@ -174,7 +174,6 @@ export const humanComponent: ContainerComponent<Props, Mutable> = (props) => {
     $rerender();
   };
 
-  let repeat = 0;
   let lastMovementAnimationId;
   //TODO Move this to a util
   const moveTo = (point: Point3d, direction: Direction) => {
@@ -245,7 +244,6 @@ export const humanComponent: ContainerComponent<Props, Mutable> = (props) => {
 
     if (!isDirectionFrontToBack(direction)) $calcZIndex();
 
-    repeat++;
     return new Promise<void>(async (resolve) => {
       lastMovementAnimationId = System.tasks.add({
         type: TickerQueue.REPEAT,
