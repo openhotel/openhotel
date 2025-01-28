@@ -19,6 +19,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       - uses: denoland/setup-deno@v1
         with:
@@ -75,7 +77,7 @@ jobs:
           gh pr create \
             --title "chore: Update CHANGELOG for $latest_tag" \
             --body "Automated CHANGELOG update for release $latest_tag. Please review and merge." \
-            --base master
+            --base master \
             --head "$branch_name"
 
       - name: Build
