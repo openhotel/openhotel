@@ -1,4 +1,3 @@
-import { parseArgs } from "deno/cli/parse_args.ts";
 import { UserMutable } from "shared/types/user.types.ts";
 import { log } from "shared/utils/log.utils.ts";
 
@@ -21,7 +20,10 @@ import { rotateCommand } from "./rotate.command.ts";
 import { moveCommand } from "./move.command.ts";
 import { demoCommand } from "./demo.command.ts";
 import { ProxyEvent } from "shared/enums/event.enum.ts";
-import { validateCommandUsages } from "shared/utils/commands.utils.ts";
+import {
+  parseCommandArgs,
+  validateCommandUsages,
+} from "shared/utils/commands.utils.ts";
 import { __ } from "shared/utils/languages.utils.ts";
 import { whisperCommand } from "./whisper.command.ts";
 import { CommandRoles } from "shared/types/commands.types.ts";
@@ -68,7 +70,7 @@ export const executeCommand = async ({
 }) => {
   if (!message.startsWith("/")) return false;
 
-  const { _ } = parseArgs(message.substring(1, message.length).split(" "));
+  const _ = parseCommandArgs(message);
 
   const foundCommand = commandList.find(({ command }) => {
     if (typeof command === "string") return _[0] === command;
