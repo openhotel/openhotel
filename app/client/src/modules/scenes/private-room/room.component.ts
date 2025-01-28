@@ -11,7 +11,11 @@ import {
   GraphicType,
   sprite,
 } from "@tu/tulip";
-import { getPositionFromIsometricPosition, getTilePolygon } from "shared/utils";
+import {
+  getPositionFromIsometricPosition,
+  getTilePolygon,
+  waitUntil,
+} from "shared/utils";
 import {
   Event,
   FurnitureType,
@@ -111,12 +115,13 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = () => {
     );
     removeOnMoveHuman = System.proxy.on<any>(
       Event.MOVE_HUMAN,
-      ({ accountId, position, bodyDirection }) => {
+      async ({ accountId, position, bodyDirection }) => {
         const human = humanList.find(
           (human) => human.getUser().accountId === accountId,
         );
 
-        human.moveTo(position, bodyDirection);
+        await waitUntil(() => !human.isMoving());
+        await human.moveTo(position, bodyDirection);
       },
     );
     removeOnSetPositionHuman = System.proxy.on<any>(
