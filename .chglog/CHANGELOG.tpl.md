@@ -10,8 +10,8 @@
 {{ range .Commits -}}
 
 - {{ .Subject }}
-  {{ end }}
-  {{ end -}}
+{{ end }}
+{{ end -}}
 
 {{- if .NoteGroups -}}
 {{ range .NoteGroups -}}
