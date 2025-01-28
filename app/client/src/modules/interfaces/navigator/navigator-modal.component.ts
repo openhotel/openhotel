@@ -3,7 +3,9 @@ import {
   ContainerComponent,
   Cursor,
   DisplayObjectEvent,
+  Event,
   EventMode,
+  global,
   graphics,
   GraphicType,
   sprite,
@@ -27,6 +29,7 @@ export const navigatorModalComponent: ContainerComponent<Props> = (
   const $container = container({
     visible,
     sortableChildren: true,
+    eventMode: EventMode.STATIC,
   });
   const base = sprite({
     spriteSheet: SpriteSheetEnum.NAVIGATOR,
@@ -162,8 +165,18 @@ export const navigatorModalComponent: ContainerComponent<Props> = (
   let removeOnShowNavigatorModal;
   let removeOnHideNavigatorModal;
   let removeOnToggleNavigatorModal;
+  let removeOnPointerDown;
+  let removeOnPointerUp;
 
   $container.on(DisplayObjectEvent.ADDED, () => {
+    removeOnPointerDown = $container.on(DisplayObjectEvent.POINTER_DOWN, () => {
+      System.events.emit(SystemEvent.DISABLE_CAMERA_MOVEMENT);
+    });
+
+    removeOnPointerUp = global.events.on(Event.POINTER_UP, () => {
+      System.events.emit(SystemEvent.ENABLE_CAMERA_MOVEMENT);
+    });
+
     removeOnToggleNavigatorModal = System.events.on(
       SystemEvent.TOGGLE_NAVIGATOR_MODAL,
       () => {
@@ -188,6 +201,8 @@ export const navigatorModalComponent: ContainerComponent<Props> = (
     removeOnShowNavigatorModal();
     removeOnHideNavigatorModal();
     removeOnToggleNavigatorModal();
+    removeOnPointerDown?.();
+    removeOnPointerUp?.();
   });
 
   return $container.getComponent(navigatorModalComponent);
