@@ -69,6 +69,16 @@
       "frame": { "x": 50, "y": 36, "w": 50, "h": 48 },
       "sourceSize": { "w": 50, "h": 48 },
       "anchor": { "x": 0, "y": 0 }
+    },
+    "stairs-x-preview": {
+      "frame": { "x": 46, "y": 83, "w": 50, "h": 48 },
+      "sourceSize": { "w": 50, "h": 48 },
+      "anchor": { "x": 0, "y": 0 }
+    },
+    "stairs-z-preview": {
+      "frame": { "x": 95, "y": 84, "w": 50, "h": 48 },
+      "sourceSize": { "w": 50, "h": 48 },
+      "anchor": { "x": 0, "y": 0 }
     }
   },
   "animations": {},
@@ -76,8 +86,8 @@
     "format": "RGBA8888",
     "image": "room.png",
     "size": {
-      "w": 128,
-      "h": 128
+      "w": 144,
+      "h": 132
     },
     "scale": 1
   }
