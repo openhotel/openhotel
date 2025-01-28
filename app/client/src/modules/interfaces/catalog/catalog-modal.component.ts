@@ -4,9 +4,11 @@ import {
   Cursor,
   DisplayObjectEvent,
   EventMode,
+  global,
   graphics,
   GraphicType,
   sprite,
+  Event,
 } from "@tu/tulip";
 import { CatalogCategory, SpriteSheetEnum, SystemEvent } from "shared/enums";
 import { System } from "system";
@@ -23,6 +25,7 @@ export const catalogModalComponent: ContainerComponent<Props> = (
   const $container = container({
     visible,
     sortableChildren: true,
+    eventMode: EventMode.STATIC,
   });
   const base = sprite({
     spriteSheet: SpriteSheetEnum.CATALOG,
@@ -166,8 +169,18 @@ export const catalogModalComponent: ContainerComponent<Props> = (
   let removeOnShowCatalogModal;
   let removeOnHideCatalogModal;
   let removeOnToggleCatalogModal;
+  let removeOnPointerDown;
+  let removeOnPointerUp;
 
   $container.on(DisplayObjectEvent.ADDED, async () => {
+    removeOnPointerDown = $container.on(DisplayObjectEvent.POINTER_DOWN, () => {
+      System.events.emit(SystemEvent.DISABLE_CAMERA_MOVEMENT);
+    });
+
+    removeOnPointerUp = global.events.on(Event.POINTER_UP, () => {
+      System.events.emit(SystemEvent.ENABLE_CAMERA_MOVEMENT);
+    });
+
     removeOnToggleCatalogModal = System.events.on(
       SystemEvent.TOGGLE_CATALOG_MODAL,
       () => {
@@ -193,6 +206,8 @@ export const catalogModalComponent: ContainerComponent<Props> = (
     removeOnShowCatalogModal?.();
     removeOnHideCatalogModal?.();
     removeOnToggleCatalogModal?.();
+    removeOnPointerDown?.();
+    removeOnPointerUp?.();
   });
 
   return $container.getComponent(catalogModalComponent);
