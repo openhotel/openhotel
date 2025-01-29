@@ -6,6 +6,12 @@ export const version = () => {
       response.json(),
     );
     $version = data.version;
+
+    const lastVersion = localStorage.getItem("version");
+    localStorage.setItem("version", $version);
+
+    console.log(lastVersion, $version);
+    // TODO: compare versions and launch modal with specific changelog
   };
 
   const isDevelopment = () => $version === "development";
