@@ -2,6 +2,25 @@ import { Command } from "../types/commands.types.ts";
 import { UserMutable } from "../types/user.types.ts";
 import { __ } from "./languages.utils.ts";
 
+export const parseCommandArgs = (message: string) => {
+  const args = message
+    .substring(1)
+    .split(" ")
+    .filter((arg) => arg !== "");
+
+  return args.map((arg) => {
+    if (/^-?\d+\.?\d*$/.test(arg)) return Number(arg);
+
+    if (arg.toLowerCase() === "true") return true;
+    if (arg.toLowerCase() === "false") return false;
+
+    if (arg === "null") return null;
+    if (arg === "undefined") return undefined;
+
+    return arg;
+  });
+};
+
 export const validateCommandUsages = (
   foundCommand: Command,
   args: string[],
