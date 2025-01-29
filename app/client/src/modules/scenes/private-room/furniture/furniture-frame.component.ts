@@ -44,10 +44,9 @@ export const furnitureFrameComponent: ContainerComponent<Props, Mutable> = (
   const isNorthDirection = direction === CrossDirection.NORTH;
 
   const $position = getPositionFromIsometricPosition(position);
-  // TODO: Check 'x' calculation for isometric positioning logic
   const frameIsometricPosition = {
-    x: isNorthDirection ? framePosition.x * 2 : -framePosition.x * 2,
-    y: -framePosition.y + framePosition.x,
+    x: isNorthDirection ? -framePosition.x : framePosition.x,
+    y: framePosition.x * 0.5 - framePosition.y,
   };
 
   const $sprite = sprite({

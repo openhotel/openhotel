@@ -5,8 +5,8 @@ import { FurnitureType } from "shared/enums/furniture.enum.ts";
 import { CrossDirection } from "@oh/utils";
 import { RoomPointEnum } from "shared/enums/room.enums.ts";
 import { isWallRenderable } from "shared/utils/rooms.utils.ts";
-import { WALL_HEIGHT } from "shared/consts/wall.consts.ts";
-import { TILE_Y_HEIGHT } from "shared/consts/tiles.consts.ts";
+import { TOP_WALL_HEIGHT, WALL_HEIGHT } from "shared/consts/wall.consts.ts";
+import { TILE_Y_HEIGHT, TILE_WIDTH } from "shared/consts/tiles.consts.ts";
 import { __ } from "shared/utils/languages.utils.ts";
 
 export const setCommand: Command = {
@@ -86,13 +86,28 @@ export const setCommand: Command = {
         return;
       }
 
+      const maxX = Math.floor(TILE_WIDTH / 2);
+      if (Math.abs(wallX) > maxX) {
+        user.emit(ProxyEvent.SYSTEM_MESSAGE, {
+          message: __(user.getLanguage())(
+            "Frames cannot be placed beyond the allowed X position ({{x}})",
+            {
+              x: maxX,
+            },
+          ),
+        });
+        return;
+      }
+
       // TODO: Default to 34 until furniture metadata is fully updated -> https://github.com/openhotel/asset-editor/issues/14
       const frameHeight = $furniture?.bounds?.height || 34;
 
       const previewY = -((parseInt(roomPoint + "") ?? 1) - 1);
       const y = Math.floor(previewY);
       const wallHeight = WALL_HEIGHT - y * TILE_Y_HEIGHT;
-      const limitHeight = wallHeight - frameHeight;
+      const limitHeight = Math.floor(
+        wallHeight - frameHeight / 2 - TOP_WALL_HEIGHT / 2,
+      );
 
       if (wallY > limitHeight) {
         user.emit(ProxyEvent.SYSTEM_MESSAGE, {
