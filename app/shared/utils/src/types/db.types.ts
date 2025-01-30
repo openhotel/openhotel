@@ -1,5 +1,6 @@
 export type DbProps = {
   pathname?: string;
+  backupsPathname?: string;
 };
 
 export type Migration = {
@@ -41,6 +42,9 @@ export type DbMutable = {
 
   load: () => Promise<void>;
   close: () => void;
+
+  backup: (backup?: string) => Promise<void>;
+  visualize: () => Promise<void>;
 
   migrations: DbMigrationsMutable;
 };

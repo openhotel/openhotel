@@ -9,9 +9,14 @@ import type {
   Migration,
   ResultItem,
 } from "../types/db.types.ts";
+import { join } from "@std/path";
+import { getUtilDate } from "../utils/date.utils.ts";
 
 export const getDb = (
-  { pathname }: DbProps = { pathname: "./database" },
+  { pathname, backupsPathname }: DbProps = {
+    pathname: "./database",
+    backupsPathname: "./database-backups",
+  },
 ): DbMutable => {
   let db: Deno.Kv;
 
@@ -46,6 +51,8 @@ export const getDb = (
           console.log(`- Migration ${migration.id} was already applied!`);
           continue;
         }
+        await backup(`_migration_${migration.id}`);
+
         try {
           await migration.up(dbMutables);
           list.push(migration.id);
@@ -80,6 +87,12 @@ export const getDb = (
   })();
 
   const load = async () => {
+    try {
+      await Deno.stat(backupsPathname!);
+    } catch (e) {
+      await Deno.mkdir(backupsPathname!);
+    }
+
     db = await Deno.openKv(pathname);
   };
 
@@ -144,6 +157,34 @@ export const getDb = (
     db = null;
   };
 
+  const backup = async (name?: string) => {
+    const backupDb = await Deno.openKv(
+      join(backupsPathname!, `${getUtilDate()}${name}`),
+    );
+    for await (const entry of db.list({ prefix: [] }))
+      await backupDb.set(entry.key, entry.value);
+
+    backupDb.close();
+  };
+
+  const visualize = async () => {
+    try {
+      const entries = [];
+      for (const entry of await list<unknown>({ prefix: [] })) {
+        entries.push({
+          //@ts-ignore
+          key: JSON.stringify(entry.key),
+          //@ts-ignore
+          value: JSON.stringify(entry.value)?.substring(0, 16),
+        });
+      }
+
+      console.table(entries);
+      console.log(`Total entries: ${entries.length}`);
+    } finally {
+    }
+  };
+
   const dbMutables = {
     get,
     set,
@@ -153,6 +194,9 @@ export const getDb = (
 
     load,
     close,
+
+    backup,
+    visualize,
 
     migrations: $migrations,
   };
