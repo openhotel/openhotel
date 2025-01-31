@@ -1,3 +1,5 @@
+import { getChangesBetweenVersions, parseChangelog } from "../shared/utils";
+
 export const version = () => {
   let $version = "v0.0.0";
 
@@ -6,12 +8,25 @@ export const version = () => {
       response.json(),
     );
     $version = data.version;
+    $version = "v0.5.27"; // TODO: remove
 
-    const lastVersion = localStorage.getItem("version");
+    const lastVersion = "v0.5.22"; // localStorage.getItem("version"); // TODO: change
     localStorage.setItem("version", $version);
 
-    console.log(lastVersion, $version);
-    // TODO: compare versions and launch modal with specific changelog
+    if (lastVersion !== $version) {
+      const rawChangelog = await fetch("/CHANGELOG.md").then((response) =>
+        response.text(),
+      );
+
+      const changelog = parseChangelog(rawChangelog);
+      const changes = getChangesBetweenVersions(
+        changelog,
+        lastVersion,
+        $version,
+      );
+      console.log(changes);
+      // TODO: launch modal with specific changelog
+    }
   };
 
   const isDevelopment = () => $version === "development";
