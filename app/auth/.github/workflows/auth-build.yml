@@ -26,6 +26,10 @@ jobs:
         with:
           deno-version: vx.x.x
 
+      - name: Tests
+        working-directory: ./app/server
+        run: deno task test
+
       - name: Build
         working-directory: ./app/server
         run: deno task build

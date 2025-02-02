@@ -1,6 +1,6 @@
 import { RequestType, getPathRequestList } from "@oh/utils";
 import { updateGetRequest } from "./update.request.ts";
-import { adminPostRequest, adminDeleteRequest } from "./main.request.ts";
+import { adminPostRequest } from "./main.request.ts";
 import {
   tokensDeleteRequest,
   tokensGetRequest,
@@ -14,7 +14,6 @@ import { userResendVerificationRequest } from "./user-resend-verification.reques
 export const adminRequestList: RequestType[] = getPathRequestList({
   requestList: [
     adminPostRequest,
-    adminDeleteRequest,
     updateGetRequest,
     tokensDeleteRequest,
     tokensGetRequest,

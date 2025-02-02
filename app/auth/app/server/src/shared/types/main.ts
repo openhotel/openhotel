@@ -3,3 +3,4 @@ export * from "./envs.types.ts";
 export * from "./server.types.ts";
 export * from "./session.types.ts";
 export * from "./account.types.ts";
+export * from "./hotel.types.ts";

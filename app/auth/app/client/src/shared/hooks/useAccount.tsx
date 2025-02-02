@@ -1,15 +1,48 @@
-import { useApi } from "./useApi";
-import { RequestMethod } from "shared/enums";
+import React, {
+  ReactNode,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+import { useApi } from "shared/hooks/useApi";
+import { useCookies } from "shared/hooks/useCookies";
 import {
   AccountChangePassProps,
   AccountLoginProps,
   AccountRecoverPassProps,
   AccountRegisterProps,
 } from "shared/types";
-import { useCallback, useEffect, useState } from "react";
-import { useCookies } from "./useCookies";
+import { RequestMethod } from "shared/enums";
 
-export const useAccount = () => {
+type AccountState = {
+  getAccountHeaders: () => Record<string, string>;
+
+  login: (body: AccountLoginProps) => Promise<void>;
+  register: (body: AccountRegisterProps) => Promise<void>;
+  logout: () => Promise<void>;
+  verify: (id: string, token: string) => Promise<void>;
+  recoverPassword: (body: AccountRecoverPassProps) => Promise<void>;
+  changePassword: (body: AccountChangePassProps) => Promise<void>;
+
+  refresh: () => Promise<void>;
+
+  isLogged: boolean;
+
+  setAsAdmin: () => Promise<void>;
+
+  __deleteAccount: () => Promise<void>;
+};
+
+const AccountContext = React.createContext<AccountState>(undefined);
+
+type ProviderProps = {
+  children: ReactNode;
+};
+
+export const AccountProvider: React.FunctionComponent<ProviderProps> = ({
+  children,
+}) => {
   const { fetch } = useApi();
   const { set: setCookie, get: getCookie, remove: removeCookie } = useCookies();
 
@@ -20,8 +53,14 @@ export const useAccount = () => {
       "account-id": getCookie("account-id"),
       token: getCookie("token"),
     }),
-    [getCookie],
+    [getCookie, isLogged],
   );
+
+  const clearSession = useCallback(() => {
+    removeCookie("account-id");
+    removeCookie("refresh-token");
+    removeCookie("token");
+  }, [removeCookie]);
 
   const login = useCallback(
     async (body: AccountLoginProps) => {
@@ -42,8 +81,10 @@ export const useAccount = () => {
       setCookie("account-id", accountId, refreshTokenDuration);
       setCookie("refresh-token", refreshToken, refreshTokenDuration);
       setCookie("token", token, tokenDuration);
+
+      setIsLogged(true);
     },
-    [fetch, setCookie],
+    [fetch, setCookie, setIsLogged],
   );
 
   const register = useCallback(
@@ -65,12 +106,9 @@ export const useAccount = () => {
       cache: false,
     });
 
-    removeCookie("account-id");
-    removeCookie("refresh-token");
-    removeCookie("token");
-
-    setIsLogged(null);
-  }, [fetch, getAccountHeaders, removeCookie]);
+    clearSession();
+    setIsLogged(false);
+  }, [fetch, getAccountHeaders, clearSession]);
 
   const recoverPassword = useCallback(
     async (body: AccountRecoverPassProps) =>
@@ -149,35 +187,45 @@ export const useAccount = () => {
       headers: getAccountHeaders(),
     });
 
-    removeCookie("account-id");
-    removeCookie("refresh-token");
-    removeCookie("token");
+    clearSession();
 
-    setIsLogged(null);
-  }, [fetch, getAccountHeaders]);
+    setIsLogged(false);
+  }, [fetch, getAccountHeaders, setIsLogged, clearSession]);
 
   useEffect(() => {
+    if (isLogged !== null) return;
+
     refresh()
       .then(() => setIsLogged(true))
-      .catch(() => setIsLogged(false));
-  }, []);
+      .catch(() => {
+        clearSession();
+        setIsLogged(false);
+      });
+  }, [isLogged]);
 
-  return {
-    getAccountHeaders,
+  return (
+    <AccountContext.Provider
+      value={{
+        getAccountHeaders,
 
-    login,
-    register,
-    logout,
-    verify,
-    recoverPassword,
-    changePassword,
+        login,
+        register,
+        logout,
+        verify,
+        recoverPassword,
+        changePassword,
 
-    refresh,
+        refresh,
 
-    isLogged,
+        isLogged,
 
-    setAsAdmin,
+        setAsAdmin,
 
-    __deleteAccount,
-  };
+        __deleteAccount,
+      }}
+      children={children}
+    />
+  );
 };
+
+export const useAccount = (): AccountState => useContext(AccountContext);

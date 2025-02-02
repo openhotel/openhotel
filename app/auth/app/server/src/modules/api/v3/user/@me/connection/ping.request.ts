@@ -3,7 +3,6 @@ import {
   RequestMethod,
   getResponse,
   HttpStatusCode,
-  getIpFromRequest,
 } from "@oh/utils";
 import { System } from "modules/system/main.ts";
 import { RequestKind } from "shared/enums/request.enums.ts";
@@ -11,35 +10,23 @@ import { RequestKind } from "shared/enums/request.enums.ts";
 export const pingGetRequest: RequestType = {
   method: RequestMethod.PATCH,
   pathname: "/ping",
-  kind: RequestKind.CONNECTION,
+  kind: RequestKind.PUBLIC,
   func: async (request: Request, url: URL) => {
     const connectionId = url.searchParams.get("connectionId");
     if (!connectionId) return getResponse(HttpStatusCode.FORBIDDEN);
 
-    const userAgent = request.headers.get("user-agent");
-    const ip = getIpFromRequest(request);
+    const account = await System.accounts.getAccount({
+      connectionId,
+    });
+    if (!account) return getResponse(HttpStatusCode.FORBIDDEN);
 
-    try {
-      const connection =
-        await System.connections.getConnectionByConnection(connectionId);
+    const pingResult = await account.connections.ping(connectionId, request);
+    if (!pingResult) return getResponse(HttpStatusCode.FORBIDDEN);
 
-      if (
-        !connection ||
-        connection.connectionId !== connectionId ||
-        connection.userAgent !== userAgent ||
-        connection.ip !== ip
-      )
-        return getResponse(HttpStatusCode.FORBIDDEN);
-
-      const pingResult = await System.connections.ping(connection);
-
-      return getResponse(HttpStatusCode.OK, {
-        data: {
-          estimatedNextPingIn: pingResult.estimatedNextPingIn,
-        },
-      });
-    } catch (e) {
-      return getResponse(HttpStatusCode.FORBIDDEN);
-    }
+    return getResponse(HttpStatusCode.OK, {
+      data: {
+        estimatedNextPingIn: pingResult.estimatedNextPingIn,
+      },
+    });
   },
 };

@@ -4,7 +4,6 @@ import {
   getResponse,
   HttpStatusCode,
 } from "@oh/utils";
-import { hasRequestAccess } from "shared/utils/scope.utils.ts";
 import { RequestKind } from "shared/enums/request.enums.ts";
 import { System } from "modules/system/main.ts";
 
@@ -13,23 +12,18 @@ export const mainPostRequest: RequestType = {
   pathname: "",
   kind: RequestKind.ACCOUNT,
   func: async (request: Request) => {
-    if (!(await hasRequestAccess({ request })))
-      return getResponse(HttpStatusCode.FORBIDDEN);
-
     const { hotelId, name, redirectUrl, type } = await request.json();
 
-    const account = await System.accounts.getFromRequest(request);
-    const hotel = await System.hotels.get(hotelId);
+    const account = await System.accounts.getAccount({ request });
+    const hotel = await account.getHotel({ hotelId });
 
-    if (!hotel || hotel.accountId !== account.accountId)
-      return getResponse(HttpStatusCode.BAD_REQUEST);
+    if (!hotel) return getResponse(HttpStatusCode.BAD_REQUEST);
 
-    const integrationId = await System.hotels.integrations.add(
-      hotelId,
+    const integrationId = await hotel.integrations.addIntegration({
       name,
       redirectUrl,
       type,
-    );
+    });
 
     return getResponse(HttpStatusCode.OK, { data: { integrationId } });
   },
@@ -41,27 +35,20 @@ export const mainGetRequest: RequestType = {
   pathname: "",
   kind: RequestKind.ACCOUNT,
   func: async (request: Request, url: URL) => {
-    if (!(await hasRequestAccess({ request })))
-      return getResponse(HttpStatusCode.FORBIDDEN);
-
     const hotelId = url.searchParams.get("hotelId");
     const integrationId = url.searchParams.get("integrationId");
 
-    const account = await System.accounts.getFromRequest(request);
-    const hotel = await System.hotels.get(hotelId);
-
-    if (
-      !hotelId ||
-      !integrationId ||
-      !hotel ||
-      hotel.accountId !== account.accountId
-    )
+    if (!hotelId || !integrationId)
       return getResponse(HttpStatusCode.BAD_REQUEST);
 
-    const token = await System.hotels.integrations.generateToken(
-      hotelId,
-      integrationId,
-    );
+    const account = await System.accounts.getAccount({ request });
+    const hotel = await account.getHotel({ hotelId });
+    if (!hotel) return getResponse(HttpStatusCode.BAD_REQUEST);
+
+    const integration = hotel.getIntegration({ integrationId });
+    if (!integration) return getResponse(HttpStatusCode.BAD_REQUEST);
+
+    const token = await integration.generateLicense();
 
     return getResponse(HttpStatusCode.OK, { data: { token } });
   },
@@ -72,24 +59,22 @@ export const mainDeleteRequest: RequestType = {
   pathname: "",
   kind: RequestKind.ACCOUNT,
   func: async (request: Request, url: URL) => {
-    if (!(await hasRequestAccess({ request })))
-      return getResponse(HttpStatusCode.FORBIDDEN);
-
     const hotelId = url.searchParams.get("hotelId");
     const integrationId = url.searchParams.get("integrationId");
 
-    const account = await System.accounts.getFromRequest(request);
-    const hotel = await System.hotels.get(hotelId);
-
-    if (
-      !hotelId ||
-      !integrationId ||
-      !hotel ||
-      hotel.accountId !== account.accountId
-    )
+    if (!hotelId || !integrationId)
       return getResponse(HttpStatusCode.BAD_REQUEST);
 
-    await System.hotels.integrations.remove(hotelId, integrationId);
+    const account = await System.accounts.getAccount({ request });
+
+    const hotel = await account.getHotel({ hotelId });
+
+    if (!hotel) return getResponse(HttpStatusCode.BAD_REQUEST);
+
+    const integration = hotel.getIntegration({ integrationId });
+    if (!integration) return getResponse(HttpStatusCode.BAD_REQUEST);
+
+    await integration.remove();
 
     return getResponse(HttpStatusCode.OK);
   },

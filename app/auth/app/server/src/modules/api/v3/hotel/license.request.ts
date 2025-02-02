@@ -10,17 +10,15 @@ import { RequestKind } from "shared/enums/request.enums.ts";
 export const licenseGetRequest: RequestType = {
   method: RequestMethod.GET,
   pathname: "/license",
-  kind: RequestKind.PUBLIC,
+  kind: RequestKind.LICENSE,
   func: async (request: Request) => {
-    const licenseToken = request.headers.get("license-token");
+    const hotel = await System.hotels.getHotel({ request });
 
-    if (
-      !licenseToken ||
-      !(await System.hotels.integrations.verify(licenseToken))
-    )
-      return getResponse(HttpStatusCode.BAD_REQUEST);
+    if (!hotel) return getResponse(HttpStatusCode.BAD_REQUEST);
 
-    const license = await System.hotels.integrations.getLicense(licenseToken);
+    const license = await hotel.getLicenseData();
+
+    if (!license) return getResponse(HttpStatusCode.BAD_REQUEST);
 
     return getResponse(HttpStatusCode.OK, {
       data: {

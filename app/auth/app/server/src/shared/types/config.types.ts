@@ -9,6 +9,9 @@ export type ConfigTypes = {
 
     connectionTokenMinutes: number;
   };
+  backups: {
+    cron: string;
+  };
   accounts: {
     maxHotels: number;
   };

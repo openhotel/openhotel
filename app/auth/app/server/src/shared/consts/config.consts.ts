@@ -11,6 +11,9 @@ export const CONFIG_DEFAULT: ConfigTypes = {
 
     connectionTokenMinutes: 20,
   },
+  backups: {
+    cron: "0 3 * * *",
+  },
   accounts: {
     maxHotels: 3,
   },

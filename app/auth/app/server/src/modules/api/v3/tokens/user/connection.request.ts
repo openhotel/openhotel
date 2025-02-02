@@ -6,29 +6,19 @@ import {
 } from "@oh/utils";
 import { RequestKind } from "shared/enums/request.enums.ts";
 import { System } from "modules/system/main.ts";
-import { hasAppTokenAccess } from "shared/utils/tokens.utils.ts";
 
 export const connectionGetRequest: RequestType = {
   method: RequestMethod.GET,
   pathname: "/connection",
   kind: RequestKind.TOKEN,
   func: async (request: Request, url: URL) => {
-    if (!(await hasAppTokenAccess(request)))
-      return getResponse(HttpStatusCode.FORBIDDEN);
-
     const accountId = url.searchParams.get("accountId");
-    // const hotelId = url.searchParams.get("hotelId");
-
     if (!accountId) return getResponse(HttpStatusCode.FORBIDDEN);
 
-    const account = await System.accounts.get(accountId);
-    // const hotel = await System.hotels.get(hotelId);
-
+    const account = await System.accounts.getAccount({ accountId });
     if (!account) return getResponse(HttpStatusCode.FORBIDDEN);
 
-    const connection =
-      await System.connections.getConnectionByAccount(accountId);
-
+    const connection = await account.connections.active.get();
     if (!connection) return getResponse(HttpStatusCode.FORBIDDEN);
 
     return getResponse(HttpStatusCode.OK, {

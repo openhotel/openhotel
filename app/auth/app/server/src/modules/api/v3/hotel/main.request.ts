@@ -18,22 +18,24 @@ export const mainGetRequest: RequestType = {
     if (!hotelId || !integrationId)
       return getResponse(HttpStatusCode.BAD_REQUEST);
 
-    const hotel = await System.hotels.get(hotelId);
+    const hotel = await System.hotels.getHotel({ hotelId });
     if (!hotel) return getResponse(HttpStatusCode.BAD_REQUEST);
 
-    const foundIntegration = hotel.integrations.find(
-      (integration) => integration.integrationId === integrationId,
-    );
-    if (!foundIntegration) return getResponse(HttpStatusCode.BAD_REQUEST);
+    const integration = hotel.getIntegration({ integrationId });
+    if (!integration) return getResponse(HttpStatusCode.BAD_REQUEST);
 
-    const ownerAccount = await System.accounts.get(hotel.accountId);
+    const ownerAccount = await hotel.getOwner();
+    const hotelData = hotel.getObject();
+    const accounts = await hotel.getAccounts();
+    const integrationData = integration.getObject();
 
     return getResponse(HttpStatusCode.OK, {
       data: {
-        name: hotel.name,
-        owner: ownerAccount.username,
-        redirectUrl: foundIntegration.redirectUrl,
-        type: foundIntegration.type,
+        name: hotelData.name,
+        owner: ownerAccount.getObject().username,
+        accounts: accounts.length,
+        redirectUrl: integrationData.redirectUrl,
+        type: integrationData.type,
       },
     });
   },

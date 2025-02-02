@@ -1,76 +1,68 @@
 import {
-  RequestType,
-  RequestMethod,
   getResponse,
   HttpStatusCode,
+  RequestMethod,
+  RequestType,
 } from "@oh/utils";
 import { System } from "modules/system/main.ts";
 import { RequestKind } from "shared/enums/request.enums.ts";
+import { DbHotelIntegrationType } from "shared/enums/hotel.enums.ts";
 
 export const listRequest: RequestType = {
   method: RequestMethod.GET,
   pathname: "/list",
   kind: RequestKind.PUBLIC,
   func: async () => {
-    const $hotels = await System.hotels.getList();
+    const $hotels = await System.hotels.getHotelList();
 
     const hotels = (
       await Promise.all(
-        $hotels
-          .filter((hotel) => hotel.public)
-          .map(async (hotel) => {
-            const owner = await System.accounts.get(hotel.accountId);
-            const client = hotel.integrations.find(
-              (integration) => integration.type === "client",
-            );
-            const web = hotel.integrations.find(
-              (integration) => integration.type === "web",
-            );
+        $hotels.map(async (hotel) => {
+          const hotelData = hotel.getObject();
 
-            const accounts = [
-              ...new Set(
-                [
-                  ...(client
-                    ? await System.hotels.getAccountsByIntegrationId(
-                        hotel.hotelId,
-                        client.integrationId,
-                      )
-                    : []),
-                  ...(web
-                    ? await System.hotels.getAccountsByIntegrationId(
-                        hotel.hotelId,
-                        web.integrationId,
-                      )
-                    : []),
-                ].map(({ value }) => value.accountId),
-              ),
-            ];
+          if (!hotelData.public) return null;
 
-            //if hotel is a ghost town, filter it out
-            if ((!client && !web) || accounts.length === 0) return null;
+          const owner = await hotel.getOwner();
 
-            return {
-              id: hotel.hotelId,
-              name: hotel.name,
-              owner: owner.username,
-              accounts: accounts.length,
-              createdAt: hotel.createdAt,
-              client: client
-                ? {
-                    name: client.name,
-                    url: client.redirectUrl,
-                  }
-                : null,
-              web: web
-                ? {
-                    name: web.name,
-                    url: web.redirectUrl,
-                  }
-                : null,
-            };
-          }),
+          const client = hotel
+            .getIntegration({
+              type: DbHotelIntegrationType.CLIENT,
+            })
+            ?.getObject();
+          const web = hotel
+            .getIntegration({
+              type: DbHotelIntegrationType.WEB,
+            })
+            ?.getObject();
+
+          const accounts = await hotel.getAccounts();
+
+          //if hotel is a ghost town, filter it out
+          if ((!client && !web) || accounts.length === 0) return null;
+
+          return {
+            id: hotelData.hotelId,
+            name: hotelData.name,
+            owner: owner.getObject().username,
+            accounts: accounts.length,
+            createdAt: hotelData.createdAt,
+            client: client
+              ? {
+                  name: client.name,
+                  url: client.redirectUrl,
+                }
+              : null,
+            web: web
+              ? {
+                  name: web.name,
+                  url: web.redirectUrl,
+                }
+              : null,
+          };
+        }),
       )
     ).filter(Boolean);
+
     return getResponse(HttpStatusCode.OK, {
       data: {
         hotels,

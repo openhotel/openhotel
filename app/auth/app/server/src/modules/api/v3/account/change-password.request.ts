@@ -5,11 +5,8 @@ import {
   HttpStatusCode,
 } from "@oh/utils";
 import { System } from "modules/system/main.ts";
-import * as bcrypt from "@da/bcrypt";
 import { PASSWORD_REGEX } from "shared/consts/main.ts";
 import { RequestKind } from "shared/enums/request.enums.ts";
-import { Account } from "shared/types/account.types.ts";
-import { pepperPassword } from "shared/utils/pepper.utils.ts";
 
 export const changePasswordPostRequest: RequestType = {
   method: RequestMethod.POST,
@@ -30,34 +27,18 @@ export const changePasswordPostRequest: RequestType = {
       });
     }
 
-    const recoverRequest = await System.db.get(["passwordRecover", token]);
-
-    if (!recoverRequest) {
+    const account = await System.accounts.getAccount({
+      recoverToken: token,
+    });
+    if (!account) {
       return getResponse(HttpStatusCode.BAD_REQUEST, {
         message: "Recover password request has expired, please send a new one",
       });
     }
 
-    const account = await System.db.get<Account>([
-      "accounts",
-      recoverRequest.accountId,
-    ]);
-
-    if (!account) {
-      return getResponse(HttpStatusCode.NOT_FOUND, {
-        message: "Account is gone",
-      });
-    }
-
-    const passWithPepper = await pepperPassword(password);
-    account.passwordHash = bcrypt.hashSync(
-      passWithPepper,
-      bcrypt.genSaltSync(8),
-    );
-
-    await System.db.set(["accounts", recoverRequest.accountId], account);
-
-    await System.db.delete(["passwordRecover", token]);
+    await account.update({
+      password,
+    });
 
     return getResponse(HttpStatusCode.OK);
   },

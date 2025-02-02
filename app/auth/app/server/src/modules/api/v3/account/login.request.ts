@@ -1,17 +1,11 @@
 import {
   RequestType,
   RequestMethod,
-  getRandomString,
-  getIpFromRequest,
   getResponse,
   HttpStatusCode,
 } from "@oh/utils";
 import { System } from "modules/system/main.ts";
-import * as bcrypt from "@da/bcrypt";
 import { RequestKind } from "shared/enums/request.enums.ts";
-import { pepperPassword } from "shared/utils/pepper.utils.ts";
-import { getEmailHash } from "shared/utils/account.utils.ts";
-import { Account } from "shared/types/account.types.ts";
 
 export const loginPostRequest: RequestType = {
   method: RequestMethod.POST,
@@ -31,52 +25,31 @@ export const loginPostRequest: RequestType = {
         message: "Email or password not valid!",
       });
 
-    const emailHash = await getEmailHash(email);
-    const accountByEmail = await System.db.get(["accountsByEmail", emailHash]);
+    const account = await System.accounts.getAccount({ email });
 
-    if (!accountByEmail)
+    if (!account)
       return getResponse(HttpStatusCode.FORBIDDEN, {
         message: "Email or password not valid!",
       });
 
-    const account = await System.db.get<Account>(["accounts", accountByEmail]);
-    if (!account)
-      return getResponse(HttpStatusCode.FORBIDDEN, {
-        message: "Contact an administrator!",
-      });
+    const accountData = account.getObject();
 
-    if (!account.verified)
+    if (!accountData.verified)
       return getResponse(HttpStatusCode.FORBIDDEN, {
         message: "Your email is not verified!",
       });
 
-    if (!account.passwordHash)
+    if (!accountData.passwordHash)
       return getResponse(HttpStatusCode.FORBIDDEN, {
         message: "Email or password not valid!",
       });
 
-    const result = bcrypt.compareSync(
-      await pepperPassword(password),
-      account.passwordHash,
-    );
-
-    if (!result)
+    if (!(await account.checkPassword(password)))
       return getResponse(HttpStatusCode.FORBIDDEN, {
         message: "Email or password not valid!",
       });
 
-    const accountOTP = await System.db.get([
-      "otpByAccountId",
-      account.accountId,
-    ]);
-
-    let isValidOTP = true;
-
-    if (
-      accountOTP?.verified &&
-      (!otpToken || !System.otp.verify(accountOTP.secret, otpToken))
-    )
-      isValidOTP = false;
+    const isValidOTP = await account.otp.check(otpToken);
 
     if (!(await System.captcha.verify(captchaId)))
       return Response.json(
@@ -94,45 +67,14 @@ export const loginPostRequest: RequestType = {
         },
       );
 
-    const token = getRandomString(54);
-    const refreshToken = getRandomString(64);
-
-    const userAgent = request.headers.get("user-agent");
-    const ip = getIpFromRequest(request);
-
-    const {
-      times: { accountTokenDays, accountRefreshTokenDays },
-    } = System.getConfig();
-    const expireInToken = accountTokenDays * 24 * 60 * 60 * 1000;
-    const expireInRefreshToken = accountRefreshTokenDays * 24 * 60 * 60 * 1000;
-
-    await System.db.set(
-      ["accountsByToken", account.accountId],
-      {
-        userAgent,
-        ip,
-        tokenHash: bcrypt.hashSync(token, bcrypt.genSaltSync(8)),
-      },
-      {
-        expireIn: expireInToken,
-      },
-    );
-    await System.db.set(
-      ["accountsByRefreshToken", account.accountId],
-      {
-        userAgent,
-        ip,
-        refreshTokenHash: bcrypt.hashSync(refreshToken, bcrypt.genSaltSync(8)),
-      },
-      { expireIn: expireInRefreshToken },
-    );
+    const tokensData = await account.createTokens(request);
 
     return getResponse(HttpStatusCode.OK, {
       data: {
-        accountId: account.accountId,
-        token,
-        refreshToken,
-        durations: [accountTokenDays, accountRefreshTokenDays],
+        accountId: accountData.accountId,
+        token: tokensData.token,
+        refreshToken: tokensData.refreshToken,
+        durations: tokensData.durations,
       },
     });
   },

@@ -7,4 +7,4 @@ const envs = getProcessedEnvs({
 });
 
 loadEnv();
-await System.load(envs);
+await System.load(envs, Deno.args.includes("--testMode"));

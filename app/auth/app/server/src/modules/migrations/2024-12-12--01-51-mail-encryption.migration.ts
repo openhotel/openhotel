@@ -4,10 +4,7 @@ export default {
   id: "2024-12-12--01-51-mail-encryption",
   description: "Encrypt user email addresses stored in the database",
   up: async (db: DbMutable) => {
-    const DB_SECRET_KEY = Deno.env.get("DB_SECRET_KEY");
-    if (!DB_SECRET_KEY) {
-      throw new Error("DB_SECRET_KEY not found");
-    }
+    const DB_SECRET_KEY = Deno.env.get("DB_SECRET_KEY") ?? "";
 
     const getEmailHash = async (text: string): Promise<string> => {
       const hashedEmail = await crypto.subtle.digest(
@@ -49,10 +46,7 @@ export default {
     }
   },
   down: async (db: DbMutable) => {
-    const DB_SECRET_KEY = Deno.env.get("DB_SECRET_KEY");
-    if (!DB_SECRET_KEY) {
-      throw new Error("DB_SECRET_KEY not found");
-    }
+    const DB_SECRET_KEY = Deno.env.get("DB_SECRET_KEY") ?? "";
 
     // accounts
     const accounts = await db.list({ prefix: ["accounts"] });

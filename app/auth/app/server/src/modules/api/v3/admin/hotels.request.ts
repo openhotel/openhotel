@@ -4,7 +4,6 @@ import {
   getResponse,
   HttpStatusCode,
 } from "@oh/utils";
-import { hasRequestAccess } from "shared/utils/scope.utils.ts";
 import { System } from "modules/system/main.ts";
 import { RequestKind } from "shared/enums/request.enums.ts";
 
@@ -13,23 +12,34 @@ export const hotelsGetRequest: RequestType = {
   pathname: "/hotels",
   kind: RequestKind.ADMIN,
   func: async (request: Request) => {
-    if (!(await hasRequestAccess({ request, admin: true })))
-      return getResponse(HttpStatusCode.FORBIDDEN);
+    const hotels = await System.hotels.getHotelList();
 
-    const hotels = await System.hotels.getList();
-    for (const hotel of hotels) {
-      for (const integration of hotel.integrations) {
-        integration.connections =
-          await System.connections.getListByHotelIdIntegrationId(
-            hotel.hotelId,
-            integration.integrationId,
-          );
-      }
-    }
+    const hotelsList = await Promise.all(
+      hotels.map(async (hotel) => {
+        const hotelData = hotel.getObject();
+        const accounts = await hotel.getAccounts();
+
+        hotelData.integrations = await Promise.all(
+          hotel.getIntegrations().map(async (integration) => {
+            const accounts = await integration.getAccounts();
+            return {
+              ...integration.getObject(),
+              accounts: accounts.map(
+                (account) => account.getObject().accountId,
+              ),
+            };
+          }),
+        );
+        return {
+          ...hotelData,
+          accounts: accounts.map((account) => account.getObject().accountId),
+        };
+      }),
+    );
 
     return getResponse(HttpStatusCode.OK, {
       data: {
-        hotels,
+        hotels: hotelsList,
       },
     });
   },
@@ -40,11 +50,9 @@ export const hotelsDeleteRequest: RequestType = {
   pathname: "/hotels",
   kind: RequestKind.ADMIN,
   func: async (request: Request, url: URL) => {
-    if (!(await hasRequestAccess({ request, admin: true })))
-      return getResponse(HttpStatusCode.FORBIDDEN);
-
     const hotelId = url.searchParams.get("hotelId");
-    await System.hotels.remove(hotelId);
+    const hotel = await System.hotels.getHotel({ hotelId });
+    await hotel.remove();
 
     return getResponse(HttpStatusCode.OK);
   },

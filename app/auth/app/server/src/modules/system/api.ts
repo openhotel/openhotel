@@ -7,6 +7,8 @@ import {
 import { System } from "./main.ts";
 import { requestV3List } from "modules/api/v3/main.ts";
 import { REQUEST_KIND_COLOR_MAP } from "shared/consts/request.consts.ts";
+import { RequestKind } from "shared/enums/request.enums.ts";
+import { AccountMutable } from "shared/types/account.types.ts";
 
 export const api = () => {
   const load = () => {
@@ -14,11 +16,27 @@ export const api = () => {
       ...Object.values(RequestMethod).map((word: string) => word.length),
     );
     console.log();
-    for (const request of requestV3List)
+    for (const request of requestV3List) {
+      const kindList = (
+        Array.isArray(request.kind) ? request.kind : [request.kind]
+      ).map((kind) => `color: ${REQUEST_KIND_COLOR_MAP[kind]}`);
+
       console.log(
-        `%c${request.method.padStart(maxLength)} | ${request.pathname}`,
-        `color: ${REQUEST_KIND_COLOR_MAP[request.kind]}`,
+        ` %c${request.method.padStart(maxLength)} %c▓▓%c▓▓%c▓▓ ${request.pathname}`,
+        `font-weight: bold;color: white`,
+        ...Object.assign(new Array(2).fill("color: white"), kindList),
+        "color: white",
       );
+    }
+    console.log();
+
+    for (const kind of Object.keys(REQUEST_KIND_COLOR_MAP)) {
+      console.log(
+        `%c▓▓ %c${RequestKind[kind]}`,
+        `color: ${REQUEST_KIND_COLOR_MAP[kind]}`,
+        "color: gray",
+      );
+    }
     console.log();
 
     const { version, port } = System.getConfig();
@@ -75,6 +93,15 @@ export const api = () => {
             ($request) => $request.method === method,
           );
           if (foundMethodRequest) {
+            if (
+              !(await checkAccess({
+                request,
+                kind: foundMethodRequest.kind ?? RequestKind.PUBLIC,
+              }))
+            )
+              return new Response("403", {
+                status: 403,
+              });
             const response = await foundMethodRequest.func(request, parsedUrl);
             appendCORSHeaders(response.headers);
             return response;
@@ -90,6 +117,72 @@ export const api = () => {
         return new Response("500", { status: 500 });
       },
     );
+  };
+
+  const checkAccess = async ({
+    request,
+    kind,
+  }: {
+    request: Request;
+    kind: RequestKind | RequestKind[];
+  }): Promise<boolean> => {
+    const check = async (kind: RequestKind) => {
+      const accountId = request.headers.get("account-id");
+      const licenseToken = request.headers.get("license-token");
+      let account: AccountMutable;
+
+      switch (kind) {
+        case RequestKind.PUBLIC:
+          return true;
+        case RequestKind.ACCOUNT:
+          if (!accountId) return false;
+
+          account = await System.accounts.getAccount({ accountId });
+          if (!account) return false;
+
+          return await account.checkToken(request);
+        case RequestKind.LICENSE:
+          if (!licenseToken) return false;
+
+          const licenseHotel = await System.hotels.getHotel({ licenseToken });
+          return Boolean(licenseHotel);
+        case RequestKind.CONNECTION:
+          if (!licenseToken) return false;
+
+          const hotel = await System.hotels.getHotel({ licenseToken });
+          if (!hotel) return false;
+
+          account = await System.accounts.getAccount({ request });
+          if (!account) return false;
+
+          const connection = await account.connections.getActiveConnection();
+          if (!connection) return false;
+
+          const hotelData = hotel.getObject();
+          if (hotelData.hotelId !== connection.hotelId) return false;
+
+          const hotelIntegration = hotel.integrations.getIntegration(
+            connection.integrationId,
+          );
+          return Boolean(hotelIntegration);
+        case RequestKind.ADMIN:
+          if (!accountId) return false;
+
+          account = await System.accounts.getAccount({ accountId });
+          if (!account || !(await account.checkToken(request))) return false;
+
+          return await account.isAdmin();
+        case RequestKind.TOKEN:
+          const appToken = request.headers.get("app-token");
+          return appToken && (await System.tokens.verify(appToken));
+        default:
+          return false;
+      }
+    };
+
+    return Array.isArray(kind)
+      ? (await Promise.all(kind.map(check))).includes(true)
+      : check(kind);
   };
 
   return {

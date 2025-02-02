@@ -4,7 +4,6 @@ import {
   getResponse,
   HttpStatusCode,
 } from "@oh/utils";
-import { hasRequestAccess } from "shared/utils/scope.utils.ts";
 import { RequestKind } from "shared/enums/request.enums.ts";
 import { System } from "modules/system/main.ts";
 
@@ -13,13 +12,34 @@ export const mainGetRequest: RequestType = {
   pathname: "",
   kind: RequestKind.ACCOUNT,
   func: async (request: Request) => {
-    if (!(await hasRequestAccess({ request })))
-      return getResponse(HttpStatusCode.FORBIDDEN);
+    const account = await System.accounts.getAccount({ request });
+    const $hotels = await account.getHotels();
 
-    const account = await System.accounts.getFromRequest(request);
-    const hotels = await System.hotels.getListByAccountId(account.accountId);
+    const hotels = await Promise.all(
+      $hotels.map(async (hotel) => {
+        const hotelData = hotel.getObject();
 
-    return getResponse(HttpStatusCode.OK, { data: { hotels } });
+        hotelData.integrations = await Promise.all(
+          hotel.getIntegrations().map(async (integration) => {
+            const accounts = await integration.getAccounts();
+            return {
+              ...integration.getObject(),
+              accounts: accounts.length,
+            };
+          }),
+        );
+
+        const accounts = await hotel.getAccounts();
+        return {
+          ...hotelData,
+          accounts: accounts.length,
+        };
+      }),
+    );
+
+    return getResponse(HttpStatusCode.OK, {
+      data: { hotels },
+    });
   },
 };
 
@@ -28,25 +48,21 @@ export const mainPostRequest: RequestType = {
   pathname: "",
   kind: RequestKind.ACCOUNT,
   func: async (request: Request) => {
-    if (!(await hasRequestAccess({ request })))
-      return getResponse(HttpStatusCode.FORBIDDEN);
-
     const { name, public: $public } = await request.json();
 
     if (!name) return getResponse(HttpStatusCode.BAD_REQUEST);
 
-    const account = await System.accounts.getFromRequest(request);
-    const response = await System.hotels.add(
-      account.accountId,
+    const account = await System.accounts.getAccount({ request });
+    const hotelId = await account.createHotel({
       name,
-      Boolean($public),
-    );
+      public: Boolean($public),
+    });
 
-    if (!response) return getResponse(HttpStatusCode.NOT_ACCEPTABLE);
+    if (!hotelId) return getResponse(HttpStatusCode.NOT_ACCEPTABLE);
 
     return getResponse(HttpStatusCode.OK, {
       data: {
-        hotelId: response.hotelId,
+        hotelId,
       },
     });
   },
@@ -57,21 +73,21 @@ export const mainPatchRequest: RequestType = {
   pathname: "",
   kind: RequestKind.ACCOUNT,
   func: async (request: Request) => {
-    if (!(await hasRequestAccess({ request })))
-      return getResponse(HttpStatusCode.FORBIDDEN);
-
     const { hotelId, name, public: $public } = await request.json();
 
     if (!hotelId || !name) return getResponse(HttpStatusCode.BAD_REQUEST);
 
-    const account = await System.accounts.getFromRequest(request);
-    const hotel = await System.hotels.get(hotelId);
-    if (!hotel || hotel.accountId !== account.accountId)
-      return getResponse(HttpStatusCode.BAD_REQUEST);
+    const account = await System.accounts.getAccount({ request });
 
-    const data = await System.hotels.update(hotelId, name, Boolean($public));
+    const hotel = await account.getHotel({ hotelId });
+    if (!hotel) return getResponse(HttpStatusCode.BAD_REQUEST);
 
-    return getResponse(HttpStatusCode.OK, data);
+    await hotel.update({
+      name,
+      public: Boolean($public),
+    });
+
+    return getResponse(HttpStatusCode.OK);
   },
 };
 
@@ -80,18 +96,15 @@ export const mainDeleteRequest: RequestType = {
   pathname: "",
   kind: RequestKind.ACCOUNT,
   func: async (request: Request, url: URL) => {
-    if (!(await hasRequestAccess({ request })))
-      return getResponse(HttpStatusCode.FORBIDDEN);
-
     const hotelId = url.searchParams.get("hotelId");
     if (!hotelId) return getResponse(HttpStatusCode.BAD_REQUEST);
 
-    const account = await System.accounts.getFromRequest(request);
-    const hotel = await System.hotels.get(hotelId);
-    if (!hotel || hotel.accountId !== account.accountId)
-      return getResponse(HttpStatusCode.BAD_REQUEST);
+    const account = await System.accounts.getAccount({ request });
 
-    await System.hotels.remove(hotelId);
+    const hotel = await account.getHotel({ hotelId });
+    if (!hotel) return getResponse(HttpStatusCode.BAD_REQUEST);
+
+    await hotel.remove();
 
     return getResponse(HttpStatusCode.OK, { data: {} });
   },

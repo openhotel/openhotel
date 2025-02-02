@@ -12,7 +12,7 @@ export const countRequest: RequestType = {
   pathname: "/count",
   kind: RequestKind.PUBLIC,
   func: async () => {
-    const accounts = await System.accounts.getList();
+    const accounts = await System.accounts.getAccountList();
     return getResponse(HttpStatusCode.OK, {
       data: {
         count: accounts.length,

@@ -9,6 +9,8 @@
 
     "start:server": "cd ./app/server && deno task start",
     "start:server:nowatch": "cd ./app/server && deno task start:nowatch",
-    "start:client": "cd ./app/client && yarn start"
+    "start:client": "cd ./app/client && yarn start",
+
+    "test": "cd ./app/server/__tests__ && deno task test"
   }
 }

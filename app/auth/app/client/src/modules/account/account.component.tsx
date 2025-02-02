@@ -1,7 +1,11 @@
 import { useUser } from "shared/hooks";
 import React from "react";
 import { getCensoredEmail } from "shared/utils";
-import { GithubComponent, LanguagesComponent } from "./components";
+import {
+  GithubComponent,
+  LanguagesComponent,
+  OtpComponent,
+} from "./components";
 //@ts-ignore
 import styles from "./account.module.scss";
 import { ButtonComponent } from "@oh/components";
@@ -17,6 +21,7 @@ export const AccountComponent = () => {
       <h2>Account</h2>
       <label title={user?.email}>{getCensoredEmail(user?.email)}</label>
       <label title={user?.accountId}>{user?.username}</label>
+      <OtpComponent />
       <LanguagesComponent />
       <GithubComponent />
       <div className={styles.delete}>

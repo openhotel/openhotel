@@ -28,5 +28,6 @@ export type PartialConnection = {
   owner: string;
   redirectUrl: string;
   verified: boolean;
+  accounts: number;
   type: "web" | "client";
 };

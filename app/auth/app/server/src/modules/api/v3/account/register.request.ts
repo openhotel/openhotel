@@ -1,12 +1,10 @@
 import {
   RequestType,
   RequestMethod,
-  getRandomString,
   getResponse,
   HttpStatusCode,
 } from "@oh/utils";
 import { System } from "modules/system/main.ts";
-import * as bcrypt from "@da/bcrypt";
 import {
   PASSWORD_REGEX,
   EMAIL_REGEX,
@@ -14,8 +12,6 @@ import {
   LANGUAGE_LIST,
 } from "shared/consts/main.ts";
 import { RequestKind } from "shared/enums/request.enums.ts";
-import { pepperPassword } from "shared/utils/pepper.utils.ts";
-import { getEmailHash, getEncryptedEmail } from "shared/utils/account.utils.ts";
 
 export const registerPostRequest: RequestType = {
   method: RequestMethod.POST,
@@ -42,8 +38,6 @@ export const registerPostRequest: RequestType = {
         message: "Language is not valid!",
       });
 
-    email = email.toLowerCase();
-
     if (
       !new RegExp(EMAIL_REGEX).test(email) ||
       !new RegExp(USERNAME_REGEX).test(username) ||
@@ -54,91 +48,20 @@ export const registerPostRequest: RequestType = {
         message: "Invalid email, username or password!",
       });
 
-    const accountByUsername = await System.db.get([
-      "accountsByUsername",
-      username.toLowerCase(),
-    ]);
-
-    const emailHash = await getEmailHash(email);
-    const accountByEmail = await System.db.get(["accountsByEmail", emailHash]);
+    const accountByUsername = await System.accounts.getAccount({ username });
+    const accountByEmail = await System.accounts.getAccount({ email });
 
     if (accountByUsername || accountByEmail)
       return getResponse(HttpStatusCode.CONFLICT, {
         message: "Username or email already in use!",
       });
 
-    const accountId = crypto.randomUUID();
-
-    const verifyId = getRandomString(16);
-    const verifyToken = getRandomString(32);
-
-    const { url: apiUrl } = System.getConfig();
-
-    const verifyUrl = `${apiUrl}/verify?id=${verifyId}&token=${verifyToken}`;
-    System.email.send(
+    await System.accounts.create({
       email,
-      "verify your account",
-      verifyUrl,
-      `<a href="${verifyUrl}">${verifyUrl}<p/>`,
-    );
-
-    const {
-      email: { enabled: isEmailVerificationEnabled },
-      times: { accountWithoutVerificationDays },
-    } = System.getConfig();
-    const expireIn = accountWithoutVerificationDays * 24 * 60 * 60 * 1000;
-
-    const passWithPepper = await pepperPassword(password);
-    const passwordHash = bcrypt.hashSync(passWithPepper, bcrypt.genSaltSync(8));
-
-    // Every key related to the account is temporary until the account is verified or freed if not
-    await System.db.set(
-      ["accounts", accountId],
-      {
-        accountId,
-        username,
-        emailHash,
-        passwordHash,
-        languages,
-        createdAt: Date.now(),
-        updatedAt: Date.now(),
-        verified: !isEmailVerificationEnabled,
-      },
-      isEmailVerificationEnabled ? { expireIn } : {},
-    );
-    await System.db.set(
-      ["accountsByVerifyId", verifyId],
-      {
-        accountId,
-        verifyTokensHash: isEmailVerificationEnabled
-          ? bcrypt.hashSync(verifyToken, bcrypt.genSaltSync(8))
-          : null,
-      },
-      {
-        expireIn,
-      },
-    );
-    await System.db.set(
-      ["accountsByEmail", emailHash],
-      accountId,
-      isEmailVerificationEnabled
-        ? {
-            expireIn,
-          }
-        : {},
-    );
-    await System.db.set(
-      ["accountsByUsername", username.toLowerCase()],
-      accountId,
-      isEmailVerificationEnabled
-        ? {
-            expireIn,
-          }
-        : {},
-    );
-
-    const encryptedEmail = await getEncryptedEmail(email);
-    await System.db.set(["emailsByHash", emailHash], encryptedEmail);
+      username,
+      languages,
+      password,
+    });
 
     return getResponse(HttpStatusCode.OK);
   },

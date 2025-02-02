@@ -2,7 +2,6 @@ import React, { useMemo } from "react";
 import {
   AccountIconComponent,
   AdminIconComponent,
-  BskyIconComponent,
   ButtonComponent,
   ConnectionsIconComponent,
   HomeIconComponent,
@@ -46,11 +45,6 @@ export const HomeNavigatorComponent: React.FC = () => {
       <LinkComponent to="/account/connections">
         <NavItemComponent icon={<ConnectionsIconComponent />}>
           Connections
-        </NavItemComponent>
-      </LinkComponent>
-      <LinkComponent to="/account/bsky">
-        <NavItemComponent icon={<BskyIconComponent />}>
-          Bluesky
         </NavItemComponent>
       </LinkComponent>
       {isAdmin ? (

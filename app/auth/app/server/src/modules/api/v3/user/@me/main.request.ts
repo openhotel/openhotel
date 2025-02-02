@@ -4,7 +4,6 @@ import {
   getResponse,
   HttpStatusCode,
 } from "@oh/utils";
-import { hasRequestAccess } from "shared/utils/scope.utils.ts";
 import { RequestKind } from "shared/enums/request.enums.ts";
 import { System } from "modules/system/main.ts";
 import { LANGUAGE_LIST } from "shared/consts/language.consts.ts";
@@ -12,22 +11,18 @@ import { LANGUAGE_LIST } from "shared/consts/language.consts.ts";
 export const mainGetRequest: RequestType = {
   method: RequestMethod.GET,
   pathname: "",
-  kind: RequestKind.CONNECTION,
+  kind: [RequestKind.ACCOUNT, RequestKind.CONNECTION],
   func: async (request: Request) => {
-    if (!(await hasRequestAccess({ request, scopes: [] })))
-      return getResponse(HttpStatusCode.FORBIDDEN);
-
-    const account = await System.accounts.getFromRequest(request);
-    const admin = Boolean(await System.admins.get(account.accountId));
-
-    const githubData = await System.db.get(["github", account.accountId]);
+    const account = await System.accounts.getAccount({ request });
+    const admin = await account.isAdmin();
+    const accountData = account.getObject();
 
     return getResponse(HttpStatusCode.OK, {
       data: {
-        accountId: account.accountId,
-        username: account.username,
-        languages: account.languages,
-        ...(githubData?.login ? { githubLogin: githubData?.login } : {}),
+        accountId: accountData.accountId,
+        username: accountData.username,
+        languages: accountData.languages,
+        githubLogin: accountData.githubLogin,
         ...(admin ? { admin } : {}),
       },
     });
@@ -37,11 +32,8 @@ export const mainGetRequest: RequestType = {
 export const mainPatchRequest: RequestType = {
   method: RequestMethod.PATCH,
   pathname: "",
-  kind: RequestKind.CONNECTION,
+  kind: RequestKind.ACCOUNT,
   func: async (request: Request) => {
-    if (!(await hasRequestAccess({ request, scopes: [] })))
-      return getResponse(HttpStatusCode.FORBIDDEN);
-
     let { languages } = await request.json();
 
     if (
@@ -52,10 +44,9 @@ export const mainPatchRequest: RequestType = {
         message: "Language is not valid!",
       });
 
-    const account = await System.accounts.getFromRequest(request);
+    const account = await System.accounts.getAccount({ request });
 
-    await System.db.set(["accounts", account.accountId], {
-      ...account,
+    await account.update({
       languages,
     });
 

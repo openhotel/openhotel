@@ -14,6 +14,8 @@ const MIGRATION_LIST = [
   ),
   await import("./2025-01-23--22-00-remove-invalid-connections.migration.ts"),
   await import("./2025-01-27--09-48-add-language-to-accounts.migration.ts"),
+  await import("./2025-01-30--23-47-refactor.migration.ts"),
+  await import("./2025-01-31--10-51-refactor-part-2.migration.ts"),
 ];
 
 export const Migrations = (() => {

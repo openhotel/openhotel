@@ -5,7 +5,6 @@ import {
   HttpStatusCode,
 } from "@oh/utils";
 import { System } from "modules/system/main.ts";
-import { hasRequestAccess } from "shared/utils/scope.utils.ts";
 import { RequestKind } from "shared/enums/request.enums.ts";
 
 export const verifyGetRequest: RequestType = {
@@ -13,28 +12,17 @@ export const verifyGetRequest: RequestType = {
   pathname: "/verify",
   kind: RequestKind.ACCOUNT,
   func: async (request: Request, url: URL) => {
-    if (!(await hasRequestAccess({ request })))
-      return getResponse(HttpStatusCode.FORBIDDEN);
-
     const token = url.searchParams.get("token");
     if (!token) return getResponse(HttpStatusCode.BAD_REQUEST);
 
-    const account = await System.accounts.getFromRequest(request);
+    const account = await System.accounts.getAccount({ request });
 
-    const accountOTP = await System.db.get([
-      "otpByAccountId",
-      account.accountId,
-    ]);
-    if (!accountOTP) return getResponse(HttpStatusCode.NOT_FOUND);
-    if (accountOTP.verified) return getResponse(HttpStatusCode.CONFLICT);
+    if (await account.otp.isVerified())
+      return getResponse(HttpStatusCode.CONFLICT);
+    if (!(await account.otp.check(token)))
+      return getResponse(HttpStatusCode.FORBIDDEN);
 
-    const isValid = System.otp.verify(accountOTP.secret, token);
-    if (!isValid) return getResponse(HttpStatusCode.FORBIDDEN);
-
-    await System.db.set(["otpByAccountId", account.accountId], {
-      ...accountOTP,
-      verified: true,
-    });
+    await account.otp.verify();
 
     return getResponse(HttpStatusCode.OK);
   },

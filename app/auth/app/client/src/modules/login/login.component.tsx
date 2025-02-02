@@ -29,7 +29,9 @@ export const LoginComponent: React.FC = () => {
       const otpToken = data.get("otpToken") as string;
 
       login({ email, password, captchaId, otpToken })
-        .then(() => navigate("/"))
+        .then(() => {
+          navigate("/");
+        })
         .catch(({ status, message }) => {
           if (status === 461 || status === 451) setShowCaptcha(true);
           if (status === 461 || status === 441) setShowOTP(true);
