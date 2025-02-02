@@ -1,6 +1,9 @@
 export type DbProps = {
   pathname?: string;
-  backupsPathname?: string;
+  backups?: {
+    pathname?: string;
+    onMigration?: boolean;
+  };
 };
 
 export type Migration = {

@@ -12,12 +12,16 @@ import type {
 import { join } from "@std/path";
 import { getUtilDate } from "../utils/date.utils.ts";
 
-export const getDb = (
-  { pathname, backupsPathname }: DbProps = {
-    pathname: "./database",
-    backupsPathname: "./database-backups",
+export const getDb = ({
+  pathname = "./database",
+  backups: {
+    pathname: backupsPathname = "./database-backups",
+    onMigration: backupOnMigration = true,
+  } = {
+    pathname: "./database-backups",
+    onMigration: true,
   },
-): DbMutable => {
+}: DbProps): DbMutable => {
   let db: Deno.Kv;
 
   const $migrations: DbMigrationsMutable = ((): DbMigrationsMutable => {
@@ -51,7 +55,7 @@ export const getDb = (
           console.log(`- Migration ${migration.id} was already applied!`);
           continue;
         }
-        await backup(`_migration_${migration.id}`);
+        if (backupOnMigration) await backup(`_migration_${migration.id}`);
 
         try {
           await migration.up(dbMutables);
