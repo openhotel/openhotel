@@ -1,13 +1,31 @@
 import { waitUntil } from "../src/shared/utils/wait.utils.ts";
 import { fetcher } from "./utils.ts";
 
-Deno.writeTextFileSync("../.env", `DB_SECRET_KEY=DB_SECRET_KEY`);
+const isDevelopmentMode = Deno.args.includes("--development");
 
-const serverCommand = new Deno.Command(Deno.execPath(), {
-  args: ["task", "start", "--testMode"],
-  cwd: "../",
-});
-const serverProcess = serverCommand.spawn();
+const deleteDatabase = async () => {
+  try {
+    Deno.removeSync("../deleteme-database");
+  } catch (e) {}
+  try {
+    Deno.removeSync("../deleteme-database-shm");
+  } catch (e) {}
+  try {
+    Deno.removeSync("../deleteme-database-wal");
+  } catch (e) {}
+};
+await deleteDatabase();
+
+let serverProcess;
+if (!isDevelopmentMode) {
+  Deno.writeTextFileSync("../.env", `DB_SECRET_KEY=DB_SECRET_KEY`);
+
+  let serverCommand = new Deno.Command(Deno.execPath(), {
+    args: ["task", "start:nowatch", "--testMode"],
+    cwd: "../",
+  });
+  serverProcess = serverCommand.spawn();
+}
 
 await waitUntil(
   async () => {
@@ -30,5 +48,6 @@ const testsProcess = commandTest.spawn();
 
 const response = await testsProcess.status;
 
-Deno.kill(serverProcess.pid);
+if (serverProcess) Deno.kill(serverProcess.pid);
+
 if (!response.success) throw "Error with tests!";

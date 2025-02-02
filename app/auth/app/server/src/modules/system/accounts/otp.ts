@@ -36,10 +36,13 @@ export const otp = (account: DbAccount): AccountOtpMutable => {
     return uri;
   };
 
-  const check = async (token: string): Promise<boolean> => {
+  const check = async (
+    token: string,
+    current: boolean = false,
+  ): Promise<boolean> => {
     const otp = await System.db.get(["otpByAccountId", account.accountId]);
     //otp non existent or not verified
-    if (!otp || !otp.verified) return true;
+    if (!otp || (!current && !otp.verified)) return true;
     return token && $getTOTP("", otp.secret).validate({ token }) === 0;
   };
 

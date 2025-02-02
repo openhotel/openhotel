@@ -48,23 +48,27 @@ export const mainPostRequest: RequestType = {
   pathname: "",
   kind: RequestKind.ACCOUNT,
   func: async (request: Request) => {
-    const { name, public: $public } = await request.json();
+    try {
+      const { name, public: $public } = await request.json();
 
-    if (!name) return getResponse(HttpStatusCode.BAD_REQUEST);
+      if (!name) return getResponse(HttpStatusCode.BAD_REQUEST);
 
-    const account = await System.accounts.getAccount({ request });
-    const hotelId = await account.createHotel({
-      name,
-      public: Boolean($public),
-    });
+      const account = await System.accounts.getAccount({ request });
+      const hotelId = await account.createHotel({
+        name,
+        public: Boolean($public),
+      });
 
-    if (!hotelId) return getResponse(HttpStatusCode.NOT_ACCEPTABLE);
+      if (!hotelId) return getResponse(HttpStatusCode.NOT_ACCEPTABLE);
 
-    return getResponse(HttpStatusCode.OK, {
-      data: {
-        hotelId,
-      },
-    });
+      return getResponse(HttpStatusCode.OK, {
+        data: {
+          hotelId,
+        },
+      });
+    } catch (e) {
+      return getResponse(HttpStatusCode.BAD_REQUEST);
+    }
   },
 };
 
@@ -106,6 +110,6 @@ export const mainDeleteRequest: RequestType = {
 
     await hotel.remove();
 
-    return getResponse(HttpStatusCode.OK, { data: {} });
+    return getResponse(HttpStatusCode.OK);
   },
 };

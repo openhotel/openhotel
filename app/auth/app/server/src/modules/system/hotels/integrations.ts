@@ -7,6 +7,7 @@ import {
   HotelIntegrationsMutable,
 } from "shared/types/hotel.types.ts";
 import { AccountMutable } from "shared/types/account.types.ts";
+import { DbHotelIntegrationType } from "shared/enums/hotel.enums.ts";
 
 export const integrations = (hotel: DbHotel): HotelIntegrationsMutable => {
   const getIntegration = (
@@ -141,6 +142,14 @@ export const integrations = (hotel: DbHotel): HotelIntegrationsMutable => {
     type,
   }: HotelIntegrationCreation) => {
     const integrationId = crypto.randomUUID();
+
+    try {
+      new URL(redirectUrl).searchParams;
+    } catch (e) {
+      return null;
+    }
+
+    if (!Object.values(DbHotelIntegrationType).includes(type)) return;
 
     if (hotel.integrations.find((integration) => integration.type === type))
       return null;

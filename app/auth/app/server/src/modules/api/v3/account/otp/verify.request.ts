@@ -19,7 +19,7 @@ export const verifyGetRequest: RequestType = {
 
     if (await account.otp.isVerified())
       return getResponse(HttpStatusCode.CONFLICT);
-    if (!(await account.otp.check(token)))
+    if (!(await account.otp.check(token, true)))
       return getResponse(HttpStatusCode.FORBIDDEN);
 
     await account.otp.verify();

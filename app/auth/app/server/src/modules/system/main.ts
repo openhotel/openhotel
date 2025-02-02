@@ -13,6 +13,8 @@ export const System = (() => {
   let $config: ConfigTypes;
   let $envs: Envs;
 
+  let $isTestMode = false;
+
   const $api = api();
   const $captcha = captcha();
   const $email = email();
@@ -22,8 +24,15 @@ export const System = (() => {
   let $db: DbMutable;
 
   const load = async (envs: Envs, testMode: boolean = false) => {
-    $config = await $getConfig<ConfigTypes>({ defaults: CONFIG_DEFAULT });
+    $config = await $getConfig<ConfigTypes>({
+      defaults: {
+        ...CONFIG_DEFAULT,
+        version: testMode ? "development" : CONFIG_DEFAULT.version,
+      },
+    });
     $envs = envs;
+
+    $isTestMode = testMode;
 
     if (
       !testMode &&
@@ -39,7 +48,7 @@ export const System = (() => {
       return;
 
     $db = getDb({
-      pathname: `./${$config.database.filename}`,
+      pathname: `./${testMode ? "deleteme-database" : $config.database.filename}`,
       backupsPathname: "./database-backups",
     });
 
@@ -57,7 +66,7 @@ export const System = (() => {
       });
 
     await $email.load();
-    $api.load();
+    $api.load(testMode);
   };
 
   const getConfig = (): ConfigTypes => $config;
@@ -73,6 +82,9 @@ export const System = (() => {
 
     get db() {
       return $db;
+    },
+    get testMode() {
+      return $isTestMode;
     },
     api: $api,
     captcha: $captcha,

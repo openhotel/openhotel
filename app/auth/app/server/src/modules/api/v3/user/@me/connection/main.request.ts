@@ -68,6 +68,7 @@ export const mainGetRequest: RequestType = {
     const account = await System.accounts.getAccount({ request });
 
     const $connections = await account.connections.getConnections();
+
     if (!$connections) return getResponse(HttpStatusCode.NOT_FOUND);
 
     const $hotels = [
@@ -97,7 +98,7 @@ export const mainGetRequest: RequestType = {
               return {
                 active:
                   activeConnection?.hotelId === hotelId &&
-                  activeConnection?.connectionId === connection.integrationId,
+                  activeConnection?.integrationId === connection.integrationId,
                 integrationId: connection.integrationId,
                 scopes: connection.scopes,
                 name: integrationData.name,
@@ -129,7 +130,7 @@ export const mainGetRequest: RequestType = {
         });
       }
     } catch (e) {
-      return getResponse(HttpStatusCode.BAD_REQUEST);
+      return getResponse(HttpStatusCode.NOT_FOUND);
     }
 
     return getResponse(HttpStatusCode.OK, { data: { connections } });

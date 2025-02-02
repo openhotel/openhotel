@@ -24,6 +24,7 @@ export const mainPostRequest: RequestType = {
       redirectUrl,
       type,
     });
+    if (!integrationId) return getResponse(HttpStatusCode.BAD_REQUEST);
 
     return getResponse(HttpStatusCode.OK, { data: { integrationId } });
   },

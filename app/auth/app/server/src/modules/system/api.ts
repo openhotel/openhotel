@@ -3,6 +3,9 @@ import {
   getContentType,
   getCORSHeaders,
   RequestMethod,
+  RequestType,
+  getResponse,
+  HttpStatusCode,
 } from "@oh/utils";
 import { System } from "./main.ts";
 import { requestV3List } from "modules/api/v3/main.ts";
@@ -11,33 +14,38 @@ import { RequestKind } from "shared/enums/request.enums.ts";
 import { AccountMutable } from "shared/types/account.types.ts";
 
 export const api = () => {
-  const load = () => {
-    const maxLength = Math.max(
-      ...Object.values(RequestMethod).map((word: string) => word.length),
-    );
-    console.log();
-    for (const request of requestV3List) {
-      const kindList = (
-        Array.isArray(request.kind) ? request.kind : [request.kind]
-      ).map((kind) => `color: ${REQUEST_KIND_COLOR_MAP[kind]}`);
-
-      console.log(
-        ` %c${request.method.padStart(maxLength)} %c▓▓%c▓▓%c▓▓ ${request.pathname}`,
-        `font-weight: bold;color: white`,
-        ...Object.assign(new Array(2).fill("color: white"), kindList),
-        "color: white",
+  const load = (testMode: boolean = false) => {
+    if (!testMode) {
+      const maxLength = Math.max(
+        ...Object.values(RequestMethod).map((word: string) => word.length),
       );
-    }
-    console.log();
+      console.log();
+      for (const request of requestV3List) {
+        const kindList = (
+          Array.isArray(request.kind) ? request.kind : [request.kind]
+        ).map((kind) => `color: ${REQUEST_KIND_COLOR_MAP[kind]}`);
 
-    for (const kind of Object.keys(REQUEST_KIND_COLOR_MAP)) {
-      console.log(
-        `%c▓▓ %c${RequestKind[kind]}`,
-        `color: ${REQUEST_KIND_COLOR_MAP[kind]}`,
-        "color: gray",
-      );
+        console.log(
+          ` %c${request.method.padStart(maxLength)} %c▓▓%c▓▓%c▓▓ ${request.pathname}`,
+          `font-weight: bold;color: white`,
+          ...Object.assign(new Array(2).fill("color: white"), kindList),
+          "color: white",
+        );
+      }
+      console.log();
+
+      for (const kind of Object.keys(REQUEST_KIND_COLOR_MAP)) {
+        console.log(
+          `%c▓▓ %c${RequestKind[kind]}`,
+          `color: ${REQUEST_KIND_COLOR_MAP[kind]}`,
+          "color: gray",
+        );
+      }
+      console.log();
+    } else {
+      console.log(" >>>>>>>>>>>>>>>   TEST MODE   <<<<<<<<<<<<<<<<<");
+      console.log(" >>>>>>>>>>>>>>> Server ready! <<<<<<<<<<<<<<<<<");
     }
-    console.log();
 
     const { version, port } = System.getConfig();
     const isDevelopment = version === "development";
@@ -99,22 +107,17 @@ export const api = () => {
                 kind: foundMethodRequest.kind ?? RequestKind.PUBLIC,
               }))
             )
-              return new Response("403", {
-                status: 403,
-              });
+              return getResponse(HttpStatusCode.FORBIDDEN);
             const response = await foundMethodRequest.func(request, parsedUrl);
             appendCORSHeaders(response.headers);
             return response;
           }
-          if (foundRequests.length)
-            return new Response("200", {
-              status: 200,
-            });
-          return new Response("404", { status: 404 });
+          if (foundRequests.length) return getResponse(HttpStatusCode.OK);
+          return getResponse(HttpStatusCode.NOT_FOUND);
         } catch (e) {
           console.log(e);
         }
-        return new Response("500", { status: 500 });
+        return getResponse(HttpStatusCode.INTERNAL_SERVER_ERROR);
       },
     );
   };
@@ -134,6 +137,13 @@ export const api = () => {
       switch (kind) {
         case RequestKind.PUBLIC:
           return true;
+        case RequestKind.ACCOUNT_REFRESH:
+          if (!accountId) return false;
+
+          account = await System.accounts.getAccount({ accountId });
+          if (!account) return false;
+
+          return await account.checkRefreshToken(request);
         case RequestKind.ACCOUNT:
           if (!accountId) return false;
 
@@ -155,7 +165,7 @@ export const api = () => {
           account = await System.accounts.getAccount({ request });
           if (!account) return false;
 
-          const connection = await account.connections.getActiveConnection();
+          const connection = await account.connections.active.get();
           if (!connection) return false;
 
           const hotelData = hotel.getObject();

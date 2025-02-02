@@ -1,6 +1,6 @@
 {
   "tasks": {
-    "start": "deno run -A --watch=./src --unstable-kv --unstable-cron mod.ts",
+    "start": "deno run -A --watch=./src,./deleteme-database --unstable-kv --unstable-cron mod.ts",
     "start:nowatch": "deno run -A --unstable-kv --unstable-cron mod.ts",
 
     "compile": "deno compile -A --unstable-kv --unstable-cron --no-check",
@@ -13,7 +13,8 @@
 
     "build": "(deno task compile:linux) & (deno task compile:linux_aarch64) & (deno task compile:darwin) & (deno task compile:windows)",
 
-    "test": "cd ./__tests__ && deno task test"
+    "test": "cd ./__tests__ && deno task test",
+    "test:watch": "(cd ./__tests__ && deno task test:watch) & deno task start --testMode"
   },
   "imports": {
     "@oh/queue": "jsr:@oh/queue@1.1.1",

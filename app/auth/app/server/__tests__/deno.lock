@@ -58,6 +58,9 @@
       "integrity": "71ba3d334305ee2149391931508b2c293a8490f94a337eef3a09cade1a2a2742"
     }
   },
+  "remote": {
+    "https://deno.land/x/otpauth@v9.3.3/dist/otpauth.esm.js": "ad5c59ffca5316919b1369b63631c94078a1aca5d05e75f547cffa7fb54e64e8"
+  },
   "workspace": {
     "dependencies": [
       "jsr:@oh/yaml@1.1.0"

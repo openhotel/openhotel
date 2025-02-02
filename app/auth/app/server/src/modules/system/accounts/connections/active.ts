@@ -28,10 +28,7 @@ export const active = (account: DbAccount): AccountActiveConnection => {
 
     const { token, id: connectionId, tokenHash } = generateToken("con", 24, 32);
 
-    const {
-      times: { connectionTokenMinutes },
-    } = System.getConfig();
-    const expireIn = connectionTokenMinutes * 60 * 1000;
+    const expireIn = await $getExpirationTime();
 
     const scopes = unfilteredScopes.filter((scope) =>
       Object.values(Scope).includes(scope as Scope),
@@ -155,10 +152,7 @@ export const active = (account: DbAccount): AccountActiveConnection => {
     )
       return null;
 
-    const {
-      times: { connectionTokenMinutes },
-    } = System.getConfig();
-    const expireIn = connectionTokenMinutes * 60 * 1000;
+    const expireIn = await $getExpirationTime();
 
     await System.db.set(
       ["activeIntegrationConnectionByAccountId", account.accountId],
@@ -183,9 +177,9 @@ export const active = (account: DbAccount): AccountActiveConnection => {
   const check = async (hotelId: string, integrationId: string) => {
     const connection = await get();
     return (
-      !connection ||
-      connection.hotelId !== hotelId ||
-      connection.integrationId !== integrationId
+      connection &&
+      connection.hotelId === hotelId &&
+      connection.integrationId === integrationId
     );
   };
 
@@ -194,6 +188,13 @@ export const active = (account: DbAccount): AccountActiveConnection => {
     if (!connection) return false;
 
     return scopes.every((scope) => connection.scopes.includes(scope));
+  };
+
+  const $getExpirationTime = async () => {
+    const {
+      times: { connectionTokenMinutes },
+    } = System.getConfig();
+    return System.testMode ? 5 * 1000 : connectionTokenMinutes * 60 * 1000;
   };
 
   return {

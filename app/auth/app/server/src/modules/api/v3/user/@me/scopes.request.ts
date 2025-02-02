@@ -15,7 +15,7 @@ export const scopesGetRequest: RequestType = {
     const account = await System.accounts.getAccount({ request });
     if (!account) return getResponse(HttpStatusCode.FORBIDDEN);
 
-    const connection = await account.connections.getActiveConnection();
+    const connection = await account.connections.active.get();
     if (!connection) return getResponse(HttpStatusCode.FORBIDDEN);
 
     return getResponse(HttpStatusCode.OK, {

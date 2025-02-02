@@ -117,7 +117,7 @@ export type AccountMutable = {
 
 export type AccountOtpMutable = {
   create: () => Promise<string>;
-  check: (token: string) => Promise<boolean>;
+  check: (token: string, current?: boolean) => Promise<boolean>;
   verify: () => Promise<void>;
   isVerified: () => Promise<boolean>;
   remove: () => Promise<void>;

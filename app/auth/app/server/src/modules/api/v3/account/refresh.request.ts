@@ -10,11 +10,9 @@ import { RequestKind } from "shared/enums/request.enums.ts";
 export const refreshGetRequest: RequestType = {
   method: RequestMethod.GET,
   pathname: "/refresh",
-  kind: RequestKind.ACCOUNT,
+  kind: RequestKind.ACCOUNT_REFRESH,
   func: async (request: Request) => {
     const account = await System.accounts.getAccount({ request });
-    if (!account || !(await account.checkRefreshToken(request)))
-      return getResponse(HttpStatusCode.FORBIDDEN);
 
     const tokens = await account.createTokens(request);
 

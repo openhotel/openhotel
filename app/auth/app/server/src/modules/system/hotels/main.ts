@@ -16,6 +16,8 @@ export const hotels = () => {
   const $getLicenseData = async (licenseToken: string) => {
     const { id: licenseId, token } = getTokenData(licenseToken);
 
+    if (!licenseId || !token) return null;
+
     const license = await System.db.get(["licenses", licenseId]);
     if (!license) return null;
 

@@ -1,10 +1,12 @@
 {
   "tasks": {
-    "test": "deno run -A --unstable-kv main.ts"
+    "test": "deno run -A --unstable-kv main.ts",
+    "test:watch": "deno run -A --watch=./tests --unstable-kv main.ts --development"
   },
   "imports": {
     "deno/": "https://deno.land/std@0.221.0/",
-    "@oh/yaml": "jsr:@oh/yaml@1.1.0"
+    "@oh/yaml": "jsr:@oh/yaml@1.1.0",
+    "otp": "https://deno.land/x/otpauth@v9.3.3/dist/otpauth.esm.js"
   },
   "test": {
     "include": ["./**/*.spec.ts", "./**/*.test.ts"]

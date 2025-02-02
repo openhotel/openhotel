@@ -1,9 +1,16 @@
 /build
 /client
+
+database-priv
+
 database
 database-shm
 database-wal
-database-priv
+
+deleteme-database
+deleteme-database-shm
+deleteme-database-wal
+
 config.yml
 abc_config.yml
 node_modules
