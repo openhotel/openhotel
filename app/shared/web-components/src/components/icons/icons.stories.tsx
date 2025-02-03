@@ -10,6 +10,7 @@ import { UploadIconComponent } from "./upload-icon.component";
 import { AccountIconComponent } from "./account-icon.component";
 import { AdminIconComponent } from "./admin-icon.component";
 import { ConnectionsIconComponent } from "./connections-icon.component";
+import { DatabaseIconComponent } from "./database-icon.component";
 
 import { CCIconComponent, BYIconComponent, NCEUIconComponent } from "./cc";
 
@@ -32,6 +33,7 @@ export const Upload = () => <UploadIconComponent />;
 export const Account = () => <AccountIconComponent />;
 export const Admin = () => <AdminIconComponent />;
 export const Connections = () => <ConnectionsIconComponent />;
+export const Database = () => <DatabaseIconComponent />;
 
 export const CC = () => <CCIconComponent />;
 export const BY = () => <BYIconComponent />;
