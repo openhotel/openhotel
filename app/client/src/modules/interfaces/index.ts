@@ -6,3 +6,4 @@ export * from "./room-info.component";
 
 export * from "./navigator";
 export * from "./catalog";
+export * from "./changelog";
