@@ -1,0 +1,7 @@
+app/server/database-backups
+app/server/build
+
+app/client/build
+
+.idea
+.yarn
