@@ -7,7 +7,7 @@ type Props = {
 };
 
 export const HotelComponent: React.FC<Props> = ({ hotel }) => {
-  const [pingMs, setPingMs] = useState<number>(null);
+  const [pingMs, setPingMs] = useState<number>(undefined);
   const [clientVersion, setClientVersion] = useState<string>(undefined);
 
   const $ping = useCallback(() => {
@@ -49,8 +49,8 @@ export const HotelComponent: React.FC<Props> = ({ hotel }) => {
       owner={hotel.owner}
       title={hotel.name}
       description={"This is a default description"}
-      logo={"/assets/hotel/hotel-logo.webp"}
-      background={"/assets/hotel/hotel-background.webp"}
+      logo={"/hotel/hotel-logo.webp"}
+      background={"/hotel/hotel-background.webp"}
       onClickWebsite={hotel.web?.url ? onClickWebsite : undefined}
       onClickClient={onClickClient}
       ms={pingMs}
