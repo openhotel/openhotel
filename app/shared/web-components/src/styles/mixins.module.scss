@@ -68,3 +68,13 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+@mixin glassBackground() {
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+
+  @media screen and (prefers-color-scheme: dark) {
+    background: rgba(55, 55, 55, 0.8);
+  }
+}

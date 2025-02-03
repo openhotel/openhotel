@@ -11,8 +11,17 @@ import { AccountIconComponent } from "./account-icon.component";
 import { AdminIconComponent } from "./admin-icon.component";
 import { ConnectionsIconComponent } from "./connections-icon.component";
 import { DatabaseIconComponent } from "./database-icon.component";
+import { VerifiedIconComponent } from "./verified-icon.component";
+import { OfficialIconComponent } from "./official-icon.component";
 
 import { CCIconComponent, BYIconComponent, NCEUIconComponent } from "./cc";
+import {
+  NoSignalIconComponent,
+  LowSignalIconComponent,
+  MediumSignalIconComponent,
+  HighSignalIconComponent,
+  FullSignalIconComponent,
+} from "./signal";
 
 export default {
   title: "Components/Icons",
@@ -34,7 +43,15 @@ export const Account = () => <AccountIconComponent />;
 export const Admin = () => <AdminIconComponent />;
 export const Connections = () => <ConnectionsIconComponent />;
 export const Database = () => <DatabaseIconComponent />;
+export const Verified = () => <VerifiedIconComponent />;
+export const Official = () => <OfficialIconComponent />;
 
 export const CC = () => <CCIconComponent />;
 export const BY = () => <BYIconComponent />;
 export const NC_EU = () => <NCEUIconComponent />;
+
+export const NoSignal = () => <NoSignalIconComponent />;
+export const LowSignal = () => <LowSignalIconComponent />;
+export const MediumSignal = () => <MediumSignalIconComponent />;
+export const HighSignal = () => <HighSignalIconComponent />;
+export const FullSignal = () => <FullSignalIconComponent />;

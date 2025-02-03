@@ -78,6 +78,17 @@ $purple-7: #0a002b;
 $purple-8: #020011;
 $purple-9: #000000;
 
+$green-0: #eaffd6;
+$green-1: #c3ffb2;
+$green-2: #a3ff8a;
+$green-3: #77ff59;
+$green-4: #69f941;
+$green-5: #41d22a;
+$green-6: #2eb227;
+$green-7: #2aa81b;
+$green-8: #0e6b12;
+$green-9: #0a5b1d;
+
 @mixin defineColor($name, $color) {
   & {
     --#{$name}: #{$color};

@@ -89,6 +89,17 @@
   @include defineColor("color-purple-8", $purple-8);
   @include defineColor("color-purple-9", $purple-9);
 
+  @include defineColor("color-green-0", $green-0);
+  @include defineColor("color-green-1", $green-1);
+  @include defineColor("color-green-2", $green-2);
+  @include defineColor("color-green-3", $green-3);
+  @include defineColor("color-green-4", $green-4);
+  @include defineColor("color-green-5", $green-5);
+  @include defineColor("color-green-6", $green-6);
+  @include defineColor("color-green-7", $green-7);
+  @include defineColor("color-green-8", $green-8);
+  @include defineColor("color-green-9", $green-9);
+
   // Text
 
   @include defineLightColor(

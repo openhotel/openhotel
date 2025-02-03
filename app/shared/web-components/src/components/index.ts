@@ -5,3 +5,5 @@ export * from "./account-item";
 export * from "./license";
 export * from "./social";
 export * from "./card";
+export * from "./hotel-card";
+export * from "./tooltip";
