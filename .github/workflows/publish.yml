@@ -11,17 +11,10 @@ env:
 jobs:
   build:
     name: "Build"
-
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pull-requests: write
 
     steps:
       - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-
       - uses: denoland/setup-deno@v1
         with:
           deno-version: v2.x.x
@@ -38,47 +31,6 @@ jobs:
             const tag = context.ref.substring(10).replace('v', '')
             core.setOutput('tag', tag)
             core.setOutput('version', tag.split("-")[0])
-
-      - name: Install git-chglog
-        run: |
-          wget https://github.com/git-chglog/git-chglog/releases/download/v${{ env.CHGLOG_VERSION }}/git-chglog_${{ env.CHGLOG_VERSION }}_linux_amd64.tar.gz
-          tar -xzf git-chglog_${{ env.CHGLOG_VERSION }}_linux_amd64.tar.gz
-          sudo mv git-chglog /usr/local/bin/
-          rm git-chglog_${{ env.CHGLOG_VERSION }}_linux_amd64.tar.gz
-
-      - name: Generate CHANGELOG
-        run: |
-          git fetch --tags --force
-          latest_tag=$(git describe --tags --abbrev=0)
-          previous_tag=$(git describe --tags --abbrev=0 "$latest_tag^" || echo "")
-          git-chglog -o CHANGELOG.md "$previous_tag..$latest_tag"
-
-      - name: Create Branch and Commit
-        run: |
-          git config user.name "OpenHotel Actions"
-          git config user.email "actions@openhotel.club"
-
-          git fetch --tags --force
-          latest_tag=$(git describe --tags --abbrev=0)
-
-          branch_name="chore/changelog-$latest_tag"
-          git checkout -b "$branch_name"
-
-          git add CHANGELOG.md
-          git commit -m "chore: update CHANGELOG for $latest_tag"
-
-          git push origin "$branch_name"
-
-      - name: Create Pull Request
-        run: |
-          latest_tag=$(git describe --tags --abbrev=0)
-          branch_name="chore/changelog-$latest_tag"
-
-          gh pr create \
-            --title "chore: Update changelog for $latest_tag" \
-            --body "Automated changelog update for release $latest_tag. Please review and merge." \
-            --base master \
-            --head "$branch_name"
 
       - name: Build
         run: deno task build --debug --target=* --version=${{ steps.set_version.outputs.tag }} --zip --release
