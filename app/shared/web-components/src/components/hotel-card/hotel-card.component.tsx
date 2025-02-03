@@ -118,8 +118,13 @@ export const HotelCardComponent: React.FC<Props> = ({
                   </label>
                 )}{" "}
               </div>
-              <TooltipComponent title={`${ms}ms`}>
-                <SignalIconComponent ms={ms} className={styles.icon} />
+              <TooltipComponent
+                title={isNaN(ms) ? "Not reachable!" : `${ms}ms`}
+              >
+                <SignalIconComponent
+                  ms={isNaN(ms) ? -1 : ms}
+                  className={styles.icon}
+                />
               </TooltipComponent>
             </div>
           </div>
@@ -127,9 +132,9 @@ export const HotelCardComponent: React.FC<Props> = ({
           <div className={styles.actions}>
             {onClickWebsite ? (
               <ButtonComponent
-                color={ms === undefined ? "grey" : "blue"}
+                color={isNaN(ms) ? "grey" : "blue"}
                 variant="3d"
-                onClick={ms === undefined ? null : onClickWebsite}
+                onClick={isNaN(ms) ? null : onClickWebsite}
               >
                 Visit website!
               </ButtonComponent>
@@ -142,9 +147,9 @@ export const HotelCardComponent: React.FC<Props> = ({
               }
             >
               <ButtonComponent
-                color={ms === undefined ? "grey" : "yellow"}
+                color={isNaN(ms) ? "grey" : "yellow"}
                 variant="3d"
-                onClick={ms === undefined ? null : onClickClient}
+                onClick={isNaN(ms) ? null : onClickClient}
               >
                 Check in!
               </ButtonComponent>
