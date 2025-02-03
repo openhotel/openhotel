@@ -783,6 +783,7 @@ __metadata:
     "@storybook/test": "npm:^8.5.1"
     "@types/react": "npm:19.0.8"
     "@vitejs/plugin-react": "npm:4.3.3"
+    dayjs: "npm:^1.11.13"
     jsr: "npm:0.13.2"
     prettier: "npm:3.3.3"
     prop-types: "npm:15.8.1"
@@ -2331,6 +2332,13 @@ __metadata:
   version: 3.1.3
   resolution: "csstype@npm:3.1.3"
   checksum: 10c0/80c089d6f7e0c5b2bd83cf0539ab41474198579584fa10d86d0cafe0642202343cbc119e076a0b1aece191989477081415d66c9fefbf3c957fc2fc4b7009f248
+  languageName: node
+  linkType: hard
+
+"dayjs@npm:^1.11.13":
+  version: 1.11.13
+  resolution: "dayjs@npm:1.11.13"
+  checksum: 10c0/a3caf6ac8363c7dade9d1ee797848ddcf25c1ace68d9fe8678ecf8ba0675825430de5d793672ec87b24a69bf04a1544b176547b2539982275d5542a7955f35b7
   languageName: node
   linkType: hard
 

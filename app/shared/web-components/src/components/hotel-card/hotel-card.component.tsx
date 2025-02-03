@@ -9,6 +9,7 @@ import {
 } from "../icons";
 import { TooltipComponent } from "../../components/tooltip";
 import { ButtonComponent } from "../../components/form";
+import dayjs from "dayjs";
 
 type Props = {
   official: boolean;
@@ -16,6 +17,7 @@ type Props = {
   owner: string;
   title: string;
   description: string;
+  createdAt: string;
 
   logo: string;
   background: string;
@@ -26,6 +28,7 @@ type Props = {
   ms?: number;
   users?: number;
   maxUsers?: number;
+  version?: string;
   joinedUsers: number;
 };
 
@@ -35,6 +38,7 @@ export const HotelCardComponent: React.FC<Props> = ({
   owner,
   title,
   description,
+  createdAt,
 
   logo,
   background,
@@ -46,6 +50,7 @@ export const HotelCardComponent: React.FC<Props> = ({
   users,
   maxUsers,
   joinedUsers,
+  version,
 }) => {
   return (
     <div className={styles.hotelWrapper}>
@@ -62,7 +67,9 @@ export const HotelCardComponent: React.FC<Props> = ({
         <div className={styles.content}>
           <div className={styles.firstLine}>
             <div className={styles.titleWrapper}>
-              <TooltipComponent title="Founded on 12 January 2025">
+              <TooltipComponent
+                title={`Founded on ${dayjs(createdAt).format("DD MMM YYYY")}`}
+              >
                 <label className={styles.title}>{title}</label>
               </TooltipComponent>
 
@@ -127,13 +134,21 @@ export const HotelCardComponent: React.FC<Props> = ({
                 Visit website!
               </ButtonComponent>
             ) : null}
-            <ButtonComponent
-              color={ms === undefined ? "grey" : "yellow"}
-              variant="3d"
-              onClick={ms === undefined ? null : onClickClient}
+            <TooltipComponent
+              title={
+                <>
+                  Running on <b>{version ?? "unknown"}</b> version!
+                </>
+              }
             >
-              Check in!
-            </ButtonComponent>
+              <ButtonComponent
+                color={ms === undefined ? "grey" : "yellow"}
+                variant="3d"
+                onClick={ms === undefined ? null : onClickClient}
+              >
+                Check in!
+              </ButtonComponent>
+            </TooltipComponent>
           </div>
         </div>
       </div>
