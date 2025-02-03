@@ -8,7 +8,7 @@ import {
 import { System } from "modules/system/main.ts";
 import { RequestKind } from "shared/enums/request.enums.ts";
 
-export const updateGetRequest: RequestType = {
+export const updatePatchRequest: RequestType = {
   method: RequestMethod.PATCH,
   pathname: "/update",
   kind: RequestKind.ADMIN,

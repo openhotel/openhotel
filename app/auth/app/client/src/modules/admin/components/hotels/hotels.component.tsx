@@ -1,11 +1,14 @@
 import { useAdmin } from "shared/hooks";
-import React from "react";
+import React, { useEffect } from "react";
 //@ts-ignore
 import styles from "./hotels.module.scss";
 
 export const AdminHotelsComponent = () => {
-  // const { hotels } = useHotels();
-  const { hotels, users } = useAdmin();
+  const { hotels, users, fetchHotels } = useAdmin();
+
+  useEffect(() => {
+    fetchHotels();
+  }, [fetchHotels]);
 
   if (!hotels?.length) return null;
 

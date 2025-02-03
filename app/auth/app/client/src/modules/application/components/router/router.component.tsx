@@ -28,6 +28,7 @@ import {
 } from "modules/admin";
 import { AdminProvider } from "shared/hooks";
 import { WrapperLayoutComponent } from "modules/application";
+import { AdminBackupsComponent } from "modules/admin/components/backups";
 
 const router = createBrowserRouter([
   {
@@ -132,6 +133,10 @@ const router = createBrowserRouter([
           {
             path: "users",
             element: <AdminUsersComponent />,
+          },
+          {
+            path: "backups",
+            element: <AdminBackupsComponent />,
           },
           {
             path: "claim",

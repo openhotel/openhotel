@@ -1,11 +1,11 @@
 import { useAdmin } from "shared/hooks";
-import React, { FormEvent, useCallback, useState } from "react";
+import React, { FormEvent, useCallback, useEffect, useState } from "react";
 //@ts-ignore
 import styles from "./tokens.module.scss";
 import { ButtonComponent, InputComponent } from "@oh/components";
 
 export const AdminTokensComponent = () => {
-  const { tokens, addToken, removeToken } = useAdmin();
+  const { tokens, addToken, removeToken, fetchTokens } = useAdmin();
 
   const [lastToken, setLastToken] = useState<string>(null);
 
@@ -28,6 +28,10 @@ export const AdminTokensComponent = () => {
     (id: string) => async () => removeToken(id),
     [removeToken],
   );
+
+  useEffect(() => {
+    fetchTokens();
+  }, [fetchTokens]);
 
   return (
     <div className={styles.tokens}>

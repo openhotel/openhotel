@@ -4,6 +4,7 @@ import {
   AdminIconComponent,
   ButtonComponent,
   ConnectionsIconComponent,
+  DatabaseIconComponent,
   HomeIconComponent,
   HotelIconComponent,
   NavItemComponent,
@@ -63,6 +64,11 @@ export const HomeNavigatorComponent: React.FC = () => {
           <LinkComponent to="/admin/hotels">
             <NavItemComponent icon={<HotelIconComponent />}>
               Hotels
+            </NavItemComponent>
+          </LinkComponent>
+          <LinkComponent to="/admin/backups">
+            <NavItemComponent icon={<DatabaseIconComponent />}>
+              Backups
             </NavItemComponent>
           </LinkComponent>
         </>

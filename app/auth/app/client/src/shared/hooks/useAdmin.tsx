@@ -1,19 +1,21 @@
-import React, {
-  ReactNode,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import React, { ReactNode, useCallback, useContext, useState } from "react";
 import { useApi } from "shared/hooks/useApi";
 import { useAccount } from "shared/hooks/useAccount";
-import { PrivateHotel, Token, User } from "shared/types";
+import { Backup, PrivateHotel, Token, User } from "shared/types";
 import { RequestMethod } from "shared/enums";
 
 type AdminState = {
   users: User[];
+  fetchUsers: () => Promise<void>;
+
   tokens: Token[];
+  fetchTokens: () => Promise<void>;
+
   hotels: PrivateHotel[];
+  fetchHotels: () => Promise<void>;
+
+  backups: Backup[];
+  fetchBackups: () => Promise<void>;
 
   addToken: (label: string) => Promise<string>;
   removeToken: (id: string) => Promise<void>;
@@ -24,7 +26,8 @@ type AdminState = {
   deleteUser: (user: User) => Promise<void>;
   resendVerificationUser: (accountId: string) => Promise<void>;
 
-  refresh: () => void;
+  backup: (name: string) => Promise<void>;
+  deleteBackup: (name: string) => Promise<void>;
 };
 
 const AdminContext = React.createContext<AdminState>(undefined);
@@ -42,13 +45,14 @@ export const AdminProvider: React.FunctionComponent<ProviderProps> = ({
   const [users, setUsers] = useState<User[]>([]);
   const [tokens, setTokens] = useState<Token[]>([]);
   const [hotels, setHotels] = useState<PrivateHotel[]>([]);
+  const [backups, setBackups] = useState<Backup[]>([]);
 
   const fetchUsers = useCallback(async () => {
     return fetch({
       method: RequestMethod.GET,
       pathname: "/admin/users",
       headers: getAccountHeaders(),
-    });
+    }).then((response) => setUsers(response.data.users));
   }, [fetch, getAccountHeaders]);
 
   const updateUser = useCallback(
@@ -92,7 +96,7 @@ export const AdminProvider: React.FunctionComponent<ProviderProps> = ({
       method: RequestMethod.GET,
       pathname: "/admin/tokens",
       headers: getAccountHeaders(),
-    });
+    }).then((response) => setTokens(response.data.tokens));
   }, [fetch, getAccountHeaders]);
 
   const addToken = useCallback(
@@ -136,7 +140,7 @@ export const AdminProvider: React.FunctionComponent<ProviderProps> = ({
       method: RequestMethod.GET,
       pathname: "/admin/hotels",
       headers: getAccountHeaders(),
-    });
+    }).then((response) => setHotels(response.data.hotels));
   }, [fetch, getAccountHeaders]);
 
   const update = useCallback(() => {
@@ -145,34 +149,64 @@ export const AdminProvider: React.FunctionComponent<ProviderProps> = ({
       pathname: "/admin/update",
       headers: getAccountHeaders(),
     });
+  }, [fetch, getAccountHeaders]);
+
+  const fetchBackups = useCallback(() => {
+    return fetch({
+      method: RequestMethod.GET,
+      pathname: "/admin/backups",
+      headers: getAccountHeaders(),
+    }).then((response) => setBackups(response.data.backups));
+  }, [fetch, getAccountHeaders, setBackups]);
+
+  const backup = useCallback(async (name: string) => {
+    await fetch({
+      method: RequestMethod.POST,
+      pathname: "/admin/backups",
+      headers: getAccountHeaders(),
+      body: {
+        name,
+      },
+    });
+    await fetchBackups();
   }, []);
 
-  const refresh = useCallback(() => {
-    fetchUsers().then((response) => setUsers(response.data.users));
-    fetchTokens().then((response) => setTokens(response.data.tokens));
-    fetchHotels().then((response) => setHotels(response.data.hotels));
-  }, [fetchUsers, fetchTokens, fetchHotels, setUsers, setTokens, setHotels]);
-
-  useEffect(() => {
-    refresh();
-  }, [refresh]);
+  const deleteBackup = useCallback(async (name: string) => {
+    await fetch({
+      method: RequestMethod.DELETE,
+      pathname: "/admin/backups",
+      headers: getAccountHeaders(),
+      body: {
+        name,
+      },
+    });
+    await fetchBackups();
+  }, []);
 
   return (
     <AdminContext.Provider
       value={{
         users,
+        fetchUsers,
+
         updateUser,
         deleteUser,
         resendVerificationUser,
 
         tokens,
+        fetchTokens,
+
         hotels,
+        fetchHotels,
 
         addToken,
         removeToken,
         update,
 
-        refresh,
+        fetchBackups,
+        backups,
+        backup,
+        deleteBackup,
       }}
       children={children}
     />

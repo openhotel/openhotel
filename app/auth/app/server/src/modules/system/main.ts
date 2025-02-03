@@ -8,6 +8,8 @@ import { tokens } from "./tokens.ts";
 import { accounts } from "./accounts/main.ts";
 import { Migrations } from "modules/migrations/main.ts";
 import { hotels } from "./hotels/main.ts";
+import { DELETE_BACKUP_PATH } from "shared/consts/backups.consts.ts";
+import { backups } from "modules/system/backups.ts";
 
 export const System = (() => {
   let $config: ConfigTypes;
@@ -21,6 +23,7 @@ export const System = (() => {
   const $tokens = tokens();
   const $accounts = accounts();
   const $hotels = hotels();
+  const $backups = backups();
   let $db: DbMutable;
 
   const load = async (envs: Envs, testMode: boolean = false) => {
@@ -49,7 +52,7 @@ export const System = (() => {
 
     $db = getDb({
       pathname: `./${testMode ? "deleteme-database" : $config.database.filename}`,
-      backupsPathname: "./database-backups",
+      backupsPathname: DELETE_BACKUP_PATH,
     });
 
     await $db.load();
@@ -59,13 +62,9 @@ export const System = (() => {
 
     // await $db.visualize();
 
-    if (!testMode)
-      Deno.cron("Backup auth", $config.backups.cron, async () => {
-        await $db.backup("_cron");
-        console.log("Backup ready!");
-      });
-
     await $email.load();
+    await $backups.load();
+
     $api.load(testMode);
   };
 
@@ -92,5 +91,6 @@ export const System = (() => {
     tokens: $tokens,
     accounts: $accounts,
     hotels: $hotels,
+    backups: $backups,
   };
 })();

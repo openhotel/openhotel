@@ -1,5 +1,5 @@
 import { useAdmin } from "shared/hooks";
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { cn, getCensoredEmail } from "shared/utils";
 import dayjs from "dayjs";
 import {
@@ -19,7 +19,7 @@ import styles from "./users.module.scss";
 import { useModal } from "@oh/components";
 
 export const AdminUsersComponent = () => {
-  const { users, updateUser, deleteUser, refresh, resendVerificationUser } =
+  const { users, updateUser, deleteUser, fetchUsers, resendVerificationUser } =
     useAdmin();
 
   const [selectedUser, setSelectedUser] = useState<User>();
@@ -45,7 +45,7 @@ export const AdminUsersComponent = () => {
       };
 
       await updateUser(user);
-      refresh();
+      fetchUsers();
     },
     [selectedUser, updateUser],
   );
@@ -68,8 +68,12 @@ export const AdminUsersComponent = () => {
   );
   const $onRemoveAccount = useCallback(async () => {
     await deleteUser(selectedUser);
-    refresh();
+    fetchUsers();
   }, [deleteUser, selectedUser]);
+
+  useEffect(() => {
+    fetchUsers();
+  }, [fetchUsers]);
 
   return (
     <div>

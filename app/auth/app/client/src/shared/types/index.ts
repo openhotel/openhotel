@@ -4,3 +4,4 @@ export * from "./connections.types";
 export * from "./user.types";
 export * from "./tokens.types";
 export * from "./hotels.types";
+export * from "./backup.types";
