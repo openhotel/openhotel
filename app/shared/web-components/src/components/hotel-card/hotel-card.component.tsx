@@ -106,7 +106,7 @@ export const HotelCardComponent: React.FC<Props> = ({
               <div className={styles.users}>
                 {maxUsers ? (
                   <TooltipComponent
-                    title={`${joinedUsers} users already joined!`}
+                    title={`${joinedUsers} user/s already joined!`}
                   >
                     <label className={styles.current}>
                       {users}/{maxUsers}
@@ -114,7 +114,7 @@ export const HotelCardComponent: React.FC<Props> = ({
                   </TooltipComponent>
                 ) : (
                   <label className={styles.joined}>
-                    {joinedUsers} already joined
+                    {joinedUsers} user/s already joined
                   </label>
                 )}{" "}
               </div>
