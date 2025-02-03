@@ -16,6 +16,7 @@
     width: 30rem;
     position: relative;
     overflow: hidden;
+    image-rendering: crisp-edges;
 
     &.notReached {
       filter: grayscale(1);
@@ -39,6 +40,7 @@
       width: 12.8rem;
       height: 12.8rem;
       z-index: 1;
+      image-rendering: crisp-edges;
     }
   }
   .content {
