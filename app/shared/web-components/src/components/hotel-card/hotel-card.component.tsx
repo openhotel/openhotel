@@ -10,6 +10,7 @@ import {
 import { TooltipComponent } from "../../components/tooltip";
 import { ButtonComponent } from "../../components/form";
 import dayjs from "dayjs";
+import { cn } from "../../utils";
 
 type Props = {
   official: boolean;
@@ -55,7 +56,11 @@ export const HotelCardComponent: React.FC<Props> = ({
   return (
     <div className={styles.hotelWrapper}>
       <div className={styles.hotelCard}>
-        <div className={styles.header}>
+        <div
+          className={cn(styles.header, {
+            [styles.notReached]: isNaN(ms),
+          })}
+        >
           <img alt="hotel logo" className={styles.logo} src={logo} />
           <div className={styles.gradient} />
           <img

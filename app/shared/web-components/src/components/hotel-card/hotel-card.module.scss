@@ -49,6 +49,10 @@
       height: 13rem;
       position: relative;
 
+      &.notReached {
+        filter: grayscale(1);
+      }
+
       .logo {
         position: absolute;
         left: 1px;
