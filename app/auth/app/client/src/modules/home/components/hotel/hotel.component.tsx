@@ -18,22 +18,22 @@ export const HotelComponent: React.FC<Props> = ({ hotel }) => {
   );
   const [clientVersion, setClientVersion] = useState<string>(null);
 
-  const $ping = useCallback(
-    () =>
-      fetch(`${hotel.client.url}/version`)
-        .then((response) => response.json())
-        .then(({ status, data }) => {
-          if (status !== 200)
-            return setPingClientStatus(PingHotelStatus.NOT_REACHED);
+  const $ping = useCallback(() => {
+    const pingUrl = new URL(hotel.client.url);
+    pingUrl.pathname = "version";
+    fetch(pingUrl.href)
+      .then((response) => response.json())
+      .then(({ status, data }) => {
+        if (status !== 200)
+          return setPingClientStatus(PingHotelStatus.NOT_REACHED);
 
-          setClientVersion(data.version);
-          setPingClientStatus(PingHotelStatus.REACHED);
-        })
-        .catch(() => {
-          setPingClientStatus(PingHotelStatus.NOT_REACHED);
-        }),
-    [hotel, setPingClientStatus, setClientVersion],
-  );
+        setClientVersion(data.version);
+        setPingClientStatus(PingHotelStatus.REACHED);
+      })
+      .catch(() => {
+        setPingClientStatus(PingHotelStatus.NOT_REACHED);
+      });
+  }, [hotel, setPingClientStatus, setClientVersion]);
 
   useEffect(() => {
     if (!hotel.client) {
