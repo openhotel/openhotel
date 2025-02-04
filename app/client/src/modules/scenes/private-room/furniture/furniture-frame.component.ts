@@ -45,8 +45,8 @@ export const furnitureFrameComponent: ContainerComponent<Props, Mutable> = (
 
   const $position = getPositionFromIsometricPosition(position);
   const frameIsometricPosition = {
-    x: isNorthDirection ? -framePosition.x : framePosition.x,
-    y: framePosition.x * 0.5 - framePosition.y,
+    x: (isNorthDirection ? -framePosition.x : framePosition.x) * 2,
+    y: framePosition.x - framePosition.y,
   };
 
   const $sprite = sprite({
