@@ -19,13 +19,15 @@ import { clearCommand } from "./clear.command.ts";
 import { rotateCommand } from "./rotate.command.ts";
 import { moveCommand } from "./move.command.ts";
 import { demoCommand } from "./demo.command.ts";
+import { whisperCommand } from "./whisper.command.ts";
+import { replyCommand } from "./reply.command.ts";
+
 import { ProxyEvent } from "shared/enums/event.enum.ts";
 import {
   parseCommandArgs,
   validateCommandUsages,
 } from "shared/utils/commands.utils.ts";
 import { __ } from "shared/utils/languages.utils.ts";
-import { whisperCommand } from "./whisper.command.ts";
 import { CommandRoles } from "shared/types/commands.types.ts";
 
 export const commandList = [
@@ -59,6 +61,7 @@ export const commandList = [
   moveCommand,
 
   whisperCommand,
+  replyCommand,
 ];
 
 export const executeCommand = async ({
