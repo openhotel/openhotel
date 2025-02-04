@@ -70,8 +70,7 @@ export const proxy = () => {
           protocols: config.auth.enabled
             ? [state, token]
             : [
-                localStorage.getItem("accountId") ||
-                  "edd8081d-d160-4bf4-b89b-133d046c87ff",
+                localStorage.getItem("accountId") || crypto.randomUUID(),
                 localStorage.getItem("username") ||
                   `player_${getRandomString(4)}`,
               ],

@@ -87,6 +87,9 @@ export type UserMutable = {
   setLastMessage: (message: string) => void;
   getLastMessage: () => string;
 
+  setLastWhisper: (user: UserMutable | null) => void;
+  getLastWhisper: () => UserMutable | null;
+
   getObject: () => User;
 
   setLanguage: (language: Language) => void;

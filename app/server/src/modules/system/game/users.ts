@@ -23,6 +23,7 @@ export const users = () => {
 
   let $userPathfindingMap: Record<string, Point3d[]> = {};
   let $userLastMessageMap: Record<string, string> = {};
+  let $userLastWhisperMap: Record<string, string> = {};
 
   const load = async () => {
     System.tasks.add({
@@ -148,6 +149,7 @@ export const users = () => {
     const removeRoom = () => {
       setRoom(null);
       setPosition(null);
+      setLastWhisper(null);
     };
 
     const setAction = (action: UserAction | null) => {
@@ -205,6 +207,17 @@ export const users = () => {
       $userLastMessageMap[user.accountId] = message;
     };
     const getLastMessage = (): string => $userLastMessageMap[user.accountId];
+
+    const setLastWhisper = (whisperUser: UserMutable | null) => {
+      $userLastWhisperMap[user.accountId] = whisperUser
+        ? whisperUser.getAccountId()
+        : null;
+    };
+    const getLastWhisper = (): UserMutable | null => {
+      const accountId = $userLastWhisperMap[user.accountId];
+      if (!accountId) return null;
+      return get({ accountId });
+    };
 
     const getObject = (): User => $user;
 
@@ -276,6 +289,9 @@ export const users = () => {
 
       setLastMessage,
       getLastMessage,
+
+      setLastWhisper,
+      getLastWhisper,
 
       getObject,
 
