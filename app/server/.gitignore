@@ -7,3 +7,6 @@ server-database-shm
 server-database-wal
 server.key
 $mod.ts
+
+/icon.png
+/background.png

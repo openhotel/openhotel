@@ -9,4 +9,6 @@ export type ConfigTypes = {
   onet: {
     enabled: boolean;
   };
+  users: number;
+  maxUsers: number;
 };

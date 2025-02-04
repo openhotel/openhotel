@@ -43,7 +43,7 @@ export const proxy = () => {
     if (canConnect() || !System.config.get().auth.enabled) return true;
 
     const { status, data } = await fetch(
-      `/request?version=${System.version.getVersion()}`,
+      `/request?version=${System.config.getVersion()}`,
     ).then((data) => data.json());
     if (status === 200) {
       const redirectUrl = new URL(data.redirectUrl);
