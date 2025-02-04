@@ -86,7 +86,7 @@ export const setCommand: Command = {
         return;
       }
 
-      // TODO: Default to 34 until furniture metadata is fully updated -> https://github.com/openhotel/asset-editor/issues/14
+      // TODO: Defaults until furniture metadata is fully updated -> https://github.com/openhotel/asset-editor/issues/14
       const frameHeight = $furniture?.size?.height || 25;
       const frameWidth = $furniture?.size?.width || 17;
 

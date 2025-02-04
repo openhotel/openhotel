@@ -230,7 +230,7 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = () => {
           if (isWallXRenderable) {
             const wall = wallComponent({
               axis: "x",
-              zIndex: zIndex - 0.3,
+              zIndex: zIndex - 0.2,
               pivot: { x: 5, y: 99 },
               position: wallPosition,
               tint: 0xc4d3dd,
@@ -241,7 +241,7 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = () => {
           if (isWallZRenderable) {
             const wall = wallComponent({
               axis: "z",
-              zIndex: zIndex - 0.3,
+              zIndex: zIndex - 0.2,
               pivot: { x: -25, y: 99 },
               position: wallPosition,
               tint: 0xc4d3dd,
@@ -265,7 +265,7 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = () => {
           if (layout[z][x - 1] === RoomPointEnum.SPAWN) {
             const wall = wallComponent({
               axis: "x",
-              zIndex: zIndex - 0.3,
+              zIndex: zIndex - 0.1,
               pivot: { x: 5, y: 99 },
               position,
               tint: 0xc4d3dd,
@@ -276,7 +276,7 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = () => {
           if (layout[z - 1] && layout[z - 1][x] === RoomPointEnum.SPAWN) {
             const wall = wallComponent({
               axis: "z",
-              zIndex: zIndex - 0.3,
+              zIndex: zIndex - 0.1,
               pivot: { x: -25, y: 99 },
               position,
               tint: 0xc4d3dd,
