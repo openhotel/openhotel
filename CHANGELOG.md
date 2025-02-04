@@ -1,4 +1,17 @@
 
+<a name="v0.5.30"></a>
+
+## [v0.5.30](https://github.com/openhotel/openhotel/compare/v0.5.29...v0.5.30) (2025-02-04)
+
+### Bug Fixes
+
+- proxy exposing wrong version - fix [#617](https://github.com/openhotel/openhotel/issues/617) ([#618](https://github.com/openhotel/openhotel/issues/618))
+
+### Chore
+
+- update changelog for v0.5.29 ([#619](https://github.com/openhotel/openhotel/issues/619))
+
+
 <a name="v0.5.29"></a>
 
 ## [v0.5.29](https://github.com/openhotel/openhotel/compare/v0.5.28...v0.5.29) (2025-02-04)
@@ -637,17 +650,17 @@
 
 <a name="v0.2.24.b"></a>
 
-## [v0.2.24.b](https://github.com/openhotel/openhotel/compare/v0.2.25...v0.2.24.b) (2024-10-02)
-
-
-<a name="v0.2.25"></a>
-
-## [v0.2.25](https://github.com/openhotel/openhotel/compare/v0.2.24...v0.2.25) (2024-10-02)
+## [v0.2.24.b](https://github.com/openhotel/openhotel/compare/v0.2.24...v0.2.24.b) (2024-10-02)
 
 
 <a name="v0.2.24"></a>
 
-## [v0.2.24](https://github.com/openhotel/openhotel/compare/v0.2.23...v0.2.24) (2024-10-02)
+## [v0.2.24](https://github.com/openhotel/openhotel/compare/v0.2.25...v0.2.24) (2024-10-02)
+
+
+<a name="v0.2.25"></a>
+
+## [v0.2.25](https://github.com/openhotel/openhotel/compare/v0.2.23...v0.2.25) (2024-10-02)
 
 ### Features
 
@@ -721,17 +734,17 @@
 
 <a name="v0.2.20-rc.2"></a>
 
-## [v0.2.20-rc.2](https://github.com/openhotel/openhotel/compare/v0.2.20-rc.1...v0.2.20-rc.2) (2024-09-29)
-
-
-<a name="v0.2.20-rc.1"></a>
-
-## [v0.2.20-rc.1](https://github.com/openhotel/openhotel/compare/v0.2.19...v0.2.20-rc.1) (2024-09-29)
+## [v0.2.20-rc.2](https://github.com/openhotel/openhotel/compare/v0.2.19...v0.2.20-rc.2) (2024-09-29)
 
 
 <a name="v0.2.19"></a>
 
-## [v0.2.19](https://github.com/openhotel/openhotel/compare/v0.2.18...v0.2.19) (2024-09-29)
+## [v0.2.19](https://github.com/openhotel/openhotel/compare/v0.2.20-rc.1...v0.2.19) (2024-09-29)
+
+
+<a name="v0.2.20-rc.1"></a>
+
+## [v0.2.20-rc.1](https://github.com/openhotel/openhotel/compare/v0.2.18...v0.2.20-rc.1) (2024-09-29)
 
 
 <a name="v0.2.18"></a>
@@ -948,21 +961,21 @@
 
 <a name="v0.1.4"></a>
 
-## [v0.1.4](https://github.com/openhotel/openhotel/compare/v0.1.3...v0.1.4) (2024-08-16)
+## [v0.1.4](https://github.com/openhotel/openhotel/compare/v0.1.2...v0.1.4) (2024-08-16)
 
 ### Features
 
 - Changed default config auth urls to openhotel ones - fix [#269](https://github.com/openhotel/openhotel/issues/269) ([#270](https://github.com/openhotel/openhotel/issues/270))
 
 
-<a name="v0.1.3"></a>
-
-## [v0.1.3](https://github.com/openhotel/openhotel/compare/v0.1.2...v0.1.3) (2024-08-16)
-
-
 <a name="v0.1.2"></a>
 
-## [v0.1.2](https://github.com/openhotel/openhotel/compare/v0.1.1...v0.1.2) (2024-08-16)
+## [v0.1.2](https://github.com/openhotel/openhotel/compare/v0.1.3...v0.1.2) (2024-08-16)
+
+
+<a name="v0.1.3"></a>
+
+## [v0.1.3](https://github.com/openhotel/openhotel/compare/v0.1.1...v0.1.3) (2024-08-16)
 
 ### Bug Fixes
 
