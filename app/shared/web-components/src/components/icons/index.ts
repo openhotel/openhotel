@@ -13,6 +13,7 @@ export * from "./admin-icon.component";
 export * from "./database-icon.component";
 export * from "./verified-icon.component";
 export * from "./official-icon.component";
+export * from "./network-icon.component";
 
 export * from "./cc";
 export * from "./signal";

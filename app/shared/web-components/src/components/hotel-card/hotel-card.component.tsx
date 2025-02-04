@@ -6,6 +6,7 @@ import {
   OfficialIconComponent,
   SignalIconComponent,
   VerifiedIconComponent,
+  NetworkIconComponent,
 } from "../icons";
 import { TooltipComponent } from "../../components/tooltip";
 import { ButtonComponent } from "../../components/form";
@@ -31,6 +32,8 @@ type Props = {
   maxUsers?: number;
   version?: string;
   joinedUsers: number;
+
+  onet?: boolean;
 };
 
 export const HotelCardComponent: React.FC<Props> = ({
@@ -52,6 +55,8 @@ export const HotelCardComponent: React.FC<Props> = ({
   maxUsers,
   joinedUsers,
   version,
+
+  onet,
 }) => {
   return (
     <div className={styles.hotelWrapper}>
@@ -84,7 +89,7 @@ export const HotelCardComponent: React.FC<Props> = ({
                   title={
                     <>
                       <VerifiedIconComponent className={styles.icon} />
-                      <label>Verified server</label>
+                      <label>Verified Server</label>
                     </>
                   }
                 >
@@ -93,13 +98,26 @@ export const HotelCardComponent: React.FC<Props> = ({
               ) : (
                 <i>by {owner}</i>
               )}
+              {onet ? (
+                <TooltipComponent
+                  className={styles.tooltip}
+                  title={
+                    <>
+                      <NetworkIconComponent className={styles.icon} />
+                      <label>Open Network Protocol</label>
+                    </>
+                  }
+                >
+                  <NetworkIconComponent className={styles.icon} />
+                </TooltipComponent>
+              ) : null}
               {official ? (
                 <TooltipComponent
                   className={styles.tooltip}
                   title={
                     <>
                       <OfficialIconComponent className={styles.icon} />
-                      <label>Official server</label>
+                      <label>Official Server</label>
                     </>
                   }
                 >

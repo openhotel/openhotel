@@ -22,6 +22,7 @@ import {
   HighSignalIconComponent,
   FullSignalIconComponent,
 } from "./signal";
+import { NetworkIconComponent } from "./network-icon.component";
 
 export default {
   title: "Components/Icons",
@@ -45,6 +46,7 @@ export const Connections = () => <ConnectionsIconComponent />;
 export const Database = () => <DatabaseIconComponent />;
 export const Verified = () => <VerifiedIconComponent />;
 export const Official = () => <OfficialIconComponent />;
+export const Network = () => <NetworkIconComponent />;
 
 export const CC = () => <CCIconComponent />;
 export const BY = () => <BYIconComponent />;

@@ -20,9 +20,12 @@ export const Primary = {
     users: 13,
     maxUsers: 200,
     joinedUsers: 32,
+    onet: true,
 
     logo: "/assets/hotel/hotel-logo.webp",
     background: "/assets/hotel/hotel-background.webp",
+
+    version: "4.3.2",
   },
 };
 
@@ -61,6 +64,7 @@ export const VerifiedAndOfficial = {
     owner: "pagoru",
     verified: true,
     official: true,
+    onet: true,
     description:
       "The official Open Hotel server. Join with friends, play, earn credits, build your rooms, trade furniture and enjoy this authentic hotel experience.",
     ms: 150,
