@@ -86,9 +86,14 @@ export const setCommand: Command = {
         return;
       }
 
-      const maxX = Math.floor(TILE_WIDTH / 2);
-      if (Math.abs(wallX) > maxX) {
-        user.emit(ProxyEvent.SYSTEM_MESSAGE, {
+      // TODO: Default to 34 until furniture metadata is fully updated -> https://github.com/openhotel/asset-editor/issues/14
+      const frameHeight = $furniture?.size?.height || 25;
+      const frameWidth = $furniture?.size?.width || 17;
+
+      const maxX = TILE_WIDTH - Math.round(frameWidth / 2);
+      const minX = -Math.round(frameWidth / 2);
+      if (wallX > maxX)
+        return user.emit(ProxyEvent.SYSTEM_MESSAGE, {
           message: __(user.getLanguage())(
             "Frames cannot be placed beyond the allowed X position ({{x}})",
             {
@@ -96,30 +101,42 @@ export const setCommand: Command = {
             },
           ),
         });
-        return;
-      }
-
-      // TODO: Default to 34 until furniture metadata is fully updated -> https://github.com/openhotel/asset-editor/issues/14
-      const frameHeight = $furniture?.bounds?.height || 34;
+      if (minX > wallX)
+        return user.emit(ProxyEvent.SYSTEM_MESSAGE, {
+          message: __(user.getLanguage())(
+            "Frames cannot be placed beyond the allowed X position ({{x}})",
+            {
+              x: minX,
+            },
+          ),
+        });
 
       const previewY = -((parseInt(roomPoint + "") ?? 1) - 1);
       const y = Math.floor(previewY);
       const wallHeight = WALL_HEIGHT - y * TILE_Y_HEIGHT;
-      const limitHeight = Math.floor(
+      const maxY = Math.floor(
         wallHeight - frameHeight / 2 - TOP_WALL_HEIGHT / 2,
       );
+      const minY = Math.round(frameHeight / 2);
 
-      if (wallY > limitHeight) {
-        user.emit(ProxyEvent.SYSTEM_MESSAGE, {
+      if (wallY > maxY)
+        return user.emit(ProxyEvent.SYSTEM_MESSAGE, {
           message: __(user.getLanguage())(
             "Frames cannot exceed the height of the wall ({{height}})",
             {
-              height: limitHeight,
+              height: maxY,
             },
           ),
         });
-        return;
-      }
+      if (minY > wallY)
+        return user.emit(ProxyEvent.SYSTEM_MESSAGE, {
+          message: __(user.getLanguage())(
+            "Frames cannot exceed the height of the wall ({{height}})",
+            {
+              height: minY,
+            },
+          ),
+        });
     }
 
     switch ($furniture.type) {
