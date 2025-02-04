@@ -8,7 +8,7 @@ import {
 } from "@tu/tulip";
 import { bubbleChatComponent, systemMessageComponent } from "modules/chat";
 import { previewComponent, roomComponent } from ".";
-import { Size2d } from "shared/types";
+import { Point2d, Size2d } from "shared/types";
 import { hotBarChatComponent, roomInfoComponent } from "modules/interfaces";
 import { System } from "system";
 import { SystemEvent } from "shared/enums";
@@ -23,7 +23,14 @@ const PREVIEW_PADDING = {
   y: 180,
 };
 
-export const privateRoomComponent: ContainerComponent = () => {
+export type PrivateRoomMutable = {
+  getPosition: () => Point2d;
+};
+
+export const privateRoomComponent: ContainerComponent<
+  {},
+  PrivateRoomMutable
+> = () => {
   const $container = container({
     sortableChildren: true,
   });
@@ -79,8 +86,7 @@ export const privateRoomComponent: ContainerComponent = () => {
     $bubbleChat.setPositionX(0);
   };
 
-  global.events.on(TulipEvent.RESIZE, loadRoomPosition);
-
+  let onRemoveResize;
   let onRemovePointerDown;
   let onRemovePointerMove;
   let onRemovePointerUp;
@@ -88,6 +94,8 @@ export const privateRoomComponent: ContainerComponent = () => {
   let onRemoveDisableCamera;
 
   $container.on(DisplayObjectEvent.MOUNT, () => {
+    onRemoveResize = global.events.on(TulipEvent.RESIZE, loadRoomPosition);
+
     $roomScene.setPosition({ x: 0, y: 0 });
     if ($room) $roomScene.remove($room);
     $room = roomComponent();
@@ -158,6 +166,8 @@ export const privateRoomComponent: ContainerComponent = () => {
   });
 
   $container.on(DisplayObjectEvent.UNMOUNT, () => {
+    onRemoveResize?.();
+
     onRemovePointerDown?.();
     onRemovePointerMove?.();
     onRemovePointerUp?.();
@@ -165,5 +175,7 @@ export const privateRoomComponent: ContainerComponent = () => {
     onRemoveDisableCamera?.();
   });
 
-  return $container.getComponent(privateRoomComponent);
+  return $container.getComponent(privateRoomComponent, {
+    getPosition: () => $roomScene.getPosition(),
+  });
 };

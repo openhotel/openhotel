@@ -3,14 +3,13 @@ import {
   ContainerComponent,
   DisplayObjectEvent,
   EventMode,
-  global,
 } from "@tu/tulip";
 import { Event } from "shared/enums";
 import { System } from "system";
 import { messageComponent } from "./message.component";
 import { HumanMutable } from "modules/human";
 import { CHAT_BUBBLE_MESSAGE_INTERVAL, TILE_SIZE } from "shared/consts";
-import { RoomMutable } from "modules/scenes/private-room";
+import { PrivateRoomMutable, RoomMutable } from "modules/scenes/private-room";
 
 type Props = {
   room: RoomMutable;
@@ -37,7 +36,6 @@ export const bubbleChatComponent: ContainerComponent<Props, Mutable> = ({
     const human = room
       .getHumanList()
       .find((human) => human.getUser().accountId === accountId);
-    const position = human.getPosition();
 
     const message = messageComponent({
       username: human.getUser().username,
@@ -48,12 +46,15 @@ export const bubbleChatComponent: ContainerComponent<Props, Mutable> = ({
     const messageBounds = message.getBounds();
     const messageBoundsWidth = messageBounds.width / 2;
 
+    const humaPosition = human.getGlobalPosition();
+
     message.setPivotX(messageBoundsWidth - TILE_SIZE.width / 2);
     $container.add(message);
 
     jumpHeight = messageBounds.height + 2;
 
-    let targetY = Math.round(position.y / jumpHeight) * jumpHeight;
+    //TODO 70 is the height of the human from the middle tile position
+    let targetY = Math.round((humaPosition.y - 70) / jumpHeight) * jumpHeight;
 
     if (messages.length > 0) {
       const lastMessage = messages[messages.length - 1];
@@ -61,37 +62,14 @@ export const bubbleChatComponent: ContainerComponent<Props, Mutable> = ({
       targetY = Math.max(targetY, lastMessageY);
     }
     moveMessages();
-    //
-    let targetX = human.getGlobalPosition().x;
 
-    const leftBound = $container.getPosition().x;
-    // Better to use the size of the parent Container
-    // -1 is a magic number that prevents overflowing
-    const rightBound = global.getApplication().window.getBounds().width - 1;
+    const $room =
+      System.displayObjects.getComponent<PrivateRoomMutable>("private-room");
 
-    const isOverflowingLeft =
-      Math.round(targetX - messageBoundsWidth + TILE_SIZE.width / 2) <
-      leftBound;
-    const isOverflowingRight =
-      Math.round(targetX + messageBoundsWidth + TILE_SIZE.width / 2) >
-      rightBound;
-
-    if (isOverflowingLeft) {
-      const overflow = Math.round(
-        leftBound - (targetX - messageBoundsWidth) - TILE_SIZE.width / 2,
-      );
-      targetX += overflow;
-    }
-
-    if (isOverflowingRight) {
-      const overflow = Math.round(
-        targetX + messageBoundsWidth - rightBound + TILE_SIZE.width / 2,
-      );
-      targetX -= overflow;
-    }
+    const roomPosition = $room.getPosition();
 
     message.setPosition({
-      x: targetX,
+      x: humaPosition.x - roomPosition.x,
       y: targetY,
     });
     messages.push(message);
@@ -136,6 +114,12 @@ export const bubbleChatComponent: ContainerComponent<Props, Mutable> = ({
       }
     },
   );
+
+  let onRemoveResize;
+
+  $container.on(DisplayObjectEvent.UNMOUNT, () => {
+    onRemoveResize?.();
+  });
 
   return $container.getComponent(bubbleChatComponent);
 };

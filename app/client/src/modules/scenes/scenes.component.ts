@@ -8,6 +8,7 @@ import { LoadRoomEvent } from "shared/types";
 import { interfacesComponent } from "./interfaces";
 import { wait } from "shared/utils";
 import { vignetteTransitionComponent } from "modules/main";
+import { ComponentMutable } from "@tu/tulip/_dist";
 
 export const scenesComponent: ContainerComponent = () => {
   const $container = container({
@@ -33,6 +34,10 @@ export const scenesComponent: ContainerComponent = () => {
 
     $privateRoom = $privateRoom ?? privateRoomComponent();
     $container.add($privateRoom);
+    System.displayObjects.setComponent(
+      "private-room",
+      $privateRoom as ComponentMutable,
+    );
 
     System.loader.end();
     await wait(1250);
@@ -50,6 +55,7 @@ export const scenesComponent: ContainerComponent = () => {
   });
 
   System.proxy.on<any>(Event.LEAVE_ROOM, async ({ moveToAnotherRoom }) => {
+    System.displayObjects.deleteComponent("private-room");
     System.game.rooms.remove();
     $container.remove($privateRoom);
 
