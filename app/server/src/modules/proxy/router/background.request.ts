@@ -1,13 +1,12 @@
+import { Proxy } from "modules/proxy/main.ts";
+
 export const getBackgroundRequest = {
   method: "GET",
   pathname: "/background",
   fn: async (request: Request): Promise<Response> => {
-    let background;
     try {
-      background = await Deno.readFile("./background.png");
+      return new Response(await Proxy.icon.getBackground());
     } catch (e) {}
-    if (!background) return Response.error();
-
-    return new Response(background);
+    return Response.error();
   },
 };

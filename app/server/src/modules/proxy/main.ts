@@ -22,6 +22,7 @@ import {
 import { eventList } from "./events/main.ts";
 import { auth } from "../shared/auth.ts";
 import { coordinates } from "../shared/coordinates.ts";
+import { icon } from "modules/shared/icon.ts";
 
 export const Proxy = (() => {
   const serverWorker = getChildWorker();
@@ -35,6 +36,7 @@ export const Proxy = (() => {
 
   const state = getRandomString(64);
 
+  const $icon = icon();
   const $auth = auth();
   const $coordinates = coordinates();
   let server;
@@ -44,6 +46,8 @@ export const Proxy = (() => {
   const load = async ({ envs, config }: WorkerProps) => {
     $config = config;
     $envs = envs;
+
+    await $icon.load();
 
     $coordinates.load(config);
     await $auth.load(config);
@@ -74,7 +78,9 @@ export const Proxy = (() => {
 
         let response = new Response("404", { status: 404 });
         if (foundRoute) response = await foundRoute.fn(request);
-        appendCORSHeaders(response.headers);
+        try {
+          appendCORSHeaders(response.headers);
+        } catch (e) {}
         return response;
       },
     );
@@ -267,6 +273,7 @@ export const Proxy = (() => {
     getState,
     getScopes,
 
+    icon: $icon,
     auth: $auth,
     coordinates: $coordinates,
   };

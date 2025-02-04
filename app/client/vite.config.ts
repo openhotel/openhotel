@@ -22,6 +22,9 @@ export default defineConfig({
         ws: true,
       },
       "/auth": PROXY_URL,
+      //
+      "/icon": PROXY_URL,
+      "/background": PROXY_URL,
     },
   },
   plugins: [tsconfigPaths(), plugin(), build()],
