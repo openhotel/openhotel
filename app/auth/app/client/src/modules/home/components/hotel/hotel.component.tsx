@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { HotelCardComponent } from "@oh/components";
-import { PublicHotel } from "shared/types";
+import { HotelInfo, PublicHotel } from "shared/types";
 
 type Props = {
   hotel: PublicHotel;
@@ -8,14 +8,20 @@ type Props = {
 
 export const HotelComponent: React.FC<Props> = ({ hotel }) => {
   const [pingMs, setPingMs] = useState<number>(undefined);
-  const [clientVersion, setClientVersion] = useState<string>(undefined);
+  const [hotelInfo, setHotelInfo] = useState<HotelInfo>(undefined);
+
+  const $getHotelUrl = useCallback(
+    (pathname: string) => {
+      const pingUrl = new URL(hotel.client.url);
+      pingUrl.pathname = pathname;
+      return pingUrl;
+    },
+    [hotel],
+  );
 
   const $ping = useCallback(() => {
-    const pingUrl = new URL(hotel.client.url);
-    pingUrl.pathname = "version";
-
     let initialDate = Date.now();
-    fetch(pingUrl.href)
+    fetch($getHotelUrl("info"))
       .then((response) => {
         setPingMs(Date.now() - initialDate);
         return response.json();
@@ -23,12 +29,12 @@ export const HotelComponent: React.FC<Props> = ({ hotel }) => {
       .then(({ status, data }) => {
         if (status !== 200) return setPingMs(undefined);
 
-        setClientVersion(data.version);
+        setHotelInfo(data);
       })
       .catch(() => {
         setPingMs(undefined);
       });
-  }, [hotel, setPingMs, setClientVersion]);
+  }, [$getHotelUrl, setPingMs, setHotelInfo]);
 
   useEffect(() => {
     $ping();
@@ -49,16 +55,21 @@ export const HotelComponent: React.FC<Props> = ({ hotel }) => {
       official={false}
       verified={false}
       owner={hotel.owner}
-      title={hotel.name}
-      description={"This is a default description"}
-      logo={"/hotel/hotel-logo.webp"}
-      background={"/hotel/hotel-background.webp"}
+      title={hotelInfo?.name ?? hotel.name}
+      description={hotelInfo?.description ?? ""}
+      logo={hotelInfo ? $getHotelUrl("icon") : "/hotel/hotel-logo.webp"}
+      background={
+        hotelInfo ? $getHotelUrl("background") : "/hotel/hotel-background.webp"
+      }
       onClickWebsite={hotel.web?.url ? onClickWebsite : undefined}
       onClickClient={onClickClient}
       ms={pingMs}
       joinedUsers={hotel.accounts}
       createdAt={hotel.createdAt}
-      version={clientVersion}
+      version={hotelInfo?.version}
+      users={hotelInfo?.users}
+      maxUsers={hotelInfo?.maxUsers}
+      onet={hotelInfo?.onet?.enabled}
     />
   );
 };

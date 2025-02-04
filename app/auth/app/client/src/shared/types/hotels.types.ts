@@ -33,6 +33,19 @@ export type PublicHotel = {
   web: PublicHotelIntegration;
 };
 
+export type HotelInfo = {
+  name: string;
+  description: string;
+  version: string;
+  auth: {
+    enabled: boolean;
+    api?: string;
+  };
+  onet: { enabled: boolean };
+  users: number;
+  maxUsers: number;
+};
+
 /**
  * -------------------------------------------------------
  * --------- PRIVATE -------------------------------------
