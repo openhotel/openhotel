@@ -78,7 +78,9 @@ export const Proxy = (() => {
 
         let response = new Response("404", { status: 404 });
         if (foundRoute) response = await foundRoute.fn(request);
-        appendCORSHeaders(response.headers);
+        try {
+          appendCORSHeaders(response.headers);
+        } catch (e) {}
         return response;
       },
     );
