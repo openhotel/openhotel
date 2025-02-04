@@ -36,11 +36,11 @@ export type BaseFurniture = {
   furnitureId: string;
   position: Point3d;
   direction: CrossDirection;
+  size: Size3d;
 };
 
 export type RoomFurnitureBase = {
   type: FurnitureType.FURNITURE | FurnitureType.TELEPORT;
-  size: Size3d;
 } & BaseFurniture;
 
 export type RoomFurnitureFrame = {

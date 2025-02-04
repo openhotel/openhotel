@@ -13,7 +13,12 @@ import {
 } from "@tu/tulip";
 import { logoComponent } from "modules/main";
 import { System } from "system";
-import { SystemEvent, TextureEnum, SpriteSheetEnum } from "shared/enums";
+import {
+  SystemEvent,
+  TextureEnum,
+  SpriteSheetEnum,
+  Event as ProxyEvent,
+} from "shared/enums";
 import { hotBarComponent } from "modules/interfaces";
 import { BLACK_BAR_HEIGHT, CONTRIBUTOR_LOOP_TIME } from "shared/consts";
 import { wait } from "shared/utils";
@@ -152,6 +157,11 @@ export const homeComponent: ContainerComponent<Props> = () => {
     $rePositionOnlineUsers(size);
 
     System.events.emit(SystemEvent.SHOW_NAVIGATOR_MODAL);
+
+    // if (System.config.isDevelopment())
+    //   System.proxy.emit(ProxyEvent.PRE_JOIN_ROOM, {
+    //     roomId: "612ebb3e-1665-492d-b4f1-dabd3100e2fb",
+    //   });
 
     repeatContributorsTaskId = System.tasks.add({
       type: TickerQueue.REPEAT,
