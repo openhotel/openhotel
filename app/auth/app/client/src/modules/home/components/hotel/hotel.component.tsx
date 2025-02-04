@@ -16,12 +16,14 @@ export const HotelComponent: React.FC<Props> = ({ hotel }) => {
 
     let initialDate = Date.now();
     fetch(pingUrl.href)
-      .then((response) => response.json())
+      .then((response) => {
+        setPingMs(Date.now() - initialDate);
+        return response.json();
+      })
       .then(({ status, data }) => {
         if (status !== 200) return setPingMs(undefined);
 
         setClientVersion(data.version);
-        setPingMs(Date.now() - initialDate);
       })
       .catch(() => {
         setPingMs(undefined);
