@@ -11,6 +11,7 @@ import { $window } from "system/window";
 import { config } from "system/config";
 import { contributors } from "system/contributors";
 import { mainComponent } from "modules/main";
+import { components } from "system/components";
 
 export const System = (() => {
   const $config = config();
@@ -22,6 +23,7 @@ export const System = (() => {
   const $events = events();
   const $api = api();
   const $contributors = contributors();
+  const $displayObjects = components();
 
   const $tasks = tasks();
   const $$window = $window();
@@ -79,6 +81,7 @@ export const System = (() => {
     api: $api,
     config: $config,
     contributors: $contributors,
+    displayObjects: $displayObjects,
 
     load,
   };
