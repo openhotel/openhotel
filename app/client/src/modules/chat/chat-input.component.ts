@@ -65,20 +65,17 @@ export const chatInputComponent: ContainerComponent<{}, Mutable> = (props) => {
   const $sendMessage = () => {
     const message = $input.getValue().trim();
     $input.clear();
-    if (message.length) {
-      $historyIndex = -1;
-      if ($history.indexOf(message) === -1) {
-        $history.unshift(message);
-        if ($history.length > MAX_MESSAGES_HISTORY) {
-          $history.pop();
-        }
-        localStorage.setItem(STORAGE_KEY, JSON.stringify($history));
-      }
+    if (!message.length) return;
+    $historyIndex = -1;
 
-      System.proxy.emit(Event.MESSAGE, {
-        message,
-      });
-    }
+    $history.unshift(message);
+    if ($history.length > MAX_MESSAGES_HISTORY) $history.pop();
+
+    localStorage.setItem(STORAGE_KEY, JSON.stringify($history));
+
+    System.proxy.emit(Event.MESSAGE, {
+      message,
+    });
   };
 
   const removeOnKeyUp = global.events.on(
