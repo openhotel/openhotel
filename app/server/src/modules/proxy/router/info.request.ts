@@ -7,11 +7,11 @@ export const getInfoRequest = {
     const {
       name,
       description,
-      version,
       auth,
       onet,
       limits: { players: maxUsers },
     } = Proxy.getConfig();
+    const { version } = Proxy.getEnvs();
     const userList = Proxy.getUserList();
 
     return Response.json(
