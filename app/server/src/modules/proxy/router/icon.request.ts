@@ -1,13 +1,12 @@
+import { Proxy } from "modules/proxy/main.ts";
+
 export const getIconRequest = {
   method: "GET",
   pathname: "/icon",
   fn: async (request: Request): Promise<Response> => {
-    let icon;
     try {
-      icon = await Deno.readFile("./icon.png");
+      return new Response(await Proxy.icon.getIcon());
     } catch (e) {}
-    if (!icon) return Response.error();
-
-    return new Response(icon);
+    return Response.error();
   },
 };
