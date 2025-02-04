@@ -60,11 +60,9 @@ export const infoComponent: ContainerComponent = () => {
   $container.add($fps);
   //--------------------------------------
 
-  const isDevelopment = System.version.isDevelopment();
+  const isDevelopment = System.config.isDevelopment();
   const $version = textSprite({
-    text: isDevelopment
-      ? "development"
-      : `${System.version.getVersion()}-alpha`,
+    text: isDevelopment ? "development" : `${System.config.getVersion()}-alpha`,
     position: {
       x: 0,
       y: 15,
