@@ -31,7 +31,7 @@ export const api = () => {
   };
 
   const getPath = (pathname: string) => {
-    const isDevelopment = System.version.isDevelopment();
+    const isDevelopment = System.config.isDevelopment();
     return `${isDevelopment ? "proxy" : ""}/api${pathname}`;
   };
 

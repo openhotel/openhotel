@@ -8,11 +8,13 @@ import { getConfig, update, getDb, DbMutable } from "@oh/utils";
 import { onet } from "./onet/main.ts";
 import { auth } from "modules/shared/auth.ts";
 import { Migrations } from "../migrations/main.ts";
+import { icon } from "./icon.ts";
 
 export const System = (() => {
   let $config: ConfigTypes;
   let $envs: Envs;
 
+  const $icon = icon();
   const $proxy = proxy();
   const $tasks = tasks();
   const $game = game();
@@ -22,6 +24,8 @@ export const System = (() => {
 
   const load = async (envs: Envs) => {
     console.clear();
+
+    await $icon.load();
 
     $envs = envs;
 
