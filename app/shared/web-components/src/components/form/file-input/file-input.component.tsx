@@ -15,12 +15,14 @@ type Props = Partial<BoxProps> &
   React.HTMLProps<HTMLInputElement> & {
     className?: string;
     onChange?: (files: File[]) => void;
+    children?: React.ReactNode;
   };
 
 export const FileInputComponent: React.FC<Props> = ({
   className,
   placeholder,
   onChange,
+  children,
   ...props
 }) => {
   const id = useId();
@@ -39,8 +41,12 @@ export const FileInputComponent: React.FC<Props> = ({
   return (
     <BoxComponent {...boxProps} className={cn(styles.inputWrapper, className)}>
       <label htmlFor={id}>
-        <UploadIconComponent />
-        <span>Upload</span>
+        {children ?? (
+          <>
+            <UploadIconComponent />
+            <span>Upload</span>
+          </>
+        )}
       </label>
       <input
         id={id}
