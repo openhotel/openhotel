@@ -139,12 +139,10 @@ export const setCommand: Command = {
         });
     }
 
+    furniture.size = $furniture.size;
     switch ($furniture.type) {
       case FurnitureType.TELEPORT:
         await System.game.teleports.setRoom(furniture.id, roomId);
-      // Not add break, it's not a bug, it's a feature!!
-      case FurnitureType.FURNITURE:
-        furniture.size = $furniture.size;
         break;
       case FurnitureType.FRAME:
         furniture.framePosition = {
