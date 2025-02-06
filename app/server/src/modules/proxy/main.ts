@@ -100,6 +100,14 @@ export const Proxy = (() => {
           const username = connectionToken;
           const accountId = state;
 
+          const foundUser = userList.find(
+            (user) => user.accountId === accountId,
+          );
+          if (foundUser) {
+            userClientMap[foundUser.clientId]?.close();
+            userList = userList.filter((user) => user.accountId !== accountId);
+          }
+
           userList.push({
             clientId,
             accountId,
@@ -183,6 +191,7 @@ export const Proxy = (() => {
         userClientMap[foundUser.clientId] = client;
 
         client.on(ProxyEvent.$USER_DATA, ({ event, message }) => {
+          if (!foundUser) return client.close();
           try {
             // Disconnect client if tries to send events outside the whitelist
             if (!PROXY_CLIENT_EVENT_WHITELIST.includes(event))
@@ -209,11 +218,11 @@ export const Proxy = (() => {
         const accountId = clientIdAccountIdMap[client.id];
         if (!accountId) return;
 
-        const foundUser = userList.find((user) => user.accountId === accountId);
-        if (!foundUser) return;
-
         delete userClientMap[client.id];
         delete clientIdAccountIdMap[client.id];
+
+        const foundUser = userList.find((user) => user.accountId === accountId);
+        if (!foundUser) return;
 
         userList = userList.filter((user) => user.clientId !== client.id);
 
