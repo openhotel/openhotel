@@ -107,6 +107,9 @@
     border-radius: var(--border-radius);
     background: color.adjust($light-3, $alpha: -0.8);
 
+    max-height: 23rem;
+    overflow-y: auto;
+
     @include boxShadow();
 
     .options {
