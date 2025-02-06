@@ -8,7 +8,7 @@ import { Event } from "shared/enums";
 import { System } from "system/system";
 
 export const proxy = () => {
-  let isConnected: boolean = false;
+  let $isConnected: boolean = false;
 
   let $socket;
   let eventFunctionMap: Record<Event | string, Function[]> = {};
@@ -61,7 +61,7 @@ export const proxy = () => {
     new Promise<void>(async (resolve, reject) => {
       try {
         const config = System.config.get();
-        if (isConnected) return;
+        if ($isConnected) return;
         System.loader.addText("Connecting...");
         window.history.pushState(null, null, "/");
 
@@ -79,7 +79,7 @@ export const proxy = () => {
         });
         $socket.on("connected", () => {
           System.loader.addText("Connected!");
-          isConnected = true;
+          $isConnected = true;
 
           $socket.emit(Event.SET_LANGUAGE, {
             language: getBrowserLanguage(),
@@ -106,7 +106,7 @@ export const proxy = () => {
         });
         $socket.on("disconnected", () => {
           console.error("proxy disconnected!");
-          isConnected = false;
+          $isConnected = false;
           reject();
           clearConnection();
           System.loader.addText("Server is not reachable!");
@@ -136,7 +136,7 @@ export const proxy = () => {
     }
 
     const index = eventFunctionMap[event].push(callback) - 1;
-    if (isConnected)
+    if ($isConnected)
       eventFunctionRemoveMap[event].push($socket.on(event, callback));
 
     return () => {
@@ -150,11 +150,15 @@ export const proxy = () => {
     };
   };
 
+  const isConnected = () => $isConnected;
+
   return {
     preConnect,
     connect,
     getRefreshSession,
     loaded,
+
+    isConnected,
 
     emit,
     on,

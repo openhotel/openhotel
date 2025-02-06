@@ -9,6 +9,10 @@ export const tasks = () => {
 
   const load = () => {
     $ticker.onTick(({ delta }) => $queue.tick(delta));
+
+    window.addEventListener("visibilitychange", () => {
+      document.hidden ? $ticker.pause() : $ticker.start();
+    });
   };
 
   const add: (props: QueueItemProps) => number = $queue.add;
