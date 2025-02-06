@@ -13,6 +13,7 @@ import { ConnectionsIconComponent } from "./connections-icon.component";
 import { DatabaseIconComponent } from "./database-icon.component";
 import { VerifiedIconComponent } from "./verified-icon.component";
 import { OfficialIconComponent } from "./official-icon.component";
+import { DownloadIconComponent } from "./download-icon.component";
 
 import { CCIconComponent, BYIconComponent, NCEUIconComponent } from "./cc";
 import {
@@ -47,6 +48,7 @@ export const Database = () => <DatabaseIconComponent />;
 export const Verified = () => <VerifiedIconComponent />;
 export const Official = () => <OfficialIconComponent />;
 export const Network = () => <NetworkIconComponent />;
+export const Download = () => <DownloadIconComponent />;
 
 export const CC = () => <CCIconComponent />;
 export const BY = () => <BYIconComponent />;
