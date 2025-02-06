@@ -120,7 +120,9 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = () => {
           (human) => human.getUser().accountId === accountId,
         );
 
-        await waitUntil(() => !human.isMoving());
+        try {
+          await waitUntil(() => !human.isMoving());
+        } catch (e) {}
         await human.moveTo(position, bodyDirection);
       },
     );
@@ -330,7 +332,7 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = () => {
 
         let canMove = false;
 
-        pol.on(DisplayObjectEvent.POINTER_TAP, (event) => {
+        pol.on(DisplayObjectEvent.POINTER_TAP, (event: PointerEvent) => {
           if (event.button !== 0 || !canMove) return;
           global.context.blur();
           System.proxy.emit(Event.POINTER_TILE, {
