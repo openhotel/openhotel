@@ -16,13 +16,15 @@ export default defineConfig({
     proxy: {
       "/data": PROXY_URL,
       "/request": PROXY_URL,
-      "/version": PROXY_URL,
-      "/config": PROXY_URL,
+      "/info": PROXY_URL,
       "/proxy": {
         target: PROXY_URL,
         ws: true,
       },
       "/auth": PROXY_URL,
+      //
+      "/icon": PROXY_URL,
+      "/background": PROXY_URL,
     },
   },
   plugins: [tsconfigPaths(), plugin(), build()],

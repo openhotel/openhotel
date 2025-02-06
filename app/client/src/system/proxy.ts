@@ -43,7 +43,7 @@ export const proxy = () => {
     if (canConnect() || !System.config.get().auth.enabled) return true;
 
     const { status, data } = await fetch(
-      `/request?version=${System.version.getVersion()}`,
+      `/request?version=${System.config.getVersion()}`,
     ).then((data) => data.json());
     if (status === 200) {
       const redirectUrl = new URL(data.redirectUrl);
@@ -70,8 +70,7 @@ export const proxy = () => {
           protocols: config.auth.enabled
             ? [state, token]
             : [
-                localStorage.getItem("accountId") ||
-                  "edd8081d-d160-4bf4-b89b-133d046c87ff",
+                localStorage.getItem("accountId") || crypto.randomUUID(),
                 localStorage.getItem("username") ||
                   `player_${getRandomString(4)}`,
               ],
