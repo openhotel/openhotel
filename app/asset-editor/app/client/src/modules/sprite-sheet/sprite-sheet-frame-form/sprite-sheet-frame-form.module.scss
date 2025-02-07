@@ -1,0 +1,21 @@
+.row {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+  align-items: center;
+}
+
+.item {
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+  padding: 1rem;
+  background-color: var(--text-0-bg);
+  color: var(--text-1-c);
+  border-radius: 1rem;
+
+  &.new {
+    border: 2px dashed var(--text-0-bg);
+    background-color: var(--text-2-bg);
+  }
+}

@@ -1,12 +1,19 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./footer.module.scss";
-import { ContainerComponent } from "shared/components";
 
 export const FooterComponent = () => {
+  const [version, setVersion] = useState<string>(null);
+
+  useEffect(() => {
+    fetch("/api/version")
+      .then((response) => response.json())
+      .then(({ data }) => setVersion(data.version));
+  }, [setVersion]);
+
   return (
     <footer className={styles.footer}>
-      <ContainerComponent className={styles.container}>
-        <label>Open Hotel</label>
+      <div className={styles.container}>
+        <label>{version}</label>
         <a
           href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en"
           target="_blank"
@@ -16,7 +23,7 @@ export const FooterComponent = () => {
             src="https://mirrors.creativecommons.org/presskit/buttons/88x31/svg/by-nc-sa.eu.svg"
           />
         </a>
-      </ContainerComponent>
+      </div>
     </footer>
   );
 };

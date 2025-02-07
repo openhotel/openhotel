@@ -1,0 +1,28 @@
+@use "../../../main.module" as *;
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  @include formStyles();
+}
+
+.preview {
+  padding: 1rem;
+  background-color: var(--text-1-bg);
+  border-radius: 1rem;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-column-gap: 1rem;
+  grid-row-gap: 1rem;
+
+  .item {
+    display: inline-flex;
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+    text-transform: capitalize;
+  }
+}

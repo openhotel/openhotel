@@ -2,18 +2,20 @@ import React from "react";
 import { Outlet } from "react-router-dom";
 import { ContentComponent, FooterComponent } from "modules/application";
 import { HeaderComponent } from "../header";
+import { BackgroundComponent } from "@oh/components";
+//@ts-ignore
 import styles from "./layout.module.scss";
 
 export const LayoutComponent = () => {
   return (
-    <>
-      <HeaderComponent />
-      <ContentComponent>
-        <div className={styles.outlet}>
+    <BackgroundComponent className={styles.background}>
+      <div className={styles.wrapper}>
+        <HeaderComponent />
+        <ContentComponent>
           <Outlet />
-        </div>
+        </ContentComponent>
         <FooterComponent />
-      </ContentComponent>
-    </>
+      </div>
+    </BackgroundComponent>
   );
 };

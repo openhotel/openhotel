@@ -13,6 +13,7 @@ export default defineConfig({
   plugins: [react(), reactRefresh(), viteSingleFile()],
   root: "./src",
   base: "/",
+  publicDir: "assets",
   build: {
     outDir: "../build",
     emptyOutDir: true, // also necessary
@@ -21,6 +22,7 @@ export default defineConfig({
     alias: {
       modules: "/modules",
       shared: "/shared",
+      "@oh/styles": "../node_modules/@oh/components/",
     },
   },
   define: {

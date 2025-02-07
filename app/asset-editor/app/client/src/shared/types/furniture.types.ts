@@ -4,12 +4,12 @@ import {
   FurnitureType,
 } from "shared/enums";
 
-export type FurnitureSize = {
+export type FurnitureBounds = {
   width: number;
   height: number;
 };
 
-export type FurnitureBounds = {
+export type FurnitureSize = {
   width: number;
   height: number;
   depth: number;
@@ -27,38 +27,37 @@ export type FurniturePosition = {
 
 export type FurnitureIcon = {
   texture: string;
-  bounds: FurnitureSize;
+  bounds: FurnitureBounds;
 };
 
 export type FurnitureTexture = {
   texture: string;
-  bounds: FurnitureSize;
+  bounds: FurnitureBounds;
   pivot: FurniturePivot;
   position: FurniturePosition;
   zIndex: number;
 };
 
-export type furnitureDirectionItem = {
+export type FurnitureDirectionItem = {
   textures: FurnitureTexture[];
 };
 
-export type FurnitureSitAction = {
-  type: FurnitureActionType.SIT;
+export type FurnitureAction = {
+  type: FurnitureActionType;
+  meta?: unknown;
 };
 
-export type FurnitureAction = FurnitureSitAction;
-
 export type FurnitureData = {
-  version: 1;
+  version: number;
   id: string;
 
-  bounds?: FurnitureBounds;
+  size?: FurnitureSize;
   type?: FurnitureType;
 
   actions?: FurnitureAction[];
 
   icon?: FurnitureIcon;
-  direction?: Partial<Record<FurnitureDirection, furnitureDirectionItem>>;
+  direction?: Partial<Record<FurnitureDirection, FurnitureDirectionItem>>;
 };
 
 //

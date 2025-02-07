@@ -1,4 +1,5 @@
 @import "./consts.module";
+@import "./form-styles.module";
 
 @mixin web-only {
   @media only screen and (min-width: $WEB_MIN_WIDTH) {

@@ -1,0 +1,20 @@
+@use "../../../main.module" as *;
+
+.wrapper {
+  background-color: var(--text-0-bg);
+  overflow: hidden;
+
+  .preview {
+    position: relative;
+
+    .top {
+      position: absolute;
+      z-index: 10;
+      opacity: 0.25;
+    }
+
+    .spriteView {
+      position: absolute;
+    }
+  }
+}

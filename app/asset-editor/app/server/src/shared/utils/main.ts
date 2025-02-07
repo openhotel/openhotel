@@ -1,7 +1,6 @@
 export * from "./request.utils.ts";
 export * from "./cors.utils.ts";
 export * from "./random.utils.ts";
-export * from "./config.utils.ts";
 export * from "./directory.utils.ts";
 export * from "./path.utils.ts";
 export * from "./content-type.utils.ts";
@@ -12,3 +11,4 @@ export * from "./url.utils.ts";
 export * from "./image.utils.ts";
 export * from "./text.utils.ts";
 export * from "./readable-stream.utils.ts";
+export * from "./base64.utils.ts";

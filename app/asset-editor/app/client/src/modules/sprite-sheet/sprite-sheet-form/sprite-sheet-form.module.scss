@@ -1,0 +1,9 @@
+@use "../../../main.module" as *;
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  @include formStyles();
+}

@@ -3,10 +3,8 @@ import React from "react";
 import { LayoutComponent } from "../layout";
 import { NotFoundComponent } from "../not-found";
 import { HomeComponent } from "modules/home";
-import { FileManagerComponent } from "modules/file-manager";
 import { RedirectComponent } from "shared/components";
-import { SpriteSheetsComponent } from "modules/sprite-sheets";
-import { FurnitureComponent } from "modules/furniture";
+import { CreateFurnitureComponent } from "modules/furniture";
 
 const router = createBrowserRouter([
   {
@@ -14,20 +12,12 @@ const router = createBrowserRouter([
     path: "/",
     children: [
       {
-        path: "/furniture",
-        element: <FurnitureComponent />,
-      },
-      {
-        path: "/sprite-sheets",
-        element: <SpriteSheetsComponent />,
-      },
-      {
-        path: "/file-manager",
-        element: <FileManagerComponent />,
-      },
-      {
         path: "/",
         Component: () => <HomeComponent />,
+      },
+      {
+        path: "/furniture/create",
+        Component: () => <CreateFurnitureComponent />,
       },
       {
         path: "/404",
@@ -39,5 +29,6 @@ const router = createBrowserRouter([
 ]);
 
 export const RouterComponent: React.FC<any> = ({ children }) => (
+  // @ts-ignore
   <RouterProvider router={router}>${children}</RouterProvider>
 );

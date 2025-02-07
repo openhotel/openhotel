@@ -1,15 +1,19 @@
-@import "../../../../shared/styles/consts.module";
-@import "../../../../shared/styles/mixins.module";
+@use "../../../../main.module" as *;
 
 .footer {
-  margin: 2rem 0;
   color: var(--color-secondary);
+  background-color: var(--text-2-bg);
 
   .container {
     display: flex;
     flex-direction: row;
     gap: 1rem;
     line-height: 3rem;
+
+    padding: 2rem;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 90rem;
 
     label {
       flex: 1;

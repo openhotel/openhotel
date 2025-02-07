@@ -1,35 +1,31 @@
 import { api } from "./api.ts";
 import { ConfigTypes, Envs } from "shared/types/main.ts";
-import { getConfig as $getConfig } from "shared/utils/main.ts";
-import { load as loadUpdater } from "../modules/updater/main.ts";
-import { open } from "open";
-import { data } from "./data/main.ts";
-import { spriteSheets } from "./sprite-sheets.ts";
-import { furniture } from "./furniture.ts";
+import { getConfig as $getConfig, update } from "@oh/utils";
+import { CONFIG_DEFAULT } from "shared/consts/config.consts.ts";
 
 export const System = (() => {
   const $api = api();
-  const $data = data();
-  const $spriteSheets = spriteSheets();
-  const $furniture = furniture();
 
   let $config: ConfigTypes;
   let $envs: Envs;
 
   const load = async (envs: Envs) => {
     $envs = envs;
+    $config = await $getConfig<ConfigTypes>({ defaults: CONFIG_DEFAULT });
 
-    if (await loadUpdater(envs)) return;
-
-    $config = await $getConfig();
-
-    await $data.load();
-    await $spriteSheets.load();
-    await $furniture.load();
+    if (
+      $config.version !== "development" &&
+      (await update({
+        targetVersion: "latest",
+        version: envs.version,
+        repository: "openhotel/asset-editor",
+        log: console.log,
+        debug: console.debug,
+      }))
+    )
+      return;
 
     $api.load();
-
-    if (!$envs.isDevelopment) await open($config.url, { wait: true });
   };
 
   const getConfig = (): ConfigTypes => $config;
@@ -41,8 +37,5 @@ export const System = (() => {
     getEnvs,
 
     api: $api,
-    data: $data,
-    spriteSheets: $spriteSheets,
-    furniture: $furniture,
   };
 })();

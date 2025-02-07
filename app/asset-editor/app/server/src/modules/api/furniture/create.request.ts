@@ -1,20 +1,38 @@
-import { RequestType } from "shared/types/main.ts";
-import { RequestMethod } from "shared/enums/main.ts";
-import { System } from "system/main.ts";
-import { getSearchParams } from "shared/utils/url.utils.ts";
+import { BlobReader, BlobWriter, ZipWriter } from "@zip-js/data-uri";
+import { stringify } from "@std/yaml";
+
+import { RequestType } from "shared/types/request.types.ts";
+import { RequestMethod } from "shared/enums/request.enum.ts";
+import { base64ToBlob } from "shared/utils/base64.utils.ts";
 
 export const createRequest: RequestType = {
-  method: RequestMethod.GET,
+  method: RequestMethod.POST,
   pathname: "/create",
   func: async (request, url) => {
-    try {
-      const id = getSearchParams(url).get("id")!;
-      await System.furniture.create(id);
+    const { sprite, sheet, furniture } = await request.json();
 
-      return Response.json({ status: 200 }, { status: 200 });
-    } catch (e) {
-      console.error(e);
-      return Response.json({ status: 500 }, { status: 500 });
-    }
+    const $sprite = base64ToBlob(sprite);
+    const $sheet = new Blob([JSON.stringify(sheet)], {
+      type: "application/json",
+    });
+    const $furniture = new Blob([stringify(furniture)], {
+      type: "application/json",
+    });
+
+    const zipWriter = new ZipWriter(new BlobWriter("application/zip"));
+
+    // Add the files to the zip archive with the desired file names.
+    await zipWriter.add("sprite.png", new BlobReader($sprite));
+    await zipWriter.add("sheet.json", new BlobReader($sheet));
+    await zipWriter.add("data.yml", new BlobReader($furniture));
+
+    const zipBlob = await zipWriter.close();
+
+    return new Response(zipBlob, {
+      headers: {
+        "Content-Type": "application/zip",
+        "Content-Disposition": 'attachment; filename="archive.zip"',
+      },
+    });
   },
 };
