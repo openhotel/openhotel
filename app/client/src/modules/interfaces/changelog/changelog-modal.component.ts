@@ -3,13 +3,12 @@ import {
   ContainerComponent,
   Cursor,
   DisplayObjectEvent,
+  Event,
   EventMode,
   global,
-  graphics,
-  GraphicType,
-  sprite,
-  Event,
+  nineSliceSprite,
   scrollableContainer,
+  sprite,
   textSprite,
 } from "@tu/tulip";
 import { SpriteSheetEnum, SystemEvent } from "shared/enums";
@@ -27,69 +26,88 @@ export const changelogModalComponent: ContainerComponent<Props> = (
     sortableChildren: true,
     eventMode: EventMode.STATIC,
   });
-  const base = sprite({
-    spriteSheet: SpriteSheetEnum.CATALOG,
-    texture: "modal",
-  });
-  $container.add(base);
+  const WIDTH = 300;
+  const HEIGHT = 200;
+  const PADDING = 12;
+  const TEXT_GAP = 4;
 
-  const draggable = graphics({
-    type: GraphicType.RECTANGLE,
-    width: base.getBounds().width,
-    height: 20,
-    tint: 0xff00ff,
-    eventMode: EventMode.STATIC,
-    position: {
-      x: 0,
-      y: 0,
-    },
-    metadata: "draggable",
-    alpha: 0,
+  const $base = nineSliceSprite({
+    spriteSheet: SpriteSheetEnum.UI,
+    texture: "modal-base-rooms",
+    leftWidth: 11,
+    topHeight: 11,
+    rightWidth: 11,
+    bottomHeight: 11,
+    width: WIDTH,
+    height: HEIGHT,
   });
-  const close = graphics({
-    type: GraphicType.RECTANGLE,
-    width: 16,
-    height: 16,
-    tint: 0xff00ff,
-    eventMode: EventMode.STATIC,
+  $container.add($base);
+
+  const $close = sprite({
+    spriteSheet: SpriteSheetEnum.UI,
+    texture: "drag-close",
     position: {
-      x: base.getBounds().width - 25,
+      x: $base.getBounds().width - 25,
       y: 3,
     },
-    alpha: 0,
     cursor: Cursor.POINTER,
+    eventMode: EventMode.STATIC,
   });
-  close.on(DisplayObjectEvent.POINTER_TAP, () => {
+  $close.on(DisplayObjectEvent.POINTER_TAP, () => {
     $container.setVisible(false);
   });
-  $container.add(draggable, close);
 
-  const content = sprite({
-    spriteSheet: SpriteSheetEnum.NAVIGATOR,
-    texture: "content",
+  const $draggable = nineSliceSprite({
+    spriteSheet: SpriteSheetEnum.UI,
+    texture: "drag",
+    leftWidth: 6,
+    topHeight: 6,
+    rightWidth: 6,
+    bottomHeight: 6,
+    width: $base.getBounds().width - 25 - 8,
+    height: 13,
     position: {
-      x: 8,
-      y: 20,
+      x: 4,
+      y: 3,
     },
-    zIndex: 10,
+    eventMode: EventMode.STATIC,
+    cursor: Cursor.POINTER,
+    metadata: "draggable",
   });
-  $container.add(content);
 
-  const $contentSize = content.getBounds();
+  $container.add($draggable, $close);
+
+  const $content = nineSliceSprite({
+    spriteSheet: SpriteSheetEnum.UI,
+    texture: "modal-1-selected",
+    leftWidth: 11,
+    topHeight: 11,
+    rightWidth: 11,
+    bottomHeight: 11,
+    width: WIDTH - PADDING,
+    height: HEIGHT - $draggable.getBounds().height - PADDING,
+    position: {
+      x: PADDING / 2,
+      y: $draggable.getBounds().height + PADDING / 2,
+    },
+  });
+  $container.add($content);
+
+  const $contentSize = $content.getBounds();
   const contentSize = {
-    width: $contentSize.width - 12,
-    height: $contentSize.height - 12,
+    width: $contentSize.width - PADDING,
+    height: $contentSize.height - PADDING,
   };
 
-  const $versionsList = scrollableContainer({
+  const $changelog = scrollableContainer({
     position: {
-      x: 12,
-      y: 25,
+      x: PADDING,
+      y: $draggable.getBounds().height + PADDING,
     },
     zIndex: 20,
     size: {
-      width: contentSize.width - 10,
-      height: contentSize.height - 10,
+      width: contentSize.width - PADDING / 2,
+      height: contentSize.height - PADDING / 2,
     },
     jump: 3,
     verticalScroll: true,
@@ -121,13 +139,12 @@ export const changelogModalComponent: ContainerComponent<Props> = (
     ],
   });
 
-  $container.add($versionsList);
+  $container.add($changelog);
 
   const load = async () => {
     let currentY = 0;
-    const padding = 4;
 
-    const changes = await System.version.getChangelogChanges();
+    const changes = await System.config.getChangelogChanges();
     for (const content of changes) {
       let versionY = 0;
       const { version, date, sections } = content;
@@ -135,7 +152,7 @@ export const changelogModalComponent: ContainerComponent<Props> = (
       const $versionContainer = container({
         size: {
           width: contentSize.width,
-          height: padding,
+          height: TEXT_GAP,
         },
         position: {
           x: 0,
@@ -164,7 +181,7 @@ export const changelogModalComponent: ContainerComponent<Props> = (
         const $sectionContainer = container({
           size: {
             width: contentSize.width,
-            height: padding,
+            height: TEXT_GAP,
           },
           position: {
             x: 0,
@@ -183,9 +200,11 @@ export const changelogModalComponent: ContainerComponent<Props> = (
         });
 
         $sectionContainer.add($section);
-        sectionY += $section.getBounds().height + padding;
+        sectionY += $section.getBounds().height + TEXT_GAP;
 
         for (const issue of sections[section]) {
+          // TODO: height only optional if text wrap...
+          // TODO: if wrap link buttons not correct
           const $issue = textSprite({
             text: `- ${issue}`,
             spriteSheet: SpriteSheetEnum.DEFAULT_FONT,
@@ -194,6 +213,12 @@ export const changelogModalComponent: ContainerComponent<Props> = (
               x: 0,
               y: sectionY,
             },
+            // size: {
+            //   width: contentSize.width,
+            //   height: 14,
+            // },
+            allowLinks: true,
+            parseMarkdown: true,
           });
 
           $sectionContainer.add($issue);
@@ -202,11 +227,11 @@ export const changelogModalComponent: ContainerComponent<Props> = (
         }
 
         $versionContainer.add($sectionContainer);
-        versionY += $sectionContainer.getBounds().height + padding;
+        versionY += $sectionContainer.getBounds().height + TEXT_GAP;
       }
 
-      $versionsList.add($versionContainer);
-      currentY += versionY + padding * 2;
+      $changelog.add($versionContainer);
+      currentY += versionY + TEXT_GAP * 2;
     }
   };
 

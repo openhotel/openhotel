@@ -45,6 +45,11 @@
       "anchor": { "x": 0, "y": 0 },
       "sourceSize": { "w": 12, "h": 9 }
     },
+    "drag": {
+      "frame": { "x": 77, "y": 0, "w": 15, "h": 13 },
+      "anchor": { "x": 0, "y": 0 },
+      "sourceSize": { "w": 15, "h": 13 }
+    },
     "drag-1": {
       "frame": { "x": 45, "y": 26, "w": 1, "h": 13 },
       "anchor": { "x": 0, "y": 0 },

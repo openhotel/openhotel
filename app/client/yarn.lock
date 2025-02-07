@@ -687,15 +687,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tu/tulip@npm:@jsr/tu__tulip@0.14.14":
-  version: 0.14.14
-  resolution: "@jsr/tu__tulip@npm:0.14.14::__archiveUrl=https%3A%2F%2Fnpm.jsr.io%2F~%2F11%2F%40jsr%2Ftu__tulip%2F0.14.14.tgz"
+"@tu/tulip@npm:@jsr/tu__tulip@0.14.15":
+  version: 0.14.15
+  resolution: "@jsr/tu__tulip@npm:0.14.15::__archiveUrl=https%3A%2F%2Fnpm.jsr.io%2F~%2F11%2F%40jsr%2Ftu__tulip%2F0.14.15.tgz"
   dependencies:
     "@tulib/vite-tulip-plugin": "npm:1.0.15"
     howler: "npm:2.2.4"
     p2: "npm:0.7.1"
     pixi.js: "npm:8.6.6"
-  checksum: 10c0/593635ebeb9dbc9b9e1f77c6d92ad71c3642c86038738a9ec5ff1d28cb97db8f894fad59a332215d7bb99699640987e22527313df091b0e155f70c0deb56c53d
+  checksum: 10c0/10d6b15ccb7752c0ba44d608c60433e3328ae5d739673cbf26166e3f33f34a977e7d1994d124be60826aad5e1ec26085c6ed5a3e27d4ce72b3dd3cda707de897
   languageName: node
   linkType: hard
 
@@ -1733,7 +1733,7 @@ __metadata:
   dependencies:
     "@oh/queue": "npm:@jsr/oh__queue@1.1.1"
     "@rollup/plugin-alias": "npm:5.1.0"
-    "@tu/tulip": "npm:@jsr/tu__tulip@0.14.14"
+    "@tu/tulip": "npm:@jsr/tu__tulip@0.14.15"
     "@tulib/vite-tulip-plugin": "npm:1.0.15"
     vite: "npm:6.0.11"
     vite-tsconfig-paths: "npm:4.3.2"
