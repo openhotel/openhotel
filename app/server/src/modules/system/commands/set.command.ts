@@ -78,12 +78,17 @@ export const setCommand: Command = {
       const isWallZ = isWallRenderable(layout, furniture.position, false);
 
       if (!isWallX && !isWallZ) {
-        user.emit(ProxyEvent.SYSTEM_MESSAGE, {
+        return user.emit(ProxyEvent.SYSTEM_MESSAGE, {
           message: __(user.getLanguage())(
             "Frames need to be attached to the wall",
           ),
         });
-        return;
+      }
+
+      if ((isWallX && direction === 0) || (isWallZ && direction === 1)) {
+        return user.emit(ProxyEvent.SYSTEM_MESSAGE, {
+          message: __(user.getLanguage())("Incorrect frame direction"),
+        });
       }
 
       // TODO: Defaults until furniture metadata is fully updated -> https://github.com/openhotel/asset-editor/issues/14

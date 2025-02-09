@@ -50,5 +50,6 @@
   "The furniture cannot be placed at position {{x}},{{z}}": "No puede ponerse en la posicion {{x}},{{z}}",
   "Frames need to be attached to the wall": "Los cuadros necesitan estar pegados a la pared",
   "Frames cannot exceed the height of the wall": "El cuadro no pueden superar la altura de la pared ({{height}})",
-  "Frames cannot be placed beyond the allowed X position ({{x}})": "El cuadro excede el límite en X ({{maxX}})"
+  "Frames cannot be placed beyond the allowed X position ({{x}})": "El cuadro excede el límite en X ({{maxX}})",
+  "Incorrect frame direction": "Dirección del cuadro incorrecta"
 }

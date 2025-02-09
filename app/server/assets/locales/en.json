@@ -50,5 +50,6 @@
   "The furniture cannot be placed at position {{x}},{{z}}": "The furniture cannot be placed at position {{x}},{{z}}",
   "Frames need to be attached to the wall": "Frames need to be attached to the wall",
   "Frames cannot exceed the height of the wall": "Frames cannot exceed the height of the wall ({{height}})",
-  "Frames cannot be placed beyond the allowed X position ({{x}})": "Frames cannot be placed beyond the allowed X position ({{x}})"
+  "Frames cannot be placed beyond the allowed X position ({{x}})": "Frames cannot be placed beyond the allowed X position ({{x}})",
+  "Incorrect frame direction": "Incorrect frame direction"
 }
