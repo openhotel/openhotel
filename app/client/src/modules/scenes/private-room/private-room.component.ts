@@ -127,19 +127,26 @@ export const privateRoomComponent: ContainerComponent<
     );
 
     onRemovePointerDown = global.events.on(TulipEvent.POINTER_DOWN, (event) => {
-      if (!isEnabled || event.button !== 0) return;
+      if (!isEnabled || (event.type === "mousedown" && event.button !== 0))
+        return;
       isDragging = true;
-      dragStart = { x: event.x, y: event.y };
+      dragStart = {
+        x: event.x ?? event.touches[0]?.clientX,
+        y: event.y ?? event.touches[0]?.clientY,
+      };
 
       containerStart = $roomScene.getGlobalPosition();
     });
 
     onRemovePointerMove = global.events.on(TulipEvent.POINTER_MOVE, (event) => {
       if (!isDragging) return;
+      System.events.emit(SystemEvent.TEST, "pointer move ");
 
       const scale = global.window.getScale();
-      const deltaX = (event.clientX - dragStart.x) / scale;
-      const deltaY = (event.clientY - dragStart.y) / scale;
+      const deltaX =
+        ((event.clientX ?? event.touches[0]?.clientX) - dragStart.x) / scale;
+      const deltaY =
+        ((event.clientY ?? event.touches[0]?.clientY) - dragStart.y) / scale;
 
       let newX = Math.floor(containerStart.x + deltaX);
       let newY = Math.floor(containerStart.y + deltaY);
@@ -158,6 +165,7 @@ export const privateRoomComponent: ContainerComponent<
     });
 
     onRemovePointerUp = global.events.on(TulipEvent.POINTER_UP, (event) => {
+      System.events.emit(SystemEvent.TEST, `pointer up ${event.button}`);
       if (event.button !== 0) return;
       isDragging = false;
     });
