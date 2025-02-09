@@ -1,4 +1,32 @@
 
+<a name="v0.5.31"></a>
+
+## [v0.5.31](https://github.com/openhotel/openhotel/compare/v0.5.30...v0.5.31) (2025-02-09)
+
+### Bug Fixes
+
+- drag room not working on phones/tablets - fix [#643](https://github.com/openhotel/openhotel/issues/643) ([#644](https://github.com/openhotel/openhotel/issues/644))
+- prevent clients without a user from being alive, kill those bastards - fix [#636](https://github.com/openhotel/openhotel/issues/636) ([#641](https://github.com/openhotel/openhotel/issues/641))
+- prevent invalid reposition on humans when focus is out - fix [#638](https://github.com/openhotel/openhotel/issues/638) ([#639](https://github.com/openhotel/openhotel/issues/639))
+- remove bounds from furniture in favor of size - fix [#632](https://github.com/openhotel/openhotel/issues/632) ([#633](https://github.com/openhotel/openhotel/issues/633))
+- incorrect message pivot - fix [#612](https://github.com/openhotel/openhotel/issues/612) ([#631](https://github.com/openhotel/openhotel/issues/631))
+- chat history not saving old duplicated elements - fix [#624](https://github.com/openhotel/openhotel/issues/624) ([#629](https://github.com/openhotel/openhotel/issues/629))
+- flags set with sizes - fix [#625](https://github.com/openhotel/openhotel/issues/625) ([#627](https://github.com/openhotel/openhotel/issues/627))
+- ignore prettier on changelog - fix [#620](https://github.com/openhotel/openhotel/issues/620) ([#622](https://github.com/openhotel/openhotel/issues/622))
+
+### Bump
+
+- tulip v0.14.14 - fix [#634](https://github.com/openhotel/openhotel/issues/634) ([#635](https://github.com/openhotel/openhotel/issues/635))
+
+### Chore
+
+- update changelog for v0.5.30 ([#621](https://github.com/openhotel/openhotel/issues/621))
+
+### Features
+
+- added reply command to whispering - fix [#623](https://github.com/openhotel/openhotel/issues/623) ([#630](https://github.com/openhotel/openhotel/issues/630))
+
+
 <a name="v0.5.30"></a>
 
 ## [v0.5.30](https://github.com/openhotel/openhotel/compare/v0.5.29...v0.5.30) (2025-02-04)
@@ -734,17 +762,17 @@
 
 <a name="v0.2.20-rc.2"></a>
 
-## [v0.2.20-rc.2](https://github.com/openhotel/openhotel/compare/v0.2.19...v0.2.20-rc.2) (2024-09-29)
-
-
-<a name="v0.2.19"></a>
-
-## [v0.2.19](https://github.com/openhotel/openhotel/compare/v0.2.20-rc.1...v0.2.19) (2024-09-29)
+## [v0.2.20-rc.2](https://github.com/openhotel/openhotel/compare/v0.2.20-rc.1...v0.2.20-rc.2) (2024-09-29)
 
 
 <a name="v0.2.20-rc.1"></a>
 
-## [v0.2.20-rc.1](https://github.com/openhotel/openhotel/compare/v0.2.18...v0.2.20-rc.1) (2024-09-29)
+## [v0.2.20-rc.1](https://github.com/openhotel/openhotel/compare/v0.2.19...v0.2.20-rc.1) (2024-09-29)
+
+
+<a name="v0.2.19"></a>
+
+## [v0.2.19](https://github.com/openhotel/openhotel/compare/v0.2.18...v0.2.19) (2024-09-29)
 
 
 <a name="v0.2.18"></a>
