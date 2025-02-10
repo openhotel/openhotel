@@ -25,4 +25,6 @@ export enum SystemEvent {
 
   ENABLE_CAMERA_MOVEMENT,
   DISABLE_CAMERA_MOVEMENT,
+
+  TEST,
 }
