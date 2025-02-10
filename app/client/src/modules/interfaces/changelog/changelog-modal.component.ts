@@ -226,7 +226,7 @@ export const changelogModalComponent: ContainerComponent<Props> = (
 
           $issue.setSize({
             width: contentSize.width,
-            height: Math.ceil($issue.getParsedText().length / 60) * 7,
+            height: Math.ceil($issue.getParsedText().length / 60) * 8,
           });
 
           $sectionContainer.add($issue);

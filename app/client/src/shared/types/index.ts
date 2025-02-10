@@ -8,4 +8,3 @@ export * from "./direction.types";
 export * from "./furniture.types";
 export * from "./event.types";
 export * from "./contributors.types";
-export * from "./changelog.types";

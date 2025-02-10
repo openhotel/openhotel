@@ -9,3 +9,4 @@ export * from "./furniture.types.ts";
 export * from "./catalog.types.ts";
 export * from "./api.types.ts";
 export * from "./request.types.ts";
+export * from "./changelog.types.ts";
