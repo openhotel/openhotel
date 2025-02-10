@@ -24,6 +24,7 @@ import {
   FullSignalIconComponent,
 } from "./signal";
 import { NetworkIconComponent } from "./network-icon.component";
+import { ForbiddenIconComponent } from "./forbidden-icon.component";
 
 export default {
   title: "Components/Icons",
@@ -49,6 +50,7 @@ export const Verified = () => <VerifiedIconComponent />;
 export const Official = () => <OfficialIconComponent />;
 export const Network = () => <NetworkIconComponent />;
 export const Download = () => <DownloadIconComponent />;
+export const Forbidden = () => <ForbiddenIconComponent />;
 
 export const CC = () => <CCIconComponent />;
 export const BY = () => <BYIconComponent />;
