@@ -6,3 +6,4 @@ export * from "./wait.utils";
 export * from "./hit-area.utils";
 export * from "./direction.utils";
 export * from "./languages.utils";
+export * from "./changelog.utils";
