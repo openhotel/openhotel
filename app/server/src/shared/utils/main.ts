@@ -5,3 +5,4 @@ export * from "./languages.utils.ts";
 export * from "./rooms.utils.ts";
 export * from "./position.utils.ts";
 export * from "./bytes.utils.ts";
+export * from "./changelog.utils.ts";
