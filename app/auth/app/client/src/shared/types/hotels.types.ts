@@ -31,6 +31,11 @@ export type PublicHotel = {
   createdAt: number;
   client: PublicHotelIntegration;
   web: PublicHotelIntegration;
+
+  official: boolean;
+  verified: boolean;
+
+  blocked: boolean;
 };
 
 export type HotelInfo = {
@@ -71,3 +76,51 @@ export type PrivateHotelIntegration = {
 export type PrivateHotel = {
   integrations: PrivateHotelIntegration[];
 } & Exclude<Hotel, "integrations">;
+
+/**
+ * -------------------------------------------------------
+ * --------- DB -------------------------------------
+ * -------------------------------------------------------
+ */
+
+export enum DbHotelIntegrationType {
+  WEB = "web",
+  CLIENT = "client",
+}
+
+export type DbHotelUser = {
+  username: string;
+  accountId: string;
+};
+
+export type DbHotelIntegration = {
+  integrationId: string;
+  name: string;
+  redirectUrl: string;
+  type: DbHotelIntegrationType;
+  createdAt: number;
+  updatedAt: number;
+
+  accounts: DbHotelUser[];
+};
+
+export type DbHotel = {
+  accountId: string;
+  username: string;
+
+  hotelId: string;
+  name: string;
+  public: boolean;
+
+  accounts: DbHotelUser[];
+
+  integrations: DbHotelIntegration[];
+
+  createdAt: number;
+  updatedAt: number;
+
+  official: boolean;
+  verified: boolean;
+
+  blocked: boolean;
+};

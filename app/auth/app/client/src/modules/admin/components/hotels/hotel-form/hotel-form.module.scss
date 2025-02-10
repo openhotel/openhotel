@@ -1,0 +1,55 @@
+@import "../../../../../shared/styles/consts.module";
+
+.icon {
+  height: 2rem;
+  cursor: pointer;
+}
+
+.selectedForm {
+  padding: 2rem;
+  background-color: var(--text-2-bg);
+  border-radius: 1rem;
+  gap: 1rem;
+  display: flex;
+  flex-direction: column;
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+  }
+  .integration {
+    padding: 1rem;
+    background-color: var(--text-3-bg);
+    border-radius: 1rem;
+    gap: 1rem;
+    display: flex;
+    flex-direction: column;
+  }
+  .live {
+    padding: 2rem;
+    background-color: var(--text-1-bg);
+    border-radius: 1rem;
+    gap: 1rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .formColumn {
+    display: flex;
+    gap: 1rem;
+    width: 100%;
+    flex-direction: column;
+  }
+  .formRow {
+    display: flex;
+    gap: 1rem;
+    width: 100%;
+  }
+  .actions {
+    justify-content: space-between;
+
+    .subActions {
+      width: auto;
+    }
+  }
+}

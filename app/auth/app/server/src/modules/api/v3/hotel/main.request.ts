@@ -19,7 +19,8 @@ export const mainGetRequest: RequestType = {
       return getResponse(HttpStatusCode.BAD_REQUEST);
 
     const hotel = await System.hotels.getHotel({ hotelId });
-    if (!hotel) return getResponse(HttpStatusCode.BAD_REQUEST);
+    if (!hotel || hotel.getObject().blocked)
+      return getResponse(HttpStatusCode.BAD_REQUEST);
 
     const integration = hotel.getIntegration({ integrationId });
     if (!integration) return getResponse(HttpStatusCode.BAD_REQUEST);

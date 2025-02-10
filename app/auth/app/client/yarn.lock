@@ -496,13 +496,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@oh/components@npm:@jsr/oh__components@0.1.35":
-  version: 0.1.35
-  resolution: "@jsr/oh__components@npm:0.1.35::__archiveUrl=https%3A%2F%2Fnpm.jsr.io%2F~%2F11%2F%40jsr%2Foh__components%2F0.1.35.tgz"
+"@oh/components@npm:@jsr/oh__components@0.1.38":
+  version: 0.1.38
+  resolution: "@jsr/oh__components@npm:0.1.38::__archiveUrl=https%3A%2F%2Fnpm.jsr.io%2F~%2F11%2F%40jsr%2Foh__components%2F0.1.38.tgz"
   dependencies:
     react: "npm:18.3.1"
     react-dom: "npm:18.3.1"
-  checksum: 10c0/f229db07b3d15d1e88ea608634ba51ae32c2dd8865a0aa318b8b5f647051c27d88727d118d021596d1e29bb43617dc9e7e13544150cc75b590cb056166195b40
+  checksum: 10c0/edeb01e62d8e0e47dbfb679c591c0c22332ad7d27ee0a000e6ac9d01c609091a0b306c88033839029b6973376ddd12d4c4f26f330dc00539b644bd1d815eddd5
   languageName: node
   linkType: hard
 
@@ -2057,7 +2057,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "root-workspace-0b6124@workspace:."
   dependencies:
-    "@oh/components": "npm:@jsr/oh__components@0.1.35"
+    "@oh/components": "npm:@jsr/oh__components@0.1.38"
     "@rollup/plugin-alias": "npm:5.1.0"
     "@types/js-cookie": "npm:3.0.6"
     "@types/react": "npm:18.3.3"

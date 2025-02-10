@@ -115,11 +115,12 @@ export const hotels = () => {
     };
 
     const update = async ($hotel: Partial<DbHotel>) => {
-      await System.db.set(["hotels", hotel.hotelId], {
+      hotel = {
         ...hotel,
         ...$hotel,
         updatedAt: Date.now(),
-      });
+      };
+      await System.db.set(["hotels", hotel.hotelId], hotel);
     };
 
     const remove = async () => {
@@ -128,7 +129,12 @@ export const hotels = () => {
       await System.db.delete(["hotels", hotel.hotelId]);
     };
 
-    const getObject = (): DbHotel => hotel;
+    const getObject = (): DbHotel => ({
+      ...hotel,
+      verified: Boolean(hotel.verified),
+      official: Boolean(hotel.official),
+      blocked: Boolean(hotel.blocked),
+    });
 
     return {
       getLicenseData,

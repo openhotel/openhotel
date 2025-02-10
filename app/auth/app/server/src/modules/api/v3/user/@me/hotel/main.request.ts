@@ -15,27 +15,31 @@ export const mainGetRequest: RequestType = {
     const account = await System.accounts.getAccount({ request });
     const $hotels = await account.getHotels();
 
-    const hotels = await Promise.all(
-      $hotels.map(async (hotel) => {
-        const hotelData = hotel.getObject();
+    const hotels = (
+      await Promise.all(
+        $hotels.map(async (hotel) => {
+          const hotelData = hotel.getObject();
 
-        hotelData.integrations = await Promise.all(
-          hotel.getIntegrations().map(async (integration) => {
-            const accounts = await integration.getAccounts();
-            return {
-              ...integration.getObject(),
-              accounts: accounts.length,
-            };
-          }),
-        );
+          if (hotelData.blocked) return null;
 
-        const accounts = await hotel.getAccounts();
-        return {
-          ...hotelData,
-          accounts: accounts.length,
-        };
-      }),
-    );
+          hotelData.integrations = await Promise.all(
+            hotel.getIntegrations().map(async (integration) => {
+              const accounts = await integration.getAccounts();
+              return {
+                ...integration.getObject(),
+                accounts: accounts.length,
+              };
+            }),
+          );
+
+          const accounts = await hotel.getAccounts();
+          return {
+            ...hotelData,
+            accounts: accounts.length,
+          };
+        }),
+      )
+    ).filter((hotel) => Boolean(hotel));
 
     return getResponse(HttpStatusCode.OK, {
       data: { hotels },
@@ -84,7 +88,8 @@ export const mainPatchRequest: RequestType = {
     const account = await System.accounts.getAccount({ request });
 
     const hotel = await account.getHotel({ hotelId });
-    if (!hotel) return getResponse(HttpStatusCode.BAD_REQUEST);
+    if (!hotel || hotel.getObject().blocked)
+      return getResponse(HttpStatusCode.BAD_REQUEST);
 
     await hotel.update({
       name,
@@ -106,7 +111,8 @@ export const mainDeleteRequest: RequestType = {
     const account = await System.accounts.getAccount({ request });
 
     const hotel = await account.getHotel({ hotelId });
-    if (!hotel) return getResponse(HttpStatusCode.BAD_REQUEST);
+    if (!hotel || hotel.getObject().blocked)
+      return getResponse(HttpStatusCode.BAD_REQUEST);
 
     await hotel.remove();
 

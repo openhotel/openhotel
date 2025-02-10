@@ -1,7 +1,7 @@
 import React, { ReactNode, useCallback, useContext, useState } from "react";
 import { useApi } from "shared/hooks/useApi";
 import { useAccount } from "shared/hooks/useAccount";
-import { Backup, PrivateHotel, Token, User } from "shared/types";
+import { Backup, DbHotel, Token, User } from "shared/types";
 import { RequestMethod } from "shared/enums";
 
 type AdminState = {
@@ -11,8 +11,17 @@ type AdminState = {
   tokens: Token[];
   fetchTokens: () => Promise<void>;
 
-  hotels: PrivateHotel[];
+  hotels: DbHotel[];
   fetchHotels: () => Promise<void>;
+  updateHotel: (
+    hotelId: string,
+    body: { blocked?: boolean; verified?: boolean; official?: boolean },
+  ) => Promise<void>;
+  deleteHotelIntegration: (
+    hotelId: string,
+    integrationId: string,
+  ) => Promise<void>;
+  deleteHotel: (hotelId: string) => Promise<void>;
 
   backups: Backup[];
   fetchBackups: () => Promise<void>;
@@ -44,7 +53,7 @@ export const AdminProvider: React.FunctionComponent<ProviderProps> = ({
 
   const [users, setUsers] = useState<User[]>([]);
   const [tokens, setTokens] = useState<Token[]>([]);
-  const [hotels, setHotels] = useState<PrivateHotel[]>([]);
+  const [hotels, setHotels] = useState<DbHotel[]>([]);
   const [backups, setBackups] = useState<Backup[]>([]);
 
   const fetchUsers = useCallback(async () => {
@@ -138,10 +147,50 @@ export const AdminProvider: React.FunctionComponent<ProviderProps> = ({
   const fetchHotels = useCallback(async () => {
     return fetch({
       method: RequestMethod.GET,
-      pathname: "/admin/hotels",
+      pathname: "/admin/hotel",
       headers: getAccountHeaders(),
     }).then((response) => setHotels(response.data.hotels));
   }, [fetch, getAccountHeaders]);
+
+  const deleteHotel = useCallback(
+    async (hotelId: string) => {
+      return fetch({
+        method: RequestMethod.DELETE,
+        pathname: `/admin/hotel?hotelId=${hotelId}`,
+        headers: getAccountHeaders(),
+      });
+    },
+    [fetch, getAccountHeaders],
+  );
+
+  const updateHotel = useCallback(
+    async (
+      hotelId: string,
+      body: { blocked?: boolean; verified?: boolean; official?: boolean },
+    ) => {
+      return fetch({
+        method: RequestMethod.PATCH,
+        pathname: `/admin/hotel`,
+        headers: getAccountHeaders(),
+        body: {
+          hotelId,
+          ...body,
+        },
+      });
+    },
+    [fetch, getAccountHeaders],
+  );
+
+  const deleteHotelIntegration = useCallback(
+    async (hotelId: string, integrationId: string) => {
+      return fetch({
+        method: RequestMethod.DELETE,
+        pathname: `/admin/hotel/integration?hotelId=${hotelId}&integrationId=${integrationId}`,
+        headers: getAccountHeaders(),
+      });
+    },
+    [fetch, getAccountHeaders],
+  );
 
   const update = useCallback(() => {
     return fetch({
@@ -198,6 +247,9 @@ export const AdminProvider: React.FunctionComponent<ProviderProps> = ({
 
         hotels,
         fetchHotels,
+        updateHotel,
+        deleteHotelIntegration,
+        deleteHotel,
 
         addToken,
         removeToken,

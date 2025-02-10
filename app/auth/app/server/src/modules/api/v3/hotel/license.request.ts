@@ -14,7 +14,8 @@ export const licenseGetRequest: RequestType = {
   func: async (request: Request) => {
     const hotel = await System.hotels.getHotel({ request });
 
-    if (!hotel) return getResponse(HttpStatusCode.BAD_REQUEST);
+    if (!hotel || hotel.getObject().blocked)
+      return getResponse(HttpStatusCode.BAD_REQUEST);
 
     const license = await hotel.getLicenseData();
 

@@ -1,14 +1,21 @@
 .hotels {
-  .list {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 
-    .item {
-      display: flex;
-      gap: 1rem;
-      background-color: var(--bg);
-      padding: 1rem 2rem;
+  .row {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
+
+    &.selected {
+      background-color: var(--text-0-c) !important;
+      color: var(--text-2-bg) !important;
+      font-weight: bold;
     }
   }
+}
+.icon {
+  height: 2rem;
 }

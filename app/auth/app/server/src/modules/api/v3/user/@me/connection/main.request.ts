@@ -30,7 +30,8 @@ export const mainPostRequest: RequestType = {
       });
 
     const hotel = await System.hotels.getHotel({ hotelId });
-    if (!hotel) return getResponse(HttpStatusCode.BAD_REQUEST);
+    if (!hotel || hotel.getObject().blocked)
+      return getResponse(HttpStatusCode.BAD_REQUEST);
 
     const integration = hotel.getIntegration({ integrationId });
     if (!integration) return getResponse(HttpStatusCode.BAD_REQUEST);
@@ -77,38 +78,43 @@ export const mainGetRequest: RequestType = {
 
     const activeConnection = await account.connections.active.get();
 
-    const connections = await Promise.all(
-      $hotels.map(async (hotelId: string) => {
-        const hotel = await System.hotels.getHotel({ hotelId });
-        const hotelData = hotel.getObject();
+    const connections = (
+      await Promise.all(
+        $hotels.map(async (hotelId: string) => {
+          const hotel = await System.hotels.getHotel({ hotelId });
+          const hotelData = hotel.getObject();
 
-        return {
-          hotelId,
-          name: hotelData.name,
-          owner: (await hotel.getOwner()).getObject().username,
-          verified: false,
-          connections: $connections
-            .filter((connection) => connection.hotelId === hotelId)
-            .map((connection) => {
-              const integration = hotel.getIntegration({
-                integrationId: connection.integrationId,
-              });
-              const integrationData = integration.getObject();
+          if (hotelData.blocked) return null;
 
-              return {
-                active:
-                  activeConnection?.hotelId === hotelId &&
-                  activeConnection?.integrationId === connection.integrationId,
-                integrationId: connection.integrationId,
-                scopes: connection.scopes,
-                name: integrationData.name,
-                redirectUrl: integrationData.redirectUrl,
-                type: integrationData.type,
-              };
-            }),
-        };
-      }),
-    );
+          return {
+            hotelId,
+            name: hotelData.name,
+            owner: (await hotel.getOwner()).getObject().username,
+            verified: false,
+            connections: $connections
+              .filter((connection) => connection.hotelId === hotelId)
+              .map((connection) => {
+                const integration = hotel.getIntegration({
+                  integrationId: connection.integrationId,
+                });
+                const integrationData = integration.getObject();
+
+                return {
+                  active:
+                    activeConnection?.hotelId === hotelId &&
+                    activeConnection?.integrationId ===
+                      connection.integrationId,
+                  integrationId: connection.integrationId,
+                  scopes: connection.scopes,
+                  name: integrationData.name,
+                  redirectUrl: integrationData.redirectUrl,
+                  type: integrationData.type,
+                };
+              }),
+          };
+        }),
+      )
+    ).filter(Boolean);
 
     //
 

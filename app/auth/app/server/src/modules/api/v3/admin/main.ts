@@ -6,7 +6,6 @@ import {
   tokensGetRequest,
   tokensPostRequest,
 } from "./tokens.request.ts";
-import { hotelsDeleteRequest, hotelsGetRequest } from "./hotels.request.ts";
 import { usersGetRequest } from "./users.request.ts";
 import { userDeleteRequest, userPatchRequest } from "./user.request.ts";
 import { userResendVerificationRequest } from "./user-resend-verification.request.ts";
@@ -15,6 +14,7 @@ import {
   backupsGetRequest,
   backupsPostRequest,
 } from "./backups.request.ts";
+import { hotelRequestList } from "./hotel/main.ts";
 
 export const adminRequestList: RequestType[] = getPathRequestList({
   requestList: [
@@ -30,8 +30,7 @@ export const adminRequestList: RequestType[] = getPathRequestList({
     userPatchRequest,
     userResendVerificationRequest,
     //
-    hotelsGetRequest,
-    hotelsDeleteRequest,
+    ...hotelRequestList,
     //
     backupsGetRequest,
     backupsPostRequest,

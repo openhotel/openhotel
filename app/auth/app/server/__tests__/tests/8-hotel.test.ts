@@ -74,6 +74,9 @@ describe("10. hotel", () => {
           "name",
           "public",
           "updatedAt",
+          "blocked",
+          "verified",
+          "official",
         ];
 
         assertEquals(keys.length, currentKeys.length);
@@ -85,6 +88,9 @@ describe("10. hotel", () => {
         assertEquals(hotel.accounts, 0);
         assertEquals(hotel.name, HOTEL_1.name);
         assertEquals(hotel.public, false);
+        assertEquals(hotel.blocked, false);
+        assertEquals(hotel.verified, false);
+        assertEquals(hotel.official, false);
       });
       it("unauthorized user gets hotel list", async () => {
         const { status, data } = await fetcher("/user/@me/hotel", {

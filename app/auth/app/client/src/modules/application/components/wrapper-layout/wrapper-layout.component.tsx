@@ -17,7 +17,7 @@ export const WrapperLayoutComponent = ({ children }: Props) => {
     refresh();
   }, [user, isLogged, refresh]);
 
-  if (isLogged === null) return <div>Loading...</div>;
+  if (isLogged === null) return null;
   if (!isLogged) return <RedirectComponent to="/login" />;
 
   return (

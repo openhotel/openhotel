@@ -17,7 +17,8 @@ export const mainPostRequest: RequestType = {
     const account = await System.accounts.getAccount({ request });
     const hotel = await account.getHotel({ hotelId });
 
-    if (!hotel) return getResponse(HttpStatusCode.BAD_REQUEST);
+    if (!hotel || hotel.getObject().blocked)
+      return getResponse(HttpStatusCode.BAD_REQUEST);
 
     const integrationId = await hotel.integrations.addIntegration({
       name,
@@ -44,7 +45,8 @@ export const mainGetRequest: RequestType = {
 
     const account = await System.accounts.getAccount({ request });
     const hotel = await account.getHotel({ hotelId });
-    if (!hotel) return getResponse(HttpStatusCode.BAD_REQUEST);
+    if (!hotel || hotel.getObject().blocked)
+      return getResponse(HttpStatusCode.BAD_REQUEST);
 
     const integration = hotel.getIntegration({ integrationId });
     if (!integration) return getResponse(HttpStatusCode.BAD_REQUEST);
@@ -70,7 +72,8 @@ export const mainDeleteRequest: RequestType = {
 
     const hotel = await account.getHotel({ hotelId });
 
-    if (!hotel) return getResponse(HttpStatusCode.BAD_REQUEST);
+    if (!hotel || hotel.getObject().blocked)
+      return getResponse(HttpStatusCode.BAD_REQUEST);
 
     const integration = hotel.getIntegration({ integrationId });
     if (!integration) return getResponse(HttpStatusCode.BAD_REQUEST);

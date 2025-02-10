@@ -20,7 +20,7 @@ export const listRequest: RequestType = {
         $hotels.map(async (hotel) => {
           const hotelData = hotel.getObject();
 
-          if (!hotelData.public) return null;
+          if (!hotelData.public || hotelData.blocked) return null;
 
           const owner = await hotel.getOwner();
 
@@ -58,6 +58,8 @@ export const listRequest: RequestType = {
                   url: web.redirectUrl,
                 }
               : null,
+            official: hotelData.official,
+            verified: hotelData.verified,
           };
         }),
       )

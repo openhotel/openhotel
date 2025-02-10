@@ -11,6 +11,11 @@ export type DbHotel = {
 
   createdAt: number;
   updatedAt: number;
+
+  official: boolean;
+  verified: boolean;
+
+  blocked: boolean;
 };
 
 export type DbHotelIntegration = {

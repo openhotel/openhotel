@@ -1,40 +1,25 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { HotelCardComponent } from "@oh/components";
 import { HotelInfo, PublicHotel } from "shared/types";
+import { useHotel } from "shared/hooks";
 
 type Props = {
   hotel: PublicHotel;
 };
 
 export const HotelComponent: React.FC<Props> = ({ hotel }) => {
+  const { getHotelUrl, getHotelInfo } = useHotel();
+
   const [pingMs, setPingMs] = useState<number>(undefined);
   const [hotelInfo, setHotelInfo] = useState<HotelInfo>(undefined);
 
-  const $getHotelUrl = useCallback(
-    (pathname: string) => {
-      const pingUrl = new URL(hotel.client.url);
-      pingUrl.pathname = pathname;
-      return pingUrl;
-    },
-    [hotel],
-  );
+  const $ping = useCallback(async () => {
+    const response = (await getHotelInfo(hotel.client.url)) as any;
+    if (!response) return;
 
-  const $ping = useCallback(() => {
-    let initialDate = Date.now();
-    fetch($getHotelUrl("info"))
-      .then((response) => {
-        setPingMs(Date.now() - initialDate);
-        return response.json();
-      })
-      .then(({ status, data }) => {
-        if (status !== 200) return setPingMs(undefined);
-
-        setHotelInfo(data);
-      })
-      .catch(() => {
-        setPingMs(undefined);
-      });
-  }, [$getHotelUrl, setPingMs, setHotelInfo]);
+    setPingMs(response.ping);
+    setHotelInfo(response.data);
+  }, [getHotelInfo, setPingMs, setHotelInfo]);
 
   useEffect(() => {
     $ping();
@@ -52,14 +37,20 @@ export const HotelComponent: React.FC<Props> = ({ hotel }) => {
 
   return (
     <HotelCardComponent
-      official={false}
-      verified={false}
+      official={hotel.official}
+      verified={hotel.verified}
       owner={hotel.owner}
       title={hotelInfo?.name ?? hotel.name}
       description={hotelInfo?.description ?? ""}
-      logo={hotelInfo ? $getHotelUrl("icon") : "/hotel/hotel-logo.webp"}
+      logo={
+        hotelInfo
+          ? getHotelUrl(hotel.client.url, "icon")
+          : "/hotel/hotel-logo.webp"
+      }
       background={
-        hotelInfo ? $getHotelUrl("background") : "/hotel/hotel-background.webp"
+        hotelInfo
+          ? getHotelUrl(hotel.client.url, "background")
+          : "/hotel/hotel-background.webp"
       }
       onClickWebsite={hotel.web?.url ? onClickWebsite : undefined}
       onClickClient={onClickClient}
