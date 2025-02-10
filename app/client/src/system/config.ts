@@ -10,12 +10,8 @@ export const config = () => {
   const load = async () => {
     $config = (await (await fetch("/info")).json()).data;
 
-    $config.version = "v0.5.27"; // TODO: remove
-    $lastVersion = "v0.5.22"; // localStorage.getItem("version"); // TODO: change
+    $lastVersion = localStorage.getItem("version");
     localStorage.setItem("version", $config.version);
-
-    console.log($lastVersion, $config.version);
-    // TODO: compare versions and launch modal with specific changelog
   };
 
   const get = (): ConfigTypes => $config;
@@ -30,6 +26,8 @@ export const config = () => {
       );
 
       const changelog = parseChangelog(rawChangelog);
+      if (!changelog.length) return;
+
       return getChangesBetweenVersions(
         changelog,
         all ? FIRST_PUBLIC_VERSION : $lastVersion,

@@ -145,6 +145,11 @@ export const changelogModalComponent: ContainerComponent<Props> = (
     let currentY = 0;
 
     const changes = await System.config.getChangelogChanges();
+    if (!changes) {
+      $container.setVisible(false);
+      return;
+    }
+
     for (const content of changes) {
       let versionY = 0;
       const { version, date, sections } = content;
@@ -203,8 +208,6 @@ export const changelogModalComponent: ContainerComponent<Props> = (
         sectionY += $section.getBounds().height + TEXT_GAP;
 
         for (const issue of sections[section]) {
-          // TODO: height only optional if text wrap...
-          // TODO: if wrap link buttons not correct
           const $issue = textSprite({
             text: `- ${issue}`,
             spriteSheet: SpriteSheetEnum.DEFAULT_FONT,
@@ -213,12 +216,17 @@ export const changelogModalComponent: ContainerComponent<Props> = (
               x: 0,
               y: sectionY,
             },
-            // size: {
-            //   width: contentSize.width,
-            //   height: 14,
-            // },
+            size: {
+              width: contentSize.width,
+              height: 20,
+            },
             allowLinks: true,
             parseMarkdown: true,
+          });
+
+          $issue.setSize({
+            width: contentSize.width,
+            height: Math.ceil($issue.getParsedText().length / 60) * 7,
           });
 
           $sectionContainer.add($issue);

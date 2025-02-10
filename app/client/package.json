@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@oh/queue": "npm:@jsr/oh__queue@1.1.1",
-    "@tu/tulip": "npm:@jsr/tu__tulip@0.14.15",
+    "@tu/tulip": "npm:@jsr/tu__tulip@0.14.18",
     "@tulib/vite-tulip-plugin": "1.0.15",
     "yaml": "2.5.0"
   },
