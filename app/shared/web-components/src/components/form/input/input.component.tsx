@@ -27,10 +27,12 @@ export const InputComponent: React.FC<Props> = ({
   return (
     <BoxComponent
       {...boxProps}
-      className={cn(styles.inputWrapper, wrapperClassName, [
-        styles.bordered,
-        !!bordered,
-      ])}
+      className={cn(
+        styles.inputWrapper,
+        wrapperClassName,
+        [styles.bordered, !!bordered],
+        { [styles.disabled]: props.disabled },
+      )}
     >
       <input
         id={id}

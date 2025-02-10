@@ -67,6 +67,9 @@
       border: 0.2rem solid var(--input-focus-bd);
     }
   }
+  &.disabled {
+    opacity: 0.5;
+  }
 
   // Weird hack to style autofill color in Chrome
   .input:-webkit-autofill {

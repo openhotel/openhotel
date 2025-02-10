@@ -16,3 +16,11 @@ export const Primary = {
     placeholder: "placeholder",
   },
 };
+
+export const Disabled = {
+  args: {
+    placeholder: "placeholder",
+    value: "test",
+    disabled: true,
+  },
+};
