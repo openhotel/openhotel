@@ -30,8 +30,6 @@ export const System = (() => {
 
   const load = async () => {
     await $config.load();
-
-    await $config.load();
     $$window.load();
 
     await $textures.loadText();

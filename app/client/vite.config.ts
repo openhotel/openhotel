@@ -17,6 +17,7 @@ export default defineConfig({
       "/data": PROXY_URL,
       "/request": PROXY_URL,
       "/info": PROXY_URL,
+      "/changelog": PROXY_URL,
       "/proxy": {
         target: PROXY_URL,
         ws: true,
