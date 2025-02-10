@@ -10,6 +10,7 @@
     "start:server": "cd app/server && deno task start",
 
     "start:build:linux": "cd ./build && ./server_linux",
+    "start:build:mac": "cd ./build && ./server_darwin_aarch64",
 
     "build": "deno run -A ./build.ts"
   },
