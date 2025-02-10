@@ -26,7 +26,7 @@ export const teleportCommand: Command = {
         await System.game.teleports.setLink(teleportIdA, teleportIdB);
         break;
       case "remote":
-        if (!System.getConfig().onet.enabled) return;
+        if (!System.config.get().onet.enabled) return;
 
         const [, $linkId] = moreArgs as string[];
 

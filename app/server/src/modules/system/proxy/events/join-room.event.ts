@@ -9,7 +9,7 @@ export const joinRoomEvent: ProxyEventType<{ roomId: string }> = {
   func: async ({ data: { roomId }, user }) => {
     await user.moveToRoom(roomId);
 
-    const { version: configVersion } = System.getConfig();
+    const { version: configVersion } = System.config.get();
     if (configVersion === "development") return;
 
     if (!(await user.isOp())) return;

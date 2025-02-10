@@ -1,9 +1,10 @@
-import { log } from "shared/utils/main.ts";
+import { log, parseChangelog } from "shared/utils/main.ts";
 import { getChildWorker } from "worker_ionic";
 import {
   ConfigTypes,
   Envs,
   PrivateUser,
+  VersionContent,
   WorkerProps,
 } from "shared/types/main.ts";
 import { getServerSocket, ServerClient } from "@da/socket";
@@ -42,6 +43,7 @@ export const Proxy = (() => {
   let server;
   let $config: ConfigTypes;
   let $envs: Envs;
+  let $changelog: VersionContent[] = [];
 
   const load = async ({ envs, config }: WorkerProps) => {
     $config = config;
@@ -262,6 +264,21 @@ export const Proxy = (() => {
       : []),
   ];
 
+  const getChangelog = async () => {
+    if ($changelog.length) return $changelog;
+
+    const rawChangelog = await fetch(
+      "https://raw.githubusercontent.com/openhotel/openhotel/master/CHANGELOG.md",
+    ).then((response) => response.text());
+
+    const changelog = parseChangelog(rawChangelog);
+
+    const foundVersion = changelog.find((c) => c.version === $config.version);
+    if (foundVersion) $changelog = changelog;
+
+    return $changelog;
+  };
+
   return {
     load,
 
@@ -281,6 +298,8 @@ export const Proxy = (() => {
 
     getState,
     getScopes,
+
+    getChangelog,
 
     icon: $icon,
     auth: $auth,

@@ -11,7 +11,7 @@ export const onet = () => {
   let $apiToken: string;
 
   const load = async () => {
-    const { auth, onet } = System.getConfig();
+    const { auth, onet } = System.config.get();
 
     if (!auth.enabled || !onet.enabled) return;
 
@@ -53,7 +53,7 @@ export const onet = () => {
     pathname,
     body,
   }: Request) => {
-    const { onet } = System.getConfig();
+    const { onet } = System.config.get();
 
     const response = await fetch(`${onet.api}/api/v1${pathname}`, {
       method,
