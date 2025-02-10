@@ -1,11 +1,12 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 
 export const useClickOutside = (ref: React.MutableRefObject<HTMLElement>) => {
-  const [callback, setCallback] = useState<Function | null>(null);
+  const callbackRef = useRef<Function | null>(null);
 
   const $onClickOutside = useCallback(
     (event) => {
-      if (ref.current && !ref.current.contains(event.target)) callback?.();
+      if (ref?.current && !ref.current.contains(event.target))
+        callbackRef.current?.();
     },
     [ref],
   );
@@ -18,12 +19,9 @@ export const useClickOutside = (ref: React.MutableRefObject<HTMLElement>) => {
     };
   }, [$onClickOutside]);
 
-  const onClickOutside = useCallback(
-    (callback: Function) => {
-      setCallback(callback);
-    },
-    [setCallback],
-  );
+  const onClickOutside = useCallback((callback: Function) => {
+    callbackRef.current = callback;
+  }, []);
 
   return {
     onClickOutside,

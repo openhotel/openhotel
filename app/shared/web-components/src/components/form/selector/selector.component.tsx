@@ -3,13 +3,14 @@ import * as React from "react";
 // @ts-ignore
 import styles from "./selector.module.scss";
 import { cn } from "../../../utils";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   ChevronDownIconComponent,
   CrossIconComponent,
   BoxComponent,
   BoxProps,
 } from "../../../components";
+import { useClickOutside } from "../../../hooks";
 
 type Option = {
   key: string | number;
@@ -71,9 +72,15 @@ export const SelectorComponent: React.FC<Props> = ({
     setIsOpen(false);
   }, [setSelectedOption, onChange, setIsOpen]);
 
-  const inputRef = useRef<HTMLInputElement>();
-  const closeRef = useRef<HTMLInputElement>();
-  const modalRef = useRef<HTMLInputElement>();
+  const inputRef = useRef<HTMLInputElement>(null);
+  const closeRef = useRef<HTMLInputElement>(null);
+  const modalRef = useRef<HTMLInputElement>(null);
+
+  const { onClickOutside } = useClickOutside(modalRef);
+
+  onClickOutside(() => {
+    setIsOpen(false);
+  });
 
   const onToggleOptions = useCallback(
     (event) => {
