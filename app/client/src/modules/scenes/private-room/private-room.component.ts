@@ -165,7 +165,10 @@ export const privateRoomComponent: ContainerComponent<
     });
 
     onRemovePointerUp = global.events.on(TulipEvent.POINTER_UP, (event) => {
-      if (event instanceof MouseEvent && event.button == 0 || event instanceof TouchEvent) {
+      if (
+        (event instanceof MouseEvent && event.button == 0) ||
+        event instanceof TouchEvent
+      ) {
         isDragging = false;
       }
     });
