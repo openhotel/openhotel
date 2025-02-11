@@ -1,4 +1,4 @@
-import { VersionContent } from "../types";
+import { VersionContent } from "../types/changelog.types.ts";
 
 export const parseChangelog = (changelog: string): VersionContent[] => {
   const versionBlocks: VersionContent[] = [];
