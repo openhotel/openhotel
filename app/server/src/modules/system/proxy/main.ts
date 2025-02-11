@@ -39,7 +39,7 @@ export const proxy = () => {
   let $worker: WorkerParent;
 
   const load = () => {
-    const config = System.getConfig();
+    const config = System.config.get();
     const envs = System.getEnvs();
 
     $worker = getParentWorker({
