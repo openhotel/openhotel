@@ -4,11 +4,17 @@ import {
   Cursor,
   DisplayObjectEvent,
   EventMode,
+  HorizontalAlign,
   textSprite,
 } from "@tu/tulip";
 import { SpriteSheetEnum, SystemEvent } from "shared/enums";
 import { System } from "system";
-import { buttonComponent, modalComponent } from "shared/components";
+import {
+  buttonComponent,
+  inputComponent,
+  modalComponent,
+} from "shared/components";
+import { __ } from "../../../shared/utils";
 
 type Props = {
   visible: boolean;
@@ -17,7 +23,7 @@ type Props = {
 export const roomEditorModalComponent: ContainerComponent<Props> = (
   { visible } = { visible: false },
 ) => {
-  const MIN_LAYOUT = 1;
+  const MIN_LAYOUT = 2;
   const MAX_LAYOUT = 10;
 
   const $modal = modalComponent({
@@ -95,8 +101,8 @@ export const roomEditorModalComponent: ContainerComponent<Props> = (
     const $container = container();
 
     const states = [
-      "X",
-      "S",
+      "x",
+      "s",
       ...Array.from({ length: deep }, (_, i) => (i + 1).toString()),
     ];
 
@@ -107,7 +113,7 @@ export const roomEditorModalComponent: ContainerComponent<Props> = (
     for (let row = 0; row < height; row++) {
       const rowCells: any[] = [];
       for (let col = 0; col < width; col++) {
-        const initialStateIndex = 0;
+        const initialStateIndex = 2;
         const $cell = buttonComponent({
           text: states[initialStateIndex],
           width: cellSize,
@@ -130,10 +136,9 @@ export const roomEditorModalComponent: ContainerComponent<Props> = (
     }
 
     const getLayout = () => {
-      const layout = cells.map((rowCells) =>
+      return cells.map((rowCells) =>
         rowCells.map((cell) => cell.getText()).join(""),
       );
-      return { layout };
     };
 
     return { component: $container, getLayout };
@@ -142,12 +147,35 @@ export const roomEditorModalComponent: ContainerComponent<Props> = (
   const load = async () => {
     let $layout;
 
+    const $name = inputComponent({
+      placeholder: __("Room name"),
+      horizontalAlign: HorizontalAlign.LEFT,
+      width: 100,
+      maxLength: 40,
+      position: {
+        x: 20,
+        y: 30,
+      },
+    });
+
+    const $description = inputComponent({
+      placeholder: __("Room description"),
+      horizontalAlign: HorizontalAlign.LEFT,
+      width: 120,
+      maxLength: 80,
+      position: {
+        x: 20,
+        y: 50,
+      },
+    });
+    $modal.add($name, $description);
+
     const onChange = () => {
       if ($layout) $modal.remove($layout.component);
       $layout = createLayout(getCols(), getRows(), getDeep());
       $layout.component.setPosition({
         x: 28,
-        y: 80,
+        y: 105,
       });
       $modal.add($layout.component);
     };
@@ -158,7 +186,7 @@ export const roomEditorModalComponent: ContainerComponent<Props> = (
     );
     $rowsOption.setPosition({
       x: 20,
-      y: 40,
+      y: 70,
     });
 
     const { component: $colsOption, getValue: getCols } = createOptions(
@@ -167,7 +195,7 @@ export const roomEditorModalComponent: ContainerComponent<Props> = (
     );
     $colsOption.setPosition({
       x: 80,
-      y: 40,
+      y: 70,
     });
 
     const { component: $deepOption, getValue: getDeep } = createOptions(
@@ -176,7 +204,7 @@ export const roomEditorModalComponent: ContainerComponent<Props> = (
     );
     $deepOption.setPosition({
       x: 140,
-      y: 40,
+      y: 70,
     });
 
     $modal.add($rowsOption, $colsOption, $deepOption);
@@ -184,7 +212,7 @@ export const roomEditorModalComponent: ContainerComponent<Props> = (
     onChange();
 
     const $create = buttonComponent({
-      text: "Crear",
+      text: __("Create"),
       width: 30,
       position: {
         x: $modal.getContentSize().width / 2 - 10,
@@ -192,16 +220,16 @@ export const roomEditorModalComponent: ContainerComponent<Props> = (
       },
     });
     $create.on(DisplayObjectEvent.POINTER_TAP, async () => {
-      console.log($layout.getLayout());
-      const a = await System.api.fetch<any>(
+      await System.api.fetch<any>(
         "/room",
         {
+          title: $name.getValue().trim(),
+          description: $description.getValue().trim(),
           layout: $layout.getLayout(),
         },
         false,
         "PUT",
       );
-      console.log(a);
     });
 
     $modal.add($create);
