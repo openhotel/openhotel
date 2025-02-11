@@ -143,7 +143,7 @@ export const roomEditorModalComponent: ContainerComponent<Props> = (
     let $layout;
 
     const onChange = () => {
-      if ($layout) $modal.remove($layout);
+      if ($layout) $modal.remove($layout.component);
       $layout = createLayout(getCols(), getRows(), getDeep());
       $layout.component.setPosition({
         x: 28,
@@ -191,9 +191,18 @@ export const roomEditorModalComponent: ContainerComponent<Props> = (
         y: $modal.getContentSize().height,
       },
     });
-    $create.on(DisplayObjectEvent.POINTER_TAP, () =>
-      console.log($layout.getLayout()),
-    );
+    $create.on(DisplayObjectEvent.POINTER_TAP, async () => {
+      console.log($layout.getLayout());
+      const a = await System.api.fetch<any>(
+        "/room",
+        {
+          layout: $layout.getLayout(),
+        },
+        false,
+        "PUT",
+      );
+      console.log(a);
+    });
 
     $modal.add($create);
   };

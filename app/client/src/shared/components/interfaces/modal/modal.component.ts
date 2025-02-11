@@ -25,12 +25,14 @@ type ModalMutable = {
 };
 
 export const modalComponent: ContainerComponent<ModalProps, ModalMutable> = ({
+  visible = false,
   width = 300,
   height = 200,
   padding = 12,
   onClose = () => {},
 } = {}) => {
   const $container = container<ModalProps, ModalMutable>({
+    visible,
     sortableChildren: true,
     eventMode: EventMode.STATIC,
   });

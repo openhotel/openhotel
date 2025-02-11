@@ -32,3 +32,18 @@ export const roomRequest: ProxyRequestType = {
     };
   },
 };
+
+export const roomPutRequest: ProxyRequestType = {
+  pathname: "/room",
+  method: RequestMethod.PUT,
+  func: async ({ data, user }, url) => {
+    // TODO: validate JSON room
+    console.log(data);
+
+    // TODO: save private room
+
+    return {
+      status: 200,
+    };
+  },
+};
