@@ -165,9 +165,12 @@ export const privateRoomComponent: ContainerComponent<
     });
 
     onRemovePointerUp = global.events.on(TulipEvent.POINTER_UP, (event) => {
-      System.events.emit(SystemEvent.TEST, `pointer up ${event.button}`);
-      if (event.button !== 0) return;
-      isDragging = false;
+      if (
+        (event instanceof MouseEvent && event.button == 0) ||
+        event instanceof TouchEvent
+      ) {
+        isDragging = false;
+      }
     });
 
     System.events.emit(SystemEvent.HIDE_NAVIGATOR_MODAL);
