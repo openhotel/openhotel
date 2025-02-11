@@ -1,4 +1,1 @@
-
-export const $public = () => {
-
-}
+export const $public = () => {};
