@@ -8,5 +8,6 @@
   "username": "usuario",
   "password": "contraseña",
   "repeat password": "repetir constraseña",
-  "Click here or press 'c' to write a message": "Click aqui o presiona 'c' para escribir"
+  "Click here or press 'c' to write a message": "Click aqui o presiona 'c' para escribir",
+  "New room": "Nueva room"
 }

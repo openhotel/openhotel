@@ -1,13 +1,13 @@
 import {
   container,
   ContainerComponent,
-  Cursor,
   DisplayObjectEvent,
-  EventMode,
   textSprite,
 } from "@tu/tulip";
 import { SpriteSheetEnum, SystemEvent } from "shared/enums";
-import { System } from "../../../system";
+import { System } from "system";
+import { buttonComponent } from "shared/components";
+import { __ } from "shared/utils";
 
 export const ownRoomsComponent: ContainerComponent = (props) => {
   const $container = container(props);
@@ -22,24 +22,18 @@ export const ownRoomsComponent: ContainerComponent = (props) => {
     },
   });
 
-  // TODO: change to button
-  const $create = textSprite({
-    text: `create one`,
-    spriteSheet: SpriteSheetEnum.DEFAULT_FONT,
-    color: 0,
+  const $create = buttonComponent({
+    text: __("New room"),
+    width: 50,
     position: {
-      x: 0,
+      x: 12,
       y: 20,
     },
-    eventMode: EventMode.STATIC,
-    cursor: Cursor.POINTER,
-    backgroundColor: 0x00fffff,
   });
 
-  $create.on(DisplayObjectEvent.POINTER_DOWN, () => {
-    console.log("open editor");
-    System.events.emit(SystemEvent.SHOW_ROOM_EDITOR_MODAL);
-  });
+  $create.on(DisplayObjectEvent.POINTER_TAP, () =>
+    System.events.emit(SystemEvent.SHOW_ROOM_EDITOR_MODAL),
+  );
   $container.add($text, $create);
 
   return $container.getComponent(ownRoomsComponent);

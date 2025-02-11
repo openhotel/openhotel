@@ -16,8 +16,15 @@ type InputProps = {
   text: string;
 };
 
-export const buttonComponent: ContainerComponent<InputProps> = (props) => {
-  const $container = container<InputProps>(props);
+type ButtonMutable = {
+  setText: (text: string) => void;
+  getText: () => string;
+};
+
+export const buttonComponent: ContainerComponent<InputProps, ButtonMutable> = (
+  props,
+) => {
+  const $container = container<InputProps, ButtonMutable>(props);
 
   const { text, width } = $container.getProps();
 
@@ -70,5 +77,7 @@ export const buttonComponent: ContainerComponent<InputProps> = (props) => {
   return $container.getComponent(buttonComponent, {
     focus: $button.focus,
     on: $button.on,
+    setText: $button.setText,
+    getText: $button.getText,
   });
 };
