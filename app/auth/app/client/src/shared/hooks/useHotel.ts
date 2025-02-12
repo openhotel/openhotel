@@ -29,11 +29,11 @@ export const useHotel = () => {
   const getHotelInfo = useCallback(
     (clientUrl: string) => {
       return new Promise((resolve) => {
-        let initialDate = Date.now();
+        let initialTime = performance.now();
         let ping = 0;
         fetch(getHotelUrl(clientUrl, "info"))
           .then((response) => {
-            ping = Date.now() - initialDate;
+            ping = performance.now() - initialTime;
             return response.json();
           })
           .then(({ status, data }) => {
