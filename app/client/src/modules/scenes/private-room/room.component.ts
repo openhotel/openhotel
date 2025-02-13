@@ -28,6 +28,8 @@ import { System } from "system";
 import { humanComponent, HumanMutable } from "modules/human";
 import {
   STEP_TILE_HEIGHT,
+  TILE_SIZE,
+  TILE_WIDTH,
   TILE_Y_HEIGHT,
   WALL_DOOR_HEIGHT,
   WALL_HEIGHT,
@@ -53,21 +55,22 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = () => {
   const $container = container<{}, RoomMutable>({
     sortableChildren: true,
     pivot: {
-      x: 0,
-      y: -WALL_HEIGHT / 2,
+      x: TILE_SIZE.width / 2,
+      y: WALL_HEIGHT / 2,
+      // y: 0,
     },
   });
-  $container.on(
-    DisplayObjectEvent.ADD_CHILD,
-    (component: DisplayObjectMutable<any>) => {
-      const position = component.getPosition();
-      const containerPivot = $container.getPivot();
-
-      if (containerPivot.x > position.x) $container.setPivotX(position.x - 4);
-      if (containerPivot.y > position.y)
-        $container.setPivotY(position.y - WALL_HEIGHT);
-    },
-  );
+  // $container.on(
+  //   DisplayObjectEvent.ADD_CHILD,
+  //   (component: DisplayObjectMutable<any>) => {
+  //     const position = component.getPosition();
+  //     const containerPivot = $container.getPivot();
+  //
+  //     // if (containerPivot.x > position.x) $container.setPivotX(position.x - 4);
+  //     // if (containerPivot.y > position.y)
+  //     //   $container.setPivotY(position.y - WALL_HEIGHT);
+  //   },
+  // );
 
   let humanList: ContainerMutable<{}, HumanMutable>[] = [];
 
@@ -444,6 +447,15 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = () => {
         delete furnituresMap[furniture.id];
       }
     };
+
+    const roomBounds = $container.getBounds();
+    //TODO calculate with tiles instead of bounds #
+    $container.setPivot((pivot) => ({
+      x: pivot.x - roomBounds.width / 2,
+      y: pivot.y - roomBounds.height / 3,
+    }));
+
+    console.log($container.getBounds());
 
     $addFurniture(...furniture);
   });
