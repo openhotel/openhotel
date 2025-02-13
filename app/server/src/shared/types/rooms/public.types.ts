@@ -9,7 +9,7 @@ import { Point3d, Direction } from "@oh/utils";
 type PublicBaseRoom = BaseRoom & {
   type: "public";
 
-  version: 1;
+  version: number;
 };
 
 export type PublicRoom = PublicBaseRoom & {
@@ -26,7 +26,7 @@ export type PublicRoomMutable = BaseRoomMutable & {
   isPointFree: (point: Point3d, accountId?: string) => boolean;
   findPath: (props: FindPathProps) => Point3d[];
 
-  getLayers: () => unknown[];
+  getLayers: () => string[];
 
   getObject: () => PublicRoom;
 };

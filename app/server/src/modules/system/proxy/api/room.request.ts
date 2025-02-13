@@ -19,24 +19,31 @@ export const roomRequest: ProxyRequestType = {
         status: 404,
       };
 
-    const foundRoom = await System.game.rooms.private.get(roomId);
+    const foundRoom = await System.game.rooms.get(roomId);
     if (!foundRoom)
       return {
         status: 404,
       };
 
-    return {
-      status: 200,
-      data: {
-        room: {
-          furniture: [
-            ...new Set(
-              foundRoom.getFurniture().map(({ furnitureId }) => furnitureId),
-            ),
-          ],
-        },
-      },
-    };
+    switch (foundRoom.type) {
+      case "private":
+        return {
+          status: 200,
+          data: {
+            room: {
+              furniture: [
+                ...new Set(
+                  foundRoom
+                    .getFurniture()
+                    .map(({ furnitureId }) => furnitureId),
+                ),
+              ],
+            },
+          },
+        };
+      case "public":
+        return null;
+    }
   },
 };
 

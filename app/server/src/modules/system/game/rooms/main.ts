@@ -1,20 +1,41 @@
 import { $public } from "./public/main.ts";
 import { $private } from "./private/main.ts";
 import { RoomMutable } from "shared/types/rooms/main.ts";
+import { pathfinding } from "./pathfinding.ts";
 
 export const rooms = () => {
   const $$private = $private();
   const $$public = $public();
 
-  const load = () => {
+  const $pathfinding = pathfinding();
+
+  const load = async () => {
+    $pathfinding.load();
+    await $$public.load();
     $$private.load();
   };
 
-  const get = async (roomId: string): Promise<RoomMutable | null> => {
+  const get = async <Room extends RoomMutable>(
+    roomId: string,
+  ): Promise<Room | null> => {
     const privateRoomFound = await $$private.get(roomId);
-    if (privateRoomFound) return privateRoomFound;
+    if (privateRoomFound) return privateRoomFound as Room;
+
+    const publicRoomFound = await $$public.get(roomId);
+    if (publicRoomFound) return publicRoomFound as Room;
 
     return null;
+  };
+
+  const getList = async <Room extends RoomMutable>(
+    type: "public" | "private",
+  ): Promise<Room[]> => {
+    switch (type) {
+      case "private":
+        return (await $$private.getList()) as Room[];
+      case "public":
+        return (await $$public.getList()) as Room[];
+    }
   };
 
   return {
@@ -22,6 +43,7 @@ export const rooms = () => {
 
     get,
 
+    pathfinding: $pathfinding,
     /**
      * @deprecated Prevent use outside here
      */

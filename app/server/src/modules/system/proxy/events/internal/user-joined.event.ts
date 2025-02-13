@@ -1,4 +1,9 @@
-import { ProxyEventType, PrivateUser } from "shared/types/main.ts";
+import {
+  ProxyEventType,
+  PrivateUser,
+  PublicRoomMutable,
+  PrivateRoomMutable,
+} from "shared/types/main.ts";
 import { Meta, ProxyEvent } from "shared/enums/main.ts";
 import { System } from "modules/system/main.ts";
 import { getDirection, getPointFromCrossDirection } from "@oh/utils";
@@ -25,8 +30,10 @@ export const userJoinedEvent: ProxyEventType<{
     if (meta?.[0] === Meta.TELEPORT) {
       const teleport = await System.game.teleports.get(meta[1] as string);
 
-      const room = await System.game.rooms.private.get(teleport.roomId);
-      if (!room) return;
+      const room = await System.game.rooms.get<PrivateRoomMutable>(
+        teleport.roomId,
+      );
+      if (!room || room.type !== "private") return;
       const furniture = room.getFurniture();
       const teleportFurniture = furniture.find(
         (furniture) => furniture.id === meta[1],
