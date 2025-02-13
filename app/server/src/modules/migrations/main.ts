@@ -5,6 +5,7 @@ const MIGRATION_LIST = [
   await import("./2024-12-11--23-00-add-rooms.migration.ts"),
   await import("./2024-12-16--01-03-remove-furniture-uid.migration.ts"),
   await import("./2025-01-24--09-00-add-demo-room.migration.ts"),
+  await import("./2025-02-14--00-20-change-demo-room-description.migration.ts"),
 ];
 
 export const Migrations = (() => {
