@@ -4,7 +4,10 @@ import { System } from "modules/system/main.ts";
 import { FurnitureType } from "shared/enums/furniture.enum.ts";
 import { CrossDirection } from "@oh/utils";
 import { RoomPointEnum } from "shared/enums/room.enums.ts";
-import { isWallRenderable } from "shared/utils/rooms.utils.ts";
+import {
+  isDoorRenderable,
+  isWallRenderable,
+} from "shared/utils/rooms.utils.ts";
 import { TOP_WALL_HEIGHT, WALL_HEIGHT } from "shared/consts/wall.consts.ts";
 import { TILE_Y_HEIGHT, TILE_WIDTH } from "shared/consts/tiles.consts.ts";
 import { __ } from "shared/utils/languages.utils.ts";
@@ -74,10 +77,14 @@ export const setCommand: Command = {
 
     if (furniture.type === FurnitureType.FRAME) {
       const layout = room.getObject().layout;
-      const isWallX = isWallRenderable(layout, furniture.position, true);
-      const isWallZ = isWallRenderable(layout, furniture.position, false);
+      const isWallOrDoorX =
+        isWallRenderable(layout, furniture.position, true) ||
+        isDoorRenderable(layout, furniture.position, true);
+      const isWallOrDoorZ =
+        isWallRenderable(layout, furniture.position, false) ||
+        isDoorRenderable(layout, furniture.position, false);
 
-      if (!isWallX && !isWallZ) {
+      if (!isWallOrDoorX && !isWallOrDoorZ) {
         return user.emit(ProxyEvent.SYSTEM_MESSAGE, {
           message: __(user.getLanguage())(
             "Frames need to be attached to the wall",
@@ -85,7 +92,12 @@ export const setCommand: Command = {
         });
       }
 
-      if ((isWallX && direction === 0) || (isWallZ && direction === 1)) {
+      if (
+        (!isWallOrDoorZ &&
+          isWallOrDoorX &&
+          direction === CrossDirection.NORTH) ||
+        (!isWallOrDoorX && isWallOrDoorZ && direction === CrossDirection.EAST)
+      ) {
         return user.emit(ProxyEvent.SYSTEM_MESSAGE, {
           message: __(user.getLanguage())("Incorrect frame direction"),
         });

@@ -42,6 +42,7 @@ import {
   furnitureFrameComponent,
   FurnitureMutable,
 } from "./furniture";
+import { RoomPoint } from "app/server/src/shared/types/room.types";
 
 type Props = {};
 
@@ -200,6 +201,11 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = () => {
       return true;
     };
 
+    const isDoorRenderable = (x: number, z: number, isX: boolean) => {
+      if (isX) return layout[z - 1] && layout[z - 1][x] === RoomPointEnum.SPAWN;
+      return layout[z][x - 1] === RoomPointEnum.SPAWN;
+    };
+
     for (let z = 0; z < roomSize.depth; z++) {
       const roomLine = layout[z];
       for (let x = 0; x < roomSize.width; x++) {
@@ -267,7 +273,7 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = () => {
             $container.add(wall);
           }
 
-          if (layout[z][x - 1] === RoomPointEnum.SPAWN) {
+          if (isDoorRenderable(x, z, false)) {
             const wall = wallComponent({
               axis: "x",
               zIndex: zIndex - 0.1,
@@ -278,7 +284,7 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = () => {
             });
             $container.add(wall);
           }
-          if (layout[z - 1] && layout[z - 1][x] === RoomPointEnum.SPAWN) {
+          if (isDoorRenderable(x, z, true)) {
             const wall = wallComponent({
               axis: "z",
               zIndex: zIndex - 0.1,

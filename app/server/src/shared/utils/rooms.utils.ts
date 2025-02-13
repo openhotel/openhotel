@@ -84,3 +84,13 @@ export const isWallRenderable = (
 
   return true;
 };
+
+export const isDoorRenderable = (
+  layout: RoomPoint[][],
+  position: Point3d,
+  isX: boolean,
+) => {
+  const { x, z } = position;
+  if (isX) return layout[z - 1] && layout[z - 1][x] === RoomPointEnum.SPAWN;
+  return layout[z][x - 1] === RoomPointEnum.SPAWN;
+};
