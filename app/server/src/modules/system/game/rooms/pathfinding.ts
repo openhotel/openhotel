@@ -9,6 +9,7 @@ export const pathfinding = () => {
   const $userPathfindingMap: Record<string, Point3d[]> = {};
 
   const load = () => {
+    //TODO this needs to be moved to workers
     System.tasks.add({
       type: TickerQueue.REPEAT,
       repeatEvery: MOVEMENT_BETWEEN_TILES_DURATION,
@@ -22,11 +23,6 @@ export const pathfinding = () => {
   const $doPathfinding = async (accountId: string) => {
     const user = System.game.users.get({ accountId });
     const room = await System.game.rooms.get(user.getRoom());
-
-    if (room.type !== "private") {
-      remove(accountId);
-      return;
-    }
 
     let nextPosition = $userPathfindingMap[accountId].shift();
     if (!nextPosition) return;
