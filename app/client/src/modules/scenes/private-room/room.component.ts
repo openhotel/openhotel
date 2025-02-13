@@ -449,7 +449,7 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = () => {
     };
 
     const roomBounds = $container.getBounds();
-    //TODO calculate with tiles instead of bounds #
+    //TODO calculate with tiles instead of bounds #https://github.com/openhotel/openhotel/issues/665
     $container.setPivot((pivot) => ({
       x: pivot.x - roomBounds.width / 2,
       y: pivot.y - roomBounds.height / 3,
