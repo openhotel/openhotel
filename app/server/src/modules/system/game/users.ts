@@ -76,7 +76,7 @@ export const users = () => {
     };
 
     const $clearPathfinding = () => {
-      System.game.rooms.private.pathfinding.remove(getAccountId());
+      System.game.rooms.pathfinding.remove(getAccountId());
       // System.game.rooms.public.pathfinding.remove(getAccountId());
     };
 
@@ -126,11 +126,11 @@ export const users = () => {
         return;
       }
 
-      System.game.rooms.private.pathfinding.set(getAccountId(), pathfinding);
+      System.game.rooms.pathfinding.set(getAccountId(), pathfinding);
     };
 
     const getPathfinding = (): Point3d[] =>
-      System.game.rooms.private.pathfinding.get(getAccountId()) || [];
+      System.game.rooms.pathfinding.get(getAccountId()) || [];
 
     const setLastMessage = (message: string) => {
       $userLastMessageMap[user.accountId] = message;
