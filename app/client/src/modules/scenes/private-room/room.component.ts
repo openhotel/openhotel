@@ -28,6 +28,8 @@ import { System } from "system";
 import { humanComponent, HumanMutable } from "modules/human";
 import {
   STEP_TILE_HEIGHT,
+  TILE_SIZE,
+  TILE_WIDTH,
   TILE_Y_HEIGHT,
   WALL_DOOR_HEIGHT,
   WALL_HEIGHT,
@@ -40,6 +42,7 @@ import {
   furnitureFrameComponent,
   FurnitureMutable,
 } from "./furniture";
+import { RoomPoint } from "app/server/src/shared/types/room.types";
 
 type Props = {};
 
@@ -53,21 +56,22 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = () => {
   const $container = container<{}, RoomMutable>({
     sortableChildren: true,
     pivot: {
-      x: 0,
-      y: -WALL_HEIGHT / 2,
+      x: TILE_SIZE.width / 2,
+      y: WALL_HEIGHT / 2,
+      // y: 0,
     },
   });
-  $container.on(
-    DisplayObjectEvent.ADD_CHILD,
-    (component: DisplayObjectMutable<any>) => {
-      const position = component.getPosition();
-      const containerPivot = $container.getPivot();
-
-      if (containerPivot.x > position.x) $container.setPivotX(position.x - 4);
-      if (containerPivot.y > position.y)
-        $container.setPivotY(position.y - WALL_HEIGHT);
-    },
-  );
+  // $container.on(
+  //   DisplayObjectEvent.ADD_CHILD,
+  //   (component: DisplayObjectMutable<any>) => {
+  //     const position = component.getPosition();
+  //     const containerPivot = $container.getPivot();
+  //
+  //     // if (containerPivot.x > position.x) $container.setPivotX(position.x - 4);
+  //     // if (containerPivot.y > position.y)
+  //     //   $container.setPivotY(position.y - WALL_HEIGHT);
+  //   },
+  // );
 
   let humanList: ContainerMutable<{}, HumanMutable>[] = [];
 
@@ -197,6 +201,11 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = () => {
       return true;
     };
 
+    const isDoorRenderable = (x: number, z: number, isX: boolean) => {
+      if (isX) return layout[z - 1] && layout[z - 1][x] === RoomPointEnum.SPAWN;
+      return layout[z][x - 1] === RoomPointEnum.SPAWN;
+    };
+
     for (let z = 0; z < roomSize.depth; z++) {
       const roomLine = layout[z];
       for (let x = 0; x < roomSize.width; x++) {
@@ -264,7 +273,7 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = () => {
             $container.add(wall);
           }
 
-          if (layout[z][x - 1] === RoomPointEnum.SPAWN) {
+          if (isDoorRenderable(x, z, false)) {
             const wall = wallComponent({
               axis: "x",
               zIndex: zIndex - 0.1,
@@ -275,7 +284,7 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = () => {
             });
             $container.add(wall);
           }
-          if (layout[z - 1] && layout[z - 1][x] === RoomPointEnum.SPAWN) {
+          if (isDoorRenderable(x, z, true)) {
             const wall = wallComponent({
               axis: "z",
               zIndex: zIndex - 0.1,
@@ -444,6 +453,15 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = () => {
         delete furnituresMap[furniture.id];
       }
     };
+
+    const roomBounds = $container.getBounds();
+    //TODO calculate with tiles instead of bounds #https://github.com/openhotel/openhotel/issues/665
+    $container.setPivot((pivot) => ({
+      x: pivot.x - roomBounds.width / 2,
+      y: pivot.y - roomBounds.height / 3,
+    }));
+
+    console.log($container.getBounds());
 
     $addFurniture(...furniture);
   });
