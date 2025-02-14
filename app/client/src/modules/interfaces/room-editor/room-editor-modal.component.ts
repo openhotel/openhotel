@@ -34,6 +34,13 @@ export const roomEditorModalComponent: ContainerComponent<Props> = (
     height: 320,
   });
 
+  const $form = container({
+    sortableChildren: true,
+    eventMode: EventMode.STATIC,
+  });
+
+  $modal.add($form);
+
   const createOptions = (title: string, onChange: () => void) => {
     let value = 4;
 
@@ -168,16 +175,16 @@ export const roomEditorModalComponent: ContainerComponent<Props> = (
         y: 50,
       },
     });
-    $modal.add($name, $description);
+    $form.add($name, $description);
 
     const onChange = () => {
-      if ($layout) $modal.remove($layout.component);
+      if ($layout) $form.remove($layout.component);
       $layout = createLayout(getCols(), getRows(), getDeep());
       $layout.component.setPosition({
         x: 28,
         y: 105,
       });
-      $modal.add($layout.component);
+      $form.add($layout.component);
     };
 
     const { component: $rowsOption, getValue: getRows } = createOptions(
@@ -207,7 +214,7 @@ export const roomEditorModalComponent: ContainerComponent<Props> = (
       y: 70,
     });
 
-    $modal.add($rowsOption, $colsOption, $deepOption);
+    $form.add($rowsOption, $colsOption, $deepOption);
 
     onChange();
 
@@ -220,7 +227,7 @@ export const roomEditorModalComponent: ContainerComponent<Props> = (
       },
     });
     $create.on(DisplayObjectEvent.POINTER_TAP, async () => {
-      await System.api.fetch<any>(
+      await System.api.fetch(
         "/room",
         {
           title: $name.getValue().trim(),
@@ -230,9 +237,11 @@ export const roomEditorModalComponent: ContainerComponent<Props> = (
         false,
         "PUT",
       );
-    });
 
-    $modal.add($create);
+      $modal.setVisible(false);
+      $form.removeAll();
+    });
+    $form.add($create);
   };
 
   let removeOnShowRoomEditorModal: Function;
@@ -241,13 +250,15 @@ export const roomEditorModalComponent: ContainerComponent<Props> = (
   $modal.on(DisplayObjectEvent.ADDED, async () => {
     removeOnShowRoomEditorModal = System.events.on(
       SystemEvent.SHOW_ROOM_EDITOR_MODAL,
-      () => $modal.setVisible(true),
+      async () => {
+        await load();
+        $modal.setVisible(true);
+      },
     );
     removeOnHideRoomEditorModal = System.events.on(
       SystemEvent.HIDE_ROOM_EDITOR_MODAL,
       () => $modal.setVisible(false),
     );
-    await load();
   });
 
   $modal.on(DisplayObjectEvent.REMOVED, () => {
