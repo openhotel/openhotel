@@ -448,19 +448,6 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = (
 
     // --- Center Room ---
     {
-      const $tile = sprite({
-        spriteSheet: SpriteSheetEnum.ROOM,
-        texture: "tile",
-        eventMode: EventMode.NONE,
-        pivot: {
-          x: 0,
-          y: 0,
-        },
-        tint: 0xff00ff,
-        zIndex: Number.MAX_SAFE_INTEGER,
-      });
-      $container.add($tile);
-
       const layoutMaxX = layout[0].length;
       const layoutMaxZ = layout.length;
 
