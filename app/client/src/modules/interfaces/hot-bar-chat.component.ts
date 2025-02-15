@@ -2,7 +2,6 @@ import {
   container,
   ContainerComponent,
   DisplayObjectEvent,
-  Env,
   Event,
   global,
   graphics,
@@ -11,6 +10,7 @@ import {
 import { Size2d } from "shared/types";
 import { chatInputComponent } from "modules/chat";
 import { hotBarItemsComponent } from "./hot-bar-items.component";
+import { HOT_BAR_HEIGHT } from "shared/consts";
 
 type Props = {};
 
@@ -19,12 +19,10 @@ export const hotBarChatComponent: ContainerComponent<Props> = () => {
     zIndex: 10,
   });
 
-  const height = 30 + global.envs.get(Env.SAFE_AREA_INSET_BOTTOM);
-
   const bg = graphics({
     type: GraphicType.RECTANGLE,
     width: 20,
-    height: height + 2,
+    height: HOT_BAR_HEIGHT,
     tint: 0x525457,
   });
   $container.add(bg);
@@ -50,9 +48,9 @@ export const hotBarChatComponent: ContainerComponent<Props> = () => {
   for (let i = 0; i < childList.length; i++) childList[i].setPositionX(i * 25);
 
   const resize = (size: Size2d) => {
-    bg.setRectangle(size.width, height + 2);
+    bg.setRectangle(size.width, HOT_BAR_HEIGHT);
 
-    $container.setPositionY(size.height - height - 2);
+    $container.setPositionY(size.height - HOT_BAR_HEIGHT);
 
     itemContainer.setPositionX(
       size.width - itemContainer.getBounds().width - 6,
