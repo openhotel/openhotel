@@ -75,7 +75,6 @@ export const getRoom =
 
         $user.emit(ProxyEvent.ADD_HUMAN, {
           user: user.getObject(),
-          isOld: true,
         });
       }
 
@@ -234,7 +233,10 @@ export const getRoom =
       return -(parseInt(roomPoint + "") - 1) + (onStairs ? 0.5 : 0);
     };
 
-    const getObject = () => $room;
+    const getObject = () => ({
+      type: "private",
+      ...$room,
+    });
 
     const emit = <Data extends any>(
       event: ProxyEvent,

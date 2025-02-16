@@ -6,19 +6,10 @@ import {
 } from "shared/types/main.ts";
 import { Point3d, Direction } from "@oh/utils";
 
-type PrivateBaseRoom = BaseRoom & {
+export type PrivateRoom = BaseRoom & {
   type: "private";
 
-  version: 1;
   ownerId: string;
-};
-
-export type PrivateRawRoom = PrivateBaseRoom & {
-  layout: string[];
-  furniture: RoomFurniture[];
-};
-
-export type PrivateRoom = PrivateBaseRoom & {
   layout: RoomPoint[][];
   furniture: RoomFurniture[];
   spawnPoint: Point3d;

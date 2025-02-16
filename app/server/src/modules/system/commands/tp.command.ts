@@ -17,7 +17,6 @@ export const tpCommand: Command = {
     const roomId = user.getRoom();
     if (!roomId) return;
     const room = await System.game.rooms.get(roomId);
-    if (room.type !== "private") return;
 
     user.setPosition({ x, z });
 

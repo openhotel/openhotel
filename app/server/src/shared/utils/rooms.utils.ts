@@ -26,6 +26,8 @@ export const getBaseRoomGrid = (layout: RoomPoint[][]): RoomPoint[][] => {
 };
 
 export const getRoomSpawnPoint = (layout: RoomPoint[][]): Point3d => {
+  if (!layout.length) return null;
+
   const roomSize = {
     width: layout.length,
     depth: Math.max(...layout.map((line) => line.length)),
@@ -37,10 +39,12 @@ export const getRoomSpawnPoint = (layout: RoomPoint[][]): Point3d => {
       if (roomLine[x] === RoomPointEnum.SPAWN) return { x, y: 0, z };
     }
   }
-  return undefined;
+  return null;
 };
 
 export const getRoomSpawnDirection = (layout: RoomPoint[][]): Direction => {
+  if (!layout.length) return Direction.NORTH_EAST;
+
   const { x, z } = getRoomSpawnPoint(layout);
 
   const checkDirection = (addX: number, addZ: number) =>
