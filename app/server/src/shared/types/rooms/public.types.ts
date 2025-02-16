@@ -6,13 +6,9 @@ import {
 } from "shared/types/main.ts";
 import { Point3d, Direction } from "@oh/utils";
 
-type PublicBaseRoom = BaseRoom & {
+export type PublicRoom = BaseRoom & {
   type: "public";
 
-  version: number;
-};
-
-export type PublicRoom = PublicBaseRoom & {
   layout: RoomPoint[][];
   spawnPoint: Point3d;
   spawnDirection: Direction;

@@ -1,5 +1,6 @@
 import {
   CacheUser,
+  PrivateRoomMutable,
   PrivateUser,
   User,
   UserMutable,
@@ -77,7 +78,6 @@ export const users = () => {
 
     const $clearPathfinding = () => {
       System.game.rooms.pathfinding.remove(getAccountId());
-      // System.game.rooms.public.pathfinding.remove(getAccountId());
     };
 
     const setAction = (action: UserAction | null) => {
@@ -87,13 +87,21 @@ export const users = () => {
 
     const preMoveToRoom = async (roomId: string) => {
       const foundRoom = await System.game.rooms.get(roomId);
-      if (foundRoom.type !== "private") return;
+
+      const room =
+        foundRoom.type === "public"
+          ? {
+              id: foundRoom.getId(),
+              type: "public",
+            }
+          : {
+              id: foundRoom.getId(),
+              type: "private",
+              furniture: (foundRoom as PrivateRoomMutable).getFurniture(),
+            };
 
       emit(ProxyEvent.PRE_JOIN_ROOM, {
-        room: {
-          id: foundRoom.getId(),
-          furniture: foundRoom.getFurniture(),
-        },
+        room,
       });
     };
 
