@@ -42,15 +42,8 @@ export const rooms = () => {
     load,
 
     get,
+    getList,
 
     pathfinding: $pathfinding,
-    /**
-     * @deprecated Prevent use outside here
-     */
-    private: $$private,
-    /**
-     * @deprecated Prevent use outside here
-     */
-    public: $$public,
   };
 };
