@@ -157,16 +157,24 @@ export const getDb = ({
 
   const close = () => {
     db?.close();
+    // deno-lint-ignore ban-ts-comment
     //@ts-ignore
     db = null;
   };
 
   const backup = async (name?: string) => {
-    const backupDb = await Deno.openKv(
-      join(backupsPathname!, `${getUtilDate()}${name}`),
-    );
-    for await (const entry of db.list({ prefix: [] }))
-      await backupDb.set(entry.key, entry.value);
+    const backupName = join(backupsPathname!, `${getUtilDate()}${name}`);
+    await Deno.copyFile(pathname, backupName);
+    try {
+      await Deno.copyFile(pathname + "-shm", backupName + "-shm");
+      // deno-lint-ignore no-empty
+    } catch (_) {}
+    try {
+      await Deno.copyFile(pathname + "-wal", backupName + "-wal");
+      // deno-lint-ignore no-empty
+    } catch (_) {}
+
+    const backupDb = await Deno.openKv(backupName);
 
     backupDb.close();
   };
