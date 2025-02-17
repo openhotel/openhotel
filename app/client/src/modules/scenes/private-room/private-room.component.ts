@@ -12,6 +12,7 @@ import { Point2d, Size2d } from "shared/types";
 import { hotBarChatComponent, roomInfoComponent } from "modules/interfaces";
 import { System } from "system";
 import { SystemEvent } from "shared/enums";
+import { HOT_BAR_HEIGHT } from "shared/consts";
 
 const CHAT_PADDING = {
   x: 12,
@@ -35,12 +36,15 @@ export const privateRoomComponent: ContainerComponent<
     sortableChildren: true,
   });
 
+  //TODO move to mount
   const windowBounds = global.getApplication().window.getBounds();
 
+  //TODO move to mount
   const hotBar = hotBarChatComponent();
   const roomInfo = roomInfoComponent();
   $container.add(hotBar, roomInfo);
 
+  //TODO move to mount
   const systemMessage = systemMessageComponent({
     position: {
       x: 0,
@@ -49,6 +53,7 @@ export const privateRoomComponent: ContainerComponent<
   });
   $container.add(systemMessage);
 
+  //TODO move to mount
   const $preview = previewComponent({
     position: {
       x: windowBounds.width - PREVIEW_PADDING.x,
@@ -57,36 +62,28 @@ export const privateRoomComponent: ContainerComponent<
   });
   $container.add($preview);
 
+  //TODO move to mount
   global.events.on(TulipEvent.RESIZE, (size: Size2d) => {
     $preview.setPosition({
       x: size.width - PREVIEW_PADDING.x,
       y: size.height - PREVIEW_PADDING.y,
+    });
+    $room.setPosition({
+      x: size.width / 2,
+      y: size.height / 2 - HOT_BAR_HEIGHT,
     });
   });
 
   let $room;
   let $bubbleChat;
 
+  //TODO move to mount
   let $roomScene = container({
     sortableChildren: true,
     eventMode: EventMode.STATIC,
   });
 
   $container.add($roomScene);
-
-  const loadRoomPosition = () => {
-    const size = global.getApplication().window.getBounds();
-    const roomBounds = $room.getBounds();
-
-    $room.setPosition({
-      x: size.width / 2 - roomBounds.width / 2,
-      y: size.height / 2 - roomBounds.height / 2,
-    });
-
-    $bubbleChat.setPositionX(0);
-  };
-
-  let onRemoveResize;
   let onRemovePointerDown;
   let onRemovePointerMove;
   let onRemovePointerUp;
@@ -94,17 +91,21 @@ export const privateRoomComponent: ContainerComponent<
   let onRemoveDisableCamera;
 
   $container.on(DisplayObjectEvent.MOUNT, () => {
-    onRemoveResize = global.events.on(TulipEvent.RESIZE, loadRoomPosition);
-
     $roomScene.setPosition({ x: 0, y: 0 });
     if ($room) $roomScene.remove($room);
-    $room = roomComponent();
+
+    const windowBounds = global.getApplication().window.getBounds();
+    $room = roomComponent({
+      position: {
+        x: windowBounds.width / 2,
+        y: windowBounds.height / 2 - HOT_BAR_HEIGHT,
+      },
+    });
     $roomScene.add($room);
 
     if ($bubbleChat) $roomScene.remove($bubbleChat);
     $bubbleChat = bubbleChatComponent({ room: $room });
     $roomScene.add($bubbleChat);
-    loadRoomPosition();
 
     let isEnabled = true;
     const margin = 100;
@@ -177,8 +178,6 @@ export const privateRoomComponent: ContainerComponent<
   });
 
   $container.on(DisplayObjectEvent.UNMOUNT, () => {
-    onRemoveResize?.();
-
     onRemovePointerDown?.();
     onRemovePointerMove?.();
     onRemovePointerUp?.();

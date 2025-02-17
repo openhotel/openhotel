@@ -4,7 +4,6 @@ import {
   ContainerMutable,
   Cursor,
   DisplayObjectEvent,
-  DisplayObjectMutable,
   EventMode,
   global,
   graphics,
@@ -27,12 +26,13 @@ import { RoomFurniture } from "shared/types";
 import { System } from "system";
 import { humanComponent, HumanMutable } from "modules/human";
 import {
+  STAIRS_HEIGHT,
   STEP_TILE_HEIGHT,
   TILE_SIZE,
-  TILE_WIDTH,
   TILE_Y_HEIGHT,
   WALL_DOOR_HEIGHT,
   WALL_HEIGHT,
+  WALL_WIDTH,
 } from "shared/consts";
 import { wallComponent } from "./wall.component";
 import {
@@ -42,7 +42,6 @@ import {
   furnitureFrameComponent,
   FurnitureMutable,
 } from "./furniture";
-import { RoomPoint } from "app/server/src/shared/types/room.types";
 
 type Props = {};
 
@@ -50,28 +49,19 @@ export type RoomMutable = {
   getHumanList: () => HumanMutable[];
 };
 
-export const roomComponent: ContainerComponent<Props, RoomMutable> = () => {
+export const roomComponent: ContainerComponent<Props, RoomMutable> = (
+  $props,
+) => {
   const { layout, furniture } = System.game.rooms.get();
   const furnituresMap: Record<string, FurnitureMutable> = {};
   const $container = container<{}, RoomMutable>({
+    ...$props,
     sortableChildren: true,
     pivot: {
       x: TILE_SIZE.width / 2,
-      y: WALL_HEIGHT / 2,
-      // y: 0,
+      y: -TILE_SIZE.height / 2,
     },
   });
-  // $container.on(
-  //   DisplayObjectEvent.ADD_CHILD,
-  //   (component: DisplayObjectMutable<any>) => {
-  //     const position = component.getPosition();
-  //     const containerPivot = $container.getPivot();
-  //
-  //     // if (containerPivot.x > position.x) $container.setPivotX(position.x - 4);
-  //     // if (containerPivot.y > position.y)
-  //     //   $container.setPivotY(position.y - WALL_HEIGHT);
-  //   },
-  // );
 
   let humanList: ContainerMutable<{}, HumanMutable>[] = [];
 
@@ -454,16 +444,74 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = () => {
       }
     };
 
-    const roomBounds = $container.getBounds();
-    //TODO calculate with tiles instead of bounds #https://github.com/openhotel/openhotel/issues/665
-    $container.setPivot((pivot) => ({
-      x: pivot.x - roomBounds.width / 2,
-      y: pivot.y - roomBounds.height / 3,
-    }));
-
-    console.log($container.getBounds());
-
     $addFurniture(...furniture);
+
+    // --- Center Room ---
+    {
+      const layoutMaxX = layout[0].length;
+      const layoutMaxZ = layout.length;
+
+      let topZIndex = Number.MAX_SAFE_INTEGER;
+
+      let bottomZIndex = Number.MIN_SAFE_INTEGER;
+      let bottomRoomPoint = Number.MAX_SAFE_INTEGER;
+
+      let leftXIndex = Number.MIN_SAFE_INTEGER;
+
+      let rightXIndex = Number.MAX_SAFE_INTEGER;
+
+      for (let z = 0; z < layoutMaxZ; z++)
+        for (let x = 0; x < layoutMaxX; x++) {
+          const roomPoint = layout[z][x] as unknown as number;
+          if (
+            (roomPoint as unknown) === RoomPointEnum.SPAWN ||
+            (roomPoint as unknown) === RoomPointEnum.EMPTY
+          )
+            continue;
+          let zIndex = x + z;
+          let xIndex = -x + z;
+
+          //top tile
+          if (topZIndex >= zIndex) topZIndex = zIndex;
+
+          //bottom tile
+          if (zIndex >= bottomZIndex) {
+            bottomZIndex = zIndex;
+            bottomRoomPoint = roomPoint;
+          }
+
+          //left tile
+          if (xIndex >= leftXIndex) leftXIndex = xIndex;
+
+          //right tile
+          if (rightXIndex >= xIndex) rightXIndex = xIndex;
+        }
+
+      const topCorrection = topZIndex * (TILE_SIZE.height / 2) - WALL_HEIGHT;
+      const leftCorrection = (-leftXIndex - 1) * (TILE_SIZE.width / 2);
+
+      const totalHeight =
+        //size of all the tiles to the bottom
+        (bottomZIndex - topZIndex + 1) * (TILE_SIZE.height / 2) +
+        //bottom step tile
+        STEP_TILE_HEIGHT +
+        //total of stairs count
+        (bottomRoomPoint - 1) * ((STAIRS_HEIGHT - TILE_SIZE.height) * 2) +
+        //total wall height
+        WALL_HEIGHT +
+        STEP_TILE_HEIGHT / 2;
+
+      const totalWidth =
+        //from left to right sum of xIndex
+        (leftXIndex - rightXIndex + 2) * (TILE_SIZE.width / 2) +
+        //wall width
+        WALL_WIDTH / 2;
+
+      $container.setPivot((pivot) => ({
+        x: pivot.x + leftCorrection + totalWidth / 2,
+        y: pivot.y + topCorrection + totalHeight / 2,
+      }));
+    }
   });
 
   return $container.getComponent(roomComponent, {
