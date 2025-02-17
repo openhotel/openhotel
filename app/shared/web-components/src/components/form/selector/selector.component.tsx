@@ -3,7 +3,7 @@ import * as React from "react";
 // @ts-ignore
 import styles from "./selector.module.scss";
 import { cn } from "../../../utils";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   ChevronDownIconComponent,
   CrossIconComponent,

@@ -26,7 +26,7 @@ type ModalProps = {
 export const ModalProvider: React.FunctionComponent<ModalProps> = ({
   children,
 }) => {
-  const modalRef = useRef<HTMLDivElement>();
+  const modalRef = useRef<HTMLDivElement>(null);
 
   const close = useCallback(() => {
     modalRef.current.remove();

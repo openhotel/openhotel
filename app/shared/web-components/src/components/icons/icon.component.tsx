@@ -1,4 +1,7 @@
 import React from "react";
+import { cn } from "../../utils";
+//@ts-ignore
+import styles from "./icon.module.scss";
 
 export type IconProps = {
   className?: string;
@@ -17,7 +20,7 @@ export const IconComponent: React.FC<IconProps> = ({
 }) => (
   <svg
     {...props}
-    className={className}
+    className={cn(className, styles.icon)}
     width={width}
     height={height}
     viewBox={`0 0 24 24`}

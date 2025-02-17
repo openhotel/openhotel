@@ -11,7 +11,7 @@ export const ModalLayoutComponent: React.FC<Props> = ({
   children,
   onClick,
 }) => {
-  const ref = useRef<HTMLDivElement>();
+  const ref = useRef<HTMLDivElement>(null);
 
   const $onClick = useCallback((event) => {
     if (ref.current === event.target) onClick();

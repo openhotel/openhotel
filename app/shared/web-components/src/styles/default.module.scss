@@ -34,12 +34,6 @@
   h4 {
     font-size: 2rem;
   }
-
-  // Override the default SVG color with the current font color
-  svg,
-  svg path {
-    fill: currentColor !important;
-  }
 }
 
 html {
