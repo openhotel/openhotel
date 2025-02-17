@@ -11,6 +11,7 @@ import {
 import { integrations } from "./integrations.ts";
 import { getTokenData } from "@oh/utils";
 import * as bcrypt from "@da/bcrypt";
+import { ulid } from "jsr:@std/ulid@1";
 
 export const hotels = () => {
   const $getLicenseData = async (licenseToken: string) => {
@@ -165,7 +166,7 @@ export const hotels = () => {
     name,
     accountId,
   }: HotelCreation): Promise<string> => {
-    const hotelId = crypto.randomUUID();
+    const hotelId = ulid();
 
     await System.db.set(["hotels", hotelId], {
       hotelId,

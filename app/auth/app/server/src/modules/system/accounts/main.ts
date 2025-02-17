@@ -28,6 +28,7 @@ import { admins } from "./admins.ts";
 import { HotelCreation, HotelMutableGet } from "shared/types/hotel.types.ts";
 import { hotels } from "./hotels.ts";
 import { connections } from "./connections/main.ts";
+import { ulid } from "jsr:@std/ulid@1";
 
 export const accounts = () => {
   const $admins = admins();
@@ -38,7 +39,7 @@ export const accounts = () => {
     password,
     languages,
   }: AccountCreation) => {
-    const accountId = crypto.randomUUID();
+    const accountId = ulid();
 
     const {
       email: { enabled: isEmailVerificationEnabled },
