@@ -75,7 +75,8 @@ export const Proxy = (() => {
 
         const foundRoute = routesList.find(
           (route) =>
-            route.method === method && pathname.startsWith(route.pathname),
+            route.method.includes(method) &&
+            pathname.startsWith(route.pathname),
         );
 
         let response = new Response("404", { status: 404 });

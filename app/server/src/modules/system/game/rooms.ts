@@ -301,11 +301,16 @@ export const rooms = () => {
     return roomList[roomIndex];
   };
 
+  const add = async (room: Room) => {
+    await System.db.set(["rooms", room.id], room);
+  };
   return {
     get,
     getList,
     getByName,
 
     getRandom,
+
+    add,
   };
 };

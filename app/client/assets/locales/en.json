@@ -8,5 +8,9 @@
   "username": "username",
   "password": "password",
   "repeat password": "repeat password",
-  "Click here or press 'c' to write a message": "Click here or press 'c' to write a message"
+  "Click here or press 'c' to write a message": "Click here or press 'c' to write a message",
+  "New room": "New room",
+  "Room name": "Room name",
+  "Room description": "Room description",
+  "Create": "Create"
 }
