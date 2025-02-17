@@ -41,6 +41,7 @@ export const AdminHotelsComponent = () => {
           <HotelFormComponent
             hotel={hotels.find((hotel) => hotel.hotelId === selectedHotel)}
             setHotel={setSelectedHotel}
+            onDelete={() => setSelectedHotel(null)}
           />
         ) : null}
         <TableComponent

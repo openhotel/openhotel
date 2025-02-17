@@ -27,9 +27,14 @@ import dayjs from "dayjs";
 type Props = {
   hotel: DbHotel;
   setHotel: (hotelId: string) => void;
+  onDelete: () => void;
 };
 
-export const HotelFormComponent: React.FC<Props> = ({ hotel, setHotel }) => {
+export const HotelFormComponent: React.FC<Props> = ({
+  hotel,
+  setHotel,
+  onDelete,
+}) => {
   const { getHotelInfo, getHotelUrl } = useHotel();
 
   const { fetchHotels, updateHotel, deleteHotel, deleteHotelIntegration } =
@@ -64,8 +69,11 @@ export const HotelFormComponent: React.FC<Props> = ({ hotel, setHotel }) => {
   }, [hotel, setHotelInfo, setHotelPing, getHotelInfo]);
 
   const $onDeleteHotel = useCallback(() => {
-    deleteHotel(hotel.hotelId).then(fetchHotels);
-  }, [deleteHotel, fetchHotels]);
+    deleteHotel(hotel.hotelId).then(() => {
+      fetchHotels();
+      onDelete();
+    });
+  }, [deleteHotel, fetchHotels, onDelete]);
 
   const $onDeleteIntegration = useCallback(
     (integration: DbHotelIntegration) => () => {
