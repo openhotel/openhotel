@@ -21,6 +21,8 @@ type ButtonMutable = {
   getText: () => string;
 };
 
+export type ButtonComponent = ContainerComponent<InputProps, ButtonMutable>;
+
 export const buttonComponent: ContainerComponent<InputProps, ButtonMutable> = (
   props,
 ) => {

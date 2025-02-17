@@ -9,5 +9,8 @@
   "password": "contraseña",
   "repeat password": "repetir constraseña",
   "Click here or press 'c' to write a message": "Click aqui o presiona 'c' para escribir",
-  "New room": "Nueva room"
+  "New room": "Nueva sala",
+  "Room name": "Nombre de la sala",
+  "Room description": "Descripción de la sala",
+  "Create": "Crear"
 }

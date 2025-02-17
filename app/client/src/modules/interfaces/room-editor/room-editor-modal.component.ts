@@ -10,6 +10,7 @@ import {
 import { SpriteSheetEnum, SystemEvent } from "shared/enums";
 import { System } from "system";
 import {
+  type ButtonComponent,
   buttonComponent,
   inputComponent,
   modalComponent,
@@ -116,7 +117,7 @@ export const roomEditorModalComponent: ContainerComponent<Props> = (
     const cellSize = 8;
     const spacing = 10;
 
-    const cells: any[][] = [];
+    const $cells: ButtonComponent[][] = [];
     for (let row = 0; row < height; row++) {
       const rowCells: any[] = [];
       for (let col = 0; col < width; col++) {
@@ -139,11 +140,12 @@ export const roomEditorModalComponent: ContainerComponent<Props> = (
         rowCells.push($cell);
         $container.add($cell);
       }
-      cells.push(rowCells);
+      $cells.push(rowCells);
     }
 
     const getLayout = () => {
-      return cells.map((rowCells) =>
+      return $cells.map((rowCells) =>
+        // @ts-ignore
         rowCells.map((cell) => cell.getText()).join(""),
       );
     };
