@@ -12,6 +12,7 @@ import {
   changelogModalComponent,
   catalogModalComponent,
   navigatorModalComponent,
+  roomEditorModalComponent,
 } from "modules/interfaces";
 
 export const interfacesComponent: ContainerMutable<{}, any> = (props) => {
@@ -26,10 +27,9 @@ export const interfacesComponent: ContainerMutable<{}, any> = (props) => {
   const $navigator = navigatorModalComponent();
   const $catalog = catalogModalComponent();
   const $changelog = changelogModalComponent();
+  const $roomEditor = roomEditorModalComponent();
 
-  $container.add($navigator);
-  $container.add($catalog);
-  $container.add($changelog);
+  $container.add($navigator, $catalog, $changelog, $roomEditor);
 
   let $removeOnResize;
   let $removeOnHideModals;
@@ -42,6 +42,7 @@ export const interfacesComponent: ContainerMutable<{}, any> = (props) => {
       System.events.emit(SystemEvent.HIDE_NAVIGATOR_MODAL);
       System.events.emit(SystemEvent.HIDE_CATALOG_MODAL);
       System.events.emit(SystemEvent.HIDE_CHANGELOG_MODAL);
+      System.events.emit(SystemEvent.HIDE_ROOM_EDITOR_MODAL);
       // ...
     });
 

@@ -4,7 +4,7 @@ import { getRandomString, getURL } from "@oh/utils";
 import { Proxy } from "modules/proxy/main.ts";
 
 export const getApiRequest = {
-  method: "GET",
+  method: ["GET", "PUT"],
   pathname: "/api",
   fn: async (request: Request): Promise<Response> => {
     const { headers, method } = request;
@@ -21,6 +21,12 @@ export const getApiRequest = {
     let data = {};
     const { searchParams, pathname: currentPathname } = getURL(request.url);
     for (const [key, value] of searchParams as any) data[key] = value;
+
+    if (request.body) {
+      data = {
+        ...(await request.json()),
+      };
+    }
 
     const pathname = currentPathname.replace("/proxy", "").replace("/api", "");
     const eventName = user?.accountId + getRandomString(32);
