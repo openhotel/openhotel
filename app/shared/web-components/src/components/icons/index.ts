@@ -16,6 +16,7 @@ export * from "./official-icon.component";
 export * from "./network-icon.component";
 export * from "./download-icon.component";
 export * from "./forbidden-icon.component";
+export * from "./analytics-icon.component";
 
 export * from "./cc";
 export * from "./signal";
