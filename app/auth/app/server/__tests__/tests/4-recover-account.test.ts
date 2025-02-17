@@ -2,7 +2,7 @@ import { describe, it } from "jsr:@std/testing/bdd";
 import { assertEquals, assertExists } from "jsr:@std/assert";
 
 import { fetcher } from "../utils.ts";
-import { INVALID_EMAILS, USER_1 } from "../consts.ts";
+import { INVALID_EMAILS, INVALID_PASSWORD, USER_1 } from "../consts.ts";
 
 import { STATE } from "../state.ts";
 
@@ -105,6 +105,26 @@ describe("5. recover account", () => {
       assertEquals(status, 400);
       assertEquals(data, undefined);
       assertEquals(message, "Invalid password");
+    });
+    it("change lengthy password on valid token", async () => {
+      const { status, data, message } = await fetcher(
+        "/account/change-password",
+        {
+          method: "POST",
+          body: JSON.stringify({
+            password:
+              "nidc0Utp}_Da*($P}90384tihjstgjlkdsgdkljdrgujdriougiodurgiod",
+            rePassword: "nidc0Utp",
+            token: STATE.getUser(USER_1.email).recoverToken,
+          }),
+        },
+      );
+      assertEquals(status, 400);
+      assertEquals(data, undefined);
+      assertEquals(
+        message,
+        "Password length cannot be more than 45 characters!",
+      );
     });
     it("change password on valid token", async () => {
       const { status, data, message } = await fetcher(

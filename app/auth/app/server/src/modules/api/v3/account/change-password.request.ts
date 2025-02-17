@@ -7,6 +7,7 @@ import {
 import { System } from "modules/system/main.ts";
 import { PASSWORD_REGEX } from "shared/consts/main.ts";
 import { RequestKind } from "shared/enums/request.enums.ts";
+import { getPasswordMaxLength } from "shared/utils/password.utils.ts";
 
 export const changePasswordPostRequest: RequestType = {
   method: RequestMethod.POST,
@@ -18,6 +19,14 @@ export const changePasswordPostRequest: RequestType = {
     if (!password || !rePassword || !token) {
       return getResponse(HttpStatusCode.BAD_REQUEST, {
         message: "Some input is missing",
+      });
+    }
+
+    const maxLength = await getPasswordMaxLength();
+
+    if (password.length > maxLength) {
+      return getResponse(HttpStatusCode.BAD_REQUEST, {
+        message: `Password length cannot be more than ${maxLength} characters!`,
       });
     }
 

@@ -1,4 +1,5 @@
-const PEPPER_FILE = "database-priv";
+import { ulid } from "jsr:@std/ulid@1";
+import { PEPPER_FILE } from "../consts/pepper.consts.ts";
 
 /**
  * Get pepper from filesystem, if not found, create it
@@ -7,7 +8,7 @@ export const getPasswordsPepper = async (): Promise<string> => {
   try {
     return await Deno.readTextFile(PEPPER_FILE);
   } catch {
-    const pepper: string = crypto.randomUUID();
+    const pepper: string = ulid();
     await Deno.writeTextFile(PEPPER_FILE, pepper);
     return pepper;
   }

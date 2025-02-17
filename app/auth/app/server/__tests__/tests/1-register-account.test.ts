@@ -59,6 +59,24 @@ describe("2. register an account", () => {
       assertEquals(data, undefined);
       assertEquals(message, "Invalid email, username or password!");
     });
+    it("try to register with too lengthy password", async () => {
+      const { status, data, message } = await fetcher("/account/register", {
+        method: "POST",
+        body: JSON.stringify({
+          email: USER_1.email,
+          username: USER_1.username,
+          password: "ajskhdhkjsadjhkasjkldjklasdjkaskldjkalsdjklajldksa",
+          rePassword: INVALID_PASSWORD,
+          languages: USER_1.languages,
+        }),
+      });
+      assertEquals(status, 400);
+      assertEquals(data, undefined);
+      assertEquals(
+        message,
+        "Password length cannot be more than 45 characters!",
+      );
+    });
     it("try to register with non matching passwords", async () => {
       const { status, data, message } = await fetcher("/account/register", {
         method: "POST",
