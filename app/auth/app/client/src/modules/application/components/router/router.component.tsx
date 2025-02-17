@@ -25,6 +25,7 @@ import {
   AdminComponent,
   AdminHotelsComponent,
   AdminUsersComponent,
+  AnalyticsComponent,
 } from "modules/admin";
 import { AdminProvider } from "shared/hooks";
 import { WrapperLayoutComponent } from "modules/application";
@@ -141,6 +142,10 @@ const router = createBrowserRouter([
           {
             path: "claim",
             element: <AdminClaimComponent />,
+          },
+          {
+            path: "analytics",
+            element: <AnalyticsComponent />,
           },
         ],
       },

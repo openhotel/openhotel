@@ -2,6 +2,7 @@ import React, { useMemo } from "react";
 import {
   AccountIconComponent,
   AdminIconComponent,
+  AnalyticsIconComponent,
   ButtonComponent,
   ConnectionsIconComponent,
   DatabaseIconComponent,
@@ -69,6 +70,11 @@ export const HomeNavigatorComponent: React.FC = () => {
           <LinkComponent to="/admin/backups">
             <NavItemComponent icon={<DatabaseIconComponent />}>
               Backups
+            </NavItemComponent>
+          </LinkComponent>
+          <LinkComponent to="/admin/analytics">
+            <NavItemComponent icon={<AnalyticsIconComponent />}>
+              Analytics
             </NavItemComponent>
           </LinkComponent>
         </>
