@@ -26,7 +26,7 @@ describe("6. otp account", () => {
           headers: STATE.getSessionHeaders(USER_1.email),
         },
       );
-      assertEquals(status, 403);
+      assertEquals(status, 400);
       assertEquals(data, undefined);
     });
     it("verify valid otp token", async () => {

@@ -43,7 +43,7 @@ export const githubPostRequest: RequestType = {
     const account = await System.accounts.getAccount({ request });
 
     if (await account.github.checkState(state))
-      return getResponse(HttpStatusCode.FORBIDDEN);
+      return getResponse(HttpStatusCode.BAD_REQUEST);
 
     const login = await account.github.link(code);
 

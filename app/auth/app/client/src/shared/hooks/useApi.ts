@@ -47,6 +47,11 @@ export const useApi = () => {
         };
       });
 
+      if (response.status === 403) {
+        globalThis.location.reload();
+        return;
+      }
+
       if (response.status !== 200) throw response;
 
       return response;

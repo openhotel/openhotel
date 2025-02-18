@@ -21,31 +21,31 @@ export const loginPostRequest: RequestType = {
     } = await request.json();
 
     if (!email || !password)
-      return getResponse(HttpStatusCode.FORBIDDEN, {
+      return getResponse(HttpStatusCode.BAD_REQUEST, {
         message: "Email or password not valid!",
       });
 
     const account = await System.accounts.getAccount({ email });
 
     if (!account)
-      return getResponse(HttpStatusCode.FORBIDDEN, {
+      return getResponse(HttpStatusCode.BAD_REQUEST, {
         message: "Email or password not valid!",
       });
 
     const accountData = account.getObject();
 
     if (!accountData.verified)
-      return getResponse(HttpStatusCode.FORBIDDEN, {
+      return getResponse(HttpStatusCode.BAD_REQUEST, {
         message: "Your email is not verified!",
       });
 
     if (!accountData.passwordHash)
-      return getResponse(HttpStatusCode.FORBIDDEN, {
+      return getResponse(HttpStatusCode.BAD_REQUEST, {
         message: "Email or password not valid!",
       });
 
     if (!(await account.checkPassword(password)))
-      return getResponse(HttpStatusCode.FORBIDDEN, {
+      return getResponse(HttpStatusCode.BAD_REQUEST, {
         message: "Email or password not valid!",
       });
 

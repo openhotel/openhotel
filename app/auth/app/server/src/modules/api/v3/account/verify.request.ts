@@ -15,13 +15,14 @@ export const verifyGetRequest: RequestType = {
     const verifyId = url.searchParams.get("id");
     const verifyToken = url.searchParams.get("token");
 
-    if (!verifyId || !verifyToken) return getResponse(HttpStatusCode.FORBIDDEN);
+    if (!verifyId || !verifyToken)
+      return getResponse(HttpStatusCode.BAD_REQUEST);
 
     const account = await System.accounts.getAccount({
       verifyId,
       verifyToken,
     });
-    if (!account) return getResponse(HttpStatusCode.FORBIDDEN);
+    if (!account) return getResponse(HttpStatusCode.BAD_REQUEST);
 
     await account.verify();
 

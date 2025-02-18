@@ -23,7 +23,7 @@ describe("2. register an account", () => {
         method: "POST",
         body: JSON.stringify({}),
       });
-      assertEquals(status, 403);
+      assertEquals(status, 400);
       assertEquals(data, undefined);
       assertEquals(message, "Some input is missing or invalid captcha!");
     });

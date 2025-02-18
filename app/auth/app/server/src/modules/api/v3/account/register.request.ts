@@ -31,7 +31,7 @@ export const registerPostRequest: RequestType = {
         !languages?.length ||
         !rePassword
       )
-        return getResponse(HttpStatusCode.FORBIDDEN, {
+        return getResponse(HttpStatusCode.BAD_REQUEST, {
           message: "Some input is missing or invalid captcha!",
         });
 
