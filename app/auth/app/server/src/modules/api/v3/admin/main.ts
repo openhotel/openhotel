@@ -13,6 +13,7 @@ import {
   backupsDeleteRequest,
   backupsGetRequest,
   backupsPostRequest,
+  backupsSyncGetRequest,
 } from "./backups.request.ts";
 import { hotelRequestList } from "./hotel/main.ts";
 
@@ -35,6 +36,7 @@ export const adminRequestList: RequestType[] = getPathRequestList({
     backupsGetRequest,
     backupsPostRequest,
     backupsDeleteRequest,
+    backupsSyncGetRequest,
   ],
   pathname: "/admin",
 });

@@ -37,6 +37,8 @@ type AdminState = {
 
   backup: (name: string) => Promise<void>;
   deleteBackup: (name: string) => Promise<void>;
+  syncBackups: () => Promise<void>;
+  sync: boolean | null;
 };
 
 const AdminContext = React.createContext<AdminState>(undefined);
@@ -55,6 +57,7 @@ export const AdminProvider: React.FunctionComponent<ProviderProps> = ({
   const [tokens, setTokens] = useState<Token[]>([]);
   const [hotels, setHotels] = useState<DbHotel[]>([]);
   const [backups, setBackups] = useState<Backup[]>([]);
+  const [sync, setSync] = useState<boolean | null>(false);
 
   const fetchUsers = useCallback(async () => {
     return fetch({
@@ -232,6 +235,17 @@ export const AdminProvider: React.FunctionComponent<ProviderProps> = ({
     await fetchBackups();
   }, []);
 
+  const syncBackups = useCallback(async () => {
+    setSync(true);
+    await fetch({
+      method: RequestMethod.GET,
+      pathname: "/admin/backups/sync",
+      headers: getAccountHeaders(),
+    })
+      .then(() => setSync(false))
+      .catch(() => setSync(null));
+  }, [setSync]);
+
   return (
     <AdminContext.Provider
       value={{
@@ -259,6 +273,8 @@ export const AdminProvider: React.FunctionComponent<ProviderProps> = ({
         backups,
         backup,
         deleteBackup,
+        syncBackups,
+        sync,
       }}
       children={children}
     />

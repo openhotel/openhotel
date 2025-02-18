@@ -13,7 +13,8 @@ import { useModal } from "@oh/components";
 import styles from "./backups.module.scss";
 
 export const AdminBackupsComponent = () => {
-  const { fetchBackups, backups, backup, deleteBackup } = useAdmin();
+  const { fetchBackups, backups, backup, deleteBackup, syncBackups, sync } =
+    useAdmin();
   const { open, close } = useModal();
 
   useEffect(() => {
@@ -24,13 +25,20 @@ export const AdminBackupsComponent = () => {
     <div>
       <h2>Backups</h2>
       <div className={styles.users}>
-        <div>
+        <div className={styles.actionsWrapper}>
           <ButtonComponent
             color="yellow"
             variant="3d"
             onClick={() => backup("_manual")}
           >
             Backup now!
+          </ButtonComponent>
+          <ButtonComponent color="grey" variant="3d" onClick={syncBackups}>
+            {sync === null
+              ? "Something was wrong"
+              : sync
+                ? "Uploading..."
+                : "Sync with s3"}
           </ButtonComponent>
         </div>
         <TableComponent

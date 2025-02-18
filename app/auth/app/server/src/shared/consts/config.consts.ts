@@ -13,6 +13,14 @@ export const CONFIG_DEFAULT: ConfigTypes = {
   },
   backups: {
     cron: "0 3 * * *",
+    s3: {
+      enabled: false,
+      accessKey: "",
+      secretKey: "",
+      endpoint: "",
+      region: "",
+      bucket: "",
+    },
   },
   accounts: {
     maxHotels: 3,

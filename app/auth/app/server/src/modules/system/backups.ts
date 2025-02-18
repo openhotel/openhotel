@@ -1,5 +1,7 @@
 import { System } from "modules/system/main.ts";
 import { DELETE_BACKUP_PATH } from "shared/consts/backups.consts.ts";
+import { walk } from "deno/fs/walk.ts";
+import * as s3 from "s3/client";
 
 export const backups = () => {
   let abortCronController: AbortController = new AbortController();
@@ -46,6 +48,39 @@ export const backups = () => {
     } catch (e) {}
   };
 
+  const sync = async () => {
+    const { endpoint, bucket, secretKey, accessKey, region } =
+      System.getConfig().backups.s3;
+
+    const s3Client = new s3.Client({
+      endPoint: endpoint,
+      useSSL: true,
+      accessKey,
+      secretKey,
+      region,
+    });
+
+    const bucketExists = await s3Client.bucketExists(bucket);
+    if (!bucketExists) s3Client.makeBucket(bucket);
+
+    const files = walk(`${DELETE_BACKUP_PATH}`, {
+      includeDirs: false,
+    });
+
+    for await (const entry of files) {
+      if (entry.isFile) {
+        try {
+          await s3Client.fPutObject(bucket, entry.name, entry.path);
+        } catch (e) {
+          console.error("Error uploading to s3", e);
+          return false;
+        }
+      }
+    }
+
+    return true;
+  };
+
   return {
     stop,
 
@@ -55,5 +90,7 @@ export const backups = () => {
     remove,
 
     getList,
+
+    sync,
   };
 };

@@ -27,6 +27,7 @@
 
     "deno/": "https://deno.land/std@0.221.0/",
     "@std/ulid": "jsr:@std/ulid@1",
+    "s3/client": "jsr:@sugar/minio-js-with-startpath@8.0.13",
     "loadenv": "https://deno.land/x/loadenv@v1.0.1/mod.ts",
 
     "nodemailer": "npm:nodemailer@6.9.15",

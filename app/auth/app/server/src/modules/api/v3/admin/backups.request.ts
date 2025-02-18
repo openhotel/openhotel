@@ -1,7 +1,6 @@
 import {
   RequestType,
   RequestMethod,
-  update,
   getResponse,
   HttpStatusCode,
 } from "@oh/utils";
@@ -12,7 +11,7 @@ export const backupsGetRequest: RequestType = {
   method: RequestMethod.GET,
   pathname: "/backups",
   kind: RequestKind.ADMIN,
-  func: async (request: Request) => {
+  func: async () => {
     const backups = await System.backups.getList();
 
     return getResponse(HttpStatusCode.OK, { data: { backups } });
@@ -40,6 +39,22 @@ export const backupsDeleteRequest: RequestType = {
     const { name } = await request.json();
 
     await System.backups.remove(name);
+
+    return getResponse(HttpStatusCode.OK);
+  },
+};
+
+export const backupsSyncGetRequest: RequestType = {
+  method: RequestMethod.GET,
+  pathname: "/backups/sync",
+  kind: RequestKind.ADMIN,
+  func: async () => {
+    const config = System.getConfig();
+    if (!config.backups.s3.enabled)
+      return getResponse(HttpStatusCode.NOT_FOUND);
+
+    const sync = await System.backups.sync();
+    if (!sync) return getResponse(HttpStatusCode.BAD_REQUEST);
 
     return getResponse(HttpStatusCode.OK);
   },

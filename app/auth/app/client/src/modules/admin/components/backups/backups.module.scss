@@ -5,6 +5,12 @@
   flex-direction: column;
   gap: 1rem;
 
+  .actionsWrapper {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+  }
+
   .selectedForm {
     padding: 2rem;
     background-color: var(--text-2-bg);
