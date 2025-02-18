@@ -8,6 +8,7 @@ import {
   DatabaseIconComponent,
   HomeIconComponent,
   HotelIconComponent,
+  KeysIconComponent,
   NavItemComponent,
 } from "@oh/components";
 import { LinkComponent } from "shared/components";
@@ -47,6 +48,11 @@ export const HomeNavigatorComponent: React.FC = () => {
       <LinkComponent to="/account/connections">
         <NavItemComponent icon={<ConnectionsIconComponent />}>
           Connections
+        </NavItemComponent>
+      </LinkComponent>
+      <LinkComponent to="/account/sessions">
+        <NavItemComponent icon={<KeysIconComponent />}>
+          Sessions
         </NavItemComponent>
       </LinkComponent>
       {isAdmin ? (

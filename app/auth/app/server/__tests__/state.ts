@@ -1,4 +1,5 @@
 import * as OTPAuth from "otp";
+import { USER_AGENTS } from "./consts.ts";
 
 export const State = () => {
   const getObject = (): any => {
@@ -46,7 +47,7 @@ export const State = () => {
       "account-id": userData.accountId,
       token: userData.token,
       "refresh-token": userData.refreshToken,
-      "user-agent": "CatOS v1.2 - FairFox 22.33.44",
+      "user-agent": USER_AGENTS.FIREFOX,
       "x-forwarded-for": "23.23.23.23",
     };
   };

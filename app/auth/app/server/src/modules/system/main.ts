@@ -60,7 +60,7 @@ export const System = (() => {
 
     await Migrations.load($db);
 
-    // await $db.visualize();
+    await $db.visualize();
 
     await $email.load();
     await $backups.load();

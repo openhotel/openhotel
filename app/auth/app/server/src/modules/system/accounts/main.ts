@@ -29,6 +29,7 @@ import { HotelCreation, HotelMutableGet } from "shared/types/hotel.types.ts";
 import { hotels } from "./hotels.ts";
 import { connections } from "./connections/main.ts";
 import { ulid } from "jsr:@std/ulid@1";
+import { getUserAgentData } from "shared/utils/user-agent.utils.ts";
 import { discordNotify } from "shared/utils/discord.utils.ts";
 
 export const accounts = () => {
@@ -279,8 +280,14 @@ export const accounts = () => {
     };
 
     const createTokens = async (request: Request) => {
-      const token = getRandomString(54);
-      const refreshToken = getRandomString(64);
+      let tokenId = getRandomString(4);
+
+      const $currentToken =
+        request.headers.get("token") ?? request.headers.get("refresh-token");
+      if ($currentToken?.length === 64) tokenId = $currentToken.substring(0, 4);
+
+      const token = getRandomString(60);
+      const refreshToken = getRandomString(60);
 
       const userAgent = request.headers.get("user-agent");
       const ip = getIpFromRequest(request);
@@ -293,18 +300,19 @@ export const accounts = () => {
         accountRefreshTokenDays * 24 * 60 * 60 * 1000;
 
       await System.db.set(
-        ["accountsByToken", account.accountId],
+        ["accountsByToken", account.accountId, tokenId],
         {
           userAgent,
           ip,
           tokenHash: bcrypt.hashSync(token, bcrypt.genSaltSync(8)),
+          updatedAt: Date.now(),
         },
         {
           expireIn: expireInToken,
         },
       );
       await System.db.set(
-        ["accountsByRefreshToken", account.accountId],
+        ["accountsByRefreshToken", account.accountId, tokenId],
         {
           userAgent,
           ip,
@@ -312,13 +320,14 @@ export const accounts = () => {
             refreshToken,
             bcrypt.genSaltSync(8),
           ),
+          updatedAt: Date.now(),
         },
         { expireIn: expireInRefreshToken },
       );
 
       return {
-        token,
-        refreshToken,
+        token: tokenId + token,
+        refreshToken: tokenId + refreshToken,
         durations: [accountTokenDays, accountRefreshTokenDays] as [
           number,
           number,
@@ -327,17 +336,67 @@ export const accounts = () => {
     };
 
     const removeTokens = async () => {
-      await System.db.delete(["accountsByToken", account.accountId]);
-      await System.db.delete(["accountsByRefreshToken", account.accountId]);
+      for (const { key } of await System.db.list({
+        prefix: ["accountsByToken", account.accountId],
+      }))
+        await System.db.delete(key);
+      for (const { key } of await System.db.list({
+        prefix: ["accountsByRefreshToken", account.accountId],
+      }))
+        await System.db.delete(key);
+    };
+
+    const removeToken = async ($token: string) => {
+      const tokenId = $token.substring(0, 4);
+
+      await System.db.delete(["accountsByToken", account.accountId, tokenId]);
+      await System.db.delete([
+        "accountsByRefreshToken",
+        account.accountId,
+        tokenId,
+      ]);
+    };
+
+    const getTokens = async () => {
+      const tokens = {};
+
+      for (const { key, value } of await System.db.list({
+        prefix: ["accountsByToken", account.accountId],
+      })) {
+        tokens[key[2]] = {
+          ...getUserAgentData(value.userAgent),
+          ip: value.ip,
+          updatedAt: value.updatedAt,
+        };
+      }
+      for (const { key, value } of await System.db.list({
+        prefix: ["accountsByRefreshToken", account.accountId],
+      })) {
+        if (!tokens[key[2]])
+          tokens[key[2]] = {
+            ...getUserAgentData(value.userAgent),
+            ip: value.ip,
+            updatedAt: value.updatedAt,
+          };
+      }
+
+      return Object.keys(tokens).map((tokenId) => ({
+        ...tokens[tokenId],
+        tokenId,
+      }));
     };
 
     const checkToken = async (request: Request) => {
-      const token = request.headers.get("token");
-      if (!token) return false;
+      const $token = request.headers.get("token");
+      if (!$token || $token.length !== 64) return false;
+
+      const tokenId = $token.substring(0, 4);
+      const token = $token.substring(4, 64);
 
       const accountsByToken = await System.db.get([
         "accountsByToken",
         account.accountId,
+        tokenId,
       ]);
 
       const userAgent = request.headers.get("user-agent");
@@ -354,11 +413,16 @@ export const accounts = () => {
     };
 
     const checkRefreshToken = async (request: Request): Promise<boolean> => {
-      const refreshToken = request.headers.get("refresh-token");
+      const $refreshToken = request.headers.get("refresh-token");
+      if (!$refreshToken || $refreshToken.length !== 64) return false;
+
+      const tokenId = $refreshToken.substring(0, 4);
+      const token = $refreshToken.substring(4, 64);
 
       const accountByRefreshToken = await System.db.get([
         "accountsByRefreshToken",
         account.accountId,
+        tokenId,
       ]);
 
       const userAgent = request.headers.get("user-agent");
@@ -371,10 +435,7 @@ export const accounts = () => {
       )
         return false;
 
-      return bcrypt.compareSync(
-        refreshToken,
-        accountByRefreshToken.refreshTokenHash,
-      );
+      return bcrypt.compareSync(token, accountByRefreshToken.refreshTokenHash);
     };
 
     const sendVerificationEmail = async () => {
@@ -500,8 +561,6 @@ export const accounts = () => {
       for (const hotel of await getHotels()) await hotel.remove();
 
       await System.db.delete(["accounts", account.accountId]);
-      await System.db.delete(["accountsByRefreshToken", account.accountId]);
-      await System.db.delete(["accountsByToken", account.accountId]);
       await System.db.delete([
         "accountsByUsername",
         account.username.toLowerCase(),
@@ -537,6 +596,8 @@ export const accounts = () => {
       checkRefreshToken,
       createTokens,
       removeTokens,
+      removeToken,
+      getTokens,
 
       sendVerificationEmail,
       verify,

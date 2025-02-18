@@ -19,6 +19,7 @@ import {
   DeleteComponent,
   GithubComponent,
   MyHotelsComponent,
+  SessionsComponent,
 } from "modules/account";
 import {
   AdminClaimComponent,
@@ -106,6 +107,10 @@ const router = createBrowserRouter([
           {
             path: "github",
             element: <GithubComponent />,
+          },
+          {
+            path: "sessions",
+            element: <SessionsComponent />,
           },
           {
             path: "delete",

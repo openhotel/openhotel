@@ -14,7 +14,7 @@ export const logoutPostRequest: RequestType = {
   func: async (request: Request) => {
     const account = await System.accounts.getAccount({ request });
 
-    await account.removeTokens();
+    await account.removeToken(request.headers.get("token"));
 
     return getResponse(HttpStatusCode.OK);
   },

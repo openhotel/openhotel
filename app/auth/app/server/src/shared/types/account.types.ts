@@ -86,6 +86,9 @@ export type AccountMutable = {
     durations: [number, number];
   }>;
   removeTokens: () => Promise<void>;
+  removeToken: (token: string) => Promise<void>;
+  getTokens: () => Promise<AccountToken[]>;
+
   checkToken: (request: Request) => Promise<boolean>;
   checkRefreshToken: (request: Request) => Promise<boolean>;
 
@@ -189,4 +192,12 @@ export type AccountActiveConnection = {
     connectionId: string,
     request: Request,
   ) => Promise<{ estimatedNextPingIn: number } | null>;
+};
+
+export type AccountToken = {
+  tokenId: string;
+  os: string;
+  browser: string;
+  ip: string;
+  updatedAt: number;
 };

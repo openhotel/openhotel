@@ -26,3 +26,11 @@ export type AccountChangePassProps = {
   password: string;
   rePassword: string;
 };
+
+export type AccountSession = {
+  tokenId: string;
+  os: string;
+  browser: string;
+  ip: string;
+  updatedAt: number;
+};

@@ -10,6 +10,7 @@ import { miscRequestList } from "./misc/main.ts";
 import { recoverPasswordPostRequest } from "./recover-password.request.ts";
 import { changePasswordPostRequest } from "./change-password.request.ts";
 import { accountDeleteRequest } from "./main.request.ts";
+import { tokenGetRequest, tokenDeleteRequest } from "./token.request.ts";
 
 export const accountRequestList: RequestType[] = getPathRequestList({
   requestList: [
@@ -22,6 +23,9 @@ export const accountRequestList: RequestType[] = getPathRequestList({
     logoutPostRequest,
     recoverPasswordPostRequest,
     changePasswordPostRequest,
+
+    tokenGetRequest,
+    tokenDeleteRequest,
 
     ...otpRequestList,
     ...miscRequestList,

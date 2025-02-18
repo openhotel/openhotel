@@ -2,15 +2,7 @@ import { useAdmin } from "shared/hooks";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { cn, getCensoredEmail } from "shared/utils";
 import dayjs from "dayjs";
-import {
-  TableComponent,
-  FormComponent,
-  InputComponent,
-  CrossIconComponent,
-  ButtonComponent,
-  SelectorComponent,
-  ConfirmationModalComponent,
-} from "@oh/components";
+import { TableComponent } from "@oh/components";
 import { User } from "shared/types";
 import { EMAIL_REGEX, USERNAME_REGEX } from "shared/consts";
 
@@ -22,8 +14,6 @@ export const AdminUsersComponent = () => {
   const { users, fetchUsers } = useAdmin();
 
   const [selectedUser, setSelectedUser] = useState<User>();
-
-  const today = dayjs(Date.now());
 
   useEffect(() => {
     fetchUsers();
@@ -72,14 +62,13 @@ export const AdminUsersComponent = () => {
           }}
           data={users.map((user) => {
             const expireAt = dayjs(user.createdAt).add(1, "day");
-            const remainingMinutes = expireAt.diff(today, "minutes");
 
             return {
               ...user,
               otp: user.otp ? "✅" : "❌",
               verified: user.verified
                 ? "✅"
-                : `⏳ ${Math.floor(remainingMinutes / 60)} hours ${remainingMinutes % 60} minutes`,
+                : `⏳ ${dayjs(expireAt).fromNow()}`,
               githubLogin: user.githubLogin,
               createdAt: dayjs(user.createdAt).format("YYYY/MM/DD HH:mm:ss"),
             };

@@ -38,3 +38,10 @@ export const HOTEL_2 = {
   name: "private hotel 2",
   public: false,
 };
+
+export const USER_AGENTS = {
+  FIREFOX:
+    "Mozilla/5.0 (X11; Linux x86_64; rv:135.0) Gecko/20100101 Firefox/135.0",
+  CHROME:
+    "Mozilla/5.0 (X11; Windows NT 10) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+};

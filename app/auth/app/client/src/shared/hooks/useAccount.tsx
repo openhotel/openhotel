@@ -12,11 +12,13 @@ import {
   AccountLoginProps,
   AccountRecoverPassProps,
   AccountRegisterProps,
+  AccountSession,
 } from "shared/types";
 import { RequestMethod } from "shared/enums";
 
 type AccountState = {
   getAccountHeaders: () => Record<string, string>;
+  getTokenId: () => string;
 
   login: (body: AccountLoginProps) => Promise<void>;
   register: (body: AccountRegisterProps) => Promise<void>;
@@ -24,6 +26,9 @@ type AccountState = {
   verify: (id: string, token: string) => Promise<void>;
   recoverPassword: (body: AccountRecoverPassProps) => Promise<void>;
   changePassword: (body: AccountChangePassProps) => Promise<void>;
+
+  getTokens: () => Promise<AccountSession[]>;
+  removeToken: (tokenId: string) => Promise<void>;
 
   refresh: () => Promise<void>;
 
@@ -53,6 +58,11 @@ export const AccountProvider: React.FunctionComponent<ProviderProps> = ({
       "account-id": getCookie("account-id"),
       token: getCookie("token"),
     }),
+    [getCookie],
+  );
+
+  const getTokenId = useCallback(
+    () => (isLogged ? getCookie("token").substring(0, 4) : null),
     [getCookie, isLogged],
   );
 
@@ -132,6 +142,29 @@ export const AccountProvider: React.FunctionComponent<ProviderProps> = ({
     [fetch],
   );
 
+  const getTokens = useCallback(async () => {
+    const { data } = await fetch({
+      method: RequestMethod.GET,
+      pathname: `/account/token`,
+      headers: getAccountHeaders(),
+      cache: false,
+    });
+
+    return data.tokens;
+  }, [fetch, getAccountHeaders]);
+
+  const removeToken = useCallback(
+    async (tokenId: string) => {
+      return await fetch({
+        method: RequestMethod.DELETE,
+        pathname: `/account/token?tokenId=${tokenId}`,
+        headers: getAccountHeaders(),
+        cache: false,
+      });
+    },
+    [fetch, getAccountHeaders],
+  );
+
   const refresh = useCallback(async () => {
     let accountId = getCookie("account-id");
     let token = getCookie("token");
@@ -207,6 +240,7 @@ export const AccountProvider: React.FunctionComponent<ProviderProps> = ({
     <AccountContext.Provider
       value={{
         getAccountHeaders,
+        getTokenId,
 
         login,
         register,
@@ -214,6 +248,9 @@ export const AccountProvider: React.FunctionComponent<ProviderProps> = ({
         verify,
         recoverPassword,
         changePassword,
+
+        getTokens,
+        removeToken,
 
         refresh,
 
