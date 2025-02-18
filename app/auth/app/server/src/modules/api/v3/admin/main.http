@@ -1,8 +1,8 @@
 #
 POST http://localhost:2024/api/v3/admin
 Content-Type: application/json
-account-id:	73a5a915-c29f-4fc2-8c3b-795bc4e3885f
-token: BumBh5MPRvdo0WBqA69YiFSLxQggHQxMQ6gSZuRGaWyGPun5wTpwX5
+account-id:	01JMB5Q2PCQXABEKCWG6MST740
+token: JzgFhmIKyTgKg0YcIVCcUaJHf4MY9l7Jb6OVy2qccsgqCZlqs9fhEO
 
 ###
 

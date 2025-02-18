@@ -29,6 +29,7 @@ import { HotelCreation, HotelMutableGet } from "shared/types/hotel.types.ts";
 import { hotels } from "./hotels.ts";
 import { connections } from "./connections/main.ts";
 import { ulid } from "jsr:@std/ulid@1";
+import { discordNotify } from "shared/utils/discord.utils.ts";
 
 export const accounts = () => {
   const $admins = admins();
@@ -386,6 +387,11 @@ export const accounts = () => {
         username: account.username,
         verified: true,
       });
+
+      const accountsList = await getList();
+      discordNotify({
+        content: `🏨  Someone just received their keys...  🏨\n\n**${account.username}** has checked in. We are now **${accountsList.length}** guests in the hotel.\n Who will be their first neighbor?  🏡\n\n🔑  Come meet them: [Hotel](https://client.openhotel.club)\n`,
+      });
     };
 
     const getEmail = async (): Promise<string> =>
@@ -410,7 +416,7 @@ export const accounts = () => {
     const createHotel = async ({
       name,
       public: $public,
-    }: HotelCreation): Promise<string | null> => {
+    }: Omit<HotelCreation, "accountId">): Promise<string | null> => {
       const hotels = await getHotels();
       if (hotels.length >= System.getConfig().accounts.maxHotels) return null;
 
