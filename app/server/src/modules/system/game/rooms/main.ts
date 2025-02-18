@@ -1,6 +1,6 @@
 import { $public } from "./public/main.ts";
 import { $private } from "./private/main.ts";
-import { RoomMutable } from "shared/types/rooms/main.ts";
+import { Room, RoomMutable } from "shared/types/rooms/main.ts";
 import { pathfinding } from "./pathfinding.ts";
 
 export const rooms = () => {
@@ -38,11 +38,21 @@ export const rooms = () => {
     }
   };
 
+  const add = (room: Room) => {
+    switch (room.type) {
+      case "private": {
+        return $$private.add(room);
+      }
+    }
+  };
+
   return {
     load,
 
     get,
     getList,
+
+    add,
 
     pathfinding: $pathfinding,
   };
