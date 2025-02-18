@@ -1,7 +1,7 @@
 import { ProxyRequestType } from "shared/types/api.types.ts";
 import { System } from "modules/system/main.ts";
 import { RequestMethod } from "@oh/utils";
-import { Room, RoomPoint } from "shared/types/room.types.ts";
+import { PrivateRoom, RoomPoint } from "shared/types/rooms/main.ts";
 import { RoomPointEnum } from "shared/enums/room.enums.ts";
 import {
   getRoomSpawnDirection,
@@ -90,7 +90,8 @@ export const roomPutRequest: ProxyRequestType = {
         ),
     );
 
-    const roomData: Room = {
+    const roomData: PrivateRoom = {
+      type: "private",
       version: 1,
       id: crypto.randomUUID(),
       ownerId: user.getAccountId(),
@@ -100,6 +101,7 @@ export const roomPutRequest: ProxyRequestType = {
       layout: $layout,
       spawnPoint: getRoomSpawnPoint($layout),
       spawnDirection: getRoomSpawnDirection($layout),
+      maxUsers: 10,
     };
 
     await System.game.rooms.add(roomData);
