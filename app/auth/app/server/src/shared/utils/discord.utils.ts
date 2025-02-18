@@ -1,5 +1,7 @@
+import { System } from "modules/system/main.ts";
+
 export const discordNotify = async (payload: unknown) => {
-  const webhookUrl = Deno.env.get("DISCORD_WEBHOOK") ?? "";
+  const webhookUrl = System.getConfig().notifications.discord;
   if (!webhookUrl) return;
 
   try {

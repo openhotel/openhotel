@@ -38,4 +38,7 @@ export const CONFIG_DEFAULT: ConfigTypes = {
     clientId: "",
     clientSecret: "",
   },
+  notifications: {
+    discord: false,
+  },
 };

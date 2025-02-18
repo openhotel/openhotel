@@ -36,4 +36,7 @@ export type ConfigTypes = {
     clientId: string;
     clientSecret: string;
   };
+  notifications: {
+    discord: string | false;
+  };
 };
