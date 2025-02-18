@@ -51,7 +51,10 @@ export const UserFormComponent: React.FC<Props> = ({ user, setUser }) => {
   );
 
   const onResendVerificationEmail = useCallback(
-    async () => await resendVerificationUser(user.accountId),
+    async (event: React.MouseEvent<HTMLButtonElement>) => {
+      event.preventDefault();
+      await resendVerificationUser(user.accountId);
+    },
     [user, resendVerificationUser],
   );
 
