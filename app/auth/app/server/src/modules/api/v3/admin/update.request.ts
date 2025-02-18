@@ -27,10 +27,8 @@ export const updatePatchRequest: RequestType = {
 
     if (!canUpdate) return getResponse(HttpStatusCode.ALREADY_REPORTED);
 
-    await System.db.backup("_update");
-
     setTimeout(() => {
-      Deno.exit();
+      System.stop();
     }, 100);
 
     return getResponse(HttpStatusCode.OK);
