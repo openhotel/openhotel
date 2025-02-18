@@ -2,13 +2,13 @@ import { System } from "modules/system/main.ts";
 import { DELETE_BACKUP_PATH } from "shared/consts/backups.consts.ts";
 
 export const backups = () => {
-  let abortCronSignal: AbortController = new AbortController();
+  let abortCronController: AbortController = new AbortController();
 
   const load = async () => {
     Deno.cron(
       "Backup auth",
       System.getConfig().backups.cron,
-      { signal: abortCronSignal },
+      { signal: abortCronController.signal },
       async () => {
         await backup("_cron");
         console.log("Backup ready!");
@@ -17,7 +17,7 @@ export const backups = () => {
   };
 
   const stop = () => {
-    abortCronSignal.abort();
+    abortCronController.abort();
   };
 
   const backup = async (name: string) => System.db.backup(name);
