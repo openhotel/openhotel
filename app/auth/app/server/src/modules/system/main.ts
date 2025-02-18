@@ -37,9 +37,10 @@ export const System = (() => {
 
     $isTestMode = testMode;
 
+    const isProduction = !testMode && $config.version !== "development";
+
     if (
-      !testMode &&
-      $config.version !== "development" &&
+      isProduction &&
       (await update({
         targetVersion: "latest",
         version: envs.version,
@@ -56,14 +57,14 @@ export const System = (() => {
     });
 
     await $db.load();
-    if (!testMode) await $db.backup("_start");
+    if (isProduction) await $db.backup("_start");
 
     await Migrations.load($db);
 
     await $db.visualize();
 
     await $email.load();
-    await $backups.load();
+    if (isProduction) await $backups.load();
 
     $api.load(testMode);
   };

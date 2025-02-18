@@ -3,11 +3,10 @@ import { DELETE_BACKUP_PATH } from "shared/consts/backups.consts.ts";
 
 export const backups = () => {
   const load = async () => {
-    if (!System.testMode)
-      Deno.cron("Backup auth", System.getConfig().backups.cron, async () => {
-        await backup("_cron");
-        console.log("Backup ready!");
-      });
+    Deno.cron("Backup auth", System.getConfig().backups.cron, async () => {
+      await backup("_cron");
+      console.log("Backup ready!");
+    });
   };
 
   const backup = async (name: string) => System.db.backup(name);
