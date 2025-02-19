@@ -7,12 +7,12 @@ import {
 import { RequestKind } from "shared/enums/request.enums.ts";
 import { System } from "modules/system/main.ts";
 
-export const thirdPartyGetRequest: RequestType = {
+export const appsGetRequest: RequestType = {
   method: RequestMethod.GET,
-  pathname: "/third-party",
+  pathname: "/apps",
   kind: RequestKind.ADMIN,
   func: async (request: Request) => {
-    const tokens = (await System.thirdParty.getList()).map(({ id, url }) => ({
+    const tokens = (await System.apps.getList()).map(({ id, url }) => ({
       id,
       url,
     }));
@@ -21,16 +21,16 @@ export const thirdPartyGetRequest: RequestType = {
   },
 };
 
-export const thirdPartyPostRequest: RequestType = {
+export const appsPostRequest: RequestType = {
   method: RequestMethod.POST,
-  pathname: "/third-party",
+  pathname: "/apps",
   kind: RequestKind.ADMIN,
   func: async (request: Request) => {
     const { url } = await request.json();
 
     if (!url) return getResponse(HttpStatusCode.BAD_REQUEST);
 
-    const { id, token } = await System.thirdParty.generate(url);
+    const { id, token } = await System.apps.generate(url);
 
     return getResponse(HttpStatusCode.OK, {
       data: {
@@ -42,15 +42,15 @@ export const thirdPartyPostRequest: RequestType = {
   },
 };
 
-export const thirdPartyDeleteRequest: RequestType = {
+export const appsDeleteRequest: RequestType = {
   method: RequestMethod.DELETE,
-  pathname: "/third-party",
+  pathname: "/apps",
   kind: RequestKind.ADMIN,
   func: async (request: Request, url: URL) => {
     const id = url.searchParams.get("id");
     if (!id) return getResponse(HttpStatusCode.BAD_REQUEST);
 
-    await System.thirdParty.remove(id);
+    await System.apps.remove(id);
 
     return getResponse(HttpStatusCode.OK);
   },

@@ -8,7 +8,7 @@ import { userRequestList } from "./user/main.ts";
 import { tokensRequestList } from "./tokens/main.ts";
 import { adminRequestList } from "./admin/main.ts";
 import { dataRequestList } from "./data/main.ts";
-import { thirdPartyRequestList } from "./third-party/main.ts";
+import { appsRequestList } from "./apps/main.ts";
 
 export const requestV3List: RequestType[] = getPathRequestList({
   requestList: [
@@ -18,7 +18,7 @@ export const requestV3List: RequestType[] = getPathRequestList({
     ...hotelRequestList,
     ...userRequestList,
     ...tokensRequestList,
-    ...thirdPartyRequestList,
+    ...appsRequestList,
     ...adminRequestList,
     ...dataRequestList,
   ],

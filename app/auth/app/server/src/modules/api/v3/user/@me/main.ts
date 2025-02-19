@@ -4,7 +4,7 @@ import { connectionRequestList } from "./connection/main.ts";
 import { scopesGetRequest } from "./scopes.request.ts";
 import { emailGetRequest } from "./email.request.ts";
 import { hotelRequestList } from "./hotel/main.ts";
-import { thirdPartyGetRequest } from "./third-party.request.ts";
+import { appsGetRequest } from "./apps.request.ts";
 
 export const meRequestList: RequestType[] = getPathRequestList({
   requestList: [
@@ -12,7 +12,7 @@ export const meRequestList: RequestType[] = getPathRequestList({
     mainPatchRequest,
     scopesGetRequest,
     emailGetRequest,
-    thirdPartyGetRequest,
+    appsGetRequest,
     ...connectionRequestList,
     ...hotelRequestList,
   ],

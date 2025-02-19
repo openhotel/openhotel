@@ -9,7 +9,7 @@ export const REQUEST_KIND_COLOR_MAP: Record<RequestKind, string> = {
   [RequestKind.CONNECTION]: "#b98d29",
   [RequestKind.ADMIN]: "#bb2727",
   [RequestKind.TOKEN]: "#2d4fa6",
-  [RequestKind.THIRD_PARTY]: "#41c4d0",
+  [RequestKind.APPS]: "#41c4d0",
 };
 
 export const REQUEST_METHOD_COLOR_MAP: Record<RequestMethod, string> = {

@@ -4,4 +4,4 @@ export * from "./hotels";
 export * from "./tokens";
 export * from "./users";
 export * from "./analytics";
-export * from "./third-party";
+export * from "./apps";

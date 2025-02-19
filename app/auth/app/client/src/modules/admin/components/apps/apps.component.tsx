@@ -1,14 +1,13 @@
 import { useAdmin } from "shared/hooks";
 import React, { FormEvent, useCallback, useEffect, useState } from "react";
 //@ts-ignore
-import styles from "./third-party.module.scss";
+import styles from "./apps.module.scss";
 import { ButtonComponent, InputComponent } from "@oh/components";
 
-export const AdminThirdPartyComponent = () => {
-  const { thirdParty, addThirdParty, removeThirdParty, fetchThirdParty } =
-    useAdmin();
+export const AdminAppsComponent = () => {
+  const { apps, addApp, removeApps, fetchApps } = useAdmin();
 
-  const [lastThirdPartyToken, setLastThirdPartyToken] = useState<string>(null);
+  const [lastApp, setLastApp] = useState<string>(null);
 
   const onSubmit = useCallback(
     async (event: FormEvent<HTMLFormElement>) => {
@@ -19,31 +18,31 @@ export const AdminThirdPartyComponent = () => {
 
       if (!url) return;
 
-      const rawToken = await addThirdParty(url);
-      setLastThirdPartyToken(rawToken);
+      const rawToken = await addApp(url);
+      setLastApp(rawToken);
     },
-    [setLastThirdPartyToken],
+    [setLastApp],
   );
 
   const onDelete = useCallback(
-    (id: string) => async () => removeThirdParty(id),
-    [removeThirdParty],
+    (id: string) => async () => removeApps(id),
+    [removeApps],
   );
 
   useEffect(() => {
-    fetchThirdParty();
-  }, [fetchThirdParty]);
+    fetchApps();
+  }, [fetchApps]);
 
   return (
     <div className={styles.tokens}>
-      <h2>Third Party</h2>
+      <h2>Apps</h2>
       <div className={styles.list}>
-        {thirdParty.map((token, index) => (
+        {apps.map((token, index) => (
           <div className={styles.item} key={token.id}>
             <label>{token.url}</label>
             <label>{token.id}</label>
-            {lastThirdPartyToken && index === thirdParty.length - 1 ? (
-              <label>{lastThirdPartyToken}</label>
+            {lastApp && index === apps.length - 1 ? (
+              <label>{lastApp}</label>
             ) : null}
             <ButtonComponent onClick={onDelete(token.id)}>
               delete

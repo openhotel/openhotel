@@ -11,7 +11,7 @@ import { LANGUAGE_LIST } from "shared/consts/language.consts.ts";
 export const mainGetRequest: RequestType = {
   method: RequestMethod.GET,
   pathname: "",
-  kind: [RequestKind.ACCOUNT, RequestKind.CONNECTION, RequestKind.THIRD_PARTY],
+  kind: [RequestKind.ACCOUNT, RequestKind.CONNECTION, RequestKind.APPS],
   func: async (request: Request) => {
     const account = await System.accounts.getAccount({ request });
     if (!account) return getResponse(HttpStatusCode.FORBIDDEN);

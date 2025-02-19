@@ -17,10 +17,10 @@ import {
 } from "./backups.request.ts";
 import { hotelRequestList } from "./hotel/main.ts";
 import {
-  thirdPartyDeleteRequest,
-  thirdPartyGetRequest,
-  thirdPartyPostRequest,
-} from "./third-party.request.ts";
+  appsDeleteRequest,
+  appsGetRequest,
+  appsPostRequest,
+} from "./apps.request.ts";
 
 export const adminRequestList: RequestType[] = getPathRequestList({
   requestList: [
@@ -31,9 +31,9 @@ export const adminRequestList: RequestType[] = getPathRequestList({
     tokensGetRequest,
     tokensPostRequest,
     //
-    thirdPartyDeleteRequest,
-    thirdPartyGetRequest,
-    thirdPartyPostRequest,
+    appsDeleteRequest,
+    appsGetRequest,
+    appsPostRequest,
     //
     usersGetRequest,
     userDeleteRequest,

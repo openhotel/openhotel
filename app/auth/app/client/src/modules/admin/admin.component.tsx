@@ -3,7 +3,7 @@ import React from "react";
 import {
   AdminTokensComponent,
   AdminActionsComponent,
-  AdminThirdPartyComponent,
+  AdminAppsComponent,
 } from "./components";
 
 export const AdminComponent = () => {
@@ -18,7 +18,7 @@ export const AdminComponent = () => {
         <hr />
         <AdminTokensComponent />
         <hr />
-        <AdminThirdPartyComponent />
+        <AdminAppsComponent />
         <hr />
         <AdminActionsComponent />
       </div>

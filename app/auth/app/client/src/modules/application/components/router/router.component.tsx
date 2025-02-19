@@ -31,7 +31,7 @@ import {
 import { AdminProvider } from "shared/hooks";
 import { WrapperLayoutComponent } from "modules/application";
 import { AdminBackupsComponent } from "modules/admin/components/backups";
-import { ThirdPartyComponent } from "modules/third-party";
+import { AppsComponent } from "modules/apps";
 
 const router = createBrowserRouter([
   {
@@ -83,7 +83,7 @@ const router = createBrowserRouter([
         path: "/connection",
       },
       {
-        element: <ThirdPartyComponent />,
+        element: <AppsComponent />,
         path: "/apps",
       },
       { path: "/verify", element: <VerifyComponent /> },

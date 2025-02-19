@@ -1,4 +1,4 @@
-export type ThirdPartyToken = {
+export type AppToken = {
   id: string;
   url: string;
 };
