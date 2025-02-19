@@ -1,8 +1,13 @@
+import type { S3Props } from "./s3.types.ts";
+
 export type DbProps = {
   pathname?: string;
   backups?: {
     pathname?: string;
     onMigration?: boolean;
+    password?: string;
+    max?: number;
+    s3?: S3Props;
   };
 };
 
@@ -17,6 +22,16 @@ export type DbMigrationsMutable = {
   load: (migrations: Migration[]) => Promise<void>;
   // up: (count?: number) => Promise<void>;
   // down: (count?: number) => Promise<void>;
+};
+
+export type DbCryptoMutable = {
+  load: () => Promise<void>;
+
+  encryptSHA256: (text: string) => Promise<string>;
+  decryptSHA256: (hash: string) => Promise<string>;
+
+  encryptPassword: (password: string) => Promise<string>;
+  comparePassword: (password: string, passwordHash: string) => Promise<boolean>;
 };
 
 export type DbMutable = {
@@ -47,9 +62,13 @@ export type DbMutable = {
   close: () => void;
 
   backup: (backup?: string) => Promise<void>;
+  getBackups: () => Promise<BackupFile[]>;
+  getBackupFile: (name: string) => Promise<Uint8Array>;
+
   visualize: () => Promise<void>;
 
   migrations: DbMigrationsMutable;
+  crypto: DbCryptoMutable;
 };
 
 export type DbKeyPart =
@@ -79,3 +98,8 @@ export type DbListOptions = {
 export type DbConsistency = "strong" | "eventual";
 
 export type ResultItem<Value> = { value: Value; key: DbKey }[];
+
+export type BackupFile = {
+  name: string;
+  size: number;
+};

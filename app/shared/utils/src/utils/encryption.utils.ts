@@ -1,4 +1,4 @@
-const deriveKey = async (key: string): Promise<CryptoKey> => {
+const deriveKeySHA256 = async (key: string): Promise<CryptoKey> => {
   const hashedKey = await crypto.subtle.digest(
     "SHA-256",
     new TextEncoder().encode(key),
@@ -13,9 +13,12 @@ const deriveKey = async (key: string): Promise<CryptoKey> => {
   );
 };
 
-export const encrypt = async (text: string, key: string): Promise<string> => {
+export const encryptSHA256 = async (
+  text: string,
+  key: string,
+): Promise<string> => {
   const encoded = new TextEncoder().encode(text);
-  const cryptoKey = await deriveKey(key);
+  const cryptoKey = await deriveKeySHA256(key);
 
   const iv = crypto.getRandomValues(new Uint8Array(12));
   const encrypted = await crypto.subtle.encrypt(
@@ -30,7 +33,7 @@ export const encrypt = async (text: string, key: string): Promise<string> => {
   return btoa(String.fromCharCode(...ivAndEncrypted));
 };
 
-export const decrypt = async (
+export const decryptSHA256 = async (
   encryptedText: string,
   key: string,
 ): Promise<string> => {
@@ -40,7 +43,7 @@ export const decrypt = async (
 
   const iv = ivAndEncrypted.slice(0, 12);
   const encrypted = ivAndEncrypted.slice(12);
-  const cryptoKey = await deriveKey(key);
+  const cryptoKey = await deriveKeySHA256(key);
 
   const decrypted = await crypto.subtle.decrypt(
     { name: "AES-GCM", iv },
@@ -49,4 +52,34 @@ export const decrypt = async (
   );
 
   return new TextDecoder().decode(decrypted);
+};
+
+export const getSHA256HashText = async (text: string): Promise<string> => {
+  const hashesBuffer = await crypto.subtle.digest(
+    "SHA-256",
+    new TextEncoder().encode(text),
+  );
+  return btoa(String.fromCharCode(...new Uint8Array(hashesBuffer)));
+};
+
+export const getSHA512HashText = async (text: string): Promise<string> => {
+  const hashesBuffer = await crypto.subtle.digest(
+    "SHA-512",
+    new TextEncoder().encode(text),
+  );
+  return btoa(String.fromCharCode(...new Uint8Array(hashesBuffer)));
+};
+
+export const getSHA512HashTextHex = async (text: string): Promise<string> => {
+  // Convert the input string to a Uint8Array
+  const encoder = new TextEncoder();
+  const data = encoder.encode(text);
+
+  // Generate the SHA-512 hash
+  const hashBuffer = await crypto.subtle.digest("SHA-512", data);
+
+  // Convert the hash to a hexadecimal string
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+
+  return hashArray.map((byte) => byte.toString(16).padStart(2, "0")).join("");
 };

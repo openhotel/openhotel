@@ -7,3 +7,4 @@ export * from "./update.types.ts";
 export * from "./lang.types.ts";
 export * from "./direction.types.ts";
 export * from "./version.types.ts";
+export * from "./s3.types.ts";

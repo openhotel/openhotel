@@ -8,14 +8,20 @@
     "@std/yaml": "jsr:@std/yaml@1.0.5",
     "@std/encoding": "jsr:@std/encoding@1.0.5",
 
+    "@std/ulid": "jsr:@std/ulid@1",
+    "@s3": "jsr:@sugar/minio-js-with-startpath@8.0.13",
+
     "@oh/yaml": "jsr:@oh/yaml@1.1.0",
     "@da/bcrypt": "jsr:@da/bcrypt@1.0.1",
 
     "@zip-js": "jsr:@zip-js/zip-js@2.7.53",
 
+    "@random-seed": "npm:random-seed@0.3.0",
+
     "dayjs": "npm:dayjs@1.11.13"
   },
   "tasks": {
     "test:watch": "deno test --watch=./src"
-  }
+  },
+  "nodeModulesDir": "auto"
 }
