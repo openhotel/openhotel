@@ -449,7 +449,9 @@ export const accounts = () => {
         verified: true,
       });
 
-      const accountsList = await getList();
+      const accountsList = (await getList()).filter(
+        (account) => account.verified,
+      );
       discordNotify({
         content: `🏨  Someone just received their keys...  🏨\n\n**${account.username}** has checked in. We are now **${accountsList.length}** guests in the hotel.\n Who will be their first neighbor?  🏡\n\n🔑  Come meet them: [Hotel](https://client.openhotel.club)\n`,
       });
