@@ -231,12 +231,31 @@ export const accounts = () => {
     }
   };
 
-  const getByRequest = async (request: Request) => {
-    const accountId = request.headers.get("account-id");
-    if (accountId) return get(accountId);
+  const hasThirdPartyApp = async (
+    accountId: string,
+    thirdPartyToken: string,
+  ) => {
+    const { id: tokenId } = getTokenData(thirdPartyToken);
 
+    const thirdPartyConnection = await System.db.get([
+      "thirdPartyAppConnection",
+      accountId,
+      tokenId,
+    ]);
+
+    return Boolean(thirdPartyConnection);
+  };
+
+  const getByRequest = async (request: Request) => {
     const connectionToken = request.headers.get("connection-token");
     if (connectionToken) return getByConnectionToken(connectionToken);
+
+    const accountId = request.headers.get("account-id");
+    const thirdAppToken = request.headers.get("app-token");
+    if (thirdAppToken && !(await hasThirdPartyApp(accountId, thirdAppToken)))
+      return null;
+
+    if (accountId) return get(accountId);
 
     return null;
   };
@@ -457,6 +476,28 @@ export const accounts = () => {
       });
     };
 
+    const addThirdPartyApp = async (
+      thirdPartyTokenId: string,
+    ): Promise<string | null> => {
+      const thirdPartyData = await System.thirdParty.get(thirdPartyTokenId);
+      if (!thirdPartyData) return null;
+
+      await System.db.set(
+        ["thirdPartyAppConnection", account.accountId, thirdPartyTokenId],
+        {
+          createdAt: Date.now(),
+          updatedAt: Date.now(),
+        },
+        {
+          expireIn: 24 * 60 * 60 * 1000,
+        },
+      );
+
+      const targetUrl = new URL(thirdPartyData.url);
+      targetUrl.hash = `accountId=${account.accountId}`;
+      return targetUrl.href;
+    };
+
     const getEmail = async (): Promise<string> =>
       await getEmailByHash(account.emailHash);
 
@@ -605,6 +646,8 @@ export const accounts = () => {
       verify,
 
       getEmail,
+
+      addThirdPartyApp,
 
       isAdmin,
       setAdmin,

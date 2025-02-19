@@ -6,4 +6,5 @@ export enum RequestKind {
   CONNECTION,
   ADMIN,
   TOKEN,
+  THIRD_PARTY,
 }

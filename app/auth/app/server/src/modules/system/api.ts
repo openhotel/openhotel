@@ -2,10 +2,9 @@ import {
   appendCORSHeaders,
   getContentType,
   getCORSHeaders,
-  RequestMethod,
-  RequestType,
   getResponse,
   HttpStatusCode,
+  RequestMethod,
 } from "@oh/utils";
 import { System } from "./main.ts";
 import { requestV3List } from "modules/api/v3/main.ts";
@@ -26,9 +25,9 @@ export const api = () => {
         ).map((kind) => `color: ${REQUEST_KIND_COLOR_MAP[kind]}`);
 
         console.log(
-          ` %c${request.method.padStart(maxLength)} %c▓▓%c▓▓%c▓▓ ${request.pathname}`,
+          ` %c${request.method.padStart(maxLength)} %c▓▓%c▓▓%c▓▓ %c${request.pathname}`,
           `font-weight: bold;color: white`,
-          ...Object.assign(new Array(2).fill("color: white"), kindList),
+          ...Object.assign(new Array(3).fill("color: white"), kindList),
           "color: white",
         );
       }
@@ -185,6 +184,11 @@ export const api = () => {
         case RequestKind.TOKEN:
           const appToken = request.headers.get("app-token");
           return appToken && (await System.tokens.verify(appToken));
+        case RequestKind.THIRD_PARTY:
+          const thirdAppToken = request.headers.get("app-token");
+          return (
+            thirdAppToken && (await System.thirdParty.verify(thirdAppToken))
+          );
         default:
           return false;
       }

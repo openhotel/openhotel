@@ -13,3 +13,11 @@ token: 6f0m3f6sRsFx2Gt8DGblvUncZBHTeDCQsIvCOcPLgUBXj7bAgvMRrhC6Z6cYXkml
 license-token: 6HuprPIVybhHSPHg#Zxrq8TA45DZZe0Z92SXHDzROrcKM6uAF
 
 ###
+
+
+#
+GET http://localhost:2024/api/v3/user/@me
+account-id: 01JMCFN9R29ZS47B78107TECWT
+app-token: tpa.dt3w2eA7u5mjc8tzzqauKz24NgnZli5z.t9k6A8BStW1OhcOg8a44KERmCBJiVEIUOvTjlASQgTvbj0WyBCWVaBD2aRJzPylr
+
+###

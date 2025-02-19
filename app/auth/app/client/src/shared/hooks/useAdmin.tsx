@@ -1,15 +1,12 @@
 import React, { ReactNode, useCallback, useContext, useState } from "react";
 import { useApi } from "shared/hooks/useApi";
 import { useAccount } from "shared/hooks/useAccount";
-import { Backup, DbHotel, Token, User } from "shared/types";
+import { Backup, DbHotel, ThirdPartyToken, Token, User } from "shared/types";
 import { RequestMethod } from "shared/enums";
 
 type AdminState = {
   users: User[];
   fetchUsers: () => Promise<void>;
-
-  tokens: Token[];
-  fetchTokens: () => Promise<void>;
 
   hotels: DbHotel[];
   fetchHotels: () => Promise<void>;
@@ -26,8 +23,15 @@ type AdminState = {
   backups: Backup[];
   fetchBackups: () => Promise<void>;
 
+  tokens: Token[];
+  fetchTokens: () => Promise<void>;
   addToken: (label: string) => Promise<string>;
   removeToken: (id: string) => Promise<void>;
+
+  thirdParty: ThirdPartyToken[];
+  fetchThirdParty: () => Promise<void>;
+  addThirdParty: (url: string) => Promise<string>;
+  removeThirdParty: (id: string) => Promise<void>;
 
   update: () => Promise<void>;
 
@@ -55,6 +59,7 @@ export const AdminProvider: React.FunctionComponent<ProviderProps> = ({
 
   const [users, setUsers] = useState<User[]>([]);
   const [tokens, setTokens] = useState<Token[]>([]);
+  const [thirdParty, setThirdParty] = useState<ThirdPartyToken[]>([]);
   const [hotels, setHotels] = useState<DbHotel[]>([]);
   const [backups, setBackups] = useState<Backup[]>([]);
   const [sync, setSync] = useState<boolean | null>(false);
@@ -136,6 +141,50 @@ export const AdminProvider: React.FunctionComponent<ProviderProps> = ({
   );
 
   const removeToken = useCallback(
+    async (id: string): Promise<void> => {
+      await fetch({
+        method: RequestMethod.DELETE,
+        pathname: `/admin/third-party?id=${id}`,
+        headers: getAccountHeaders(),
+      });
+      setThirdParty((tokens) => tokens.filter((token) => token.id !== id));
+    },
+    [fetch, getAccountHeaders, setThirdParty],
+  );
+
+  const fetchThirdParty = useCallback(async () => {
+    return fetch({
+      method: RequestMethod.GET,
+      pathname: "/admin/third-party",
+      headers: getAccountHeaders(),
+    }).then((response) => setThirdParty(response.data.tokens));
+  }, [fetch, getAccountHeaders]);
+
+  const addThirdParty = useCallback(
+    async (url: string): Promise<string> => {
+      const { id, token } = (
+        await fetch({
+          method: RequestMethod.POST,
+          pathname: "/admin/third-party",
+          headers: getAccountHeaders(),
+          body: {
+            url,
+          },
+        })
+      ).data;
+      setThirdParty((tokens) => [
+        ...tokens,
+        {
+          id,
+          url,
+        },
+      ]);
+      return token;
+    },
+    [fetch, getAccountHeaders, setThirdParty],
+  );
+
+  const removeThirdParty = useCallback(
     async (id: string): Promise<void> => {
       await fetch({
         method: RequestMethod.DELETE,
@@ -256,17 +305,22 @@ export const AdminProvider: React.FunctionComponent<ProviderProps> = ({
         deleteUser,
         resendVerificationUser,
 
-        tokens,
-        fetchTokens,
-
         hotels,
         fetchHotels,
         updateHotel,
         deleteHotelIntegration,
         deleteHotel,
 
+        tokens,
+        fetchTokens,
         addToken,
         removeToken,
+
+        thirdParty,
+        fetchThirdParty,
+        addThirdParty,
+        removeThirdParty,
+
         update,
 
         fetchBackups,

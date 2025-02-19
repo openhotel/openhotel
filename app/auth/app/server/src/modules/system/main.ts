@@ -10,6 +10,7 @@ import { Migrations } from "modules/migrations/main.ts";
 import { hotels } from "./hotels/main.ts";
 import { DELETE_BACKUP_PATH } from "shared/consts/backups.consts.ts";
 import { backups } from "modules/system/backups.ts";
+import { thirdParty } from "modules/system/third-party.ts";
 
 export const System = (() => {
   let $config: ConfigTypes;
@@ -21,6 +22,7 @@ export const System = (() => {
   const $captcha = captcha();
   const $email = email();
   const $tokens = tokens();
+  const $thirdParty = thirdParty();
   const $accounts = accounts();
   const $hotels = hotels();
   const $backups = backups();
@@ -98,6 +100,7 @@ export const System = (() => {
     captcha: $captcha,
     email: $email,
     tokens: $tokens,
+    thirdParty: $thirdParty,
     accounts: $accounts,
     hotels: $hotels,
     backups: $backups,

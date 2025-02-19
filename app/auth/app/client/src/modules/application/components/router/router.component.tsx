@@ -31,6 +31,7 @@ import {
 import { AdminProvider } from "shared/hooks";
 import { WrapperLayoutComponent } from "modules/application";
 import { AdminBackupsComponent } from "modules/admin/components/backups";
+import { ThirdPartyComponent } from "modules/third-party";
 
 const router = createBrowserRouter([
   {
@@ -80,6 +81,10 @@ const router = createBrowserRouter([
           </CardLayoutComponent>
         ),
         path: "/connection",
+      },
+      {
+        element: <ThirdPartyComponent />,
+        path: "/apps",
       },
       { path: "/verify", element: <VerifyComponent /> },
       { path: "/ping", element: <PingComponent /> },

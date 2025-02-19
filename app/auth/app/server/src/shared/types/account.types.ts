@@ -97,6 +97,8 @@ export type AccountMutable = {
 
   getEmail: () => Promise<string>;
 
+  addThirdPartyApp: (tokenId: string) => Promise<string | null>;
+
   isAdmin: () => Promise<boolean>;
   setAdmin: (admin: boolean) => Promise<void>;
 
