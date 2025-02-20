@@ -32,11 +32,14 @@ export const api = () => {
           }
 
           if (!parsedUrl.pathname.startsWith("/api")) {
-            return new Response(decodeURIComponent(clientIndex), {
-              headers: {
-                "Content-Type": "text/html",
+            return new Response(
+              await Deno.readTextFile(`./client/index.html`),
+              {
+                headers: {
+                  "content-type": "text/html",
+                },
               },
-            });
+            );
           }
 
           const foundRequests = requestList.filter(
