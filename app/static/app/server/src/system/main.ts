@@ -1,5 +1,5 @@
 import { ConfigTypes, Envs } from "shared/types/main.ts";
-import { getConfig as $getConfig, DbMutable, getDb } from "@oh/utils";
+import { getConfig as $getConfig, DbMutable, getDb, update } from "@oh/utils";
 import { CONFIG_DEFAULT } from "shared/consts/config.consts.ts";
 import { Migrations } from "modules/migrations/main.ts";
 import { api } from "./api.ts";
@@ -19,6 +19,17 @@ export const System = (() => {
     $config = await $getConfig<ConfigTypes>({ defaults: CONFIG_DEFAULT });
 
     const isProduction = $config.version !== "development";
+    if (
+      isProduction &&
+      (await update({
+        targetVersion: "latest",
+        version: envs.version,
+        repository: "openhotel/static",
+        log: console.log,
+        debug: console.debug,
+      }))
+    )
+      return;
 
     $db = getDb({
       pathname: `./${$config.database.filename}`,
