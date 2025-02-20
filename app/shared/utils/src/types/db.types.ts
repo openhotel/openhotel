@@ -64,6 +64,7 @@ export type DbMutable = {
   backup: (backup?: string) => Promise<void>;
   getBackups: () => Promise<BackupFile[]>;
   getBackupFile: (name: string) => Promise<Uint8Array>;
+  removeBackup: (backup: string) => Promise<void>;
 
   visualize: () => Promise<void>;
 

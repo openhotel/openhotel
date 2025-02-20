@@ -209,6 +209,14 @@ export const getDb = (props: DbProps = {}): DbMutable => {
     return await Deno.readFile(join(backupsPathname!, name));
   };
 
+  const removeBackup = async (name: string): Promise<void> => {
+    if (s3) {
+      const s3Client = getS3(s3);
+      return await s3Client.removeFiles(name);
+    }
+    return await Deno.remove(join(backupsPathname!, name));
+  };
+
   const visualize = async () => {
     try {
       const entries = [];
@@ -240,6 +248,7 @@ export const getDb = (props: DbProps = {}): DbMutable => {
     backup,
     getBackups,
     getBackupFile,
+    removeBackup,
 
     visualize,
 
