@@ -6,7 +6,9 @@ export const files = () => {
   let s3Client: S3Mutable;
 
   const load = () => {
-    const configS3 = System.getConfig().s3;
+    const { enabled, ...configS3 } = System.getConfig().s3;
+    if (!enabled) return;
+
     s3Client = getS3(configS3);
   };
 
