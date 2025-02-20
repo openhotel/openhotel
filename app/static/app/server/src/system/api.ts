@@ -17,6 +17,20 @@ export const api = () => {
           const { url, method } = request;
           const parsedUrl = new URL(url);
 
+          if (parsedUrl.pathname.startsWith("/_")) {
+            const fileId = parsedUrl.pathname.split("/_/")[1] ?? null;
+            if (!fileId) return getResponse(HttpStatusCode.NOT_FOUND);
+
+            const fileData = await System.files.get(fileId, true);
+            if (!fileData) return getResponse(HttpStatusCode.NOT_FOUND);
+
+            return new Response(fileData.file, {
+              headers: {
+                "Content-Type": fileData.mimeType || "application/octet-stream",
+              },
+            });
+          }
+
           if (!parsedUrl.pathname.startsWith("/api")) {
             return new Response(decodeURIComponent(clientIndex), {
               headers: {

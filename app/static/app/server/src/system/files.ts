@@ -13,6 +13,18 @@ export const files = () => {
   const getList = async () =>
     (await System.db.list({ prefix: ["files"] })).map(({ value }) => value);
 
+  const get = async (
+    fileId: string,
+  ): Promise<(File & { file: Uint8Array }) | null> => {
+    const info = await System.db.get<File>(["files", fileId]);
+    if (!info) return null;
+
+    return {
+      ...info,
+      file: await s3Client.getObject(fileId),
+    };
+  };
+
   const set = async (file: File, buffer: Uint8Array) => {
     await System.db.set(["files", file.id], file);
     await s3Client.addObject(file.id, buffer);
