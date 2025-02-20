@@ -9,8 +9,6 @@
     "compile:linux": "deno task compile --target=x86_64-unknown-linux-gnu --output ./build/assets_editor_linux ./mod.ts",
     "compile:darwin": "deno task compile --target=x86_64-apple-darwin --output ./build/assets_editor_darwin ./mod.ts",
 
-    "build:index": "deno run -A build-index.ts",
-
     "build": "(deno task compile:linux) & (deno task compile:darwin) & (deno task compile:windows)"
   },
   "imports": {

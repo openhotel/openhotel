@@ -1,7 +1,6 @@
 import { requestList } from "modules/api/main.ts";
 import { appendCORSHeaders } from "shared/utils/main.ts";
 import { System } from "system/main.ts";
-import { clientIndex } from "../../client-index.ts";
 import { isDevelopment } from "shared/utils/environment.utils.ts";
 
 export const api = () => {
