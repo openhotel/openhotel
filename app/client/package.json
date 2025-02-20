@@ -14,6 +14,7 @@
     "@oh/queue": "npm:@jsr/oh__queue@1.1.1",
     "@tu/tulip": "npm:@jsr/tu__tulip@0.14.18",
     "@tulib/vite-tulip-plugin": "1.0.15",
+    "ulidx": "2.4.1",
     "yaml": "2.5.0"
   },
   "packageManager": "yarn@4.6.0"

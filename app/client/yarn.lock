@@ -1277,6 +1277,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"layerr@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "layerr@npm:3.0.0"
+  checksum: 10c0/320c9b9cf1392c73c9ff8f8d1bb7a782093ac7341fe5d7fea6ebfeea6d785af8e0fc573541431b6ffcb268577f8aea66168757e73a15035568a00ab9e4370705
+  languageName: node
+  linkType: hard
+
 "lru-cache@npm:^10.0.1, lru-cache@npm:^10.2.0":
   version: 10.4.3
   resolution: "lru-cache@npm:10.4.3"
@@ -1746,6 +1753,7 @@ __metadata:
     "@rollup/plugin-alias": "npm:5.1.0"
     "@tu/tulip": "npm:@jsr/tu__tulip@0.14.18"
     "@tulib/vite-tulip-plugin": "npm:1.0.15"
+    ulidx: "npm:^2.4.1"
     vite: "npm:6.1.0"
     vite-tsconfig-paths: "npm:4.3.2"
     yaml: "npm:2.5.0"
@@ -1914,6 +1922,15 @@ __metadata:
   bin:
     tsconfck: bin/tsconfck.js
   checksum: 10c0/5120e91b3388574b449d57d08f45d05d9966cf4b9d6aa1018652c1fff6d7d37b1ed099b07e6ebf6099aa40b8a16968dd337198c55b7274892849112b942861ed
+  languageName: node
+  linkType: hard
+
+"ulidx@npm:^2.4.1":
+  version: 2.4.1
+  resolution: "ulidx@npm:2.4.1"
+  dependencies:
+    layerr: "npm:^3.0.0"
+  checksum: 10c0/3cbe05123b4b49d262e26cd0edd3ac38a4f9e97f043d47ae7daa88502748881d1615d832e3bcb29698ca2429947c24494929ba35b40d6bf38df891cb15642d2e
   languageName: node
   linkType: hard
 
