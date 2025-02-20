@@ -86,6 +86,11 @@ export const getS3 = ({
     }
   };
 
+  const addObject = async (name: string, buffer: Uint8Array) => {
+    await checkBucket(bucket);
+    await client.putObject(bucket, name, buffer);
+  };
+
   return {
     syncPath,
 
@@ -93,6 +98,7 @@ export const getS3 = ({
     removeFiles,
 
     getObject,
+    addObject,
     removeObjects,
   };
 };

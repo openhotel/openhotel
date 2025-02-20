@@ -13,6 +13,7 @@ export type S3Mutable = {
   removeFiles: (...files: string[]) => Promise<void>;
 
   getObject: (name: string) => Promise<Uint8Array>;
+  addObject: (name: string, buffer: Uint8Array) => Promise<void>;
   removeObjects: (objects: S3ObjectInfo[]) => Promise<void>;
 };
 
