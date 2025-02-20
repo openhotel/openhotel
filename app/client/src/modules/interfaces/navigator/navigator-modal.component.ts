@@ -86,7 +86,7 @@ export const navigatorModalComponent: ContainerComponent<Props> = (
   };
 
   const categoryComponentMap: Record<NavigatorCategory, any> = {
-    [NavigatorCategory.PUBLIC]: publicRoomsComponent(),
+    [NavigatorCategory.PUBLIC]: publicRoomsComponent({ size: contentSize }),
     [NavigatorCategory.PRIVATE]: privateRoomsComponent({ size: contentSize }),
     [NavigatorCategory.TOP]: topRoomsComponent(),
     [NavigatorCategory.LIKED]: likedRoomsComponent(),
