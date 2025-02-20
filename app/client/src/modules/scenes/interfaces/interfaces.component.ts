@@ -41,9 +41,9 @@ export const interfacesComponent: ContainerMutable<{}, any> = (props) => {
     $removeOnHideModals = System.events.on(SystemEvent.HIDE_MODALS, () => {
       System.events.emit(SystemEvent.HIDE_NAVIGATOR_MODAL);
       System.events.emit(SystemEvent.HIDE_CATALOG_MODAL);
+      System.events.emit(SystemEvent.HIDE_CONFIRM_MODAL);
       System.events.emit(SystemEvent.HIDE_CHANGELOG_MODAL);
       System.events.emit(SystemEvent.HIDE_ROOM_EDITOR_MODAL);
-      // ...
     });
 
     const destroyNavigatorVisibility = $navigator.on(
