@@ -9,17 +9,20 @@ import {
   useModal,
 } from "@oh/components";
 import { FurnitureDataFormComponent } from "../furniture-data-form";
-import { useFurniture } from "shared/hooks";
+import { useApi, useAppSession, useFurniture } from "shared/hooks";
 import { SpriteSheetFormComponent } from "modules/sprite-sheet";
 import { TabContentComponent } from "shared/components";
 
 //@ts-ignore
 import styles from "./create.module.scss";
 import { getBase64FromBody, getImageSize } from "shared/utils";
+import { RequestMethod } from "shared/enums";
 
 export const CreateFurnitureComponent: React.FC = () => {
   const { setData, data } = useFurniture();
   const { open, close } = useModal();
+  const { fetch: fetchApi } = useApi();
+  const { getHeaders } = useAppSession();
 
   const onClickCreate = useCallback(async () => {
     const base64 = await getBase64FromBody(await fetch("/furniture.png"));
@@ -48,9 +51,12 @@ export const CreateFurnitureComponent: React.FC = () => {
   }, []);
 
   const onDownloadFurniture = useCallback(async () => {
-    const response = await fetch("/api/furniture/create", {
-      method: "POST",
+    const response = await fetchApi({
+      pathname: "furniture/create",
+      method: RequestMethod.POST,
       body: JSON.stringify(data),
+      headers: getHeaders(),
+      rawResponse: true,
     });
 
     const reader = response.body.getReader();
@@ -88,11 +94,13 @@ export const CreateFurnitureComponent: React.FC = () => {
       formData.append("file", files[0]);
 
       setData(null);
-      const response = await fetch("/api/furniture/import", {
-        method: "POST",
+
+      const { data } = await fetchApi({
+        pathname: "furniture/import",
+        method: RequestMethod.POST,
         body: formData,
+        headers: getHeaders(),
       });
-      const { data } = await response.json();
       setData(data);
     },
     [setData],

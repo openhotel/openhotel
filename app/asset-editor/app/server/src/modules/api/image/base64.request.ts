@@ -1,11 +1,12 @@
-import { RequestType } from "shared/types/main.ts";
-import { RequestMethod } from "shared/enums/main.ts";
+import { RequestType, RequestMethod } from "@oh/utils";
 import { getBase64Image } from "shared/utils/image.utils.ts";
 import { Image } from "imagescript";
+import { RequestKind } from "shared/enums/request.enums.ts";
 
 export const base64Request: RequestType = {
   method: RequestMethod.POST,
   pathname: "/base64",
+  kind: RequestKind.ACCOUNT,
   func: async (request, url) => {
     const formData = await request.formData();
     const file = formData.get("image") as File;

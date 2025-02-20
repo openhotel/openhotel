@@ -1,14 +1,14 @@
-import { RequestType } from "shared/types/main.ts";
-import { RequestMethod } from "shared/enums/main.ts";
+import { RequestType, RequestMethod } from "@oh/utils";
 import { System } from "system/main.ts";
-import { getTokenData } from "@oh/utils";
+import { RequestKind } from "shared/enums/request.enums.ts";
 
 export const userRequest: RequestType = {
   method: RequestMethod.GET,
   pathname: "/user",
-  func: async (request, url) => {
-    const accountId = url.searchParams.get("accountId");
-    const accountToken = url.searchParams.get("accountToken");
+  kind: RequestKind.ACCOUNT,
+  func: async (request: Request) => {
+    const accountId = request.headers.get("account-id");
+    const accountToken = request.headers.get("account-token");
     const {
       auth: { url: authUrl, appToken },
     } = System.getConfig();
@@ -21,6 +21,8 @@ export const userRequest: RequestType = {
       },
     }).then((response) => response.json());
 
-    return Response.json(data, { status: data.status });
+    return Response.json(data, {
+      status: data.status,
+    });
   },
 };

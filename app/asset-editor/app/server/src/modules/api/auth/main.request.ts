@@ -1,5 +1,4 @@
-import { RequestType } from "shared/types/main.ts";
-import { RequestMethod } from "shared/enums/main.ts";
+import { RequestType, RequestMethod } from "@oh/utils";
 import { System } from "system/main.ts";
 
 export const getRequest: RequestType = {

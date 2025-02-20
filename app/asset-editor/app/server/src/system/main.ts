@@ -2,9 +2,11 @@ import { api } from "./api.ts";
 import { ConfigTypes, Envs } from "shared/types/main.ts";
 import { getConfig as $getConfig, update } from "@oh/utils";
 import { CONFIG_DEFAULT } from "shared/consts/config.consts.ts";
+import { accounts } from "system/accounts.ts";
 
 export const System = (() => {
   const $api = api();
+  const $accounts = accounts();
 
   let $config: ConfigTypes;
   let $envs: Envs;
@@ -37,5 +39,6 @@ export const System = (() => {
     getEnvs,
 
     api: $api,
+    accounts: $accounts,
   };
 })();

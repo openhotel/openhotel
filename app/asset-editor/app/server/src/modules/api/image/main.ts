@@ -1,5 +1,4 @@
-import { RequestType } from "shared/types/request.types.ts";
-import { getPathRequestList } from "shared/utils/main.ts";
+import { RequestType, getPathRequestList } from "@oh/utils";
 
 import { base64Request } from "./base64.request.ts";
 

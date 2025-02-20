@@ -1,0 +1,12 @@
+name: openhotel-asset-editor
+services:
+  web:
+    restart: unless-stopped
+    container_name: openhotel-asset-editor
+    ports:
+      - "2030:2030"
+    volumes:
+      - "openhotel-asset-editor:/app"
+    image: "openhotel/asset-editor:latest"
+volumes:
+  openhotel-asset-editor: null

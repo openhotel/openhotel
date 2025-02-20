@@ -10,6 +10,8 @@ import { SpriteSheet, SpriteSheetFrame } from "shared/types";
 import { SpriteComponent } from "shared/components";
 import { getRandomString, setObject } from "shared/utils";
 import { SpriteSheetFrameFormComponent } from "modules/sprite-sheet/sprite-sheet-frame-form";
+import { RequestMethod } from "shared/enums";
+import { useApi, useAppSession } from "shared/hooks";
 
 type Props = {
   sheet: SpriteSheet;
@@ -43,6 +45,9 @@ export const SpriteSheetFormComponent: React.FC<Props> = ({
   onChange,
   disabled = false,
 }) => {
+  const { fetch: fetchApi } = useApi();
+  const { getHeaders } = useAppSession();
+
   const $onChange = useCallback(
     (key: string) => (event) => {
       onChange(setObject(sheet, key, event.target.value));
@@ -84,11 +89,12 @@ export const SpriteSheetFormComponent: React.FC<Props> = ({
       const formData = new FormData();
       formData.append("image", file);
 
-      const response = await fetch("/api/image/base64", {
-        method: "POST",
+      const { data } = await fetchApi({
+        pathname: "image/base64",
+        method: RequestMethod.POST,
         body: formData,
+        headers: getHeaders(),
       });
-      const { data } = await response.json();
       onChange(
         {
           ...sheet,

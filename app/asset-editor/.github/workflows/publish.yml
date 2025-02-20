@@ -98,20 +98,21 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: client-build
-          path: ./app/server
-
-      - name: Build index
-        working-directory: ./app/server
-        run: deno task build:index
+          path: ./app/server/build/client
 
       - name: Compile
         working-directory: ./app/server
         run: deno task compile:${{ matrix.os }}
 
+      - name: "Zip build"
+        run: |
+          cd ./app/server/build/
+          zip -r ../../../asset_editor_${{ matrix.os }}.zip .
+
       - name: "Upload to release"
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: ./app/server/build/assets_editor_${{ matrix.os }}
+          file: ./asset_editor_${{ matrix.os }}
           tag: ${{ github.ref }}
           overwrite: true

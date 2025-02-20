@@ -1,13 +1,14 @@
 import { BlobReader, BlobWriter, ZipReader } from "@zip-js/data-uri";
 import { parse } from "@std/yaml";
 
-import { RequestType } from "shared/types/request.types.ts";
-import { RequestMethod } from "shared/enums/request.enum.ts";
+import { RequestType, RequestMethod } from "@oh/utils";
 import { getBase64ImageFromBlob } from "shared/utils/image.utils.ts";
+import { RequestKind } from "shared/enums/request.enums.ts";
 
 export const importRequest: RequestType = {
   method: RequestMethod.POST,
   pathname: "/import",
+  kind: RequestKind.ACCOUNT,
   func: async (request, url) => {
     const formData = await request.formData();
     const file = formData.get("file") as File;

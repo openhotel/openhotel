@@ -1,13 +1,14 @@
 import { BlobReader, BlobWriter, ZipWriter } from "@zip-js/data-uri";
 import { stringify } from "@std/yaml";
 
-import { RequestType } from "shared/types/request.types.ts";
-import { RequestMethod } from "shared/enums/request.enum.ts";
+import { RequestType, RequestMethod } from "@oh/utils";
 import { base64ToBlob } from "shared/utils/base64.utils.ts";
+import { RequestKind } from "shared/enums/request.enums.ts";
 
 export const createRequest: RequestType = {
   method: RequestMethod.POST,
   pathname: "/create",
+  kind: RequestKind.ACCOUNT,
   func: async (request, url) => {
     const { sprite, sheet, furniture } = await request.json();
 

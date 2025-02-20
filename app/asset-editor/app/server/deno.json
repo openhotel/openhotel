@@ -5,9 +5,9 @@
 
     "compile": "deno compile -A --unstable-kv --no-check",
 
-    "compile:windows": "deno task compile --target=x86_64-pc-windows-msvc --output ./build/assets_editor_windows ./mod.ts",
-    "compile:linux": "deno task compile --target=x86_64-unknown-linux-gnu --output ./build/assets_editor_linux ./mod.ts",
-    "compile:darwin": "deno task compile --target=x86_64-apple-darwin --output ./build/assets_editor_darwin ./mod.ts",
+    "compile:windows": "deno task compile --target=x86_64-pc-windows-msvc --output ./build/asset_editor_windows ./mod.ts",
+    "compile:linux": "deno task compile --target=x86_64-unknown-linux-gnu --output ./build/asset_editor_linux ./mod.ts",
+    "compile:darwin": "deno task compile --target=x86_64-apple-darwin --output ./build/asset_editor_darwin ./mod.ts",
 
     "build": "(deno task compile:linux) & (deno task compile:darwin) & (deno task compile:windows)"
   },
@@ -16,7 +16,7 @@
     "system/": "./src/system/",
     "modules/": "./src/modules/",
 
-    "@oh/utils": "jsr:@oh/utils@1.3.25",
+    "@oh/utils": "jsr:@oh/utils@1.4.3",
 
     "@zip-js": "jsr:@zip-js/zip-js@2.7.53",
     "@std/yaml": "jsr:@std/yaml@1.0.5",

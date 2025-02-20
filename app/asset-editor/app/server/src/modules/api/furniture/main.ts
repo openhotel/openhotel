@@ -1,5 +1,4 @@
-import { RequestType } from "shared/types/request.types.ts";
-import { getPathRequestList } from "shared/utils/main.ts";
+import { RequestType, getPathRequestList } from "@oh/utils";
 
 import { importRequest } from "./import.request.ts";
 import { createRequest } from "./create.request.ts";
