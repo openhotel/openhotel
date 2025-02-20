@@ -11,4 +11,12 @@ export type ConfigTypes = {
     filename: string;
     backupName: string;
   };
+  s3: {
+    enabled: boolean;
+    accessKey: string;
+    secretKey: string;
+    endpoint: string;
+    region: string;
+    bucket: string;
+  };
 };

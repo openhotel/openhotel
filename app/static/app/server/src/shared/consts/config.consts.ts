@@ -13,4 +13,12 @@ export const CONFIG_DEFAULT: ConfigTypes = {
     filename: "database",
     backupName: "database-backups",
   },
+  s3: {
+    enabled: false,
+    accessKey: "",
+    secretKey: "",
+    endpoint: "",
+    region: "",
+    bucket: "",
+  },
 };

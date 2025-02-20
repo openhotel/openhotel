@@ -8,6 +8,7 @@ import {
 import { ulid } from "@std/ulid";
 import { type File } from "shared/types/main.ts";
 import { ALLOWED_EXTENSIONS, ALLOWED_MIME_TYPES } from "shared/consts/main.ts";
+import { Buffer } from "node:buffer";
 
 export const putRequest: RequestType = {
   method: RequestMethod.PUT,
@@ -38,9 +39,13 @@ export const putRequest: RequestType = {
       id: ulid(),
       name: baseName,
       createdAt: Date.now(),
+      mimeType: fileExtension,
     };
 
-    await System.files.set($file.id, $file);
+    const arrayBuffer = await file.arrayBuffer();
+    const nodeBuffer = Buffer.from(arrayBuffer);
+
+    await System.files.set($file, nodeBuffer);
 
     return getResponse(HttpStatusCode.OK, {
       data: {

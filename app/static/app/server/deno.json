@@ -16,7 +16,7 @@
     "system/": "./src/system/",
     "modules/": "./src/modules/",
 
-    "@oh/utils": "jsr:@oh/utils@1.4.3",
+    "@oh/utils": "jsr:@oh/utils@1.4.4",
     "@std/ulid": "jsr:@std/ulid@1",
 
     "deno/": "https://deno.land/std@0.221.0/",

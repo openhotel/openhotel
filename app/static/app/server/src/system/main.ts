@@ -33,6 +33,7 @@ export const System = (() => {
     await $db.visualize();
 
     $api.load();
+    $files.load();
   };
 
   const getConfig = (): ConfigTypes => $config;
