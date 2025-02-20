@@ -43,7 +43,10 @@ describe("4. refresh account tokens", () => {
   it("refreshes account session", async () => {
     const { status, data } = await fetcher("/account/refresh", {
       method: "GET",
-      headers: STATE.getSessionHeaders(USER_1.email),
+      headers: {
+        ...STATE.getSessionHeaders(USER_1.email),
+        token: "",
+      },
     });
     assertEquals(status, 200);
     assertExists(data.accountId);
@@ -65,5 +68,22 @@ describe("4. refresh account tokens", () => {
       languages: USER_1.languages,
       username: USER_1.username,
     });
+  });
+
+  it("check current sessions to be one", async () => {
+    const { status, data } = await fetcher("/account/token", {
+      method: "GET",
+      headers: STATE.getSessionHeaders(USER_1.email),
+    });
+    assertEquals(status, 200);
+    assertEquals(data.tokens.length, 1);
+
+    const [{ browser, ip, os, tokenId, updatedAt }] = data.tokens;
+
+    assertEquals(browser, "Firefox");
+    assertEquals(ip, "23.23.23.23");
+    assertEquals(os, "Linux");
+    assertExists(tokenId);
+    assertExists(updatedAt);
   });
 });
