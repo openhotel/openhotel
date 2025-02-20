@@ -4,8 +4,12 @@ import {
 } from "../../consts/db.consts.ts";
 import { DbCryptoMutable, type DbProps } from "../../types/db.types.ts";
 import { ulid } from "jsr:@std/ulid@1";
-import * as bcrypt from "@da/bcrypt";
-import { decryptSHA256, encryptSHA256 } from "../../utils/encryption.utils.ts";
+import {
+  compareToken,
+  decryptSHA256,
+  encryptSHA256,
+  encryptToken,
+} from "../../utils/encryption.utils.ts";
 
 export const crypto = ({ pathname }: DbProps): DbCryptoMutable => {
   const load = async () => {
@@ -48,13 +52,13 @@ export const crypto = ({ pathname }: DbProps): DbCryptoMutable => {
     (await getPepper()) + ":" + password;
 
   const $encryptPassword = async (password: string) =>
-    bcrypt.hashSync(await pepperPassword(password), bcrypt.genSaltSync(8));
+    encryptToken(await pepperPassword(password));
 
   const $comparePassword = async (
     password: string,
     passwordHash: string,
   ): Promise<boolean> =>
-    bcrypt.compareSync(await pepperPassword(password), passwordHash);
+    compareToken(await pepperPassword(password), passwordHash);
 
   return {
     load,

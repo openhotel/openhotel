@@ -1,3 +1,5 @@
+import * as bcrypt from "@da/bcrypt";
+
 const deriveKeySHA256 = async (key: string): Promise<CryptoKey> => {
   const hashedKey = await crypto.subtle.digest(
     "SHA-256",
@@ -83,3 +85,9 @@ export const getSHA512HashTextHex = async (text: string): Promise<string> => {
 
   return hashArray.map((byte) => byte.toString(16).padStart(2, "0")).join("");
 };
+
+export const encryptToken = (token: string): string =>
+  bcrypt.hashSync(token, bcrypt.genSaltSync(8));
+
+export const compareToken = (token: string, tokenHash: string): boolean =>
+  bcrypt.compareSync(token, tokenHash);
