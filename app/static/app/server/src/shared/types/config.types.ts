@@ -7,4 +7,8 @@ export type ConfigTypes = {
     url: string;
     appToken: string;
   };
+  database: {
+    filename: string;
+    backupName: string;
+  };
 };

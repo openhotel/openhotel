@@ -1,7 +1,9 @@
-import { api } from "./api.ts";
 import { ConfigTypes, Envs } from "shared/types/main.ts";
-import { getConfig as $getConfig, update } from "@oh/utils";
+import { getConfig as $getConfig, DbMutable, getDb } from "@oh/utils";
 import { CONFIG_DEFAULT } from "shared/consts/config.consts.ts";
+import { Migrations } from "modules/migrations/main.ts";
+import { api } from "./api.ts";
+import { files } from "./files.ts";
 
 export const System = (() => {
   const $api = api();
@@ -9,21 +11,26 @@ export const System = (() => {
   let $config: ConfigTypes;
   let $envs: Envs;
 
+  const $files = files();
+  let $db: DbMutable;
+
   const load = async (envs: Envs) => {
     $envs = envs;
     $config = await $getConfig<ConfigTypes>({ defaults: CONFIG_DEFAULT });
 
-    if (
-      $config.version !== "development" &&
-      (await update({
-        targetVersion: "latest",
-        version: envs.version,
-        repository: "openhotel/static",
-        log: console.log,
-        debug: console.debug,
-      }))
-    )
-      return;
+    const isProduction = $config.version !== "development";
+
+    $db = getDb({
+      pathname: `./${$config.database.filename}`,
+      backupsPathname: `./${$config.database.backupName}`,
+    });
+
+    await $db.load();
+    if (isProduction) await $db.backup("_start");
+
+    await Migrations.load($db);
+
+    await $db.visualize();
 
     $api.load();
   };
@@ -36,6 +43,11 @@ export const System = (() => {
     getConfig,
     getEnvs,
 
+    get db() {
+      return $db;
+    },
+
+    files: $files,
     api: $api,
   };
 })();

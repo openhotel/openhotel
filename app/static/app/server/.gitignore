@@ -4,3 +4,10 @@
 config.yml
 node_modules
 .env
+./database-backups
+
+database
+database-key
+database-pep
+database-shm
+database-wal

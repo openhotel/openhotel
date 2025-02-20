@@ -9,4 +9,8 @@ export const CONFIG_DEFAULT: ConfigTypes = {
     appToken: "",
     url: "http://localhost:2024",
   },
+  database: {
+    filename: "database",
+    backupName: "database-backups",
+  },
 };

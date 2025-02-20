@@ -2,7 +2,7 @@
   "version": "4",
   "specifiers": {
     "jsr:@da/bcrypt@1.0.1": "1.0.1",
-    "jsr:@oh/utils@1.4.0": "1.4.0",
+    "jsr:@oh/utils@1.4.3": "1.4.3",
     "jsr:@oh/yaml@1.1.0": "1.1.0",
     "jsr:@std/encoding@1.0.5": "1.0.5",
     "jsr:@std/fs@1.0.4": "1.0.4",
@@ -32,8 +32,8 @@
     "@da/bcrypt@1.0.1": {
       "integrity": "d2172d3acbcff52e0465557a1a48b1ff1c92df08c90712dae5372255a8c45eb3"
     },
-    "@oh/utils@1.4.0": {
-      "integrity": "3155c6605cefc07a96342ee137a1992cc7a22d6cd4193b367f991bc7a44b43ff",
+    "@oh/utils@1.4.3": {
+      "integrity": "3f985a987135951cf9584ffd3fbfb8e0f2658e046f09e28f2344ad963c19b668",
       "dependencies": [
         "jsr:@da/bcrypt",
         "jsr:@oh/yaml",
@@ -462,7 +462,8 @@
   },
   "workspace": {
     "dependencies": [
-      "jsr:@oh/utils@1.4.0"
+      "jsr:@oh/utils@1.4.3",
+      "jsr:@std/ulid@1"
     ]
   }
 }
