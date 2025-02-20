@@ -27,6 +27,11 @@ export type DbMigrationsMutable = {
 export type DbCryptoMutable = {
   load: () => Promise<void>;
 
+  getSecretKey: () => Promise<string>;
+
+  getPepper: () => Promise<string>;
+  pepperPassword: (password: string) => Promise<string>;
+
   encryptSHA256: (text: string) => Promise<string>;
   decryptSHA256: (hash: string) => Promise<string>;
 

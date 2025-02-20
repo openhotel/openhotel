@@ -63,6 +63,11 @@ export const crypto = ({ pathname }: DbProps): DbCryptoMutable => {
   return {
     load,
 
+    getSecretKey,
+
+    getPepper,
+    pepperPassword,
+
     encryptSHA256: $encryptSHA256,
     decryptSHA256: $decryptSHA256,
 
