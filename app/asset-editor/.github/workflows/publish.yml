@@ -113,6 +113,7 @@ jobs:
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: ./asset_editor_${{ matrix.os }}
+          file: ./asset_editor_${{ matrix.os }}.zip
           tag: ${{ github.ref }}
           overwrite: true
+          file_glob: true
