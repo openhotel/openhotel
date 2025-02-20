@@ -8,7 +8,7 @@ import { Event } from "shared/enums";
 import { System } from "system/system";
 
 export const proxy = () => {
-  let isConnected: boolean = false;
+  let $isConnected: boolean = false;
 
   let $socket;
   let eventFunctionMap: Record<Event | string, Function[]> = {};
@@ -43,7 +43,7 @@ export const proxy = () => {
     if (canConnect() || !System.config.get().auth.enabled) return true;
 
     const { status, data } = await fetch(
-      `/request?version=${System.version.getVersion()}`,
+      `/request?version=${System.config.getVersion()}`,
     ).then((data) => data.json());
     if (status === 200) {
       const redirectUrl = new URL(data.redirectUrl);
@@ -61,7 +61,7 @@ export const proxy = () => {
     new Promise<void>(async (resolve, reject) => {
       try {
         const config = System.config.get();
-        if (isConnected) return;
+        if ($isConnected) return;
         System.loader.addText("Connecting...");
         window.history.pushState(null, null, "/");
 
@@ -70,8 +70,7 @@ export const proxy = () => {
           protocols: config.auth.enabled
             ? [state, token]
             : [
-                localStorage.getItem("accountId") ||
-                  "edd8081d-d160-4bf4-b89b-133d046c87ff",
+                localStorage.getItem("accountId") || crypto.randomUUID(),
                 localStorage.getItem("username") ||
                   `player_${getRandomString(4)}`,
               ],
@@ -80,7 +79,7 @@ export const proxy = () => {
         });
         $socket.on("connected", () => {
           System.loader.addText("Connected!");
-          isConnected = true;
+          $isConnected = true;
 
           $socket.emit(Event.SET_LANGUAGE, {
             language: getBrowserLanguage(),
@@ -107,7 +106,7 @@ export const proxy = () => {
         });
         $socket.on("disconnected", () => {
           console.error("proxy disconnected!");
-          isConnected = false;
+          $isConnected = false;
           reject();
           clearConnection();
           System.loader.addText("Server is not reachable!");
@@ -137,7 +136,7 @@ export const proxy = () => {
     }
 
     const index = eventFunctionMap[event].push(callback) - 1;
-    if (isConnected)
+    if ($isConnected)
       eventFunctionRemoveMap[event].push($socket.on(event, callback));
 
     return () => {
@@ -151,11 +150,15 @@ export const proxy = () => {
     };
   };
 
+  const isConnected = () => $isConnected;
+
   return {
     preConnect,
     connect,
     getRefreshSession,
     loaded,
+
+    isConnected,
 
     emit,
     on,

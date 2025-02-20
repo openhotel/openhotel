@@ -11,5 +11,9 @@
   "Click here or press 'c' to write a message": "Click here or press 'c' to write a message",
   "See you later": "See you later",
   "You are about to leave this room being redirected to an external site or hotel": "You are about to leave this room being redirected to an external site or hotel",
-  "Are you sure you want to proceed?": "Are you sure you want to proceed?"
+  "Are you sure you want to proceed?": "Are you sure you want to proceed?",
+  "New room": "New room",
+  "Room name": "Room name",
+  "Room description": "Room description",
+  "Create": "Create"
 }

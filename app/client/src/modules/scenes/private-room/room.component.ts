@@ -4,7 +4,6 @@ import {
   ContainerMutable,
   Cursor,
   DisplayObjectEvent,
-  DisplayObjectMutable,
   EventMode,
   global,
   graphics,
@@ -27,10 +26,13 @@ import { RoomFurniture } from "shared/types";
 import { System } from "system";
 import { humanComponent, HumanMutable } from "modules/human";
 import {
+  STAIRS_HEIGHT,
   STEP_TILE_HEIGHT,
+  TILE_SIZE,
   TILE_Y_HEIGHT,
   WALL_DOOR_HEIGHT,
   WALL_HEIGHT,
+  WALL_WIDTH,
 } from "shared/consts";
 import { wallComponent } from "./wall.component";
 import {
@@ -47,27 +49,19 @@ export type RoomMutable = {
   getHumanList: () => HumanMutable[];
 };
 
-export const roomComponent: ContainerComponent<Props, RoomMutable> = () => {
+export const roomComponent: ContainerComponent<Props, RoomMutable> = (
+  $props,
+) => {
   const { layout, furniture } = System.game.rooms.get();
   const furnituresMap: Record<string, FurnitureMutable> = {};
   const $container = container<{}, RoomMutable>({
+    ...$props,
     sortableChildren: true,
     pivot: {
-      x: 0,
-      y: -WALL_HEIGHT / 2,
+      x: TILE_SIZE.width / 2,
+      y: -TILE_SIZE.height / 2,
     },
   });
-  $container.on(
-    DisplayObjectEvent.ADD_CHILD,
-    (component: DisplayObjectMutable<any>) => {
-      const position = component.getPosition();
-      const containerPivot = $container.getPivot();
-
-      if (containerPivot.x > position.x) $container.setPivotX(position.x - 4);
-      if (containerPivot.y > position.y)
-        $container.setPivotY(position.y - WALL_HEIGHT);
-    },
-  );
 
   let humanList: ContainerMutable<{}, HumanMutable>[] = [];
 
@@ -120,7 +114,9 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = () => {
           (human) => human.getUser().accountId === accountId,
         );
 
-        await waitUntil(() => !human.isMoving());
+        try {
+          await waitUntil(() => !human.isMoving());
+        } catch (e) {}
         await human.moveTo(position, bodyDirection);
       },
     );
@@ -195,6 +191,11 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = () => {
       return true;
     };
 
+    const isDoorRenderable = (x: number, z: number, isX: boolean) => {
+      if (isX) return layout[z - 1] && layout[z - 1][x] === RoomPointEnum.SPAWN;
+      return layout[z][x - 1] === RoomPointEnum.SPAWN;
+    };
+
     for (let z = 0; z < roomSize.depth; z++) {
       const roomLine = layout[z];
       for (let x = 0; x < roomSize.width; x++) {
@@ -262,7 +263,7 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = () => {
             $container.add(wall);
           }
 
-          if (layout[z][x - 1] === RoomPointEnum.SPAWN) {
+          if (isDoorRenderable(x, z, false)) {
             const wall = wallComponent({
               axis: "x",
               zIndex: zIndex - 0.1,
@@ -273,7 +274,7 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = () => {
             });
             $container.add(wall);
           }
-          if (layout[z - 1] && layout[z - 1][x] === RoomPointEnum.SPAWN) {
+          if (isDoorRenderable(x, z, true)) {
             const wall = wallComponent({
               axis: "z",
               zIndex: zIndex - 0.1,
@@ -330,7 +331,7 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = () => {
 
         let canMove = false;
 
-        pol.on(DisplayObjectEvent.POINTER_TAP, (event) => {
+        pol.on(DisplayObjectEvent.POINTER_TAP, (event: PointerEvent) => {
           if (event.button !== 0 || !canMove) return;
           global.context.blur();
           System.proxy.emit(Event.POINTER_TILE, {
@@ -444,6 +445,73 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = () => {
     };
 
     $addFurniture(...furniture);
+
+    // --- Center Room ---
+    {
+      const layoutMaxX = layout[0].length;
+      const layoutMaxZ = layout.length;
+
+      let topZIndex = Number.MAX_SAFE_INTEGER;
+
+      let bottomZIndex = Number.MIN_SAFE_INTEGER;
+      let bottomRoomPoint = Number.MAX_SAFE_INTEGER;
+
+      let leftXIndex = Number.MIN_SAFE_INTEGER;
+
+      let rightXIndex = Number.MAX_SAFE_INTEGER;
+
+      for (let z = 0; z < layoutMaxZ; z++)
+        for (let x = 0; x < layoutMaxX; x++) {
+          const roomPoint = layout[z][x] as unknown as number;
+          if (
+            (roomPoint as unknown) === RoomPointEnum.SPAWN ||
+            (roomPoint as unknown) === RoomPointEnum.EMPTY
+          )
+            continue;
+          let zIndex = x + z;
+          let xIndex = -x + z;
+
+          //top tile
+          if (topZIndex >= zIndex) topZIndex = zIndex;
+
+          //bottom tile
+          if (zIndex >= bottomZIndex) {
+            bottomZIndex = zIndex;
+            bottomRoomPoint = roomPoint;
+          }
+
+          //left tile
+          if (xIndex >= leftXIndex) leftXIndex = xIndex;
+
+          //right tile
+          if (rightXIndex >= xIndex) rightXIndex = xIndex;
+        }
+
+      const topCorrection = topZIndex * (TILE_SIZE.height / 2) - WALL_HEIGHT;
+      const leftCorrection = (-leftXIndex - 1) * (TILE_SIZE.width / 2);
+
+      const totalHeight =
+        //size of all the tiles to the bottom
+        (bottomZIndex - topZIndex + 1) * (TILE_SIZE.height / 2) +
+        //bottom step tile
+        STEP_TILE_HEIGHT +
+        //total of stairs count
+        (bottomRoomPoint - 1) * ((STAIRS_HEIGHT - TILE_SIZE.height) * 2) +
+        //total wall height
+        WALL_HEIGHT +
+        STEP_TILE_HEIGHT / 2;
+
+      const totalWidth =
+        //from left to right sum of xIndex
+        (leftXIndex - rightXIndex + 2) * (TILE_SIZE.width / 2) +
+        //wall width
+        WALL_WIDTH / 2;
+
+      $container.setPivot((pivot) => ({
+        x: pivot.x + leftCorrection + totalWidth / 2,
+        y: pivot.y + topCorrection + totalHeight / 2,
+      }));
+    }
   });
 
   return $container.getComponent(roomComponent, {

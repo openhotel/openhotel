@@ -6,10 +6,14 @@ import {
   Event,
   global,
 } from "@tu/tulip";
-import { navigatorModalComponent } from "modules/interfaces";
 import { System } from "system";
 import { SystemEvent } from "shared/enums";
-import { catalogModalComponent } from "modules/interfaces";
+import {
+  changelogModalComponent,
+  catalogModalComponent,
+  navigatorModalComponent,
+  roomEditorModalComponent,
+} from "modules/interfaces";
 
 export const interfacesComponent: ContainerMutable<{}, any> = (props) => {
   const $container = draggableContainer({
@@ -22,9 +26,10 @@ export const interfacesComponent: ContainerMutable<{}, any> = (props) => {
 
   const $navigator = navigatorModalComponent();
   const $catalog = catalogModalComponent();
+  const $changelog = changelogModalComponent();
+  const $roomEditor = roomEditorModalComponent();
 
-  $container.add($navigator);
-  $container.add($catalog);
+  $container.add($navigator, $catalog, $changelog, $roomEditor);
 
   let $removeOnResize;
   let $removeOnHideModals;
@@ -37,7 +42,8 @@ export const interfacesComponent: ContainerMutable<{}, any> = (props) => {
       System.events.emit(SystemEvent.HIDE_NAVIGATOR_MODAL);
       System.events.emit(SystemEvent.HIDE_CATALOG_MODAL);
       System.events.emit(SystemEvent.HIDE_CONFIRM_MODAL);
-      // ...
+      System.events.emit(SystemEvent.HIDE_CHANGELOG_MODAL);
+      System.events.emit(SystemEvent.HIDE_ROOM_EDITOR_MODAL);
     });
 
     const destroyNavigatorVisibility = $navigator.on(

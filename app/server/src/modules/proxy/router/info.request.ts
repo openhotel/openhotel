@@ -1,10 +1,18 @@
 import { Proxy } from "modules/proxy/main.ts";
 
-export const getConfigRequest = {
+export const getInfoRequest = {
   method: "GET",
-  pathname: "/config",
+  pathname: "/info",
   fn: async (request: Request): Promise<Response> => {
-    const { name, description, version, auth, onet } = Proxy.getConfig();
+    const {
+      name,
+      description,
+      auth,
+      onet,
+      limits: { players: maxUsers },
+    } = Proxy.getConfig();
+    const { version } = Proxy.getEnvs();
+    const userList = Proxy.getUserList();
 
     return Response.json(
       {
@@ -20,6 +28,8 @@ export const getConfigRequest = {
           onet: {
             enabled: onet.enabled,
           },
+          users: userList.length,
+          maxUsers,
         },
       },
       { status: 200 },

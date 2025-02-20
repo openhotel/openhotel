@@ -8,10 +8,11 @@ import {
 } from "@tu/tulip";
 import { bubbleChatComponent, systemMessageComponent } from "modules/chat";
 import { previewComponent, roomComponent } from ".";
-import { Size2d } from "shared/types";
+import { Point2d, Size2d } from "shared/types";
 import { hotBarChatComponent, roomInfoComponent } from "modules/interfaces";
 import { System } from "system";
 import { SystemEvent } from "shared/enums";
+import { HOT_BAR_HEIGHT } from "shared/consts";
 
 const CHAT_PADDING = {
   x: 12,
@@ -23,17 +24,27 @@ const PREVIEW_PADDING = {
   y: 180,
 };
 
-export const privateRoomComponent: ContainerComponent = () => {
+export type PrivateRoomMutable = {
+  getPosition: () => Point2d;
+};
+
+export const privateRoomComponent: ContainerComponent<
+  {},
+  PrivateRoomMutable
+> = () => {
   const $container = container({
     sortableChildren: true,
   });
 
+  //TODO move to mount
   const windowBounds = global.getApplication().window.getBounds();
 
+  //TODO move to mount
   const hotBar = hotBarChatComponent();
   const roomInfo = roomInfoComponent();
   $container.add(hotBar, roomInfo);
 
+  //TODO move to mount
   const systemMessage = systemMessageComponent({
     position: {
       x: 0,
@@ -42,6 +53,7 @@ export const privateRoomComponent: ContainerComponent = () => {
   });
   $container.add(systemMessage);
 
+  //TODO move to mount
   const $preview = previewComponent({
     position: {
       x: windowBounds.width - PREVIEW_PADDING.x,
@@ -50,37 +62,28 @@ export const privateRoomComponent: ContainerComponent = () => {
   });
   $container.add($preview);
 
+  //TODO move to mount
   global.events.on(TulipEvent.RESIZE, (size: Size2d) => {
     $preview.setPosition({
       x: size.width - PREVIEW_PADDING.x,
       y: size.height - PREVIEW_PADDING.y,
+    });
+    $room.setPosition({
+      x: size.width / 2,
+      y: size.height / 2 - HOT_BAR_HEIGHT,
     });
   });
 
   let $room;
   let $bubbleChat;
 
+  //TODO move to mount
   let $roomScene = container({
     sortableChildren: true,
     eventMode: EventMode.STATIC,
   });
 
   $container.add($roomScene);
-
-  const loadRoomPosition = () => {
-    const size = global.getApplication().window.getBounds();
-    const roomBounds = $room.getBounds();
-
-    $room.setPosition({
-      x: size.width / 2 - roomBounds.width / 2,
-      y: size.height / 2 - roomBounds.height / 2,
-    });
-
-    $bubbleChat.setPositionX(0);
-  };
-
-  global.events.on(TulipEvent.RESIZE, loadRoomPosition);
-
   let onRemovePointerDown;
   let onRemovePointerMove;
   let onRemovePointerUp;
@@ -90,13 +93,19 @@ export const privateRoomComponent: ContainerComponent = () => {
   $container.on(DisplayObjectEvent.MOUNT, () => {
     $roomScene.setPosition({ x: 0, y: 0 });
     if ($room) $roomScene.remove($room);
-    $room = roomComponent();
+
+    const windowBounds = global.getApplication().window.getBounds();
+    $room = roomComponent({
+      position: {
+        x: windowBounds.width / 2,
+        y: windowBounds.height / 2 - HOT_BAR_HEIGHT,
+      },
+    });
     $roomScene.add($room);
 
     if ($bubbleChat) $roomScene.remove($bubbleChat);
     $bubbleChat = bubbleChatComponent({ room: $room });
     $roomScene.add($bubbleChat);
-    loadRoomPosition();
 
     let isEnabled = true;
     const margin = 100;
@@ -119,19 +128,26 @@ export const privateRoomComponent: ContainerComponent = () => {
     );
 
     onRemovePointerDown = global.events.on(TulipEvent.POINTER_DOWN, (event) => {
-      if (!isEnabled || event.button !== 0) return;
+      if (!isEnabled || (event.type === "mousedown" && event.button !== 0))
+        return;
       isDragging = true;
-      dragStart = { x: event.x, y: event.y };
+      dragStart = {
+        x: event.x ?? event.touches[0]?.clientX,
+        y: event.y ?? event.touches[0]?.clientY,
+      };
 
       containerStart = $roomScene.getGlobalPosition();
     });
 
     onRemovePointerMove = global.events.on(TulipEvent.POINTER_MOVE, (event) => {
       if (!isDragging) return;
+      System.events.emit(SystemEvent.TEST, "pointer move ");
 
       const scale = global.window.getScale();
-      const deltaX = (event.clientX - dragStart.x) / scale;
-      const deltaY = (event.clientY - dragStart.y) / scale;
+      const deltaX =
+        ((event.clientX ?? event.touches[0]?.clientX) - dragStart.x) / scale;
+      const deltaY =
+        ((event.clientY ?? event.touches[0]?.clientY) - dragStart.y) / scale;
 
       let newX = Math.floor(containerStart.x + deltaX);
       let newY = Math.floor(containerStart.y + deltaY);
@@ -150,8 +166,12 @@ export const privateRoomComponent: ContainerComponent = () => {
     });
 
     onRemovePointerUp = global.events.on(TulipEvent.POINTER_UP, (event) => {
-      if (event.button !== 0) return;
-      isDragging = false;
+      if (
+        (event instanceof MouseEvent && event.button == 0) ||
+        event instanceof TouchEvent
+      ) {
+        isDragging = false;
+      }
     });
 
     System.events.emit(SystemEvent.HIDE_NAVIGATOR_MODAL);
@@ -165,5 +185,7 @@ export const privateRoomComponent: ContainerComponent = () => {
     onRemoveDisableCamera?.();
   });
 
-  return $container.getComponent(privateRoomComponent);
+  return $container.getComponent(privateRoomComponent, {
+    getPosition: () => $roomScene.getPosition(),
+  });
 };

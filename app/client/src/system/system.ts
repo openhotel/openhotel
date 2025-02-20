@@ -8,10 +8,10 @@ import { locale } from "system/locale";
 import { loader } from "system/loader";
 import { api } from "system/api";
 import { $window } from "system/window";
-import { version } from "system/version";
 import { config } from "system/config";
 import { contributors } from "system/contributors";
 import { mainComponent } from "modules/main";
+import { components } from "system/components";
 
 export const System = (() => {
   const $config = config();
@@ -22,16 +22,14 @@ export const System = (() => {
   const $game = game();
   const $events = events();
   const $api = api();
-  const $version = version();
   const $contributors = contributors();
+  const $displayObjects = components();
 
   const $tasks = tasks();
   const $$window = $window();
 
   const load = async () => {
     await $config.load();
-
-    await $version.load();
     $$window.load();
 
     await $textures.loadText();
@@ -53,7 +51,7 @@ export const System = (() => {
 
     global.events.on(Event.KEY_DOWN, ({ ctrlKey, key }) => {
       const lowerCaseKey = key.toLowerCase();
-      if ($version.isDevelopment()) {
+      if ($config.isDevelopment()) {
         switch (lowerCaseKey) {
           case "f5":
             window.location.reload();
@@ -79,9 +77,9 @@ export const System = (() => {
     tasks: $tasks,
     events: $events,
     api: $api,
-    version: $version,
     config: $config,
     contributors: $contributors,
+    displayObjects: $displayObjects,
 
     load,
   };

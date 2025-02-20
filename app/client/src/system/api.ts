@@ -5,6 +5,7 @@ export const api = () => {
     pathname: string,
     data: Record<string | number, string | number | boolean> = {},
     ignoreStatus: boolean = false,
+    method = "GET",
   ): Promise<Data> => {
     const { accountId, apiToken } = System.game.users.getCurrentUser();
     const searchParams = new URLSearchParams();
@@ -16,9 +17,11 @@ export const api = () => {
 
     const params = searchParams.toString();
     const $data = await fetch(
-      getPath(pathname + (params ? `?${params}` : "")),
+      getPath(pathname + (params && method === "GET" ? `?${params}` : "")),
       {
         headers,
+        method,
+        ...(method !== "GET" ? { body: JSON.stringify(data) } : {}),
       },
     ).then((response) => response.json());
 
@@ -31,7 +34,7 @@ export const api = () => {
   };
 
   const getPath = (pathname: string) => {
-    const isDevelopment = System.version.isDevelopment();
+    const isDevelopment = System.config.isDevelopment();
     return `${isDevelopment ? "proxy" : ""}/api${pathname}`;
   };
 

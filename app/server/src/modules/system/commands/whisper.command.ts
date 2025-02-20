@@ -22,6 +22,8 @@ export const whisperCommand: Command = {
     const message = messages.join(" ");
     user.setLastMessage(message);
 
+    targetUser.setLastWhisper(user);
+
     const data = {
       accountId: user.getAccountId(),
       message,

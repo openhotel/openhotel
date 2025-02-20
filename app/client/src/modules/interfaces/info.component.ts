@@ -1,6 +1,7 @@
 import {
   container,
   ContainerComponent,
+  DisplayObjectEvent,
   Event as TulipEvent,
   EventMode,
   global,
@@ -60,11 +61,9 @@ export const infoComponent: ContainerComponent = () => {
   $container.add($fps);
   //--------------------------------------
 
-  const isDevelopment = System.version.isDevelopment();
+  const isDevelopment = System.config.isDevelopment();
   const $version = textSprite({
-    text: isDevelopment
-      ? "development"
-      : `${System.version.getVersion()}-alpha`,
+    text: isDevelopment ? "development" : `${System.config.getVersion()}-alpha`,
     position: {
       x: 0,
       y: 15,
@@ -120,6 +119,19 @@ export const infoComponent: ContainerComponent = () => {
   });
 
   $container.add($direction);
+  //--------------------------------------
+
+  const $test = textSprite({
+    text: "null",
+    position: {
+      x: 0,
+      y: 59,
+    },
+    visible: isDevelopment,
+    ...textSpriteConfig,
+  });
+
+  $container.add($test);
 
   const setDirectionText = (position: Point3d, direction: Direction) => {
     const crossDirection = getCrossDirectionFromDirection(direction);
@@ -175,6 +187,13 @@ export const infoComponent: ContainerComponent = () => {
       localStorage.setItem("info", isEnabled ? "0" : "1");
       $container.setVisible(!isEnabled);
     }
+  });
+
+  $container.on(DisplayObjectEvent.MOUNT, () => {
+    System.events.on(SystemEvent.TEST, (text) => {
+      $test.setText(text);
+      $reload();
+    });
   });
 
   return $container.getComponent(infoComponent);

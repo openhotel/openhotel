@@ -1,9 +1,10 @@
-import { log } from "shared/utils/main.ts";
+import { log, parseChangelog } from "shared/utils/main.ts";
 import { getChildWorker } from "worker_ionic";
 import {
   ConfigTypes,
   Envs,
   PrivateUser,
+  VersionContent,
   WorkerProps,
 } from "shared/types/main.ts";
 import { getServerSocket, ServerClient } from "@da/socket";
@@ -22,6 +23,7 @@ import {
 import { eventList } from "./events/main.ts";
 import { auth } from "../shared/auth.ts";
 import { coordinates } from "../shared/coordinates.ts";
+import { icon } from "modules/shared/icon.ts";
 
 export const Proxy = (() => {
   const serverWorker = getChildWorker();
@@ -35,15 +37,19 @@ export const Proxy = (() => {
 
   const state = getRandomString(64);
 
+  const $icon = icon();
   const $auth = auth();
   const $coordinates = coordinates();
   let server;
   let $config: ConfigTypes;
   let $envs: Envs;
+  let $changelog: VersionContent[] = [];
 
   const load = async ({ envs, config }: WorkerProps) => {
     $config = config;
     $envs = envs;
+
+    await $icon.load();
 
     $coordinates.load(config);
     await $auth.load(config);
@@ -69,12 +75,15 @@ export const Proxy = (() => {
 
         const foundRoute = routesList.find(
           (route) =>
-            route.method === method && pathname.startsWith(route.pathname),
+            route.method.includes(method) &&
+            pathname.startsWith(route.pathname),
         );
 
         let response = new Response("404", { status: 404 });
         if (foundRoute) response = await foundRoute.fn(request);
-        appendCORSHeaders(response.headers);
+        try {
+          appendCORSHeaders(response.headers);
+        } catch (e) {}
         return response;
       },
     );
@@ -93,6 +102,14 @@ export const Proxy = (() => {
         if (!config.auth.enabled) {
           const username = connectionToken;
           const accountId = state;
+
+          const foundUser = userList.find(
+            (user) => user.accountId === accountId,
+          );
+          if (foundUser) {
+            userClientMap[foundUser.clientId]?.close();
+            userList = userList.filter((user) => user.accountId !== accountId);
+          }
 
           userList.push({
             clientId,
@@ -177,6 +194,7 @@ export const Proxy = (() => {
         userClientMap[foundUser.clientId] = client;
 
         client.on(ProxyEvent.$USER_DATA, ({ event, message }) => {
+          if (!foundUser) return client.close();
           try {
             // Disconnect client if tries to send events outside the whitelist
             if (!PROXY_CLIENT_EVENT_WHITELIST.includes(event))
@@ -203,11 +221,11 @@ export const Proxy = (() => {
         const accountId = clientIdAccountIdMap[client.id];
         if (!accountId) return;
 
-        const foundUser = userList.find((user) => user.accountId === accountId);
-        if (!foundUser) return;
-
         delete userClientMap[client.id];
         delete clientIdAccountIdMap[client.id];
+
+        const foundUser = userList.find((user) => user.accountId === accountId);
+        if (!foundUser) return;
 
         userList = userList.filter((user) => user.clientId !== client.id);
 
@@ -247,6 +265,21 @@ export const Proxy = (() => {
       : []),
   ];
 
+  const getChangelog = async () => {
+    if ($changelog.length) return $changelog;
+
+    const rawChangelog = await fetch(
+      "https://raw.githubusercontent.com/openhotel/openhotel/master/CHANGELOG.md",
+    ).then((response) => response.text());
+
+    const changelog = parseChangelog(rawChangelog);
+
+    const foundVersion = changelog.find((c) => c.version === $config.version);
+    if (foundVersion) $changelog = changelog;
+
+    return $changelog;
+  };
+
   return {
     load,
 
@@ -267,6 +300,9 @@ export const Proxy = (() => {
     getState,
     getScopes,
 
+    getChangelog,
+
+    icon: $icon,
     auth: $auth,
     coordinates: $coordinates,
   };

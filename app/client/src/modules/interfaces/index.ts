@@ -7,3 +7,5 @@ export * from "./confirm-modal.component";
 
 export * from "./navigator";
 export * from "./catalog";
+export * from "./changelog";
+export * from "./room-editor";

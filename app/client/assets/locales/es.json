@@ -11,5 +11,9 @@
   "Click here or press 'c' to write a message": "Click aqui o presiona 'c' para escribir",
   "See you later": "Hasta luego",
   "You are about to leave this room being redirected to an external site or hotel": "Estás a punto de abandonar esta sala siendo redirigido a un sitio u hotel externo",
-  "Are you sure you want to proceed?": "¿Estás seguro de que deseas continuar?"
+  "Are you sure you want to proceed?": "¿Estás seguro de que deseas continuar?",
+  "New room": "Nueva sala",
+  "Room name": "Nombre de la sala",
+  "Room description": "Descripción de la sala",
+  "Create": "Crear"
 }
