@@ -1,0 +1,36 @@
+@mixin formStyles() {
+  .alternativeSelector > div {
+    background-color: var(--text-0-bg) !important;
+    color: var(--text-0-c) !important;
+    border: 1px solid var(--text-1-bg) !important;
+  }
+  .row {
+    display: flex;
+    gap: 1rem;
+    width: 100%;
+    align-items: center;
+  }
+  .column {
+    display: flex;
+    gap: 1rem;
+    flex-direction: column;
+    width: 100%;
+  }
+  .list {
+    display: flex;
+    gap: 1rem;
+    flex-direction: column;
+
+    .item {
+      padding: 1rem;
+      background-color: var(--text-0-bg);
+      color: var(--text-1-c);
+      border-radius: 1rem;
+
+      &.new {
+        border: 2px dashed var(--text-0-bg);
+        background-color: var(--text-2-bg);
+      }
+    }
+  }
+}

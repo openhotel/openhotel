@@ -1,0 +1,6 @@
+/build
+/client
+
+config.yml
+node_modules
+.env

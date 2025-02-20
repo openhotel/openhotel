@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "moduleResolution": "node",
+    "module": "ES2022",
+    "target": "ES2022",
+    "esModuleInterop": true,
+    "sourceMap": false,
+    "noUnusedLocals": true,
+    "lib": ["ES2022", "dom"],
+    "baseUrl": "./src/",
+    "rootDir": "./src"
+  }
+}

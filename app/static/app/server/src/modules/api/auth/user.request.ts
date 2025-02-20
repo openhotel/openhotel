@@ -1,0 +1,22 @@
+import { System } from "system/main.ts";
+import { RequestType, RequestMethod } from "@oh/utils";
+
+export const userRequest: RequestType = {
+  method: RequestMethod.GET,
+  pathname: "/user",
+  func: async (request, url) => {
+    const accountId = url.searchParams.get("accountId");
+    const {
+      auth: { url: authUrl, appToken },
+    } = System.getConfig();
+
+    const data = await fetch(`${authUrl}/api/v3/user/@me`, {
+      headers: {
+        "app-token": appToken,
+        "account-id": accountId,
+      },
+    }).then((response) => response.json());
+
+    return Response.json(data, { status: data.status });
+  },
+};
