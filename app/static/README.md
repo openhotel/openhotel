@@ -15,7 +15,6 @@
 - Install `node >= 20`
 - Install `yarn`
 
-
 ### Start project
 
 - Run `deno task install`

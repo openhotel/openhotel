@@ -5,9 +5,9 @@
 
     "compile": "deno compile -A --unstable-kv --no-check",
 
-    "compile:windows": "deno task compile --target=x86_64-pc-windows-msvc --output ./build/assets_editor_windows ./mod.ts",
-    "compile:linux": "deno task compile --target=x86_64-unknown-linux-gnu --output ./build/assets_editor_linux ./mod.ts",
-    "compile:darwin": "deno task compile --target=x86_64-apple-darwin --output ./build/assets_editor_darwin ./mod.ts",
+    "compile:windows": "deno task compile --target=x86_64-pc-windows-msvc --output ./build/static_windows ./mod.ts",
+    "compile:linux": "deno task compile --target=x86_64-unknown-linux-gnu --output ./build/static_linux ./mod.ts",
+    "compile:darwin": "deno task compile --target=x86_64-apple-darwin --output ./build/static_darwin ./mod.ts",
 
     "build": "(deno task compile:linux) & (deno task compile:darwin) & (deno task compile:windows)"
   },

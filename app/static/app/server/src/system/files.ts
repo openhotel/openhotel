@@ -31,6 +31,8 @@ export const files = () => {
   };
 
   const remove = async (fileId: string) => {
+    // deno-lint-ignore ban-ts-comment
+    // @ts-ignore
     await s3Client.removeObjects([{ name: fileId }]);
     await System.db.delete(["files", fileId]);
   };
@@ -39,6 +41,7 @@ export const files = () => {
     load,
 
     getList,
+    get,
     set,
     remove,
   };
