@@ -11,6 +11,9 @@ export type ConfigTypes = {
   };
   backups: {
     cron: string;
+    pathname: string;
+    max: number;
+    password: string;
     s3: {
       enabled: boolean;
       accessKey: string;

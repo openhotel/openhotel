@@ -8,12 +8,13 @@ import {
 } from "@oh/components";
 import { Backup } from "shared/types";
 import { useModal } from "@oh/components";
+import { decodeTime } from "ulidx";
 
 //@ts-ignore
 import styles from "./backups.module.scss";
 
 export const AdminBackupsComponent = () => {
-  const { fetchBackups, backups, backup, deleteBackup, syncBackups, sync } =
+  const { fetchBackups, backups, backup, deleteBackup, downloadBackup } =
     useAdmin();
   const { open, close } = useModal();
 
@@ -33,27 +34,21 @@ export const AdminBackupsComponent = () => {
           >
             Backup now!
           </ButtonComponent>
-          <ButtonComponent color="grey" variant="3d" onClick={syncBackups}>
-            {sync === null
-              ? "Something was wrong"
-              : sync
-                ? "Uploading..."
-                : "Sync with s3"}
-          </ButtonComponent>
         </div>
         <TableComponent
           title="Backups"
           searchable={true}
           pageRows={20}
           data={backups
-            .sort((backupA, backupB) => backupB.modifiedAt - backupA.modifiedAt)
+            .toSorted((backupA, backupB) =>
+              backupB.name > backupA.name ? 1 : -1,
+            )
             .map((backup) => ({
               ...backup,
-              id: backup.name,
-              modifiedAt: dayjs(backup.modifiedAt).format(
+              modifiedAt: dayjs(decodeTime(backup.id)).format(
                 "YYYY/MM/DD HH:mm:ss",
               ),
-              size: `${backup.size}kB`,
+              size: `${Math.round(backup.size / 1e4) / 1e2}MB`,
             }))}
           rowFunc={($row: Backup & { id: string }, columns) => {
             return (
@@ -64,6 +59,7 @@ export const AdminBackupsComponent = () => {
                       <td
                         title={$column.label}
                         key={$row.id + $column.key + "row-column"}
+                        className={styles.actions}
                       >
                         <ButtonComponent
                           color="grey"
@@ -80,6 +76,12 @@ export const AdminBackupsComponent = () => {
                           }
                         >
                           Delete
+                        </ButtonComponent>
+                        <ButtonComponent
+                          color="yellow"
+                          onClick={() => downloadBackup($row.name)}
+                        >
+                          Download
                         </ButtonComponent>
                       </td>
                     );
@@ -100,6 +102,7 @@ export const AdminBackupsComponent = () => {
             {
               key: "name",
               label: "Name",
+              sortable: true,
             },
             {
               sortable: true,

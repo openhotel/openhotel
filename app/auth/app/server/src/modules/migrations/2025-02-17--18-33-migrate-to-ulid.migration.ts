@@ -1,5 +1,5 @@
 import { Migration, DbMutable } from "@oh/utils";
-import { ulid } from "jsr:@std/ulid@1";
+import { ulid } from "@std/ulid";
 
 export default {
   id: "2025-02-17--18-33-migrate-to-ulid",

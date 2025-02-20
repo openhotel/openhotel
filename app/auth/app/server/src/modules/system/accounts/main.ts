@@ -8,27 +8,22 @@ import {
   AccountUpdate,
 } from "shared/types/account.types.ts";
 import {
-  getEmailByHash,
-  getEmailHash,
-  getEncryptedEmail,
-} from "shared/utils/account.utils.ts";
-import { pepperPassword } from "shared/utils/pepper.utils.ts";
-import * as bcrypt from "@da/bcrypt";
-import {
   getRandomString,
   getIpFromRequest,
   HttpStatusCode,
   compareIps,
   getTokenData,
+  getSHA256HashText,
+  encryptToken,
+  compareToken,
 } from "@oh/utils";
-
 import { otp } from "./otp.ts";
 import { github } from "./github.ts";
 import { admins } from "./admins.ts";
 import { HotelCreation, HotelMutableGet } from "shared/types/hotel.types.ts";
 import { hotels } from "./hotels.ts";
 import { connections } from "./connections/main.ts";
-import { ulid } from "jsr:@std/ulid@1";
+import { ulid } from "@std/ulid";
 import { getUserAgentData } from "shared/utils/user-agent.utils.ts";
 import { discordNotify } from "shared/utils/discord.utils.ts";
 
@@ -51,8 +46,7 @@ export const accounts = () => {
     email = email.toLowerCase();
     const emailHash = await getEmailHash(email);
 
-    const passWithPepper = await pepperPassword(password);
-    const passwordHash = bcrypt.hashSync(passWithPepper, bcrypt.genSaltSync(8));
+    const passwordHash = await System.db.crypto.encryptPassword(password);
 
     const accountData: DbAccount = {
       accountId,
@@ -100,11 +94,13 @@ export const accounts = () => {
         }
       : {};
 
-    const emailHash = await getEmailHash(email);
     // --- Email things
     {
+      const emailHash = await getEmailHash(email);
+
       await System.db.set(["accountsByEmail", emailHash], accountId, expire);
-      const encryptedEmail = await getEncryptedEmail(email);
+
+      const encryptedEmail = await System.db.crypto.encryptSHA256(email);
       await System.db.set(["emailsByHash", emailHash], encryptedEmail, expire);
     }
     // --- Username things ---
@@ -121,7 +117,7 @@ export const accounts = () => {
         ["accountsByVerifyId", verifyId],
         {
           accountId,
-          verifyTokensHash: bcrypt.hashSync(verifyToken, bcrypt.genSaltSync(8)),
+          verifyTokensHash: encryptToken(verifyToken),
         },
         {
           expireIn,
@@ -180,7 +176,7 @@ export const accounts = () => {
     token: string,
   ): Promise<DbAccount | null> => {
     const verifyData = await System.db.get(["accountsByVerifyId", id]);
-    if (!verifyData || !bcrypt.compareSync(token, verifyData.verifyTokensHash))
+    if (!verifyData || !compareToken(token, verifyData.verifyTokensHash))
       return null;
 
     await System.db.delete(["accountsByVerifyId", id]);
@@ -222,7 +218,7 @@ export const accounts = () => {
         "activeIntegrationConnectionByAccountId",
         accountByConnectionId,
       ]);
-      if (!connection || !bcrypt.compareSync(token, connection.tokenHash))
+      if (!connection || !compareToken(token, connection.tokenHash))
         return null;
 
       return await get(connection.accountId);
@@ -245,8 +241,7 @@ export const accounts = () => {
     ]);
 
     return (
-      Boolean(appConnection) &&
-      bcrypt.compareSync(token, appConnection.hashedToken)
+      Boolean(appConnection) && compareToken(token, appConnection.hashedToken)
     );
   };
 
@@ -300,10 +295,7 @@ export const accounts = () => {
     const $connections = connections(account);
 
     const checkPassword = async (password: string): Promise<boolean> => {
-      return bcrypt.compareSync(
-        await pepperPassword(password),
-        account.passwordHash,
-      );
+      return System.db.crypto.comparePassword(password, account.passwordHash);
     };
 
     const createTokens = async (request: Request) => {
@@ -331,7 +323,7 @@ export const accounts = () => {
         {
           userAgent,
           ip,
-          tokenHash: bcrypt.hashSync(token, bcrypt.genSaltSync(8)),
+          tokenHash: encryptToken(token),
           updatedAt: Date.now(),
         },
         {
@@ -343,10 +335,7 @@ export const accounts = () => {
         {
           userAgent,
           ip,
-          refreshTokenHash: bcrypt.hashSync(
-            refreshToken,
-            bcrypt.genSaltSync(8),
-          ),
+          refreshTokenHash: encryptToken(refreshToken),
           updatedAt: Date.now(),
         },
         { expireIn: expireInRefreshToken },
@@ -436,7 +425,7 @@ export const accounts = () => {
       )
         return false;
 
-      return bcrypt.compareSync(token, accountsByToken.tokenHash);
+      return compareToken(token, accountsByToken.tokenHash);
     };
 
     const checkRefreshToken = async (request: Request): Promise<boolean> => {
@@ -462,7 +451,7 @@ export const accounts = () => {
       )
         return false;
 
-      return bcrypt.compareSync(token, accountByRefreshToken.refreshTokenHash);
+      return compareToken(token, accountByRefreshToken.refreshTokenHash);
     };
 
     const sendVerificationEmail = async () => {
@@ -493,7 +482,7 @@ export const accounts = () => {
       await System.db.set(
         ["appConnectionByAccount", account.accountId, appId],
         {
-          hashedToken: bcrypt.hashSync(rawToken, bcrypt.genSaltSync(8)),
+          hashedToken: encryptToken(rawToken),
           createdAt: Date.now(),
           updatedAt: Date.now(),
         },
@@ -507,8 +496,14 @@ export const accounts = () => {
       return targetUrl.href;
     };
 
-    const getEmail = async (): Promise<string> =>
-      await getEmailByHash(account.emailHash);
+    const getEmail = async (): Promise<string> => {
+      const encryptedEmail = (await System.db.get([
+        "emailsByHash",
+        account.emailHash,
+      ])) as string;
+
+      return await System.db.crypto.decryptSHA256(encryptedEmail);
+    };
 
     const isAdmin = async () => Boolean(await $admins.get(account.accountId));
     const setAdmin = async (admin: boolean) => {
@@ -558,7 +553,9 @@ export const accounts = () => {
       if ($account.email?.length) {
         $account.email = $account.email.toLowerCase();
         const emailHash = await getEmailHash($account.email);
-        const encryptedEmail = await getEncryptedEmail($account.email);
+        const encryptedEmail = await System.db.crypto.encryptSHA256(
+          $account.email,
+        );
 
         await System.db.delete(["accountsByEmail", account.emailHash]);
         await System.db.delete(["emailsByHash", account.emailHash]);
@@ -570,10 +567,8 @@ export const accounts = () => {
       }
 
       if ($account.password?.length) {
-        const passWithPepper = await pepperPassword($account.password);
-        account.passwordHash = bcrypt.hashSync(
-          passWithPepper,
-          bcrypt.genSaltSync(8),
+        account.passwordHash = await System.db.crypto.encryptPassword(
+          $account.password,
         );
       }
 
@@ -736,6 +731,18 @@ export const accounts = () => {
     return verifyUrl;
   };
 
+  const getEmailHash = async (email: string): Promise<string> =>
+    getSHA256HashText(email);
+
+  const getEmailByHash = async (emailHash: string): Promise<string> => {
+    const encryptedEmail = (await System.db.get([
+      "emailsByHash",
+      emailHash,
+    ])) as string;
+
+    return await System.db.crypto.decryptSHA256(encryptedEmail);
+  };
+
   return {
     create,
 
@@ -743,6 +750,9 @@ export const accounts = () => {
     getAccount,
 
     sendRecover,
+
+    getEmailHash,
+    getEmailByHash,
 
     admins: $admins,
   };

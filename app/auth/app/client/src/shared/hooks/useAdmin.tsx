@@ -20,9 +20,6 @@ type AdminState = {
   ) => Promise<void>;
   deleteHotel: (hotelId: string) => Promise<void>;
 
-  backups: Backup[];
-  fetchBackups: () => Promise<void>;
-
   tokens: Token[];
   fetchTokens: () => Promise<void>;
   addToken: (label: string) => Promise<string>;
@@ -39,10 +36,11 @@ type AdminState = {
   deleteUser: (user: User) => Promise<void>;
   resendVerificationUser: (accountId: string) => Promise<void>;
 
+  backups: Backup[];
+  fetchBackups: () => Promise<void>;
   backup: (name: string) => Promise<void>;
   deleteBackup: (name: string) => Promise<void>;
-  syncBackups: () => Promise<void>;
-  sync: boolean | null;
+  downloadBackup: (name: string) => Promise<void>;
 };
 
 const AdminContext = React.createContext<AdminState>(undefined);
@@ -62,7 +60,6 @@ export const AdminProvider: React.FunctionComponent<ProviderProps> = ({
   const [apps, setApps] = useState<AppToken[]>([]);
   const [hotels, setHotels] = useState<DbHotel[]>([]);
   const [backups, setBackups] = useState<Backup[]>([]);
-  const [sync, setSync] = useState<boolean | null>(false);
 
   const fetchUsers = useCallback(async () => {
     return fetch({
@@ -257,13 +254,20 @@ export const AdminProvider: React.FunctionComponent<ProviderProps> = ({
       method: RequestMethod.GET,
       pathname: "/admin/backups",
       headers: getAccountHeaders(),
-    }).then((response) => setBackups(response.data.backups));
+    }).then((response) =>
+      setBackups(
+        response.data.backups.map((data) => ({
+          ...data,
+          id: data.name.substring(0, 26),
+        })),
+      ),
+    );
   }, [fetch, getAccountHeaders, setBackups]);
 
   const backup = useCallback(async (name: string) => {
     await fetch({
       method: RequestMethod.POST,
-      pathname: "/admin/backups",
+      pathname: "/admin/backup",
       headers: getAccountHeaders(),
       body: {
         name,
@@ -275,7 +279,7 @@ export const AdminProvider: React.FunctionComponent<ProviderProps> = ({
   const deleteBackup = useCallback(async (name: string) => {
     await fetch({
       method: RequestMethod.DELETE,
-      pathname: "/admin/backups",
+      pathname: "/admin/backup",
       headers: getAccountHeaders(),
       body: {
         name,
@@ -284,16 +288,24 @@ export const AdminProvider: React.FunctionComponent<ProviderProps> = ({
     await fetchBackups();
   }, []);
 
-  const syncBackups = useCallback(async () => {
-    setSync(true);
-    await fetch({
+  const downloadBackup = useCallback(async (name: string) => {
+    const response = await fetch({
       method: RequestMethod.GET,
-      pathname: "/admin/backups/sync",
+      pathname: `/admin/backup?name=${name}`,
       headers: getAccountHeaders(),
-    })
-      .then(() => setSync(false))
-      .catch(() => setSync(null));
-  }, [setSync]);
+      rawResponse: true,
+    });
+
+    const blob = await response.blob();
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = name;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
+  }, []);
 
   return (
     <AdminContext.Provider
@@ -327,8 +339,7 @@ export const AdminProvider: React.FunctionComponent<ProviderProps> = ({
         backups,
         backup,
         deleteBackup,
-        syncBackups,
-        sync,
+        downloadBackup,
       }}
       children={children}
     />

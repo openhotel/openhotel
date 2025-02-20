@@ -9,9 +9,8 @@ import {
   HotelMutableGet,
 } from "shared/types/hotel.types.ts";
 import { integrations } from "./integrations.ts";
-import { getTokenData } from "@oh/utils";
-import * as bcrypt from "@da/bcrypt";
-import { ulid } from "jsr:@std/ulid@1";
+import { getTokenData, compareToken } from "@oh/utils";
+import { ulid } from "@std/ulid";
 
 export const hotels = () => {
   const $getLicenseData = async (licenseToken: string) => {
@@ -22,7 +21,7 @@ export const hotels = () => {
     const license = await System.db.get(["licenses", licenseId]);
     if (!license) return null;
 
-    if (!bcrypt.compareSync(token, license.tokenHash)) return null;
+    if (!compareToken(token, license.tokenHash)) return null;
 
     return {
       hotelId: license.hotelId,

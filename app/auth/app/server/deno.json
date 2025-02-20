@@ -18,17 +18,13 @@
   },
   "imports": {
     "@oh/queue": "jsr:@oh/queue@1.1.1",
-    "@oh/utils": "jsr:@oh/utils@1.3.28",
-
-    "@da/bcrypt": "jsr:@da/bcrypt@1.0.1",
+    "@oh/utils": "jsr:@oh/utils@1.4.3",
 
     "shared/": "./src/shared/",
     "modules/": "./src/modules/",
 
     "deno/": "https://deno.land/std@0.221.0/",
     "@std/ulid": "jsr:@std/ulid@1",
-    "s3/client": "jsr:@sugar/minio-js-with-startpath@8.0.13",
-    "loadenv": "https://deno.land/x/loadenv@v1.0.1/mod.ts",
 
     "nodemailer": "npm:nodemailer@6.9.15",
     "otp": "https://deno.land/x/otpauth@v9.3.3/dist/otpauth.esm.js"

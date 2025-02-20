@@ -18,8 +18,6 @@ await deleteDatabase();
 
 let serverProcess;
 if (!isDevelopmentMode) {
-  Deno.writeTextFileSync("../.env", `DB_SECRET_KEY=DB_SECRET_KEY`);
-
   let serverCommand = new Deno.Command(Deno.execPath(), {
     args: ["task", "start:nowatch", "--testMode"],
     cwd: "../",

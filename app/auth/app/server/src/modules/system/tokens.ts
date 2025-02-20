@@ -1,6 +1,5 @@
 import { System } from "modules/system/main.ts";
-import * as bcrypt from "@da/bcrypt";
-import { generateToken, getTokenData } from "@oh/utils";
+import { generateToken, getTokenData, compareToken } from "@oh/utils";
 
 export const tokens = () => {
   const getList = async (): Promise<{ id: string; label: string }[]> =>
@@ -38,7 +37,7 @@ export const tokens = () => {
     const foundToken = await System.db.get(["appTokens", tokenId]);
     if (!foundToken) return false;
 
-    return bcrypt.compareSync(token, foundToken.tokenHash);
+    return compareToken(token, foundToken.tokenHash);
   };
 
   return {

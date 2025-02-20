@@ -12,6 +12,9 @@ export const CONFIG_DEFAULT: ConfigTypes = {
     connectionTokenMinutes: 20,
   },
   backups: {
+    pathname: "./backups",
+    max: 60,
+    password: "",
     cron: "0 3 * * *",
     s3: {
       enabled: false,

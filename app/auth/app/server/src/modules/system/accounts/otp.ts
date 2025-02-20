@@ -1,4 +1,3 @@
-import { getEmailByHash } from "shared/utils/account.utils.ts";
 import { System } from "modules/system/main.ts";
 import * as OTPAuth from "otp";
 import { AccountOtpMutable, DbAccount } from "shared/types/account.types.ts";
@@ -20,7 +19,7 @@ export const otp = (account: DbAccount): AccountOtpMutable => {
     $getTOTP(email, otpSecret).toString();
 
   const create = async (): Promise<string> => {
-    const email = await getEmailByHash(account.emailHash);
+    const email = await System.accounts.getEmailByHash(account.emailHash);
 
     const secret = generateSecret();
     const uri = generateURI(email, secret);

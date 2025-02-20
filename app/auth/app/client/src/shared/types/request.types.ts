@@ -6,4 +6,5 @@ export type Request = {
   body?: unknown;
   headers?: Record<string, string>;
   cache?: boolean;
+  rawResponse?: boolean;
 };

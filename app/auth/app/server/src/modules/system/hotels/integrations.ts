@@ -8,7 +8,7 @@ import {
 } from "shared/types/hotel.types.ts";
 import { AccountMutable } from "shared/types/account.types.ts";
 import { DbHotelIntegrationType } from "shared/enums/hotel.enums.ts";
-import { ulid } from "jsr:@std/ulid@1";
+import { ulid } from "@std/ulid";
 
 export const integrations = (hotel: DbHotel): HotelIntegrationsMutable => {
   const getIntegration = (

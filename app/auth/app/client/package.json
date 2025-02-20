@@ -20,6 +20,7 @@
     "react-router": "6.26.0",
     "react-router-dom": "6.26.0",
     "sass": "1.77.8",
+    "ulidx": "2.4.1",
     "victory": "37.3.6"
   },
   "packageManager": "yarn@4.6.0",

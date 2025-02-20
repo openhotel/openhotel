@@ -1,5 +1,5 @@
 export type Backup = {
+  id: string;
   name: string;
-  modifiedAt: number;
   size: number;
 };

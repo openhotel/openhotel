@@ -10,6 +10,7 @@ export const useApi = () => {
       body,
       headers = {},
       cache = true,
+      rawResponse = false,
     }: Request) => {
       const response = await fetch(`/api/v3${pathname}`, {
         method,
@@ -21,6 +22,8 @@ export const useApi = () => {
         credentials: "include",
         cache: cache ? "default" : "no-store",
       }).then(async (data) => {
+        if (rawResponse) return data;
+
         const contentType = data.headers.get("content-type");
 
         // Check that the response is JSON before calling `.json()`,
@@ -46,6 +49,8 @@ export const useApi = () => {
           response_text,
         };
       });
+
+      if (rawResponse) return response;
 
       if (response.status === 403) {
         globalThis.location.reload();
