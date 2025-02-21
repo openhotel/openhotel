@@ -1,5 +1,17 @@
-import { System } from "./main.ts";
+import { System } from "../main.ts";
 import nodemailer from "nodemailer";
+import { changePasswordTemplate, verifyTemplate } from "./templates/main.ts";
+import { getHiddenMail } from "shared/utils/mail.utils.ts";
+import {
+  MailDataMap,
+  MailTemplate,
+  MailTypes,
+} from "shared/types/mail.types.ts";
+
+const mailTemplates: { [K in MailTypes]: MailTemplate<MailDataMap[K]> } = {
+  [MailTypes.VERIFY]: verifyTemplate,
+  [MailTypes.CHANGE_PASSWORD]: changePasswordTemplate,
+};
 
 export const email = () => {
   let transporter;
@@ -40,37 +52,50 @@ export const email = () => {
     await $loadTransporter();
   };
 
-  const send = async (
+  const send = async <T extends MailTypes>(
+    mailType: T,
     to: string,
-    subject: string,
-    content: string,
-    html: string,
+    data: MailDataMap[T],
   ) =>
     new Promise<void>((resolve) => {
       const $send = async () => {
-        const hiddenEmail = `${to.substring(0, 3)}***${to.substring(to.length - 3, to.length)}`;
+        const hiddenEmail = getHiddenMail(to);
         try {
           const {
             email: { enabled, username },
           } = System.getConfig();
+
           if (!enabled) return resolve();
 
-          await new Promise<void>((resolve, reject) => {
+          const template = mailTemplates[mailType] as MailTemplate<
+            MailDataMap[T]
+          >;
+          if (!template) {
+            console.error(
+              `Email error to ${hiddenEmail}, template ${mailType} not found`,
+            );
+            return resolve();
+          }
+
+          const mail = template(data);
+
+          await new Promise<void>((resolveMail, rejectMail) => {
             transporter.sendMail(
               {
                 from: username,
                 to,
-                subject: subject,
-                text: content,
-                html,
+                subject: mail.subject,
+                text: mail.text,
+                html: mail.html,
               },
-              (error, info) => {
-                error ? reject() : resolve();
+              (error: any, info: any) => {
+                error ? rejectMail(error) : resolveMail();
               },
             );
           });
-          resolve();
+
           console.log(`Email sent to ${hiddenEmail}!`);
+          resolve();
         } catch (e) {
           console.error(`Email error to ${hiddenEmail}!`);
           setTimeout($send, 5_000);

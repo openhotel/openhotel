@@ -2,7 +2,7 @@ import { api } from "./api.ts";
 import { ConfigTypes, Envs } from "shared/types/main.ts";
 import { getConfig as $getConfig, getDb, update, DbMutable } from "@oh/utils";
 import { captcha } from "./captcha.ts";
-import { email } from "./email.ts";
+import { email } from "./email/main.ts";
 import { CONFIG_DEFAULT } from "shared/consts/config.consts.ts";
 import { tokens } from "./tokens.ts";
 import { accounts } from "./accounts/main.ts";
