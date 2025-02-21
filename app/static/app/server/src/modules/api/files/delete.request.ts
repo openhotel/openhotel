@@ -5,10 +5,12 @@ import {
   getResponse,
   HttpStatusCode,
 } from "@oh/utils";
+import { RequestKind } from "shared/enums/request.enum.ts";
 
 export const deleteRequest: RequestType = {
   method: RequestMethod.DELETE,
   pathname: "",
+  kind: RequestKind.ADMIN,
   func: async (request) => {
     const { id } = await request.json();
     if (!id) {

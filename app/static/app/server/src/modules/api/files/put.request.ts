@@ -9,10 +9,12 @@ import { ulid } from "@std/ulid";
 import { type File } from "shared/types/main.ts";
 import { ALLOWED_EXTENSIONS, ALLOWED_MIME_TYPES } from "shared/consts/main.ts";
 import { Buffer } from "node:buffer";
+import { RequestKind } from "shared/enums/request.enum.ts";
 
 export const putRequest: RequestType = {
   method: RequestMethod.PUT,
   pathname: "",
+  kind: RequestKind.ADMIN,
   func: async (request) => {
     const formData = await request.formData();
     const file = formData.get("file");

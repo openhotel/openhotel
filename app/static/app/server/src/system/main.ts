@@ -4,6 +4,7 @@ import { CONFIG_DEFAULT } from "shared/consts/config.consts.ts";
 import { Migrations } from "modules/migrations/main.ts";
 import { api } from "./api.ts";
 import { files } from "./files.ts";
+import { accounts } from "./accounts.ts";
 
 export const System = (() => {
   const $api = api();
@@ -12,6 +13,7 @@ export const System = (() => {
   let $envs: Envs;
 
   const $files = files();
+  const $accounts = accounts();
   let $db: DbMutable;
 
   const load = async (envs: Envs) => {
@@ -59,7 +61,8 @@ export const System = (() => {
       return $db;
     },
 
-    files: $files,
     api: $api,
+    files: $files,
+    accounts: $accounts,
   };
 })();
