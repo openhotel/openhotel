@@ -7,6 +7,8 @@ import { getLatestVersion } from "@oh/utils";
 export const joinRoomEvent: ProxyEventType<{ roomId: string }> = {
   event: ProxyEvent.JOIN_ROOM,
   func: async ({ data: { roomId }, user }) => {
+    user.setLastMessage('');
+
     await user.moveToRoom(roomId);
 
     const { version: configVersion } = System.config.get();
