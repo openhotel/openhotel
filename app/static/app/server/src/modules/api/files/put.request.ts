@@ -6,10 +6,10 @@ import {
   HttpStatusCode,
 } from "@oh/utils";
 import { ulid } from "@std/ulid";
-import { type File } from "shared/types/main.ts";
-import { ALLOWED_EXTENSIONS, ALLOWED_MIME_TYPES } from "shared/consts/main.ts";
 import { Buffer } from "node:buffer";
+import { type File } from "shared/types/main.ts";
 import { RequestKind } from "shared/enums/request.enum.ts";
+import { isAllowedMimeType } from "shared/utils/files.utils.ts";
 
 export const putRequest: RequestType = {
   method: RequestMethod.PUT,
@@ -24,24 +24,18 @@ export const putRequest: RequestType = {
       return getResponse(HttpStatusCode.BAD_REQUEST);
     }
 
-    const fileName = file.name;
-    const fileExtension = fileName.split(".").pop()?.toLowerCase();
-
-    if (
-      !fileExtension ||
-      !ALLOWED_EXTENSIONS.includes(fileExtension) ||
-      !ALLOWED_MIME_TYPES.includes(file.type)
-    ) {
+    if (!isAllowedMimeType(file.type)) {
       return getResponse(HttpStatusCode.BAD_REQUEST);
     }
 
+    const fileName = file.name;
     const baseName = fileName.substring(0, fileName.lastIndexOf("."));
 
     const $file: File = {
       id: ulid(),
       name: baseName,
       createdAt: Date.now(),
-      mimeType: fileExtension,
+      mimeType: file.type,
     };
 
     const arrayBuffer = await file.arrayBuffer();

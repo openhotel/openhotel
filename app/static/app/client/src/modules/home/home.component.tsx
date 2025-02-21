@@ -87,6 +87,11 @@ export const HomeComponent: React.FC = () => {
             },
             {
               sortable: true,
+              key: "mimeType",
+              label: "Type",
+            },
+            {
+              sortable: true,
               key: "createdAt",
               label: "Created At",
             },
