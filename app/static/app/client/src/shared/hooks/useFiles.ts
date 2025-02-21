@@ -10,7 +10,7 @@ export const useFiles = () => {
   const getList = useCallback(async () => {
     const { data } = await fetch({
       method: RequestMethod.GET,
-      pathname: `/files`,
+      pathname: "files",
     });
 
     setFiles(data.files);
@@ -20,7 +20,7 @@ export const useFiles = () => {
     async (formData) => {
       const { data } = await fetch({
         method: RequestMethod.PUT,
-        pathname: `/files`,
+        pathname: "files",
         formData: true,
         body: formData,
       });
@@ -35,7 +35,7 @@ export const useFiles = () => {
     (fileId: string) => async () => {
       await fetch({
         method: RequestMethod.DELETE,
-        pathname: `/files`,
+        pathname: "files",
         body: { id: fileId },
       });
 
