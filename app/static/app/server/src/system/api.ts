@@ -72,6 +72,7 @@ export const api = () => {
             return new Response(fileData.file, {
               headers: {
                 "Content-Type": fileData.mimeType || "application/octet-stream",
+                "Cache-Control": `max-age=${60 * 60}`,
               },
             });
           }
