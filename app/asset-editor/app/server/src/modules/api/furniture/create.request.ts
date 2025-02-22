@@ -1,9 +1,8 @@
 import { BlobReader, BlobWriter, ZipWriter } from "@zip-js/data-uri";
 import { stringify } from "@std/yaml";
 
-import { RequestType, RequestMethod } from "@oh/utils";
+import { RequestType, RequestMethod, RequestKind } from "@oh/utils";
 import { base64ToBlob } from "shared/utils/base64.utils.ts";
-import { RequestKind } from "shared/enums/request.enums.ts";
 
 export const createRequest: RequestType = {
   method: RequestMethod.POST,

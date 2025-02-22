@@ -1,9 +1,8 @@
 import { BlobReader, BlobWriter, ZipReader } from "@zip-js/data-uri";
 import { parse } from "@std/yaml";
 
-import { RequestType, RequestMethod } from "@oh/utils";
+import { RequestType, RequestMethod, RequestKind } from "@oh/utils";
 import { getBase64ImageFromBlob } from "shared/utils/image.utils.ts";
-import { RequestKind } from "shared/enums/request.enums.ts";
 
 export const importRequest: RequestType = {
   method: RequestMethod.POST,

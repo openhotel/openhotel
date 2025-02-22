@@ -16,7 +16,7 @@
     "system/": "./src/system/",
     "modules/": "./src/modules/",
 
-    "@oh/utils": "jsr:@oh/utils@1.4.3",
+    "@oh/utils": "jsr:@oh/utils@1.5.0",
 
     "@zip-js": "jsr:@zip-js/zip-js@2.7.53",
     "@std/yaml": "jsr:@std/yaml@1.0.5",
