@@ -3,10 +3,10 @@ import {
   RequestMethod,
   getResponse,
   HttpStatusCode,
+  RequestKind,
 } from "@oh/utils";
 import { Scope } from "shared/enums/scopes.enums.ts";
 import { System } from "modules/system/main.ts";
-import { RequestKind } from "shared/enums/request.enums.ts";
 
 export const mainPostRequest: RequestType = {
   method: RequestMethod.POST,

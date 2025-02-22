@@ -3,9 +3,9 @@ import {
   RequestType,
   getResponse,
   HttpStatusCode,
+  RequestKind,
 } from "@oh/utils";
 import { System } from "modules/system/main.ts";
-import { RequestKind } from "shared/enums/request.enums.ts";
 
 export const githubGetRequest: RequestType = {
   method: RequestMethod.GET,

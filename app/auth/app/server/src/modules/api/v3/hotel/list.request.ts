@@ -3,9 +3,9 @@ import {
   HttpStatusCode,
   RequestMethod,
   RequestType,
+  RequestKind,
 } from "@oh/utils";
 import { System } from "modules/system/main.ts";
-import { RequestKind } from "shared/enums/request.enums.ts";
 import { DbHotelIntegrationType } from "shared/enums/hotel.enums.ts";
 
 export const listRequest: RequestType = {

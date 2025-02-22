@@ -3,8 +3,8 @@ import {
   RequestMethod,
   getResponse,
   HttpStatusCode,
+  RequestKind,
 } from "@oh/utils";
-import { RequestKind } from "shared/enums/request.enums.ts";
 
 export const checkGetRequest: RequestType = {
   method: RequestMethod.GET,

@@ -1,50 +1,25 @@
 import {
-  appendCORSHeaders,
+  getApiHandler,
   getContentType,
   getCORSHeaders,
   getResponse,
   HttpStatusCode,
   RequestMethod,
+  RequestKind,
 } from "@oh/utils";
 import { System } from "./main.ts";
 import { requestV3List } from "modules/api/v3/main.ts";
-import { REQUEST_KIND_COLOR_MAP } from "shared/consts/request.consts.ts";
-import { RequestKind } from "shared/enums/request.enums.ts";
 import { AccountMutable } from "shared/types/account.types.ts";
 
 export const api = () => {
   const load = (testMode: boolean = false) => {
-    if (!testMode) {
-      const maxLength = Math.max(
-        ...Object.values(RequestMethod).map((word: string) => word.length),
-      );
-      console.log();
-      for (const request of requestV3List) {
-        const kindList = (
-          Array.isArray(request.kind) ? request.kind : [request.kind]
-        ).map((kind) => `color: ${REQUEST_KIND_COLOR_MAP[kind]}`);
+    const $apiHandler = getApiHandler({
+      testMode,
+      requests: requestV3List,
+      checkAccess: checkAccess,
+    });
 
-        console.log(
-          ` %c${request.method.padStart(maxLength)} %c▓▓%c▓▓%c▓▓ %c${request.pathname}`,
-          `font-weight: bold;color: white`,
-          ...Object.assign(new Array(3).fill("color: white"), kindList),
-          "color: white",
-        );
-      }
-      console.log();
-
-      for (const kind of Object.keys(REQUEST_KIND_COLOR_MAP)) {
-        console.log(
-          `%c▓▓ %c${RequestKind[kind]}`,
-          `color: ${REQUEST_KIND_COLOR_MAP[kind]}`,
-          "color: gray",
-        );
-      }
-      console.log();
-    } else {
-      console.log(" >>>>>>>>>>>>>>>   TEST MODE   <<<<<<<<<<<<<<<<<");
-      console.log(" >>>>>>>>>>>>>>> Server ready! <<<<<<<<<<<<<<<<<");
-    }
+    $apiHandler.overview();
 
     const { version, port } = System.getConfig();
     const isDevelopment = version === "development";
@@ -91,28 +66,7 @@ export const api = () => {
             }
           }
 
-          const foundRequests = requestV3List.filter(
-            ($request) =>
-              // $request.method === method &&
-              $request.pathname === parsedUrl.pathname,
-          );
-          const foundMethodRequest = foundRequests.find(
-            ($request) => $request.method === method,
-          );
-          if (foundMethodRequest) {
-            if (
-              !(await checkAccess({
-                request,
-                kind: foundMethodRequest.kind ?? RequestKind.PUBLIC,
-              }))
-            )
-              return getResponse(HttpStatusCode.FORBIDDEN);
-            const response = await foundMethodRequest.func(request, parsedUrl);
-            appendCORSHeaders(response.headers);
-            return response;
-          }
-          if (foundRequests.length) return getResponse(HttpStatusCode.OK);
-          return getResponse(HttpStatusCode.NOT_FOUND);
+          return await $apiHandler.on(request);
         } catch (e) {
           console.log(e);
         }

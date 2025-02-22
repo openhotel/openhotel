@@ -3,10 +3,10 @@ import {
   RequestMethod,
   getResponse,
   HttpStatusCode,
+  RequestKind,
 } from "@oh/utils";
 import { System } from "modules/system/main.ts";
 import { EMAIL_REGEX } from "shared/consts/main.ts";
-import { RequestKind } from "shared/enums/request.enums.ts";
 
 export const recoverPasswordPostRequest: RequestType = {
   method: RequestMethod.POST,

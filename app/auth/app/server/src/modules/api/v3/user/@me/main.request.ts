@@ -3,8 +3,8 @@ import {
   RequestType,
   getResponse,
   HttpStatusCode,
+  RequestKind,
 } from "@oh/utils";
-import { RequestKind } from "shared/enums/request.enums.ts";
 import { System } from "modules/system/main.ts";
 import { LANGUAGE_LIST } from "shared/consts/language.consts.ts";
 

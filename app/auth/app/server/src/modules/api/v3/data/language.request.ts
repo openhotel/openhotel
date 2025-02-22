@@ -3,8 +3,8 @@ import {
   RequestMethod,
   getResponse,
   HttpStatusCode,
+  RequestKind,
 } from "@oh/utils";
-import { RequestKind } from "shared/enums/request.enums.ts";
 import { LANGUAGE_LIST } from "shared/consts/language.consts.ts";
 
 export const languagesRequest: RequestType = {

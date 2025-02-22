@@ -3,7 +3,7 @@
   "specifiers": {
     "jsr:@da/bcrypt@1.0.1": "1.0.1",
     "jsr:@oh/queue@1.1.1": "1.1.1",
-    "jsr:@oh/utils@1.4.3": "1.4.3",
+    "jsr:@oh/utils@1.5.0": "1.5.0",
     "jsr:@oh/yaml@1.1.0": "1.1.0",
     "jsr:@std/encoding@1.0.5": "1.0.5",
     "jsr:@std/fs@1.0.4": "1.0.4",
@@ -38,8 +38,8 @@
     "@oh/queue@1.1.1": {
       "integrity": "8e8ec809202c48beaf436b3ea01b4c3a17f8c015ca686d906822482c9c881390"
     },
-    "@oh/utils@1.4.3": {
-      "integrity": "3f985a987135951cf9584ffd3fbfb8e0f2658e046f09e28f2344ad963c19b668",
+    "@oh/utils@1.5.0": {
+      "integrity": "3410ce0496bf98318981fab601e68928dd2eb47148445bfa4870c91606c1d30f",
       "dependencies": [
         "jsr:@da/bcrypt",
         "jsr:@oh/yaml",
@@ -213,8 +213,8 @@
         "safe-buffer"
       ]
     },
-    "strnum@1.0.5": {
-      "integrity": "sha512-J8bbNyKKXl5qYcR36TIO8W3mVGVHrmmxsd5PAItGkmyzwJvybiw2IVq5nqd0i4LSNSkB/sx9VHllbfFdr9k1JA=="
+    "strnum@1.1.0": {
+      "integrity": "sha512-a4NGarQIHRhvr+k8VXaHg6TMU6f3YEmi5CAb6RYgX2gwbGDBNMbr6coC6g0wmif5dLjHtmHUVD/qOxPq7D0tnQ=="
     },
     "through2@4.0.2": {
       "integrity": "sha512-iOqSav00cVxEEICeD7TjLB1sueEL+81Wpzp2bY17uZjZN0pWZPuo4suZ/61VujxmqSGFfgOcNuTZ85QJwNZQpw==",
@@ -378,7 +378,7 @@
   "workspace": {
     "dependencies": [
       "jsr:@oh/queue@1.1.1",
-      "jsr:@oh/utils@1.4.3",
+      "jsr:@oh/utils@1.5.0",
       "jsr:@std/ulid@1",
       "npm:nodemailer@6.9.15"
     ]

@@ -3,10 +3,10 @@ import {
   RequestMethod,
   getResponse,
   HttpStatusCode,
+  RequestKind,
 } from "@oh/utils";
 import { System } from "modules/system/main.ts";
 import { PASSWORD_REGEX } from "shared/consts/main.ts";
-import { RequestKind } from "shared/enums/request.enums.ts";
 import { getPasswordMaxLength } from "shared/utils/password.utils.ts";
 
 export const changePasswordPostRequest: RequestType = {

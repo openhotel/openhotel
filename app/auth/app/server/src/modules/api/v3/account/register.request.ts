@@ -3,6 +3,7 @@ import {
   RequestMethod,
   getResponse,
   HttpStatusCode,
+  RequestKind,
 } from "@oh/utils";
 import { System } from "modules/system/main.ts";
 import {
@@ -11,7 +12,6 @@ import {
   USERNAME_REGEX,
   LANGUAGE_LIST,
 } from "shared/consts/main.ts";
-import { RequestKind } from "shared/enums/request.enums.ts";
 import { getPasswordMaxLength } from "shared/utils/password.utils.ts";
 
 export const registerPostRequest: RequestType = {
