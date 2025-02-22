@@ -70,6 +70,7 @@ export const AccountProvider: React.FunctionComponent<ProviderProps> = ({
     removeCookie("account-id");
     removeCookie("refresh-token");
     removeCookie("token");
+    removeCookie("account-token");
   }, [removeCookie]);
 
   const login = useCallback(
