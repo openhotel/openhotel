@@ -1,11 +1,8 @@
 import { Request } from "shared/types";
 import { RequestMethod } from "shared/enums";
 import { useCallback } from "react";
-import { useCookies } from "./useCookies.ts";
 
 export const useApi = () => {
-  const { get: getCookie } = useCookies();
-
   const $fetch = useCallback(
     async ({
       method = RequestMethod.GET,
@@ -20,8 +17,7 @@ export const useApi = () => {
         method,
         headers: new Headers({
           ...headers,
-          "account-id": getCookie("account-id"),
-          "account-token": getCookie("account-token"),
+          credentials: "include",
           ...(formData ? {} : { "Content-Type": "application/json" }),
         }),
         body: body ? (formData ? body : JSON.stringify(body)) : undefined,

@@ -9,6 +9,7 @@ export const userRequest: RequestType = {
   func: async (request: Request) => {
     const accountId = request.headers.get("account-id");
     const accountToken = request.headers.get("account-token");
+
     const {
       auth: { url: authUrl, appToken },
     } = System.getConfig();

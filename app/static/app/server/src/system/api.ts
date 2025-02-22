@@ -143,7 +143,7 @@ export const api = () => {
           if (!accountId || !accountToken) return false;
 
           const data = await System.accounts.getData(request);
-          return Boolean(data.admin);
+          return data && Boolean(data.admin);
 
         default:
           return false;
