@@ -46,6 +46,21 @@ export const HomeComponent: React.FC = () => {
                 {columns.map(($column) => {
                   let value = $row[$column.key];
 
+                  if ($column.key === "file") {
+                    const url = `${window.location.origin}/_/${$row.id}`;
+                    value = (
+                      <>
+                        <a href={url} target={"_blank"}>
+                          <img
+                            className={styles.preview}
+                            src={url}
+                            alt={"preview"}
+                          />
+                        </a>
+                      </>
+                    );
+                  }
+
                   if ($column.key === "actions") {
                     value = (
                       <>
@@ -76,6 +91,10 @@ export const HomeComponent: React.FC = () => {
             createdAt: dayjs(file.createdAt).format("YYYY/MM/DD HH:mm:ss"),
           }))}
           columns={[
+            {
+              key: "file",
+              label: "File",
+            },
             {
               key: "id",
               label: "ID",
