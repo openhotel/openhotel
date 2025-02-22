@@ -59,7 +59,8 @@ export const useApi = () => {
       if (rawResponse) return response;
 
       if (response.status === 403) {
-        globalThis.location.reload();
+        // In this web if not is admin redirect to auth
+        globalThis.location.replace("https://auth.openhotel.club");
         return;
       }
 
