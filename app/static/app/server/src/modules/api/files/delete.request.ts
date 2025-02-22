@@ -4,8 +4,8 @@ import {
   RequestMethod,
   getResponse,
   HttpStatusCode,
+  RequestKind,
 } from "@oh/utils";
-import { RequestKind } from "shared/enums/request.enum.ts";
 
 export const deleteRequest: RequestType = {
   method: RequestMethod.DELETE,

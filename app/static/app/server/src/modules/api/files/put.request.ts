@@ -4,11 +4,11 @@ import {
   RequestMethod,
   getResponse,
   HttpStatusCode,
+  RequestKind,
 } from "@oh/utils";
 import { ulid } from "@std/ulid";
 import { Buffer } from "node:buffer";
 import { type File } from "shared/types/main.ts";
-import { RequestKind } from "shared/enums/request.enum.ts";
 import { isAllowedMimeType } from "shared/utils/files.utils.ts";
 
 export const putRequest: RequestType = {
