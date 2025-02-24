@@ -84,14 +84,19 @@ export const getDb = (props: DbProps = {}): DbMutable => {
   const list = async <Value>(
     selector: DbListSelector,
     options?: DbListOptions,
-  ): Promise<ResultItem<Value>[]> => {
+  ): Promise<{ items: ResultItem<Value>[]; nextCursor?: string }> => {
     //@ts-ignore
     if (!$checkDbNull()) return;
 
+    const iterator = db.list(selector, options);
     const items = [];
-    for await (const entry of db.list(selector, options))
+    for await (const entry of iterator)
       items.push(entry as unknown as ResultItem<Value>);
-    return items;
+
+    return {
+      items,
+      nextCursor: iterator.cursor,
+    };
   };
 
   const getMany = async <Value extends readonly unknown[]>(
