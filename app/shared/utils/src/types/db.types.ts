@@ -54,7 +54,7 @@ export type DbMutable = {
   list: <Value>(
     selector: DbListSelector,
     options?: DbListOptions,
-  ) => Promise<ResultItem<Value>[]>;
+  ) => Promise<{ items: ResultItem<Value>[]; nextCursor?: string }>;
 
   getMany: <Value extends readonly unknown[]>(
     keys: readonly [...{ [K in keyof Value]: DbKey }],

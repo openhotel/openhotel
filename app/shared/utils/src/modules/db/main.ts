@@ -225,7 +225,8 @@ export const getDb = (props: DbProps = {}): DbMutable => {
   const visualize = async () => {
     try {
       const entries = [];
-      for (const entry of await list<unknown>({ prefix: [] })) {
+      const { items } = await list<unknown>({ prefix: [] });
+      for (const entry of items) {
         entries.push({
           //@ts-ignore
           key: JSON.stringify(entry.key),
