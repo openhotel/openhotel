@@ -25,7 +25,10 @@ import { hotels } from "./hotels.ts";
 import { connections } from "./connections/main.ts";
 import { ulid } from "@std/ulid";
 import { getUserAgentData } from "shared/utils/user-agent.utils.ts";
-import { discordNotify } from "shared/utils/discord.utils.ts";
+import {
+  discordNotify,
+  getRandomDiscordMessage,
+} from "shared/utils/discord.utils.ts";
 import { getHiddenMail } from "shared/utils/mail.utils.ts";
 import { MailTypes } from "shared/types/mail.types.ts";
 
@@ -466,7 +469,7 @@ export const accounts = () => {
         (account) => account.verified,
       );
       discordNotify({
-        content: `🏨  Someone just received their keys...  🏨\n\n**${account.username}** has checked in. We are now **${accountsList.length}** guests in the hotel.\n Who will be their first neighbor?  🏡\n\n🔑  Come meet them: [Hotel](https://client.openhotel.club)\n`,
+        content: getRandomDiscordMessage(account.username, accountsList.length),
       });
     };
 
