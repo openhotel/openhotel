@@ -35,6 +35,7 @@ export const active = (account: DbAccount): AccountActiveConnection => {
     );
 
     const userAgent = request.headers.get("user-agent");
+    const fingerprint = request.headers.get("fingerprint");
     const ip = getIpFromRequest(request);
 
     await System.db.set(
@@ -55,6 +56,7 @@ export const active = (account: DbAccount): AccountActiveConnection => {
         accountId: account.accountId,
         userAgent,
         ip,
+        fingerprint,
 
         scopes,
 
@@ -141,14 +143,12 @@ export const active = (account: DbAccount): AccountActiveConnection => {
   const ping = async (connectionId: string, request: Request) => {
     const connection = await get();
 
-    const userAgent = request.headers.get("user-agent");
-    const ip = getIpFromRequest(request);
+    const fingerprint = request.headers.get("fingerprint");
 
     if (
       !connection ||
       connection.connectionId !== connectionId ||
-      connection.userAgent !== userAgent ||
-      connection.ip !== ip
+      connection.fingerprint !== fingerprint
     )
       return null;
 

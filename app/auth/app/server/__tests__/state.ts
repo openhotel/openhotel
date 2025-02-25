@@ -48,6 +48,7 @@ export const State = () => {
       token: userData.token,
       "refresh-token": userData.refreshToken,
       "user-agent": USER_AGENTS.FIREFOX,
+      fingerprint: "12345678",
       "x-forwarded-for": "23.23.23.23",
     };
   };

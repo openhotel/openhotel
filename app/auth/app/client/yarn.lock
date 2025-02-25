@@ -677,6 +677,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@thumbmarkjs/thumbmarkjs@npm:^0.19.1":
+  version: 0.19.1
+  resolution: "@thumbmarkjs/thumbmarkjs@npm:0.19.1"
+  checksum: 10c0/3234cd7a03fb24dd5ea25983aa80009d2752579cc48a8765b8f67c7e6ac77391f44307fb49472334323874eea12df2250c3bf7172cf1847c891cec674c3708a0
+  languageName: node
+  linkType: hard
+
 "@types/babel__core@npm:^7.20.5":
   version: 7.20.5
   resolution: "@types/babel__core@npm:7.20.5"
@@ -2279,6 +2286,7 @@ __metadata:
   dependencies:
     "@oh/components": "npm:@jsr/oh__components@0.1.41"
     "@rollup/plugin-alias": "npm:5.1.0"
+    "@thumbmarkjs/thumbmarkjs": "npm:^0.19.1"
     "@types/js-cookie": "npm:3.0.6"
     "@types/react": "npm:18.3.3"
     "@vitejs/plugin-react": "npm:^4.3.1"

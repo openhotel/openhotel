@@ -162,6 +162,7 @@ export type DbAccountActiveIntegrationConnection = {
   accountId: string;
   userAgent: string;
   ip: string;
+  fingerprint: string;
 
   scopes: Scope[];
 

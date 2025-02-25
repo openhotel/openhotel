@@ -95,6 +95,7 @@ describe("3. login an account", () => {
         headers: {
           "user-agent": USER_AGENTS.CHROME,
           "x-forwarded-for": "1.2.3.4",
+          fingerprint: "654321",
         },
         body: JSON.stringify({
           email: USER_1.email,
@@ -110,7 +111,7 @@ describe("3. login an account", () => {
         headers: {
           ...STATE.getSessionHeaders(USER_1.email + "2"),
           "user-agent": USER_AGENTS.CHROME,
-          "x-forwarded-for": "1.2.3.4",
+          fingerprint: "654321",
         },
       });
       assertEquals(status, 200);

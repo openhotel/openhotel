@@ -12,3 +12,4 @@ export * from "./useCookies";
 export * from "./useHotels";
 export * from "./useLanguages";
 export * from "./useTitle";
+export * from "./useFingerprint";

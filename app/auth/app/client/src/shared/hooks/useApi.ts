@@ -1,8 +1,11 @@
 import { Request } from "shared/types";
 import { RequestMethod } from "../enums";
 import { useCallback } from "react";
+import { useFingerprint } from "./useFingerprint";
 
 export const useApi = () => {
+  const { getFingerprint } = useFingerprint();
+
   const $fetch = useCallback(
     async ({
       method = RequestMethod.GET,
@@ -17,6 +20,7 @@ export const useApi = () => {
         headers: new Headers({
           ...headers,
           "Content-Type": "application/json",
+          fingerprint: getFingerprint(),
         }),
         body: body ? JSON.stringify(body) : undefined,
         credentials: "include",
@@ -61,7 +65,7 @@ export const useApi = () => {
 
       return response;
     },
-    [],
+    [getFingerprint],
   );
 
   const getVersion = useCallback(async (): Promise<string> => {

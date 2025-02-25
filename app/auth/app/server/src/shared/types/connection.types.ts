@@ -9,6 +9,7 @@ export type Connection = {
   accountId: string;
   userAgent: string;
   ip: string;
+  fingerprint: string;
 
   scopes: Scope[];
 

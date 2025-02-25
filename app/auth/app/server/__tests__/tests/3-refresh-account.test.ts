@@ -17,23 +17,12 @@ describe("4. refresh account tokens", () => {
     assertEquals(status, 403);
     assertEquals(data, undefined);
   });
-  it("refreshes with incorrect user-agent account session", async () => {
+  it("refreshes with incorrect fingerprint account session", async () => {
     const { status, data } = await fetcher("/account/refresh", {
       method: "GET",
       headers: {
         ...STATE.getSessionHeaders(USER_1.email),
-        "user-agent": "POTATOES",
-      },
-    });
-    assertEquals(status, 403);
-    assertEquals(data, undefined);
-  });
-  it("refreshes with incorrect ip account session", async () => {
-    const { status, data } = await fetcher("/account/refresh", {
-      method: "GET",
-      headers: {
-        ...STATE.getSessionHeaders(USER_1.email),
-        "x-forwarded-for": "0.0.0.0",
+        fingerprint: "666555",
       },
     });
     assertEquals(status, 403);

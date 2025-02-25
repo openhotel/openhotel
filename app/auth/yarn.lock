@@ -5,6 +5,13 @@ __metadata:
   version: 8
   cacheKey: 10c0
 
+"@thumbmarkjs/thumbmarkjs@npm:^0.19.1":
+  version: 0.19.1
+  resolution: "@thumbmarkjs/thumbmarkjs@npm:0.19.1"
+  checksum: 10c0/3234cd7a03fb24dd5ea25983aa80009d2752579cc48a8765b8f67c7e6ac77391f44307fb49472334323874eea12df2250c3bf7172cf1847c891cec674c3708a0
+  languageName: node
+  linkType: hard
+
 "prettier@npm:3.3.2":
   version: 3.3.2
   resolution: "prettier@npm:3.3.2"
@@ -18,6 +25,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "root-workspace-0b6124@workspace:."
   dependencies:
+    "@thumbmarkjs/thumbmarkjs": "npm:^0.19.1"
     prettier: "npm:3.3.2"
   languageName: unknown
   linkType: soft
