@@ -1,14 +1,8 @@
 import { getFingerprint, setOption } from "@thumbmarkjs/thumbmarkjs";
-import React, {
-  ReactNode,
-  useCallback,
-  useContext,
-  useEffect,
-  useRef,
-} from "react";
+import React, { ReactNode, useContext, useEffect, useState } from "react";
 
 type FingerprintState = {
-  getFingerprint: () => string;
+  fingerprint: string;
 };
 
 const FingerprintContext = React.createContext<FingerprintState>(undefined);
@@ -20,21 +14,17 @@ type ProviderProps = {
 export const FingerprintProvider: React.FunctionComponent<ProviderProps> = ({
   children,
 }) => {
-  const fingerprint = useRef<string>(null);
+  const [fingerprint, setFingerprint] = useState<string>(null);
 
   useEffect(() => {
     setOption("exclude", ["system.browser.version"]);
-    getFingerprint().then(($fingerprint) => {
-      fingerprint.current = $fingerprint;
-    });
-  }, []);
-
-  const $getFingerprint = useCallback(() => fingerprint.current, [fingerprint]);
+    getFingerprint().then(setFingerprint);
+  }, [setFingerprint]);
 
   return (
     <FingerprintContext.Provider
-      value={{ getFingerprint: $getFingerprint }}
-      children={children}
+      value={{ fingerprint }}
+      children={fingerprint ? children : null}
     />
   );
 };

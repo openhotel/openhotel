@@ -4,7 +4,7 @@ import { useCallback } from "react";
 import { useFingerprint } from "./useFingerprint";
 
 export const useApi = () => {
-  const { getFingerprint } = useFingerprint();
+  const { fingerprint } = useFingerprint();
 
   const $fetch = useCallback(
     async ({
@@ -20,7 +20,7 @@ export const useApi = () => {
         headers: new Headers({
           ...headers,
           "Content-Type": "application/json",
-          fingerprint: getFingerprint(),
+          fingerprint,
         }),
         body: body ? JSON.stringify(body) : undefined,
         credentials: "include",
@@ -57,7 +57,8 @@ export const useApi = () => {
       if (rawResponse) return response;
 
       if (response.status === 403) {
-        globalThis.location.reload();
+        console.log(fingerprint);
+        // globalThis.location.reload();
         return;
       }
 
@@ -65,7 +66,7 @@ export const useApi = () => {
 
       return response;
     },
-    [getFingerprint],
+    [fingerprint],
   );
 
   const getVersion = useCallback(async (): Promise<string> => {
