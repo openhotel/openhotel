@@ -18,4 +18,5 @@
 
 ### Start project
 
+- Run `deno task install`
 - Run `deno task start`
