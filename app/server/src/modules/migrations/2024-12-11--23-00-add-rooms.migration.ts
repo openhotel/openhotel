@@ -11,8 +11,8 @@ export default {
   description: "Add initial rooms",
   up: async (db: DbMutable) => {
     const removeAllItems = async (id: string) => {
-      for (const { key } of await db.list({ prefix: [id] }))
-        await db.delete(key);
+      const { items } = await db.list({ prefix: [id] });
+      for (const { key } of items) await db.delete(key);
     };
 
     // Remove all previous rooms

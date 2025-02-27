@@ -5,7 +5,8 @@ export default {
   id: "2024-12-16--01-03-remove-furniture-uid",
   description: "Add initial rooms",
   up: async (db: DbMutable) => {
-    for (const { key, value } of await db.list({ prefix: ["rooms"] })) {
+    const { items: rooms } = await db.list({ prefix: ["rooms"] });
+    for (const { key, value } of rooms) {
       db.set(key, {
         ...value,
         furniture: value.furniture.map((furni) => ({
@@ -17,7 +18,8 @@ export default {
     }
   },
   down: async (db: DbMutable) => {
-    for (const { key, value } of await db.list({ prefix: ["rooms"] })) {
+    const { items: rooms } = await db.list({ prefix: ["rooms"] });
+    for (const { key, value } of rooms) {
       db.set(key, {
         ...value,
         furniture: value.furniture.map((furni) => ({
