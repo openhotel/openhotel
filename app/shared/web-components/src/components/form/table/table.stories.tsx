@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import { fn } from "@storybook/test";
 import { TableComponent } from "./table.component";
 
@@ -396,4 +397,106 @@ export const Secondary = {
     ],
     defaultPage: 0,
   },
+};
+
+export const CursorPaginated = () => {
+  const [data, setData] = useState([
+    {
+      id: 1,
+      name: "Pablo",
+      username: "pagoru",
+      email: "pagoru@example.com",
+    },
+    {
+      id: 2,
+      name: "Wacede",
+      username: "alqubo",
+      email: "alqubo@example.com",
+    },
+    {
+      id: 3,
+      name: "Fake123",
+      username: "fake123",
+      email: "fake123@aol.com",
+    },
+    {
+      id: 4,
+      name: "Fake1234",
+      username: "fake1234",
+      email: "fake1234@aol.com",
+    },
+  ]);
+  const [cursor, setCursor] = useState("cursor");
+
+  const handleNext = () => {
+    const newRows = [
+      {
+        id: data.length + 1,
+        name: `User ${data.length + 1}`,
+        username: `user${data.length + 1}`,
+        email: `user${data.length + 1}@example.com`,
+      },
+      {
+        id: data.length + 2,
+        name: `User ${data.length + 2}`,
+        username: `user${data.length + 2}`,
+        email: `user${data.length + 2}@example.com`,
+      },
+      {
+        id: data.length + 3,
+        name: `User ${data.length + 3}`,
+        username: `user${data.length + 3}`,
+        email: `user${data.length + 3}@example.com`,
+      },
+      {
+        id: data.length + 4,
+        name: `User ${data.length + 4}`,
+        username: `user${data.length + 4}`,
+        email: `user${data.length + 4}@example.com`,
+      },
+    ];
+    setData((prev) => [...prev, ...newRows]);
+    setCursor(`cursor-${data.length + newRows.length}`);
+
+    if (data.length > 10) {
+      setCursor("");
+      return;
+    }
+  };
+
+  const columns = [
+    {
+      sortable: true,
+      key: "name",
+      label: "Name",
+    },
+    {
+      key: "username",
+      label: "Username",
+    },
+    {
+      sortable: true,
+      key: "email",
+      label: "Email",
+    },
+  ];
+
+  return (
+    <TableComponent
+      title="Users"
+      searchable={true}
+      pageRows={4}
+      cursor={cursor}
+      onNext={handleNext}
+      columns={columns}
+      data={data}
+      rowFunc={(row, columns) => (
+        <tr key={row.id}>
+          {columns.map((col) => (
+            <td key={col.key}>{row[col.key]}</td>
+          ))}
+        </tr>
+      )}
+    />
+  );
 };

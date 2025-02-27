@@ -28,6 +28,9 @@ type Props = {
   defaultPage?: number;
 
   rowFunc: (data: DataRow, columns: Column[]) => React.ReactNode | null;
+
+  cursor?: string;
+  onNext?: (cursor: string) => void;
 };
 
 export const TableComponent: React.FC<Props> = ({
@@ -39,6 +42,8 @@ export const TableComponent: React.FC<Props> = ({
   defaultPage = 0,
   searchable = false,
   rowFunc,
+  cursor,
+  onNext,
 }) => {
   const [pageIndex, setPageIndex] = useState(defaultPage);
   const [searchFilterText, setSearchFilterText] = useState<string>("");
@@ -85,10 +90,13 @@ export const TableComponent: React.FC<Props> = ({
   }, [sortedData, pageRows, pageIndex]);
 
   const canGoToPreviousPage = useMemo(() => pageIndex !== 0, [pageIndex]);
-  const canGoToNextPage = useMemo(
-    () => pageIndex * pageRows + pageRows < sortedData.length,
-    [pageRows, pageIndex, sortedData],
-  );
+  const canGoToNextPage = useMemo(() => {
+    const nextPageStart = (pageIndex + 1) * pageRows;
+    return (
+      sortedData.length > nextPageStart ||
+      (!!cursor && sortedData.length === nextPageStart)
+    );
+  }, [sortedData, pageIndex, pageRows, cursor]);
 
   const maxPages = useMemo(
     () => Math.ceil(sortedData.length / pageRows),
@@ -100,10 +108,15 @@ export const TableComponent: React.FC<Props> = ({
     setPageIndex((index) => index - 1);
   }, [setPageIndex, canGoToPreviousPage]);
 
-  const onNextPage = useCallback(() => {
-    if (!canGoToNextPage) return;
-    setPageIndex((index) => index + 1);
-  }, [setPageIndex, canGoToNextPage]);
+  const handleNext = useCallback(() => {
+    const nextPageStart = (pageIndex + 1) * pageRows;
+    if (sortedData.length > nextPageStart) {
+      setPageIndex(pageIndex + 1);
+    } else if (onNext && cursor) {
+      onNext(cursor);
+      setPageIndex(pageIndex + 1);
+    }
+  }, [sortedData, pageIndex, pageRows, onNext, cursor]);
 
   const onSearchInputChange = useCallback(
     (event) => setSearchFilterText(event.target.value),
@@ -217,7 +230,7 @@ export const TableComponent: React.FC<Props> = ({
           </div>
           <ButtonComponent
             className={styles.button}
-            onClick={onNextPage}
+            onClick={handleNext}
             color="grey"
             style={{
               visibility: canGoToNextPage ? "visible" : "hidden",
