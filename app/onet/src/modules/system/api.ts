@@ -1,10 +1,23 @@
 import { requestV1List } from "modules/api/v1/main.ts";
-import { appendCORSHeaders, getCORSHeaders, RequestMethod } from "@oh/utils";
+import {
+  getCORSHeaders,
+  RequestMethod,
+  getApiHandler,
+  ApiHandlerMutable,
+  RequestKind,
+} from "@oh/utils";
+import { System } from "./main.ts";
 
 export const api = () => {
+  let $apiHandler: ApiHandlerMutable;
+
   const load = () => {
-    for (const request of requestV1List)
-      console.info(request.method, request.pathname);
+    $apiHandler = getApiHandler({
+      requests: requestV1List,
+      checkAccess,
+    });
+
+    $apiHandler.overview();
   };
 
   const onRequest = async (
@@ -17,37 +30,47 @@ export const api = () => {
     const request = new Request($request, { headers });
 
     try {
-      const { url, method } = request;
+      const { method } = request;
       if (method === RequestMethod.OPTIONS)
         return new Response(null, {
           headers: getCORSHeaders(),
           status: 204,
         });
 
-      const parsedUrl = new URL(url);
-
-      const foundRequests = requestV1List.filter(
-        ($request) =>
-          $request.method === method &&
-          $request.pathname === parsedUrl.pathname,
-      );
-      const foundMethodRequest = foundRequests.find(
-        ($request) => $request.method === method,
-      );
-      if (foundMethodRequest) {
-        const response = await foundMethodRequest.func(request, parsedUrl);
-        appendCORSHeaders(response.headers);
-        return response;
-      }
-      if (foundRequests.length)
-        return new Response("200", {
-          status: 200,
-        });
-      return new Response("404", { status: 404 });
+      return await $apiHandler.on(request);
     } catch (e) {
       console.log(e);
     }
     return new Response("500", { status: 500 });
+  };
+
+  const checkAccess = async ({
+    request,
+    kind,
+  }: {
+    request: Request;
+    kind: RequestKind | RequestKind[];
+  }): Promise<boolean> => {
+    const check = async (kind: RequestKind) => {
+      switch (kind) {
+        case RequestKind.PUBLIC:
+          return true;
+        case RequestKind.TOKEN:
+          const hotelId = request.headers.get("hotel-id");
+          const token = request.headers.get("token");
+
+          if (!hotelId || !token) return false;
+
+          const hotel = System.hotels.get({ hotelId });
+          return hotel.verify(token);
+        default:
+          return false;
+      }
+    };
+
+    return Array.isArray(kind)
+      ? (await Promise.all(kind.map(check))).includes(true)
+      : check(kind);
   };
 
   return {

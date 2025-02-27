@@ -6,3 +6,7 @@ build
 database
 database-wal
 database-shm
+database-key
+database-pep
+database-backups
+.yarn
