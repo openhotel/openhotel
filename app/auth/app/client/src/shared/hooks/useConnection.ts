@@ -34,6 +34,7 @@ export const useConnection = () => {
         method: RequestMethod.GET,
         pathname: `/user/@me/connection?hotelId=${hotelId}&integrationId=${integrationId}`,
         headers: getAccountHeaders(),
+        preventReload: true,
       });
 
       return data.connection;
@@ -53,22 +54,26 @@ export const useConnection = () => {
         pathname: `/user/@me/connection`,
         headers: getAccountHeaders(),
         body: { hotelId, integrationId, state, scopes },
+        preventReload: true,
       });
     },
     [fetch, getAccountHeaders],
   );
 
   const ping = useCallback(
-    async (connectionId: string) => {
+    async (connectionId: string, fingerprint: string) => {
       const { data } = await fetch({
         method: RequestMethod.PATCH,
         pathname: `/user/@me/connection/ping?connectionId=${connectionId}`,
-        headers: getAccountHeaders(),
+        headers: {
+          fingerprint,
+        },
+        preventReload: true,
       });
 
       return data;
     },
-    [fetch, getAccountHeaders],
+    [fetch],
   );
 
   return {

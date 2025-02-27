@@ -52,13 +52,15 @@ export const AccountProvider: React.FunctionComponent<ProviderProps> = ({
   const { set: setCookie, get: getCookie, remove: removeCookie } = useCookies();
 
   const [isLogged, setIsLogged] = useState<boolean>(null);
+  const [lastRefresh, setLastRefresh] = useState<number>(0);
 
   const getAccountHeaders = useCallback(
     () => ({
       "account-id": getCookie("account-id"),
       token: getCookie("token"),
+      lastRefresh: lastRefresh + "",
     }),
-    [getCookie],
+    [getCookie, lastRefresh],
   );
 
   const getTokenId = useCallback(
@@ -71,7 +73,9 @@ export const AccountProvider: React.FunctionComponent<ProviderProps> = ({
     removeCookie("refresh-token");
     removeCookie("token");
     removeCookie("account-token");
-  }, [removeCookie]);
+
+    setLastRefresh(performance.now());
+  }, [removeCookie, setLastRefresh]);
 
   const login = useCallback(
     async (body: AccountLoginProps) => {
@@ -93,9 +97,10 @@ export const AccountProvider: React.FunctionComponent<ProviderProps> = ({
       setCookie("refresh-token", refreshToken, refreshTokenDuration);
       setCookie("token", token, tokenDuration);
 
+      setLastRefresh(performance.now());
       setIsLogged(true);
     },
-    [fetch, setCookie, setIsLogged],
+    [fetch, setCookie, setIsLogged, setLastRefresh],
   );
 
   const register = useCallback(
@@ -192,7 +197,9 @@ export const AccountProvider: React.FunctionComponent<ProviderProps> = ({
     setCookie("account-id", accountId, refreshTokenDuration);
     setCookie("refresh-token", refreshToken, refreshTokenDuration);
     setCookie("token", token, tokenDuration);
-  }, [fetch, setCookie, getCookie]);
+
+    setLastRefresh(performance.now());
+  }, [fetch, setCookie, getCookie, setLastRefresh]);
 
   const setAsAdmin = useCallback(() => {
     return fetch({
@@ -227,12 +234,12 @@ export const AccountProvider: React.FunctionComponent<ProviderProps> = ({
   }, [fetch, getAccountHeaders, setIsLogged, clearSession]);
 
   useEffect(() => {
-    if (isLogged !== null) return;
+    if (isLogged !== null || window.location.pathname === "/ping") return;
 
     refresh()
       .then(() => setIsLogged(true))
       .catch(() => {
-        clearSession();
+        // clearSession();
         setIsLogged(false);
       });
   }, [isLogged]);

@@ -112,6 +112,7 @@ export const active = (account: DbAccount): AccountActiveConnection => {
     const url = new URL(integration.getObject().redirectUrl);
     url.searchParams.append("state", state);
     url.searchParams.append("token", token);
+    url.searchParams.append("fingerprint", fingerprint);
 
     if (scopes?.length) url.searchParams.append("scopes", scopes.join(","));
 

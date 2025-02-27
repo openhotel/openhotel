@@ -1,18 +1,24 @@
 import React, { useCallback, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
-import { useConnection } from "shared/hooks";
 
 export const PingComponent: React.FC = () => {
   const [searchParams] = useSearchParams();
-  const { ping } = useConnection();
 
+  const fingerprint = searchParams.get("fingerprint");
   const connectionId = searchParams.get("connectionId");
 
   const $ping = useCallback(() => {
-    ping(connectionId).then(({ estimatedNextPingIn }) => {
-      setTimeout($ping, estimatedNextPingIn);
-    });
-  }, [ping]);
+    fetch(`api/v3/user/@me/connection/ping?connectionId=${connectionId}`, {
+      method: "PATCH",
+      headers: new Headers({
+        fingerprint,
+      }),
+    })
+      .then((response) => response.json())
+      .then(({ data: { estimatedNextPingIn } }) => {
+        setTimeout($ping, estimatedNextPingIn);
+      });
+  }, []);
 
   useEffect(() => {
     if (!connectionId) return;

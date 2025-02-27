@@ -82,12 +82,12 @@ const router = createBrowserRouter([
         ),
         path: "/connection",
       },
+      { path: "/ping", element: <PingComponent /> },
       {
         element: <AppsComponent />,
         path: "/apps",
       },
       { path: "/verify", element: <VerifyComponent /> },
-      { path: "/ping", element: <PingComponent /> },
       //pages
       {
         path: "/account",

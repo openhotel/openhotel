@@ -14,13 +14,14 @@ export const useApi = () => {
       headers = {},
       cache = true,
       rawResponse = false,
+      preventReload = false,
     }: Request) => {
       const response = await fetch(`/api/v3${pathname}`, {
         method,
         headers: new Headers({
-          ...headers,
           "Content-Type": "application/json",
           fingerprint,
+          ...headers,
         }),
         body: body ? JSON.stringify(body) : undefined,
         credentials: "include",
@@ -56,9 +57,8 @@ export const useApi = () => {
 
       if (rawResponse) return response;
 
-      if (response.status === 403) {
-        console.log(fingerprint);
-        // globalThis.location.reload();
+      if (!preventReload && response.status === 403) {
+        globalThis.location.reload();
         return;
       }
 
