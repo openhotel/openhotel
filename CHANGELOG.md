@@ -1,4 +1,36 @@
 
+<a name="v0.5.32"></a>
+
+## [v0.5.32](https://github.com/openhotel/openhotel/compare/v0.5.31...v0.5.32) (2025-02-28)
+
+### Bug Fixes
+
+- accept pinf from fingerprint - fix [#685](https://github.com/openhotel/openhotel/issues/685) ([#686](https://github.com/openhotel/openhotel/issues/686))
+- texture of stairs missing few pixels - fix [#671](https://github.com/openhotel/openhotel/issues/671) ([#678](https://github.com/openhotel/openhotel/issues/678))
+- remove reference tile - fix [#673](https://github.com/openhotel/openhotel/issues/673) ([#674](https://github.com/openhotel/openhotel/issues/674))
+- private rooms not centered - fix [#665](https://github.com/openhotel/openhotel/issues/665) ([#672](https://github.com/openhotel/openhotel/issues/672))
+- cannot place flags on corner or spawn door - fix [#663](https://github.com/openhotel/openhotel/issues/663) ([#667](https://github.com/openhotel/openhotel/issues/667))
+- incorrect room displacement when placing flags - fix [#628](https://github.com/openhotel/openhotel/issues/628) ([#664](https://github.com/openhotel/openhotel/issues/664))
+- allow touchevents to stop dragging - fix [#648](https://github.com/openhotel/openhotel/issues/648) ([#659](https://github.com/openhotel/openhotel/issues/659))
+- prevent set incorrect frame direction - fix [#649](https://github.com/openhotel/openhotel/issues/649) ([#650](https://github.com/openhotel/openhotel/issues/650))
+
+### Bump
+
+- [@oh](https://github.com/oh)/utils - fix [#683](https://github.com/openhotel/openhotel/issues/683) ([#684](https://github.com/openhotel/openhotel/issues/684))
+
+### Chore
+
+- update changelog for v0.5.31 ([#646](https://github.com/openhotel/openhotel/issues/646))
+
+### Features
+
+- add first version of room creation menu - fix [#274](https://github.com/openhotel/openhotel/issues/274) ([#657](https://github.com/openhotel/openhotel/issues/657))
+- correct literal error demo room - fix [#668](https://github.com/openhotel/openhotel/issues/668) ([#669](https://github.com/openhotel/openhotel/issues/669))
+- add cache changelog - fix [#655](https://github.com/openhotel/openhotel/issues/655) ([#656](https://github.com/openhotel/openhotel/issues/656))
+- add /changelog request - fix [#653](https://github.com/openhotel/openhotel/issues/653) ([#654](https://github.com/openhotel/openhotel/issues/654))
+- add changelog modal - fix [#611](https://github.com/openhotel/openhotel/issues/611) ([#642](https://github.com/openhotel/openhotel/issues/642))
+
+
 <a name="v0.5.31"></a>
 
 ## [v0.5.31](https://github.com/openhotel/openhotel/compare/v0.5.30...v0.5.31) (2025-02-09)
@@ -669,21 +701,21 @@
 
 <a name="v0.2.26"></a>
 
-## [v0.2.26](https://github.com/openhotel/openhotel/compare/v0.2.24.b...v0.2.26) (2024-10-02)
+## [v0.2.26](https://github.com/openhotel/openhotel/compare/v0.2.24...v0.2.26) (2024-10-02)
 
 ### Bump
 
 - [@oh](https://github.com/oh)/updater - fix [#338](https://github.com/openhotel/openhotel/issues/338) ([#339](https://github.com/openhotel/openhotel/issues/339))
 
 
-<a name="v0.2.24.b"></a>
-
-## [v0.2.24.b](https://github.com/openhotel/openhotel/compare/v0.2.24...v0.2.24.b) (2024-10-02)
-
-
 <a name="v0.2.24"></a>
 
-## [v0.2.24](https://github.com/openhotel/openhotel/compare/v0.2.25...v0.2.24) (2024-10-02)
+## [v0.2.24](https://github.com/openhotel/openhotel/compare/v0.2.24.b...v0.2.24) (2024-10-02)
+
+
+<a name="v0.2.24.b"></a>
+
+## [v0.2.24.b](https://github.com/openhotel/openhotel/compare/v0.2.25...v0.2.24.b) (2024-10-02)
 
 
 <a name="v0.2.25"></a>
@@ -762,17 +794,17 @@
 
 <a name="v0.2.20-rc.2"></a>
 
-## [v0.2.20-rc.2](https://github.com/openhotel/openhotel/compare/v0.2.20-rc.1...v0.2.20-rc.2) (2024-09-29)
-
-
-<a name="v0.2.20-rc.1"></a>
-
-## [v0.2.20-rc.1](https://github.com/openhotel/openhotel/compare/v0.2.19...v0.2.20-rc.1) (2024-09-29)
+## [v0.2.20-rc.2](https://github.com/openhotel/openhotel/compare/v0.2.19...v0.2.20-rc.2) (2024-09-29)
 
 
 <a name="v0.2.19"></a>
 
-## [v0.2.19](https://github.com/openhotel/openhotel/compare/v0.2.18...v0.2.19) (2024-09-29)
+## [v0.2.19](https://github.com/openhotel/openhotel/compare/v0.2.20-rc.1...v0.2.19) (2024-09-29)
+
+
+<a name="v0.2.20-rc.1"></a>
+
+## [v0.2.20-rc.1](https://github.com/openhotel/openhotel/compare/v0.2.18...v0.2.20-rc.1) (2024-09-29)
 
 
 <a name="v0.2.18"></a>
