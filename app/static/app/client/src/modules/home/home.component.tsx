@@ -34,7 +34,7 @@ export const HomeComponent: React.FC = () => {
   return (
     <div className={styles.home}>
       <div className={styles.content}>
-        <FileInputComponent onChange={onUploadFile} accept="image/*" />
+        <FileInputComponent onChange={onUploadFile} />
         <TableComponent
           title="Files"
           searchable={true}

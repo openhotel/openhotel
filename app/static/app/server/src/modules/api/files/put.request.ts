@@ -9,7 +9,6 @@ import {
 import { ulid } from "@std/ulid";
 import { Buffer } from "node:buffer";
 import { type File } from "shared/types/main.ts";
-import { isAllowedMimeType } from "shared/utils/files.utils.ts";
 
 export const putRequest: RequestType = {
   method: RequestMethod.PUT,
@@ -21,10 +20,6 @@ export const putRequest: RequestType = {
 
     const MAX_SIZE = 10 * 1024 * 1024; // 10MB
     if (!file || typeof file === "string" || file.size > MAX_SIZE) {
-      return getResponse(HttpStatusCode.BAD_REQUEST);
-    }
-
-    if (!isAllowedMimeType(file.type)) {
       return getResponse(HttpStatusCode.BAD_REQUEST);
     }
 
