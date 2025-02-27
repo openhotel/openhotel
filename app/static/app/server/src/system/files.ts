@@ -12,8 +12,23 @@ export const files = () => {
     s3Client = getS3(configS3);
   };
 
-  const getList = async () =>
-    (await System.db.list({ prefix: ["files"] })).map(({ value }) => value);
+  const getList = async ({
+    cursor,
+    limit = 10,
+  }: {
+    cursor?: string;
+    limit?: number;
+  } = {}) => {
+    const { items, nextCursor } = await System.db.list<File>(
+      { prefix: ["files"] },
+      { cursor, limit },
+    );
+
+    return {
+      files: items.map(({ value }) => value),
+      nextCursor,
+    };
+  };
 
   const get = async (
     fileId: string,

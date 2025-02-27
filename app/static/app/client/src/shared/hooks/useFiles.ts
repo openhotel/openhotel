@@ -9,16 +9,22 @@ export const useFiles = () => {
   const { getHeaders } = useAppSession();
 
   const [files, setFiles] = useState<File[]>([]);
+  const [cursor, setCursor] = useState<string>();
 
   const getList = useCallback(async () => {
     const { data } = await fetch({
       method: RequestMethod.GET,
       pathname: "files",
       headers: getHeaders(),
+      params: {
+        limit: 5,
+        ...(cursor ? { cursor } : {}),
+      },
     });
 
-    setFiles(data.files);
-  }, [fetch]);
+    setFiles(($files) => [...$files, ...data.files]);
+    setCursor(data.nextCursor);
+  }, [fetch, setFiles, setCursor, cursor]);
 
   const uploadFile = useCallback(
     async (formData) => {
@@ -52,6 +58,8 @@ export const useFiles = () => {
 
   return {
     files,
+    cursor,
+
     getList,
     uploadFile,
     deleteFile,

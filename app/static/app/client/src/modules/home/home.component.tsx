@@ -11,10 +11,14 @@ import { cn } from "shared/utils/class-name.utils.ts";
 import dayjs from "dayjs";
 
 export const HomeComponent: React.FC = () => {
-  const { files, getList, uploadFile, deleteFile } = useFiles();
+  const { files, cursor, getList, uploadFile, deleteFile } = useFiles();
 
   useEffect(() => {
     getList();
+  }, []);
+
+  const onNextPage = useCallback(async () => {
+    await getList();
   }, [getList]);
 
   const onUploadFile = useCallback(
@@ -34,7 +38,9 @@ export const HomeComponent: React.FC = () => {
         <TableComponent
           title="Files"
           searchable={true}
-          pageRows={20}
+          pageRows={5}
+          cursor={cursor}
+          onNext={onNextPage}
           rowFunc={($row, columns) => {
             return (
               <tr

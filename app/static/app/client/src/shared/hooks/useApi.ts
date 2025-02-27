@@ -12,8 +12,15 @@ export const useApi = () => {
       cache = true,
       rawResponse = false,
       formData = false,
+      params,
     }: Request) => {
-      const response = await fetch(`/api/${pathname}`, {
+      let url = `/api/${pathname}`;
+      if (method === RequestMethod.GET && params) {
+        const query = new URLSearchParams(params).toString();
+        url += `?${query}`;
+      }
+
+      const response = await fetch(url, {
         method,
         headers: new Headers({
           ...headers,
