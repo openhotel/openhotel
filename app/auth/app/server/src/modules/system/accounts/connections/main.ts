@@ -12,11 +12,10 @@ export const connections = (account: DbAccount): AccountConnections => {
   const getConnections = async (): Promise<
     DbAccountIntegrationConnection[]
   > => {
-    return (
-      await System.db.list({
-        prefix: ["integrationConnectionByAccountId", account.accountId],
-      })
-    ).map(({ value }) => value);
+    const { items } = await System.db.list({
+      prefix: ["integrationConnectionByAccountId", account.accountId],
+    });
+    return items.map(({ value }) => value);
   };
 
   const getConnection = async (hotelId: string, integrationId: string) => {

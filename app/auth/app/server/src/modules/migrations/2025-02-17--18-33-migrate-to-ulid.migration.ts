@@ -9,14 +9,17 @@ export default {
     const $hotelMap: Record<string, string> = {};
     const $integrationsMap: Record<string, string> = {};
 
-    for (const { key } of await db.list({
+    const { items: accountsByUsername } = await db.list({
       prefix: ["accountsByUsername"],
-    })) {
+    });
+    for (const { key } of accountsByUsername) {
       await db.delete(key);
     }
-    for (const { key, value: account } of await db.list({
+
+    const { items: accounts } = await db.list({
       prefix: ["accounts"],
-    })) {
+    });
+    for (const { key, value: account } of accounts) {
       const $oldId = account.accountId;
       $accountMap[$oldId] = ulid(account.createdAt);
       account.accountId = $accountMap[$oldId];
@@ -55,15 +58,17 @@ export default {
       }
     }
 
-    for (const { key, value: accountId } of await db.list({
+    const { items: accountsByEmail } = await db.list({
       prefix: ["accountsByEmail"],
-    })) {
+    });
+    for (const { key, value: accountId } of accountsByEmail) {
       await db.set(key, $accountMap[accountId]);
     }
 
-    for (const { key, value: hotel } of await db.list({
+    const { items: hotels } = await db.list({
       prefix: ["hotels"],
-    })) {
+    });
+    for (const { key, value: hotel } of hotels) {
       const $oldId = hotel.hotelId;
       $hotelMap[$oldId] = ulid(hotel.createdAt);
       hotel.hotelId = $hotelMap[$oldId];
@@ -78,12 +83,10 @@ export default {
       await db.delete(key);
     }
 
-    for (const {
-      key,
-      value: integrationConnectionByAccountId,
-    } of await db.list({
+    const { items } = await db.list({
       prefix: ["integrationConnectionByAccountId"],
-    })) {
+    });
+    for (const { key, value: integrationConnectionByAccountId } of items) {
       integrationConnectionByAccountId.accountId =
         $accountMap[integrationConnectionByAccountId.accountId];
       integrationConnectionByAccountId.hotelId =
@@ -108,9 +111,10 @@ export default {
     }
 
     //'licenses'
-    for (const { key, value: license } of await db.list({
+    const { items: licenses } = await db.list({
       prefix: ["licenses"],
-    })) {
+    });
+    for (const { key, value: license } of licenses) {
       license.hotelId = $hotelMap[license.hotelId];
       license.integrationId = $integrationsMap[license.integrationId];
       license.accountId = $accountMap[license.accountId];
@@ -122,9 +126,13 @@ export default {
       }
     }
 
-    for (const { key, value: licensesByIntegrationId } of await db.list({
+    const { items: licensesByIntegrationIdItems } = await db.list({
       prefix: ["licensesByIntegrationId"],
-    })) {
+    });
+    for (const {
+      key,
+      value: licensesByIntegrationId,
+    } of licensesByIntegrationIdItems) {
       const [, integrationId] = key;
 
       if ($integrationsMap[integrationId]) {
@@ -137,19 +145,24 @@ export default {
       await db.delete(key);
     }
 
-    for (const { key } of await db.list({
+    const { items: accountsByRefreshToken } = await db.list({
       prefix: ["accountsByRefreshToken"],
-    })) {
+    });
+    for (const { key } of accountsByRefreshToken) {
       await db.delete(key);
     }
-    for (const { key } of await db.list({
+
+    const { items: accountsByToken } = await db.list({
       prefix: ["accountsByToken"],
-    })) {
+    });
+    for (const { key } of accountsByToken) {
       await db.delete(key);
     }
-    for (const { key } of await db.list({
+
+    const { items: github } = await db.list({
       prefix: ["github"],
-    })) {
+    });
+    for (const { key } of github) {
       await db.delete(key);
     }
   },

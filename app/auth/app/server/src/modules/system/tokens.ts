@@ -2,10 +2,10 @@ import { System } from "modules/system/main.ts";
 import { generateToken, getTokenData, compareToken } from "@oh/utils";
 
 export const tokens = () => {
-  const getList = async (): Promise<{ id: string; label: string }[]> =>
-    (await System.db.list({ prefix: ["appTokens"] })).map(
-      ({ value }) => value,
-    ) as any[];
+  const getList = async (): Promise<{ id: string; label: string }[]> => {
+    const { items } = await System.db.list({ prefix: ["appTokens"] });
+    return items.map(({ value }) => value);
+  };
 
   const generate = async (
     label: string,

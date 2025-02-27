@@ -1,10 +1,10 @@
 import { System } from "modules/system/main.ts";
 
 export const admins = () => {
-  const getList = async () =>
-    (await System.db.list({ prefix: ["adminsByAccountId"] })).map(
-      ({ value }) => value,
-    );
+  const getList = async () => {
+    const { items } = await System.db.list({ prefix: ["adminsByAccountId"] });
+    return items.map(({ value }) => value);
+  };
 
   const get = async (accountId: string) => {
     return await System.db.get(["adminsByAccountId", accountId]);

@@ -13,10 +13,10 @@ export const apps = () => {
       : null;
   };
 
-  const getList = async (): Promise<{ id: string; url: string }[]> =>
-    (await System.db.list({ prefix: ["apps"] })).map(
-      ({ value }) => value,
-    ) as any[];
+  const getList = async (): Promise<{ id: string; url: string }[]> => {
+    const { items } = await System.db.list({ prefix: ["apps"] });
+    return items.map(({ value }) => value);
+  };
 
   const generate = async (
     url: string,

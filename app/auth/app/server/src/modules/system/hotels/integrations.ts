@@ -74,7 +74,7 @@ export const integrations = (hotel: DbHotel): HotelIntegrationsMutable => {
     };
 
     const getAccounts = async (): Promise<AccountMutable[]> => {
-      const integrations = await System.db.list({
+      const { items: integrations } = await System.db.list({
         prefix: ["integrationConnectionByAccountId"],
       });
       return await Promise.all(

@@ -4,7 +4,7 @@ export default {
   id: "2025-02-02--23-56-github-login-fix",
   description: `fix github login`,
   up: async (db: DbMutable) => {
-    const accounts = await db.list({
+    const { items: accounts } = await db.list({
       prefix: ["accounts"],
     });
 
@@ -19,7 +19,7 @@ export default {
     }
   },
   down: async (db: DbMutable) => {
-    const accounts = await db.list({
+    const { items: accounts } = await db.list({
       prefix: ["accounts"],
     });
 

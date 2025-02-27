@@ -8,7 +8,6 @@ import {
   PublicAccount,
 } from "shared/types/account.types.ts";
 import {
-  compareIps,
   compareToken,
   encryptToken,
   getIpFromRequest,
@@ -135,8 +134,10 @@ export const accounts = () => {
     }
   };
 
-  const getList = async (): Promise<DbAccount[]> =>
-    (await System.db.list({ prefix: ["accounts"] })).map(({ value }) => value);
+  const getList = async (): Promise<DbAccount[]> => {
+    const { items } = await System.db.list<DbAccount>({ prefix: ["accounts"] });
+    return items.map(({ value }) => value);
+  };
 
   const get = async (accountId: string): Promise<DbAccount> =>
     await System.db.get(["accounts", accountId]);
@@ -355,14 +356,15 @@ export const accounts = () => {
     };
 
     const removeTokens = async () => {
-      for (const { key } of await System.db.list({
+      const { items: accountsByToken } = await System.db.list({
         prefix: ["accountsByToken", account.accountId],
-      }))
-        await System.db.delete(key);
-      for (const { key } of await System.db.list({
+      });
+      for (const { key } of accountsByToken) await System.db.delete(key);
+
+      const { items: accountsByRefreshToken } = await System.db.list({
         prefix: ["accountsByRefreshToken", account.accountId],
-      }))
-        await System.db.delete(key);
+      });
+      for (const { key } of accountsByRefreshToken) await System.db.delete(key);
     };
 
     const removeToken = async ($token: string) => {
@@ -379,18 +381,21 @@ export const accounts = () => {
     const getTokens = async () => {
       const tokens = {};
 
-      for (const { key, value } of await System.db.list({
+      const { items: accountsByToken } = await System.db.list({
         prefix: ["accountsByToken", account.accountId],
-      })) {
+      });
+      for (const { key, value } of accountsByToken) {
         tokens[key[2]] = {
           ...getUserAgentData(value.userAgent),
           ip: value.ip,
           updatedAt: value.updatedAt,
         };
       }
-      for (const { key, value } of await System.db.list({
+
+      const { items: accountsByRefreshToken } = await System.db.list({
         prefix: ["accountsByRefreshToken", account.accountId],
-      })) {
+      });
+      for (const { key, value } of accountsByRefreshToken) {
         if (!tokens[key[2]])
           tokens[key[2]] = {
             ...getUserAgentData(value.userAgent),

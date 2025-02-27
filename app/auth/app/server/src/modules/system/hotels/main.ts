@@ -49,7 +49,7 @@ export const hotels = () => {
   const getList = async ({ accountId }: HotelListMutableGet = {}): Promise<
     DbHotel[]
   > => {
-    const hotelList = await System.db.list({ prefix: ["hotels"] });
+    const { items: hotelList } = await System.db.list({ prefix: ["hotels"] });
     return (
       await Promise.all(hotelList.map(({ value }) => get(value.hotelId)))
     ).filter((hotel: DbHotel) => !accountId || accountId === hotel.accountId);
