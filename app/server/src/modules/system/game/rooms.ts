@@ -285,9 +285,8 @@ export const rooms = () => {
   };
 
   const getList = async (): Promise<RoomMutable[]> => {
-    return (await System.db.list({ prefix: ["rooms"] })).map((item) =>
-      $getRoom(item.value),
-    );
+    const { items } = await System.db.list({ prefix: ["rooms"] });
+    return items.map((item) => $getRoom(item.value));
   };
 
   const getByName = async (name: string): Promise<RoomMutable | null> => {
