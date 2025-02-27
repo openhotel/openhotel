@@ -52,7 +52,10 @@ export const AppSessionProvider: React.FunctionComponent<ProviderProps> = ({
         pathname: "auth",
       });
 
-      if (!enabled) return;
+      if (!enabled) {
+        setIsLogged(true);
+        return;
+      }
 
       if (accountId && accountToken) {
         const { status } = await fetch({

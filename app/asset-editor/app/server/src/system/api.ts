@@ -84,6 +84,8 @@ export const api = () => {
       const accountId = request.headers.get("account-id");
       const accountToken = request.headers.get("account-token");
 
+      if (!System.getConfig().auth.enabled) return true;
+
       switch (kind) {
         case RequestKind.PUBLIC:
           return true;
