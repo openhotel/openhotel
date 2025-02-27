@@ -21,9 +21,8 @@ export const $private = () => {
   };
 
   const getList = async (): Promise<PrivateRoomMutable[]> => {
-    return (await System.db.list({ prefix: ["rooms", "private"] })).map(
-      (item) => $getRoom(item.value),
-    );
+    const { items } = await System.db.list({ prefix: ["rooms", "private"] });
+    return items.map((item) => $getRoom(item.value));
   };
 
   const getByName = async (
@@ -50,7 +49,7 @@ export const $private = () => {
     getByName,
 
     getRandom,
-		
-		add,
+
+    add,
   };
 };
