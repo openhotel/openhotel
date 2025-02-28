@@ -94,13 +94,20 @@ export const proxy = () => {
           }
 
           if (config.auth.enabled) {
-            const iframeElement = document.createElement("iframe");
-            iframeElement.src = `${config.auth.api}/ping?connectionId=${token.split(".")[1]}`;
-            iframeElement.width = String(0);
-            iframeElement.height = String(0);
-            iframeElement.style.border = "1px solid black";
-
-            document.body.append(iframeElement);
+            const pingUrl = new URL(config.auth.api);
+            pingUrl.pathname = "/api/v3/user/@me/connection/ping";
+            pingUrl.searchParams.append("connectionId", token.split(".")[1]);
+            const $ping = () => {
+              fetch(pingUrl, {
+                method: "PATCH",
+              })
+                .then((response) => response.json())
+                .then(({ status, data }) => {
+                  if (status !== 200) return emit(Event.DISCONNECTED, {});
+                  setTimeout($ping, data.estimatedNextPingIn);
+                });
+            };
+            $ping();
           }
           resolve();
         });

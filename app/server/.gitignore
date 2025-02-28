@@ -5,6 +5,9 @@ users.yml
 server-database
 server-database-shm
 server-database-wal
+server-database-key
+server-database-pep
+database-backups
 server.key
 $mod.ts
 
