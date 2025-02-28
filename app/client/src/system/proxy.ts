@@ -19,6 +19,7 @@ export const proxy = () => {
 
   const params = new URLSearchParams(location.search);
   let state = params.get("state");
+  let fingerprint = params.get("fingerprint");
   let token = params.get("token");
   let meta = params.get("meta");
 
@@ -94,8 +95,13 @@ export const proxy = () => {
           }
 
           if (config.auth.enabled) {
+            const pingUrl = new URL(config.auth.api);
+            pingUrl.pathname = "/ping";
+            pingUrl.searchParams.append("connectionId", token.split(".")[1]);
+            pingUrl.searchParams.append("fingerprint", fingerprint);
+
             const iframeElement = document.createElement("iframe");
-            iframeElement.src = `${config.auth.api}/ping?connectionId=${token.split(".")[1]}`;
+            iframeElement.src = pingUrl.href;
             iframeElement.width = String(0);
             iframeElement.height = String(0);
             iframeElement.style.border = "1px solid black";

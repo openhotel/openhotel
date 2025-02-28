@@ -125,8 +125,9 @@ export const furniture = () => {
 
   const getList = async (): Promise<FurnitureData[]> => {
     const decoder = new TextDecoder();
-    return (await System.db.list({ prefix: ["furnitureData"] })).map(
-      ({ value: [data] }) => $mapFurnitureData(parse(decoder.decode(data))),
+    const { items } = await System.db.list({ prefix: ["furnitureData"] });
+    return items.map(({ value: [data] }) =>
+      $mapFurnitureData(parse(decoder.decode(data))),
     );
   };
   const get = async (furnitureId: string): Promise<FurnitureData | null> => {
