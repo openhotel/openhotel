@@ -7,7 +7,7 @@ import { HomeComponent, HotelsComponent } from "modules/home";
 import { RedirectComponent } from "shared/components";
 import { LogoutComponent } from "modules/logout";
 import { CardLayoutComponent } from "modules/application/components/card-layout";
-import { ConnectionComponent, PingComponent } from "modules/connection";
+import { ConnectionComponent } from "modules/connection";
 import { Outlet } from "react-router";
 import { VerifyComponent } from "modules/verify";
 import { ChangePasswordComponent } from "modules/change-password";
@@ -82,7 +82,6 @@ const router = createBrowserRouter([
         ),
         path: "/connection",
       },
-      { path: "/ping", element: <PingComponent /> },
       {
         element: <AppsComponent />,
         path: "/apps",

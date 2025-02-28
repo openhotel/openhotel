@@ -60,27 +60,10 @@ export const useConnection = () => {
     [fetch, getAccountHeaders],
   );
 
-  const ping = useCallback(
-    async (connectionId: string, fingerprint: string) => {
-      const { data } = await fetch({
-        method: RequestMethod.PATCH,
-        pathname: `/user/@me/connection/ping?connectionId=${connectionId}`,
-        headers: {
-          fingerprint,
-        },
-        preventReload: true,
-      });
-
-      return data;
-    },
-    [fetch],
-  );
-
   return {
     add,
     remove,
     get,
     getList,
-    ping,
   };
 };
