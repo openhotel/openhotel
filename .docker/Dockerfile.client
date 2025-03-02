@@ -1,0 +1,14 @@
+FROM node:lts
+
+RUN corepack enable
+
+RUN install -d -o node -g node /app
+USER node
+
+WORKDIR /app/client
+
+COPY app/client/package.json app/client/yarn.lock ./
+
+EXPOSE 2024
+
+CMD ["bash", "-c", "yarn install && yarn start"]

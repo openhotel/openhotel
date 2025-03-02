@@ -1,0 +1,24 @@
+services:
+  server:
+    container_name: openhotel-server
+    restart: always
+    build:
+      context: .
+      dockerfile: ./.docker/Dockerfile.server
+    volumes:
+      - ./app/server:/app/server
+    ports:
+      - "19940:19940"
+    network_mode: "host"
+
+  client:
+    container_name: openhotel-client
+    restart: always
+    build:
+      context: .
+      dockerfile: ./.docker/Dockerfile.client
+    volumes:
+      - ./app/client:/app/client
+    ports:
+      - "1994:1994"
+    network_mode: "host"
