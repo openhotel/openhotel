@@ -38,7 +38,7 @@
 
 ## How to run the project
 
-You can run OpenHotel Auth either with native installations (Deno + Node) or via Docker.
+You can run OpenHotel either with native installations (Deno + Node) or via Docker.
 
 If it's the first time running the project:
   - Go to `./app/server/config.yml` and change the `version` to `development`. Restart the process.
