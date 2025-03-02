@@ -38,25 +38,48 @@
 
 ## How to run the project
 
-### Dependencies
+You can run OpenHotel either with native installations (Deno + Node) or via Docker.
 
-- Install `deno >= 1.44`
-- Install `node >= 20`
-- Install `yarn`
-
-### Install
-
-- Run `deno task install`
-
-### Start project
-
-- Run `deno task start`
-- If it's the first time running the project:
+If it's the first time running the project:
   - Go to `./app/server/config.yml` and change the `version` to `development`. Restart the process.
   - On the browser, add a localStorage item with key `username` and value of your choice.
   - Reload the browser
   - Go to `./app/server/users.yml` and add the username on the `op` list
   - Go to `Room 1` and use the command `/set flags@pirate 3 3 0 0 20` 🏴‍☠️
+
+### Option A: Run Locally (Deno + Node)
+
+If you prefer running without Docker:
+
+#### Install Dependencies
+- Deno >= 1.44
+- Node >= 20
+- Yarn (make sure Corepack is enabled if using Yarn 4)
+
+#### Start project
+
+- Run `deno task install` to install dependencies.
+- Run `deno task start` to start the server.
+- Set `version` to `development` in the `app/server/config.yml` file.
+
+### Option B: Run with Docker (Development)
+
+#### Install docker
+https://docs.docker.com/engine/install/
+
+#### Build and start
+
+```bash
+docker compose up --build
+```
+
+This will spin up both the server (Deno) and the client (Vite/React) in development mode, with hot reload.
+
+> [!NOTE]
+>
+> There’s no need to install Deno or Node on your host machine, as Docker handles them.
+> By default, the server runs on port 20240, and the client on port 2024. Check or adjust your docker-compose.yml if needed.
+> In development mode, changes to your code are automatically reflected without rebuilding the image.
 
 ---
 
