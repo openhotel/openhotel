@@ -1,0 +1,15 @@
+# I ran into permission issues because the official Deno image creates a "deno" user with UID 1993.
+# Switching to Ubuntu and manually copying the Deno binary lets me run as “ubuntu” and avoid those errors.
+FROM ubuntu
+COPY --from=denoland/deno:bin-2.2.2 /deno /usr/local/bin/deno
+
+RUN install -d -o ubuntu -g ubuntu /app/server
+USER ubuntu
+
+WORKDIR /app/server
+
+RUN deno install
+
+EXPOSE 20240
+
+CMD ["bash", "-c", "deno task start"]
