@@ -7,6 +7,7 @@ import {
   getRoomSpawnDirection,
   getRoomSpawnPoint,
 } from "shared/utils/rooms.utils.ts";
+import { ulid } from "@std/ulid";
 
 export const roomRequest: ProxyRequestType = {
   pathname: "/room",
@@ -85,7 +86,7 @@ export const roomPutRequest: ProxyRequestType = {
 
     const roomData: Room = {
       version: 1,
-      id: crypto.randomUUID(),
+      id: ulid(),
       ownerId: user.getAccountId(),
       title,
       description,

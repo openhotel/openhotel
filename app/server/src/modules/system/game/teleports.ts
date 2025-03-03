@@ -1,5 +1,6 @@
 import { System } from "modules/system/main.ts";
 import { RequestMethod } from "@oh/utils";
+import { ulid } from "@std/ulid";
 
 export const teleports = () => {
   const setRoom = async (id: string, roomId: string) => {
@@ -34,7 +35,7 @@ export const teleports = () => {
       teleportId: string,
       linkId?: string,
     ) => {
-      const $linkId = linkId ?? crypto.randomUUID();
+      const $linkId = linkId ?? ulid();
 
       await System.onet.fetch({
         pathname: "/teleports/link",

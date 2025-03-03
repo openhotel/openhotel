@@ -41,17 +41,19 @@
 You can run OpenHotel either with native installations (Deno + Node) or via Docker.
 
 If it's the first time running the project:
-  - Go to `./app/server/config.yml` and change the `version` to `development`. Restart the process.
-  - On the browser, add a localStorage item with key `username` and value of your choice.
-  - Reload the browser
-  - Go to `./app/server/users.yml` and add the username on the `op` list
-  - Go to `Room 1` and use the command `/set flags@pirate 3 3 0 0 20` 🏴‍☠️
+
+- Go to `./app/server/config.yml` and change the `version` to `development`. Restart the process.
+- On the browser, add a localStorage item with key `username` and value of your choice.
+- Reload the browser
+- Go to `./app/server/users.yml` and add the username on the `op` list
+- Go to `Room 1` and use the command `/set flags@pirate 3 3 0 0 20` 🏴‍☠️
 
 ### Option A: Run Locally (Deno + Node)
 
 If you prefer running without Docker:
 
 #### Install Dependencies
+
 - Deno >= 1.44
 - Node >= 20
 - Yarn (make sure Corepack is enabled if using Yarn 4)
@@ -65,6 +67,7 @@ If you prefer running without Docker:
 ### Option B: Run with Docker (Development)
 
 #### Install docker
+
 https://docs.docker.com/engine/install/
 
 #### Build and start

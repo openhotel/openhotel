@@ -6,6 +6,7 @@ import {
 } from "shared/utils";
 import { Event } from "shared/enums";
 import { System } from "system/system";
+import { ulid } from "ulidx";
 
 export const proxy = () => {
   let $isConnected: boolean = false;
@@ -70,7 +71,7 @@ export const proxy = () => {
           protocols: config.auth.enabled
             ? [state, token]
             : [
-                localStorage.getItem("accountId") || crypto.randomUUID(),
+                localStorage.getItem("accountId") || ulid(),
                 localStorage.getItem("username") ||
                   `player_${getRandomString(4)}`,
               ],
