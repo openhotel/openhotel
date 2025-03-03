@@ -1,5 +1,1 @@
-export * from "./input";
-export * from "./button";
-export * from "./loader";
-export * from "./icons";
-export * from "./interfaces";
+export * from "./text";

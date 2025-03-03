@@ -1,7 +1,8 @@
 import { defineConfig } from "vite";
+import reactRefresh from "@vitejs/plugin-react-refresh";
+import react from "@vitejs/plugin-react";
 import tsconfigPaths from "vite-tsconfig-paths";
-import { plugin } from "@tulib/vite-tulip-plugin";
-import { build } from "./vite/index.ts";
+import { build } from "./vite";
 
 // https://github.com/openhotel/openhotel/issues/469
 const PROXY_URL =
@@ -28,11 +29,29 @@ export default defineConfig({
       "/background": PROXY_URL,
     },
   },
-  plugins: [tsconfigPaths(), plugin(), build()],
-  publicDir: "assets/",
+  plugins: [react(), reactRefresh(), tsconfigPaths(), build()],
+  root: "./src",
+  base: "/",
+  publicDir: "./assets/",
   build: {
     outDir: "../../build/client",
     emptyOutDir: false, // also necessary
+    rollupOptions: {
+      external: ["react", "react-dom"], // Exclude peer dependencies
+      output: {
+        globals: {
+          react: "React",
+          "react-dom": "ReactDOM",
+        },
+      },
+    },
+  },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        api: "modern",
+      },
+    },
   },
   define: {
     __APP_VERSION: `{ "version": "__VERSION__" }`,

@@ -2,13 +2,14 @@
   "compilerOptions": {
     "moduleResolution": "node",
     "module": "ES2022",
-    "target": "ES2022",
+    "target": "ES2023",
     "esModuleInterop": true,
     "sourceMap": false,
     "noUnusedLocals": true,
-    "lib": ["ES2022", "dom"],
-    "baseUrl": "./src/",
+    "lib": ["ES2023", "dom"],
+    "baseUrl": "./src",
     "rootDir": "./src",
+    "jsx": "react",
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true
   }
