@@ -10,8 +10,8 @@ export const requestList: RequestType[] = getPathRequestList({
   requestList: [
     roomListRequest,
     roomRequest,
-		roomPutRequest,
-		
+    roomPutRequest,
+
     onlineUsersRequest,
     catalogRequest,
     furnitureRequest,
