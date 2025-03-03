@@ -84,8 +84,8 @@ export type UserMutable = {
 
   getPathfinding: () => Point3d[];
 
-  setLastMessage: (message: string) => void;
-  getLastMessage: () => string;
+  setLastMessage: (message: string | null) => void;
+  getLastMessage: () => string | null;
 
   setLastWhisper: (user: UserMutable | null) => void;
   getLastWhisper: () => UserMutable | null;
