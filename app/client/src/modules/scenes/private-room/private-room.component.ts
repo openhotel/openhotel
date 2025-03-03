@@ -7,9 +7,13 @@ import {
   global,
 } from "@tu/tulip";
 import { bubbleChatComponent, systemMessageComponent } from "modules/chat";
-import { previewComponent, roomComponent } from ".";
+import {
+  previewComponent,
+  roomComponent,
+  hotBarChatComponent,
+  roomInfoComponent,
+} from ".";
 import { Point2d, Size2d } from "shared/types";
-import { hotBarChatComponent, roomInfoComponent } from "modules/interfaces";
 import { System } from "system";
 import { SystemEvent } from "shared/enums";
 import { HOT_BAR_HEIGHT } from "shared/consts";

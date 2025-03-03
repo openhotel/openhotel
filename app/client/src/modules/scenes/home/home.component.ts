@@ -13,13 +13,8 @@ import {
 } from "@tu/tulip";
 import { logoComponent } from "modules/main";
 import { System } from "system";
-import {
-  SystemEvent,
-  TextureEnum,
-  SpriteSheetEnum,
-  Event as ProxyEvent,
-} from "shared/enums";
-import { hotBarComponent } from "modules/interfaces";
+import { SystemEvent, TextureEnum, SpriteSheetEnum } from "shared/enums";
+import { hotBarComponent } from ".";
 import { BLACK_BAR_HEIGHT, CONTRIBUTOR_LOOP_TIME } from "shared/consts";
 import { wait } from "shared/utils";
 import { TickerQueue } from "@oh/queue";

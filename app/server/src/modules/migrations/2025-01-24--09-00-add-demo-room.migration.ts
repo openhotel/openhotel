@@ -1,16 +1,14 @@
 import { Migration, DbMutable } from "@oh/utils";
-import { RawRoom, RoomPoint } from "shared/types/room.types.ts";
 import {
   getRoomSpawnDirection,
   getRoomSpawnPoint,
 } from "shared/utils/rooms.utils.ts";
-import { RoomPointEnum } from "shared/enums/room.enums.ts";
 
 export default {
   id: "2025-01-24--09-00-add-demo-room",
   description: "Add demo room",
   up: async (db: DbMutable) => {
-    const room: RawRoom = {
+    const room = {
       version: 1,
       id: crypto.randomUUID(),
       title: "Demo Furnitures",
@@ -32,12 +30,10 @@ export default {
       ],
     };
 
-    const layout: RoomPoint[][] = room.layout.map((line) =>
+    const layout = room.layout.map((line) =>
       line
         .split("")
-        .map((value) =>
-          parseInt(value) ? parseInt(value) : (value as RoomPointEnum),
-        ),
+        .map((value) => (parseInt(value) ? parseInt(value) : value)),
     );
 
     const roomData = {

@@ -1,13 +1,13 @@
-import { Room } from "shared/types";
+import { BaseRoom } from "shared/types";
 export const rooms = () => {
-  let $room: Room | null = null;
-  let $preRoom: Room | null = null;
+  let $room: BaseRoom | null = null;
+  let $preRoom: BaseRoom | null = null;
 
-  const preload = async (room: Room) => {
+  const preload = async (room: BaseRoom) => {
     $preRoom = room;
   };
 
-  const load = async (room: Room) => {
+  const load = async (room: BaseRoom) => {
     $room = room;
     $preRoom = null;
   };

@@ -1,4 +1,4 @@
-import { ProxyEventType } from "shared/types/main.ts";
+import { PrivateRoomMutable, ProxyEventType } from "shared/types/main.ts";
 import {
   FurnitureType,
   Meta,
@@ -22,12 +22,14 @@ export const pointerInteractiveEvent: ProxyEventType<any> = {
   func: async ({ data: { position }, user }) => {
     // if (!isPoint3dEqual(position, user.getPosition())) return;
 
-    let room = await System.game.rooms.get(user.getRoom());
+    let room = await System.game.rooms.get<PrivateRoomMutable>(user.getRoom());
+
+    if (room.type !== "private") return;
 
     if (!isPointAdjacent(user.getPosition(), position)) return;
 
     let teleportFurniture = room
-      .getFurnitures()
+      .getFurniture()
       .find(
         (furniture) =>
           furniture.type === FurnitureType.TELEPORT &&
@@ -89,10 +91,13 @@ export const pointerInteractiveEvent: ProxyEventType<any> = {
 
       const isSameRoom = teleportTo.roomId === user.getRoom();
 
-      if (!isSameRoom) room = await System.game.rooms.get(teleportTo.roomId);
+      if (!isSameRoom)
+        room = await System.game.rooms.get<PrivateRoomMutable>(
+          teleportTo.roomId,
+        );
 
       teleportFurniture = room
-        .getFurnitures()
+        .getFurniture()
         .find((furniture) => furniture.id === teleportFrom.to);
 
       const teleportPosition = teleportFurniture.position;

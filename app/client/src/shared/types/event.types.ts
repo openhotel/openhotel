@@ -1,7 +1,7 @@
-import { Room } from "./room.types";
+import { BaseRoom } from "./room.types";
 
 export type LoadRoomEvent = {
-  room: Room;
+  room: BaseRoom;
 };
 
 export type SystemMessageEvent = {

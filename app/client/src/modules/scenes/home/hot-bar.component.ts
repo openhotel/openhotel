@@ -9,7 +9,7 @@ import {
   GraphicType,
 } from "@tu/tulip";
 import { Size2d } from "shared/types";
-import { hotBarItemsComponent } from "./hot-bar-items.component";
+import { hotBarItemsComponent } from "modules/interfaces";
 import { BLACK_BAR_HEIGHT } from "shared/consts";
 import { wait } from "shared/utils";
 import { System } from "system";
