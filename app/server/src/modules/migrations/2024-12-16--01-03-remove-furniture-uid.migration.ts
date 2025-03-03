@@ -1,5 +1,4 @@
 import { Migration, DbMutable } from "@oh/utils";
-import { Room } from "shared/types/room.types.ts";
 
 export default {
   id: "2024-12-16--01-03-remove-furniture-uid",
@@ -14,7 +13,7 @@ export default {
           id: furni.uid,
           furnitureId: furni.id,
         })),
-      } as Room);
+      });
     }
   },
   down: async (db: DbMutable) => {
@@ -27,7 +26,7 @@ export default {
           uid: furni.id,
           id: furni.furnitureId,
         })),
-      } as Room);
+      });
     }
   },
 } as Migration;

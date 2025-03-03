@@ -1,12 +1,11 @@
 import { RoomPoint } from "shared/types/main.ts";
 import { RoomPointEnum } from "shared/enums/main.ts";
 import { Point3d, Direction } from "@oh/utils";
-import { Grid } from "@oh/pathfinding";
 
-export const getRoomGridLayout = (layout: RoomPoint[][]) => {
-  let grid: number[][] = [];
+export const getBaseRoomGrid = (layout: RoomPoint[][]): RoomPoint[][] => {
+  const $baseRoomGrid: number[][] = [];
   for (let z = 0; z < layout.length; z++) {
-    grid[z] = [];
+    $baseRoomGrid[z] = [];
     for (let x = 0; x < layout[z].length; x++) {
       let point = 0;
       switch (layout[z][x]) {
@@ -20,13 +19,15 @@ export const getRoomGridLayout = (layout: RoomPoint[][]) => {
           point = parseInt(layout[z][x] + "") * 4;
           break;
       }
-      grid[z][x] = point;
+      $baseRoomGrid[z][x] = point;
     }
   }
-  return Grid.from(grid);
+  return $baseRoomGrid;
 };
 
 export const getRoomSpawnPoint = (layout: RoomPoint[][]): Point3d => {
+  if (!layout.length) return null;
+
   const roomSize = {
     width: layout.length,
     depth: Math.max(...layout.map((line) => line.length)),
@@ -38,10 +39,12 @@ export const getRoomSpawnPoint = (layout: RoomPoint[][]): Point3d => {
       if (roomLine[x] === RoomPointEnum.SPAWN) return { x, y: 0, z };
     }
   }
-  return undefined;
+  return null;
 };
 
 export const getRoomSpawnDirection = (layout: RoomPoint[][]): Direction => {
+  if (!layout.length) return Direction.NORTH_EAST;
+
   const { x, z } = getRoomSpawnPoint(layout);
 
   const checkDirection = (addX: number, addZ: number) =>

@@ -22,7 +22,7 @@
     "npm:buffer-crc32@1": "1.0.0",
     "npm:dayjs@1.11.13": "1.11.13",
     "npm:eventemitter3@^5.0.1": "5.0.1",
-    "npm:fast-xml-parser@^4.4.1": "4.5.2",
+    "npm:fast-xml-parser@^4.4.1": "4.5.3",
     "npm:ipaddr.js@^2.0.1": "2.2.0",
     "npm:lodash@^4.17.21": "4.17.21",
     "npm:mime-types@^2.1.35": "2.1.35",
@@ -137,8 +137,8 @@
     "eventemitter3@5.0.1": {
       "integrity": "sha512-GWkBvjiSZK87ELrYOSESUYeVIc9mvLLf/nXalMOS5dYrgZq9o5OVkbZAVM06CVxYsCwH9BDZFPlQTlPA1j4ahA=="
     },
-    "fast-xml-parser@4.5.2": {
-      "integrity": "sha512-xmnYV9o0StIz/0ArdzmWTxn9oDy0lH8Z80/8X/TD2EUQKXY4DHxoT9mYBqgGIG17DgddCJtH1M6DriMbalNsAA==",
+    "fast-xml-parser@4.5.3": {
+      "integrity": "sha512-RKihhV+SHsIUGXObeVy9AXiBbFwkVk7Syp8XgwN5U3JV416+Gwp/GO9i0JYKmikykgz/UHRrrV4ROuZEo/T0ig==",
       "dependencies": [
         "strnum"
       ]
@@ -217,8 +217,8 @@
         "safe-buffer"
       ]
     },
-    "strnum@1.1.0": {
-      "integrity": "sha512-a4NGarQIHRhvr+k8VXaHg6TMU6f3YEmi5CAb6RYgX2gwbGDBNMbr6coC6g0wmif5dLjHtmHUVD/qOxPq7D0tnQ=="
+    "strnum@1.1.1": {
+      "integrity": "sha512-O7aCHfYCamLCctjAiaucmE+fHf2DYHkus2OKCn4Wv03sykfFtgeECn505X6K4mPl8CRNd/qurC9guq+ynoN4pw=="
     },
     "through2@4.0.2": {
       "integrity": "sha512-iOqSav00cVxEEICeD7TjLB1sueEL+81Wpzp2bY17uZjZN0pWZPuo4suZ/61VujxmqSGFfgOcNuTZ85QJwNZQpw==",
@@ -686,6 +686,7 @@
       "jsr:@oh/pathfinding@2.0.3",
       "jsr:@oh/queue@1.1.1",
       "jsr:@oh/utils@1.5.2",
+      "jsr:@std/ulid@1",
       "jsr:@std/yaml@1.0.5",
       "jsr:@zip-js/zip-js@2.7.53"
     ]
