@@ -14,7 +14,7 @@ export const HotBarItemsComponent: React.FC = () => {
         .map((modal: Modal) => (
           <SpriteComponent
             key={modal}
-            spriteSheet={SpriteSheetEnum.UI}
+            spriteSheet={SpriteSheetEnum.HOT_BAR_ICONS}
             texture={MODAL_SPRITE_MAP[modal]}
             eventMode={EventMode.STATIC}
             cursor={Cursor.POINTER}

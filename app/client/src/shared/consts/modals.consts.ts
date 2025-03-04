@@ -19,10 +19,10 @@ export const MODAL_COMPONENTS_MAP: Record<Modal, React.FC> = {
 };
 
 export const MODAL_SPRITE_MAP: Record<Modal, string> = {
-  [Modal.CONSOLE]: "console",
+  [Modal.CONSOLE]: "console-off",
   [Modal.NAVIGATOR]: "navigator",
   [Modal.CATALOG]: "catalog",
-  [Modal.INVENTORY]: "box",
+  [Modal.INVENTORY]: "inventory",
   [Modal.PURSE]: "purse",
   [Modal.CLUB]: "club",
 };

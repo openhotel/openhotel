@@ -5,7 +5,10 @@ import { SpriteSheetEnum } from "shared/enums";
 export const InventoryComponent: React.FC = () => {
   return (
     <ContainerComponent>
-      <SpriteComponent spriteSheet={SpriteSheetEnum.UI} texture="box" />
+      <SpriteComponent
+        spriteSheet={SpriteSheetEnum.HOT_BAR_ICONS}
+        texture="box"
+      />
     </ContainerComponent>
   );
 };
