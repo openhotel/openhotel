@@ -15,13 +15,14 @@ export const tasks = () => {
     });
   };
 
-  const add: (props: QueueItemProps) => number = $queue.add;
-  const remove: (id: number) => void = $queue.remove;
+  const add = (props: QueueItemProps): (() => void) => {
+    const index = $queue.add(props);
+    return () => $queue.remove(index);
+  };
 
   return {
     load,
 
     add,
-    remove,
   };
 };
