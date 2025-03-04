@@ -6,3 +6,4 @@ export * from "./navigator.consts";
 export * from "./home.consts";
 export * from "./contributors.consts";
 export * from "./hot-bar.consts";
+export * from "./modals.consts";

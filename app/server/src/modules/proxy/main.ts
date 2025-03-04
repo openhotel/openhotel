@@ -177,7 +177,7 @@ export const Proxy = (() => {
 
           client.emit(ProxyEvent.WELCOME, {
             datetime: Date.now(),
-            user: {
+            account: {
               ...foundUser,
               apiToken: userTokenMap[foundUser.clientId],
             },

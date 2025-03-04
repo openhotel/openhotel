@@ -23,14 +23,6 @@ export const proxy = () => {
   let token = params.get("token");
   let meta = params.get("meta");
 
-  const getRefreshSession = () => {
-    try {
-      return JSON.parse(atob(localStorage.getItem("session-refresh")));
-    } catch (e) {
-      return null;
-    }
-  };
-
   const canConnect = () => state && token;
 
   const clearConnection = () => {
@@ -163,7 +155,6 @@ export const proxy = () => {
   return {
     preConnect,
     connect,
-    getRefreshSession,
     loaded,
 
     isConnected,

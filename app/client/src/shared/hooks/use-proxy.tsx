@@ -1,20 +1,23 @@
-import React, {
-  ReactNode,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { ReactNode, useCallback, useContext, useState } from "react";
 import { LoaderComponent } from "shared/components";
 import { useConfig } from ".";
 import {
+  getBrowserLanguage,
   getClientSocket,
   getRandomString,
   getWebSocketUrl,
 } from "shared/utils";
 import { ulid } from "ulidx";
+import { Event } from "shared/enums";
 
-type ProxyState = {};
+type ProxyState = {
+  emit: <Data>(event: Event, data: Data) => void;
+  on: (
+    event: Event,
+    callback: (data: unknown) => void | Promise<void>,
+  ) => () => void;
+  load: () => void;
+};
 
 const ProxyContext = React.createContext<ProxyState>(undefined);
 
@@ -27,29 +30,31 @@ export const ProxyProvider: React.FunctionComponent<ProxyProps> = ({
 }) => {
   const { config } = useConfig();
 
-  const socketRef = useRef<any>(null);
-
   const [loadingMessage, setLoadingMessage] = useState<string>("Connecting...");
 
-  useEffect(() => {
+  const params = new URLSearchParams(location.search);
+  const state = params.get("state");
+  const token = params.get("token");
+  const meta = params.get("meta");
+
+  const load = useCallback(() => {
+    socket.emit("$$load", { p: performance.now(), meta });
+  }, []);
+
+  const [socket] = useState(() => {
     //pre connection
     setLoadingMessage("Requesting connection...");
-    const params = new URLSearchParams(location.search);
-    let state = params.get("state");
-    let token = params.get("token");
-    let meta = params.get("meta");
-
     const canConnect = (state && token) || !config.auth.enabled;
 
     if (!canConnect) {
-      console.log("><<");
+      setLoadingMessage("Redirecting...");
       return;
     }
     //connection
     setLoadingMessage("Connecting...");
     window.history.pushState(null, null, "/");
 
-    socketRef.current = getClientSocket({
+    const $socket = getClientSocket({
       url: getWebSocketUrl(`${window.location.origin}/proxy`),
       protocols: config.auth.enabled
         ? [state, token]
@@ -60,24 +65,43 @@ export const ProxyProvider: React.FunctionComponent<ProxyProps> = ({
       reconnect: false,
       silent: true,
     });
-    socketRef.current.on("connected", () => {
+    $socket.on("connected", () => {
       setLoadingMessage(null);
+
+      $socket.emit<Event>(Event.SET_LANGUAGE, {
+        language: getBrowserLanguage(),
+      });
     });
-    socketRef.current.on("disconnected", () => {
+    $socket.on("disconnected", () => {
       setLoadingMessage("Proxy disconnected!");
     });
-    socketRef.current.connect().catch(() => {
+    $socket.connect().catch(() => {
       setLoadingMessage("Proxy is not reachable! :(");
     });
 
-    return () => {
-      socketRef.current.close();
-    };
-  }, [setLoadingMessage, config]);
+    return $socket;
+  });
+
+  const emit = useCallback(
+    (event: Event, data: unknown) => {
+      socket?.emit("$$user-data", { event, message: data });
+    },
+    [socket],
+  );
+
+  const on = useCallback(
+    (event: Event, callback: (data: unknown) => void | Promise<void>) =>
+      socket?.on(event, callback),
+    [socket],
+  );
 
   return (
     <ProxyContext.Provider
-      value={{}}
+      value={{
+        emit,
+        on,
+        load,
+      }}
       children={
         <LoaderComponent message={loadingMessage} children={children} />
       }

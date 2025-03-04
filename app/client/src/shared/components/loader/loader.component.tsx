@@ -18,13 +18,7 @@ export const LoaderComponent: React.FC<Props> = ({
   message,
   children,
 }) => {
-  const [loading, setLoading] = useState<boolean>(true);
   const [currentText, setCurrentText] = useState<string>("Loading...");
-
-  useEffect(() => {
-    if (!loaderItems && !message) setLoading(false);
-    setCurrentText(message);
-  }, [message]);
 
   useEffect(() => {
     if (!loaderItems) return;
@@ -44,17 +38,17 @@ export const LoaderComponent: React.FC<Props> = ({
         }
         setCurrentText(endLabel);
       }
-      setLoading(false);
+      setCurrentText(null);
     })();
   }, [loaderItems, setCurrentText]);
 
-  return loading ? (
+  return message ? (
     <ContainerComponent>
       <FlexContainerComponent
         justify={FLEX_JUSTIFY.CENTER}
         align={FLEX_ALIGN.CENTER}
       >
-        <TextComponent text={currentText} />
+        <TextComponent text={message ?? currentText} />
       </FlexContainerComponent>
     </ContainerComponent>
   ) : (

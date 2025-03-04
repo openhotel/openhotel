@@ -1,10 +1,15 @@
 import React from "react";
-import { SpriteTextComponent } from "@oh/pixi-components";
 import {
   CoreLoaderComponent,
   InitialLoaderComponent,
 } from "modules/application";
-import { ConfigProvider, ProxyProvider } from "shared/hooks";
+import {
+  ConfigProvider,
+  ProxyProvider,
+  RouterProvider,
+  AccountProvider,
+  ModalProvider,
+} from "shared/hooks";
 
 export const ApplicationComponent = () => {
   return (
@@ -12,11 +17,11 @@ export const ApplicationComponent = () => {
       <ConfigProvider>
         <ProxyProvider>
           <CoreLoaderComponent>
-            <SpriteTextComponent
-              spriteSheet={"bold-font/bold-font.json"}
-              text={"test"}
-              tint={0xff00ff}
-            />
+            <AccountProvider>
+              <ModalProvider>
+                <RouterProvider />
+              </ModalProvider>
+            </AccountProvider>
           </CoreLoaderComponent>
         </ProxyProvider>
       </ConfigProvider>
