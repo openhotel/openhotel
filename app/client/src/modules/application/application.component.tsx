@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   CoreLoaderComponent,
   InitialLoaderComponent,
@@ -10,8 +10,13 @@ import {
   AccountProvider,
   ModalProvider,
 } from "shared/hooks";
+import { System } from "system";
 
 export const ApplicationComponent = () => {
+  useEffect(() => {
+    System.load();
+  }, []);
+
   return (
     <InitialLoaderComponent>
       <ConfigProvider>

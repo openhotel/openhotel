@@ -13,6 +13,8 @@ import {
   useWindow,
 } from "@oh/pixi-components";
 import { TextureEnum } from "shared/enums";
+import { System } from "system";
+import { TickerQueue } from "@oh/queue";
 
 export const BackgroundComponent: React.FC = () => {
   const { on } = useEvents();

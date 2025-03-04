@@ -9,13 +9,14 @@ import {
 } from "@oh/pixi-components";
 import { System } from "system";
 import { HotBarItemsComponent } from "shared/components";
-import { BackgroundComponent } from "./components";
+import { BackgroundComponent, VignetteTransitionComponent } from "./components";
 
 export const HomeComponent: React.FC = () => {
   const { username } = System.account.getAccount();
   return (
     <ContainerComponent sortableChildren={true}>
       <BackgroundComponent />
+      <VignetteTransitionComponent />
       <FlexContainerComponent
         align={FLEX_ALIGN.CENTER}
         justify={FLEX_JUSTIFY.CENTER}
@@ -28,22 +29,23 @@ export const HomeComponent: React.FC = () => {
           eventMode={EventMode.STATIC}
         />
       </FlexContainerComponent>
-      <FlexContainerComponent
-        align={FLEX_ALIGN.BOTTOM}
-        position={{
-          y: -25,
+      <ContainerComponent
+        pivot={{
+          y: 25,
         }}
       >
-        <FlexContainerComponent
-          justify={FLEX_JUSTIFY.SPACE_EVENLY}
-          align={FLEX_ALIGN.CENTER}
-          size={{
-            height: 40,
-          }}
-        >
-          <HotBarItemsComponent />
+        <FlexContainerComponent align={FLEX_ALIGN.BOTTOM}>
+          <FlexContainerComponent
+            justify={FLEX_JUSTIFY.SPACE_EVENLY}
+            align={FLEX_ALIGN.CENTER}
+            size={{
+              height: 40,
+            }}
+          >
+            <HotBarItemsComponent />
+          </FlexContainerComponent>
         </FlexContainerComponent>
-      </FlexContainerComponent>
+      </ContainerComponent>
     </ContainerComponent>
   );
 };
