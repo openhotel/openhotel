@@ -9,7 +9,6 @@
     "lib": ["es2023", "DOM"],
     "baseUrl": "./src",
     "rootDir": "./src",
-    "allowImportingTsExtensions": true,
     "jsx": "react"
   }
 }

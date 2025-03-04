@@ -1,1 +1,2 @@
-export * from "./use-loaded";
+export * from "./use-proxy";
+export * from "./use-config";
