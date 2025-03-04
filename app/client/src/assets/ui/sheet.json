@@ -154,6 +154,11 @@
       "frame": { "x": 73, "y": 41, "w": 23, "h": 21 },
       "anchor": { "x": 0, "y": 0 },
       "sourceSize": { "w": 23, "h": 21 }
+    },
+    "purse": {
+      "frame": { "x": 75, "y": 0, "w": 18, "h": 20 },
+      "anchor": { "x": 0, "y": 0 },
+      "sourceSize": { "w": 18, "h": 20 }
     }
   },
   "animations": {},

@@ -3,7 +3,7 @@ import { ConfigTypes } from "shared/types";
 import { LoaderComponent } from "shared/components";
 
 type ConfigState = {
-  lastVersion: string;
+  changeLog: unknown;
   config: ConfigTypes;
 };
 
@@ -16,33 +16,42 @@ type ConfigProps = {
 export const ConfigProvider: React.FunctionComponent<ConfigProps> = ({
   children,
 }) => {
-  const [lastVersion, setLastVersion] = useState<string>("v0.0.0");
+  const [changeLog, setChangeLog] = useState(null);
   const [config, setConfig] = useState<ConfigTypes>(null);
 
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loadingMessage, setLoadingMessage] =
+    useState<string>("Loading config...");
 
   useEffect(() => {
     fetch("/info")
       .then((response) => response.json())
-      .then(({ data: config }) => {
+      .then(async ({ data: config }) => {
         setConfig(config);
-        setLastVersion(localStorage.getItem("version"));
+        const lastVersion = localStorage.getItem("version");
         localStorage.setItem("version", config.version);
-        setLoading(false);
+
+        if (lastVersion === config.version) return setLoadingMessage(null);
+
+        setLoadingMessage("Loading changelog...");
+        setChangeLog(
+          (await (await fetch(`/changelog?from=${lastVersion}`)).json()).data,
+        );
+
+        setLoadingMessage(null);
+      })
+      .catch(() => {
+        setLoadingMessage("Server is not reachable!");
       });
-  }, [setConfig, setLastVersion, setLoading]);
+  }, [setConfig, setChangeLog, setLoadingMessage]);
 
   return (
     <ConfigContext.Provider
       value={{
-        lastVersion,
+        changeLog,
         config,
       }}
       children={
-        <LoaderComponent
-          message={loading ? "Loading config..." : null}
-          children={children}
-        />
+        <LoaderComponent message={loadingMessage} children={children} />
       }
     />
   );

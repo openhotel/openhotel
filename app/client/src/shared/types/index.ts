@@ -9,3 +9,4 @@ export * from "./furniture.types";
 export * from "./event.types";
 export * from "./contributors.types";
 export * from "./loader.types";
+export * from "./account.types";

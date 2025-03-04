@@ -10,6 +10,8 @@ const PROXY_URL =
     ? "http://127.0.0.1:19940"
     : "http://localhost:19940";
 
+const getHash = () => Math.floor(Math.random() * 90000) + 10000;
+
 export default defineConfig({
   clearScreen: false,
   server: {
@@ -43,6 +45,9 @@ export default defineConfig({
           react: "React",
           "react-dom": "ReactDOM",
         },
+        entryFileNames: `[name]${getHash()}.js`,
+        chunkFileNames: `[name]${getHash()}.js`,
+        assetFileNames: `[name]${getHash()}.js`,
       },
     },
   },
