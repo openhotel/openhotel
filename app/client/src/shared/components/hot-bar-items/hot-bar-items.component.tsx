@@ -1,0 +1,27 @@
+import React, { useMemo } from "react";
+import { Cursor, EventMode, SpriteComponent } from "@oh/pixi-components";
+import { Modal, SpriteSheetEnum } from "shared/enums";
+import { useModal } from "shared/hooks";
+import { MODAL_SPRITE_MAP } from "shared/consts";
+
+export const HotBarItemsComponent: React.FC = () => {
+  const { toggleModal } = useModal();
+
+  const items = useMemo(
+    () =>
+      Object.values(Modal)
+        .filter((id: number) => !isNaN(id))
+        .map((modal: Modal) => (
+          <SpriteComponent
+            key={modal}
+            spriteSheet={SpriteSheetEnum.HOT_BAR_ICONS}
+            texture={MODAL_SPRITE_MAP[modal]}
+            eventMode={EventMode.STATIC}
+            cursor={Cursor.POINTER}
+            onPointerDown={() => toggleModal(modal)}
+          />
+        )),
+    [toggleModal],
+  );
+  return <>{items}</>;
+};
