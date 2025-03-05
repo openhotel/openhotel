@@ -7,7 +7,7 @@ export const ConsoleComponent: React.FC = () => {
     <ContainerComponent>
       <SpriteComponent
         spriteSheet={SpriteSheetEnum.HOT_BAR_ICONS}
-        texture="console"
+        texture="console-off"
       />
     </ContainerComponent>
   );
