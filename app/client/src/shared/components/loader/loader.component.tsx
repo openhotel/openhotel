@@ -42,7 +42,7 @@ export const LoaderComponent: React.FC<Props> = ({
     })();
   }, [loaderItems, setCurrentText]);
 
-  return message ? (
+  return (message ?? currentText) ? (
     <ContainerComponent>
       <FlexContainerComponent
         justify={FLEX_JUSTIFY.CENTER}

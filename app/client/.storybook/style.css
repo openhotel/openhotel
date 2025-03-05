@@ -1,0 +1,12 @@
+body {
+  background-color: deeppink;
+}
+#storybook-root {
+  overflow: hidden;
+}
+
+.storybook-background {
+  box-sizing: border-box;
+  margin: auto;
+  min-height: 100%;
+}
