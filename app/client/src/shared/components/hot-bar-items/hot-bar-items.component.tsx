@@ -7,7 +7,7 @@ import { MODAL_SPRITE_MAP } from "shared/consts";
 export const HotBarItemsComponent: React.FC = () => {
   const { toggleModal } = useModal();
 
-  return useMemo(
+  const items = useMemo(
     () =>
       Object.values(Modal)
         .filter((id: number) => !isNaN(id))
@@ -23,4 +23,5 @@ export const HotBarItemsComponent: React.FC = () => {
         )),
     [toggleModal],
   );
+  return <>{items}</>;
 };
