@@ -1,6 +1,6 @@
 export enum SpriteSheetEnum {
-  DEFAULT_FONT = "default-font/default-font.json",
-  BOLD_FONT = "bold-font/bold-font.json",
+  DEFAULT_FONT = "fonts/default/default.json",
+  BOLD_FONT = "fonts/bold/bold.json",
 
   ROOM = "room/room.json",
 

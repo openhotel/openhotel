@@ -2,11 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { System } from "system";
 import { TickerQueue } from "@oh/queue";
 import { CONTRIBUTOR_LOOP_TIME } from "shared/consts";
-import {
-  ContainerComponent,
-  FLEX_ALIGN,
-  FlexContainerComponent,
-} from "@oh/pixi-components";
+import { Cursor, EventMode } from "@oh/pixi-components";
 import { TextComponent } from "shared/components";
 import { Contributor } from "shared/types";
 
@@ -20,6 +16,10 @@ export const ContributorsComponent: React.FC = () => {
   );
 
   const [text, setText] = useState<string>();
+
+  const onOpenGithub = useCallback(() => {
+    window.open("https://github.com/openhotel", "_blank");
+  }, []);
 
   const doLoop = useCallback(() => {
     if (creators.length > creatorIndexRef.current) {
@@ -48,24 +48,18 @@ export const ContributorsComponent: React.FC = () => {
   }, [setText, doLoop]);
 
   return (
-    <ContainerComponent
-      pivot={{
-        x: -10,
-        y: 55,
+    <TextComponent
+      text={text}
+      padding={{
+        right: 0,
+        left: 6,
+        top: 3,
       }}
-    >
-      <FlexContainerComponent align={FLEX_ALIGN.BOTTOM}>
-        <TextComponent
-          text={text}
-          padding={{
-            right: 0,
-            left: 6,
-            top: 3,
-          }}
-          backgroundColor={1}
-          backgroundAlpha={0.45}
-        />
-      </FlexContainerComponent>
-    </ContainerComponent>
+      backgroundColor={1}
+      backgroundAlpha={0.45}
+      eventMode={EventMode.STATIC}
+      cursor={Cursor.POINTER}
+      onPointerDown={onOpenGithub}
+    />
   );
 };

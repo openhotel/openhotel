@@ -8,7 +8,7 @@ import { TickerQueue } from "@oh/queue";
 const DELTA_MULTIPLIER = 0.5;
 
 export const LogoComponent: React.FC = () => {
-  const [yPosition, setYPosition] = useState<number>(-100);
+  const [yPosition, setYPosition] = useState<number>(-128);
 
   useEffect(() => {
     wait(1000).then(() => {
@@ -19,7 +19,7 @@ export const LogoComponent: React.FC = () => {
           setYPosition((y) => {
             const targetY = y + delta * DELTA_MULTIPLIER;
 
-            if (targetY >= 0) return 0;
+            if (targetY >= -14) return -14;
             return targetY;
           });
         },
@@ -29,11 +29,7 @@ export const LogoComponent: React.FC = () => {
 
   return (
     <SpriteComponent
-      texture={TextureEnum.LOGO_FULL}
-      pivot={{
-        x: -5,
-        y: -5,
-      }}
+      texture={TextureEnum.HOME_LOGO}
       position={{
         y: yPosition,
       }}

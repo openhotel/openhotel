@@ -4,7 +4,7 @@
   "license": "CC BY-NC-SA 4.0",
   "scripts": {
     "start": "vite --host",
-    "storybook": "storybook dev -p 6006",
+    "storybook": "storybook dev -p 7007",
     "link:pixi-components": "npm link @oh/pixi-components",
     "build-storybook": "storybook build"
   },
