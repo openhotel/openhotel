@@ -501,7 +501,7 @@
   "animations": {},
   "meta": {
     "format": "RGBA8888",
-    "image": "bold-font.png",
+    "image": "bold.png",
     "size": {
       "w": 128,
       "h": 128

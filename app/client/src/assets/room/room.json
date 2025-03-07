@@ -55,7 +55,7 @@
       "sourceSize": { "w": 50, "h": 30 },
       "anchor": { "x": 0, "y": 0 }
     },
-    "tile_preview": {
+    "tile-preview": {
       "frame": { "x": 0, "y": 81, "w": 46, "h": 24 },
       "sourceSize": { "w": 46, "h": 24 },
       "anchor": { "x": 0, "y": 0 }
@@ -70,13 +70,8 @@
       "sourceSize": { "w": 50, "h": 48 },
       "anchor": { "x": 0, "y": 0 }
     },
-    "stairs-x-preview": {
+    "stairs-preview": {
       "frame": { "x": 46, "y": 84, "w": 50, "h": 48 },
-      "sourceSize": { "w": 50, "h": 48 },
-      "anchor": { "x": 0, "y": 0 }
-    },
-    "stairs-z-preview": {
-      "frame": { "x": 95, "y": 84, "w": 50, "h": 48 },
       "sourceSize": { "w": 50, "h": 48 },
       "anchor": { "x": 0, "y": 0 }
     }
@@ -86,8 +81,8 @@
     "format": "RGBA8888",
     "image": "room.png",
     "size": {
-      "w": 144,
-      "h": 132
+      "w": 128,
+      "h": 128
     },
     "scale": 1
   }

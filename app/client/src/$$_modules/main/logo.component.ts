@@ -6,7 +6,7 @@ import { TickerQueue } from "@oh/queue";
 
 export const logoComponent: SpriteComponent = () => {
   const $logo = sprite({
-    texture: TextureEnum.LOGO_FULL,
+    texture: TextureEnum.HOME_LOGO,
     pivot: {
       x: 0,
       y: 90,

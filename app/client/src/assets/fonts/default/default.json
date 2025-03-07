@@ -521,7 +521,7 @@
   "animations": {},
   "meta": {
     "format": "RGBA8888",
-    "image": "default-font.png",
+    "image": "default.png",
     "size": {
       "w": 128,
       "h": 128
