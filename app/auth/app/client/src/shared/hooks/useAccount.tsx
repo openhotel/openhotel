@@ -178,28 +178,36 @@ export const AccountProvider: React.FunctionComponent<ProviderProps> = ({
 
     if (!accountId || (!token && !refreshToken)) throw "Not logged";
 
-    const { data } = await fetch({
-      method: RequestMethod.GET,
-      pathname: "/account/refresh",
-      headers: {
-        "account-id": getCookie("account-id"),
-        token: getCookie("token"),
-        "refresh-token": getCookie("refresh-token"),
-      },
-      cache: false,
-    });
-    if (!data) return;
+    try {
+      const { data } = await fetch({
+        method: RequestMethod.GET,
+        pathname: "/account/refresh",
+        headers: {
+          "account-id": getCookie("account-id"),
+          token: getCookie("token"),
+          "refresh-token": getCookie("refresh-token"),
+        },
+        cache: false,
+        preventReload: true,
+      });
+      if (!data) {
+        clearSession();
+        return;
+      }
 
-    token = data.token;
-    refreshToken = data.refreshToken;
-    const [tokenDuration, refreshTokenDuration] = data.durations;
+      token = data.token;
+      refreshToken = data.refreshToken;
+      const [tokenDuration, refreshTokenDuration] = data.durations;
 
-    setCookie("account-id", accountId, refreshTokenDuration);
-    setCookie("refresh-token", refreshToken, refreshTokenDuration);
-    setCookie("token", token, tokenDuration);
+      setCookie("account-id", accountId, refreshTokenDuration);
+      setCookie("refresh-token", refreshToken, refreshTokenDuration);
+      setCookie("token", token, tokenDuration);
 
-    setLastRefresh(performance.now());
-  }, [fetch, setCookie, getCookie, setLastRefresh]);
+      setLastRefresh(performance.now());
+    } catch (_) {
+      clearSession();
+    }
+  }, [fetch, setCookie, getCookie, setLastRefresh, clearSession]);
 
   const setAsAdmin = useCallback(() => {
     return fetch({

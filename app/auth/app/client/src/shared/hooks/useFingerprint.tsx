@@ -17,7 +17,19 @@ export const FingerprintProvider: React.FunctionComponent<ProviderProps> = ({
   const [fingerprint, setFingerprint] = useState<string>(null);
 
   useEffect(() => {
-    setOption("exclude", ["system.browser.version"]);
+    setOption("exclude", [
+      //prevents browser version change
+      "system.browser.version",
+      "system.useragent",
+      //prevents updates on webgl
+      "webgl",
+      //prevents screen changes
+      "screen",
+      //prevent audio changes
+      "audio",
+      //prevents plugin installs/uninstalls
+      "plugins",
+    ]);
     getFingerprint().then(setFingerprint);
   }, [setFingerprint]);
 

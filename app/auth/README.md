@@ -20,6 +20,7 @@ You can run OpenHotel Auth either with native installations (Deno + Node) or via
 If you prefer running without Docker:
 
 #### Install Dependencies
+
 - Deno >= 1.44
 - Node >= 20
 - Yarn (make sure Corepack is enabled if using Yarn 4)
@@ -33,6 +34,7 @@ If you prefer running without Docker:
 ### Option B: Run with Docker (Development)
 
 #### Install docker
+
 https://docs.docker.com/engine/install/
 
 #### Build and start
