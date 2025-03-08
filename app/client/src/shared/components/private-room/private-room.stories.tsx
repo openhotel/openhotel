@@ -60,6 +60,7 @@ export const Primary: Story = () => {
         ownerId: "test",
         ownerUsername: "test",
       }}
+      onPointerTile={console.log}
     />
   );
 };
@@ -97,6 +98,7 @@ export const Simple: Story = () => {
         ownerId: "test",
         ownerUsername: "test",
       }}
+      onPointerTile={console.log}
     />
   );
 };
@@ -146,6 +148,7 @@ export const Stairs: Story = () => {
         ownerId: "test",
         ownerUsername: "test",
       }}
+      onPointerTile={console.log}
     />
   );
 };
@@ -189,6 +192,7 @@ export const Stairs1: Story = () => {
           ownerId: "test",
           ownerUsername: "test",
         }}
+        onPointerTile={console.log}
       />
     </FlexContainerComponent>
   );
