@@ -27,7 +27,7 @@ export const ContributorsComponent: React.FC = () => {
       creatorIndexRef.current++;
     } else if (contributors.length > contributorIndexRef.current) {
       setText(
-        `Contributed by ${contributors[contributorIndexRef.current].login}`,
+        `Developed by ${contributors[contributorIndexRef.current].login}`,
       );
       contributorIndexRef.current++;
     }

@@ -1,15 +1,10 @@
 import React, { useMemo } from "react";
 import { ContainerComponent } from "@oh/pixi-components";
 import { CrossDirection, RoomPointEnum } from "shared/enums";
-import {
-  getPositionFromIsometricPosition,
-  isDoorRenderable,
-  isWallRenderable,
-} from "shared/utils";
+import { isDoorRenderable, isWallRenderable } from "shared/utils";
 import { PrivateRoom } from "shared/types";
 import {
   TILE_SIZE,
-  TILE_Y_HEIGHT,
   WALL_DOOR_HEIGHT,
   WALL_HEIGHT,
   WALL_WIDTH,
@@ -17,6 +12,7 @@ import {
 import {
   PrivateRoomStairs,
   PrivateRoomTile,
+  PrivateRoomTilePreview,
   PrivateRoomWallComponent,
 } from "shared/components/private-room/components";
 
@@ -45,17 +41,6 @@ export const PrivateRoomComponent: React.FC<Props> = ({ layout }) => {
 
         const renderNorthStairs = roomLine[x] > roomLine[x - 1];
         const renderEastStairs = roomLine[x] > layout[z - 1]?.[x];
-
-        const previewPosition = getPositionFromIsometricPosition({
-          x,
-          z,
-          y: previewY + (renderNorthStairs || renderEastStairs ? 0.5 : 0),
-        });
-
-        const position = getPositionFromIsometricPosition({ x, z, y });
-        const wallPosition = getPositionFromIsometricPosition({ x, z, y: 0 });
-        const wallHeight = WALL_HEIGHT - y * TILE_Y_HEIGHT;
-        const zIndex = x + z;
 
         list.push(
           renderNorthStairs || renderEastStairs ? (
@@ -193,6 +178,11 @@ export const PrivateRoomComponent: React.FC<Props> = ({ layout }) => {
   return (
     <ContainerComponent pivot={containerPivot} sortableChildren>
       {tilesAndWalls}
+      <PrivateRoomTilePreview
+        type="stairs"
+        position={{ x: 4, y: -1, z: 8 }}
+        direction={CrossDirection.EAST}
+      />
     </ContainerComponent>
   );
 };
