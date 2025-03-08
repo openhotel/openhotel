@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 import { ContainerComponent } from "@oh/pixi-components";
 import { CrossDirection, RoomPointEnum } from "shared/enums";
 import { isDoorRenderable, isWallRenderable } from "shared/utils";
-import { PrivateRoom } from "shared/types";
+import { Point3d, PrivateRoom } from "shared/types";
 import {
   TILE_SIZE,
   WALL_DOOR_HEIGHT,
@@ -12,23 +12,24 @@ import {
 import {
   PrivateRoomStairs,
   PrivateRoomTile,
-  PrivateRoomTilePreview,
   PrivateRoomWallComponent,
 } from "shared/components/private-room/components";
 
-type Props = {} & PrivateRoom;
+type Props = {
+  onPointerTile?: (point: Point3d) => void;
+} & PrivateRoom;
 
-export const PrivateRoomComponent: React.FC<Props> = ({ layout }) => {
-  const roomSize = useMemo(
-    () => ({
-      width: Math.max(...layout.map((line) => line.length)),
-      depth: layout.length,
-    }),
-    [layout],
-  );
-
+export const PrivateRoomComponent: React.FC<Props> = ({
+  layout,
+  onPointerTile,
+}) => {
   const tilesAndWalls = useMemo(() => {
     const list = [];
+
+    const roomSize = {
+      width: Math.max(...layout.map((line) => line.length)),
+      depth: layout.length,
+    };
 
     for (let z = 0; z < roomSize.depth; z++) {
       const roomLine = layout[z];
@@ -50,12 +51,14 @@ export const PrivateRoomComponent: React.FC<Props> = ({ layout }) => {
               direction={
                 renderNorthStairs ? CrossDirection.NORTH : CrossDirection.EAST
               }
+              onPointerDown={() => onPointerTile?.({ x, y, z })}
             />
           ) : (
             <PrivateRoomTile
               key={`tile${x}${z}`}
               spawn={spawn}
               position={{ x, y, z }}
+              onPointerDown={() => onPointerTile?.({ x, y, z })}
             />
           ),
         );
@@ -85,7 +88,7 @@ export const PrivateRoomComponent: React.FC<Props> = ({ layout }) => {
           if (renderNorthWall)
             list.push(
               <PrivateRoomWallComponent
-                key={`wall${x}${z}`}
+                key={`wall${x}${z}-${CrossDirection.NORTH}`}
                 direction={CrossDirection.NORTH}
                 position={{
                   x,
@@ -97,7 +100,7 @@ export const PrivateRoomComponent: React.FC<Props> = ({ layout }) => {
           if (renderEastWall)
             list.push(
               <PrivateRoomWallComponent
-                key={`wall${x}${z}`}
+                key={`wall${x}${z}-${CrossDirection.EAST}`}
                 direction={CrossDirection.EAST}
                 position={{
                   x,
@@ -144,7 +147,7 @@ export const PrivateRoomComponent: React.FC<Props> = ({ layout }) => {
     }
 
     return list;
-  }, []);
+  }, [layout, onPointerTile]);
 
   const containerPivot = useMemo(() => {
     let topZIndex = Number.MAX_SAFE_INTEGER;
@@ -168,7 +171,6 @@ export const PrivateRoomComponent: React.FC<Props> = ({ layout }) => {
         if (xIndex >= leftXIndex) leftXIndex = xIndex;
       }
 
-    //-leftXIndex * (TILE_SIZE.width / 2) - rightXIndex
     return {
       x: -leftXIndex * (TILE_SIZE.width / 2) - WALL_WIDTH,
       y: topZIndex * (TILE_SIZE.height / 2) - WALL_HEIGHT,
@@ -178,11 +180,11 @@ export const PrivateRoomComponent: React.FC<Props> = ({ layout }) => {
   return (
     <ContainerComponent pivot={containerPivot} sortableChildren>
       {tilesAndWalls}
-      <PrivateRoomTilePreview
-        type="stairs"
-        position={{ x: 4, y: -1, z: 8 }}
-        direction={CrossDirection.EAST}
-      />
+      {/*<PrivateRoomTilePreview*/}
+      {/*  type="tile"*/}
+      {/*  position={{ x: 1, y: 0, z: 3 }}*/}
+      {/*  direction={CrossDirection.EAST}*/}
+      {/*/>*/}
     </ContainerComponent>
   );
 };
