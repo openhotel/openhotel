@@ -15,6 +15,8 @@ export type BaseRoom = {
 
   layout: RoomPoint[][];
   spawnPoint: Point3d;
+
+  maxUsers: number;
 };
 
 export type PrivateRoom = BaseRoom & {

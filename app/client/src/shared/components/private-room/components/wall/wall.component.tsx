@@ -1,0 +1,130 @@
+import React, { useMemo } from "react";
+import {
+  ContainerComponent,
+  ContainerRef,
+  DisplayObjectProps,
+  NineSliceSpriteComponent,
+  SpriteComponent,
+} from "@oh/pixi-components";
+import { CrossDirection, SpriteSheetEnum } from "shared/enums";
+import { getPositionFromIsometricPosition, getSafeZIndex } from "shared/utils";
+import { Point3d } from "shared/types";
+import { TILE_Y_HEIGHT, WALL_HEIGHT, WALL_WIDTH } from "shared/consts";
+
+type Props = {
+  direction: CrossDirection.NORTH | CrossDirection.EAST | "corner";
+  position: Point3d;
+  height?: number;
+} & Omit<DisplayObjectProps<ContainerRef>, "position">;
+
+const TOP_HEIGHT = 15;
+const MIDDLE_SLICE_CORRECTION = 2;
+
+export const PrivateRoomWallComponent: React.FC<Props> = ({
+  direction,
+  position,
+  height = WALL_HEIGHT,
+  pivot,
+  ...props
+}) => {
+  const zIndex = useMemo(() => getSafeZIndex(position, -0.2), [position]);
+  const $position = useMemo(
+    () =>
+      getPositionFromIsometricPosition({
+        x: position.x,
+        z: position.z,
+        y: 0,
+      }),
+    [position],
+  );
+
+  const middleHeight = useMemo(
+    () =>
+      height -
+      position.y * TILE_Y_HEIGHT -
+      TOP_HEIGHT +
+      MIDDLE_SLICE_CORRECTION,
+    [position],
+  );
+
+  const directionText = useMemo(() => {
+    switch (direction) {
+      case "corner":
+        return "b";
+      case CrossDirection.EAST:
+        return "z";
+      case CrossDirection.NORTH:
+        return "x";
+    }
+  }, [direction]);
+
+  const $pivot = useMemo(() => {
+    switch (direction) {
+      case CrossDirection.NORTH:
+        return {
+          x: 5,
+          y: 0,
+        };
+      case CrossDirection.EAST:
+        return {
+          x: -25,
+          y: 0,
+        };
+      case "corner":
+        return {
+          x: -20,
+          y: 3,
+        };
+    }
+  }, [direction]);
+
+  return (
+    <ContainerComponent
+      zIndex={zIndex}
+      position={$position}
+      pivot={{
+        x: $pivot.x + (pivot?.x ?? 0),
+        y: height - WALL_WIDTH / 2 + $pivot.y + (pivot?.y ?? 0),
+      }}
+      tint={0xc4d3dd}
+      {...props}
+    >
+      {direction === "corner" ? (
+        <SpriteComponent
+          zIndex={zIndex}
+          texture={`wall-${directionText}`}
+          spriteSheet={SpriteSheetEnum.ROOM}
+        />
+      ) : (
+        <>
+          <SpriteComponent
+            zIndex={zIndex}
+            texture={`wall-${directionText}-top`}
+            spriteSheet={SpriteSheetEnum.ROOM}
+          />
+          <NineSliceSpriteComponent
+            zIndex={zIndex}
+            spriteSheet={SpriteSheetEnum.ROOM}
+            texture={`wall-${directionText}-mid`}
+            leftWidth={8}
+            rightWidth={1}
+            topHeight={1}
+            bottomHeight={1}
+            height={middleHeight}
+            position={{
+              y: TOP_HEIGHT,
+            }}
+          />
+          <SpriteComponent
+            zIndex={zIndex}
+            texture={`wall-${directionText}-bottom`}
+            spriteSheet={SpriteSheetEnum.ROOM}
+            position={{
+              y: TOP_HEIGHT + middleHeight,
+            }}
+          />
+        </>
+      )}
+    </ContainerComponent>
+  );
+};
