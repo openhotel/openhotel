@@ -9,6 +9,7 @@ import {
   RouterProvider,
   AccountProvider,
   ModalProvider,
+  AssetsProvider,
 } from "shared/hooks";
 import { System } from "system";
 
@@ -21,13 +22,15 @@ export const ApplicationComponent = () => {
     <InitialLoaderComponent>
       <ConfigProvider>
         <ProxyProvider>
-          <CoreLoaderComponent>
-            <AccountProvider>
-              <ModalProvider>
-                <RouterProvider />
-              </ModalProvider>
-            </AccountProvider>
-          </CoreLoaderComponent>
+          <AssetsProvider>
+            <CoreLoaderComponent>
+              <AccountProvider>
+                <ModalProvider>
+                  <RouterProvider />
+                </ModalProvider>
+              </AccountProvider>
+            </CoreLoaderComponent>
+          </AssetsProvider>
         </ProxyProvider>
       </ConfigProvider>
     </InitialLoaderComponent>
