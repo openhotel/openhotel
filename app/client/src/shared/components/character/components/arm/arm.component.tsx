@@ -75,7 +75,7 @@ export const ArmComponent: React.FC<Props> = ({
       scale={{
         x: scale,
       }}
-      zIndex={zIndex}
+      zIndex={zIndex ?? 1}
       pivot={pivot}
     />
   );

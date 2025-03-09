@@ -50,14 +50,14 @@ export const CHARACTER_ARM_SIDE_MAP: Record<
   },
   [Direction.SOUTH_WEST]: {
     [CharacterArmSide.LEFT]: CharacterArmSide.LEFT,
-    [CharacterArmSide.RIGHT]: CharacterArmSide.RIGHT,
+    [CharacterArmSide.RIGHT]: CharacterArmSide.LEFT,
   },
   [Direction.WEST]: {
     [CharacterArmSide.LEFT]: CharacterArmSide.LEFT,
     [CharacterArmSide.RIGHT]: CharacterArmSide.RIGHT,
   },
   [Direction.NORTH_WEST]: {
-    [CharacterArmSide.LEFT]: CharacterArmSide.LEFT,
+    [CharacterArmSide.LEFT]: CharacterArmSide.RIGHT,
     [CharacterArmSide.RIGHT]: CharacterArmSide.RIGHT,
   },
   [Direction.NONE]: null,
