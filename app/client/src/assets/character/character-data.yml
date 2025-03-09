@@ -272,7 +272,7 @@ west:
   sit:
     body:
       pivot:
-        x: 14
+        x: 16
         y: 27
     head:
       west:
