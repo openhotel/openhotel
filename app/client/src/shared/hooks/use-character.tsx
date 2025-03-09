@@ -25,9 +25,9 @@ export const useCharacter = () => {
       action: CharacterBodyAction,
       part: CharacterPart,
     ) => {
-      return data[getEnumKeyLowCase(direction, Direction)][
+      return data[getEnumKeyLowCase(direction, Direction)]?.[
         getEnumKeyLowCase(action, CharacterBodyAction)
-      ][getEnumKeyLowCase(part, CharacterPart)];
+      ]?.[getEnumKeyLowCase(part, CharacterPart)];
     },
     [data],
   );

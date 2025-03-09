@@ -8,6 +8,7 @@ import {
 } from "shared/enums";
 import { TILE_SIZE } from "shared/consts";
 import { ArmComponent, BodyComponent, HeadComponent } from "./components";
+import { useCharacter } from "shared/hooks";
 
 type Props = {
   bodyAction: CharacterBodyAction;
@@ -26,12 +27,17 @@ export const CharacterComponent: React.FC<Props> = ({
   rightArmAction,
   skinColor,
 }) => {
+  const { getBodyData } = useCharacter();
+
+  if (!getBodyData(bodyDirection, bodyAction)) return null;
+
   return (
     <ContainerComponent
       position={{
         x: (TILE_SIZE.width + 2) / 2,
         y: TILE_SIZE.height / 2,
       }}
+      alpha={0.5}
     >
       <BodyComponent
         action={bodyAction}
