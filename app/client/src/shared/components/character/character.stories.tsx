@@ -7,6 +7,8 @@ import {
   EventMode,
   FLEX_JUSTIFY,
   FlexContainerComponent,
+  GraphicsComponent,
+  GraphicType,
 } from "@oh/pixi-components";
 import { PrivateRoomTile } from "shared/components/private-room/components";
 import {
@@ -38,8 +40,6 @@ export const Character: Story = () => {
   const [rightArmAction, setRightArmAction] = useState<CharacterArmAction>(
     CharacterArmAction.IDLE,
   );
-
-  console.log(Direction[bodyDirection]);
   // useEffect(() => {
   //   setTimeout(() => {
   //     setAction(CharacterBodyAction.SIT);
@@ -99,6 +99,7 @@ export const Character: Story = () => {
         skinColor={0xefcfb1}
       />
       <PrivateRoomTile position={{ x: 0, y: 0, z: 0 }} />
+
       <FlexContainerComponent
         position={{
           y: 35,
@@ -119,6 +120,13 @@ export const Character: Story = () => {
           onPointerDown={onPointerRight}
         />
       </FlexContainerComponent>
+      <TextComponent
+        text={Direction[bodyDirection]}
+        position={{
+          x: 10,
+          y: 45,
+        }}
+      />
     </ContainerComponent>
   );
 };
