@@ -33,7 +33,7 @@ export const BodyComponent: React.FC<Props> = ({
 
   const data = useMemo(() => {
     return getAsset(AssetEnum.CHARACTER_DATA)["north"]["idle"]["body"].pivot;
-  });
+  }, []);
 
   console.log(data);
 
