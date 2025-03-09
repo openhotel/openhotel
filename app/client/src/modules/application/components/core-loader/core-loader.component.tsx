@@ -4,6 +4,7 @@ import { useTextures } from "@oh/pixi-components";
 import { LoaderAssetsComponent } from "shared/components";
 import { LoaderItem } from "shared/types";
 import { useAssets } from "shared/hooks";
+import { parse } from "yaml";
 
 type Props = {} & PropsWithChildren;
 
@@ -24,7 +25,14 @@ export const CoreLoaderComponent: React.FC<Props> = ({ children }) => {
         prefix: "Loading",
         suffix: "asset",
         func: async (asset: AssetEnum) => {
-          setAsset(asset, await (await fetch(asset)).json());
+          const response = await fetch(asset);
+          const format = asset.split(".")[1];
+
+          let data = await (format === "json"
+            ? response.json()
+            : response.text());
+          if (format === "yml") data = parse(data);
+          setAsset(asset, data);
         },
       },
       {

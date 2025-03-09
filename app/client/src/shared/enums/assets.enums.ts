@@ -1,3 +1,3 @@
 export enum AssetEnum {
-  CHARACTER_DATA = "character/character-data.json",
+  CHARACTER_DATA = "character/character-data.yml",
 }
