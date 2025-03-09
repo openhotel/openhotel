@@ -37,7 +37,7 @@ export const CharacterComponent: React.FC<Props> = ({
         x: (TILE_SIZE.width + 2) / 2,
         y: TILE_SIZE.height / 2,
       }}
-      alpha={0.5}
+      // alpha={0.5}
     >
       <BodyComponent
         action={bodyAction}

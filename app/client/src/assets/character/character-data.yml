@@ -47,8 +47,220 @@ north:
         pivot:
           x: 2
           y: -1
+  walk_0:
+    body:
+      pivot:
+        x: 9
+        y: 44
+    head:
+      north:
+        pivot:
+          x: 0
+          y: 18
+      north_west:
+        pivot:
+          x: 0
+          y: 17
+    arm:
+      left:
+        zIndex: -1
+        pivot:
+          x: -11
+          y: 0
+      right:
+        pivot:
+          x: 2
+          y: -1
+  walk_1:
+    body:
+      pivot:
+        x: 15
+        y: 44
+    head:
+      north:
+        pivot:
+          x: -6
+          y: 18
+      north_west:
+        pivot:
+          x: -6
+          y: 17
+    arm:
+      left:
+        zIndex: -1
+        pivot:
+          x: -17
+          y: 0
+      right:
+        pivot:
+          x: -4
+          y: -1
+  walk_2:
+    body:
+      pivot:
+        x: 9
+        y: 44
+    head:
+      north:
+        pivot:
+          x: 0
+          y: 18
+      north_west:
+        pivot:
+          x: 0
+          y: 17
+    arm:
+      left:
+        zIndex: -1
+        pivot:
+          x: -11
+          y: 0
+      right:
+        pivot:
+          x: 2
+          y: -1
+  walk_3:
+    body:
+      pivot:
+        x: 9
+        y: 44
+    head:
+      north:
+        pivot:
+          x: 0
+          y: 18
+      north_west:
+        pivot:
+          x: 0
+          y: 17
+    arm:
+      left:
+        zIndex: -1
+        pivot:
+          x: -11
+          y: 0
+      right:
+        pivot:
+          x: 2
+          y: -1
 north_east:
   idle:
+    body:
+      pivot:
+        x: 9
+        y: 45
+    head:
+      north:
+        pivot:
+          x: 0
+          y: 18
+      north_east:
+        pivot:
+          x: 1
+          y: 18
+      east:
+        pivot:
+          x: 0
+          y: 18
+    arm:
+      left:
+        zIndex: 1
+        pivot:
+          x: -14
+          y: -3
+      right:
+        zIndex: 1
+        pivot:
+          x: 3
+          y: -3
+  walk_0:
+    body:
+      pivot:
+        x: 9
+        y: 45
+    head:
+      north:
+        pivot:
+          x: 0
+          y: 18
+      north_east:
+        pivot:
+          x: 1
+          y: 18
+      east:
+        pivot:
+          x: 0
+          y: 18
+    arm:
+      left:
+        zIndex: 1
+        pivot:
+          x: -14
+          y: -3
+      right:
+        zIndex: 1
+        pivot:
+          x: 3
+          y: -3
+  walk_1:
+    body:
+      pivot:
+        x: 9
+        y: 45
+    head:
+      north:
+        pivot:
+          x: 0
+          y: 18
+      north_east:
+        pivot:
+          x: 1
+          y: 18
+      east:
+        pivot:
+          x: 0
+          y: 18
+    arm:
+      left:
+        zIndex: 1
+        pivot:
+          x: -14
+          y: -3
+      right:
+        zIndex: 1
+        pivot:
+          x: 3
+          y: -3
+  walk_2:
+    body:
+      pivot:
+        x: 9
+        y: 45
+    head:
+      north:
+        pivot:
+          x: 0
+          y: 18
+      north_east:
+        pivot:
+          x: 1
+          y: 18
+      east:
+        pivot:
+          x: 0
+          y: 18
+    arm:
+      left:
+        zIndex: 1
+        pivot:
+          x: -14
+          y: -3
+      right:
+        zIndex: 1
+        pivot:
+          x: 3
+          y: -3
+  walk_3:
     body:
       pivot:
         x: 9

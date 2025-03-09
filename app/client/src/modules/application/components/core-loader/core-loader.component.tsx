@@ -9,7 +9,7 @@ import { parse } from "yaml";
 type Props = {} & PropsWithChildren;
 
 export const CoreLoaderComponent: React.FC<Props> = ({ children }) => {
-  const { getSpriteSheet, getTexture } = useTextures();
+  const { loadSpriteSheet, loadTexture } = useTextures();
   const { setAsset } = useAssets();
 
   const loaderItems = useMemo(() => {
@@ -41,7 +41,7 @@ export const CoreLoaderComponent: React.FC<Props> = ({ children }) => {
         endLabel: "Sprite-sheets loaded!",
         prefix: "Loading",
         suffix: "sprite-sheet",
-        func: getSpriteSheet,
+        func: loadSpriteSheet,
       },
       {
         items: textures,
@@ -49,10 +49,10 @@ export const CoreLoaderComponent: React.FC<Props> = ({ children }) => {
         endLabel: "Textures loaded!",
         prefix: "Loading",
         suffix: "texture",
-        func: (texture: string) => getTexture({ texture }),
+        func: loadTexture,
       },
     ] as LoaderItem[];
-  }, [getSpriteSheet, getTexture, setAsset]);
+  }, [loadSpriteSheet, loadTexture, setAsset]);
 
   return (
     <LoaderAssetsComponent loaderItems={loaderItems} children={children} />

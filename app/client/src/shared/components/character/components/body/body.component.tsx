@@ -28,23 +28,23 @@ export const BodyComponent: React.FC<Props> = ({
 }) => {
   const { getBodyData } = useCharacter();
 
-  const characterDirection = useMemo(
-    () => CHARACTER_DIRECTION_MAP[direction],
-    [direction],
-  );
-  const scale = useMemo(
-    () => CHARACTER_DIRECTION_SCALE_MAP[direction],
-    [direction],
-  );
+  const { scale, texture, pivot } = useMemo(() => {
+    const characterDirection = CHARACTER_DIRECTION_MAP[direction];
+    const scale = CHARACTER_DIRECTION_SCALE_MAP[direction];
 
-  const texture = useMemo(
-    () => getCharacterBodyPart(CharacterPart.BODY, characterDirection, action),
-    [action, characterDirection],
-  );
+    const { pivot } = getBodyData(direction, action);
+    const texture = getCharacterBodyPart(
+      CharacterPart.BODY,
+      characterDirection,
+      action,
+    );
 
-  const { pivot } = useMemo(() => {
-    return getBodyData(direction, action);
-  }, [getBodyData, direction, action]);
+    return {
+      scale,
+      texture,
+      pivot,
+    };
+  }, [direction, action]);
 
   return (
     <ContainerComponent sortableChildren pivot={pivot}>
