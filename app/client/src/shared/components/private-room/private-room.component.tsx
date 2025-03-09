@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import { ContainerComponent } from "@oh/pixi-components";
 import { CrossDirection, RoomPointEnum } from "shared/enums";
 import { isDoorRenderable, isWallRenderable } from "shared/utils";
@@ -12,6 +12,7 @@ import {
 import {
   PrivateRoomStairs,
   PrivateRoomTile,
+  PrivateRoomTilePreview,
   PrivateRoomWallComponent,
 } from "./components";
 
@@ -23,6 +24,12 @@ export const PrivateRoomComponent: React.FC<Props> = ({
   layout,
   onPointerTile,
 }) => {
+  const [previewData, setPreviewData] = useState<{
+    point: Point3d;
+    type: "tile" | "stairs";
+    direction?: CrossDirection.NORTH | CrossDirection.EAST;
+  }>(null);
+
   const tilesAndWalls = useMemo(() => {
     const list = [];
 
@@ -43,15 +50,25 @@ export const PrivateRoomComponent: React.FC<Props> = ({
         const renderNorthStairs = roomLine[x] > roomLine[x - 1];
         const renderEastStairs = roomLine[x] > layout[z - 1]?.[x];
 
+        const stairsDirection = renderNorthStairs
+          ? CrossDirection.NORTH
+          : CrossDirection.EAST;
+
         list.push(
           renderNorthStairs || renderEastStairs ? (
             <PrivateRoomStairs
               key={`stairs${x}${z}`}
               position={{ x, y: y, z }}
-              direction={
-                renderNorthStairs ? CrossDirection.NORTH : CrossDirection.EAST
-              }
+              direction={stairsDirection}
               onPointerDown={() => onPointerTile?.({ x, y, z })}
+              onPointerEnter={() =>
+                setPreviewData({
+                  point: { x, y, z },
+                  type: "stairs",
+                  direction: stairsDirection,
+                })
+              }
+              onPointerLeave={() => setPreviewData(null)}
             />
           ) : (
             <PrivateRoomTile
@@ -59,6 +76,10 @@ export const PrivateRoomComponent: React.FC<Props> = ({
               spawn={spawn}
               position={{ x, y, z }}
               onPointerDown={() => onPointerTile?.({ x, y, z })}
+              onPointerEnter={() =>
+                setPreviewData({ point: { x, y, z }, type: "tile" })
+              }
+              onPointerLeave={() => setPreviewData(null)}
             />
           ),
         );
@@ -147,7 +168,7 @@ export const PrivateRoomComponent: React.FC<Props> = ({
     }
 
     return list;
-  }, [layout, onPointerTile]);
+  }, [layout, onPointerTile, setPreviewData]);
 
   const containerPivot = useMemo(() => {
     let topZIndex = Number.MAX_SAFE_INTEGER;
@@ -180,11 +201,13 @@ export const PrivateRoomComponent: React.FC<Props> = ({
   return (
     <ContainerComponent pivot={containerPivot} sortableChildren>
       {tilesAndWalls}
-      {/*<PrivateRoomTilePreview*/}
-      {/*  type="tile"*/}
-      {/*  position={{ x: 1, y: 0, z: 3 }}*/}
-      {/*  direction={CrossDirection.EAST}*/}
-      {/*/>*/}
+      {previewData ? (
+        <PrivateRoomTilePreview
+          type={previewData.type}
+          position={previewData.point}
+          direction={previewData?.direction ?? CrossDirection.EAST}
+        />
+      ) : null}
     </ContainerComponent>
   );
 };

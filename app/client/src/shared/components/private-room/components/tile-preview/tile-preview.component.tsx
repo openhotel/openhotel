@@ -22,11 +22,11 @@ export const PrivateRoomTilePreview: React.FC<Props> = ({
         x: direction === CrossDirection.NORTH ? 1 : -1,
       }}
       spriteSheet={SpriteSheetEnum.ROOM}
-      zIndex={Number.MAX_SAFE_INTEGER}
+      zIndex={position.x + position.z}
       position={getPositionFromIsometricPosition(position)}
       pivot={{
         x: type === "tile" ? 2 : 0,
-        y: type === "stairs" ? -6 : 0,
+        y: type === "stairs" ? 18 : 0,
       }}
     />
   );

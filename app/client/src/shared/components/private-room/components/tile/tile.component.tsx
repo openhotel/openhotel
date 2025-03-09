@@ -21,12 +21,16 @@ type Props = {
   position: Point3d;
   spawn?: boolean;
   onPointerDown?: () => void;
+  onPointerEnter?: () => void;
+  onPointerLeave?: () => void;
 } & Omit<DisplayObjectProps<SpriteRef>, "position">;
 
 export const PrivateRoomTile: React.FC<Props> = ({
   position,
   spawn,
   onPointerDown,
+  onPointerEnter,
+  onPointerLeave,
   ...props
 }) => {
   const zIndex = useMemo(() => getSafeZIndex(position, -0.1), [position]);
@@ -49,6 +53,8 @@ export const PrivateRoomTile: React.FC<Props> = ({
         }}
         alpha={0}
         onPointerDown={onPointerDown}
+        onPointerEnter={onPointerEnter}
+        onPointerLeave={onPointerLeave}
       />
       <SpriteComponent
         texture="tile"
