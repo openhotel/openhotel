@@ -25,7 +25,7 @@ export const PrivateRoomTilePreview: React.FC<Props> = ({
       zIndex={position.x + position.z}
       position={getPositionFromIsometricPosition(position)}
       pivot={{
-        x: type === "tile" ? 2 : 0,
+        x: type === "tile" ? -2 : 0,
         y: type === "stairs" ? 18 : 0,
       }}
     />

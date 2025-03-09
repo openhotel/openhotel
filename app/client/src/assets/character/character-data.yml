@@ -28,7 +28,7 @@ north_east:
     body:
       pivot:
         x: 9
-        y: 46
+        y: 45
     head:
       north:
         pivot:
@@ -45,7 +45,7 @@ north_east:
     arm:
       left:
         pivot:
-          x: 14
+          x: -14
           y: -3
       right:
         pivot:
@@ -60,7 +60,7 @@ east:
     head:
       east:
         pivot:
-          x: 1
+          x: -1
           y: 18
       south_east:
         pivot:
@@ -70,9 +70,27 @@ east:
       left:
         zIndex: -1
         pivot:
-          x: -1
+          x: 1
           y: 0
       right:
         pivot:
-          x: 12
+          x: -12
           y: -1
+south_east:
+  idle:
+    body:
+      pivot:
+        x: 6
+        y: 45
+    head:
+      south_east:
+        pivot:
+          x: 3
+          y: 16
+    arm:
+      left:
+        visible: false
+      right:
+        pivot:
+          x: -4
+          y: -6

@@ -60,9 +60,12 @@ export const ArmComponent: React.FC<Props> = ({
     [characterDirection, action, armSide],
   );
 
-  const { pivot, zIndex } = useMemo(() => {
+  const { pivot, zIndex, visible } = useMemo(() => {
     return getArmData(bodyDirection, bodyAction, side);
   }, [getArmData, bodyDirection, bodyAction, side]);
+
+  //Do not change to "!visible"
+  if (visible === false) return null;
 
   return (
     <SpriteComponent
