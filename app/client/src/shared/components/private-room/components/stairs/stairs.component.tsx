@@ -50,7 +50,7 @@ export const PrivateRoomStairs: React.FC<Props> = ({
         cursor={Cursor.POINTER}
         position={$position}
         pivot={{
-          x: direction === CrossDirection.NORTH ? -26 : 24,
+          x: direction === CrossDirection.NORTH ? -26 : -24,
           y: 18,
         }}
         alpha={0}

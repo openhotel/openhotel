@@ -22,6 +22,7 @@ export type CharacterHeadData = {
   pivot: Point2d;
 };
 export type CharacterArmData = {
+  visible?: boolean;
   pivot: Point2d;
   zIndex?: number;
 };
