@@ -18,12 +18,16 @@ type Props = {
   spawn?: boolean;
   direction: CrossDirection.NORTH | CrossDirection.EAST;
   onPointerDown?: () => void;
+  onPointerEnter?: () => void;
+  onPointerLeave?: () => void;
 } & Omit<DisplayObjectProps<SpriteRef>, "position">;
 
 export const PrivateRoomStairs: React.FC<Props> = ({
   position,
   direction,
   onPointerDown,
+  onPointerEnter,
+  onPointerLeave,
 }) => {
   const zIndex = useMemo(() => getSafeZIndex(position, -0.1), [position]);
   const $position = useMemo(
@@ -54,6 +58,8 @@ export const PrivateRoomStairs: React.FC<Props> = ({
           x: direction === CrossDirection.NORTH ? 1 : -1,
         }}
         onPointerDown={onPointerDown}
+        onPointerEnter={onPointerEnter}
+        onPointerLeave={onPointerLeave}
       />
       <SpriteComponent
         zIndex={zIndex}
