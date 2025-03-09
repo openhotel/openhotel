@@ -20,12 +20,8 @@ export default {
 type Story = StoryObj<typeof CharacterComponent>;
 
 export const Character: Story = () => {
-  const [bodyDirection, setBodyDirection] = useState<Direction>(
-    Direction.NORTH,
-  );
-  const [headDirection, setHeadDirection] = useState<Direction>(
-    Direction.NORTH,
-  );
+  const [bodyDirection, setBodyDirection] = useState<Direction>(Direction.EAST);
+  const [headDirection, setHeadDirection] = useState<Direction>(null);
   const [action, setAction] = useState<CharacterBodyAction>(
     CharacterBodyAction.IDLE,
   );
@@ -59,15 +55,15 @@ export const Character: Story = () => {
   return (
     <ContainerComponent
       position={{
-        y: 50,
+        y: 55,
       }}
     >
       <CharacterComponent
         bodyDirection={bodyDirection}
-        headDirection={headDirection}
+        headDirection={headDirection ?? bodyDirection}
         leftArmAction={leftArmAction}
         rightArmAction={rightArmAction}
-        action={action}
+        bodyAction={action}
         skinColor={0xefcfb1}
       />
       <PrivateRoomTile position={{ x: 0, y: 0, z: 0 }} />
