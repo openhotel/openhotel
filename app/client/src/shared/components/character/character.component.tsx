@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React from "react";
 import { ContainerComponent } from "@oh/pixi-components";
 import {
   CharacterArmAction,
@@ -6,15 +6,11 @@ import {
   CharacterBodyAction,
   Direction,
 } from "shared/enums";
-import {
-  CHARACTER_DIRECTION_MAP,
-  CHARACTER_DIRECTION_SCALE_MAP,
-  TILE_SIZE,
-} from "shared/consts";
+import { TILE_SIZE } from "shared/consts";
 import { ArmComponent, BodyComponent, HeadComponent } from "./components";
 
 type Props = {
-  action: CharacterBodyAction;
+  bodyAction: CharacterBodyAction;
   bodyDirection: Direction;
   headDirection: Direction;
   leftArmAction: CharacterArmAction;
@@ -23,31 +19,13 @@ type Props = {
 };
 
 export const CharacterComponent: React.FC<Props> = ({
-  action,
+  bodyAction,
   bodyDirection,
   headDirection,
   leftArmAction,
   rightArmAction,
   skinColor,
 }) => {
-  const bodyCharacterDirection = useMemo(
-    () => CHARACTER_DIRECTION_MAP[bodyDirection],
-    [bodyDirection],
-  );
-  const headCharacterDirection = useMemo(
-    () => CHARACTER_DIRECTION_MAP[headDirection],
-    [headDirection],
-  );
-
-  const bodyScale = useMemo(
-    () => CHARACTER_DIRECTION_SCALE_MAP[bodyDirection],
-    [bodyDirection],
-  );
-  const headScale = useMemo(
-    () => CHARACTER_DIRECTION_SCALE_MAP[headDirection],
-    [headDirection],
-  );
-
   return (
     <ContainerComponent
       position={{
@@ -56,27 +34,27 @@ export const CharacterComponent: React.FC<Props> = ({
       }}
     >
       <BodyComponent
-        action={action}
-        direction={bodyCharacterDirection}
+        action={bodyAction}
+        direction={bodyDirection}
         skinColor={skinColor}
-        scale={bodyScale}
       >
         <HeadComponent
           skinColor={skinColor}
-          direction={headCharacterDirection}
-          scale={headScale}
+          bodyDirection={bodyDirection}
+          bodyAction={bodyAction}
+          direction={headDirection}
         />
         <ArmComponent
           skinColor={skinColor}
-          bodyDirection={bodyCharacterDirection}
-          bodyScale={bodyScale}
+          bodyDirection={bodyDirection}
+          bodyAction={bodyAction}
           side={CharacterArmSide.LEFT}
           action={leftArmAction}
         />
         <ArmComponent
           skinColor={skinColor}
-          bodyDirection={bodyCharacterDirection}
-          bodyScale={bodyScale}
+          bodyDirection={bodyDirection}
+          bodyAction={bodyAction}
           side={CharacterArmSide.RIGHT}
           action={rightArmAction}
         />

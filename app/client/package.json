@@ -5,7 +5,7 @@
   "scripts": {
     "start": "vite --host",
     "storybook": "storybook dev -p 7007",
-    "link:pixi-components": "npm link @oh/pixi-components",
+    "link:pixi-components": "npm link @oh/pixi-components --force",
     "build-storybook": "storybook build"
   },
   "devDependencies": {

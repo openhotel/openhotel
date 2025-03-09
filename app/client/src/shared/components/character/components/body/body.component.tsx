@@ -1,21 +1,23 @@
 import React, { useMemo } from "react";
 import {
-  AssetEnum,
   CharacterBodyAction,
-  CharacterDirection,
   CharacterPart,
+  Direction,
   SpriteSheetEnum,
 } from "shared/enums";
 import { ContainerComponent, SpriteComponent } from "@oh/pixi-components";
 import { getCharacterBodyPart } from "shared/utils";
-import { useAssets } from "shared/hooks";
+import { useCharacter } from "shared/hooks";
+import {
+  CHARACTER_DIRECTION_MAP,
+  CHARACTER_DIRECTION_SCALE_MAP,
+} from "shared/consts";
 
 type Props = {
-  direction: CharacterDirection;
+  direction: Direction;
   action: CharacterBodyAction;
   children?: React.ReactNode;
   skinColor: number;
-  scale: number;
 };
 
 export const BodyComponent: React.FC<Props> = ({
@@ -23,28 +25,29 @@ export const BodyComponent: React.FC<Props> = ({
   direction,
   children,
   skinColor,
-  scale,
 }) => {
-  const { getAsset } = useAssets();
-  const texture = useMemo(
-    () => getCharacterBodyPart(CharacterPart.BODY, direction, action),
-    [action],
+  const { getBodyData } = useCharacter();
+
+  const characterDirection = useMemo(
+    () => CHARACTER_DIRECTION_MAP[direction],
+    [direction],
+  );
+  const scale = useMemo(
+    () => CHARACTER_DIRECTION_SCALE_MAP[direction],
+    [direction],
   );
 
-  const data = useMemo(() => {
-    return getAsset(AssetEnum.CHARACTER_DATA)["north"]["idle"]["body"].pivot;
-  }, []);
+  const texture = useMemo(
+    () => getCharacterBodyPart(CharacterPart.BODY, characterDirection, action),
+    [action, characterDirection],
+  );
 
-  console.log(data);
+  const { pivot } = useMemo(() => {
+    return getBodyData(direction, action);
+  }, [getBodyData, direction, action]);
 
   return (
-    <ContainerComponent
-      sortableChildren
-      pivot={{
-        x: 9,
-        y: 44,
-      }}
-    >
+    <ContainerComponent sortableChildren pivot={pivot}>
       <SpriteComponent
         texture={texture}
         spriteSheet={SpriteSheetEnum.CHARACTER}
