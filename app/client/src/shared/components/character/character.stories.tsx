@@ -28,7 +28,7 @@ type Story = StoryObj<typeof CharacterComponent>;
 
 export const Character: Story = () => {
   const [bodyDirection, setBodyDirection] = useState<Direction>(
-    Direction.SOUTH_EAST,
+    Direction.NORTH_WEST,
   );
   const [headDirection, setHeadDirection] = useState<Direction>(null);
   const [action, setAction] = useState<CharacterBodyAction>(
@@ -41,6 +41,7 @@ export const Character: Story = () => {
     CharacterArmAction.IDLE,
   );
 
+  console.log(Direction[bodyDirection]);
   // useEffect(() => {
   //   setTimeout(() => {
   //     setAction(CharacterBodyAction.SIT);

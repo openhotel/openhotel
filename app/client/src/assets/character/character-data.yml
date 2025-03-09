@@ -44,10 +44,12 @@ north_east:
           y: 18
     arm:
       left:
+        zIndex: 1
         pivot:
           x: -14
           y: -3
       right:
+        zIndex: 1
         pivot:
           x: 3
           y: -3
@@ -81,11 +83,19 @@ south_east:
     body:
       pivot:
         x: 6
-        y: 45
+        y: 44
     head:
       south_east:
         pivot:
           x: 3
+          y: 16
+      south:
+        pivot:
+          x: 1
+          y: 15
+      east:
+        pivot:
+          x: 1
           y: 16
     arm:
       left:
@@ -93,4 +103,114 @@ south_east:
       right:
         pivot:
           x: -4
+          y: -6
+south:
+  idle:
+    body:
+      pivot:
+        x: 12
+        y: 43
+    head:
+      south:
+        pivot:
+          x: -4
+          y: 18
+      south_east:
+        pivot:
+          x: -2
+          y: 17
+      south_west:
+        pivot:
+          x: -3
+          y: 18
+    arm:
+      left:
+        zIndex: -1
+        pivot:
+          x: -15
+          y: -3
+      right:
+        pivot:
+          x: -2
+          y: -2
+south_west:
+  idle:
+    body:
+      pivot:
+        x: 10
+        y: 43
+    head:
+      south_west:
+        pivot:
+          x: 0
+          y: 19
+      west:
+        pivot:
+          x: 0
+          y: 18
+      south:
+        pivot:
+          x: 0
+          y: 18
+    arm:
+      left:
+        zIndex: -1
+        pivot:
+          x: 2
+          y: -2
+      right:
+        zIndex: -1
+        pivot:
+          x: -14
+          y: -2
+west:
+  idle:
+    body:
+      pivot:
+        x: 8
+        y: 43
+    head:
+      west:
+        pivot:
+          x: 3
+          y: 18
+      south_west:
+        pivot:
+          x: 2
+          y: 18
+      north_west:
+        pivot:
+          x: 2
+          y: 17
+    arm:
+      left:
+        zIndex: -1
+        pivot:
+          x: 3
+          y: -3
+      right:
+        pivot:
+          x: -10
+          y: -2
+north_west:
+  idle:
+    body:
+      pivot:
+        x: 6
+        y: 44
+    head:
+      north_west:
+        pivot:
+          x: 3
+          y: 16
+      west:
+        pivot:
+          x: 5
+          y: 15
+    arm:
+      left:
+        visible: false
+      right:
+        pivot:
+          x: -2
           y: -6
