@@ -6,6 +6,7 @@ import {
   CoreLoaderComponent,
   InitialLoaderComponent,
 } from "modules/application";
+import { AssetsProvider } from "shared/hooks";
 
 /** @type { import('@storybook/react').Preview } */
 const preview = {
@@ -62,11 +63,16 @@ export const decorators = [
 
     return (
       <StrictMode>
-        <ApplicationProvider scale={scale}>
+        <ApplicationProvider
+          scale={scale}
+          backgroundColor={props.globals.backgrounds?.value || 0x1}
+        >
           <InitialLoaderComponent>
-            <CoreLoaderComponent>
-              {withConsole()(renderStory)(props)}
-            </CoreLoaderComponent>
+            <AssetsProvider>
+              <CoreLoaderComponent>
+                {withConsole()(renderStory)(props)}
+              </CoreLoaderComponent>
+            </AssetsProvider>
           </InitialLoaderComponent>
         </ApplicationProvider>
       </StrictMode>

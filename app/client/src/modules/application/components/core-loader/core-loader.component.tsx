@@ -1,19 +1,32 @@
 import React, { PropsWithChildren, useMemo } from "react";
-import { SpriteSheetEnum, TextureEnum } from "shared/enums";
+import { AssetEnum, SpriteSheetEnum, TextureEnum } from "shared/enums";
 import { useTextures } from "@oh/pixi-components";
-import { LoaderComponent } from "shared/components";
+import { LoaderAssetsComponent } from "shared/components";
 import { LoaderItem } from "shared/types";
+import { useAssets } from "shared/hooks";
 
 type Props = {} & PropsWithChildren;
 
 export const CoreLoaderComponent: React.FC<Props> = ({ children }) => {
   const { getSpriteSheet, getTexture } = useTextures();
+  const { setAsset } = useAssets();
 
   const loaderItems = useMemo(() => {
+    const assets = Object.values(AssetEnum);
     const spriteSheets = Object.values(SpriteSheetEnum);
     const textures = Object.values(TextureEnum);
 
     return [
+      {
+        items: assets,
+        startLabel: "Loading assets",
+        endLabel: "Assets loaded!",
+        prefix: "Loading",
+        suffix: "asset",
+        func: async (asset: AssetEnum) => {
+          setAsset(asset, await (await fetch(asset)).json());
+        },
+      },
       {
         items: spriteSheets,
         startLabel: "Loading sprite-sheets",
@@ -31,7 +44,9 @@ export const CoreLoaderComponent: React.FC<Props> = ({ children }) => {
         func: (texture: string) => getTexture({ texture }),
       },
     ] as LoaderItem[];
-  }, [getSpriteSheet, getTexture]);
+  }, [getSpriteSheet, getTexture, setAsset]);
 
-  return <LoaderComponent loaderItems={loaderItems} children={children} />;
+  return (
+    <LoaderAssetsComponent loaderItems={loaderItems} children={children} />
+  );
 };

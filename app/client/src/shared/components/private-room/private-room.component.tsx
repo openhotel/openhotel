@@ -13,7 +13,7 @@ import {
   PrivateRoomStairs,
   PrivateRoomTile,
   PrivateRoomWallComponent,
-} from "shared/components/private-room/components";
+} from "./components";
 
 type Props = {
   onPointerTile?: (point: Point3d) => void;

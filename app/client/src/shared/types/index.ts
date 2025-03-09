@@ -10,3 +10,4 @@ export * from "./event.types";
 export * from "./contributors.types";
 export * from "./loader.types";
 export * from "./account.types";
+export * from "./character.types";
