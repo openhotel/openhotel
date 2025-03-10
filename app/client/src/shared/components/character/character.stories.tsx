@@ -12,6 +12,7 @@ import { PrivateRoomTile } from "shared/components/private-room/components";
 import {
   CharacterArmAction,
   CharacterBodyAction,
+  CharacterBodyAnimation,
   Direction,
 } from "shared/enums";
 import { TextComponent } from "shared/components/text";
@@ -31,8 +32,8 @@ export const Character: Story = () => {
     Direction.SOUTH_EAST,
   );
   const [headDirection, setHeadDirection] = useState<Direction>(null);
-  const [action, setAction] = useState<CharacterBodyAction>(
-    CharacterBodyAction.WALK_0,
+  const [bodyAnimation, setBodyAnimation] = useState<CharacterBodyAnimation>(
+    CharacterBodyAnimation.WALK,
   );
   const [leftArmAction, setLeftArmAction] = useState<CharacterArmAction>(
     CharacterArmAction.IDLE,
@@ -41,21 +42,21 @@ export const Character: Story = () => {
     CharacterArmAction.IDLE,
   );
 
-  useEffect(() => {
-    return;
-    const interval = setInterval(() => {
-      setAction((action) => {
-        if (CharacterBodyAction.WALK_0 > action) return action;
-
-        action++;
-        if (action > CharacterBodyAction.WALK_3)
-          action = CharacterBodyAction.WALK_0;
-        return action;
-      });
-    }, 150);
-
-    return () => clearInterval(interval);
-  }, [setAction]);
+  // useEffect(() => {
+  //   return;
+  //   const interval = setInterval(() => {
+  //     setBodyAnimation((action) => {
+  //       if (CharacterBodyAction.WALK_0 > action) return action;
+  //
+  //       action++;
+  //       if (action > CharacterBodyAction.WALK_3)
+  //         action = CharacterBodyAction.WALK_0;
+  //       return action;
+  //     });
+  //   }, 150);
+  //
+  //   return () => clearInterval(interval);
+  // }, [setBodyAnimation]);
 
   const onPointerLeft = useCallback(() => {
     setBodyDirection((direction) => {
@@ -74,11 +75,11 @@ export const Character: Story = () => {
   }, [setBodyDirection]);
 
   const onToggleAction = useCallback(() => {
-    setAction((action) => {
+    setBodyAnimation((action) => {
       if (action >= CharacterBodyAction.WALK_0) return CharacterBodyAction.IDLE;
       return action + 1;
     });
-  }, [setAction]);
+  }, [setBodyAnimation]);
 
   return (
     <ContainerComponent
@@ -99,7 +100,7 @@ export const Character: Story = () => {
         headDirection={headDirection ?? bodyDirection}
         leftArmAction={leftArmAction}
         rightArmAction={rightArmAction}
-        bodyAction={action}
+        bodyAnimation={bodyAnimation}
         skinColor={0xefcfb1}
       />
       <PrivateRoomTile position={{ x: 0, y: 0, z: 0 }} />
@@ -132,7 +133,7 @@ export const Character: Story = () => {
         }}
       />
       <TextComponent
-        text={CharacterBodyAction[action]}
+        text={CharacterBodyAction[bodyAnimation]}
         position={{
           x: 10,
           y: 52,

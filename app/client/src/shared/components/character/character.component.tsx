@@ -1,17 +1,20 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { ContainerComponent } from "@oh/pixi-components";
 import {
   CharacterArmAction,
   CharacterArmSide,
   CharacterBodyAction,
+  CharacterBodyAnimation,
   Direction,
 } from "shared/enums";
-import { TILE_SIZE } from "shared/consts";
+import { CHARACTER_BODY_ANIMATION_MAP, TILE_SIZE } from "shared/consts";
 import { ArmComponent, BodyComponent, HeadComponent } from "./components";
 import { useCharacter } from "shared/hooks";
+import { System } from "system";
+import { TickerQueue } from "@oh/queue";
 
 type Props = {
-  bodyAction: CharacterBodyAction;
+  bodyAnimation: CharacterBodyAnimation;
   bodyDirection: Direction;
   headDirection: Direction;
   leftArmAction: CharacterArmAction;
@@ -20,7 +23,7 @@ type Props = {
 };
 
 export const CharacterComponent: React.FC<Props> = ({
-  bodyAction,
+  bodyAnimation,
   bodyDirection,
   headDirection,
   leftArmAction,
@@ -29,7 +32,35 @@ export const CharacterComponent: React.FC<Props> = ({
 }) => {
   const { getBodyData } = useCharacter();
 
-  if (!getBodyData(bodyDirection, bodyAction)) return null;
+  const [bodyAction, setBodyAction] = useState<CharacterBodyAction>(null);
+
+  useEffect(() => {
+    const animationBodyActions =
+      CHARACTER_BODY_ANIMATION_MAP?.[bodyDirection]?.[bodyAnimation];
+
+    if (!Array.isArray(animationBodyActions))
+      return setBodyAction(animationBodyActions);
+
+    setBodyAction(animationBodyActions[0]);
+    return System.tasks.add({
+      type: TickerQueue.REPEAT,
+      repeatEvery: 120,
+      repeats: undefined,
+      onFunc: () => {
+        setBodyAction((animation) => {
+          const index = animationBodyActions.indexOf(animation) + 1;
+          return animationBodyActions[index] ?? animationBodyActions[0];
+        });
+      },
+    });
+  }, [bodyAnimation, bodyDirection, setBodyAction]);
+
+  if (
+    bodyAction === null ||
+    isNaN(bodyAction) ||
+    !getBodyData(bodyDirection, bodyAction)
+  )
+    return null;
 
   return (
     <ContainerComponent
