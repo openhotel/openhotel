@@ -42,7 +42,7 @@ export const Character: Story = () => {
   );
 
   useEffect(() => {
-    // return;
+    return;
     const interval = setInterval(() => {
       setAction((action) => {
         if (CharacterBodyAction.WALK_0 > action) return action;
