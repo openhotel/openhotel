@@ -460,6 +460,106 @@ south_east:
         pivot:
           x: -4
           y: -6
+  walk_0:
+    body:
+      pivot:
+        x: 13
+        y: 44
+    head:
+      south_east:
+        pivot:
+          x: -4
+          y: 16
+      south:
+        pivot:
+          x: -4
+          y: 15
+      east:
+        pivot:
+          x: -4
+          y: 16
+    arm:
+      left:
+        visible: false
+      right:
+        pivot:
+          x: -11
+          y: -6
+  walk_1:
+    body:
+      pivot:
+        x: 5
+        y: 44
+    head:
+      south_east:
+        pivot:
+          x: 4
+          y: 16
+      south:
+        pivot:
+          x: 4
+          y: 15
+      east:
+        pivot:
+          x: 4
+          y: 16
+    arm:
+      left:
+        visible: false
+      right:
+        pivot:
+          x: -3
+          y: -6
+  walk_2:
+    body:
+      pivot:
+        x: 13
+        y: 44
+    head:
+      south_east:
+        pivot:
+          x: -4
+          y: 16
+      south:
+        pivot:
+          x: -4
+          y: 15
+      east:
+        pivot:
+          x: -4
+          y: 16
+    arm:
+      left:
+        visible: false
+      right:
+        pivot:
+          x: -11
+          y: -6
+  walk_3:
+    body:
+      pivot:
+        x: 6
+        y: 44
+    head:
+      south_east:
+        pivot:
+          x: 3
+          y: 16
+      south:
+        pivot:
+          x: 3
+          y: 15
+      east:
+        pivot:
+          x: 3
+          y: 16
+    arm:
+      left:
+        visible: false
+      right:
+        pivot:
+          x: -4
+          y: -6
 south:
   idle:
     body:
