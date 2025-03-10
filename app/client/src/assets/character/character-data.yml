@@ -314,7 +314,6 @@ east:
         pivot:
           x: -12
           y: -1
-
   sit:
     body:
       pivot:
@@ -338,6 +337,102 @@ east:
       right:
         pivot:
           x: -22
+          y: -1
+  walk_0:
+    body:
+      pivot:
+        x: 7
+        y: 44
+    head:
+      east:
+        pivot:
+          x: 1
+          y: 18
+      south_east:
+        pivot:
+          x: 1
+          y: 17
+    arm:
+      left:
+        zIndex: -1
+        pivot:
+          x: 3
+          y: 0
+      right:
+        pivot:
+          x: -10
+          y: -1
+  walk_1:
+    body:
+      pivot:
+        x: 12
+        y: 44
+    head:
+      east:
+        pivot:
+          x: -4
+          y: 18
+      south_east:
+        pivot:
+          x: 1
+          y: 17
+    arm:
+      left:
+        zIndex: -1
+        pivot:
+          x: -2
+          y: 0
+      right:
+        pivot:
+          x: -15
+          y: -1
+  walk_2:
+    body:
+      pivot:
+        x: 9
+        y: 44
+    head:
+      east:
+        pivot:
+          x: -1
+          y: 18
+      south_east:
+        pivot:
+          x: 1
+          y: 17
+    arm:
+      left:
+        zIndex: -1
+        pivot:
+          x: 1
+          y: 0
+      right:
+        pivot:
+          x: -12
+          y: -1
+  walk_3:
+    body:
+      pivot:
+        x: 7
+        y: 44
+    head:
+      east:
+        pivot:
+          x: 1
+          y: 18
+      south_east:
+        pivot:
+          x: 1
+          y: 17
+    arm:
+      left:
+        zIndex: -1
+        pivot:
+          x: 3
+          y: 0
+      right:
+        pivot:
+          x: -10
           y: -1
 south_east:
   idle:
