@@ -76,25 +76,45 @@ export const CHARACTER_BODY_ANIMATION_MAP: Record<
   [Direction.NORTH]: {
     [CharacterBodyAnimation.IDLE]: CharacterBodyAction.IDLE,
     [CharacterBodyAnimation.SIT]: CharacterBodyAction.SIT,
-    [CharacterBodyAnimation.WALK]: [],
+    [CharacterBodyAnimation.WALK]: [
+      CharacterBodyAction.WALK_0,
+      CharacterBodyAction.WALK_1,
+      CharacterBodyAction.WALK_2,
+      CharacterBodyAction.WALK_3,
+    ],
     [CharacterBodyAnimation.DANCE_0]: [],
   },
   [Direction.NORTH_EAST]: {
     [CharacterBodyAnimation.IDLE]: CharacterBodyAction.IDLE,
     [CharacterBodyAnimation.SIT]: CharacterBodyAction.SIT,
-    [CharacterBodyAnimation.WALK]: [],
+    [CharacterBodyAnimation.WALK]: [
+      CharacterBodyAction.WALK_0,
+      CharacterBodyAction.WALK_1,
+      CharacterBodyAction.WALK_2,
+      CharacterBodyAction.WALK_3,
+    ],
     [CharacterBodyAnimation.DANCE_0]: [],
   },
   [Direction.EAST]: {
     [CharacterBodyAnimation.IDLE]: CharacterBodyAction.IDLE,
     [CharacterBodyAnimation.SIT]: CharacterBodyAction.SIT,
-    [CharacterBodyAnimation.WALK]: [],
+    [CharacterBodyAnimation.WALK]: [
+      CharacterBodyAction.WALK_0,
+      CharacterBodyAction.WALK_1,
+      CharacterBodyAction.WALK_2,
+      CharacterBodyAction.WALK_3,
+    ],
     [CharacterBodyAnimation.DANCE_0]: [],
   },
   [Direction.SOUTH_EAST]: {
     [CharacterBodyAnimation.IDLE]: CharacterBodyAction.IDLE,
     [CharacterBodyAnimation.SIT]: CharacterBodyAction.SIT,
-    [CharacterBodyAnimation.WALK]: [],
+    [CharacterBodyAnimation.WALK]: [
+      CharacterBodyAction.WALK_3,
+      CharacterBodyAction.WALK_0,
+      CharacterBodyAction.WALK_1,
+      CharacterBodyAction.WALK_2,
+    ],
     [CharacterBodyAnimation.DANCE_0]: [],
   },
   [Direction.SOUTH]: {
@@ -118,7 +138,12 @@ export const CHARACTER_BODY_ANIMATION_MAP: Record<
   [Direction.NORTH_WEST]: {
     [CharacterBodyAnimation.IDLE]: CharacterBodyAction.IDLE,
     [CharacterBodyAnimation.SIT]: CharacterBodyAction.SIT,
-    [CharacterBodyAnimation.WALK]: [],
+    [CharacterBodyAnimation.WALK]: [
+      CharacterBodyAction.WALK_3,
+      CharacterBodyAction.WALK_0,
+      CharacterBodyAction.WALK_1,
+      CharacterBodyAction.WALK_2,
+    ],
     [CharacterBodyAnimation.DANCE_0]: [],
   },
   [Direction.NONE]: null,

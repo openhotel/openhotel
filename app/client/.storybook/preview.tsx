@@ -1,4 +1,4 @@
-import React, { StrictMode, useMemo } from "react";
+import React, { StrictMode, useEffect, useMemo } from "react";
 import "./style.css";
 import { ApplicationProvider } from "@oh/pixi-components";
 import { withConsole } from "@storybook/addon-console";
@@ -7,6 +7,7 @@ import {
   InitialLoaderComponent,
 } from "modules/application";
 import { AssetsProvider } from "shared/hooks";
+import { System } from "system";
 
 /** @type { import('@storybook/react').Preview } */
 const preview = {
@@ -60,6 +61,10 @@ export const decorators = [
   (renderStory, props) => {
     const scale = useMemo(() => props.globals.scale, [props]);
     // const isConsole = useMemo(() => props.globals.console, [props]);
+
+    useEffect(() => {
+      System.load();
+    }, []);
 
     return (
       <StrictMode>
