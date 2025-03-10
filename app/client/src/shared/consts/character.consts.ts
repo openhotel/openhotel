@@ -1,4 +1,10 @@
-import { CharacterArmSide, CharacterDirection, Direction } from "shared/enums";
+import {
+  CharacterArmSide,
+  CharacterBodyAction,
+  CharacterBodyAnimation,
+  CharacterDirection,
+  Direction,
+} from "shared/enums";
 
 export const CHARACTER_DIRECTION_MAP: Record<Direction, CharacterDirection> = {
   [Direction.NORTH]: CharacterDirection.NORTH,
@@ -59,6 +65,61 @@ export const CHARACTER_ARM_SIDE_MAP: Record<
   [Direction.NORTH_WEST]: {
     [CharacterArmSide.LEFT]: CharacterArmSide.RIGHT,
     [CharacterArmSide.RIGHT]: CharacterArmSide.RIGHT,
+  },
+  [Direction.NONE]: null,
+};
+
+export const CHARACTER_BODY_ANIMATION_MAP: Record<
+  Direction,
+  Record<CharacterBodyAnimation, CharacterBodyAction | CharacterBodyAction[]>
+> = {
+  [Direction.NORTH]: {
+    [CharacterBodyAnimation.IDLE]: CharacterBodyAction.IDLE,
+    [CharacterBodyAnimation.SIT]: CharacterBodyAction.SIT,
+    [CharacterBodyAnimation.WALK]: [],
+    [CharacterBodyAnimation.DANCE_0]: [],
+  },
+  [Direction.NORTH_EAST]: {
+    [CharacterBodyAnimation.IDLE]: CharacterBodyAction.IDLE,
+    [CharacterBodyAnimation.SIT]: CharacterBodyAction.SIT,
+    [CharacterBodyAnimation.WALK]: [],
+    [CharacterBodyAnimation.DANCE_0]: [],
+  },
+  [Direction.EAST]: {
+    [CharacterBodyAnimation.IDLE]: CharacterBodyAction.IDLE,
+    [CharacterBodyAnimation.SIT]: CharacterBodyAction.SIT,
+    [CharacterBodyAnimation.WALK]: [],
+    [CharacterBodyAnimation.DANCE_0]: [],
+  },
+  [Direction.SOUTH_EAST]: {
+    [CharacterBodyAnimation.IDLE]: CharacterBodyAction.IDLE,
+    [CharacterBodyAnimation.SIT]: CharacterBodyAction.SIT,
+    [CharacterBodyAnimation.WALK]: [],
+    [CharacterBodyAnimation.DANCE_0]: [],
+  },
+  [Direction.SOUTH]: {
+    [CharacterBodyAnimation.IDLE]: CharacterBodyAction.IDLE,
+    [CharacterBodyAnimation.SIT]: CharacterBodyAction.SIT,
+    [CharacterBodyAnimation.WALK]: [],
+    [CharacterBodyAnimation.DANCE_0]: [],
+  },
+  [Direction.SOUTH_WEST]: {
+    [CharacterBodyAnimation.IDLE]: CharacterBodyAction.IDLE,
+    [CharacterBodyAnimation.SIT]: CharacterBodyAction.SIT,
+    [CharacterBodyAnimation.WALK]: [],
+    [CharacterBodyAnimation.DANCE_0]: [],
+  },
+  [Direction.WEST]: {
+    [CharacterBodyAnimation.IDLE]: CharacterBodyAction.IDLE,
+    [CharacterBodyAnimation.SIT]: CharacterBodyAction.SIT,
+    [CharacterBodyAnimation.WALK]: [],
+    [CharacterBodyAnimation.DANCE_0]: [],
+  },
+  [Direction.NORTH_WEST]: {
+    [CharacterBodyAnimation.IDLE]: CharacterBodyAction.IDLE,
+    [CharacterBodyAnimation.SIT]: CharacterBodyAction.SIT,
+    [CharacterBodyAnimation.WALK]: [],
+    [CharacterBodyAnimation.DANCE_0]: [],
   },
   [Direction.NONE]: null,
 };

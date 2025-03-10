@@ -21,6 +21,13 @@ export enum CharacterBodyAction {
   WALK_3,
 }
 
+export enum CharacterBodyAnimation {
+  IDLE,
+  SIT,
+  WALK,
+  DANCE_0,
+}
+
 export enum CharacterArmSide {
   RIGHT,
   LEFT,
