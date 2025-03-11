@@ -1,25 +1,13 @@
 import { useAssets } from ".";
-import { useCallback, useMemo } from "react";
-import {
-  AssetEnum,
-  CharacterArmSide,
-  CharacterBodyAction,
-  CharacterPart,
-  Direction,
-} from "shared/enums";
-import { getEnumKeyLowCase } from "shared/utils";
-import {
-  CharacterArmData,
-  CharacterBodyData,
-  CharacterData,
-  CharacterHeadData,
-} from "shared/types";
+import { useMemo } from "react";
+import { AssetEnum } from "shared/enums";
+import { CharacterFramesData } from "shared/types";
 
 export const useCharacter = () => {
   const { getAsset } = useAssets();
 
-  const data = useMemo(
-    () => getAsset(AssetEnum.CHARACTER_DATA) as CharacterData,
+  const data: CharacterFramesData = useMemo(
+    () => getAsset(AssetEnum.CHARACTER_DATA) as CharacterFramesData,
     [getAsset],
   );
   //

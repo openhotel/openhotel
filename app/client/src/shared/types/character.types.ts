@@ -6,6 +6,7 @@ import {
   CharacterPart,
 } from "shared/enums";
 import { Point2d } from "shared/types/point.types";
+import { DirectionKeys } from "shared/types/direction.types";
 
 export type CharacterBodyPartId =
   | CharacterPart
@@ -29,34 +30,34 @@ export type CharacterArmData = {
 
 ////////////////////////
 
-export type CharacterFramesData = {
-  north: {
-    idle: {
-      body: {
-        pivot: Point2d;
-      };
-      head: {
-        pivot: Point2d;
-      };
-    };
-    walk_0: {
-      body: {
-        pivot: Point2d;
-      };
-      head: {
-        pivot: Point2d;
-      };
-    };
-    walk_1: {
-      body: {
-        pivot: Point2d;
-      };
-      head: {
-        pivot: Point2d;
-      };
-    };
+export type CharacterDirectionData = {
+  target: string;
+  scale: number;
+  frames: Record<string, CharacterFrame>;
+};
+
+export type CharacterFrame = {
+  body: {
+    pivot: Point2d;
+  };
+  head: {
+    pivot: Point2d;
+  };
+  left_arm: {
+    target: string;
+    visible: false;
+    zIndex: number;
+    pivot: Point2d;
+  };
+  right_arm: {
+    target: string;
+    visible: false;
+    zIndex: number;
+    pivot: Point2d;
   };
 };
+
+export type CharacterFramesData = Record<DirectionKeys, CharacterDirectionData>;
 
 export type CharacterAnimationsData = {
   north: {
