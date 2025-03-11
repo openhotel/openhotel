@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from "@storybook/react";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { CharacterComponent } from "./character.component";
 import {
   ContainerComponent,
@@ -29,11 +29,11 @@ type Story = StoryObj<typeof CharacterComponent>;
 
 export const Character: Story = () => {
   const [bodyDirection, setBodyDirection] = useState<Direction>(
-    Direction.SOUTH_EAST,
+    Direction.NORTH,
   );
   const [headDirection, setHeadDirection] = useState<Direction>(null);
   const [bodyAnimation, setBodyAnimation] = useState<CharacterBodyAnimation>(
-    CharacterBodyAnimation.WALK,
+    CharacterBodyAnimation.IDLE,
   );
   const [leftArmAction, setLeftArmAction] = useState<CharacterArmAction>(
     CharacterArmAction.IDLE,

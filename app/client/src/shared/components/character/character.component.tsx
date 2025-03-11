@@ -1,17 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { ContainerComponent } from "@oh/pixi-components";
 import {
   CharacterArmAction,
   CharacterArmSide,
-  CharacterBodyAction,
   CharacterBodyAnimation,
   Direction,
 } from "shared/enums";
-import { CHARACTER_BODY_ANIMATION_MAP, TILE_SIZE } from "shared/consts";
+import { TILE_SIZE } from "shared/consts";
 import { ArmComponent, BodyComponent, HeadComponent } from "./components";
-import { useCharacter } from "shared/hooks";
-import { System } from "system";
-import { TickerQueue } from "@oh/queue";
 
 type Props = {
   bodyAnimation: CharacterBodyAnimation;
@@ -30,37 +26,37 @@ export const CharacterComponent: React.FC<Props> = ({
   rightArmAction,
   skinColor,
 }) => {
-  const { getBodyData } = useCharacter();
-
-  const [bodyAction, setBodyAction] = useState<CharacterBodyAction>(null);
-
-  useEffect(() => {
-    const animationBodyActions =
-      CHARACTER_BODY_ANIMATION_MAP?.[bodyDirection]?.[bodyAnimation];
-
-    if (!Array.isArray(animationBodyActions))
-      return setBodyAction(animationBodyActions);
-
-    setBodyAction(animationBodyActions[0]);
-    return System.tasks.add({
-      type: TickerQueue.REPEAT,
-      repeatEvery: 120,
-      repeats: undefined,
-      onFunc: () => {
-        setBodyAction((animation) => {
-          const index = animationBodyActions.indexOf(animation) + 1;
-          return animationBodyActions[index] ?? animationBodyActions[0];
-        });
-      },
-    });
-  }, [bodyAnimation, bodyDirection, setBodyAction]);
-
-  if (
-    bodyAction === null ||
-    isNaN(bodyAction) ||
-    !getBodyData(bodyDirection, bodyAction)
-  )
-    return null;
+  // const { data } = useCharacter();
+  //
+  // const [bodyAction, setBodyAction] = useState<CharacterBodyAction>(null);
+  //
+  // useEffect(() => {
+  //   const animationBodyActions =
+  //     CHARACTER_BODY_ANIMATION_MAP?.[bodyDirection]?.[bodyAnimation];
+  //
+  //   if (!Array.isArray(animationBodyActions))
+  //     return setBodyAction(animationBodyActions);
+  //
+  //   setBodyAction(animationBodyActions[0]);
+  //   return System.tasks.add({
+  //     type: TickerQueue.REPEAT,
+  //     repeatEvery: 120,
+  //     repeats: undefined,
+  //     onFunc: () => {
+  //       setBodyAction((animation) => {
+  //         const index = animationBodyActions.indexOf(animation) + 1;
+  //         return animationBodyActions[index] ?? animationBodyActions[0];
+  //       });
+  //     },
+  //   });
+  // }, [bodyAnimation, bodyDirection, setBodyAction]);
+  //
+  // if (
+  //   bodyAction === null ||
+  //   isNaN(bodyAction) ||
+  //   !getBodyData(bodyDirection, bodyAction)
+  // )
+  //   return null;
 
   return (
     <ContainerComponent
@@ -71,30 +67,30 @@ export const CharacterComponent: React.FC<Props> = ({
       // alpha={0.5}
     >
       <BodyComponent
-        action={bodyAction}
+        animation={bodyAnimation}
         direction={bodyDirection}
         skinColor={skinColor}
       >
-        <HeadComponent
-          skinColor={skinColor}
-          bodyDirection={bodyDirection}
-          bodyAction={bodyAction}
-          direction={headDirection}
-        />
-        <ArmComponent
-          skinColor={skinColor}
-          bodyDirection={bodyDirection}
-          bodyAction={bodyAction}
-          side={CharacterArmSide.LEFT}
-          action={leftArmAction}
-        />
-        <ArmComponent
-          skinColor={skinColor}
-          bodyDirection={bodyDirection}
-          bodyAction={bodyAction}
-          side={CharacterArmSide.RIGHT}
-          action={rightArmAction}
-        />
+        {/*<HeadComponent*/}
+        {/*  skinColor={skinColor}*/}
+        {/*  bodyDirection={bodyDirection}*/}
+        {/*  bodyAction={null}*/}
+        {/*  direction={headDirection}*/}
+        {/*/>*/}
+        {/*<ArmComponent*/}
+        {/*  skinColor={skinColor}*/}
+        {/*  bodyDirection={bodyDirection}*/}
+        {/*  bodyAction={null}*/}
+        {/*  side={CharacterArmSide.LEFT}*/}
+        {/*  action={leftArmAction}*/}
+        {/*/>*/}
+        {/*<ArmComponent*/}
+        {/*  skinColor={skinColor}*/}
+        {/*  bodyDirection={bodyDirection}*/}
+        {/*  bodyAction={null}*/}
+        {/*  side={CharacterArmSide.RIGHT}*/}
+        {/*  action={rightArmAction}*/}
+        {/*/>*/}
       </BodyComponent>
     </ContainerComponent>
   );
