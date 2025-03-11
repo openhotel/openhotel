@@ -1,62 +1,63 @@
-import React, { useMemo } from "react";
+import React from "react";
 import {
   CharacterBodyAction,
-  CharacterPart,
+  CharacterBodyAnimation,
   Direction,
-  SpriteSheetEnum,
 } from "shared/enums";
-import { ContainerComponent, SpriteComponent } from "@oh/pixi-components";
-import { getCharacterBodyPart } from "shared/utils";
 import { useCharacter } from "shared/hooks";
-import {
-  CHARACTER_DIRECTION_MAP,
-  CHARACTER_DIRECTION_SCALE_MAP,
-} from "shared/consts";
+import { getEnumKeyLowCase } from "shared/utils";
 
 type Props = {
   direction: Direction;
-  action: CharacterBodyAction;
+  animation: CharacterBodyAnimation;
   children?: React.ReactNode;
   skinColor: number;
 };
 
 export const BodyComponent: React.FC<Props> = ({
-  action,
+  animation,
   direction,
   children,
   skinColor,
 }) => {
-  const { getBodyData } = useCharacter();
+  const { data } = useCharacter();
 
-  const { scale, texture, pivot } = useMemo(() => {
-    const characterDirection = CHARACTER_DIRECTION_MAP[direction];
-    const scale = CHARACTER_DIRECTION_SCALE_MAP[direction];
+  // const { scale, texture, pivot } = useMemo(() => {
+  //   const characterDirection = CHARACTER_DIRECTION_MAP[direction];
+  //   const scale = CHARACTER_DIRECTION_SCALE_MAP[direction];
+  //
+  //   const { pivot } = getBodyData(direction, action);
+  //   const texture = getCharacterBodyPart(
+  //     CharacterPart.BODY,
+  //     characterDirection,
+  //     action,
+  //   );
+  //
+  //   return {
+  //     scale,
+  //     texture,
+  //     pivot,
+  //   };
+  // }, [direction, action]);
 
-    const { pivot } = getBodyData(direction, action);
-    const texture = getCharacterBodyPart(
-      CharacterPart.BODY,
-      characterDirection,
-      action,
-    );
-
-    return {
-      scale,
-      texture,
-      pivot,
-    };
-  }, [direction, action]);
-
-  return (
-    <ContainerComponent sortableChildren pivot={pivot}>
-      <SpriteComponent
-        texture={texture}
-        spriteSheet={SpriteSheetEnum.CHARACTER}
-        tint={skinColor}
-        scale={{
-          x: scale,
-        }}
-      />
-      {children}
-    </ContainerComponent>
+  console.log(
+    data[getEnumKeyLowCase(direction, Direction)].animations[
+      getEnumKeyLowCase(animation, CharacterBodyAnimation)
+    ],
   );
+
+  return null;
+  // return (
+  //   <ContainerComponent sortableChildren pivot={pivot}>
+  //     <SpriteComponent
+  //       texture={texture}
+  //       spriteSheet={SpriteSheetEnum.CHARACTER}
+  //       tint={skinColor}
+  //       scale={{
+  //         x: scale,
+  //       }}
+  //     />
+  //     {children}
+  //   </ContainerComponent>
+  // );
 };
