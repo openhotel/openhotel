@@ -662,34 +662,34 @@ south:
 south_west:
   frames:
     idle:
-    body:
-      pivot:
-        x: 10
-        y: 43
-    head:
-      south_west:
+      body:
         pivot:
-          x: 0
-          y: 19
-      west:
-        pivot:
-          x: 0
-          y: 18
-      south:
-        pivot:
-          x: 0
-          y: 18
-    arm:
-      left:
-        zIndex: -1
-        pivot:
-          x: 2
-          y: -2
-      right:
-        zIndex: -1
-        pivot:
-          x: -14
-          y: -2
+          x: 10
+          y: 43
+      head:
+        south_west:
+          pivot:
+            x: 0
+            y: 19
+        west:
+          pivot:
+            x: 0
+            y: 18
+        south:
+          pivot:
+            x: 0
+            y: 18
+      arm:
+        left:
+          zIndex: -1
+          pivot:
+            x: 2
+            y: -2
+        right:
+          zIndex: -1
+          pivot:
+            x: -14
+            y: -2
   arms:
     left: left
     right: left

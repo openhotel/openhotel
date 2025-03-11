@@ -2,11 +2,11 @@ import { CharacterDirection, Direction } from "shared/enums";
 
 export const CHARACTER_DIRECTION_MAP: Record<Direction, CharacterDirection> = {
   [Direction.NORTH]: CharacterDirection.NORTH,
-  [Direction.NORTH_EAST]: CharacterDirection.FRONT,
+  [Direction.NORTH_EAST]: CharacterDirection.NORTH_EAST,
   [Direction.EAST]: CharacterDirection.NORTH,
   [Direction.SOUTH_EAST]: CharacterDirection.NORTH_WEST,
   [Direction.SOUTH]: CharacterDirection.WEST,
-  [Direction.SOUTH_WEST]: CharacterDirection.BACK,
+  [Direction.SOUTH_WEST]: CharacterDirection.SOUTH_WEST,
   [Direction.WEST]: CharacterDirection.WEST,
   [Direction.NORTH_WEST]: CharacterDirection.NORTH_WEST,
   [Direction.NONE]: null,

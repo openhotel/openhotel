@@ -1,63 +1,65 @@
-import React from "react";
+import React, { useMemo } from "react";
 import {
   CharacterBodyAction,
-  CharacterBodyAnimation,
+  CharacterDirection,
+  CharacterPart,
   Direction,
+  SpriteSheetEnum,
 } from "shared/enums";
 import { useCharacter } from "shared/hooks";
-import { getEnumKeyLowCase } from "shared/utils";
+import { getCharacterBodyPart, getEnumKeyLowCase } from "shared/utils";
+import { CharacterDirectionData } from "shared/types";
+import { ContainerComponent, SpriteComponent } from "@oh/pixi-components";
 
 type Props = {
   direction: Direction;
-  animation: CharacterBodyAnimation;
+  action: CharacterBodyAction;
   children?: React.ReactNode;
   skinColor: number;
 };
 
 export const BodyComponent: React.FC<Props> = ({
-  animation,
+  action,
   direction,
   children,
   skinColor,
 }) => {
   const { data } = useCharacter();
 
-  // const { scale, texture, pivot } = useMemo(() => {
-  //   const characterDirection = CHARACTER_DIRECTION_MAP[direction];
-  //   const scale = CHARACTER_DIRECTION_SCALE_MAP[direction];
-  //
-  //   const { pivot } = getBodyData(direction, action);
-  //   const texture = getCharacterBodyPart(
-  //     CharacterPart.BODY,
-  //     characterDirection,
-  //     action,
-  //   );
-  //
-  //   return {
-  //     scale,
-  //     texture,
-  //     pivot,
-  //   };
-  // }, [direction, action]);
+  const bodyData = useMemo(() => {
+    const { frames, scale, target }: CharacterDirectionData =
+      data[getEnumKeyLowCase(direction, Direction)];
 
-  console.log(
-    data[getEnumKeyLowCase(direction, Direction)].animations[
-      getEnumKeyLowCase(animation, CharacterBodyAnimation)
-    ],
+    const bodyData = frames[getEnumKeyLowCase(action, CharacterBodyAction)];
+
+    if (!bodyData) return null;
+
+    const texture = getCharacterBodyPart(
+      CharacterPart.BODY,
+      CharacterDirection[(target ?? Direction[direction]).toUpperCase()] as any,
+      action,
+    );
+
+    return {
+      scale,
+      texture,
+      pivot: bodyData.body.pivot,
+    };
+  }, [direction, action]);
+
+  if (!bodyData) return null;
+
+  return (
+    <ContainerComponent sortableChildren pivot={bodyData.pivot}>
+      <SpriteComponent
+        texture={bodyData.texture}
+        spriteSheet={SpriteSheetEnum.CHARACTER}
+        tint={skinColor}
+        scale={{
+          x: bodyData.scale ?? 1,
+        }}
+      />
+      {children}
+    </ContainerComponent>
   );
-
-  return null;
-  // return (
-  //   <ContainerComponent sortableChildren pivot={pivot}>
-  //     <SpriteComponent
-  //       texture={texture}
-  //       spriteSheet={SpriteSheetEnum.CHARACTER}
-  //       tint={skinColor}
-  //       scale={{
-  //         x: scale,
-  //       }}
-  //     />
-  //     {children}
-  //   </ContainerComponent>
-  // );
 };

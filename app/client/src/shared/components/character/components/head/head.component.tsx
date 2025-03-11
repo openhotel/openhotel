@@ -1,17 +1,15 @@
 import React, { useMemo } from "react";
 import {
   CharacterBodyAction,
+  CharacterDirection,
   CharacterPart,
   Direction,
   SpriteSheetEnum,
 } from "shared/enums";
 import { SpriteComponent } from "@oh/pixi-components";
-import { getCharacterBodyPart } from "shared/utils";
-import {
-  CHARACTER_DIRECTION_MAP,
-  CHARACTER_DIRECTION_SCALE_MAP,
-} from "shared/consts";
 import { useCharacter } from "shared/hooks";
+import { CharacterDirectionData } from "shared/types";
+import { getCharacterBodyPart, getEnumKeyLowCase } from "shared/utils";
 
 type Props = {
   bodyDirection: Direction;
@@ -26,26 +24,28 @@ export const HeadComponent: React.FC<Props> = ({
   direction,
   skinColor,
 }) => {
-  const { getHeadData } = useCharacter();
+  const { data } = useCharacter();
 
-  const characterDirection = useMemo(
-    () => CHARACTER_DIRECTION_MAP[direction],
-    [direction],
-  );
+  const { texture, scale, pivot } = useMemo(() => {
+    const { frames, scale, target }: CharacterDirectionData =
+      data[getEnumKeyLowCase(bodyDirection, Direction)];
 
-  const scale = useMemo(
-    () => CHARACTER_DIRECTION_SCALE_MAP[direction],
-    [direction],
-  );
+    const { pivot } =
+      frames[getEnumKeyLowCase(bodyAction, CharacterBodyAction)].head;
 
-  const texture = useMemo(
-    () => getCharacterBodyPart(CharacterPart.HEAD, characterDirection),
-    [characterDirection],
-  );
+    const texture = getCharacterBodyPart(
+      CharacterPart.HEAD,
+      CharacterDirection[
+        (target ?? Direction[bodyDirection]).toUpperCase()
+      ] as any,
+    );
 
-  const { pivot } = useMemo(() => {
-    return getHeadData(bodyDirection, bodyAction, direction);
-  }, [getHeadData, bodyDirection, bodyAction, direction]);
+    return {
+      scale,
+      texture,
+      pivot,
+    };
+  }, [bodyDirection, bodyAction]);
 
   return (
     <SpriteComponent

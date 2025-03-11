@@ -3,6 +3,7 @@ import { ContainerComponent } from "@oh/pixi-components";
 import {
   CharacterArmAction,
   CharacterArmSide,
+  CharacterBodyAction,
   CharacterBodyAnimation,
   Direction,
 } from "shared/enums";
@@ -58,6 +59,8 @@ export const CharacterComponent: React.FC<Props> = ({
   // )
   //   return null;
 
+  const bodyAction = CharacterBodyAction.IDLE;
+
   return (
     <ContainerComponent
       position={{
@@ -67,30 +70,30 @@ export const CharacterComponent: React.FC<Props> = ({
       // alpha={0.5}
     >
       <BodyComponent
-        animation={bodyAnimation}
+        action={bodyAction}
         direction={bodyDirection}
         skinColor={skinColor}
       >
-        {/*<HeadComponent*/}
-        {/*  skinColor={skinColor}*/}
-        {/*  bodyDirection={bodyDirection}*/}
-        {/*  bodyAction={null}*/}
-        {/*  direction={headDirection}*/}
-        {/*/>*/}
-        {/*<ArmComponent*/}
-        {/*  skinColor={skinColor}*/}
-        {/*  bodyDirection={bodyDirection}*/}
-        {/*  bodyAction={null}*/}
-        {/*  side={CharacterArmSide.LEFT}*/}
-        {/*  action={leftArmAction}*/}
-        {/*/>*/}
-        {/*<ArmComponent*/}
-        {/*  skinColor={skinColor}*/}
-        {/*  bodyDirection={bodyDirection}*/}
-        {/*  bodyAction={null}*/}
-        {/*  side={CharacterArmSide.RIGHT}*/}
-        {/*  action={rightArmAction}*/}
-        {/*/>*/}
+        <HeadComponent
+          skinColor={skinColor}
+          bodyDirection={bodyDirection}
+          bodyAction={bodyAction}
+          direction={headDirection}
+        />
+        <ArmComponent
+          skinColor={skinColor}
+          bodyDirection={bodyDirection}
+          bodyAction={bodyAction}
+          side={CharacterArmSide.LEFT}
+          action={leftArmAction}
+        />
+        <ArmComponent
+          skinColor={skinColor}
+          bodyDirection={bodyDirection}
+          bodyAction={bodyAction}
+          side={CharacterArmSide.RIGHT}
+          action={rightArmAction}
+        />
       </BodyComponent>
     </ContainerComponent>
   );

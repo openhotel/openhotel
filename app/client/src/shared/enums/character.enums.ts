@@ -7,8 +7,8 @@ export enum CharacterPart {
 export enum CharacterDirection {
   NORTH,
   WEST,
-  FRONT,
-  BACK,
+  NORTH_EAST,
+  SOUTH_WEST,
   NORTH_WEST,
 }
 
