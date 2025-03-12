@@ -32,8 +32,6 @@ export const ArmComponent: React.FC<Props> = ({
 }) => {
   const { data } = useCharacter();
 
-  // if (side === CharacterArmSide.LEFT) return null;
-
   const { texture, scale, pivot, zIndex, visible } = useMemo(() => {
     const {
       frames,
@@ -61,12 +59,17 @@ export const ArmComponent: React.FC<Props> = ({
 
     const scale = coreArmData?.scale ?? baseArmData?.scale ?? bodyScale ?? 1;
 
-    const $side =
-      scale === -1
-        ? side === CharacterArmSide.LEFT
+    let $side = baseArmData?.target
+      ? baseArmData?.target?.includes("right")
+        ? CharacterArmSide.RIGHT
+        : CharacterArmSide.LEFT
+      : side;
+
+    if (bodyScale === -1)
+      $side =
+        $side === CharacterArmSide.LEFT
           ? CharacterArmSide.RIGHT
-          : CharacterArmSide.LEFT
-        : side;
+          : CharacterArmSide.LEFT;
 
     const texture = getCharacterBodyPart(
       CharacterPart.ARM,
@@ -76,43 +79,6 @@ export const ArmComponent: React.FC<Props> = ({
       $side,
       action,
     );
-
-    // const armActionData = frames[getEnumKeyLowCase(action, CharacterArmAction)];
-    //
-    // const bodyActionData =
-    //   frames[getEnumKeyLowCase(bodyAction, CharacterBodyAction)];
-    //
-    // const { target, visible, zIndex, pivot, scale } =
-    //   bodyActionData[`${getEnumKeyLowCase(side, CharacterArmSide)}_arm`];
-    //
-    // const targetData = target
-    //   ? ((armActionData ? armActionData[target] : null) ??
-    //     (bodyActionData ? bodyActionData[target] : null))
-    //   : null;
-    //
-    // const getRealSideFromBodyScale = (
-    //   $side: CharacterArmSide,
-    // ): CharacterArmSide =>
-    //   bodyScale !== undefined
-    //     ? $side === CharacterArmSide.LEFT
-    //       ? CharacterArmSide.RIGHT
-    //       : CharacterArmSide.LEFT
-    //     : $side;
-    //
-    // const texture = getCharacterBodyPart(
-    //   CharacterPart.ARM,
-    //   CharacterDirection[
-    //     (bodyTarget ?? Direction[bodyDirection]).toUpperCase()
-    //   ],
-    //   getRealSideFromBodyScale(
-    //     target
-    //       ? target.includes("right")
-    //         ? CharacterArmSide.RIGHT
-    //         : CharacterArmSide.LEFT
-    //       : side,
-    //   ),
-    //   action,
-    // );
 
     return {
       scale,
