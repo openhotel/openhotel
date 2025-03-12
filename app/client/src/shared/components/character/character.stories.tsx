@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from "@storybook/react";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { CharacterComponent } from "./character.component";
 import {
   ContainerComponent,
@@ -29,36 +29,35 @@ type Story = StoryObj<typeof CharacterComponent>;
 
 export const Character: Story = () => {
   const [bodyDirection, setBodyDirection] = useState<Direction>(
-    Direction.SOUTH,
+    Direction.NORTH,
   );
   const [headDirection, setHeadDirection] = useState<Direction>(
     Direction.NORTH_EAST,
   );
-  const [bodyAnimation, setBodyAnimation] = useState<CharacterBodyAnimation>(
-    CharacterBodyAnimation.IDLE,
+  const [bodyAnimation, setBodyAnimation] = useState<CharacterBodyAction>(
+    CharacterBodyAction.WALK_3,
   );
   const [leftArmAction, setLeftArmAction] = useState<CharacterArmAction>(
-    CharacterArmAction.IDLE,
-  );
-  const [rightArmAction, setRightArmAction] = useState<CharacterArmAction>(
     CharacterArmAction.ARM_GRAB,
   );
+  const [rightArmAction, setRightArmAction] = useState<CharacterArmAction>(
+    CharacterArmAction.IDLE,
+  );
 
-  // useEffect(() => {
-  //   return;
-  //   const interval = setInterval(() => {
-  //     setBodyAnimation((action) => {
-  //       if (CharacterBodyAction.WALK_0 > action) return action;
-  //
-  //       action++;
-  //       if (action > CharacterBodyAction.WALK_3)
-  //         action = CharacterBodyAction.WALK_0;
-  //       return action;
-  //     });
-  //   }, 150);
-  //
-  //   return () => clearInterval(interval);
-  // }, [setBodyAnimation]);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setBodyAnimation((action) => {
+        if (CharacterBodyAction.WALK_0 > action) return action;
+
+        action++;
+        if (action > CharacterBodyAction.WALK_3)
+          action = CharacterBodyAction.WALK_0;
+        return action;
+      });
+    }, 150);
+
+    return () => clearInterval(interval);
+  }, [setBodyAnimation]);
 
   const onPointerLeft = useCallback(() => {
     setBodyDirection((direction) => {
@@ -89,20 +88,20 @@ export const Character: Story = () => {
         y: 55,
       }}
     >
-      {/*<CharacterComponent*/}
-      {/*  bodyDirection={bodyDirection}*/}
-      {/*  headDirection={headDirection ?? bodyDirection}*/}
-      {/*  leftArmAction={leftArmAction}*/}
-      {/*  rightArmAction={rightArmAction}*/}
-      {/*  bodyAction={CharacterBodyAction.IDLE}*/}
-      {/*  skinColor={0xefcfb1}*/}
-      {/*/>*/}
       <CharacterComponent
         bodyDirection={bodyDirection}
         headDirection={headDirection ?? bodyDirection}
         leftArmAction={leftArmAction}
         rightArmAction={rightArmAction}
-        bodyAnimation={bodyAnimation}
+        bodyAction={CharacterBodyAction.IDLE}
+        skinColor={0xefcfb1}
+      />
+      <CharacterComponent
+        bodyDirection={bodyDirection}
+        headDirection={headDirection ?? bodyDirection}
+        leftArmAction={leftArmAction}
+        rightArmAction={rightArmAction}
+        bodyAction={bodyAnimation}
         skinColor={0xefcfb1}
       />
       <PrivateRoomTile position={{ x: 0, y: 0, z: 0 }} />

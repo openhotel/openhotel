@@ -11,7 +11,7 @@ import { TILE_SIZE } from "shared/consts";
 import { ArmComponent, BodyComponent, HeadComponent } from "./components";
 
 type Props = {
-  bodyAnimation: CharacterBodyAnimation;
+  bodyAction: CharacterBodyAction;
   bodyDirection: Direction;
   headDirection: Direction;
   leftArmAction: CharacterArmAction;
@@ -20,7 +20,7 @@ type Props = {
 };
 
 export const CharacterComponent: React.FC<Props> = ({
-  bodyAnimation,
+  bodyAction,
   bodyDirection,
   headDirection,
   leftArmAction,
@@ -58,8 +58,6 @@ export const CharacterComponent: React.FC<Props> = ({
   //   !getBodyData(bodyDirection, bodyAction)
   // )
   //   return null;
-
-  const bodyAction = CharacterBodyAction.IDLE;
 
   return (
     <ContainerComponent
