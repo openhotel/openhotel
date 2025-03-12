@@ -32,31 +32,56 @@ export const ArmComponent: React.FC<Props> = ({
 }) => {
   const { data } = useCharacter();
 
+  // if (side === CharacterArmSide.LEFT) return null;
+
   const { texture, scale, pivot, zIndex, visible } = useMemo(() => {
-    const { frames }: CharacterDirectionData =
-      data[getEnumKeyLowCase(bodyDirection, Direction)];
+    const {
+      frames,
+      target: bodyTarget,
+      scale: bodyScale,
+    }: CharacterDirectionData = data[
+      getEnumKeyLowCase(bodyDirection, Direction)
+    ];
+
+    const armActionData = frames[getEnumKeyLowCase(action, CharacterArmAction)];
 
     const bodyActionData =
       frames[getEnumKeyLowCase(bodyAction, CharacterBodyAction)];
 
-    const { target, visible, zIndex, pivot, scale } =
-      bodyActionData[`${getEnumKeyLowCase(side, CharacterArmSide)}_arm`];
+    const { target, visible, zIndex, pivot, scale } = (armActionData ??
+      bodyActionData)[`${getEnumKeyLowCase(side, CharacterArmSide)}_arm`];
 
-    const targetData = bodyActionData[target];
+    const targetData = target
+      ? ((armActionData ? armActionData[target] : null) ??
+        (bodyActionData ? bodyActionData[target] : null))
+      : null;
+
+    const getRealSideFromBodyScale = (
+      $side: CharacterArmSide,
+    ): CharacterArmSide =>
+      bodyScale !== undefined
+        ? $side === CharacterArmSide.LEFT
+          ? CharacterArmSide.RIGHT
+          : CharacterArmSide.LEFT
+        : $side;
 
     const texture = getCharacterBodyPart(
       CharacterPart.ARM,
-      CharacterDirection[Direction[bodyDirection].toUpperCase()] as any,
-      target
-        ? target.includes("right")
-          ? CharacterArmSide.RIGHT
-          : CharacterArmSide.LEFT
-        : side,
+      CharacterDirection[
+        (bodyTarget ?? Direction[bodyDirection]).toUpperCase()
+      ],
+      getRealSideFromBodyScale(
+        target
+          ? target.includes("right")
+            ? CharacterArmSide.RIGHT
+            : CharacterArmSide.LEFT
+          : side,
+      ),
       action,
     );
 
     return {
-      scale,
+      scale: bodyScale ?? scale,
       texture,
       pivot,
       zIndex: targetData?.zIndex ?? zIndex ?? 1,

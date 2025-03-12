@@ -39,6 +39,7 @@ export type CharacterDirectionData = {
 export type CharacterFrame = {
   body: {
     pivot: Point2d;
+    position: Point2d;
   };
   head: {
     pivot: Point2d;

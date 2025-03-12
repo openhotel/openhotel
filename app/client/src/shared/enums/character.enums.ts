@@ -35,7 +35,7 @@ export enum CharacterArmSide {
 
 export enum CharacterArmAction {
   IDLE,
-  GRAB,
-  DRINK,
-  WAVE_0,
+  ARM_GRAB,
+  ARM_DRINK,
+  ARM_WAVE_0,
 }
