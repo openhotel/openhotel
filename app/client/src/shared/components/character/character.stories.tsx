@@ -29,7 +29,7 @@ type Story = StoryObj<typeof CharacterComponent>;
 
 export const Character: Story = () => {
   const [bodyDirection, setBodyDirection] = useState<Direction>(
-    Direction.SOUTH,
+    Direction.NORTH,
   );
   const [headDirection, setHeadDirection] = useState<Direction>(
     Direction.NORTH_EAST,

@@ -43,90 +43,89 @@ export const ArmComponent: React.FC<Props> = ({
       getEnumKeyLowCase(bodyDirection, Direction)
     ];
 
-    const armActionData = frames[getEnumKeyLowCase(action, CharacterArmAction)];
-
-    const bodyActionData =
+    const baseBodyData =
       frames[getEnumKeyLowCase(bodyAction, CharacterBodyAction)];
 
-    const { target, visible, zIndex, pivot, scale } = (armActionData ??
-      bodyActionData)[`${getEnumKeyLowCase(side, CharacterArmSide)}_arm`];
+    const $armSide = `${getEnumKeyLowCase(side, CharacterArmSide)}_arm`;
+    const baseArmData = baseBodyData[$armSide];
 
-    const targetData = target
-      ? ((armActionData ? armActionData[target] : null) ??
-        (bodyActionData ? bodyActionData[target] : null))
-      : null;
+    const coreArmData =
+      action !== CharacterArmAction.IDLE
+        ? frames[getEnumKeyLowCase(action, CharacterArmAction)]?.[$armSide]
+        : null;
 
-    const getRealSideFromBodyScale = (
-      $side: CharacterArmSide,
-    ): CharacterArmSide =>
-      bodyScale !== undefined
-        ? $side === CharacterArmSide.LEFT
+    const pivot = {
+      x: (baseArmData?.pivot?.x ?? 0) + (coreArmData?.pivot?.x ?? 0),
+      y: (baseArmData?.pivot?.y ?? 0) + (coreArmData?.pivot?.y ?? 0),
+    };
+
+    const scale = coreArmData?.scale ?? baseArmData?.scale ?? bodyScale ?? 1;
+
+    const $side =
+      scale === -1
+        ? side === CharacterArmSide.LEFT
           ? CharacterArmSide.RIGHT
           : CharacterArmSide.LEFT
-        : $side;
+        : side;
 
     const texture = getCharacterBodyPart(
       CharacterPart.ARM,
       CharacterDirection[
         (bodyTarget ?? Direction[bodyDirection]).toUpperCase()
       ],
-      getRealSideFromBodyScale(
-        target
-          ? target.includes("right")
-            ? CharacterArmSide.RIGHT
-            : CharacterArmSide.LEFT
-          : side,
-      ),
+      $side,
       action,
     );
 
+    // const armActionData = frames[getEnumKeyLowCase(action, CharacterArmAction)];
+    //
+    // const bodyActionData =
+    //   frames[getEnumKeyLowCase(bodyAction, CharacterBodyAction)];
+    //
+    // const { target, visible, zIndex, pivot, scale } =
+    //   bodyActionData[`${getEnumKeyLowCase(side, CharacterArmSide)}_arm`];
+    //
+    // const targetData = target
+    //   ? ((armActionData ? armActionData[target] : null) ??
+    //     (bodyActionData ? bodyActionData[target] : null))
+    //   : null;
+    //
+    // const getRealSideFromBodyScale = (
+    //   $side: CharacterArmSide,
+    // ): CharacterArmSide =>
+    //   bodyScale !== undefined
+    //     ? $side === CharacterArmSide.LEFT
+    //       ? CharacterArmSide.RIGHT
+    //       : CharacterArmSide.LEFT
+    //     : $side;
+    //
+    // const texture = getCharacterBodyPart(
+    //   CharacterPart.ARM,
+    //   CharacterDirection[
+    //     (bodyTarget ?? Direction[bodyDirection]).toUpperCase()
+    //   ],
+    //   getRealSideFromBodyScale(
+    //     target
+    //       ? target.includes("right")
+    //         ? CharacterArmSide.RIGHT
+    //         : CharacterArmSide.LEFT
+    //       : side,
+    //   ),
+    //   action,
+    // );
+
     return {
-      scale: bodyScale ?? scale,
+      scale,
       texture,
       pivot,
-      zIndex: targetData?.zIndex ?? zIndex ?? 1,
-      visible,
+      zIndex: coreArmData?.zIndex ?? baseArmData?.zIndex ?? 1,
+      visible: coreArmData?.visible ?? baseArmData?.visible ?? true,
     };
   }, [bodyDirection, bodyAction]);
 
   //DO NOT CHANGE TO !visible
   if (visible === false) return null;
 
-  console.log(texture);
-  // const { getArmData } = useCharacter();
-  //
-  // const characterDirection = useMemo(
-  //   () => CHARACTER_DIRECTION_MAP[bodyDirection],
-  //   [bodyDirection],
-  // );
-  // const armSide = useMemo(
-  //   () => CHARACTER_ARM_SIDE_MAP[bodyDirection][side],
-  //   [bodyDirection, side],
-  // );
-  // const scale = useMemo(
-  //   () =>
-  //     side === armSide ? CHARACTER_DIRECTION_SCALE_MAP[bodyDirection] : -1,
-  //   [side, armSide, bodyDirection],
-  // );
-  //
-  // const texture = useMemo(
-  //   () =>
-  //     getCharacterBodyPart(
-  //       CharacterPart.ARM,
-  //       characterDirection,
-  //       armSide,
-  //       action,
-  //     ),
-  //   [characterDirection, action, armSide],
-  // );
-  //
-  // const { pivot, zIndex, visible } = useMemo(() => {
-  //   return getArmData(bodyDirection, bodyAction, side);
-  // }, [getArmData, bodyDirection, bodyAction, side]);
-  //
-  // //Do not change to "!visible"
-  // if (visible === false) return null;
-  //
   return (
     <SpriteComponent
       texture={texture}
