@@ -51,7 +51,7 @@ export const BodyComponent: React.FC<Props> = ({
   if (!bodyData) return null;
 
   return (
-    <ContainerComponent sortableChildren position={bodyData.position}>
+    <ContainerComponent sortableChildren pivot={bodyData.position}>
       <SpriteComponent
         texture={bodyData.texture}
         spriteSheet={SpriteSheetEnum.CHARACTER}
@@ -60,8 +60,8 @@ export const BodyComponent: React.FC<Props> = ({
           x: bodyData.scale ?? 1,
         }}
         pivot={{
-          x: (bodyData?.position?.x ?? 0) + (bodyData?.pivot?.x ?? 0),
-          y: (bodyData?.position?.y ?? 0) + (bodyData?.pivot?.y ?? 0),
+          x: bodyData?.pivot?.x ?? 0,
+          y: bodyData?.pivot?.y ?? 0,
         }}
       />
       {children}

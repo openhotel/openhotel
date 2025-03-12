@@ -2,12 +2,9 @@ north:
   frames:
     idle:
       body:
-        pivot:
+        position:
           x: 9
           y: 44
-        position:
-          x: -9
-          y: -44
       head:
         pivot:
           x: 0
@@ -23,12 +20,9 @@ north:
           y: -1
     sit:
       body:
-        pivot:
+        position:
           x: 11
           y: 27
-        position:
-          x: -11
-          y: -27
       head:
         pivot:
           x: 0
@@ -118,17 +112,17 @@ north:
       left_arm:
         zIndex: -1
         pivot:
-          x: -15
+          x: -4
           y: 0
       right_arm:
         pivot:
-          x: 2
-          y: -1
+          x: 0
+          y: 0
 north_east:
   frames:
     idle:
       body:
-        pivot:
+        position:
           x: 9
           y: 45
       head:
@@ -240,12 +234,9 @@ east:
   frames:
     idle:
       body:
-        pivot:
+        position:
           x: 9
           y: 44
-        position:
-          x: -9
-          y: -44
       head:
         pivot:
           x: -1
@@ -261,12 +252,12 @@ east:
           y: 0
     sit:
       body:
-        pivot:
-          x: 18
-          y: 27
         position:
-          x: -7
-          y: -27
+          x: 7
+          y: 27
+        pivot:
+          x: 11
+          y: 0
       head:
         pivot:
           x: -1
@@ -369,7 +360,7 @@ south_east:
   frames:
     idle:
       body:
-        pivot:
+        position:
           x: 6
           y: 44
       head:
@@ -464,12 +455,9 @@ south:
   frames:
     idle:
       body:
-        pivot:
+        position:
           x: 12
           y: 43
-        position:
-          x: -12
-          y: -43
       head:
         pivot:
           x: -4
@@ -485,40 +473,40 @@ south:
           y: -3
     sit:
       body:
-        pivot:
-          x: 18
-          y: 27
         position:
-          x: -16
-          y: -27
+          x: -11
+          y: 27
+        pivot:
+          x: 29
+          y: 0
       head:
         pivot:
-          x: -15
+          x: 12
           y: 18
       left_arm:
+        pivot:
+          x: 14
+          y: -2
+      right_arm:
         zIndex: -1
         pivot:
-          x: -29
+          x: 0
           y: -3
-      right_arm:
-        pivot:
-          x: -15
-          y: -2
     arm_grab:
       left_arm:
         pivot:
-          x: -4
+          x: 7
           y: -2
       right_arm:
         zIndex: -1
         pivot:
-          x: -27
+          x: -15
           y: -3
 south_west:
   frames:
     idle:
       body:
-        pivot:
+        position:
           x: 10
           y: 43
       head:
@@ -541,7 +529,7 @@ west:
   frames:
     idle:
       body:
-        pivot:
+        position:
           x: 8
           y: 43
       head:
@@ -559,12 +547,9 @@ west:
           y: -2
     sit:
       body:
-        pivot:
+        position:
           x: 16
           y: 27
-        position:
-          x: -16
-          y: -27
       head:
         pivot:
           x: 2
@@ -582,7 +567,7 @@ north_west:
   frames:
     idle:
       body:
-        pivot:
+        position:
           x: 6
           y: 44
       head:
@@ -597,14 +582,6 @@ north_west:
           x: -2
           y: -8
     arm_grab:
-      body:
-        pivot:
-          x: 6
-          y: 44
-      head:
-        pivot:
-          x: 3
-          y: 16
       left_arm:
         target: right_arm
         zIndex: -1
