@@ -467,6 +467,9 @@ south:
         pivot:
           x: 12
           y: 43
+        position:
+          x: -12
+          y: -43
       head:
         pivot:
           x: -4
@@ -485,9 +488,12 @@ south:
         pivot:
           x: 18
           y: 27
+        position:
+          x: -16
+          y: -27
       head:
         pivot:
-          x: -17
+          x: -15
           y: 18
       left_arm:
         zIndex: -1
@@ -501,12 +507,12 @@ south:
     arm_grab:
       left_arm:
         pivot:
-          x: 6
+          x: -4
           y: -2
       right_arm:
         zIndex: -1
         pivot:
-          x: -15
+          x: -27
           y: -3
 south_west:
   frames:
@@ -556,9 +562,12 @@ west:
         pivot:
           x: 16
           y: 27
+        position:
+          x: -16
+          y: -27
       head:
         pivot:
-          x: 3
+          x: 2
           y: 18
       left_arm:
         zIndex: -1
