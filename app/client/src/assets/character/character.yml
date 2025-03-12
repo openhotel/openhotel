@@ -34,8 +34,8 @@ north:
           y: 0
       right_arm:
         pivot:
-          x: 2
-          y: -1
+          x: 1
+          y: 0
     walk_0:
       body:
         pivot:
@@ -263,14 +263,13 @@ east:
           x: -1
           y: 18
       left_arm:
-        zIndex: -1
         pivot:
-          x: -10
+          x: -11
           y: 0
       right_arm:
         zIndex: -1
         pivot:
-          x: -22
+          x: 1
           y: -1
     walk_0:
       body:
@@ -347,8 +346,8 @@ east:
     arm_grab:
       left_arm:
         pivot:
-          x: -4
-          y: -1
+          x: 8
+          y: 0
       right_arm:
         zIndex: -1
         pivot:
