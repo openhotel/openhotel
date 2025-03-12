@@ -5,6 +5,9 @@ north:
         pivot:
           x: 9
           y: 44
+        position:
+          x: -9
+          y: -44
       head:
         pivot:
           x: 0
@@ -23,6 +26,9 @@ north:
         pivot:
           x: 11
           y: 27
+        position:
+          x: -11
+          y: -27
       head:
         pivot:
           x: 0
@@ -108,6 +114,16 @@ north:
         pivot:
           x: 2
           y: -1
+    arm_grab:
+      left_arm:
+        zIndex: -1
+        pivot:
+          x: -15
+          y: 0
+      right_arm:
+        pivot:
+          x: 2
+          y: -1
 north_east:
   frames:
     idle:
@@ -121,11 +137,13 @@ north_east:
           y: 18
       left_arm:
         target: right_arm
+        zIndex: 1
         scale: -1
         pivot:
           x: -14
           y: -3
       right_arm:
+        zIndex: 1
         pivot:
           x: 3
           y: -3
@@ -205,6 +223,17 @@ north_east:
         pivot:
           x: 3
           y: -3
+    arm_grab:
+      left_arm:
+        target: right_arm
+        scale: -1
+        pivot:
+          x: -7
+          y: -2
+      right_arm:
+        pivot:
+          x: 2
+          y: -2
 east:
   target: north
   scale: -1
@@ -214,6 +243,30 @@ east:
         pivot:
           x: 9
           y: 44
+        position:
+          x: -9
+          y: -44
+      head:
+        pivot:
+          x: -1
+          y: 18
+      left_arm:
+        pivot:
+          x: -12
+          y: -1
+      right_arm:
+        zIndex: -1
+        pivot:
+          x: 1
+          y: 0
+    sit:
+      body:
+        pivot:
+          x: 18
+          y: 27
+        position:
+          x: -7
+          y: -27
       head:
         pivot:
           x: -1
@@ -221,27 +274,10 @@ east:
       left_arm:
         zIndex: -1
         pivot:
-          x: 1
-          y: 0
-      right_arm:
-        pivot:
-          x: -12
-          y: -1
-    sit:
-      body:
-        pivot:
-          x: 18
-          y: 27
-      head:
-        pivot:
-          x: -12
-          y: 18
-      left_arm:
-        zIndex: -1
-        pivot:
           x: -10
           y: 0
       right_arm:
+        zIndex: -1
         pivot:
           x: -22
           y: -1
@@ -317,6 +353,16 @@ east:
         pivot:
           x: -10
           y: -1
+    arm_grab:
+      left_arm:
+        pivot:
+          x: -4
+          y: -1
+      right_arm:
+        zIndex: -1
+        pivot:
+          x: 8
+          y: -1
 south_east:
   target: north_west
   scale: -1
@@ -331,12 +377,12 @@ south_east:
           x: 3
           y: 16
       left_arm:
-        visible: false
-        target: right_arm
-      right_arm:
         pivot:
           x: -4
           y: -8
+      right_arm:
+        visible: false
+        target: right_arm
     walk_0:
       body:
         pivot:
@@ -401,6 +447,17 @@ south_east:
         pivot:
           x: -4
           y: -6
+    arm_grab:
+      left_arm:
+        pivot:
+          x: 5
+          y: -8
+      right_arm:
+        target: left_arm
+        zIndex: -1
+        pivot:
+          x: 5
+          y: -3
 south:
   target: west
   scale: -1
@@ -415,14 +472,14 @@ south:
           x: -4
           y: 18
       left_arm:
+        pivot:
+          x: -2
+          y: -2
+      right_arm:
         zIndex: -1
         pivot:
           x: -15
           y: -3
-      right_arm:
-        pivot:
-          x: -2
-          y: -2
     sit:
       body:
         pivot:
@@ -441,6 +498,16 @@ south:
         pivot:
           x: -15
           y: -2
+    arm_grab:
+      left_arm:
+        pivot:
+          x: 6
+          y: -2
+      right_arm:
+        zIndex: -1
+        pivot:
+          x: -15
+          y: -3
 south_west:
   frames:
     idle:
@@ -516,6 +583,25 @@ north_west:
       left_arm:
         target: right_arm
         visible: false
+      right_arm:
+        pivot:
+          x: -2
+          y: -8
+    arm_grab:
+      body:
+        pivot:
+          x: 6
+          y: 44
+      head:
+        pivot:
+          x: 3
+          y: 16
+      left_arm:
+        target: right_arm
+        zIndex: -1
+        pivot:
+          x: -2
+          y: -3
       right_arm:
         pivot:
           x: -2
