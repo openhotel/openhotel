@@ -59,7 +59,7 @@ export const CharacterComponent: React.FC<Props> = ({
   // )
   //   return null;
 
-  const bodyAction = CharacterBodyAction.SIT;
+  const bodyAction = CharacterBodyAction.IDLE;
 
   return (
     <ContainerComponent

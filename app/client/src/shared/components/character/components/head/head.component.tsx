@@ -45,7 +45,7 @@ export const HeadComponent: React.FC<Props> = ({
       texture,
       pivot,
     };
-  }, [bodyDirection, bodyAction]);
+  }, [direction, bodyDirection, bodyAction]);
 
   return (
     <SpriteComponent
@@ -56,6 +56,7 @@ export const HeadComponent: React.FC<Props> = ({
       }}
       pivot={pivot}
       tint={skinColor}
+      zIndex={2}
     />
   );
 };
