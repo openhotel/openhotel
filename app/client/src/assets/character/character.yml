@@ -137,8 +137,8 @@ north:
           y: 0
       north_west:
         pivot:
-          x: 0
-          y: -1
+          x: -2
+          y: 1
 north_east:
   frames:
     idle:
@@ -260,7 +260,11 @@ north_east:
     head:
       north:
         pivot:
-          x: -1
+          x: 0
+          y: 0
+      east:
+        pivot:
+          x: 1
           y: 0
 east:
   target: north
@@ -399,6 +403,15 @@ east:
         pivot:
           x: 8
           y: -1
+    head:
+      north_east:
+        pivot:
+          x: -1
+          y: 0
+      south_east:
+        pivot:
+          x: -2
+          y: 1
 south_east:
   target: north_west
   scale: -1
@@ -519,6 +532,15 @@ south_east:
         pivot:
           x: 9
           y: 0
+    head:
+      south:
+        pivot:
+          x: 4
+          y: -2
+      east:
+        pivot:
+          x: 2
+          y: -1
 south:
   target: west
   scale: -1
@@ -653,6 +675,15 @@ south:
         pivot:
           x: 0
           y: 0
+    head:
+      south_east:
+        pivot:
+          x: -4
+          y: 1
+      south_west:
+        pivot:
+          x: -3
+          y: -1
 south_west:
   frames:
     idle:
@@ -760,6 +791,15 @@ south_west:
         pivot:
           x: -14
           y: -2
+    head:
+      south:
+        pivot:
+          x: 3
+          y: 0
+      west:
+        pivot:
+          x: -2
+          y: 0
 west:
   frames:
     idle:
@@ -873,6 +913,15 @@ west:
         pivot:
           x: -10
           y: -2
+    head:
+      south_west:
+        pivot:
+          x: 2
+          y: -1
+      north_west:
+        pivot:
+          x: -2
+          y: 1
 north_west:
   frames:
     idle:
@@ -994,3 +1043,12 @@ north_west:
         pivot:
           x: 0
           y: 0
+    head:
+      west:
+        pivot:
+          x: 3
+          y: -2
+      north:
+        pivot:
+          x: 2
+          y: -1
