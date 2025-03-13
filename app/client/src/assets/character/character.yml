@@ -153,6 +153,90 @@ north_east:
         pivot:
           x: 3
           y: -3
+    walk_0:
+      body:
+        position:
+          x: 9
+          y: 45
+      head:
+        pivot:
+          x: 1
+          y: 18
+      left_arm:
+        target: right_arm
+        zIndex: 1
+        scale: -1
+        pivot:
+          x: -14
+          y: -3
+      right_arm:
+        zIndex: 1
+        pivot:
+          x: 3
+          y: -3
+    walk_1:
+      body:
+        position:
+          x: 9
+          y: 45
+      head:
+        pivot:
+          x: 1
+          y: 18
+      left_arm:
+        target: right_arm
+        zIndex: 1
+        scale: -1
+        pivot:
+          x: -14
+          y: -3
+      right_arm:
+        zIndex: 1
+        pivot:
+          x: 3
+          y: -3
+    walk_2:
+      body:
+        position:
+          x: 9
+          y: 45
+      head:
+        pivot:
+          x: 1
+          y: 18
+      left_arm:
+        target: right_arm
+        zIndex: 1
+        scale: -1
+        pivot:
+          x: -14
+          y: -3
+      right_arm:
+        zIndex: 1
+        pivot:
+          x: 3
+          y: -3
+    walk_3:
+      body:
+        position:
+          x: 9
+          y: 45
+      head:
+        pivot:
+          x: 1
+          y: 18
+      left_arm:
+        target: right_arm
+        zIndex: 1
+        scale: -1
+        pivot:
+          x: -14
+          y: -3
+      right_arm:
+        zIndex: 1
+        pivot:
+          x: 3
+          y: -3
     arm_grab:
       left_arm:
         target: right_arm
@@ -207,6 +291,90 @@ east:
         pivot:
           x: 1
           y: -1
+    walk_0:
+      body:
+        position:
+          x: 9
+          y: 44
+        pivot:
+          x: -2
+          y: 0
+      head:
+        pivot:
+          x: -1
+          y: 18
+      left_arm:
+        pivot:
+          x: -12
+          y: -1
+      right_arm:
+        zIndex: -1
+        pivot:
+          x: 1
+          y: 0
+    walk_1:
+      body:
+        position:
+          x: 9
+          y: 44
+        pivot:
+          x: 3
+          y: 0
+      head:
+        pivot:
+          x: -1
+          y: 18
+      left_arm:
+        pivot:
+          x: -12
+          y: -1
+      right_arm:
+        zIndex: -1
+        pivot:
+          x: 1
+          y: 0
+    walk_2:
+      body:
+        position:
+          x: 9
+          y: 44
+        pivot:
+          x: 0
+          y: 0
+      head:
+        pivot:
+          x: -1
+          y: 18
+      left_arm:
+        pivot:
+          x: -12
+          y: -1
+      right_arm:
+        zIndex: -1
+        pivot:
+          x: 1
+          y: 0
+    walk_3:
+      body:
+        position:
+          x: 9
+          y: 44
+        pivot:
+          x: -2
+          y: 0
+      head:
+        pivot:
+          x: -1
+          y: 18
+      left_arm:
+        pivot:
+          x: -12
+          y: -1
+      right_arm:
+        zIndex: -1
+        pivot:
+          x: 1
+          y: 0
     arm_grab:
       left_arm:
         pivot:
@@ -222,6 +390,91 @@ south_east:
   scale: -1
   frames:
     idle:
+      body:
+        position:
+          x: 6
+          y: 44
+      head:
+        pivot:
+          x: 3
+          y: 16
+      left_arm:
+        pivot:
+          x: -4
+          y: -8
+      right_arm:
+        target: left_arm
+        zIndex: -1
+        pivot:
+          x: -4
+          y: -4
+    walk_0:
+      body:
+        position:
+          x: 6
+          y: 44
+        pivot:
+          x: 7
+          y: 0
+      head:
+        pivot:
+          x: 3
+          y: 16
+      left_arm:
+        pivot:
+          x: -4
+          y: -8
+      right_arm:
+        target: left_arm
+        zIndex: -1
+        pivot:
+          x: -4
+          y: -4
+    walk_1:
+      body:
+        position:
+          x: 6
+          y: 44
+        pivot:
+          x: -1
+          y: 0
+      head:
+        pivot:
+          x: 3
+          y: 16
+      left_arm:
+        pivot:
+          x: -4
+          y: -8
+      right_arm:
+        target: left_arm
+        zIndex: -1
+        pivot:
+          x: -4
+          y: -4
+    walk_2:
+      body:
+        position:
+          x: 6
+          y: 44
+        pivot:
+          x: 7
+          y: 0
+      head:
+        pivot:
+          x: 3
+          y: 16
+      left_arm:
+        pivot:
+          x: -4
+          y: -8
+      right_arm:
+        target: left_arm
+        zIndex: -1
+        pivot:
+          x: -4
+          y: -4
+    walk_3:
       body:
         position:
           x: 6
@@ -295,6 +548,87 @@ south:
         pivot:
           x: 0
           y: -3
+    walk_0:
+      body:
+        position:
+          x: 12
+          y: 43
+        pivot:
+          x: -3
+          y: 0
+      head:
+        pivot:
+          x: -4
+          y: 18
+      left_arm:
+        pivot:
+          x: -2
+          y: -2
+      right_arm:
+        zIndex: -1
+        pivot:
+          x: -15
+          y: -3
+    walk_1:
+      body:
+        position:
+          x: 12
+          y: 43
+      head:
+        pivot:
+          x: -4
+          y: 18
+      left_arm:
+        pivot:
+          x: -2
+          y: -2
+      right_arm:
+        zIndex: -1
+        pivot:
+          x: -15
+          y: -3
+    walk_2:
+      body:
+        position:
+          x: 12
+          y: 43
+        pivot:
+          x: -2
+          y: 0
+      head:
+        pivot:
+          x: -4
+          y: 18
+      left_arm:
+        pivot:
+          x: -2
+          y: -2
+      right_arm:
+        zIndex: -1
+        pivot:
+          x: -15
+          y: -3
+    walk_3:
+      body:
+        position:
+          x: 12
+          y: 43
+        pivot:
+          x: 4
+          y: 0
+      head:
+        pivot:
+          x: -4
+          y: 18
+      left_arm:
+        pivot:
+          x: -2
+          y: -2
+      right_arm:
+        zIndex: -1
+        pivot:
+          x: -15
+          y: -3
     arm_grab:
       left_arm:
         pivot:
@@ -308,6 +642,90 @@ south:
 south_west:
   frames:
     idle:
+      body:
+        position:
+          x: 10
+          y: 43
+      head:
+        pivot:
+          x: 0
+          y: 19
+      left_arm:
+        zIndex: -1
+        pivot:
+          x: 2
+          y: -2
+      right_arm:
+        target: left_arm
+        scale: -1
+        zIndex: -1
+        pivot:
+          x: -14
+          y: -2
+    walk_0:
+      body:
+        position:
+          x: 10
+          y: 43
+      head:
+        pivot:
+          x: 0
+          y: 19
+      left_arm:
+        zIndex: -1
+        pivot:
+          x: 2
+          y: -2
+      right_arm:
+        target: left_arm
+        scale: -1
+        zIndex: -1
+        pivot:
+          x: -14
+          y: -2
+    walk_1:
+      body:
+        position:
+          x: 10
+          y: 43
+      head:
+        pivot:
+          x: 0
+          y: 19
+      left_arm:
+        zIndex: -1
+        pivot:
+          x: 2
+          y: -2
+      right_arm:
+        target: left_arm
+        scale: -1
+        zIndex: -1
+        pivot:
+          x: -14
+          y: -2
+    walk_2:
+      body:
+        position:
+          x: 10
+          y: 43
+      head:
+        pivot:
+          x: 0
+          y: 19
+      left_arm:
+        zIndex: -1
+        pivot:
+          x: 2
+          y: -2
+      right_arm:
+        target: left_arm
+        scale: -1
+        zIndex: -1
+        pivot:
+          x: -14
+          y: -2
+    walk_3:
       body:
         position:
           x: 10
@@ -348,6 +766,81 @@ west:
         pivot:
           x: -10
           y: -2
+    walk_0:
+      body:
+        position:
+          x: 8
+          y: 43
+      head:
+        pivot:
+          x: 3
+          y: 18
+      left_arm:
+        zIndex: -1
+        pivot:
+          x: 3
+          y: -3
+      right_arm:
+        pivot:
+          x: -10
+          y: -2
+    walk_1:
+      body:
+        position:
+          x: 8
+          y: 43
+      head:
+        pivot:
+          x: 3
+          y: 18
+      left_arm:
+        zIndex: -1
+        pivot:
+          x: 3
+          y: -3
+      right_arm:
+        pivot:
+          x: -10
+          y: -2
+    walk_2:
+      body:
+        position:
+          x: 8
+          y: 43
+      head:
+        pivot:
+          x: 3
+          y: 18
+      left_arm:
+        zIndex: -1
+        pivot:
+          x: 3
+          y: -3
+      right_arm:
+        pivot:
+          x: -10
+          y: -2
+    walk_3:
+      body:
+        position:
+          x: 8
+          y: 43
+        pivot:
+          x: 4
+          y: 0
+      head:
+        pivot:
+          x: 3
+          y: 18
+      left_arm:
+        zIndex: -1
+        pivot:
+          x: 3
+          y: -3
+      right_arm:
+        pivot:
+          x: -10
+          y: -2
     sit:
       body:
         position:
@@ -373,6 +866,94 @@ north_west:
         position:
           x: 6
           y: 44
+      head:
+        pivot:
+          x: 3
+          y: 16
+      left_arm:
+        target: right_arm
+        visible: false
+        pivot:
+          x: -2
+          y: -4
+      right_arm:
+        pivot:
+          x: -2
+          y: -8
+    walk_0:
+      body:
+        position:
+          x: 6
+          y: 44
+        pivot:
+          x: 5
+          y: 0
+      head:
+        pivot:
+          x: 3
+          y: 16
+      left_arm:
+        target: right_arm
+        visible: false
+        pivot:
+          x: -2
+          y: -4
+      right_arm:
+        pivot:
+          x: -2
+          y: -8
+    walk_1:
+      body:
+        position:
+          x: 6
+          y: 44
+        pivot:
+          x: 2
+          y: 0
+      head:
+        pivot:
+          x: 3
+          y: 16
+      left_arm:
+        target: right_arm
+        visible: false
+        pivot:
+          x: -2
+          y: -4
+      right_arm:
+        pivot:
+          x: -2
+          y: -8
+    walk_2:
+      body:
+        position:
+          x: 6
+          y: 44
+        pivot:
+          x: 6
+          y: 0
+      head:
+        pivot:
+          x: 3
+          y: 16
+      left_arm:
+        target: right_arm
+        visible: false
+        pivot:
+          x: -2
+          y: -4
+      right_arm:
+        pivot:
+          x: -2
+          y: -8
+    walk_3:
+      body:
+        position:
+          x: 6
+          y: 44
+        pivot:
+          x: 1
+          y: 0
       head:
         pivot:
           x: 3

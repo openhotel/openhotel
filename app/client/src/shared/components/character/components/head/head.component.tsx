@@ -28,7 +28,7 @@ export const HeadComponent: React.FC<Props> = ({
 
   const { texture, scale, pivot } = useMemo(() => {
     const { frames, scale, target }: CharacterDirectionData =
-      data[getEnumKeyLowCase(bodyDirection, Direction)];
+      data[getEnumKeyLowCase(direction ?? bodyDirection, Direction)];
 
     const { pivot } =
       frames[getEnumKeyLowCase(bodyAction, CharacterBodyAction)].head;
@@ -36,7 +36,7 @@ export const HeadComponent: React.FC<Props> = ({
     const texture = getCharacterBodyPart(
       CharacterPart.HEAD,
       CharacterDirection[
-        (target ?? Direction[bodyDirection]).toUpperCase()
+        (target ?? Direction[direction ?? bodyDirection]).toUpperCase()
       ] as any,
     );
 
