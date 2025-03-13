@@ -4,7 +4,6 @@ import {
   CharacterArmAction,
   CharacterArmSide,
   CharacterBodyAction,
-  CharacterBodyAnimation,
   Direction,
 } from "shared/enums";
 import { TILE_SIZE } from "shared/consts";
