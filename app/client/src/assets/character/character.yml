@@ -35,7 +35,7 @@ north:
       right_arm:
         pivot:
           x: 1
-          y: -1
+          y: 0
     walk_0:
       body:
         position:
@@ -306,7 +306,7 @@ east:
       left_arm:
         pivot:
           x: -11
-          y: -1
+          y: 0
       right_arm:
         zIndex: -1
         pivot:
@@ -415,7 +415,7 @@ east:
       right_arm:
         zIndex: 1
         pivot:
-          x: 6
+          x: 7
           y: 4
 south_east:
   target: north_west
@@ -967,6 +967,7 @@ north_west:
           x: -2
           y: -4
       right_arm:
+        zIndex: -1
         pivot:
           x: -2
           y: -8
@@ -989,6 +990,7 @@ north_west:
           x: -2
           y: -4
       right_arm:
+        zIndex: -1
         pivot:
           x: -2
           y: -8
@@ -1011,6 +1013,7 @@ north_west:
           x: -2
           y: -4
       right_arm:
+        zIndex: -1
         pivot:
           x: -2
           y: -8
@@ -1033,6 +1036,7 @@ north_west:
           x: -2
           y: -4
       right_arm:
+        zIndex: -1
         pivot:
           x: -2
           y: -8

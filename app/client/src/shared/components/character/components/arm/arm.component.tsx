@@ -87,7 +87,7 @@ export const ArmComponent: React.FC<Props> = ({
       zIndex: coreArmData?.zIndex ?? baseArmData?.zIndex ?? 1,
       visible: coreArmData?.visible ?? baseArmData?.visible ?? true,
     };
-  }, [bodyDirection, bodyAction]);
+  }, [bodyDirection, bodyAction, action]);
 
   //DO NOT CHANGE TO !visible
   if (visible === false) return null;
