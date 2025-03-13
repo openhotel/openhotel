@@ -141,6 +141,15 @@ north:
         pivot:
           x: -1
           y: 3
+    arm_wave_0:
+      left_arm:
+        pivot:
+          x: -1
+          y: 22
+      right_arm:
+        pivot:
+          x: 0
+          y: 0
 north_east:
   frames:
     idle:
