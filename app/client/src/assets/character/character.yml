@@ -130,6 +130,17 @@ north:
         pivot:
           x: 0
           y: 0
+    arm_drink:
+      left_arm:
+        zIndex: 1
+        pivot:
+          x: -4
+          y: 4
+      right_arm:
+        zIndex: 2
+        pivot:
+          x: -1
+          y: 3
 north_east:
   frames:
     idle:
@@ -248,6 +259,16 @@ north_east:
         pivot:
           x: 0
           y: 0
+    arm_drink:
+      left_arm:
+        zIndex: 1
+        pivot:
+          x: 5
+          y: 1
+      right_arm:
+        pivot:
+          x: 3
+          y: 1
 east:
   target: north
   scale: -1
@@ -385,6 +406,17 @@ east:
         pivot:
           x: 8
           y: -1
+    arm_drink:
+      left_arm:
+        zIndex: 2
+        pivot:
+          x: 14
+          y: 3
+      right_arm:
+        zIndex: 1
+        pivot:
+          x: 6
+          y: 4
 south_east:
   target: north_west
   scale: -1
@@ -505,6 +537,15 @@ south_east:
         pivot:
           x: 9
           y: 0
+    arm_drink:
+      left_arm:
+        pivot:
+          x: 11
+          y: 10
+      right_arm:
+        pivot:
+          x: 11
+          y: 10
 south:
   target: west
   scale: -1
@@ -639,6 +680,15 @@ south:
         pivot:
           x: 0
           y: 0
+    arm_drink:
+      left_arm:
+        pivot:
+          x: 7
+          y: 10
+      right_arm:
+        pivot:
+          x: 0
+          y: 0
 south_west:
   frames:
     idle:
@@ -746,6 +796,15 @@ south_west:
         pivot:
           x: -14
           y: -2
+    arm_drink:
+      left_arm:
+        pivot:
+          x: 0
+          y: 0
+      right_arm:
+        pivot:
+          x: -1
+          y: 0
 west:
   frames:
     idle:
@@ -859,6 +918,15 @@ west:
         pivot:
           x: -10
           y: -2
+    arm_drink:
+      left_arm:
+        pivot:
+          x: 0
+          y: 0
+      right_arm:
+        pivot:
+          x: -1
+          y: 10
 north_west:
   frames:
     idle:
@@ -980,3 +1048,13 @@ north_west:
         pivot:
           x: 0
           y: 0
+    arm_drink:
+      left_arm:
+        visible: true
+        pivot:
+          x: 0
+          y: 10
+      right_arm:
+        pivot:
+          x: 0
+          y: 10
