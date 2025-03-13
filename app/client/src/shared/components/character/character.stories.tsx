@@ -29,11 +29,9 @@ type Story = StoryObj<typeof CharacterComponent>;
 
 export const Character: Story = () => {
   const [bodyDirection, setBodyDirection] = useState<Direction>(
-    Direction.NORTH,
+    Direction.NORTH_WEST,
   );
-  const [headDirection, setHeadDirection] = useState<Direction>(
-    Direction.NORTH_EAST,
-  );
+  const [headDirection, setHeadDirection] = useState<Direction>(Direction.EAST);
   const [bodyAnimation, setBodyAnimation] = useState<CharacterBodyAction>(
     CharacterBodyAction.WALK_3,
   );
@@ -82,20 +80,19 @@ export const Character: Story = () => {
     });
   }, [setBodyAnimation]);
 
+  const onToggleHead = useCallback(() => {
+    setHeadDirection((action) => {
+      if (action >= Direction.NORTH_WEST) return Direction.NORTH;
+      return action + 1;
+    });
+  }, [setBodyAnimation, bodyDirection]);
+
   return (
     <ContainerComponent
       position={{
         y: 55,
       }}
     >
-      <CharacterComponent
-        bodyDirection={bodyDirection}
-        headDirection={headDirection ?? bodyDirection}
-        leftArmAction={leftArmAction}
-        rightArmAction={rightArmAction}
-        bodyAction={CharacterBodyAction.IDLE}
-        skinColor={0xefcfb1}
-      />
       <CharacterComponent
         bodyDirection={bodyDirection}
         headDirection={headDirection ?? bodyDirection}
@@ -129,19 +126,50 @@ export const Character: Story = () => {
       <TextComponent
         text={Direction[bodyDirection]}
         position={{
-          x: 10,
+          x: 0,
           y: 45,
         }}
       />
       <TextComponent
-        text={CharacterBodyAction[bodyAnimation]}
+        text={`- BODY: ${CharacterBodyAction[bodyAnimation]}`}
         position={{
-          x: 10,
+          x: 0,
           y: 52,
         }}
         eventMode={EventMode.STATIC}
         cursor={Cursor.POINTER}
         onPointerDown={onToggleAction}
+      />
+
+      <TextComponent
+        text={`- LEFT_ARM: ${CharacterArmAction[leftArmAction]}`}
+        eventMode={EventMode.STATIC}
+        cursor={Cursor.POINTER}
+        onPointerDown={onPointerLeft}
+        position={{
+          x: 0,
+          y: 60,
+        }}
+      />
+      <TextComponent
+        text={`- RIGHT_ARM: ${CharacterArmAction[rightArmAction]}`}
+        eventMode={EventMode.STATIC}
+        cursor={Cursor.POINTER}
+        onPointerDown={onPointerLeft}
+        position={{
+          x: 0,
+          y: 68,
+        }}
+      />
+      <TextComponent
+        text={`- HEAD DIRECTION: ${Direction[headDirection]}`}
+        position={{
+          x: 0,
+          y: 76,
+        }}
+        eventMode={EventMode.STATIC}
+        cursor={Cursor.POINTER}
+        onPointerDown={onToggleHead}
       />
     </ContainerComponent>
   );
