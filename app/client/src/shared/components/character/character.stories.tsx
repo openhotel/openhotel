@@ -27,13 +27,13 @@ export default {
 type Story = StoryObj<typeof CharacterComponent>;
 
 export const Character: Story = () => {
-  const [bodyDirection, setBodyDirection] = useState<Direction>(Direction.WEST);
+  const [bodyDirection, setBodyDirection] = useState<Direction>(Direction.EAST);
   const [headDirection, setHeadDirection] = useState<Direction>(null);
   const [bodyAnimation, setBodyAnimation] = useState<CharacterBodyAction>(
-    CharacterBodyAction.WALK_0,
+    CharacterBodyAction.SIT,
   );
   const [leftArmAction, setLeftArmAction] = useState<CharacterArmAction>(
-    CharacterArmAction.ARM_DRINK,
+    CharacterArmAction.IDLE,
   );
   const [rightArmAction, setRightArmAction] = useState<CharacterArmAction>(
     CharacterArmAction.ARM_DRINK,
