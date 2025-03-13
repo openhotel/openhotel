@@ -45,32 +45,14 @@ export const HeadComponent: React.FC<Props> = ({
           (baseBodyData?.target ?? Direction[$direction])?.toUpperCase()
         ];
 
-      let currentPivot = null;
-      if (bodyDirection !== direction) {
-        const currentBodyDirectionString = getEnumKeyLowCase(
-          bodyDirection,
-          Direction,
-        );
-        const currentBodyData: CharacterDirectionData =
-          data[currentBodyDirectionString];
-        currentPivot =
-          currentBodyData?.frames?.head?.[bodyDirectionString]?.pivot;
-      }
-
       const texture = getCharacterBodyPart(
         CharacterPart.HEAD,
         headBodyDirection,
       );
 
       const pivot = {
-        x:
-          (currentPivot?.x ?? 0) +
-          (coreData?.head?.pivot?.x ?? 0) +
-          (baseData?.head?.pivot?.x ?? 0),
-        y:
-          (currentPivot?.y ?? 0) +
-          (coreData?.head?.pivot?.y ?? 0) +
-          (baseData?.head?.pivot?.y ?? 0),
+        x: (baseData?.head?.pivot?.x ?? 0) + (coreData?.head?.pivot?.x ?? 0),
+        y: (baseData?.head?.pivot?.y ?? 0) + (coreData?.head?.pivot?.y ?? 0),
       };
 
       const scale = coreBodyData?.scale ?? baseBodyData?.scale;
@@ -85,9 +67,10 @@ export const HeadComponent: React.FC<Props> = ({
   );
 
   const { texture, scale, pivot } = useMemo(() => {
-    return direction !== undefined
-      ? getDataFromDirection(direction)
-      : getDataFromDirection(bodyDirection);
+    const bodyData = getDataFromDirection(bodyDirection);
+    const headData = getDataFromDirection(direction);
+
+    return bodyDirection !== direction ? headData : bodyData;
   }, [getDataFromDirection, data, bodyDirection, direction]);
 
   return (
