@@ -50,10 +50,14 @@ export const ConnectionComponent: React.FC = () => {
         setConnection(connection);
       })
       .catch(() => navigate("/"));
-    get(hotelId, integrationId).then((connection) => {
-      if (arraysMatch(connection.scopes, scopes)) return onAddHost();
-      setRedirect(connection.redirectUrl);
-    });
+    get(hotelId, integrationId)
+      .then((connection) => {
+        if (arraysMatch(connection.scopes, scopes)) return onAddHost();
+        setRedirect(connection.redirectUrl);
+      })
+      .catch(({ status }) => {
+        if (status === 403) navigate("/");
+      });
   }, [setConnection, getHotel, get, hotelId, integrationId]);
 
   if (connection === undefined) return <div>loading...</div>;
