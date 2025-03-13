@@ -80,10 +80,27 @@ export const Character: Story = () => {
     });
   }, [setBodyAnimation]);
 
-  const onToggleHead = useCallback(() => {
-    setHeadDirection((action) => {
-      if (action >= Direction.NORTH_WEST) return Direction.NORTH;
+  const onToggleRightArm = useCallback(() => {
+    setRightArmAction((action) => {
+      if (action >= CharacterArmAction.ARM_WAVE_0)
+        return CharacterArmAction.IDLE;
       return action + 1;
+    });
+  }, [setRightArmAction]);
+
+  const onToggleLeftArm = useCallback(() => {
+    setLeftArmAction((action) => {
+      if (action >= CharacterArmAction.ARM_WAVE_0)
+        return CharacterArmAction.IDLE;
+      return action + 1;
+    });
+  }, [setLeftArmAction]);
+
+  const onToggleHead = useCallback(() => {
+    setHeadDirection((direction) => {
+      if (direction === null) return Direction.NORTH;
+      if (direction >= Direction.NORTH_WEST) return null;
+      return direction + 1;
     });
   }, [setBodyAnimation, bodyDirection]);
 
@@ -145,7 +162,7 @@ export const Character: Story = () => {
         text={`- LEFT_ARM: ${CharacterArmAction[leftArmAction]}`}
         eventMode={EventMode.STATIC}
         cursor={Cursor.POINTER}
-        onPointerDown={onPointerLeft}
+        onPointerDown={onToggleLeftArm}
         position={{
           x: 0,
           y: 60,
@@ -155,7 +172,7 @@ export const Character: Story = () => {
         text={`- RIGHT_ARM: ${CharacterArmAction[rightArmAction]}`}
         eventMode={EventMode.STATIC}
         cursor={Cursor.POINTER}
-        onPointerDown={onPointerLeft}
+        onPointerDown={onToggleRightArm}
         position={{
           x: 0,
           y: 68,
