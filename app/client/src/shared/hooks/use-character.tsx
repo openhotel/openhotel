@@ -1,7 +1,7 @@
 import { useAssets } from ".";
 import { useMemo } from "react";
 import { AssetEnum } from "shared/enums";
-import { CharacterFramesData } from "shared/types";
+import { CharacterFixesData, CharacterFramesData } from "shared/types";
 
 export const useCharacter = () => {
   const { getAsset } = useAssets();
@@ -10,57 +10,15 @@ export const useCharacter = () => {
     () => getAsset(AssetEnum.CHARACTER_DATA) as CharacterFramesData,
     [getAsset],
   );
-  //
-  // const getData = useCallback(
-  //   (
-  //     direction: Direction,
-  //     action: CharacterBodyAction,
-  //     part: CharacterPart,
-  //   ) => {
-  //     return data[getEnumKeyLowCase(direction, Direction)]?.[
-  //       getEnumKeyLowCase(action, CharacterBodyAction)
-  //     ]?.[getEnumKeyLowCase(part, CharacterPart)];
-  //   },
-  //   [data],
-  // );
-  //
-  // const getBodyData = useCallback(
-  //   (
-  //     direction: Direction,
-  //     bodyAction: CharacterBodyAction,
-  //   ): CharacterBodyData => getData(direction, bodyAction, CharacterPart.BODY),
-  //   [getData],
-  // );
-  //
-  // const getHeadData = useCallback(
-  //   (
-  //     direction: Direction,
-  //     bodyAction: CharacterBodyAction,
-  //     headDirection: Direction,
-  //   ): CharacterHeadData => {
-  //     const headData = getData(direction, bodyAction, CharacterPart.HEAD);
-  //     return (
-  //       headData[getEnumKeyLowCase(headDirection, Direction)] ??
-  //       headData[getEnumKeyLowCase(direction, Direction)]
-  //     );
-  //   },
-  //   [getData],
-  // );
-  //
-  // const getArmData = useCallback(
-  //   (
-  //     direction: Direction,
-  //     bodyAction: CharacterBodyAction,
-  //     armSide: CharacterArmSide,
-  //   ): CharacterArmData =>
-  //     getData(direction, bodyAction, CharacterPart.ARM)[
-  //       getEnumKeyLowCase(armSide, CharacterArmSide)
-  //     ],
-  //   [getData],
-  // );
+
+  const dataFixes: CharacterFixesData = useMemo(
+    () => getAsset(AssetEnum.CHARACTER_DATA_FIXES) as CharacterFixesData,
+    [getAsset],
+  );
 
   return {
     data,
+    dataFixes,
     // getBodyData,
     // getHeadData,
     // getArmData,

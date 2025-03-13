@@ -29,6 +29,7 @@ export type CharacterArmData = {
 };
 
 ////////////////////////
+type CharacterPartTypes = "body" | "head" | "left_arm" | "right_arm";
 
 export type CharacterDirectionData = {
   target: string;
@@ -59,6 +60,26 @@ export type CharacterFrame = {
 };
 
 export type CharacterFramesData = Record<DirectionKeys, CharacterDirectionData>;
+
+export type CharacterFixesData = {
+  match: Partial<
+    Record<
+      CharacterPartTypes,
+      {
+        direction?: string;
+        action?: string;
+      }
+    >
+  >[];
+  exec: Partial<
+    Record<
+      CharacterPartTypes,
+      {
+        pivot?: Point2d;
+      }
+    >
+  >;
+}[];
 
 export type CharacterAnimationsData = {
   north: {

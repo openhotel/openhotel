@@ -12,7 +12,6 @@ import { PrivateRoomTile } from "shared/components/private-room/components";
 import {
   CharacterArmAction,
   CharacterBodyAction,
-  CharacterBodyAnimation,
   Direction,
 } from "shared/enums";
 import { TextComponent } from "shared/components/text";
@@ -29,11 +28,11 @@ type Story = StoryObj<typeof CharacterComponent>;
 
 export const Character: Story = () => {
   const [bodyDirection, setBodyDirection] = useState<Direction>(
-    Direction.SOUTH,
+    Direction.NORTH_WEST,
   );
-  const [headDirection, setHeadDirection] = useState<Direction>(null);
+  const [headDirection, setHeadDirection] = useState<Direction>(Direction.WEST);
   const [bodyAnimation, setBodyAnimation] = useState<CharacterBodyAction>(
-    CharacterBodyAction.SIT,
+    CharacterBodyAction.WALK_0,
   );
   const [leftArmAction, setLeftArmAction] = useState<CharacterArmAction>(
     CharacterArmAction.ARM_GRAB,
