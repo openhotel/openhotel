@@ -27,25 +27,33 @@ export const HeadComponent: React.FC<Props> = ({
   const { data } = useCharacter();
 
   const { texture, scale, pivot } = useMemo(() => {
-    const { frames, scale, target }: CharacterDirectionData =
-      data[getEnumKeyLowCase(direction ?? bodyDirection, Direction)];
+    const bodyDirectionString = getEnumKeyLowCase(bodyDirection, Direction);
+    const bodyActionString = getEnumKeyLowCase(bodyAction, CharacterBodyAction);
 
-    const { pivot } =
-      frames[getEnumKeyLowCase(bodyAction, CharacterBodyAction)].head;
+    const baseBodyData: CharacterDirectionData = data[bodyDirectionString];
+    const coreBodyData: CharacterDirectionData = data[baseBodyData?.target];
 
-    const texture = getCharacterBodyPart(
-      CharacterPart.HEAD,
+    const baseData = baseBodyData?.frames?.[bodyActionString];
+    const coreData = coreBodyData?.frames?.[bodyActionString];
+
+    const headBodyDirection =
       CharacterDirection[
-        (target ?? Direction[direction ?? bodyDirection]).toUpperCase()
-      ] as any,
-    );
+        (baseBodyData?.target ?? Direction[bodyDirection])?.toUpperCase()
+      ];
+
+    const texture = getCharacterBodyPart(CharacterPart.HEAD, headBodyDirection);
+
+    const pivot = {
+      x: (coreData?.head?.pivot?.x ?? 0) + (baseData?.head?.pivot?.x ?? 0),
+      y: (coreData?.head?.pivot?.y ?? 0) + (baseData?.head?.pivot?.y ?? 0),
+    };
 
     return {
-      scale,
+      scale: coreBodyData?.scale ?? baseBodyData?.scale,
       texture,
       pivot,
     };
-  }, [direction, bodyDirection, bodyAction]);
+  }, [bodyDirection, bodyAction, data]);
 
   return (
     <SpriteComponent
