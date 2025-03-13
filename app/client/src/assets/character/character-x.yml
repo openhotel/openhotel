@@ -1,0 +1,535 @@
+- match:
+    - body:
+        direction: north
+        action: sit
+      head:
+        direction: north_east
+  exec:
+    head:
+      pivot:
+        x: 0
+        y: 18
+- match:
+    - body:
+        direction: north
+        action: sit
+      head:
+        direction: north_west
+  exec:
+    head:
+      pivot:
+        x: 0
+        y: 17
+- match:
+    - body:
+        direction: east
+        action: sit
+      head:
+        direction: north_east
+  exec:
+    head:
+      pivot:
+        x: 0
+        y: 18
+- match:
+    - body:
+        direction: east
+        action: sit
+      head:
+        direction: south_east
+  exec:
+    head:
+      pivot:
+        x: 1
+        y: 17
+- match:
+    - body:
+        direction: east
+        action: idle
+      head:
+        direction: south_east
+    - body:
+        direction: east
+        action: walk_0
+      head:
+        direction: south_east
+    - body:
+        direction: east
+        action: walk_1
+      head:
+        direction: south_east
+    - body:
+        direction: east
+        action: walk_2
+      head:
+        direction: south_east
+    - body:
+        direction: east
+        action: walk_3
+      head:
+        direction: south_east
+  exec:
+    head:
+      pivot:
+        x: -3
+        y: 1
+- match:
+    - body:
+        direction: south
+        action: sit
+      head:
+        direction: south_east
+  exec:
+    head:
+      pivot:
+        x: 13
+        y: 17
+- match:
+    - body:
+        direction: south
+        action: sit
+      head:
+        direction: south_west
+  exec:
+    head:
+      pivot:
+        x: 13
+        y: 18
+- match:
+    - body:
+        direction: south
+        action: idle
+      head:
+        direction: south_west
+    - body:
+        direction: south
+        action: walk_0
+      head:
+        direction: south_west
+    - body:
+        direction: south
+        action: walk_1
+      head:
+        direction: south_west
+    - body:
+        direction: south
+        action: walk_2
+      head:
+        direction: south_west
+    - body:
+        direction: south
+        action: walk_3
+      head:
+        direction: south_west
+  exec:
+    head:
+      pivot:
+        x: -3
+        y: 0
+- match:
+    - body:
+        direction: west
+        action: sit
+      head:
+        direction: south_west
+  exec:
+    head:
+      pivot:
+        x: 2
+        y: 18
+- match:
+    - body:
+        direction: west
+        action: idle
+      head:
+        direction: south_west
+    - body:
+        direction: west
+        action: walk_0
+      head:
+        direction: south_west
+    - body:
+        direction: west
+        action: walk_1
+      head:
+        direction: south_west
+    - body:
+        direction: west
+        action: walk_2
+      head:
+        direction: south_west
+    - body:
+        direction: west
+        action: walk_3
+      head:
+        direction: south_west
+  exec:
+    head:
+      pivot:
+        x: 2
+        y: 0
+- match:
+    - body:
+        direction: south
+        action: idle
+      head:
+        direction: south_east
+    - body:
+        direction: south
+        action: walk_0
+      head:
+        direction: south_east
+    - body:
+        direction: south
+        action: walk_1
+      head:
+        direction: south_east
+    - body:
+        direction: south
+        action: walk_2
+      head:
+        direction: south_east
+    - body:
+        direction: south
+        action: walk_3
+      head:
+        direction: south_east
+  exec:
+    head:
+      pivot:
+        x: -4
+        y: 1
+- match:
+    - body:
+        direction: west
+        action: sit
+      head:
+        direction: north_west
+  exec:
+    head:
+      pivot:
+        x: 1
+        y: 17
+- match:
+    - body:
+        direction: west
+        action: idle
+      head:
+        direction: north_west
+  exec:
+    head:
+      pivot:
+        x: -2
+        y: 1
+- match:
+    - body:
+        direction: north
+        action: idle
+      head:
+        direction: north_west
+  exec:
+    head:
+      pivot:
+        x: -2
+        y: 1
+- match:
+    - body:
+        direction: north_east
+        action: idle
+      head:
+        direction: east
+    - body:
+        direction: north_east
+        action: walk_0
+      head:
+        direction: east
+    - body:
+        direction: north_east
+        action: walk_1
+      head:
+        direction: east
+    - body:
+        direction: north_east
+        action: walk_2
+      head:
+        direction: east
+    - body:
+        direction: north_east
+        action: walk_3
+      head:
+        direction: east
+  exec:
+    head:
+      pivot:
+        x: 2
+        y: 0
+- match:
+    - body:
+        direction: north
+        action: walk_0
+      head:
+        direction: north_west
+    - body:
+        direction: north
+        action: walk_1
+      head:
+        direction: north_west
+    - body:
+        direction: north
+        action: walk_2
+      head:
+        direction: north_west
+    - body:
+        direction: north
+        action: walk_3
+      head:
+        direction: north_west
+  exec:
+    head:
+      pivot:
+        x: -3
+        y: 1
+- match:
+    - body:
+        direction: west
+        action: walk_0
+      head:
+        direction: north_west
+    - body:
+        direction: west
+        action: walk_1
+      head:
+        direction: north_west
+    - body:
+        direction: west
+        action: walk_2
+      head:
+        direction: north_west
+    - body:
+        direction: west
+        action: walk_3
+      head:
+        direction: north_west
+  exec:
+    head:
+      pivot:
+        x: -2
+        y: 1
+- match:
+    - body:
+        direction: north
+        action: walk_0
+      head:
+        direction: north_east
+    - body:
+        direction: north
+        action: walk_1
+      head:
+        direction: north_east
+    - body:
+        direction: north
+        action: walk_2
+      head:
+        direction: north_east
+    - body:
+        direction: north
+        action: walk_3
+      head:
+        direction: north_east
+  exec:
+    head:
+      pivot:
+        x: -1
+        y: 0
+- match:
+    - body:
+        direction: south_east
+        action: idle
+      head:
+        direction: east
+    - body:
+        direction: south_east
+        action: walk_0
+      head:
+        direction: east
+    - body:
+        direction: south_east
+        action: walk_1
+      head:
+        direction: east
+    - body:
+        direction: south_east
+        action: walk_2
+      head:
+        direction: east
+    - body:
+        direction: south_east
+        action: walk_3
+      head:
+        direction: east
+  exec:
+    head:
+      pivot:
+        x: 2
+        y: -1
+- match:
+    - body:
+        direction: south_east
+        action: idle
+      head:
+        direction: south
+    - body:
+        direction: south_east
+        action: walk_0
+      head:
+        direction: south
+    - body:
+        direction: south_east
+        action: walk_1
+      head:
+        direction: south
+    - body:
+        direction: south_east
+        action: walk_2
+      head:
+        direction: south
+    - body:
+        direction: south_east
+        action: walk_3
+      head:
+        direction: south
+  exec:
+    head:
+      pivot:
+        x: 4
+        y: -2
+- match:
+    - body:
+        direction: south_west
+        action: idle
+      head:
+        direction: west
+    - body:
+        direction: south_west
+        action: walk_0
+      head:
+        direction: west
+    - body:
+        direction: south_west
+        action: walk_1
+      head:
+        direction: west
+    - body:
+        direction: south_west
+        action: walk_2
+      head:
+        direction: west
+    - body:
+        direction: south_west
+        action: walk_3
+      head:
+        direction: west
+  exec:
+    head:
+      pivot:
+        x: -2
+        y: 0
+- match:
+    - body:
+        direction: south_west
+        action: idle
+      head:
+        direction: south
+    - body:
+        direction: south_west
+        action: walk_0
+      head:
+        direction: south
+    - body:
+        direction: south_west
+        action: walk_1
+      head:
+        direction: south
+    - body:
+        direction: south_west
+        action: walk_2
+      head:
+        direction: south
+    - body:
+        direction: south_west
+        action: walk_3
+      head:
+        direction: south
+  exec:
+    head:
+      pivot:
+        x: 3
+        y: 0
+- match:
+    - body:
+        direction: north_west
+        action: idle
+      head:
+        direction: west
+    - body:
+        direction: north_west
+        action: walk_0
+      head:
+        direction: west
+    - body:
+        direction: north_west
+        action: walk_1
+      head:
+        direction: west
+    - body:
+        direction: north_west
+        action: walk_2
+      head:
+        direction: west
+    - body:
+        direction: north_west
+        action: walk_3
+      head:
+        direction: west
+  exec:
+    head:
+      pivot:
+        x: 3
+        y: -2
+- match:
+    - body:
+        direction: north_west
+        action: walk_0
+      head:
+        direction: north
+    - body:
+        direction: north_west
+        action: walk_1
+      head:
+        direction: north
+    - body:
+        direction: north_west
+        action: walk_2
+      head:
+        direction: north
+    - body:
+        direction: north_west
+        action: walk_3
+      head:
+        direction: north
+  exec:
+    head:
+      pivot:
+        x: 4
+        y: -2
+- match:
+    - body:
+        direction: north_west
+        action: idle
+      head:
+        direction: north
+  exec:
+    head:
+      pivot:
+        x: 3
+        y: -2

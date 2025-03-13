@@ -24,7 +24,7 @@ export const HeadComponent: React.FC<Props> = ({
   direction,
   skinColor,
 }) => {
-  const { data } = useCharacter();
+  const { data, dataFixes } = useCharacter();
 
   const getDataFromDirection = useCallback(
     ($direction: Direction) => {
@@ -67,11 +67,29 @@ export const HeadComponent: React.FC<Props> = ({
   );
 
   const { texture, scale, pivot } = useMemo(() => {
-    const bodyData = getDataFromDirection(bodyDirection);
+    if (bodyDirection === direction) return getDataFromDirection(bodyDirection);
     const headData = getDataFromDirection(direction);
 
-    return bodyDirection !== direction ? headData : bodyData;
-  }, [getDataFromDirection, data, bodyDirection, direction]);
+    const foundFix = dataFixes.find(({ match }) =>
+      match.some(
+        ($match) =>
+          $match?.body?.direction ===
+            getEnumKeyLowCase(bodyDirection, Direction).toLowerCase() &&
+          $match?.body?.action ===
+            getEnumKeyLowCase(bodyAction, CharacterBodyAction).toLowerCase() &&
+          $match?.head?.direction ===
+            getEnumKeyLowCase(direction, Direction).toLowerCase(),
+      ),
+    );
+
+    return {
+      ...headData,
+      pivot: {
+        x: headData.pivot.x + (foundFix?.exec?.head?.pivot?.x ?? 0),
+        y: headData.pivot.y + (foundFix?.exec?.head?.pivot?.y ?? 0),
+      },
+    };
+  }, [getDataFromDirection, data, dataFixes, bodyDirection, direction]);
 
   return (
     <SpriteComponent
