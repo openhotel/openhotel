@@ -130,6 +130,15 @@ north:
         pivot:
           x: 0
           y: 0
+    head:
+      north_east:
+        pivot:
+          x: 0
+          y: 0
+      north_west:
+        pivot:
+          x: 0
+          y: -1
 north_east:
   frames:
     idle:
@@ -248,6 +257,11 @@ north_east:
         pivot:
           x: 0
           y: 0
+    head:
+      north:
+        pivot:
+          x: -1
+          y: 0
 east:
   target: north
   scale: -1
@@ -260,7 +274,7 @@ east:
       head:
         pivot:
           x: -1
-          y: 18
+          y: 0
       left_arm:
         pivot:
           x: -12
@@ -281,7 +295,7 @@ east:
       head:
         pivot:
           x: 0
-          y: 18
+          y: 0
       left_arm:
         pivot:
           x: -11
@@ -301,8 +315,8 @@ east:
           y: 0
       head:
         pivot:
-          x: -1
-          y: 18
+          x: 0
+          y: 0
       left_arm:
         pivot:
           x: -12
@@ -322,8 +336,8 @@ east:
           y: 0
       head:
         pivot:
-          x: -1
-          y: 18
+          x: 0
+          y: 0
       left_arm:
         pivot:
           x: -12
@@ -343,8 +357,8 @@ east:
           y: 0
       head:
         pivot:
-          x: -1
-          y: 18
+          x: 0
+          y: 0
       left_arm:
         pivot:
           x: -12
@@ -364,8 +378,8 @@ east:
           y: 0
       head:
         pivot:
-          x: -1
-          y: 18
+          x: 0
+          y: 0
       left_arm:
         pivot:
           x: -12
@@ -396,8 +410,8 @@ south_east:
           y: 44
       head:
         pivot:
-          x: 3
-          y: 16
+          x: 0
+          y: 0
       left_arm:
         pivot:
           x: -4
@@ -418,8 +432,8 @@ south_east:
           y: 0
       head:
         pivot:
-          x: 3
-          y: 16
+          x: 0
+          y: 0
       left_arm:
         pivot:
           x: -4
@@ -440,8 +454,8 @@ south_east:
           y: 0
       head:
         pivot:
-          x: 3
-          y: 16
+          x: 0
+          y: 0
       left_arm:
         pivot:
           x: -4
@@ -462,8 +476,8 @@ south_east:
           y: 0
       head:
         pivot:
-          x: 3
-          y: 16
+          x: 0
+          y: 0
       left_arm:
         pivot:
           x: -4
@@ -481,8 +495,8 @@ south_east:
           y: 44
       head:
         pivot:
-          x: 3
-          y: 16
+          x: 0
+          y: 0
       left_arm:
         pivot:
           x: -4
@@ -516,8 +530,8 @@ south:
           y: 43
       head:
         pivot:
-          x: -4
-          y: 18
+          x: -7
+          y: 0
       left_arm:
         pivot:
           x: -2
@@ -537,8 +551,8 @@ south:
           y: 0
       head:
         pivot:
-          x: 12
-          y: 18
+          x: 10
+          y: 0
       left_arm:
         pivot:
           x: 14
@@ -558,8 +572,8 @@ south:
           y: 0
       head:
         pivot:
-          x: -4
-          y: 18
+          x: -7
+          y: 0
       left_arm:
         pivot:
           x: -2
@@ -576,8 +590,8 @@ south:
           y: 43
       head:
         pivot:
-          x: -4
-          y: 18
+          x: -7
+          y: 0
       left_arm:
         pivot:
           x: -2
@@ -597,8 +611,8 @@ south:
           y: 0
       head:
         pivot:
-          x: -4
-          y: 18
+          x: -7
+          y: 0
       left_arm:
         pivot:
           x: -2
@@ -618,8 +632,8 @@ south:
           y: 0
       head:
         pivot:
-          x: -4
-          y: 18
+          x: -7
+          y: 0
       left_arm:
         pivot:
           x: -2
