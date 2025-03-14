@@ -1,11 +1,11 @@
-import React, { PropsWithChildren, useEffect, useState } from "react";
+import React, { PropsWithChildren, useEffect, useRef, useState } from "react";
 import {
   ContainerComponent,
   FLEX_ALIGN,
   FLEX_JUSTIFY,
   FlexContainerComponent,
 } from "@oh/pixi-components";
-import { TextComponent } from "shared/components";
+import { LoadingBarComponent, TextComponent } from "shared/components";
 import { LoaderItem } from "shared/types";
 
 type Props = {
@@ -16,11 +16,17 @@ export const LoaderAssetsComponent: React.FC<Props> = ({
   loaderItems,
   children,
 }) => {
+  const currentPercentageRef = useRef<number>(0);
   const [currentText, setCurrentText] = useState<string>("Loading...");
 
   useEffect(() => {
     if (!loaderItems) return;
     (async () => {
+      const totalItems = loaderItems.reduce(
+        (total, { items }) => total + items.length,
+        0,
+      );
+      let currentItem = 0;
       for (const {
         items,
         func,
@@ -33,6 +39,8 @@ export const LoaderAssetsComponent: React.FC<Props> = ({
         for (const item of items) {
           setCurrentText(`${prefix} ${item.split(".")[0]} ${suffix}`);
           await func(item);
+          currentItem++;
+          currentPercentageRef.current = currentItem / totalItems;
         }
         setCurrentText(endLabel);
       }
@@ -43,10 +51,16 @@ export const LoaderAssetsComponent: React.FC<Props> = ({
   return currentText ? (
     <ContainerComponent>
       <FlexContainerComponent
-        justify={FLEX_JUSTIFY.CENTER}
         align={FLEX_ALIGN.CENTER}
+        justify={FLEX_JUSTIFY.CENTER}
+        direction="y"
       >
-        <TextComponent text={currentText} />
+        <TextComponent text={currentText} pivot={{ y: 4 }} />
+        <LoadingBarComponent
+          width={200}
+          height={10}
+          percentage={currentPercentageRef.current}
+        />
       </FlexContainerComponent>
     </ContainerComponent>
   ) : (
