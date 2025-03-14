@@ -47,6 +47,17 @@ export const ProxyProvider: React.FunctionComponent<ProxyProps> = ({
     const canConnect = (state && token) || !config.auth.enabled;
 
     if (!canConnect) {
+      fetch(`/request?version=${config.version}`)
+        .then((data) => data.json())
+        .then(({ status, data }) => {
+          if (status !== 200)
+            return setLoadingMessage("Something went wrong :(");
+
+          const redirectUrl = new URL(data.redirectUrl);
+          if (meta) redirectUrl.searchParams.append("meta", meta);
+          window.location.replace(redirectUrl);
+        });
+
       setLoadingMessage("Redirecting...");
       return;
     }
@@ -71,6 +82,7 @@ export const ProxyProvider: React.FunctionComponent<ProxyProps> = ({
       $socket.emit<Event>(Event.SET_LANGUAGE, {
         language: getBrowserLanguage(),
       });
+      $ping();
     });
     $socket.on("disconnected", () => {
       setLoadingMessage("Proxy disconnected!");
@@ -81,6 +93,23 @@ export const ProxyProvider: React.FunctionComponent<ProxyProps> = ({
 
     return $socket;
   });
+
+  const $ping = useCallback(() => {
+    if (!config.auth.enabled) return;
+
+    const pingUrl = new URL(config.auth.api);
+    pingUrl.pathname = "/api/v3/user/@me/connection/ping";
+    pingUrl.searchParams.append("connectionId", token.split(".")[1]);
+
+    fetch(pingUrl, {
+      method: "PATCH",
+    })
+      .then((response) => response.json())
+      .then(({ status, data }) => {
+        if (status !== 200) return emit(Event.DISCONNECTED, {});
+        setTimeout($ping, data.estimatedNextPingIn);
+      });
+  }, [config]);
 
   const emit = useCallback(
     (event: Event, data: unknown) => {

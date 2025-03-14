@@ -1,1 +1,1 @@
-export * from "./loader-assets.component.tsx";
+export * from "./loader-assets.component";
