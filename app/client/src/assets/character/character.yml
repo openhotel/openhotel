@@ -145,11 +145,12 @@ north:
       left_arm:
         pivot:
           x: -1
-          y: 22
+          y: 20
       right_arm:
+        zIndex: 3
         pivot:
-          x: 0
-          y: 0
+          x: 2
+          y: 20
 north_east:
   frames:
     idle:
@@ -278,6 +279,15 @@ north_east:
         pivot:
           x: 3
           y: 1
+    arm_wave_0:
+      left_arm:
+        pivot:
+          x: 0
+          y: 21
+      right_arm:
+        pivot:
+          x: 1
+          y: 21
 east:
   target: north
   scale: -1
@@ -426,6 +436,16 @@ east:
         pivot:
           x: 7
           y: 4
+    arm_wave_0:
+      left_arm:
+        zIndex: 3
+        pivot:
+          x: -2
+          y: 20
+      right_arm:
+        pivot:
+          x: 1
+          y: 20
 south_east:
   target: north_west
   scale: -1
