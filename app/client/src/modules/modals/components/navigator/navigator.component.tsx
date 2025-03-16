@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
   ContainerComponent,
   Cursor,
@@ -10,20 +10,44 @@ import {
   NineSliceSpriteComponent,
   TilingSpriteComponent,
 } from "@oh/pixi-components";
-import { SpriteSheetEnum } from "shared/enums";
+import { ModalNavigatorTab, SpriteSheetEnum } from "shared/enums";
 import { TextComponent } from "shared/components";
 import { NavigatorBarComponent } from "./components";
+import { ModalProps } from "shared/types";
+import { MODAL_NAVIGATOR_TAB_MAP } from "shared/consts";
 
-export const NavigatorComponent: React.FC = () => {
+export const NavigatorComponent: React.FC<ModalProps> = ({ setModalData }) => {
   const height = 260;
   const width = 300;
   const horizontalMargin = 12 * 2;
   const topMargin = 38;
   const bottomMargin = 12;
 
-  const onSelectItem = useCallback((item: string) => {
-    console.log(item);
+  const [selectedCategory, setSelectedCategory] = useState<ModalNavigatorTab>(
+    ModalNavigatorTab.ROOMS,
+  );
+
+  const onSelectCategoryTab = useCallback((tab: ModalNavigatorTab) => {
+    setSelectedCategory(tab);
   }, []);
+
+  useEffect(() => {
+    setModalData({
+      dragPolygon: [0, 0, width, 0, width, 15, 0, 15],
+      closeCircle: {
+        radius: 6.5,
+        position: {
+          x: width - 23,
+          y: 1.5,
+        },
+      },
+    });
+  }, [setModalData]);
+
+  const SelectedCategoryContent = useMemo(
+    () => MODAL_NAVIGATOR_TAB_MAP[selectedCategory],
+    [selectedCategory],
+  );
 
   return (
     <ContainerComponent>
@@ -47,14 +71,6 @@ export const NavigatorComponent: React.FC = () => {
         width={width - 35}
       />
       <ContainerComponent>
-        <GraphicsComponent
-          type={GraphicType.RECTANGLE}
-          width={width}
-          height={15}
-          alpha={0}
-          cursor={Cursor.GRAB}
-          eventMode={EventMode.STATIC}
-        />
         <GraphicsComponent
           type={GraphicType.CIRCLE}
           radius={6.5}
@@ -95,8 +111,8 @@ export const NavigatorComponent: React.FC = () => {
         }}
       >
         <NavigatorBarComponent
-          categories={["Hotel", "Rooms", "Me", "Search"]}
-          onSelectCategory={onSelectItem}
+          onSelectCategory={onSelectCategoryTab}
+          selectedCategory={selectedCategory}
         />
       </ContainerComponent>
       <ContainerComponent
@@ -111,6 +127,7 @@ export const NavigatorComponent: React.FC = () => {
           width={width - horizontalMargin}
           height={height - topMargin - bottomMargin}
         />
+        <SelectedCategoryContent />
       </ContainerComponent>
     </ContainerComponent>
   );
