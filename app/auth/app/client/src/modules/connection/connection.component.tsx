@@ -38,7 +38,7 @@ export const ConnectionComponent: React.FC = () => {
         redirectTo(redirectUrl);
       },
     );
-  }, [add, hotelId, integrationId, state, scopes]);
+  }, [add, hotelId, integrationId, state, scopes, redirectTo]);
 
   if (!state || !hotelId || !integrationId) return <RedirectComponent to="/" />;
 

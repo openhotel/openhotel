@@ -1,12 +1,10 @@
 import React, { useEffect, useMemo, useState } from "react";
 import {
-  Line,
   VictoryAxis,
   VictoryChart,
   VictoryGroup,
   VictoryLegend,
   VictoryLine,
-  VictoryScatter,
   VictoryTheme,
 } from "victory";
 
@@ -127,14 +125,20 @@ export const AnalyticsComponent: React.FC = () => {
     [usersData, hotelsData],
   );
 
+  const domain = useMemo(
+    () => ({
+      y: [0, Math.max(...series.map((serie) => serie.data.pop())) + 50],
+    }),
+    [series],
+  );
+
   return (
     <div className={styles.analytics}>
       <h2>Analytics</h2>
       <VictoryChart
         theme={CUSTOM_DARK_THEME}
-        domain={{
-          y: [0, Math.max(...series.map((serie) => serie.data.length + 100))],
-        }}
+        //@ts-ignore
+        domain={domain}
         height={200}
       >
         <VictoryAxis
@@ -146,8 +150,10 @@ export const AnalyticsComponent: React.FC = () => {
               ? date
               : null;
           }}
+          //@ts-ignore
           tickLabelComponent={<CustomTickLabel />}
         />
+        {/*@ts-ignore*/}
         <VictoryAxis
           dependentAxis
           style={{
