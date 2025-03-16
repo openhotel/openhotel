@@ -6,3 +6,10 @@ export enum Modal {
   PURSE,
   CLUB,
 }
+
+export enum ModalNavigatorTab {
+  HOTEL,
+  ROOMS,
+  ME,
+  SEARCH,
+}

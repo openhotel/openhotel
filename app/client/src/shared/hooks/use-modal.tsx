@@ -8,9 +8,47 @@ import React, {
 import { Modal } from "shared/enums";
 import {
   ContainerComponent,
+  Cursor,
   DragContainerComponent,
+  EventMode,
+  GraphicsComponent,
+  GraphicType,
 } from "@oh/pixi-components";
 import { MODAL_COMPONENTS_MAP } from "shared/consts";
+import { ModalData } from "shared/types";
+
+type RenderModalProps = {
+  modal: Modal;
+  onClose: () => void;
+};
+
+const RenderModal: React.FC<RenderModalProps> = ({ modal, onClose }) => {
+  const [data, setData] = useState<ModalData>(null);
+
+  const Modal = useMemo(() => MODAL_COMPONENTS_MAP[modal], [modal]);
+
+  return (
+    <DragContainerComponent
+      key={modal}
+      zIndex={100}
+      dragPolygon={data?.dragPolygon ?? []}
+    >
+      {data?.closeCircle ? (
+        <GraphicsComponent
+          type={GraphicType.CIRCLE}
+          radius={data?.closeCircle?.radius ?? 0}
+          alpha={0}
+          cursor={Cursor.POINTER}
+          eventMode={EventMode.STATIC}
+          position={data?.closeCircle?.position}
+          zIndex={100}
+          onPointerDown={onClose}
+        />
+      ) : null}
+      <Modal setModalData={setData} onClose={onClose} />
+    </DragContainerComponent>
+  );
+};
 
 type ModalState = {
   toggleModal: (modal: Modal) => void;
@@ -37,19 +75,13 @@ export const ModalProvider: React.FunctionComponent<ModalProps> = ({
 
   const renderModals = useMemo(
     () =>
-      openedModals.map((openModal) => {
-        const Modal = MODAL_COMPONENTS_MAP[openModal];
-
-        return (
-          <DragContainerComponent
-            key={openModal}
-            zIndex={100}
-            dragPolygon={[0, 0, 20, 0, 20, 20, 0, 20]}
-          >
-            <Modal />
-          </DragContainerComponent>
-        );
-      }),
+      openedModals.map((modal) => (
+        <RenderModal
+          key={modal}
+          modal={modal}
+          onClose={() => toggleModal(modal)}
+        />
+      )),
     [openedModals],
   );
 

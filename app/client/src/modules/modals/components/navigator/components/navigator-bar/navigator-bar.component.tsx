@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useMemo } from "react";
 import {
   ContainerComponent,
   Cursor,
@@ -7,35 +7,36 @@ import {
   FlexContainerComponent,
 } from "@oh/pixi-components";
 import { NavigatorButtonComponent } from "../";
+import { ModalNavigatorTab } from "shared/enums";
+import { MODAL_NAVIGATOR_TAB_NAME_MAP } from "shared/consts";
 
 type Props = {
-  categories?: string[];
-  onSelectCategory?: (category: string) => void;
+  selectedCategory?: ModalNavigatorTab;
+  onSelectCategory?: (category: ModalNavigatorTab) => void;
 };
 
 export const NavigatorBarComponent: React.FC<Props> = ({
-  categories = [],
+  selectedCategory,
   onSelectCategory,
 }) => {
-  const [selectedCategory, setSelectedCategory] = useState<string>(
-    categories[0],
-  );
-
-  useEffect(() => {
-    setSelectedCategory(categories[0]);
-  }, [setSelectedCategory, categories]);
-
   const $onSelectCategory = useCallback(
-    (category: string) => () => {
-      setSelectedCategory(category);
+    (category: ModalNavigatorTab) => () => {
       onSelectCategory?.(category);
     },
-    [setSelectedCategory, onSelectCategory],
+    [onSelectCategory],
+  );
+
+  const categories = useMemo(
+    () =>
+      Object.keys(ModalNavigatorTab)
+        .filter((num) => !isNaN(num as unknown as number))
+        .map(Number) as unknown[] as ModalNavigatorTab[],
+    [],
   );
 
   return (
     <FlexContainerComponent justify={FLEX_JUSTIFY.START}>
-      {categories.map((category, index) => (
+      {categories.map((category: ModalNavigatorTab, index) => (
         <ContainerComponent
           key={category}
           onPointerDown={$onSelectCategory(category)}
@@ -46,7 +47,7 @@ export const NavigatorBarComponent: React.FC<Props> = ({
           }}
         >
           <NavigatorButtonComponent
-            text={category}
+            text={MODAL_NAVIGATOR_TAB_NAME_MAP[category]}
             selected={selectedCategory === category}
             type={
               index === 0
