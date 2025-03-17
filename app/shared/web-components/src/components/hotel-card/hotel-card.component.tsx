@@ -142,7 +142,7 @@ export const HotelCardComponent: React.FC<Props> = ({
                 )}{" "}
               </div>
               <TooltipComponent
-                title={isNaN(ms) ? "Not reachable!" : `${ms}ms`}
+                title={isNaN(ms) ? "Not reachable!" : `${Math.round(ms)}ms`}
               >
                 <SignalIconComponent
                   ms={isNaN(ms) ? -1 : ms}
