@@ -1,6 +1,8 @@
 import { Meta, StoryObj } from "@storybook/react";
 import React from "react";
 import { NavigatorComponent } from "./navigator.component";
+import { ModalProvider } from "shared/hooks";
+import { DragContainerProvider } from "@oh/pixi-components";
 
 export default {
   title: "Modules/Modals/Navigator",
@@ -12,6 +14,13 @@ export default {
 
 type Story = StoryObj<typeof NavigatorComponent>;
 
+//@ts-ignore
 export const Primary: Story = () => {
-  return <NavigatorComponent />;
+  return (
+    <ModalProvider>
+      <DragContainerProvider>
+        <NavigatorComponent />
+      </DragContainerProvider>
+    </ModalProvider>
+  );
 };
