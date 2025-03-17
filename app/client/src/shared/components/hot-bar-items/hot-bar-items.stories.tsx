@@ -14,6 +14,7 @@ export default {
 
 type Story = StoryObj<typeof HotBarItemsComponent>;
 
+//@ts-ignore
 export const Primary: Story = () => {
   return (
     <ModalProvider>

@@ -9,6 +9,15 @@ import { HotBarItemsComponent } from "shared/components";
 import { wait } from "shared/utils";
 import { System } from "system";
 import { TickerQueue } from "@oh/queue";
+import { Modal } from "shared/enums";
+import {
+  CatalogComponent,
+  ClubComponent,
+  ConsoleComponent,
+  InventoryComponent,
+  NavigatorComponent,
+  PurseComponent,
+} from "modules/modals";
 
 const DELTA_MULTIPLIER = 0.25;
 

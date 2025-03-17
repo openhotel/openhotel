@@ -9,14 +9,18 @@ import {
   GraphicType,
   NineSliceSpriteComponent,
   TilingSpriteComponent,
+  useDragContainer,
 } from "@oh/pixi-components";
-import { ModalNavigatorTab, SpriteSheetEnum } from "shared/enums";
+import { Modal, ModalNavigatorTab, SpriteSheetEnum } from "shared/enums";
 import { TextComponent } from "shared/components";
 import { NavigatorBarComponent } from "./components";
-import { ModalProps } from "shared/types";
 import { MODAL_NAVIGATOR_TAB_MAP } from "shared/consts";
+import { useModal } from "shared/hooks";
 
-export const NavigatorComponent: React.FC<ModalProps> = ({ setModalData }) => {
+export const NavigatorComponent: React.FC = ({}) => {
+  const { setDragPolygon } = useDragContainer();
+  const { closeModal } = useModal();
+
   const height = 260;
   const width = 300;
   const horizontalMargin = 12 * 2;
@@ -32,103 +36,104 @@ export const NavigatorComponent: React.FC<ModalProps> = ({ setModalData }) => {
   }, []);
 
   useEffect(() => {
-    setModalData({
-      dragPolygon: [0, 0, width, 0, width, 15, 0, 15],
-      closeCircle: {
-        radius: 6.5,
-        position: {
-          x: width - 23,
-          y: 1.5,
-        },
-      },
-    });
-  }, [setModalData]);
+    setDragPolygon?.([0, 0, width, 0, width, 15, 0, 15]);
+  }, [setDragPolygon]);
 
   const SelectedCategoryContent = useMemo(
     () => MODAL_NAVIGATOR_TAB_MAP[selectedCategory],
     [selectedCategory],
   );
 
+  const contentSize = useMemo(
+    () => ({
+      width: width - horizontalMargin,
+      height: height - topMargin - bottomMargin,
+    }),
+    [width, horizontalMargin, height, topMargin, bottomMargin],
+  );
+
   return (
-    <ContainerComponent>
-      <NineSliceSpriteComponent
-        spriteSheet={SpriteSheetEnum.UI}
-        texture="ui-tab-modal"
-        leftWidth={14}
-        rightWidth={21}
-        topHeight={39}
-        bottomHeight={11}
-        height={height}
-        width={width}
-      />
-      <TilingSpriteComponent
-        texture="ui-tab-modal-bar-tile"
-        spriteSheet={SpriteSheetEnum.UI}
+    <>
+      <GraphicsComponent
+        type={GraphicType.CIRCLE}
+        radius={6.5}
+        alpha={0}
+        cursor={Cursor.POINTER}
+        eventMode={EventMode.STATIC}
         position={{
-          x: 11,
-          y: 4,
+          x: width - 23,
+          y: 1.5,
         }}
-        width={width - 35}
+        onPointerDown={() => closeModal(Modal.NAVIGATOR)}
+        zIndex={20}
       />
       <ContainerComponent>
-        <GraphicsComponent
-          type={GraphicType.CIRCLE}
-          radius={6.5}
-          alpha={0}
-          cursor={Cursor.POINTER}
-          eventMode={EventMode.STATIC}
+        <NineSliceSpriteComponent
+          spriteSheet={SpriteSheetEnum.UI}
+          texture="ui-tab-modal"
+          leftWidth={14}
+          rightWidth={21}
+          topHeight={39}
+          bottomHeight={11}
+          height={height}
+          width={width}
+        />
+        <TilingSpriteComponent
+          texture="ui-tab-modal-bar-tile"
+          spriteSheet={SpriteSheetEnum.UI}
           position={{
-            x: width - 23,
-            y: 1.5,
+            x: 11,
+            y: 4,
           }}
+          width={width - 35}
         />
-      </ContainerComponent>
-      <FlexContainerComponent
-        justify={FLEX_JUSTIFY.CENTER}
-        size={{
-          width,
-        }}
-        position={{
-          y: 4,
-        }}
-      >
-        <TextComponent
-          text="Navigator"
-          backgroundColor={0xacc1ed}
-          backgroundAlpha={1}
-          padding={{
-            left: 4,
-            right: 0,
-            bottom: 0,
-            top: 1,
+        <FlexContainerComponent
+          justify={FLEX_JUSTIFY.CENTER}
+          size={{
+            width,
           }}
-        />
-      </FlexContainerComponent>
-      <ContainerComponent
-        position={{
-          x: 5,
-          y: 15,
-        }}
-      >
-        <NavigatorBarComponent
-          onSelectCategory={onSelectCategoryTab}
-          selectedCategory={selectedCategory}
-        />
+          position={{
+            y: 4,
+          }}
+        >
+          <TextComponent
+            text="Navigator"
+            backgroundColor={0xacc1ed}
+            backgroundAlpha={1}
+            padding={{
+              left: 4,
+              right: 0,
+              bottom: 0,
+              top: 1,
+            }}
+          />
+        </FlexContainerComponent>
+        <ContainerComponent
+          position={{
+            x: 5,
+            y: 15,
+          }}
+        >
+          <NavigatorBarComponent
+            onSelectCategory={onSelectCategoryTab}
+            selectedCategory={selectedCategory}
+          />
+        </ContainerComponent>
+        <ContainerComponent
+          position={{
+            x: 12,
+            y: 38,
+          }}
+        >
+          <GraphicsComponent
+            type={GraphicType.RECTANGLE}
+            tint={0xff00ff}
+            width={contentSize.width}
+            height={contentSize.height}
+          />
+          <SelectedCategoryContent size={contentSize} />
+        </ContainerComponent>
       </ContainerComponent>
-      <ContainerComponent
-        position={{
-          x: 12,
-          y: 38,
-        }}
-      >
-        <GraphicsComponent
-          type={GraphicType.RECTANGLE}
-          tint={0xff00ff}
-          width={width - horizontalMargin}
-          height={height - topMargin - bottomMargin}
-        />
-        <SelectedCategoryContent />
-      </ContainerComponent>
-    </ContainerComponent>
+    </>
   );
 };
