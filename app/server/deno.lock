@@ -6,7 +6,7 @@
     "jsr:@da/socket@2.3.0": "2.3.0",
     "jsr:@oh/pathfinding@2.0.3": "2.0.3",
     "jsr:@oh/queue@1.1.1": "1.1.1",
-    "jsr:@oh/utils@1.5.2": "1.5.2",
+    "jsr:@oh/utils@1.5.3": "1.5.3",
     "jsr:@oh/yaml@1.1.0": "1.1.0",
     "jsr:@std/encoding@1.0.5": "1.0.5",
     "jsr:@std/fs@1.0.4": "1.0.4",
@@ -48,8 +48,8 @@
     "@oh/queue@1.1.1": {
       "integrity": "8e8ec809202c48beaf436b3ea01b4c3a17f8c015ca686d906822482c9c881390"
     },
-    "@oh/utils@1.5.2": {
-      "integrity": "b2fec420696c1a227413fb7fcce4991031e9d96d3b66fd97ae75c953cc900b4e",
+    "@oh/utils@1.5.3": {
+      "integrity": "3edcf03edbcbd8cd05b7b3f1cfc078b4d285caf8e2beb709f396915eb042a114",
       "dependencies": [
         "jsr:@da/bcrypt@1.0.1",
         "jsr:@oh/yaml",
@@ -217,8 +217,8 @@
         "safe-buffer"
       ]
     },
-    "strnum@1.1.1": {
-      "integrity": "sha512-O7aCHfYCamLCctjAiaucmE+fHf2DYHkus2OKCn4Wv03sykfFtgeECn505X6K4mPl8CRNd/qurC9guq+ynoN4pw=="
+    "strnum@1.1.2": {
+      "integrity": "sha512-vrN+B7DBIoTTZjnPNewwhx6cBA/H+IS7rfW68n7XxC1y7uoiGQBxaKzqucGUgavX15dJgiGztLJ8vxuEzwqBdA=="
     },
     "through2@4.0.2": {
       "integrity": "sha512-iOqSav00cVxEEICeD7TjLB1sueEL+81Wpzp2bY17uZjZN0pWZPuo4suZ/61VujxmqSGFfgOcNuTZ85QJwNZQpw==",
@@ -685,7 +685,7 @@
       "jsr:@da/socket@2.3.0",
       "jsr:@oh/pathfinding@2.0.3",
       "jsr:@oh/queue@1.1.1",
-      "jsr:@oh/utils@1.5.2",
+      "jsr:@oh/utils@1.5.3",
       "jsr:@std/ulid@1",
       "jsr:@std/yaml@1.0.5",
       "jsr:@zip-js/zip-js@2.7.53"
