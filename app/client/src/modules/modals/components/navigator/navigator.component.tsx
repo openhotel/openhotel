@@ -10,6 +10,7 @@ import {
   NineSliceSpriteComponent,
   TilingSpriteComponent,
   useDragContainer,
+  useWindow,
 } from "@oh/pixi-components";
 import { Modal, ModalNavigatorTab, SpriteSheetEnum } from "shared/enums";
 import { TextComponent } from "shared/components";
@@ -24,10 +25,11 @@ import { useModal } from "shared/hooks";
 
 export const NavigatorComponent: React.FC = () => {
   const { setDragPolygon } = useDragContainer();
-  const { closeModal } = useModal();
+  const { closeModal, setModalPosition } = useModal();
+  const { getSize } = useWindow();
 
   const height = 260;
-  const width = 300;
+  const width = 250;
   const horizontalMargin = 12 * 2;
   const topMargin = 38;
   const bottomMargin = 12;
@@ -43,6 +45,15 @@ export const NavigatorComponent: React.FC = () => {
   useEffect(() => {
     setDragPolygon?.([0, 0, width, 0, width, 15, 0, 15]);
   }, [setDragPolygon]);
+
+  useEffect(() => {
+    const windowSize = getSize();
+
+    setModalPosition(Modal.NAVIGATOR, {
+      x: windowSize.width / 2 - width / 2,
+      y: windowSize.height / 2 - height / 2,
+    });
+  }, [setModalPosition, getSize, width, height]);
 
   const SelectedCategoryContent = useMemo(
     () =>
@@ -136,12 +147,12 @@ export const NavigatorComponent: React.FC = () => {
             y: 38,
           }}
         >
-          <GraphicsComponent
-            type={GraphicType.RECTANGLE}
-            tint={0xff00ff}
-            width={contentSize.width}
-            height={contentSize.height}
-          />
+          {/*<GraphicsComponent*/}
+          {/*  type={GraphicType.RECTANGLE}*/}
+          {/*  tint={0xff00ff}*/}
+          {/*  width={contentSize.width}*/}
+          {/*  height={contentSize.height}*/}
+          {/*/>*/}
           <SelectedCategoryContent size={contentSize} />
         </ContainerComponent>
       </ContainerComponent>

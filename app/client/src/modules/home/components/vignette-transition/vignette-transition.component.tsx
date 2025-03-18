@@ -13,7 +13,11 @@ import {
 
 const DELTA_MULTIPLIER = 0.35;
 
-export const VignetteTransitionComponent: React.FC = () => {
+type Props = {
+  onDone: () => void;
+};
+
+export const VignetteTransitionComponent: React.FC<Props> = ({ onDone }) => {
   const { on } = useEvents();
   const { getSize } = useWindow();
 
@@ -35,6 +39,7 @@ export const VignetteTransitionComponent: React.FC = () => {
       },
       onDone: () => {
         setIsDone(true);
+        onDone();
       },
     });
 

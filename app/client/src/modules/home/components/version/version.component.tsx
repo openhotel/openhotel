@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Cursor, EventMode } from "@oh/pixi-components";
 import { TextComponent } from "shared/components";
 import { useConfig } from "shared/hooks";
@@ -6,7 +6,11 @@ import { useConfig } from "shared/hooks";
 export const VersionComponent: React.FC = () => {
   const { getConfig } = useConfig();
 
-  const { version } = getConfig();
+  const [version, setVersion] = useState<string>("");
+
+  useEffect(() => {
+    setVersion(getConfig?.()?.version);
+  }, [setVersion]);
 
   const onOpenGithubRelease = useCallback(() => {
     window.open(

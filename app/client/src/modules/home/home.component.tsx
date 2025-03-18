@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import {
   ContainerComponent,
   FLEX_ALIGN,
@@ -14,12 +14,21 @@ import {
   VersionComponent,
   VignetteTransitionComponent,
 } from "./components";
+import { useModal } from "shared/hooks";
+import { Modal } from "shared/enums";
+import { NavigatorComponent } from "modules/modals";
 
 export const HomeComponent: React.FC = () => {
+  const { openModal } = useModal();
+
+  const onDone = useCallback(() => {
+    openModal(Modal.NAVIGATOR, NavigatorComponent);
+  }, [openModal]);
+
   return (
     <ContainerComponent sortableChildren={true}>
       <BackgroundComponent />
-      <VignetteTransitionComponent />
+      <VignetteTransitionComponent onDone={onDone} />
       <LogoComponent />
       <HotBarComponent />
 
