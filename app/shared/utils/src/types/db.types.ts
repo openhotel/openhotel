@@ -63,6 +63,8 @@ export type DbMutable = {
 
   delete: (key: DbKey) => Promise<void>;
 
+  atomic: () => Deno.AtomicOperation | undefined;
+
   load: () => Promise<void>;
   close: () => void;
 

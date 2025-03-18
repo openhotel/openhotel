@@ -241,12 +241,18 @@ export const getDb = (props: DbProps = {}): DbMutable => {
     }
   };
 
+  const atomic = (): Deno.AtomicOperation | undefined => {
+    if (!$checkDbNull()) return;
+    return db.atomic();
+  };
+
   const dbMutable: DbMutable = {
     get,
     set,
     list,
     getMany,
     delete: $delete,
+    atomic,
 
     load,
     close,
