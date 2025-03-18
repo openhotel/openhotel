@@ -7,32 +7,32 @@ import {
   ConfigProvider,
   ProxyProvider,
   RouterProvider,
-  AccountProvider,
   ModalProvider,
   AssetsProvider,
+  AccountProvider,
 } from "shared/hooks";
 import { System } from "system";
+import { NesterComponent } from "shared/components";
 
 export const ApplicationComponent = () => {
   useEffect(() => {
     System.load();
   }, []);
 
-  return (
-    <InitialLoaderComponent>
-      <ConfigProvider>
-        <ProxyProvider>
-          <AssetsProvider>
-            <CoreLoaderComponent>
-              <AccountProvider>
-                <ModalProvider>
-                  <RouterProvider />
-                </ModalProvider>
-              </AccountProvider>
-            </CoreLoaderComponent>
-          </AssetsProvider>
-        </ProxyProvider>
-      </ConfigProvider>
-    </InitialLoaderComponent>
-  );
+  const PROVIDERS = [
+    InitialLoaderComponent,
+    ConfigProvider,
+    ProxyProvider,
+    AssetsProvider,
+    CoreLoaderComponent,
+    AccountProvider,
+    //|\\|//|\\|MODIFY/ONLY\BELOW|//|\\|//|\\|//|\\|//|\\|//|\\|//|\\|
+
+    ModalProvider,
+
+    //|\\|//|\\|MODIFY/ONLY\ABOVE|//|\\|//|\\|//|\\|//|\\|//|\\|//|\\|
+    RouterProvider,
+  ];
+
+  return <NesterComponent components={PROVIDERS} />;
 };

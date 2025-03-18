@@ -1,12 +1,6 @@
-import React, { ReactNode, useCallback, useContext, useRef } from "react";
+import React, { ReactNode, useCallback, useRef } from "react";
+import { AssetsContext } from "./assets.context";
 import { AssetEnum } from "shared/enums";
-
-type AssetsState = {
-  getAsset: <Data>(assetKey: AssetEnum) => Data;
-  setAsset: (assetKey: AssetEnum, data: unknown) => void;
-};
-
-const AssetsContext = React.createContext<AssetsState>(undefined);
 
 type AssetsProps = {
   children: ReactNode;
@@ -40,5 +34,3 @@ export const AssetsProvider: React.FunctionComponent<AssetsProps> = ({
     />
   );
 };
-
-export const useAssets = (): AssetsState => useContext(AssetsContext);

@@ -13,11 +13,16 @@ import {
 } from "@oh/pixi-components";
 import { Modal, ModalNavigatorTab, SpriteSheetEnum } from "shared/enums";
 import { TextComponent } from "shared/components";
-import { NavigatorBarComponent } from "./components";
-import { MODAL_NAVIGATOR_TAB_MAP } from "shared/consts";
+import {
+  CategoryHotelComponent,
+  CategoryMeComponent,
+  CategoryRoomsComponent,
+  CategorySearchComponent,
+  NavigatorBarComponent,
+} from "./components";
 import { useModal } from "shared/hooks";
 
-export const NavigatorComponent: React.FC = ({}) => {
+export const NavigatorComponent: React.FC = () => {
   const { setDragPolygon } = useDragContainer();
   const { closeModal } = useModal();
 
@@ -40,7 +45,13 @@ export const NavigatorComponent: React.FC = ({}) => {
   }, [setDragPolygon]);
 
   const SelectedCategoryContent = useMemo(
-    () => MODAL_NAVIGATOR_TAB_MAP[selectedCategory],
+    () =>
+      ({
+        [ModalNavigatorTab.HOTEL]: CategoryHotelComponent,
+        [ModalNavigatorTab.ROOMS]: CategoryRoomsComponent,
+        [ModalNavigatorTab.ME]: CategoryMeComponent,
+        [ModalNavigatorTab.SEARCH]: CategorySearchComponent,
+      })[selectedCategory],
     [selectedCategory],
   );
 

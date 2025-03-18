@@ -65,13 +65,20 @@ export const decorators = [
     useEffect(() => {
       System.load();
     }, []);
+    const backgroundColor = useMemo(() => {
+      const { backgrounds } = props.parameters;
+
+      return (
+        props?.globals?.backgrounds?.value ??
+        backgrounds.values?.find(({ name }) => backgrounds.default === name)
+          ?.value ??
+        0x1
+      );
+    }, [props]);
 
     return (
       <StrictMode>
-        <ApplicationProvider
-          scale={scale}
-          backgroundColor={props.globals.backgrounds?.value || 0x1}
-        >
+        <ApplicationProvider scale={scale} backgroundColor={backgroundColor}>
           <InitialLoaderComponent>
             <AssetsProvider>
               <CoreLoaderComponent>

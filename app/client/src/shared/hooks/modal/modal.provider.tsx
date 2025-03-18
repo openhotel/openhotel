@@ -1,56 +1,47 @@
-import React, {
-  ReactNode,
-  useCallback,
-  useContext,
-  useMemo,
-  useState,
-} from "react";
-import { Modal } from "shared/enums";
+import React, { ReactNode, useCallback, useMemo } from "react";
+import { ModalContext } from "shared/hooks/modal/modal.context";
 import {
   ContainerComponent,
   DragContainerComponent,
+  useUpdate,
 } from "@oh/pixi-components";
+import { Modal } from "shared/enums";
+import { System } from "system";
 
-type ModalState = {
-  openModal: (modalId: Modal, Content: React.FC) => void;
-  closeModal: (modalId: Modal) => void;
-};
-
-const ModalContext = React.createContext<ModalState>(undefined);
-
-type ModalProps = {
+type TemplateProps = {
   children: ReactNode;
 };
 
-export const ModalProvider: React.FunctionComponent<ModalProps> = ({
+export const ModalProvider: React.FunctionComponent<TemplateProps> = ({
   children,
 }) => {
-  const [modalsMap, setModalMap] = useState<Record<Modal, React.FC>>({} as any);
+  const { update, lastUpdate } = useUpdate();
 
   const openModal = useCallback(
     (modal: Modal, component: React.FC) => {
-      setModalMap((data) => ({
-        ...data,
-        [modal]: component,
-      }));
+      update();
+      System.modals.open(modal, component);
     },
-    [setModalMap],
+    [update],
   );
 
   const closeModal = useCallback(
     (modal: Modal) => {
-      setModalMap((map) => ({
-        ...map,
-        [modal]: null,
-      }));
+      update();
+      System.modals.close(modal);
     },
-    [setModalMap],
+    [update],
+  );
+
+  const isModalOpen = useCallback(
+    (modal: Modal) => System.modals.isOpen(modal),
+    [],
   );
 
   const renderModals = useMemo(() => {
-    return Object.keys(modalsMap)
+    return Object.keys(System.modals.getAll())
       .map((modal) => {
-        const Modal = modalsMap[modal];
+        const Modal = System.modals.get(modal as any);
         return Modal ? (
           <DragContainerComponent
             key={modal}
@@ -60,13 +51,14 @@ export const ModalProvider: React.FunctionComponent<ModalProps> = ({
         ) : null;
       })
       .filter(Boolean);
-  }, [modalsMap]);
+  }, [lastUpdate]);
 
   return (
     <ModalContext.Provider
       value={{
         openModal,
         closeModal,
+        isModalOpen,
       }}
       children={
         <>
@@ -79,5 +71,3 @@ export const ModalProvider: React.FunctionComponent<ModalProps> = ({
     />
   );
 };
-
-export const useModal = (): ModalState => useContext(ModalContext);

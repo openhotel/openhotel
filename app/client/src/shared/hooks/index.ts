@@ -1,7 +1,8 @@
-export * from "./use-proxy";
-export * from "./use-config";
-export * from "./use-router";
-export * from "./use-account";
-export * from "./use-modal";
-export * from "./use-assets";
+export * from "./account";
+export * from "./assets";
+export * from "./proxy";
+export * from "./config";
+export * from "./modal";
+export * from "./router";
+
 export * from "./use-character";

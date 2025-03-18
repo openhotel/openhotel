@@ -1,11 +1,8 @@
-import React, { ReactNode, useContext, useEffect, useState } from "react";
-import { useProxy } from "shared/hooks/use-proxy";
+import React, { ReactNode, useEffect, useState } from "react";
+import { useProxy } from "shared/hooks";
 import { Event } from "shared/enums";
 import { System } from "system";
-
-type AccountState = {};
-
-const AccountContext = React.createContext<AccountState>(undefined);
+import { AccountContext } from "./account.context";
 
 type AccountProps = {
   children: ReactNode;
@@ -34,5 +31,3 @@ export const AccountProvider: React.FunctionComponent<AccountProps> = ({
     <AccountContext.Provider value={{}} children={loading ? null : children} />
   );
 };
-
-export const useAccount = (): AccountState => useContext(AccountContext);

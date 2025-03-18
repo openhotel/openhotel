@@ -1,6 +1,6 @@
-import React, { ReactNode, useCallback, useContext, useState } from "react";
-import { LoaderComponent } from "shared/components";
-import { useConfig } from ".";
+import React, { ReactNode, useCallback, useState } from "react";
+import { ProxyContext } from "./proxy.context";
+import { useConfig } from "shared/hooks";
 import {
   getBrowserLanguage,
   getClientSocket,
@@ -9,17 +9,7 @@ import {
 } from "shared/utils";
 import { ulid } from "ulidx";
 import { Event } from "shared/enums";
-
-type ProxyState = {
-  emit: <Data>(event: Event, data: Data) => void;
-  on: (
-    event: Event,
-    callback: (data: unknown) => void | Promise<void>,
-  ) => () => void;
-  load: () => void;
-};
-
-const ProxyContext = React.createContext<ProxyState>(undefined);
+import { LoaderComponent } from "shared/components";
 
 type ProxyProps = {
   children: ReactNode;
@@ -28,7 +18,7 @@ type ProxyProps = {
 export const ProxyProvider: React.FunctionComponent<ProxyProps> = ({
   children,
 }) => {
-  const { config } = useConfig();
+  const { getConfig } = useConfig();
 
   const [loadingMessage, setLoadingMessage] = useState<string>("Connecting...");
 
@@ -42,6 +32,7 @@ export const ProxyProvider: React.FunctionComponent<ProxyProps> = ({
   }, []);
 
   const [socket] = useState(() => {
+    const config = getConfig();
     //pre connection
     setLoadingMessage("Requesting connection...");
     const canConnect = (state && token) || !config.auth.enabled;
@@ -95,6 +86,7 @@ export const ProxyProvider: React.FunctionComponent<ProxyProps> = ({
   });
 
   const $ping = useCallback(() => {
+    const config = getConfig();
     if (!config.auth.enabled) return;
 
     const pingUrl = new URL(config.auth.api);
@@ -109,7 +101,7 @@ export const ProxyProvider: React.FunctionComponent<ProxyProps> = ({
         if (status !== 200) return emit(Event.DISCONNECTED, {});
         setTimeout($ping, data.estimatedNextPingIn);
       });
-  }, [config]);
+  }, [getConfig()]);
 
   const emit = useCallback(
     (event: Event, data: unknown) => {
@@ -137,5 +129,3 @@ export const ProxyProvider: React.FunctionComponent<ProxyProps> = ({
     />
   );
 };
-
-export const useProxy = (): ProxyState => useContext(ProxyContext);

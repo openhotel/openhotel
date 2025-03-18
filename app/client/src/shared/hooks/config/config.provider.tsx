@@ -1,13 +1,7 @@
-import React, { ReactNode, useContext, useEffect, useState } from "react";
-import { ConfigTypes } from "shared/types";
+import React, { ReactNode, useCallback, useEffect, useState } from "react";
+import { ConfigContext } from "./config.context";
 import { LoaderComponent } from "shared/components";
-
-type ConfigState = {
-  changeLog: unknown;
-  config: ConfigTypes;
-};
-
-const ConfigContext = React.createContext<ConfigState>(undefined);
+import { System } from "system";
 
 type ConfigProps = {
   children: ReactNode;
@@ -16,9 +10,6 @@ type ConfigProps = {
 export const ConfigProvider: React.FunctionComponent<ConfigProps> = ({
   children,
 }) => {
-  const [changeLog, setChangeLog] = useState(null);
-  const [config, setConfig] = useState<ConfigTypes>(null);
-
   const [loadingMessage, setLoadingMessage] =
     useState<string>("Loading config...");
 
@@ -26,14 +17,14 @@ export const ConfigProvider: React.FunctionComponent<ConfigProps> = ({
     fetch("/info")
       .then((response) => response.json())
       .then(async ({ data: config }) => {
-        setConfig(config);
+        System.config.set(config);
         const lastVersion = localStorage.getItem("version");
         localStorage.setItem("version", config.version);
 
         if (lastVersion === config.version) return setLoadingMessage(null);
 
         setLoadingMessage("Loading changelog...");
-        setChangeLog(
+        System.config.setChangeLog(
           (await (await fetch(`/changelog?from=${lastVersion}`)).json()).data,
         );
 
@@ -42,13 +33,16 @@ export const ConfigProvider: React.FunctionComponent<ConfigProps> = ({
       .catch(() => {
         setLoadingMessage("Server is not reachable!");
       });
-  }, [setConfig, setChangeLog, setLoadingMessage]);
+  }, [setLoadingMessage]);
+
+  const getConfig = useCallback(() => System.config.get(), []);
+  const getChangeLog = useCallback(() => System.config.getChangelog(), []);
 
   return (
     <ConfigContext.Provider
       value={{
-        changeLog,
-        config,
+        getChangeLog,
+        getConfig,
       }}
       children={
         <LoaderComponent message={loadingMessage} children={children} />
@@ -56,5 +50,3 @@ export const ConfigProvider: React.FunctionComponent<ConfigProps> = ({
     />
   );
 };
-
-export const useConfig = (): ConfigState => useContext(ConfigContext);
