@@ -4,19 +4,20 @@ import { TextComponent } from "shared/components";
 import { useConfig } from "shared/hooks";
 
 export const VersionComponent: React.FC = () => {
-  const { config } = useConfig();
+  const { getConfig } = useConfig();
+
+  const { version } = getConfig();
 
   const onOpenGithubRelease = useCallback(() => {
-    config.version = "0.5.33";
     window.open(
-      `https://github.com/openhotel/openhotel/releases/tag/v${config.version}`,
+      `https://github.com/openhotel/openhotel/releases/tag/v${version}`,
       "_blank",
     );
-  }, [config]);
+  }, [getConfig]);
 
   return (
     <TextComponent
-      text={`${config.version}-alpha`}
+      text={`${version}-alpha`}
       padding={{
         right: 0,
         left: 6,

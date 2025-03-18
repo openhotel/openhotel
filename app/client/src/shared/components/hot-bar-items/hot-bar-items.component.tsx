@@ -2,19 +2,54 @@ import React, { useMemo } from "react";
 import { Cursor, EventMode, SpriteComponent } from "@oh/pixi-components";
 import { Modal, SpriteSheetEnum } from "shared/enums";
 import { useModal } from "shared/hooks";
-import { MODAL_HOT_BAR_ITEMS } from "shared/consts";
+import {
+  CatalogComponent,
+  ClubComponent,
+  ConsoleComponent,
+  InventoryComponent,
+  NavigatorComponent,
+  PurseComponent,
+} from "modules/modals";
 
 type Props = {};
 
 export const HotBarItemsComponent: React.FC<Props> = () => {
-  const { openModal } = useModal();
+  const { openModal, closeModal, isModalOpen } = useModal();
+
+  const MODAL_HOT_BAR_ITEMS = {
+    [Modal.CONSOLE]: {
+      icon: "console-off",
+      component: ConsoleComponent,
+    },
+    [Modal.NAVIGATOR]: {
+      icon: "navigator",
+      component: NavigatorComponent,
+    },
+    [Modal.CATALOG]: {
+      icon: "catalog",
+      component: CatalogComponent,
+    },
+    [Modal.INVENTORY]: {
+      icon: "navigator",
+      component: InventoryComponent,
+    },
+    [Modal.PURSE]: {
+      icon: "purse",
+      component: PurseComponent,
+    },
+    [Modal.CLUB]: {
+      icon: "club",
+      component: ClubComponent,
+    },
+  };
 
   const renderItems = useMemo(
     () =>
       Object.keys(MODAL_HOT_BAR_ITEMS)
         .filter((modal) => !isNaN(modal as any))
         .map((modal) => {
-          const { icon, component } = MODAL_HOT_BAR_ITEMS[modal];
+          const modalId = modal as unknown as Modal;
+          const { icon, component } = MODAL_HOT_BAR_ITEMS[modalId];
           return (
             <SpriteComponent
               key={modal}
@@ -23,12 +58,14 @@ export const HotBarItemsComponent: React.FC<Props> = () => {
               eventMode={EventMode.STATIC}
               cursor={Cursor.POINTER}
               onPointerDown={() =>
-                openModal(modal as unknown as Modal, component)
+                isModalOpen(modalId)
+                  ? closeModal(modalId)
+                  : openModal(modalId, component)
               }
             />
           );
         }),
-    [openModal],
+    [openModal, isModalOpen, closeModal],
   );
   return <>{renderItems}</>;
 };
