@@ -5,6 +5,7 @@ export * from "./config";
 export * from "./modal";
 export * from "./router";
 export * from "./tasks";
+export * from "./private-room";
 
 export * from "./use-character";
 export * from "./use-api";
