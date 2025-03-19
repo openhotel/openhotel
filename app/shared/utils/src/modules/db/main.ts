@@ -254,6 +254,8 @@ export const getDb = (props: DbProps = {}): DbMutable => {
     delete: $delete,
     atomic,
 
+    $get: () => db,
+
     load,
     close,
 

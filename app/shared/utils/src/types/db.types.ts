@@ -77,6 +77,8 @@ export type DbMutable = {
 
   migrations: DbMigrationsMutable;
   crypto: DbCryptoMutable;
+
+  $get: () => Deno.Kv;
 };
 
 export type DbKeyPart =
