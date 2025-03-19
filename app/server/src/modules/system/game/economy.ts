@@ -31,7 +31,7 @@ export const economy = () => {
 
       switch (type) {
         case TransactionType.REWARD:
-        case TransactionType.REFUND:
+        case TransactionType.REFUND: {
           // Flow: Hotel -> User
           if (!toAccount)
             throw new Error(
@@ -48,24 +48,26 @@ export const economy = () => {
 
           buildAtomicTransaction(atomic, hotelEntry, toEntry, amount);
           break;
+        }
 
-        case TransactionType.PURCHASE:
+        case TransactionType.PURCHASE: {
           // Flow: User -> Hotel
           if (!fromAccount)
             throw new Error(
               "fromAccount is required for purchase transactions.",
             );
 
-          const [userEntry, hotelEntry2] = await Promise.all([
+          const [userEntry, hotelEntry] = await Promise.all([
             getBalanceEntry("users", fromAccount),
             getBalanceEntry("hotel"),
           ]);
 
           validateBalance(userEntry, amount);
-          validateBalance(hotelEntry2, 0);
+          validateBalance(hotelEntry, 0);
 
-          buildAtomicTransaction(atomic, userEntry, hotelEntry2, amount);
+          buildAtomicTransaction(atomic, userEntry, hotelEntry, amount);
           break;
+        }
 
         case TransactionType.DEPOSIT:
           // Flow: onet -> User (onet coin -> local coin)
@@ -83,23 +85,24 @@ export const economy = () => {
           );
           break;
 
-        case TransactionType.TRANSFER:
+        case TransactionType.TRANSFER: {
           // Flow: User -> User
           if (!fromAccount || !toAccount)
             throw new Error(
               "fromAccount and toAccount are required for transfer transactions.",
             );
 
-          const [fromEntry, toEntry2] = await Promise.all([
+          const [fromEntry, toEntry] = await Promise.all([
             getBalanceEntry("users", fromAccount),
             getBalanceEntry("users", toAccount),
           ]);
 
           validateBalance(fromEntry, amount);
-          validateBalance(toEntry2, 0);
+          validateBalance(toEntry, 0);
 
-          buildAtomicTransaction(atomic, fromEntry, toEntry2, amount);
+          buildAtomicTransaction(atomic, fromEntry, toEntry, amount);
           break;
+        }
 
         default:
           throw new Error("Unsupported transaction type");
