@@ -1,0 +1,91 @@
+import React, { useCallback, useEffect, useState } from "react";
+import {
+  ContainerComponent,
+  Event as OhEvent,
+  FLEX_ALIGN,
+  FLEX_JUSTIFY,
+  FlexContainerComponent,
+  GraphicsComponent,
+  GraphicType,
+  Size,
+  SpriteTextInputComponent,
+  useEvents,
+  useWindow,
+} from "@oh/pixi-components";
+import { HotBarItemsComponent } from "shared/components";
+import { Event, SpriteSheetEnum } from "shared/enums";
+import { useProxy } from "shared/hooks";
+
+export const ChatHotBarComponent: React.FC = () => {
+  const { getSize } = useWindow();
+  const { on } = useEvents();
+  const { emit } = useProxy();
+
+  const [windowSize, setWindowSize] = useState<Size>(getSize());
+
+  useEffect(() => {
+    const removeOnResize = on(OhEvent.RESIZE, setWindowSize);
+
+    return () => {
+      removeOnResize();
+    };
+  }, [on]);
+
+  const onSendChatMessage = useCallback(
+    (message: string) => {
+      console.log(message);
+      emit(Event.MESSAGE, { message });
+    },
+    [emit],
+  );
+
+  return (
+    <ContainerComponent
+      position={{
+        y: windowSize.height - 32,
+      }}
+    >
+      <GraphicsComponent
+        type={GraphicType.RECTANGLE}
+        width={windowSize.width}
+        height={32}
+        tint={0x525457}
+      />
+      <SpriteTextInputComponent
+        width={windowSize.width - 170}
+        height={10}
+        spriteSheet={SpriteSheetEnum.DEFAULT_FONT}
+        position={{
+          x: 5,
+          y: 8,
+        }}
+        padding={{
+          left: 4,
+          right: 4,
+          top: 4,
+          bottom: 0,
+        }}
+        placeholder="Click here or press 'c' to write a message"
+        onEnter={onSendChatMessage}
+        clearOnEnter={true}
+      />
+      <FlexContainerComponent
+        justify={FLEX_JUSTIFY.END}
+        align={FLEX_ALIGN.CENTER}
+        size={{
+          height: 30,
+        }}
+        gap={5}
+        pivot={{
+          x: 10,
+        }}
+      >
+        <HotBarItemsComponent />
+      </FlexContainerComponent>
+    </ContainerComponent>
+  );
+};
+
+// <ContainerComponent>
+
+// </ContainerComponent>

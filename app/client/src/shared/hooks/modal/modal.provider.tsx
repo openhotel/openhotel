@@ -22,7 +22,7 @@ export const ModalProvider: React.FunctionComponent<TemplateProps> = ({
 
   const openModal = useCallback(
     (modal: Modal) => {
-      if (store.modals[modal]?.visible) return closeModal(modal);
+      if (store.modals[modal]?.visible) return;
 
       const modalSize = MODAL_SIZE_MAP[modal];
       const windowSize = getSize();
