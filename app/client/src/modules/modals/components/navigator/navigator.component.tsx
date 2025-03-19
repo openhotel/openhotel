@@ -10,7 +10,6 @@ import {
   NineSliceSpriteComponent,
   TilingSpriteComponent,
   useDragContainer,
-  useWindow,
 } from "@oh/pixi-components";
 import { Modal, ModalNavigatorTab, SpriteSheetEnum } from "shared/enums";
 import { TextComponent } from "shared/components";
@@ -22,14 +21,14 @@ import {
   NavigatorBarComponent,
 } from "./components";
 import { useModal } from "shared/hooks";
+import { MODAL_SIZE_MAP } from "shared/consts";
 
 export const NavigatorComponent: React.FC = () => {
   const { setDragPolygon } = useDragContainer();
-  const { closeModal, setModalPosition } = useModal();
-  const { getSize } = useWindow();
+  const { closeModal } = useModal();
 
-  const height = 260;
-  const width = 250;
+  const { width, height } = MODAL_SIZE_MAP[Modal.NAVIGATOR];
+
   const horizontalMargin = 12 * 2;
   const topMargin = 38;
   const bottomMargin = 12;
@@ -45,15 +44,6 @@ export const NavigatorComponent: React.FC = () => {
   useEffect(() => {
     setDragPolygon?.([0, 0, width, 0, width, 15, 0, 15]);
   }, [setDragPolygon]);
-
-  useEffect(() => {
-    const windowSize = getSize();
-
-    setModalPosition(Modal.NAVIGATOR, {
-      x: windowSize.width / 2 - width / 2,
-      y: windowSize.height / 2 - height / 2,
-    });
-  }, [setModalPosition, getSize, width, height]);
 
   const SelectedCategoryContent = useMemo(
     () =>

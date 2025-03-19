@@ -16,22 +16,22 @@ import {
 } from "./components";
 import { useModal } from "shared/hooks";
 import { Modal } from "shared/enums";
-import { NavigatorComponent } from "modules/modals";
 
 export const HomeComponent: React.FC = () => {
-  const { openModal } = useModal();
+  const { openModal, isModalOpen } = useModal();
 
   const onDone = useCallback(() => {
-    openModal(Modal.NAVIGATOR, NavigatorComponent);
+    if (isModalOpen(Modal.NAVIGATOR)) return;
+    openModal(Modal.NAVIGATOR);
   }, [openModal]);
 
   return (
     <ContainerComponent sortableChildren={true}>
       <BackgroundComponent />
 
-      <VignetteTransitionComponent onDone={onDone} />
+      <VignetteTransitionComponent />
       <LogoComponent />
-      <HotBarComponent />
+      <HotBarComponent onDone={onDone} />
 
       <FlexContainerComponent
         align={FLEX_ALIGN.BOTTOM}

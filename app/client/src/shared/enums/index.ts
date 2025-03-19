@@ -12,3 +12,4 @@ export * from "./catalog.enums";
 export * from "./modal.enums";
 export * from "./character.enums";
 export * from "./assets.enums";
+export * from "./router.enums";

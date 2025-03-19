@@ -1,30 +1,33 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { RouterContext } from "./router.context";
 import { useProxy } from "shared/hooks/proxy";
-import { Event } from "shared/enums";
-import { RoomComponent } from "modules/room";
+import { Event, Route } from "shared/enums";
 import { useUpdate } from "@oh/pixi-components";
 import { useRouterStore } from "./router.store";
 import { HomeComponent } from "modules/home";
+import { PrivateRoomComponent } from "modules/private-room";
+import { useModal } from "shared/hooks";
 
-type RouterProps = {
-  children?: React.ReactNode;
-};
+type RouterProps = {};
 
-export const RouterProvider: React.FunctionComponent<RouterProps> = ({
-  children,
-}) => {
-  const { update, lastUpdate } = useUpdate();
+export const RouterProvider: React.FunctionComponent<RouterProps> = () => {
+  const { update } = useUpdate();
   const { on, emit } = useProxy();
+  const { closeAll } = useModal();
 
-  const { component: Component, navigate } = useRouterStore();
+  const { route, data, navigate } = useRouterStore();
 
   useEffect(() => {
-    const removeOnPreJoinRoom = on(Event.PRE_JOIN_ROOM, (data) => {
-      emit(Event.JOIN_ROOM, { roomId: data.roomId });
+    const removeOnPreJoinRoom = on(Event.PRE_JOIN_ROOM, ({ room }) => {
+      emit(Event.JOIN_ROOM, { roomId: room.id });
     });
     const removeOnJoinRoom = on(Event.LOAD_ROOM, (data) => {
-      navigate(RoomComponent);
+      navigate(Route.PRIVATE_ROOM, data);
+      closeAll();
+      update();
+    });
+    on(Event.LEAVE_ROOM, (data) => {
+      navigate(Route.HOME);
       update();
     });
 
@@ -34,5 +37,20 @@ export const RouterProvider: React.FunctionComponent<RouterProps> = ({
     };
   }, [on, emit, update, navigate]);
 
-  return <RouterContext.Provider value={{}} children={<Component />} />;
+  const RouteComponent = useMemo(
+    () =>
+      ({
+        [Route.HOME]: HomeComponent,
+        [Route.PRIVATE_ROOM]: PrivateRoomComponent,
+      })[route],
+    [route],
+  );
+
+  return (
+    <RouterContext.Provider
+      value={{}}
+      // @ts-ignore
+      children={<RouteComponent {...data} />}
+    />
+  );
 };

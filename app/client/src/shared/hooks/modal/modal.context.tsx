@@ -3,8 +3,9 @@ import { Modal } from "shared/enums";
 import { Point2d } from "shared/types";
 
 export type TemplateState = {
-  openModal: (modalId: Modal, Content: React.FC) => void;
+  openModal: (modalId: Modal) => void;
   closeModal: (modalId: Modal) => void;
+  closeAll: () => void;
   isModalOpen: (modalId: Modal) => boolean;
   setModalPosition: (modalId: Modal, position: Point2d) => void;
 };
