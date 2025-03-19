@@ -38,7 +38,7 @@
     "vitest": "^3.0.7"
   },
   "dependencies": {
-    "@oh/pixi-components": "../../../pixi-components",
+    "@oh/pixi-components": "npm:@jsr/oh__pixi-components@0.0.1",
     "@oh/queue": "npm:@jsr/oh__queue@1.1.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
