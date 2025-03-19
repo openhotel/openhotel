@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback } from "react";
 import { PrivateRoomComponent as PrivateRoomComp } from "shared/components";
 
 import {
@@ -6,54 +6,17 @@ import {
   FLEX_JUSTIFY,
   FlexContainerComponent,
 } from "@oh/pixi-components";
-import { useProxy } from "shared/hooks";
-import { Point3d, PrivateRoom, User } from "shared/types";
-import {
-  CharacterArmAction,
-  CharacterBodyAction,
-  Direction,
-  Event,
-} from "shared/enums";
+import { usePrivateRoom, useProxy } from "shared/hooks";
+import { Point3d } from "shared/types";
+import { CharacterArmAction, CharacterBodyAction, Event } from "shared/enums";
 import { CharacterComponent } from "shared/components";
 import { getPositionFromIsometricPosition } from "shared/utils";
 
-type Props = {
-  room: PrivateRoom;
-};
+type Props = {};
 
-export const PrivateRoomComponent: React.FC<Props> = ({ room }) => {
-  const { emit, on } = useProxy();
-
-  const [users, setUsers] = useState<User[]>([]);
-
-  useEffect(() => {
-    const removeOnAddHuman = on(Event.ADD_HUMAN, ({ user }) => {
-      setUsers((users) => [...users, user]);
-    });
-    const removeOnRemoveHuman = on(Event.REMOVE_HUMAN, ({ accountId }) => {
-      setUsers((users) => users.filter((user) => user.accountId !== accountId));
-    });
-    const removeOnMoveHuman = on(
-      Event.MOVE_HUMAN,
-      ({ accountId, position }) => {
-        setUsers((users) =>
-          users.map((user) => {
-            if (user.accountId !== accountId) return user;
-            return {
-              ...user,
-              position,
-            };
-          }),
-        );
-      },
-    );
-
-    return () => {
-      removeOnAddHuman();
-      removeOnRemoveHuman();
-      removeOnMoveHuman();
-    };
-  }, [on, setUsers]);
+export const PrivateRoomComponent: React.FC<Props> = () => {
+  const { emit } = useProxy();
+  const { room, users } = usePrivateRoom();
 
   const onPointerTile = useCallback(
     (position: Point3d) => {
@@ -65,7 +28,6 @@ export const PrivateRoomComponent: React.FC<Props> = ({ room }) => {
     [emit],
   );
 
-  console.log(users);
   return (
     <FlexContainerComponent
       justify={FLEX_JUSTIFY.CENTER}
@@ -75,9 +37,9 @@ export const PrivateRoomComponent: React.FC<Props> = ({ room }) => {
         {users.map((user) => (
           <CharacterComponent
             key={user.accountId}
-            bodyAction={CharacterBodyAction.SIT}
-            bodyDirection={Direction.NORTH}
-            headDirection={Direction.NORTH_EAST}
+            bodyAction={CharacterBodyAction.IDLE}
+            bodyDirection={user.bodyDirection}
+            headDirection={user.bodyDirection}
             leftArmAction={CharacterArmAction.ARM_WAVE_0}
             rightArmAction={CharacterArmAction.IDLE}
             skinColor={user.skinColor ?? 0xefcfb1}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import {
   CoreLoaderComponent,
   InitialLoaderComponent,
@@ -11,26 +11,34 @@ import {
   AssetsProvider,
   AccountProvider,
   TasksProvider,
+  PrivateRoomProvider,
+  RouterProviderWrapper,
 } from "shared/hooks";
 import { NesterComponent } from "shared/components";
 
 export const ApplicationComponent = () => {
-  const PROVIDERS = [
-    TasksProvider,
-    //
-    InitialLoaderComponent,
-    ConfigProvider,
-    ProxyProvider,
-    AssetsProvider,
-    CoreLoaderComponent,
-    AccountProvider,
-    //|\\|//|\\|MODIFY/ONLY\BELOW|//|\\|//|\\|//|\\|//|\\|//|\\|//|\\|
+  const providers = useMemo(
+    () => [
+      //|\\|//|\\|//|\\|//|\\|//|\\|//|\\|//|\\|
+      //|\\|//|\\|//|\\|//|\\|//|\\|//|\\|//|\\|
+      TasksProvider,
+      InitialLoaderComponent,
+      ConfigProvider,
+      ProxyProvider,
+      AssetsProvider,
+      CoreLoaderComponent,
+      AccountProvider,
+      ModalProvider,
+      RouterProvider,
+      //|\\|//|\\|//|\\|//|\\|//|\\|//|\\|//|\\|
+      //|\\|//|\\|//|\\|//|\\|//|\\|//|\\|//|\\|
+      PrivateRoomProvider,
+      //|\\|//|\\|//|\\|//|\\|//|\\|//|\\|//|\\|
+      //|\\|//|\\|//|\\|//|\\|//|\\|//|\\|//|\\|,
+      RouterProviderWrapper,
+    ],
+    [],
+  );
 
-    ModalProvider,
-
-    //|\\|//|\\|MODIFY/ONLY\ABOVE|//|\\|//|\\|//|\\|//|\\|//|\\|//|\\|
-    RouterProvider,
-  ];
-
-  return <NesterComponent components={PROVIDERS} />;
+  return <NesterComponent components={providers} />;
 };
