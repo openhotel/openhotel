@@ -819,7 +819,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@oh/pixi-components@npm:@jsr/oh__pixi-components@^0.0.1":
+"@oh/pixi-components@npm:@jsr/oh__pixi-components@0.0.1":
   version: 0.0.1
   resolution: "@jsr/oh__pixi-components@npm:0.0.1::__archiveUrl=https%3A%2F%2Fnpm.jsr.io%2F~%2F11%2F%40jsr%2Foh__pixi-components%2F0.0.1.tgz"
   dependencies:
@@ -4058,7 +4058,7 @@ __metadata:
   resolution: "root-workspace-0b6124@workspace:."
   dependencies:
     "@chromatic-com/storybook": "npm:3.2.4"
-    "@oh/pixi-components": "npm:@jsr/oh__pixi-components@^0.0.1"
+    "@oh/pixi-components": "npm:@jsr/oh__pixi-components@0.0.1"
     "@oh/queue": "npm:@jsr/oh__queue@1.1.1"
     "@storybook/addon-actions": "npm:8.5.8"
     "@storybook/addon-console": "npm:3.0.0"
