@@ -38,13 +38,15 @@ export const RouterProviderWrapper: React.FunctionComponent<
 
   const RouteComponent = useMemo(
     () =>
-      ({
-        [Route.HOME]: HomeComponent,
-        [Route.PRIVATE_ROOM]: PrivateRoomComponent,
-      })[route],
+      !isNaN(route)
+        ? {
+            [Route.HOME]: HomeComponent,
+            [Route.PRIVATE_ROOM]: PrivateRoomComponent,
+          }[route]
+        : null,
     [route],
   );
 
   // @ts-ignore
-  return <RouteComponent {...data} />;
+  return RouteComponent ? <RouteComponent {...data} /> : null;
 };

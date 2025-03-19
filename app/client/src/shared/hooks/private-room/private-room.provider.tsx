@@ -39,7 +39,7 @@ export const PrivateRoomProvider: React.FunctionComponent<PrivateRoomProps> = ({
       },
     );
     const removeOnLeaveRoom = on(Event.LEAVE_ROOM, (data) => {
-      navigate(Route.HOME);
+      navigate(null);
       removeRoom();
     });
     const removeOnAddHuman = on(Event.ADD_HUMAN, ({ user }) => {
