@@ -266,6 +266,7 @@ export const users = () => {
       username: user.username,
     });
     await System.db.set(["usersByUsername", user.username], user.accountId);
+    await System.db.set(["users", user.accountId, "balance"], 0);
 
     await $user.log("joined");
   };

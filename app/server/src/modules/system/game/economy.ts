@@ -3,6 +3,11 @@ import { System } from "../main.ts";
 import { ulid } from "@std/ulid";
 import { TransactionType } from "shared/enums/economy.enum.ts";
 import { TransactionParams } from "shared/types/economy.types.ts";
+import {
+  buildAtomicTransaction,
+  getBalanceEntry,
+  validateBalance,
+} from "shared/utils/economy.utils.ts";
 
 export const economy = () => {
   const load = async () => {
@@ -21,103 +26,89 @@ export const economy = () => {
       throw new Error("The amount must be greater than zero.");
     }
 
-    const atomic = System.db.atomic();
-
     try {
+      const atomic = System.db.atomic();
+
       switch (type) {
         case TransactionType.REWARD:
         case TransactionType.REFUND:
           // Flow: Hotel -> User
-          if (!toAccount) {
+          if (!toAccount)
             throw new Error(
               "toAccount is required for reward/refund transactions.",
             );
-          }
 
-          atomic
-            .check({
-              key: ["hotel", "balance"],
-              value: (balance: number) => balance >= amount,
-            })
-            .check({
-              key: ["users", toAccount, "balance"],
-              value: (balance: number) => balance !== undefined,
-            })
-            .mutate({
-              key: ["hotel", "balance"],
-              value: (balance: number) => balance - amount,
-            })
-            .mutate({
-              key: ["users", toAccount, "balance"],
-              value: (balance: number) => (balance || 0) + amount,
-            });
+          const [hotelEntry, toEntry] = await Promise.all([
+            getBalanceEntry("hotel"),
+            getBalanceEntry("users", toAccount),
+          ]);
+
+          validateBalance(hotelEntry, amount);
+          validateBalance(toEntry, 0);
+
+          buildAtomicTransaction(atomic, hotelEntry, toEntry, amount);
           break;
 
         case TransactionType.PURCHASE:
           // Flow: User -> Hotel
-          if (!fromAccount) {
+          if (!fromAccount)
             throw new Error(
               "fromAccount is required for purchase transactions.",
             );
-          }
 
-          atomic
-            .check({
-              key: ["users", fromAccount, "balance"],
-              value: (balance: number) => balance >= amount,
-            })
-            .check({
-              key: ["hotel", "balance"],
-              value: (balance: number) => balance !== undefined,
-            })
-            .mutate({
-              key: ["users", fromAccount, "balance"],
-              value: (balance: number) => balance - amount,
-            })
-            .mutate({
-              key: ["hotel", "balance"],
-              value: (balance: number) => (balance || 0) + amount,
-            });
+          const [userEntry, hotelEntry2] = await Promise.all([
+            getBalanceEntry("users", fromAccount),
+            getBalanceEntry("hotel"),
+          ]);
+
+          validateBalance(userEntry, amount);
+          validateBalance(hotelEntry2, 0);
+
+          buildAtomicTransaction(atomic, userEntry, hotelEntry2, amount);
           break;
 
         case TransactionType.DEPOSIT:
           // Flow: onet -> User (onet coin -> local coin)
           // TODO: onet
+          throw new Error(
+            "TransactionType.DEPOSIT transaction method not implemented.",
+          );
           break;
 
         case TransactionType.WITHDRAWAL:
           // TODO: onet
           // Flow: User -> onet (local coin -> onet coin)
+          throw new Error(
+            "TransactionType.WITHDRAWAL transaction method not implemented.",
+          );
           break;
 
         case TransactionType.TRANSFER:
           // Flow: User -> User
-          if (!fromAccount || !toAccount) {
+          if (!fromAccount || !toAccount)
             throw new Error(
               "fromAccount and toAccount are required for transfer transactions.",
             );
-          }
 
-          atomic
-            .check({
-              key: ["users", fromAccount, "balance"],
-              value: (balance: number) => balance >= amount,
-            })
-            .mutate({
-              key: ["users", fromAccount, "balance"],
-              value: (balance: number) => balance - amount,
-            })
-            .mutate({
-              key: ["users", toAccount, "balance"],
-              value: (balance: number) => (balance || 0) + amount,
-            });
+          const [fromEntry, toEntry2] = await Promise.all([
+            getBalanceEntry("users", fromAccount),
+            getBalanceEntry("users", toAccount),
+          ]);
+
+          validateBalance(fromEntry, amount);
+          validateBalance(toEntry2, 0);
+
+          buildAtomicTransaction(atomic, fromEntry, toEntry2, amount);
           break;
 
         default:
           throw new Error("Unsupported transaction type");
       }
 
-      atomic.commit();
+      const result = await atomic.commit();
+      if (!result.ok) {
+        throw new Error("Transaction failed: conditions were not met.");
+      }
 
       const transactionId = ulid();
       const transactionData = {
