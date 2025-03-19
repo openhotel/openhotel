@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 import { Cursor, EventMode, SpriteComponent } from "@oh/pixi-components";
 import { Modal, SpriteSheetEnum } from "shared/enums";
 import { useModal } from "shared/hooks";
@@ -9,13 +9,20 @@ type Props = {};
 export const HotBarItemsComponent: React.FC<Props> = () => {
   const { openModal, closeModal, isModalOpen } = useModal();
 
+  const onPointerDown = useCallback(
+    (modal: Modal) => () => {
+      isModalOpen(modal) ? closeModal(modal) : openModal(modal);
+    },
+    [openModal, isModalOpen, closeModal],
+  );
+
   const renderItems = useMemo(
     () =>
       Object.keys(MODAL_HOT_BAR_ITEMS)
         .filter((modal) => !isNaN(modal as any))
         .map((modal) => {
-          const modalId = modal as unknown as Modal;
-          const { icon, component } = MODAL_HOT_BAR_ITEMS[modalId];
+          const modalId = Number(modal) as Modal;
+          const { icon } = MODAL_HOT_BAR_ITEMS[modalId];
           return (
             <SpriteComponent
               key={modal}
@@ -23,15 +30,11 @@ export const HotBarItemsComponent: React.FC<Props> = () => {
               texture={icon}
               eventMode={EventMode.STATIC}
               cursor={Cursor.POINTER}
-              onPointerDown={() =>
-                isModalOpen(modalId)
-                  ? closeModal(modalId)
-                  : openModal(modalId, component)
-              }
+              onPointerDown={onPointerDown(modalId)}
             />
           );
         }),
-    [openModal, isModalOpen, closeModal],
+    [onPointerDown],
   );
   return <>{renderItems}</>;
 };

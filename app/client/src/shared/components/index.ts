@@ -7,3 +7,4 @@ export * from "./loading-bar";
 export * from "./button";
 export * from "./navigator-room-button";
 export * from "./nester";
+export * from "./character";

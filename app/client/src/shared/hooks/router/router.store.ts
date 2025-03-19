@@ -1,11 +1,12 @@
 import { create } from "zustand";
-import React from "react";
-import { HomeComponent } from "modules/home";
+import { Route } from "shared/enums";
 
 export const useRouterStore = create<{
-  component: React.FC;
-  navigate: (component: React.FC) => void;
+  route: Route;
+  data: unknown;
+  navigate: (route: Route, data?: unknown) => void;
 }>((set) => ({
-  component: HomeComponent,
-  navigate: (component: React.FC) => set({ component }),
+  route: Route.HOME,
+  data: null,
+  navigate: (route: Route, data) => set({ route, data: data ?? null }),
 }));

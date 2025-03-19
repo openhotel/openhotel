@@ -1,5 +1,5 @@
 import React from "react";
-import { ContainerComponent } from "@oh/pixi-components";
+import { ContainerComponent, ContainerProps } from "@oh/pixi-components";
 import {
   CharacterArmAction,
   CharacterArmSide,
@@ -16,7 +16,7 @@ type Props = {
   leftArmAction: CharacterArmAction;
   rightArmAction: CharacterArmAction;
   skinColor: number;
-};
+} & ContainerProps;
 
 export const CharacterComponent: React.FC<Props> = ({
   bodyAction,
@@ -25,6 +25,7 @@ export const CharacterComponent: React.FC<Props> = ({
   leftArmAction,
   rightArmAction,
   skinColor,
+  ...containerProps
 }) => {
   // const { data } = useCharacter();
   //
@@ -60,10 +61,11 @@ export const CharacterComponent: React.FC<Props> = ({
 
   return (
     <ContainerComponent
-      position={{
-        x: (TILE_SIZE.width + 2) / 2,
-        y: TILE_SIZE.height / 2,
+      pivot={{
+        x: -(TILE_SIZE.width + 2) / 2,
+        y: -TILE_SIZE.height / 2,
       }}
+      {...containerProps}
     >
       <BodyComponent
         action={bodyAction}

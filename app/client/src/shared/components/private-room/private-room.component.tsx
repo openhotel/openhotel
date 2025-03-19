@@ -18,11 +18,13 @@ import {
 
 type Props = {
   onPointerTile?: (point: Point3d) => void;
+  children?: React.ReactNode;
 } & PrivateRoom;
 
 export const PrivateRoomComponent: React.FC<Props> = ({
   layout,
   onPointerTile,
+  children,
 }) => {
   const [previewData, setPreviewData] = useState<{
     point: Point3d;
@@ -46,7 +48,6 @@ export const PrivateRoomComponent: React.FC<Props> = ({
         const spawn = roomLine[x] === RoomPointEnum.SPAWN;
         const previewY = -((spawn ? 1 : (parseInt(roomLine[x] + "") ?? 1)) - 1);
         const y = Math.floor(previewY);
-
         const renderNorthStairs = roomLine[x] > roomLine[x - 1];
         const renderEastStairs = roomLine[x] > layout[z - 1]?.[x];
 
@@ -57,7 +58,7 @@ export const PrivateRoomComponent: React.FC<Props> = ({
         list.push(
           renderNorthStairs || renderEastStairs ? (
             <PrivateRoomStairs
-              key={`stairs${x}${z}`}
+              key={`stairs${x}.${z}`}
               position={{ x, y: y, z }}
               direction={stairsDirection}
               onPointerDown={() => onPointerTile?.({ x, y, z })}
@@ -72,7 +73,7 @@ export const PrivateRoomComponent: React.FC<Props> = ({
             />
           ) : (
             <PrivateRoomTile
-              key={`tile${x}${z}`}
+              key={`tile${x}.${z}`}
               spawn={spawn}
               position={{ x, y, z }}
               onPointerDown={() => onPointerTile?.({ x, y, z })}
@@ -109,7 +110,7 @@ export const PrivateRoomComponent: React.FC<Props> = ({
           if (renderNorthWall)
             list.push(
               <PrivateRoomWallComponent
-                key={`wall${x}${z}-${CrossDirection.NORTH}`}
+                key={`wall${x}.${z}-${CrossDirection.NORTH}`}
                 direction={CrossDirection.NORTH}
                 position={{
                   x,
@@ -121,7 +122,7 @@ export const PrivateRoomComponent: React.FC<Props> = ({
           if (renderEastWall)
             list.push(
               <PrivateRoomWallComponent
-                key={`wall${x}${z}-${CrossDirection.EAST}`}
+                key={`wall${x}.${z}-${CrossDirection.EAST}`}
                 direction={CrossDirection.EAST}
                 position={{
                   x,
@@ -133,7 +134,7 @@ export const PrivateRoomComponent: React.FC<Props> = ({
           if (renderEastWall && renderNorthWall)
             list.push(
               <PrivateRoomWallComponent
-                key={`wall${x}${z}-corner`}
+                key={`wall${x}.${z}-corner`}
                 direction="corner"
                 position={{
                   x,
@@ -146,7 +147,7 @@ export const PrivateRoomComponent: React.FC<Props> = ({
           if (renderNorthDoorWall || renderEastDoorWall)
             list.push(
               <PrivateRoomWallComponent
-                key={`wall${x}${z}-door`}
+                key={`wall${x}.${z}-door`}
                 direction={
                   renderNorthDoorWall
                     ? CrossDirection.NORTH
@@ -208,6 +209,7 @@ export const PrivateRoomComponent: React.FC<Props> = ({
           direction={previewData?.direction ?? CrossDirection.EAST}
         />
       ) : null}
+      {children}
     </ContainerComponent>
   );
 };

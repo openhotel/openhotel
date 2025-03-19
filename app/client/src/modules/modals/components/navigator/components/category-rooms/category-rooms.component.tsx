@@ -32,7 +32,7 @@ export const CategoryRoomsComponent: React.FC<ModalNavigatorTabProps> = ({
 
   const [rooms, setRooms] = useState([]);
 
-  useEffect(() => {
+  const $reload = useCallback(() => {
     fetch("/room-list", {
       type: "private",
     }).then(
@@ -59,11 +59,26 @@ export const CategoryRoomsComponent: React.FC<ModalNavigatorTabProps> = ({
     );
   }, [setRooms, fetch]);
 
-  const onClickGo = useCallback((roomId: string) => {
-    emit(Event.PRE_JOIN_ROOM, {
-      roomId,
-    });
-  }, []);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      $reload();
+    }, 30_000);
+    $reload();
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [$reload]);
+
+  const onClickGo = useCallback(
+    (roomId: string) => {
+      emit(Event.PRE_JOIN_ROOM, {
+        roomId,
+      });
+      $reload();
+    },
+    [$reload],
+  );
 
   const onClickFavorite = useCallback(() => {}, []);
 

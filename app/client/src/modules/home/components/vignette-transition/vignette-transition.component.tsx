@@ -14,7 +14,7 @@ import { useTasks } from "shared/hooks";
 const DELTA_MULTIPLIER = 0.35;
 
 type Props = {
-  onDone: () => void;
+  onDone?: () => void;
 };
 
 export const VignetteTransitionComponent: React.FC<Props> = ({ onDone }) => {
@@ -40,7 +40,7 @@ export const VignetteTransitionComponent: React.FC<Props> = ({ onDone }) => {
       },
       onDone: () => {
         setIsDone(true);
-        onDone();
+        onDone?.();
       },
     });
 

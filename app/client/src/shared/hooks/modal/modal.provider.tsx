@@ -1,12 +1,14 @@
-import React, { ReactNode, useCallback, useMemo, useRef } from "react";
+import React, { ReactNode, useCallback, useMemo } from "react";
 import { ModalContext } from "shared/hooks/modal/modal.context";
 import {
   ContainerComponent,
   DragContainerComponent,
-  useUpdate,
+  useWindow,
 } from "@oh/pixi-components";
 import { Modal } from "shared/enums";
 import { Point2d } from "shared/types";
+import { useModalStore } from "./modal.store";
+import { MODAL_COMPONENT_MAP, MODAL_SIZE_MAP } from "shared/consts";
 
 type TemplateProps = {
   children: ReactNode;
@@ -15,62 +17,42 @@ type TemplateProps = {
 export const ModalProvider: React.FunctionComponent<TemplateProps> = ({
   children,
 }) => {
-  const { update, lastUpdate } = useUpdate();
-
-  const modalMapRef = useRef<
-    Record<
-      Modal,
-      {
-        component: React.FC;
-        visible: boolean;
-        position: Point2d;
-      }
-    >
-  >({} as any);
+  const { getSize } = useWindow();
+  const store = useModalStore();
 
   const openModal = useCallback(
-    (modal: Modal, component: React.FC) => {
-      if (modalMapRef.current[modal]) return closeModal(modal);
-
-      modalMapRef.current[modal] = {
-        component,
-        visible: true,
-        position: { x: 0, y: 0 },
-      };
-      update();
-    },
-    [update],
-  );
-
-  const closeModal = useCallback(
     (modal: Modal) => {
-      modalMapRef.current[modal].visible = false;
-      update();
+      if (store.modals[modal]?.visible) return closeModal(modal);
+
+      const modalSize = MODAL_SIZE_MAP[modal];
+      const windowSize = getSize();
+
+      store.open(modal, {
+        x: windowSize.width / 2 - modalSize.width / 2,
+        y: windowSize.height / 2 - modalSize.height / 2,
+      });
     },
-    [update],
+    [getSize],
   );
 
-  const isModalOpen = useCallback(
-    (modal: Modal) => Boolean(modalMapRef.current[modal]?.visible),
-    [],
-  );
+  const closeModal = useCallback((modal: Modal) => {
+    store.close(modal);
+  }, []);
 
-  const setModalPosition = useCallback(
-    (modal: Modal, position: Point2d) => {
-      modalMapRef.current[modal].position = position;
-      update();
-    },
-    [update],
-  );
+  const closeAll = useCallback(() => {
+    store.closeAll();
+  }, []);
+  const isModalOpen = useCallback((modal: Modal) => store.isOpen(modal), []);
+
+  const setModalPosition = useCallback((modal: Modal, position: Point2d) => {
+    store.setPosition(modal, position);
+  }, []);
 
   const renderModals = useMemo(() => {
-    return Object.keys(modalMapRef.current)
+    return Object.keys(store.modals)
       .map((modal: any) => {
-        const {
-          component: Modal,
-          position,
-          visible,
-        } = modalMapRef.current[modal];
+        const { position, visible } = store.get(modal);
+        const Modal = MODAL_COMPONENT_MAP[modal];
         return Modal ? (
           <DragContainerComponent
             key={modal}
@@ -82,7 +64,7 @@ export const ModalProvider: React.FunctionComponent<TemplateProps> = ({
         ) : null;
       })
       .filter(Boolean);
-  }, [lastUpdate]);
+  }, [store]);
 
   return (
     <ModalContext.Provider
@@ -91,6 +73,7 @@ export const ModalProvider: React.FunctionComponent<TemplateProps> = ({
         closeModal,
         isModalOpen,
         setModalPosition,
+        closeAll,
       }}
       children={
         <>

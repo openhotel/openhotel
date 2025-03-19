@@ -12,7 +12,11 @@ import { useTasks } from "shared/hooks";
 
 const DELTA_MULTIPLIER = 0.25;
 
-export const HotBarComponent: React.FC = () => {
+type Props = {
+  onDone?: () => void;
+};
+
+export const HotBarComponent: React.FC<Props> = ({ onDone }) => {
   const { add: addTask } = useTasks();
 
   const [yPosition, setYPosition] = useState<number>(50);
@@ -30,9 +34,12 @@ export const HotBarComponent: React.FC = () => {
             return targetY;
           });
         },
+        onDone: () => {
+          onDone?.();
+        },
       });
     });
-  }, [setYPosition, addTask]);
+  }, [setYPosition, addTask, onDone]);
 
   return (
     <ContainerComponent

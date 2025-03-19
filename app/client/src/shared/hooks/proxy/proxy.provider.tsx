@@ -104,8 +104,8 @@ export const ProxyProvider: React.FunctionComponent<ProxyProps> = ({
   }, [getConfig()]);
 
   const emit = useCallback(
-    (event: Event, data: unknown) => {
-      socket?.emit("$$user-data", { event, message: data });
+    (event: Event, message: unknown) => {
+      socket?.emit("$$user-data", { event, message });
     },
     [socket],
   );
