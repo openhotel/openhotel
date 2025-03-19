@@ -1,1 +1,1 @@
-export * from './private-room.component'
+export * from "./private-room.component";
