@@ -2,17 +2,19 @@ import React, { useEffect, useState } from "react";
 import { TextureEnum } from "shared/enums";
 import { SpriteComponent } from "@oh/pixi-components";
 import { wait } from "shared/utils";
-import { System } from "system";
 import { TickerQueue } from "@oh/queue";
+import { useTasks } from "shared/hooks";
 
 const DELTA_MULTIPLIER = 0.5;
 
 export const LogoComponent: React.FC = () => {
+  const { add: addTask } = useTasks();
+
   const [yPosition, setYPosition] = useState<number>(-128);
 
   useEffect(() => {
     wait(1000).then(() => {
-      System.tasks.add({
+      addTask({
         type: TickerQueue.DURATION,
         duration: 500,
         onFunc: (delta) => {
@@ -25,7 +27,7 @@ export const LogoComponent: React.FC = () => {
         },
       });
     });
-  }, [setYPosition]);
+  }, [setYPosition, addTask]);
 
   return (
     <SpriteComponent

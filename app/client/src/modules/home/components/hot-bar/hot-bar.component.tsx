@@ -7,26 +7,19 @@ import {
 } from "@oh/pixi-components";
 import { HotBarItemsComponent } from "shared/components";
 import { wait } from "shared/utils";
-import { System } from "system";
 import { TickerQueue } from "@oh/queue";
-import { Modal } from "shared/enums";
-import {
-  CatalogComponent,
-  ClubComponent,
-  ConsoleComponent,
-  InventoryComponent,
-  NavigatorComponent,
-  PurseComponent,
-} from "modules/modals";
+import { useTasks } from "shared/hooks";
 
 const DELTA_MULTIPLIER = 0.25;
 
 export const HotBarComponent: React.FC = () => {
+  const { add: addTask } = useTasks();
+
   const [yPosition, setYPosition] = useState<number>(50);
 
   useEffect(() => {
     wait(1000).then(() => {
-      System.tasks.add({
+      addTask({
         type: TickerQueue.DURATION,
         duration: 500,
         onFunc: (delta) => {
@@ -39,7 +32,7 @@ export const HotBarComponent: React.FC = () => {
         },
       });
     });
-  }, [setYPosition]);
+  }, [setYPosition, addTask]);
 
   return (
     <ContainerComponent

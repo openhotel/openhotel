@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { System } from "system";
 import { TickerQueue } from "@oh/queue";
 import {
   ContainerComponent,
@@ -10,6 +9,7 @@ import {
   useEvents,
   useWindow,
 } from "@oh/pixi-components";
+import { useTasks } from "shared/hooks";
 
 const DELTA_MULTIPLIER = 0.35;
 
@@ -18,6 +18,7 @@ type Props = {
 };
 
 export const VignetteTransitionComponent: React.FC<Props> = ({ onDone }) => {
+  const { add: addTask } = useTasks();
   const { on } = useEvents();
   const { getSize } = useWindow();
 
@@ -30,7 +31,7 @@ export const VignetteTransitionComponent: React.FC<Props> = ({ onDone }) => {
     const onRemoveSize = on<Size>(Event.RESIZE, setSize);
 
     setIsDone(false);
-    System.tasks.add({
+    addTask({
       type: TickerQueue.DURATION,
       duration: 750,
       onFunc: (delta) => {
@@ -46,7 +47,7 @@ export const VignetteTransitionComponent: React.FC<Props> = ({ onDone }) => {
     return () => {
       onRemoveSize();
     };
-  }, [setSize, on, setUpperYPosition, setBelowYPosition]);
+  }, [setSize, on, setUpperYPosition, setBelowYPosition, addTask]);
 
   return isDone ? null : (
     <ContainerComponent zIndex={Number.MAX_SAFE_INTEGER}>

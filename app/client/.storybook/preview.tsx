@@ -65,6 +65,7 @@ export const decorators = [
     useEffect(() => {
       System.load();
     }, []);
+
     const backgroundColor = useMemo(() => {
       const { backgrounds } = props.parameters;
 

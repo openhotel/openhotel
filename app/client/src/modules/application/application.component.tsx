@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
   CoreLoaderComponent,
   InitialLoaderComponent,
@@ -10,16 +10,14 @@ import {
   ModalProvider,
   AssetsProvider,
   AccountProvider,
+  TasksProvider,
 } from "shared/hooks";
-import { System } from "system";
 import { NesterComponent } from "shared/components";
 
 export const ApplicationComponent = () => {
-  useEffect(() => {
-    System.load();
-  }, []);
-
   const PROVIDERS = [
+    TasksProvider,
+    //
     InitialLoaderComponent,
     ConfigProvider,
     ProxyProvider,

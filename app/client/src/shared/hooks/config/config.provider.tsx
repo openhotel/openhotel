@@ -1,7 +1,13 @@
-import React, { ReactNode, useCallback, useEffect, useState } from "react";
+import React, {
+  ReactNode,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { ConfigContext } from "./config.context";
 import { LoaderComponent } from "shared/components";
-import { System } from "system";
+import { ConfigTypes } from "shared/types";
 
 type ConfigProps = {
   children: ReactNode;
@@ -10,6 +16,9 @@ type ConfigProps = {
 export const ConfigProvider: React.FunctionComponent<ConfigProps> = ({
   children,
 }) => {
+  const configRef = useRef<ConfigTypes>(null);
+  const changeLogRef = useRef<unknown>(null);
+
   const [loadingMessage, setLoadingMessage] =
     useState<string>("Loading config...");
 
@@ -17,32 +26,38 @@ export const ConfigProvider: React.FunctionComponent<ConfigProps> = ({
     fetch("/info")
       .then((response) => response.json())
       .then(async ({ data: config }) => {
-        System.config.set(config);
+        configRef.current = config;
         const lastVersion = localStorage.getItem("version");
         localStorage.setItem("version", config.version);
 
         if (lastVersion === config.version) return setLoadingMessage(null);
 
         setLoadingMessage("Loading changelog...");
-        System.config.setChangeLog(
-          (await (await fetch(`/changelog?from=${lastVersion}`)).json()).data,
-        );
-
-        setLoadingMessage(null);
+        (changeLogRef.current = (
+          await (await fetch(`/changelog?from=${lastVersion}`)).json()
+        ).data),
+          setLoadingMessage(null);
       })
       .catch(() => {
         setLoadingMessage("Server is not reachable!");
       });
   }, [setLoadingMessage]);
 
-  const getConfig = useCallback(() => System.config.get(), []);
-  const getChangeLog = useCallback(() => System.config.getChangelog(), []);
+  const getConfig = useCallback(() => configRef.current, []);
+  const getChangeLog = useCallback(() => changeLogRef.current, []);
+
+  const isDevelopment = useCallback(
+    () => configRef.current.version === "development",
+    [],
+  );
 
   return (
     <ConfigContext.Provider
       value={{
         getChangeLog,
         getConfig,
+
+        isDevelopment,
       }}
       children={
         <LoaderComponent message={loadingMessage} children={children} />
