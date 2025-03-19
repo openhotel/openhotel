@@ -45,6 +45,11 @@ export type DbMutable = {
     consistency?: DbConsistency,
   ) => Promise<Value | undefined>;
 
+  getRaw: <Value extends unknown>(
+    key: DbKey,
+    consistency?: DbConsistency,
+  ) => Promise<Deno.KvEntryMaybe<Value> | undefined>;
+
   set: (
     key: DbKey,
     value: unknown,
@@ -77,8 +82,6 @@ export type DbMutable = {
 
   migrations: DbMigrationsMutable;
   crypto: DbCryptoMutable;
-
-  $get: () => Deno.Kv;
 };
 
 export type DbKeyPart =

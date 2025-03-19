@@ -71,6 +71,15 @@ export const getDb = (props: DbProps = {}): DbMutable => {
     return value as Value | undefined;
   };
 
+  const getRaw = async <Value extends unknown>(
+    key: DbKey,
+    consistency?: DbConsistency,
+  ): Promise<Deno.KvEntryMaybe<Value> | undefined> => {
+    if (!$checkDbNull()) return;
+
+    return await db.get(key, { consistency });
+  };
+
   const set = async (
     key: DbKey,
     value: unknown,
@@ -248,13 +257,12 @@ export const getDb = (props: DbProps = {}): DbMutable => {
 
   const dbMutable: DbMutable = {
     get,
+    getRaw,
     set,
     list,
     getMany,
     delete: $delete,
     atomic,
-
-    $get: () => db,
 
     load,
     close,
