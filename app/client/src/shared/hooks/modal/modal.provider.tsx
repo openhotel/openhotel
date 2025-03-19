@@ -1,4 +1,4 @@
-import React, { ReactNode, useCallback, useMemo, useState } from "react";
+import React, { ReactNode, useCallback, useMemo, useRef } from "react";
 import { ModalContext } from "shared/hooks/modal/modal.context";
 import {
   ContainerComponent,
@@ -6,7 +6,6 @@ import {
   useUpdate,
 } from "@oh/pixi-components";
 import { Modal } from "shared/enums";
-import { System } from "system";
 import { Point2d } from "shared/types";
 
 type TemplateProps = {
@@ -17,57 +16,73 @@ export const ModalProvider: React.FunctionComponent<TemplateProps> = ({
   children,
 }) => {
   const { update, lastUpdate } = useUpdate();
-  const [modalMapPosition, setModalMapPosition] = useState<
-    Record<Modal, Point2d>
-  >({} as Record<Modal, Point2d>);
+
+  const modalMapRef = useRef<
+    Record<
+      Modal,
+      {
+        component: React.FC;
+        visible: boolean;
+        position: Point2d;
+      }
+    >
+  >({} as any);
 
   const openModal = useCallback(
     (modal: Modal, component: React.FC) => {
+      if (modalMapRef.current[modal]) return closeModal(modal);
+
+      modalMapRef.current[modal] = {
+        component,
+        visible: true,
+        position: { x: 0, y: 0 },
+      };
       update();
-      System.modals.open(modal, component);
     },
     [update],
   );
 
   const closeModal = useCallback(
     (modal: Modal) => {
+      modalMapRef.current[modal].visible = false;
       update();
-      System.modals.close(modal);
     },
     [update],
   );
 
   const isModalOpen = useCallback(
-    (modal: Modal) => System.modals.isOpen(modal),
+    (modal: Modal) => Boolean(modalMapRef.current[modal]?.visible),
     [],
   );
 
   const setModalPosition = useCallback(
-    (modalId: Modal, position: Point2d) => {
-      setModalMapPosition((modalMap) => ({
-        ...modalMap,
-        [modalId]: position,
-      }));
+    (modal: Modal, position: Point2d) => {
+      modalMapRef.current[modal].position = position;
+      update();
     },
-    [setModalMapPosition],
+    [update],
   );
 
   const renderModals = useMemo(() => {
-    return Object.keys(System.modals.getAll())
+    return Object.keys(modalMapRef.current)
       .map((modal: any) => {
-        const Modal = System.modals.get(modal);
+        const {
+          component: Modal,
+          position,
+          visible,
+        } = modalMapRef.current[modal];
         return Modal ? (
           <DragContainerComponent
             key={modal}
             zIndex={100}
             children={<Modal />}
-            position={modalMapPosition[modal] ?? { x: 0, y: 0 }}
-            visible={System.modals.isOpen(modal)}
+            position={position ?? { x: 0, y: 0 }}
+            visible={visible}
           />
         ) : null;
       })
       .filter(Boolean);
-  }, [lastUpdate, modalMapPosition]);
+  }, [lastUpdate]);
 
   return (
     <ModalContext.Provider

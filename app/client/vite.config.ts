@@ -30,6 +30,7 @@ export default defineConfig({
       "/icon": PROXY_URL,
       "/background": PROXY_URL,
     },
+    hmr: true,
   },
   plugins: [react(), reactRefresh(), tsconfigPaths(), build()],
   root: "./src",

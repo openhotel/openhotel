@@ -6,8 +6,7 @@ import {
   Size,
 } from "@oh/pixi-components";
 import { ModalNavigatorTabProps } from "shared/types";
-import { System } from "system";
-import { useProxy } from "shared/hooks";
+import { useApi, useProxy } from "shared/hooks";
 import { Event } from "shared/enums";
 
 type Props = {
@@ -28,13 +27,18 @@ type Props = {
 export const CategoryRoomsComponent: React.FC<ModalNavigatorTabProps> = ({
   size,
 }) => {
+  const fetch = useApi();
   const { emit } = useProxy();
 
   const [rooms, setRooms] = useState([]);
 
   useEffect(() => {
-    System.api
-      .fetch<{
+    fetch("/room-list", {
+      type: "private",
+    }).then(
+      ({
+        rooms,
+      }: {
         rooms: {
           id: string;
           title: string;
@@ -42,10 +46,7 @@ export const CategoryRoomsComponent: React.FC<ModalNavigatorTabProps> = ({
           userCount: number;
           maxUsers: number;
         }[];
-      }>("/room-list", {
-        type: "private",
-      })
-      .then(({ rooms }) => {
+      }) => {
         setRooms(
           rooms.map((room) => ({
             id: room.id,
@@ -54,8 +55,9 @@ export const CategoryRoomsComponent: React.FC<ModalNavigatorTabProps> = ({
             maxUsers: room.maxUsers,
           })),
         );
-      });
-  }, [setRooms]);
+      },
+    );
+  }, [setRooms, fetch]);
 
   const onClickGo = useCallback((roomId: string) => {
     emit(Event.PRE_JOIN_ROOM, {

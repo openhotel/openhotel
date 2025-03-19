@@ -28,6 +28,7 @@ export const HomeComponent: React.FC = () => {
   return (
     <ContainerComponent sortableChildren={true}>
       <BackgroundComponent />
+
       <VignetteTransitionComponent onDone={onDone} />
       <LogoComponent />
       <HotBarComponent />

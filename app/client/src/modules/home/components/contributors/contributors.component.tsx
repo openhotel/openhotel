@@ -1,19 +1,16 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { System } from "system";
 import { TickerQueue } from "@oh/queue";
 import { CONTRIBUTOR_LOOP_TIME } from "shared/consts";
 import { Cursor, EventMode } from "@oh/pixi-components";
 import { TextComponent } from "shared/components";
-import { Contributor } from "shared/types";
+import { useContributors, useTasks } from "shared/hooks";
 
 export const ContributorsComponent: React.FC = () => {
+  const { getContributors, getCreators } = useContributors();
+  const { add: addTask } = useTasks();
+
   const creatorIndexRef = useRef<number>(0);
   const contributorIndexRef = useRef<number>(0);
-
-  const [creators] = useState<Contributor[]>(System.contributors.getCreators());
-  const [contributors] = useState<Contributor[]>(
-    System.contributors.getContributors(),
-  );
 
   const [text, setText] = useState<string>();
 
@@ -22,6 +19,9 @@ export const ContributorsComponent: React.FC = () => {
   }, []);
 
   const doLoop = useCallback(() => {
+    const creators = getCreators();
+    const contributors = getContributors();
+
     if (creators.length > creatorIndexRef.current) {
       setText(`Created by ${creators[creatorIndexRef.current].login}`);
       creatorIndexRef.current++;
@@ -35,17 +35,17 @@ export const ContributorsComponent: React.FC = () => {
       creatorIndexRef.current = 0;
       contributorIndexRef.current = 0;
     }
-  }, [creators, contributors]);
+  }, [getCreators, getContributors]);
 
   useEffect(() => {
     doLoop();
-    return System.tasks.add({
+    return addTask({
       type: TickerQueue.REPEAT,
       repeatEvery: CONTRIBUTOR_LOOP_TIME,
       repeats: Number.MAX_SAFE_INTEGER,
       onFunc: doLoop,
     });
-  }, [setText, doLoop]);
+  }, [setText, doLoop, addTask]);
 
   return (
     <TextComponent
