@@ -48,11 +48,29 @@ export const ChatHotBarComponent: React.FC = () => {
       <GraphicsComponent
         type={GraphicType.RECTANGLE}
         width={windowSize.width}
+        height={1}
+        tint={1}
+        pivot={{
+          y: 2,
+        }}
+      />
+      <GraphicsComponent
+        type={GraphicType.RECTANGLE}
+        width={windowSize.width}
+        height={1}
+        tint={0xb0b0b0}
+        pivot={{
+          y: 1,
+        }}
+      />
+      <GraphicsComponent
+        type={GraphicType.RECTANGLE}
+        width={windowSize.width}
         height={32}
         tint={0x525457}
       />
       <SpriteTextInputComponent
-        width={windowSize.width - 170}
+        width={windowSize.width - 185}
         height={10}
         spriteSheet={SpriteSheetEnum.DEFAULT_FONT}
         position={{
@@ -60,12 +78,16 @@ export const ChatHotBarComponent: React.FC = () => {
           y: 8,
         }}
         padding={{
-          left: 4,
-          right: 4,
+          left: 10,
+          right: 10,
           top: 4,
           bottom: 0,
         }}
         placeholder="Click here or press 'c' to write a message"
+        placeholderProps={{
+          color: 0x1,
+          alpha: 0.5,
+        }}
         onEnter={onSendChatMessage}
         clearOnEnter={true}
       />
