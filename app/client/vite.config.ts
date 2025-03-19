@@ -37,15 +37,10 @@ export default defineConfig({
   base: "/",
   publicDir: "./assets/",
   build: {
-    outDir: "../../build/client",
+    outDir: "../../../build/client",
     emptyOutDir: false, // also necessary
     rollupOptions: {
-      external: ["react", "react-dom"], // Exclude peer dependencies
       output: {
-        globals: {
-          react: "React",
-          "react-dom": "ReactDOM",
-        },
         entryFileNames: `[name]${getHash()}.js`,
         chunkFileNames: `[name]${getHash()}.js`,
         assetFileNames: `[name]${getHash()}.js`,
