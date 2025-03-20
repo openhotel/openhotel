@@ -1,6 +1,6 @@
-import React, { PropsWithChildren, useEffect, useMemo } from "react";
+import React, { PropsWithChildren, useMemo } from "react";
 import { AssetEnum, SpriteSheetEnum, TextureEnum } from "shared/enums";
-import { useTextures } from "@oh/pixi-components";
+import { useTextures, useUpdate } from "@oh/pixi-components";
 import { LoaderAssetsComponent } from "shared/components";
 import { LoaderItem } from "shared/types";
 import { useAssets } from "shared/hooks";
@@ -9,6 +9,7 @@ import { parse } from "yaml";
 type Props = {} & PropsWithChildren;
 
 export const CoreLoaderComponent: React.FC<Props> = ({ children }) => {
+  const { update, lastUpdate } = useUpdate();
   const { loadSpriteSheet, loadTexture, getTexture, getSpriteSheet } =
     useTextures();
   const { setAsset, getAsset } = useAssets();
@@ -64,9 +65,14 @@ export const CoreLoaderComponent: React.FC<Props> = ({ children }) => {
     getTexture,
     getSpriteSheet,
     getAsset,
+    lastUpdate,
   ]);
 
   return (
-    <LoaderAssetsComponent loaderItems={loaderItems} children={children} />
+    <LoaderAssetsComponent
+      loaderItems={loaderItems}
+      children={children}
+      onDone={update}
+    />
   );
 };

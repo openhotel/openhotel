@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
 import { RouterContext } from "./router.context";
 import { Route } from "shared/enums";
 import { useRouterStore } from "./router.store";
@@ -34,7 +34,7 @@ export const RouterProvider: React.FunctionComponent<RouterProps> = ({
 export const RouterProviderWrapper: React.FunctionComponent<
   RouterProps
 > = () => {
-  const { route, data } = useRouterStore();
+  const { route, data, navigate } = useRouterStore();
 
   const RouteComponent = useMemo(
     () =>
@@ -46,6 +46,18 @@ export const RouterProviderWrapper: React.FunctionComponent<
         : null,
     [route],
   );
+
+  useEffect(() => {
+    if (route) return;
+    //if there's not route in some time, load home to prevent locking
+    const timeout = setTimeout(() => {
+      navigate(Route.HOME);
+    }, 200);
+
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [route]);
 
   // @ts-ignore
   return RouteComponent ? <RouteComponent {...data} /> : null;

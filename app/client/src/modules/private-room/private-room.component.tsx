@@ -39,10 +39,10 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
               bodyAction={CharacterBodyAction.IDLE}
               bodyDirection={user.bodyDirection}
               headDirection={user.bodyDirection}
-              leftArmAction={CharacterArmAction.ARM_WAVE_0}
+              leftArmAction={CharacterArmAction.IDLE}
               rightArmAction={CharacterArmAction.IDLE}
               skinColor={user.skinColor ?? 0xefcfb1}
-              zIndex={user.position.x + user.position.z}
+              zIndex={user.position.x + user.position.z + 0.5}
               position={getPositionFromIsometricPosition(user.position)}
             />
           ))}

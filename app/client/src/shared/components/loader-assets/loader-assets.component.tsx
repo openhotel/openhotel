@@ -10,10 +10,12 @@ import { LoaderItem } from "shared/types";
 
 type Props = {
   loaderItems: LoaderItem[];
+  onDone?: () => void;
 } & PropsWithChildren;
 
 export const LoaderAssetsComponent: React.FC<Props> = ({
   loaderItems,
+  onDone,
   children,
 }) => {
   const currentPercentageRef = useRef<number>(0);
@@ -45,8 +47,9 @@ export const LoaderAssetsComponent: React.FC<Props> = ({
         setCurrentText(endLabel);
       }
       setCurrentText(null);
+      onDone?.();
     })();
-  }, [loaderItems, setCurrentText]);
+  }, [loaderItems, setCurrentText, onDone]);
 
   return currentText ? (
     <ContainerComponent>

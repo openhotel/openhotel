@@ -1,6 +1,7 @@
-import React, { ReactNode, useCallback, useRef } from "react";
+import React, { ReactNode, useCallback } from "react";
 import { AssetsContext } from "./assets.context";
 import { AssetEnum } from "shared/enums";
+import { useAssetsStore } from "./assets.store";
 
 type AssetsProps = {
   children: ReactNode;
@@ -9,19 +10,17 @@ type AssetsProps = {
 export const AssetsProvider: React.FunctionComponent<AssetsProps> = ({
   children,
 }) => {
-  const assetRef = useRef<Record<AssetEnum, unknown>>(
-    {} as Record<AssetEnum, unknown>,
-  );
+  const { setAsset: $setAsset, getAsset: $getAsset } = useAssetsStore();
 
   const getAsset = useCallback(
-    (assetKey: AssetEnum) => assetRef.current[assetKey] as any,
-    [assetRef],
+    (assetKey: AssetEnum) => $getAsset(assetKey) as any,
+    [$getAsset],
   );
   const setAsset = useCallback(
     (assetKey: AssetEnum, data: unknown) => {
-      assetRef.current[assetKey] = data;
+      $setAsset(assetKey, data);
     },
-    [assetRef],
+    [$setAsset],
   );
 
   return (
