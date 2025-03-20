@@ -75,7 +75,6 @@ export const PrivateRoomComponent: React.FC<Props> = ({
             <PrivateRoomTile
               key={`tile${x}.${z}`}
               spawn={spawn}
-              alpha={0.5}
               position={{ x, y, z }}
               onPointerDown={() => onPointerTile?.({ x, y, z })}
               onPointerEnter={() =>
