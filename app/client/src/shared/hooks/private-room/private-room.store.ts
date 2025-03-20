@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { Point3d, PrivateRoom, User } from "shared/types";
+import { Direction } from "shared/enums";
 
 export const usePrivateRoomStore = create<{
   room: PrivateRoom;
@@ -10,7 +11,11 @@ export const usePrivateRoomStore = create<{
   addUser: (user: User) => void;
   removeUser: (accountId: string) => void;
 
-  setUserPosition: (accountId: string, position: Point3d) => void;
+  setUserPosition: (
+    accountId: string,
+    position: Point3d,
+    bodyDirection?: Direction,
+  ) => void;
 }>((set) => ({
   room: null,
   setRoom: (room: PrivateRoom) => set((store) => ({ ...store, room })),
@@ -32,7 +37,11 @@ export const usePrivateRoomStore = create<{
       users: store.users.filter((user) => user.accountId !== accountId),
     })),
 
-  setUserPosition: (accountId: string, position: Point3d) =>
+  setUserPosition: (
+    accountId: string,
+    position: Point3d,
+    bodyDirection: Direction,
+  ) =>
     set((store) => ({
       ...store,
       users: store.users.map((user) =>
@@ -40,6 +49,7 @@ export const usePrivateRoomStore = create<{
           ? {
               ...user,
               position,
+              bodyDirection: bodyDirection ?? user.bodyDirection,
               positionUpdatedAt: Date.now(),
             }
           : user,

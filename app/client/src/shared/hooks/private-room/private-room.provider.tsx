@@ -1,7 +1,7 @@
 import React, { ReactNode, useEffect } from "react";
 import { PrivateRoomContext } from "shared/hooks/private-room/private-room.context";
 import { Event, Route } from "shared/enums";
-import { useProxy, useModal, useRouter } from "shared/hooks";
+import { useModal, useProxy, useRouter } from "shared/hooks";
 import { usePrivateRoomStore } from "./private-room.store";
 import { PrivateRoom } from "shared/types";
 
@@ -38,48 +38,26 @@ export const PrivateRoomProvider: React.FunctionComponent<PrivateRoomProps> = ({
         closeAll();
       },
     );
-    const removeOnLeaveRoom = on(Event.LEAVE_ROOM, (data) => {
-      navigate(null);
+    const removeOnLeaveRoom = on(Event.LEAVE_ROOM, ({ moveToAnotherRoom }) => {
+      !moveToAnotherRoom && navigate(Route.HOME);
       removeRoom();
     });
-    const removeOnAddHuman = on(Event.ADD_HUMAN, ({ user }) => {
-      addUser(user);
-    });
-    const removeOnRemoveHuman = on(Event.REMOVE_HUMAN, ({ accountId }) => {
-      removeUser(accountId);
-    });
-
-    const removeOnMoveHuman = on(
-      Event.MOVE_HUMAN,
-      ({ accountId, position }) => {
-        setUserPosition(accountId, position);
-      },
-    );
 
     return () => {
       removeOnPreJoinRoom();
       removeOnJoinRoom();
       removeOnLeaveRoom();
-      removeOnAddHuman();
-      removeOnRemoveHuman();
-      removeOnMoveHuman();
     };
-  }, [
-    on,
-    emit,
-    navigate,
-    setRoom,
-    removeRoom,
-    addUser,
-    removeUser,
-    setUserPosition,
-  ]);
+  }, [on, emit, navigate, setRoom, removeRoom]);
 
   return (
     <PrivateRoomContext.Provider
       value={{
         users,
         room,
+        addUser,
+        removeUser,
+        setUserPosition,
       }}
       children={children}
     />
