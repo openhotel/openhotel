@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import {
   CharacterComponent,
   PrivateRoomComponent as PrivateRoomComp,
@@ -8,7 +8,7 @@ import {
   ContainerComponent,
   FlexContainerComponent,
 } from "@oh/pixi-components";
-import { usePrivateRoom, useProxy } from "shared/hooks";
+import { usePrivateRoom, useProxy, useRouter } from "shared/hooks";
 import { Point3d } from "shared/types";
 import { CharacterArmAction, CharacterBodyAction, Event } from "shared/enums";
 import { getPositionFromIsometricPosition } from "shared/utils";
@@ -17,8 +17,10 @@ import { ChatHotBarComponent } from "modules/private-room/components";
 type Props = {};
 
 export const PrivateRoomComponent: React.FC<Props> = () => {
-  const { emit } = useProxy();
-  const { room, users } = usePrivateRoom();
+  const { on, emit } = useProxy();
+  const { navigate } = useRouter();
+  const { room, users, addUser, removeUser, setUserPosition } =
+    usePrivateRoom();
 
   const onPointerTile = useCallback(
     (position: Point3d) => {
@@ -28,6 +30,38 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
     },
     [emit],
   );
+
+  useEffect(() => {
+    const removeOnAddHuman = on(Event.ADD_HUMAN, ({ user }) => {
+      addUser(user);
+    });
+    const removeOnRemoveHuman = on(Event.REMOVE_HUMAN, ({ accountId }) => {
+      removeUser(accountId);
+    });
+
+    const removeOnMoveHuman = on(
+      Event.MOVE_HUMAN,
+      ({ accountId, position, bodyDirection }) => {
+        setUserPosition(accountId, position, bodyDirection);
+      },
+    );
+
+    const removeOnSetPositionHuman = on(
+      Event.SET_POSITION_HUMAN,
+      ({ accountId, position }) => {
+        setUserPosition(accountId, position);
+      },
+    );
+
+    return () => {
+      removeOnAddHuman();
+      removeOnRemoveHuman();
+      removeOnMoveHuman();
+      removeOnSetPositionHuman();
+    };
+  }, [on, emit, navigate, addUser, removeUser, setUserPosition]);
+
+  if (!room) return null;
 
   return (
     <ContainerComponent>
