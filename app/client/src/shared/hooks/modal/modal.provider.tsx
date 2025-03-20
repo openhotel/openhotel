@@ -18,40 +18,54 @@ export const ModalProvider: React.FunctionComponent<TemplateProps> = ({
   children,
 }) => {
   const { getSize } = useWindow();
-  const store = useModalStore();
+  const {
+    modals,
+    open,
+    close,
+    closeAll: $closeAll,
+    get,
+    setPosition,
+    isOpen,
+  } = useModalStore();
 
   const openModal = useCallback(
     (modal: Modal) => {
-      if (store.modals[modal]?.visible) return;
+      if (modals[modal]?.visible) return;
 
       const modalSize = MODAL_SIZE_MAP[modal];
       const windowSize = getSize();
 
-      store.open(modal, {
+      open(modal, {
         x: windowSize.width / 2 - modalSize.width / 2,
         y: windowSize.height / 2 - modalSize.height / 2,
       });
     },
-    [getSize],
+    [getSize, open, modals],
   );
 
-  const closeModal = useCallback((modal: Modal) => {
-    store.close(modal);
-  }, []);
+  const closeModal = useCallback(
+    (modal: Modal) => {
+      close(modal);
+    },
+    [close],
+  );
 
   const closeAll = useCallback(() => {
-    store.closeAll();
-  }, []);
-  const isModalOpen = useCallback((modal: Modal) => store.isOpen(modal), []);
+    $closeAll();
+  }, [$closeAll]);
+  const isModalOpen = useCallback((modal: Modal) => isOpen(modal), [isOpen]);
 
-  const setModalPosition = useCallback((modal: Modal, position: Point2d) => {
-    store.setPosition(modal, position);
-  }, []);
+  const setModalPosition = useCallback(
+    (modal: Modal, position: Point2d) => {
+      setPosition(modal, position);
+    },
+    [setPosition],
+  );
 
   const renderModals = useMemo(() => {
-    return Object.keys(store.modals)
+    return Object.keys(modals)
       .map((modal: any) => {
-        const { position, visible } = store.get(modal);
+        const { position, visible } = get(modal);
         const Modal = MODAL_COMPONENT_MAP[modal];
         return Modal ? (
           <DragContainerComponent
@@ -64,7 +78,7 @@ export const ModalProvider: React.FunctionComponent<TemplateProps> = ({
         ) : null;
       })
       .filter(Boolean);
-  }, [store]);
+  }, [modals, get]);
 
   return (
     <ModalContext.Provider
