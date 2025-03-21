@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect } from "react";
 import {
   CharacterComponent,
+  FurnitureComponent,
   PrivateRoomComponent as PrivateRoomComp,
 } from "shared/components";
 
@@ -11,8 +12,7 @@ import {
 import { usePrivateRoom, useProxy, useRouter } from "shared/hooks";
 import { Point3d } from "shared/types";
 import { CharacterArmAction, CharacterBodyAction, Event } from "shared/enums";
-import { getPositionFromIsometricPosition } from "shared/utils";
-import { ChatHotBarComponent } from "modules/private-room/components";
+import { ChatHotBarComponent } from "modules/private-room";
 
 type Props = {};
 
@@ -76,10 +76,12 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
               leftArmAction={CharacterArmAction.IDLE}
               rightArmAction={CharacterArmAction.IDLE}
               skinColor={user.skinColor ?? 0xefcfb1}
-              zIndex={user.position.x + user.position.z + 0.5}
-              position={getPositionFromIsometricPosition(user.position)}
+              position={user.position}
             />
           ))}
+          <FurnitureComponent position={{ x: 3, y: 0, z: 4 }} />
+          <FurnitureComponent position={{ x: 4, y: 0, z: 4 }} />
+          <FurnitureComponent position={{ x: 4, y: 1, z: 4 }} />
         </PrivateRoomComp>
       </FlexContainerComponent>
       <ChatHotBarComponent />

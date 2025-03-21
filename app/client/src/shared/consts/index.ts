@@ -9,3 +9,4 @@ export * from "./hot-bar.consts";
 export * from "./modals.consts";
 export * from "./room.consts";
 export * from "./character.consts";
+export * from "./furniture.consts";

@@ -8,6 +8,8 @@ import {
 } from "shared/enums";
 import { TILE_SIZE } from "shared/consts";
 import { ArmComponent, BodyComponent, HeadComponent } from "./components";
+import { Point3d } from "shared/types";
+import { getPositionFromIsometricPosition } from "shared/utils";
 
 type Props = {
   bodyAction: CharacterBodyAction;
@@ -16,6 +18,8 @@ type Props = {
   leftArmAction: CharacterArmAction;
   rightArmAction: CharacterArmAction;
   skinColor: number;
+
+  position: Point3d;
 } & ContainerProps;
 
 export const CharacterComponent: React.FC<Props> = ({
@@ -25,6 +29,8 @@ export const CharacterComponent: React.FC<Props> = ({
   leftArmAction,
   rightArmAction,
   skinColor,
+
+  position,
   ...containerProps
 }) => {
   // const { data } = useCharacter();
@@ -65,6 +71,8 @@ export const CharacterComponent: React.FC<Props> = ({
         x: -(TILE_SIZE.width + 2) / 2,
         y: -TILE_SIZE.height / 2,
       }}
+      zIndex={position.x + position.z + Math.abs(position.y / 100) + 0.5}
+      position={getPositionFromIsometricPosition(position)}
       {...containerProps}
     >
       <BodyComponent

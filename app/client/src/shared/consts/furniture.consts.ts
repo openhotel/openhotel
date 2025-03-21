@@ -21,6 +21,7 @@ const DUMMY_FURNITURE_DIRECTION: FurnitureDirectionData = {
 
 export const DUMMY_FURNITURE_DATA: FurnitureData = {
   furnitureId: "dummy",
+  icon: null,
   direction: {
     [CrossDirection.NORTH]: DUMMY_FURNITURE_DIRECTION,
     [CrossDirection.EAST]: DUMMY_FURNITURE_DIRECTION,
@@ -69,6 +70,7 @@ const DUMMY_FURNITURE_FRAME_DIRECTION_EAST: FurnitureDirectionData = {
 
 export const DUMMY_FURNITURE_FRAME_DATA: FurnitureData = {
   furnitureId: "dummy",
+  icon: null,
   direction: {
     [CrossDirection.NORTH]: DUMMY_FURNITURE_FRAME_DIRECTION_NORTH,
     [CrossDirection.EAST]: DUMMY_FURNITURE_FRAME_DIRECTION_EAST,

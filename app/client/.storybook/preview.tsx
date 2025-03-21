@@ -7,7 +7,6 @@ import {
   InitialLoaderComponent,
 } from "modules/application";
 import { AssetsProvider } from "shared/hooks";
-import { System } from "system";
 
 /** @type { import('@storybook/react').Preview } */
 const preview = {
@@ -61,10 +60,6 @@ export const decorators = [
   (renderStory, props) => {
     const scale = useMemo(() => props.globals.scale, [props]);
     // const isConsole = useMemo(() => props.globals.console, [props]);
-
-    useEffect(() => {
-      System.load();
-    }, []);
 
     const backgroundColor = useMemo(() => {
       const { backgrounds } = props.parameters;
