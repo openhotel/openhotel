@@ -21,7 +21,6 @@ export const FurnitureComponent: React.FC<Props> = ({
   spriteSheet = DUMMY_FURNITURE_DATA.spriteSheet,
   textures = DUMMY_FURNITURE_DATA.direction[CrossDirection.NORTH].textures,
 }) => {
-  console.log(spriteSheet, textures);
   const renderSprites = useMemo(
     () =>
       textures.map(({ texture, bounds, pivot, zIndex, hitArea }) => (

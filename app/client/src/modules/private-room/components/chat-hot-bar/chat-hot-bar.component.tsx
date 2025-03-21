@@ -33,7 +33,6 @@ export const ChatHotBarComponent: React.FC = () => {
 
   const onSendChatMessage = useCallback(
     (message: string) => {
-      console.log(message);
       emit(Event.MESSAGE, { message });
     },
     [emit],
