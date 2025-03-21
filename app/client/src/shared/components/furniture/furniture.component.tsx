@@ -1,18 +1,25 @@
 import React, { useMemo } from "react";
 import { SpriteComponent } from "@oh/pixi-components";
-import { DUMMY_FURNITURE_DATA } from "shared/consts";
+import { DUMMY_FURNITURE_DATA, TILE_SIZE } from "shared/consts";
 import { CrossDirection } from "shared/enums";
-import { FurnitureDirectionData, Point3d } from "shared/types";
+import { RoomFurniture } from "shared/types";
 import { getPositionFromIsometricPosition } from "shared/utils";
+import { useFurniture } from "shared/hooks";
 
-type Props = {
-  position?: Point3d;
-};
+type Props = {} & RoomFurniture;
 
-export const FurnitureComponent: React.FC<Props> = ({ position }) => {
-  const furnitureDirectionData = DUMMY_FURNITURE_DATA.direction[
-    CrossDirection.NORTH
-  ] as FurnitureDirectionData;
+export const FurnitureComponent: React.FC<Props> = ({
+  position,
+  furnitureId,
+}) => {
+  const { get: getFurniture } = useFurniture();
+
+  const furniture = useMemo(
+    () => getFurniture(furnitureId) ?? DUMMY_FURNITURE_DATA,
+    [getFurniture, furnitureId],
+  );
+
+  const furnitureDirectionData = furniture?.direction[CrossDirection.NORTH];
 
   const textures = useMemo(
     () =>
@@ -21,9 +28,12 @@ export const FurnitureComponent: React.FC<Props> = ({ position }) => {
           <SpriteComponent
             key={texture}
             texture={texture}
+            spriteSheet={
+              furniture?.spriteSheet ?? DUMMY_FURNITURE_DATA.spriteSheet
+            }
             pivot={{
-              x: -pivot.x - 1,
-              y: -pivot.y,
+              x: pivot.x - 1,
+              y: pivot.y + TILE_SIZE.height / 2 + 2,
             }}
             zIndex={
               position.x +
@@ -33,11 +43,10 @@ export const FurnitureComponent: React.FC<Props> = ({ position }) => {
               0.1
             }
             position={getPositionFromIsometricPosition(position)}
-            spriteSheet={DUMMY_FURNITURE_DATA.spriteSheet}
           />
         ),
       ),
-    [furnitureDirectionData.textures],
+    [furnitureDirectionData],
   );
 
   return <>{textures}</>;

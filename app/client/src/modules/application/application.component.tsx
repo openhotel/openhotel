@@ -15,6 +15,7 @@ import {
   RouterProviderWrapper,
 } from "shared/hooks";
 import { NesterComponent } from "shared/components";
+import { FurnitureProvider } from "shared/hooks";
 
 export const ApplicationComponent = () => {
   const providers = useMemo(
@@ -32,6 +33,7 @@ export const ApplicationComponent = () => {
       RouterProvider,
       //|\\|//|\\|//|\\|//|\\|//|\\|//|\\|//|\\|
       //|\\|//|\\|//|\\|//|\\|//|\\|//|\\|//|\\|
+      FurnitureProvider,
       PrivateRoomProvider,
       //|\\|//|\\|//|\\|//|\\|//|\\|//|\\|//|\\|
       //|\\|//|\\|//|\\|//|\\|//|\\|//|\\|//|\\|,

@@ -10,11 +10,11 @@ import { Point2d } from "shared/types";
 import { useModalStore } from "./modal.store";
 import { MODAL_COMPONENT_MAP, MODAL_SIZE_MAP } from "shared/consts";
 
-type TemplateProps = {
+type ModalProps = {
   children: ReactNode;
 };
 
-export const ModalProvider: React.FunctionComponent<TemplateProps> = ({
+export const ModalProvider: React.FunctionComponent<ModalProps> = ({
   children,
 }) => {
   const { getSize } = useWindow();

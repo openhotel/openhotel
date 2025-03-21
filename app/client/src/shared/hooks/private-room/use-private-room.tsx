@@ -1,8 +1,8 @@
 import { useContext } from "react";
 import {
   PrivateRoomContext,
-  TemplateState,
+  PrivateRoomState,
 } from "shared/hooks/private-room/private-room.context";
 
-export const usePrivateRoom = (): TemplateState =>
+export const usePrivateRoom = (): PrivateRoomState =>
   useContext(PrivateRoomContext);

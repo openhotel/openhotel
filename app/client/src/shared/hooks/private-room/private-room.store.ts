@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { Point3d, PrivateRoom, User } from "shared/types";
+import { Point3d, PrivateRoom, RoomFurniture, User } from "shared/types";
 import { Direction } from "shared/enums";
 
 export const usePrivateRoomStore = create<{
@@ -16,6 +16,10 @@ export const usePrivateRoomStore = create<{
     position: Point3d,
     bodyDirection?: Direction,
   ) => void;
+
+  addFurniture: (furniture: RoomFurniture) => void;
+  updateFurniture: (furniture: RoomFurniture) => void;
+  removeFurniture: (furniture: RoomFurniture) => void;
 }>((set) => ({
   room: null,
   setRoom: (room: PrivateRoom) => set((store) => ({ ...store, room })),
@@ -25,6 +29,7 @@ export const usePrivateRoomStore = create<{
       users: [],
     }),
 
+  //////////////////
   users: [],
   addUser: (user: User) =>
     set((store) => ({
@@ -54,5 +59,34 @@ export const usePrivateRoomStore = create<{
             }
           : user,
       ),
+    })),
+  /////////////////
+  addFurniture: (furniture: RoomFurniture) =>
+    set((store) => ({
+      ...store,
+      room: {
+        ...store.room,
+        furniture: [...store.room.furniture, furniture],
+      },
+    })),
+  removeFurniture: (furniture: RoomFurniture) =>
+    set((store) => ({
+      ...store,
+      room: {
+        ...store.room,
+        furniture: store.room.furniture.filter(
+          ($furniture) => $furniture.id !== furniture.id,
+        ),
+      },
+    })),
+  updateFurniture: (furniture: RoomFurniture) =>
+    set((store) => ({
+      ...store,
+      room: {
+        ...store.room,
+        furniture: store.room.furniture.map(($furniture) =>
+          $furniture.id === furniture.id ? furniture : $furniture,
+        ),
+      },
     })),
 }));

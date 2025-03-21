@@ -1,8 +1,8 @@
 import React from "react";
-import { Point3d, PrivateRoom, User } from "shared/types";
+import { RoomFurniture, Point3d, PrivateRoom, User } from "shared/types";
 import { Direction } from "shared/enums";
 
-export type TemplateState = {
+export type PrivateRoomState = {
   users: User[];
   room: PrivateRoom;
 
@@ -13,6 +13,11 @@ export type TemplateState = {
     position: Point3d,
     bodyDirection?: Direction,
   ) => void;
+
+  addFurniture: (furniture: RoomFurniture) => void;
+  updateFurniture: (furniture: RoomFurniture) => void;
+  removeFurniture: (furniture: RoomFurniture) => void;
 };
 
-export const PrivateRoomContext = React.createContext<TemplateState>(undefined);
+export const PrivateRoomContext =
+  React.createContext<PrivateRoomState>(undefined);
