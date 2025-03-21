@@ -15,6 +15,7 @@ export default {
 
 type Story = StoryObj<typeof FurnitureComponent>;
 
+//@ts-ignore
 export const Furniture: Story = () => {
   return (
     <ContainerComponent

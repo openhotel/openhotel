@@ -29,8 +29,6 @@ export const scenesComponent: ContainerComponent = () => {
   System.proxy.on<LoadRoomEvent>(Event.LOAD_ROOM, async ({ room }) => {
     await System.game.rooms.load(room);
 
-    console.log(room);
-
     switch (room.type) {
       case "private":
         $container.remove($homeScene);

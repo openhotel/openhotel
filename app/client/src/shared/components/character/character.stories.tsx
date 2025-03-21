@@ -26,6 +26,7 @@ export default {
 
 type Story = StoryObj<typeof CharacterComponent>;
 
+//@ts-ignore
 export const Character: Story = () => {
   const [bodyDirection, setBodyDirection] = useState<Direction>(Direction.EAST);
   const [headDirection, setHeadDirection] = useState<Direction>(null);
@@ -114,6 +115,7 @@ export const Character: Story = () => {
         rightArmAction={rightArmAction}
         bodyAction={bodyAnimation}
         skinColor={0xefcfb1}
+        position={{ x: 0, y: 0, z: 0 }}
       />
       <PrivateRoomTile position={{ x: 0, y: 0, z: 0 }} />
 
