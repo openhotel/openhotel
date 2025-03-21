@@ -8,3 +8,4 @@ export * from "./button";
 export * from "./navigator-room-button";
 export * from "./nester";
 export * from "./character";
+export * from "./furniture";
