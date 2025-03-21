@@ -48,5 +48,5 @@ export const useApi = () => {
     [isDevelopment],
   );
 
-  return $fetch;
+  return { fetch: $fetch, getPath };
 };

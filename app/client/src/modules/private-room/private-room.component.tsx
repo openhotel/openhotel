@@ -9,8 +9,13 @@ import {
   ContainerComponent,
   FlexContainerComponent,
 } from "@oh/pixi-components";
-import { usePrivateRoom, useProxy, useRouter } from "shared/hooks";
-import { Point3d } from "shared/types";
+import {
+  useFurniture,
+  usePrivateRoom,
+  useProxy,
+  useRouter,
+} from "shared/hooks";
+import { Point3d, RoomFurniture } from "shared/types";
 import { CharacterArmAction, CharacterBodyAction, Event } from "shared/enums";
 import { ChatHotBarComponent } from "modules/private-room";
 
@@ -19,8 +24,17 @@ type Props = {};
 export const PrivateRoomComponent: React.FC<Props> = () => {
   const { on, emit } = useProxy();
   const { navigate } = useRouter();
-  const { room, users, addUser, removeUser, setUserPosition } =
-    usePrivateRoom();
+  const { load: loadFurniture } = useFurniture();
+  const {
+    room,
+    users,
+    addUser,
+    removeUser,
+    setUserPosition,
+    addFurniture,
+    removeFurniture,
+    updateFurniture,
+  } = usePrivateRoom();
 
   const onPointerTile = useCallback(
     (position: Point3d) => {
@@ -53,13 +67,51 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
       },
     );
 
+    const removeOnAddFurniture = on(
+      Event.ADD_FURNITURE,
+      ({ furniture }: { furniture: RoomFurniture }) => {
+        addFurniture(furniture);
+      },
+    );
+
+    const removeOnUpdateFurniture = on(
+      Event.REMOVE_FURNITURE,
+      ({ furniture }: { furniture: RoomFurniture }) => {
+        removeFurniture(furniture);
+      },
+    );
+
+    const removeOnRemoveFurniture = on(
+      Event.REMOVE_FURNITURE,
+      ({ furniture }: { furniture: RoomFurniture }) => {
+        removeFurniture(furniture);
+      },
+    );
+
     return () => {
       removeOnAddHuman();
       removeOnRemoveHuman();
       removeOnMoveHuman();
       removeOnSetPositionHuman();
+      removeOnAddFurniture();
+      removeOnUpdateFurniture();
+      removeOnRemoveFurniture();
     };
-  }, [on, emit, navigate, addUser, removeUser, setUserPosition]);
+  }, [
+    on,
+    emit,
+    navigate,
+    addUser,
+    removeUser,
+    setUserPosition,
+    addFurniture,
+    updateFurniture,
+    removeFurniture,
+  ]);
+
+  useEffect(() => {
+    loadFurniture(...room.furniture.map((furniture) => furniture.furnitureId));
+  }, [room, loadFurniture]);
 
   if (!room) return null;
 
@@ -79,9 +131,9 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
               position={user.position}
             />
           ))}
-          <FurnitureComponent position={{ x: 3, y: 0, z: 4 }} />
-          <FurnitureComponent position={{ x: 4, y: 0, z: 4 }} />
-          <FurnitureComponent position={{ x: 4, y: 1, z: 4 }} />
+          {room.furniture.map((furniture) => (
+            <FurnitureComponent key={furniture.id} {...furniture} />
+          ))}
         </PrivateRoomComp>
       </FlexContainerComponent>
       <ChatHotBarComponent />

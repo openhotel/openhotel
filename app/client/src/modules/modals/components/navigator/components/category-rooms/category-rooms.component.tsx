@@ -27,7 +27,7 @@ type Props = {
 export const CategoryRoomsComponent: React.FC<ModalNavigatorTabProps> = ({
   size,
 }) => {
-  const fetch = useApi();
+  const { fetch } = useApi();
   const { emit } = useProxy();
 
   const [rooms, setRooms] = useState([]);

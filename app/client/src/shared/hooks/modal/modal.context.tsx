@@ -2,7 +2,7 @@ import React from "react";
 import { Modal } from "shared/enums";
 import { Point2d } from "shared/types";
 
-export type TemplateState = {
+export type ModalState = {
   openModal: (modalId: Modal) => void;
   closeModal: (modalId: Modal) => void;
   closeAll: () => void;
@@ -10,4 +10,4 @@ export type TemplateState = {
   setModalPosition: (modalId: Modal, position: Point2d) => void;
 };
 
-export const ModalContext = React.createContext<TemplateState>(undefined);
+export const ModalContext = React.createContext<ModalState>(undefined);

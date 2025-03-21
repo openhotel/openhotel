@@ -20,6 +20,9 @@ export const PrivateRoomProvider: React.FunctionComponent<PrivateRoomProps> = ({
     users,
     room,
     setUserPosition,
+    addFurniture,
+    removeFurniture,
+    updateFurniture,
   } = usePrivateRoomStore();
 
   const { on, emit } = useProxy();
@@ -58,6 +61,9 @@ export const PrivateRoomProvider: React.FunctionComponent<PrivateRoomProps> = ({
         addUser,
         removeUser,
         setUserPosition,
+        addFurniture,
+        removeFurniture,
+        updateFurniture,
       }}
       children={children}
     />
