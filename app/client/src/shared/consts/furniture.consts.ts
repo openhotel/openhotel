@@ -10,8 +10,8 @@ const DUMMY_FURNITURE_DIRECTION: FurnitureDirectionData = {
         height: 0,
       },
       pivot: {
-        x: -24,
-        y: -38,
+        x: 0,
+        y: 12,
       },
       zIndex: 0,
       hitArea: [],

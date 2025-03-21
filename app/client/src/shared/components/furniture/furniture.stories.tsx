@@ -22,7 +22,7 @@ export const Furniture: Story = () => {
         y: 55,
       }}
     >
-      <FurnitureComponent position={{ x: 1, y: 0, z: 0 }} />
+      <FurnitureComponent position={{ x: 0, y: 0, z: 0 }} />
       <PrivateRoomTile position={{ x: 0, y: 0, z: 0 }} />
     </ContainerComponent>
   );

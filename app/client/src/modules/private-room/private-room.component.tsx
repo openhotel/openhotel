@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
 import {
   CharacterComponent,
   FurnitureComponent,
@@ -24,7 +24,7 @@ type Props = {};
 export const PrivateRoomComponent: React.FC<Props> = () => {
   const { on, emit } = useProxy();
   const { navigate } = useRouter();
-  const { load: loadFurniture } = useFurniture();
+  const { load: loadFurniture, get: getFurniture } = useFurniture();
   const {
     room,
     users,
@@ -115,6 +115,25 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
 
   if (!room) return null;
 
+  const renderFurniture = useMemo(
+    () =>
+      room.furniture.map((furniture) => {
+        const furnitureData = getFurniture(furniture.furnitureId);
+
+        return (
+          <FurnitureComponent
+            key={furniture.id}
+            id={furniture.id}
+            position={furniture.position}
+            furnitureId={furniture.furnitureId}
+            spriteSheet={furnitureData?.spriteSheet}
+            textures={furnitureData?.direction?.[furniture.direction]?.textures}
+          />
+        );
+      }),
+    [room, getFurniture],
+  );
+
   return (
     <ContainerComponent>
       <FlexContainerComponent>
@@ -131,9 +150,7 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
               position={user.position}
             />
           ))}
-          {room.furniture.map((furniture) => (
-            <FurnitureComponent key={furniture.id} {...furniture} />
-          ))}
+          {renderFurniture}
         </PrivateRoomComp>
       </FlexContainerComponent>
       <ChatHotBarComponent />
