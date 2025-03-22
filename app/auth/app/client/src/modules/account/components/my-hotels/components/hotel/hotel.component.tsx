@@ -8,8 +8,10 @@ import React, {
 import { Hotel } from "shared/types";
 import {
   ButtonComponent,
+  ConfirmationModalComponent,
   InputComponent,
   SelectorComponent,
+  useModal,
 } from "@oh/components";
 import { IntegrationComponent } from "../integration/integration.component";
 import { cn } from "shared/utils";
@@ -42,6 +44,7 @@ export const HotelComponent: React.FC<Props> = ({
     integrations: { create: createIntegration },
     update,
   } = useMyHotels();
+  const { open, close } = useModal();
 
   const [integrationOptions, setIntegrationOptions] = useState<string[]>([]);
 
@@ -79,10 +82,25 @@ export const HotelComponent: React.FC<Props> = ({
     [hotel, createIntegration, refresh, integrationOptions],
   );
 
-  const onRemove = useCallback(async () => {
+  const onConfirmRemove = useCallback(async () => {
     await remove(hotel.hotelId);
     refresh();
   }, [hotel, remove, refresh]);
+
+  const onOpenModal = useCallback(() => {
+    open({
+      children: (
+        <ConfirmationModalComponent
+          title={"Confirm Deletion"}
+          description={`Are you sure you want to delete the hotel '${hotel.name}'? This action is irreversible.`}
+          onConfirm={onConfirmRemove}
+          confirmText="Yes, delete it"
+          cancelText="Cancel"
+          onClose={close}
+        />
+      ),
+    });
+  }, [open, close, onConfirmRemove, hotel.name]);
 
   const integrationSelectorOptions = useMemo(
     () => integrationOptions.map((type) => ({ key: type, value: type })),
@@ -143,8 +161,11 @@ export const HotelComponent: React.FC<Props> = ({
           </div>
         ) : null}
       </div>
-      <ButtonComponent onClick={onRemove} style={{ backgroundColor: "gray" }}>
-        delete
+      <ButtonComponent
+        onClick={onOpenModal}
+        style={{ backgroundColor: "gray" }}
+      >
+        Delete Hotel
       </ButtonComponent>
     </div>
   );

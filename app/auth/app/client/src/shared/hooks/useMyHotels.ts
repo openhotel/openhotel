@@ -51,13 +51,11 @@ export const useMyHotels = () => {
 
   const remove = useCallback(
     async (hotelId: string) => {
-      const { data } = await fetch({
+      await fetch({
         method: RequestMethod.DELETE,
         pathname: `/user/@me/hotel?hotelId=${hotelId}`,
         headers: getAccountHeaders(),
       });
-
-      return data.hotels;
     },
     [fetch, getAccountHeaders],
   );
