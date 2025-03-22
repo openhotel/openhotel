@@ -13,6 +13,7 @@ import {
   LANGUAGE_LIST,
 } from "shared/consts/main.ts";
 import { getPasswordMaxLength } from "shared/utils/password.utils.ts";
+import { getEmailMaxLength } from "shared/utils/mail.utils.ts";
 
 export const registerPostRequest: RequestType = {
   method: RequestMethod.POST,
@@ -40,11 +41,19 @@ export const registerPostRequest: RequestType = {
           message: "Language is not valid!",
         });
 
-      const maxLength = await getPasswordMaxLength();
+      const passwordMaxLength = await getPasswordMaxLength();
 
-      if (password.length > maxLength) {
+      if (password.length > passwordMaxLength) {
         return getResponse(HttpStatusCode.BAD_REQUEST, {
-          message: `Password length cannot be more than ${maxLength} characters!`,
+          message: `Password length cannot be more than ${passwordMaxLength} characters!`,
+        });
+      }
+
+      const emailMaxLength = getEmailMaxLength();
+
+      if (email.length > emailMaxLength) {
+        return getResponse(HttpStatusCode.BAD_REQUEST, {
+          message: `Email length cannot be more than ${emailMaxLength} characters!`,
         });
       }
 
