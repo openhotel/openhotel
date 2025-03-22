@@ -5,9 +5,10 @@ import { useHotel } from "shared/hooks";
 
 type Props = {
   hotel: PublicHotel;
+  updatePing: (hotelId: string, ping: number | undefined) => void;
 };
 
-export const HotelComponent: React.FC<Props> = ({ hotel }) => {
+export const HotelComponent: React.FC<Props> = ({ hotel, updatePing }) => {
   const { getHotelUrl, getHotelInfo } = useHotel();
 
   const [pingMs, setPingMs] = useState<number>(undefined);
@@ -19,6 +20,7 @@ export const HotelComponent: React.FC<Props> = ({ hotel }) => {
 
     setPingMs(response.ping);
     setHotelInfo(response.data);
+    updatePing(hotel.id, response.ping);
   }, [getHotelInfo, setPingMs, setHotelInfo]);
 
   useEffect(() => {
