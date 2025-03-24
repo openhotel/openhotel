@@ -74,7 +74,7 @@ export const useApi = () => {
       data: { version },
     } = await $fetch({
       method: RequestMethod.GET,
-      pathname: "/version",
+      pathname: "/_/version",
     });
     return version;
   }, [$fetch]);

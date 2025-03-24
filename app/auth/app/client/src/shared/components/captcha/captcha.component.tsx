@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { CAPTCHA_ID, CAPTCHA_URL } from "shared/consts";
 
 //@ts-ignore
 import styles from "./captcha.module.scss";
+import { useCaptcha } from "shared/hooks/useCaptcha";
 
 type Props = {
   submittedAt: number;
@@ -16,49 +16,67 @@ export const CaptchaComponent: React.FC<Props> = ({
   const [sessionId, setSessionId] = useState<string>("");
   const [captchaImage, setCaptchaImage] = useState<string>("");
   const [isDone, setIsDone] = useState<boolean>(false);
+  const [captchaConfig, setCaptchaConfig] = useState<{
+    enabled: boolean;
+    url: string;
+    id: string;
+  } | null>(null);
 
-  const $refreshCaptcha = useCallback(
-    () =>
-      fetch(`${CAPTCHA_URL}/v1/captcha?id=${CAPTCHA_ID}`)
-        .then((data) => data.json())
-        .then(({ sessionId, image }) => {
-          setSessionId(sessionId);
-          setCaptchaImage(image);
-        }),
-    [setSessionId, setCaptchaImage],
-  );
+  const { get: getCaptcha } = useCaptcha();
 
   useEffect(() => {
-    $refreshCaptcha();
-    setIsDone(false);
-  }, [setCaptchaImage, setIsDone, submittedAt]);
+    getCaptcha()
+      .then((response) => {
+        setCaptchaConfig({
+          enabled: response?.enabled ?? false,
+          url: response?.url ?? "",
+          id: response?.id ?? "",
+        });
+      })
+      .catch(() => {
+        setCaptchaConfig({ enabled: false, url: "", id: "" });
+      });
+  }, [getCaptcha]);
+
+  const $refreshCaptcha = useCallback(() => {
+    if (!captchaConfig?.enabled) return;
+
+    fetch(`${captchaConfig.url}/v1/captcha?id=${captchaConfig.id}`)
+      .then((data) => data.json())
+      .then(({ sessionId, image }) => {
+        setSessionId(sessionId);
+        setCaptchaImage(image);
+      });
+  }, [captchaConfig]);
+
+  useEffect(() => {
+    if (captchaConfig?.enabled) {
+      $refreshCaptcha();
+      setIsDone(false);
+    }
+  }, [submittedAt, captchaConfig]);
 
   const onClickCaptcha = useCallback(
     (event) => {
-      if (isDone) return;
+      if (isDone || !captchaConfig?.enabled) return;
       const clientRect = event.target.getBoundingClientRect();
       const point = {
         x: Math.round(event.clientX - clientRect.left),
         y: Math.round(event.clientY - clientRect.top),
       };
 
-      const headers = new Headers();
-      headers.append("Content-Type", "application/json");
-
-      fetch(`${CAPTCHA_URL}/v1/captcha/response`, {
+      fetch(`${captchaConfig.url}/v1/captcha/response`, {
         method: "POST",
-        headers,
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          data: {
-            point,
-          },
+          data: { point },
           sessionId,
-          id: CAPTCHA_ID,
+          id: captchaConfig.id,
         }),
       })
         .then((data) => data.json())
-        .then((data) => {
-          if (data === 200) {
+        .then((response) => {
+          if (response === 200) {
             setIsDone(true);
             onResolve(sessionId);
             return;
@@ -66,10 +84,10 @@ export const CaptchaComponent: React.FC<Props> = ({
           $refreshCaptcha();
         });
     },
-    [sessionId, isDone],
+    [sessionId, isDone, captchaConfig],
   );
 
-  if (!captchaImage || isDone) return <div />;
+  if (!captchaConfig?.enabled || !captchaImage || isDone) return null;
 
   return (
     <div className={styles.captcha}>

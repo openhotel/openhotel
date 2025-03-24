@@ -25,7 +25,7 @@ export const GithubComponent: React.FC = () => {
     if (enabled !== null) return;
     fetch({
       method: RequestMethod.GET,
-      pathname: "/account/misc/github?enabled=enabled",
+      pathname: "/account/_/github?enabled=enabled",
       headers: getAccountHeaders(),
     }).then(({ enabled }) => {
       setEnabled(enabled);
@@ -51,7 +51,7 @@ export const GithubComponent: React.FC = () => {
 
     fetch({
       method: RequestMethod.POST,
-      pathname: "/account/misc/github",
+      pathname: "/account/_/github",
       body: {
         code,
         state,
@@ -74,7 +74,7 @@ export const GithubComponent: React.FC = () => {
   const onClickLinkGithub = useCallback(async () => {
     const data = await fetch({
       method: RequestMethod.GET,
-      pathname: "/account/misc/github",
+      pathname: "/account/_/github",
       headers: getAccountHeaders(),
     });
     window.location.href = data.url;
@@ -83,7 +83,7 @@ export const GithubComponent: React.FC = () => {
   const onClickUnlinkGithub = useCallback(async () => {
     await fetch({
       method: RequestMethod.DELETE,
-      pathname: "/account/misc/github",
+      pathname: "/account/_/github",
       headers: getAccountHeaders(),
     }).then(() => setGithubLogin(null));
   }, [fetch, getAccountHeaders, navigate, setGithubLogin]);

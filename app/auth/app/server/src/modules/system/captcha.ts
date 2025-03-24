@@ -2,8 +2,8 @@ import { System } from "modules/system/main.ts";
 
 export const captcha = () => {
   const verify = async (sessionId: string): Promise<boolean> => {
-    const { enabled, id, token, url } = System.getConfig().captcha;
-    if (!enabled || !id || !token || !url) return true;
+    const { id, token, url } = System.getConfig().captcha;
+    if (!isEnabled()) return true;
     if (!sessionId) return false;
 
     const headers = new Headers();
@@ -23,7 +23,13 @@ export const captcha = () => {
     }
   };
 
+  const isEnabled = () => {
+    const { enabled, id, token, url } = System.getConfig().captcha;
+    return Boolean(enabled && id && token && url);
+  };
+
   return {
     verify,
+    isEnabled,
   };
 };

@@ -7,5 +7,5 @@ import {
 
 export const miscRequestList: RequestType[] = getPathRequestList({
   requestList: [githubGetRequest, githubPostRequest, githubDeleteRequest],
-  pathname: "/misc",
+  pathname: "/_",
 });
