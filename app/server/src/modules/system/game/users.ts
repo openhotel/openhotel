@@ -209,7 +209,8 @@ export const users = () => {
     const setLastMessage = (message: string | null) => {
       $userLastMessageMap[user.accountId] = message;
     };
-    const getLastMessage = (): string | null => $userLastMessageMap[user.accountId];
+    const getLastMessage = (): string | null =>
+      $userLastMessageMap[user.accountId];
 
     const setLastWhisper = (whisperUser: UserMutable | null) => {
       $userLastWhisperMap[user.accountId] = whisperUser
