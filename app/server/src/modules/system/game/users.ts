@@ -107,7 +107,7 @@ export const users = () => {
 
     const moveToRoom = async (roomId: string) => {
       const currentRoom = getRoom();
-      
+
       setLastMessage(null);
 
       if (currentRoom) {
