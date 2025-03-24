@@ -107,6 +107,9 @@ export const users = () => {
 
     const moveToRoom = async (roomId: string) => {
       const currentRoom = getRoom();
+
+      setLastMessage(null);
+
       if (currentRoom) {
         const room = await System.game.rooms.get(currentRoom);
         room?.removeUser?.(getObject(), true);
@@ -140,10 +143,11 @@ export const users = () => {
     const getPathfinding = (): Point3d[] =>
       System.game.rooms.pathfinding.get(getAccountId()) || [];
 
-    const setLastMessage = (message: string) => {
+    const setLastMessage = (message: string | null) => {
       $userLastMessageMap[user.accountId] = message;
     };
-    const getLastMessage = (): string => $userLastMessageMap[user.accountId];
+    const getLastMessage = (): string | null =>
+      $userLastMessageMap[user.accountId];
 
     const setLastWhisper = (whisperUser: UserMutable | null) => {
       $userLastWhisperMap[user.accountId] = whisperUser
