@@ -9,7 +9,7 @@ import {
 } from "@tu/tulip";
 import { Size2d } from "shared/types";
 import { chatInputComponent } from "modules/chat";
-import { hotBarItemsComponent } from "./hot-bar-items.component";
+import { hotBarItemsComponent } from "modules/interfaces";
 import { HOT_BAR_HEIGHT } from "shared/consts";
 
 type Props = {};

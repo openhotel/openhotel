@@ -12,8 +12,9 @@ export const clearCommand: Command = {
     if (!roomId) return;
 
     const room = await System.game.rooms.get(roomId);
+    if (room.type !== "private") return;
 
-    for (const furniture of room.getFurnitures()) {
+    for (const furniture of room.getFurniture()) {
       await room.removeFurniture(furniture);
       room.emit(ProxyEvent.REMOVE_FURNITURE, {
         furniture,

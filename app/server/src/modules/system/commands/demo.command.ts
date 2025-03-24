@@ -8,6 +8,7 @@ import {
 import { FurnitureType, ProxyEvent } from "shared/enums/main.ts";
 import { CrossDirection } from "@oh/utils";
 import { __ } from "shared/utils/languages.utils.ts";
+import { ulid } from "@std/ulid";
 
 const fillDemoRoom = async (room: RoomMutable) => {
   const list = await System.game.furniture.getList();
@@ -21,7 +22,7 @@ const fillDemoRoom = async (room: RoomMutable) => {
     const furniture: RoomFurniture = {
       furnitureId: data.id,
       type: data.type,
-      id: crypto.randomUUID(),
+      id: ulid(),
       direction: CrossDirection.NORTH,
       position: { x: col, y: 0, z: row },
     };
@@ -49,7 +50,7 @@ const fillDemoRoom = async (room: RoomMutable) => {
     const frame: RoomFurniture = {
       furnitureId: data.id,
       type: data.type,
-      id: crypto.randomUUID(),
+      id: ulid(),
       direction: side ? CrossDirection.EAST : CrossDirection.NORTH,
       position: { x: side ? row : col, y: 0, z: side ? col : row },
       framePosition: { x: 0, y: odd ? 35 : 15 },
@@ -144,7 +145,7 @@ const fillRoom1 = async (room: RoomMutable) => {
     const furniture: RoomFurniture = {
       furnitureId: data.furnitureId,
       type: $furniture.type,
-      id: crypto.randomUUID(),
+      id: ulid(),
       direction: data.direction,
       position: data.position,
     };

@@ -83,6 +83,7 @@ export const privateRoomsComponent: ContainerComponent<Props> = (props) => {
         title: string;
         description: string;
         userCount: number;
+        maxUsers: number;
       }[];
     }>("/room-list", {
       type: "private",
@@ -114,7 +115,7 @@ export const privateRoomsComponent: ContainerComponent<Props> = (props) => {
       });
 
       const $joinRoomText = textSprite({
-        text: `${room.title} (${room.userCount})`,
+        text: `${room.title} (${room.userCount}/${room.maxUsers})`,
         tint: 0,
         spriteSheet: SpriteSheetEnum.DEFAULT_FONT,
         position: {

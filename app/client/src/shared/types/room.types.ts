@@ -4,17 +4,22 @@ import { RoomFurniture } from "shared/types/furniture.types";
 
 export type RoomPoint = string | RoomPointEnum;
 
-export type Room = {
+export type BaseRoom = {
+  type: "public" | "private";
+
   version: number;
   id: string;
 
   title: string;
   description: string;
 
+  layout: RoomPoint[][];
+  spawnPoint: Point3d;
+};
+
+export type PrivateRoom = BaseRoom & {
   ownerId: string;
   ownerUsername: string | null;
 
-  layout: RoomPoint[][];
   furniture: RoomFurniture[];
-  spawnPoint: Point3d;
 };
