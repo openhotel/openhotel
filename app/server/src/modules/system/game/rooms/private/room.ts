@@ -263,7 +263,7 @@ export const getRoom =
       getOwnerUsername,
 
       getYFromPoint,
-      
+
       addUser,
       removeUser,
       getUsers,
