@@ -236,6 +236,7 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = (
               position: wallPosition,
               tint: 0xc4d3dd,
               height: wallHeight,
+              point: { x, y, z },
             });
             $container.add(wall);
           }
@@ -247,6 +248,7 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = (
               position: wallPosition,
               tint: 0xc4d3dd,
               height: wallHeight,
+              point: { x, y, z },
             });
             $container.add(wall);
           }
@@ -271,6 +273,7 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = (
               position,
               tint: 0xc4d3dd,
               height: WALL_DOOR_HEIGHT,
+              point: { x, y, z },
             });
             $container.add(wall);
           }
@@ -282,6 +285,7 @@ export const roomComponent: ContainerComponent<Props, RoomMutable> = (
               position,
               tint: 0xc4d3dd,
               height: WALL_DOOR_HEIGHT,
+              point: { x, y, z },
             });
             $container.add(wall);
           }

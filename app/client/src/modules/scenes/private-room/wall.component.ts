@@ -1,20 +1,31 @@
-import { container, ContainerComponent, EventMode, sprite } from "@tu/tulip";
-import { SpriteSheetEnum } from "shared/enums";
+import {
+  container,
+  ContainerComponent,
+  Cursor,
+  DisplayObjectEvent,
+  EventMode,
+  sprite
+} from "@tu/tulip";
+import { SpriteSheetEnum, SystemEvent, Event } from "shared/enums";
+import { System } from "system";
+import { Point3d } from "shared/types";
 
 type Props = {
   axis: "x" | "z";
   height: number;
+  point?: Point3d;
 };
 
 export const wallComponent: ContainerComponent<Props> = (props) => {
   const $container = container<Props>(props);
 
-  const { axis, height } = $container.getProps();
+  const { axis, height, point } = $container.getProps();
 
   const top = sprite({
     spriteSheet: SpriteSheetEnum.ROOM,
     texture: `wall-${axis}-top`,
-    eventMode: EventMode.NONE,
+    eventMode: point ? EventMode.STATIC : EventMode.NONE,
+    cursor: point ? Cursor.POINTER : undefined,
     pivot: { x: 0, y: 0 },
   });
   const topHeight = top.getBounds().height;
@@ -23,7 +34,8 @@ export const wallComponent: ContainerComponent<Props> = (props) => {
   const mid = sprite({
     spriteSheet: SpriteSheetEnum.ROOM,
     texture: `wall-${axis}-mid`,
-    eventMode: EventMode.NONE,
+    eventMode: point ? EventMode.STATIC : EventMode.NONE,
+    cursor: point ? Cursor.POINTER : undefined,
     pivot: { x: 0, y: 0 },
     position: { x: 0, y: topHeight },
   });
@@ -32,9 +44,30 @@ export const wallComponent: ContainerComponent<Props> = (props) => {
   const bottom = sprite({
     spriteSheet: SpriteSheetEnum.ROOM,
     texture: `wall-${axis}-bottom`,
-    eventMode: EventMode.NONE,
+    eventMode: point ? EventMode.STATIC : EventMode.NONE,
+    cursor: point ? Cursor.POINTER : undefined,
     pivot: { x: 0, y: -topHeight - $wallHeight },
   });
+  
+  if (point) {
+    [top, mid, bottom].forEach(sprite => {
+      sprite.on(DisplayObjectEvent.POINTER_ENTER, () => {
+        System.events.emit(SystemEvent.CURSOR_COORDS, {
+          position: point,
+        });
+      });
+      
+      sprite.on(DisplayObjectEvent.POINTER_TAP, (event: MouseEvent) => {
+        System.proxy.emit(Event.POINTER_TILE, {
+          position: {
+            x: point.x,
+            z: point.z,
+          },
+        });
+      });
+    });
+  }
+  
   $container.add(top, mid, bottom);
 
   return $container.getComponent(wallComponent);
