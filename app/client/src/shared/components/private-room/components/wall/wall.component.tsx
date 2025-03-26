@@ -2,14 +2,23 @@ import React, { useMemo } from "react";
 import {
   ContainerComponent,
   ContainerRef,
+  Cursor,
   DisplayObjectProps,
+  EventMode,
+  GraphicsComponent,
+  GraphicType,
   NineSliceSpriteComponent,
   SpriteComponent,
 } from "@oh/pixi-components";
 import { CrossDirection, SpriteSheetEnum } from "shared/enums";
 import { getPositionFromIsometricPosition, getSafeZIndex } from "shared/utils";
 import { Point3d } from "shared/types";
-import { TILE_Y_HEIGHT, WALL_HEIGHT, WALL_WIDTH } from "shared/consts";
+import {
+  TILE_SIZE,
+  TILE_Y_HEIGHT,
+  WALL_HEIGHT,
+  WALL_WIDTH,
+} from "shared/consts";
 
 type Props = {
   direction: CrossDirection.NORTH | CrossDirection.EAST | "corner";
@@ -97,6 +106,34 @@ export const PrivateRoomWallComponent: React.FC<Props> = ({
         />
       ) : (
         <>
+          <GraphicsComponent
+            type={GraphicType.POLYGON}
+            polygon={[
+              0,
+              0,
+              //
+              TILE_SIZE.width / 2,
+              TILE_SIZE.height / 2,
+              //
+              TILE_SIZE.width / 2,
+              TOP_HEIGHT + middleHeight + TILE_SIZE.height / 2,
+              //
+              0,
+              TOP_HEIGHT + middleHeight,
+            ]}
+            position={{
+              x: direction === CrossDirection.NORTH ? 30 : 0,
+              y: WALL_WIDTH / 2,
+            }}
+            scale={{
+              x: direction === CrossDirection.NORTH ? -1 : 1,
+            }}
+            tint={0xff00ff}
+            cursor={Cursor.POINTER}
+            eventMode={EventMode.STATIC}
+            alpha={0.4}
+            zIndex={zIndex + 1}
+          />
           <SpriteComponent
             zIndex={zIndex}
             texture={`wall-${directionText}-top`}

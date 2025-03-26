@@ -3,6 +3,7 @@ import React from "react";
 import { PrivateRoomWallComponent } from "./wall.component";
 import { CrossDirection } from "shared/enums";
 import {
+  ContainerComponent,
   FLEX_ALIGN,
   FLEX_JUSTIFY,
   FlexContainerComponent,
@@ -18,11 +19,14 @@ export default {
 
 type Story = StoryObj<typeof PrivateRoomWallComponent>;
 
+//@ts-ignore
 export const NorthWall: Story = () => {
   return (
-    <FlexContainerComponent
-      justify={FLEX_JUSTIFY.CENTER}
-      align={FLEX_ALIGN.CENTER}
+    <ContainerComponent
+      position={{
+        x: 0,
+        y: 100,
+      }}
     >
       <PrivateRoomWallComponent
         direction={CrossDirection.NORTH}
@@ -33,15 +37,18 @@ export const NorthWall: Story = () => {
           z: 0,
         }}
       />
-    </FlexContainerComponent>
+    </ContainerComponent>
   );
 };
 
+//@ts-ignore
 export const EastWall: Story = () => {
   return (
-    <FlexContainerComponent
-      justify={FLEX_JUSTIFY.CENTER}
-      align={FLEX_ALIGN.CENTER}
+    <ContainerComponent
+      position={{
+        x: 0,
+        y: 100,
+      }}
     >
       <PrivateRoomWallComponent
         direction={CrossDirection.EAST}
@@ -52,10 +59,11 @@ export const EastWall: Story = () => {
           z: 0,
         }}
       />
-    </FlexContainerComponent>
+    </ContainerComponent>
   );
 };
 
+//@ts-ignore
 export const CornerWall: Story = () => {
   return (
     <FlexContainerComponent
