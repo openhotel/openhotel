@@ -7,7 +7,6 @@ export const usePrivateRoomStore = create<{
   setRoom: (room: PrivateRoom) => void;
   removeRoom: () => void;
 
-  users: User[];
   addUser: (user: User) => void;
   removeUser: (accountId: string) => void;
 
@@ -26,20 +25,24 @@ export const usePrivateRoomStore = create<{
   removeRoom: () =>
     set({
       room: null,
-      users: [],
     }),
 
   //////////////////
-  users: [],
   addUser: (user: User) =>
     set((store) => ({
       ...store,
-      users: [...store.users, user],
+      room: {
+        ...store.room,
+        users: [...store.room.users, user],
+      },
     })),
   removeUser: (accountId: string) =>
     set((store) => ({
       ...store,
-      users: store.users.filter((user) => user.accountId !== accountId),
+      room: {
+        ...store.room,
+        users: store.room.users.filter((user) => user.accountId !== accountId),
+      },
     })),
 
   setUserPosition: (
@@ -49,16 +52,19 @@ export const usePrivateRoomStore = create<{
   ) =>
     set((store) => ({
       ...store,
-      users: store.users.map((user) =>
-        user.accountId === accountId
-          ? {
-              ...user,
-              position,
-              bodyDirection: bodyDirection ?? user.bodyDirection,
-              positionUpdatedAt: Date.now(),
-            }
-          : user,
-      ),
+      room: {
+        ...store.room,
+        users: store.room.users.map((user) =>
+          user.accountId === accountId
+            ? {
+                ...user,
+                position,
+                bodyDirection: bodyDirection ?? user.bodyDirection,
+                positionUpdatedAt: Date.now(),
+              }
+            : user,
+        ),
+      },
     })),
   /////////////////
   addFurniture: (furniture: RoomFurniture) =>

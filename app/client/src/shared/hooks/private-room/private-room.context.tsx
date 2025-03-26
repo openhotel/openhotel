@@ -3,7 +3,6 @@ import { RoomFurniture, Point3d, PrivateRoom, User } from "shared/types";
 import { Direction } from "shared/enums";
 
 export type PrivateRoomState = {
-  users: User[];
   room: PrivateRoom;
 
   addUser: (user: User) => void;

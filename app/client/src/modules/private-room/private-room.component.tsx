@@ -27,7 +27,6 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
   const { load: loadFurniture, get: getFurniture } = useFurniture();
   const {
     room,
-    users,
     addUser,
     removeUser,
     setUserPosition,
@@ -46,6 +45,8 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
   );
 
   useEffect(() => {
+    if (!room) return;
+
     const removeOnAddHuman = on(Event.ADD_HUMAN, ({ user }) => {
       addUser(user);
     });
@@ -98,6 +99,7 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
       removeOnRemoveFurniture();
     };
   }, [
+    room,
     on,
     emit,
     navigate,
@@ -110,14 +112,13 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
   ]);
 
   useEffect(() => {
+    if (!room) return;
     loadFurniture(...room.furniture.map((furniture) => furniture.furnitureId));
   }, [room, loadFurniture]);
 
-  if (!room) return null;
-
   const renderFurniture = useMemo(
     () =>
-      room.furniture.map((furniture) => {
+      room?.furniture?.map((furniture) => {
         const furnitureData = getFurniture(furniture.furnitureId);
 
         return (
@@ -134,11 +135,13 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
     [room, getFurniture],
   );
 
+  if (!room) return null;
+
   return (
     <ContainerComponent>
       <FlexContainerComponent>
         <PrivateRoomComp {...room} onPointerTile={onPointerTile}>
-          {users.map((user) => (
+          {room.users.map((user) => (
             <CharacterComponent
               key={user.accountId}
               bodyAction={CharacterBodyAction.IDLE}

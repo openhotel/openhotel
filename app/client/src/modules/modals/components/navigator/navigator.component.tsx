@@ -22,11 +22,39 @@ import {
 } from "./components";
 import { useModal } from "shared/hooks";
 import { MODAL_SIZE_MAP } from "shared/consts";
+import { ModalNavigatorTabProps } from "shared/types";
 
 export const NavigatorComponent: React.FC = () => {
-  const { setDragPolygon } = useDragContainer();
   const { closeModal } = useModal();
 
+  const navigatorTabMap = useMemo(
+    (): Record<ModalNavigatorTab, React.FC<ModalNavigatorTabProps>> => ({
+      [ModalNavigatorTab.HOTEL]: CategoryHotelComponent,
+      [ModalNavigatorTab.ROOMS]: CategoryRoomsComponent,
+      [ModalNavigatorTab.ME]: CategoryMeComponent,
+      [ModalNavigatorTab.SEARCH]: CategorySearchComponent,
+    }),
+    [],
+  );
+
+  return (
+    <NavigatorComponentWrapper
+      onPointerDown={() => closeModal(Modal.NAVIGATOR)}
+      navigatorTabMap={navigatorTabMap}
+    />
+  );
+};
+
+type Props = {
+  onPointerDown: () => void;
+  navigatorTabMap: Record<ModalNavigatorTab, React.FC<ModalNavigatorTabProps>>;
+};
+
+export const NavigatorComponentWrapper: React.FC<Props> = ({
+  onPointerDown,
+  navigatorTabMap,
+}) => {
+  const { setDragPolygon } = useDragContainer();
   const { width, height } = MODAL_SIZE_MAP[Modal.NAVIGATOR];
 
   const horizontalMargin = 12 * 2;
@@ -46,14 +74,8 @@ export const NavigatorComponent: React.FC = () => {
   }, [setDragPolygon]);
 
   const SelectedCategoryContent = useMemo(
-    () =>
-      ({
-        [ModalNavigatorTab.HOTEL]: CategoryHotelComponent,
-        [ModalNavigatorTab.ROOMS]: CategoryRoomsComponent,
-        [ModalNavigatorTab.ME]: CategoryMeComponent,
-        [ModalNavigatorTab.SEARCH]: CategorySearchComponent,
-      })[selectedCategory],
-    [selectedCategory],
+    () => navigatorTabMap[selectedCategory],
+    [navigatorTabMap, selectedCategory],
   );
 
   const contentSize = useMemo(
@@ -76,7 +98,7 @@ export const NavigatorComponent: React.FC = () => {
           x: width - 23,
           y: 1.5,
         }}
-        onPointerDown={() => closeModal(Modal.NAVIGATOR)}
+        onPointerDown={onPointerDown}
         zIndex={20}
       />
       <ContainerComponent>
@@ -85,7 +107,7 @@ export const NavigatorComponent: React.FC = () => {
           texture="ui-tab-modal"
           leftWidth={14}
           rightWidth={21}
-          topHeight={39}
+          topHeight={38}
           bottomHeight={11}
           height={height}
           width={width}
@@ -137,12 +159,6 @@ export const NavigatorComponent: React.FC = () => {
             y: 38,
           }}
         >
-          {/*<GraphicsComponent*/}
-          {/*  type={GraphicType.RECTANGLE}*/}
-          {/*  tint={0xff00ff}*/}
-          {/*  width={contentSize.width}*/}
-          {/*  height={contentSize.height}*/}
-          {/*/>*/}
           <SelectedCategoryContent size={contentSize} />
         </ContainerComponent>
       </ContainerComponent>

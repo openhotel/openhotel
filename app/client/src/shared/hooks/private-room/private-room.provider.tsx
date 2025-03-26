@@ -1,9 +1,9 @@
-import React, { ReactNode, useEffect } from "react";
+import React, { ReactNode, useCallback, useEffect } from "react";
 import { PrivateRoomContext } from "shared/hooks/private-room/private-room.context";
-import { Event, Route } from "shared/enums";
+import { Direction, Event, Route } from "shared/enums";
 import { useModal, useProxy, useRouter } from "shared/hooks";
 import { usePrivateRoomStore } from "./private-room.store";
-import { PrivateRoom } from "shared/types";
+import { Point3d, PrivateRoom, RoomFurniture, User } from "shared/types";
 
 type PrivateRoomProps = {
   children: ReactNode;
@@ -17,7 +17,6 @@ export const PrivateRoomProvider: React.FunctionComponent<PrivateRoomProps> = ({
     removeRoom,
     addUser,
     removeUser,
-    users,
     room,
     setUserPosition,
     addFurniture,
@@ -53,17 +52,42 @@ export const PrivateRoomProvider: React.FunctionComponent<PrivateRoomProps> = ({
     };
   }, [on, emit, navigate, setRoom, removeRoom]);
 
+  const $addUser = useCallback(
+    (user: User) => room && addUser(user),
+    [addUser, room],
+  );
+  const $removeUser = useCallback(
+    (accountId: string) => room && removeUser(accountId),
+    [removeUser, room],
+  );
+  const $setUserPosition = useCallback(
+    (accountId: string, position: Point3d, bodyDirection?: Direction) =>
+      room && setUserPosition(accountId, position, bodyDirection),
+    [setUserPosition, room],
+  );
+  const $addFurniture = useCallback(
+    (furniture: RoomFurniture) => room && addFurniture(furniture),
+    [addFurniture, room],
+  );
+  const $removeFurniture = useCallback(
+    (furniture: RoomFurniture) => room && removeFurniture(furniture),
+    [removeFurniture, room],
+  );
+  const $updateFurniture = useCallback(
+    (furniture: RoomFurniture) => room && updateFurniture(furniture),
+    [updateFurniture, room],
+  );
+
   return (
     <PrivateRoomContext.Provider
       value={{
-        users,
         room,
-        addUser,
-        removeUser,
-        setUserPosition,
-        addFurniture,
-        removeFurniture,
-        updateFurniture,
+        addUser: $addUser,
+        removeUser: $removeUser,
+        setUserPosition: $setUserPosition,
+        addFurniture: $addFurniture,
+        removeFurniture: $removeFurniture,
+        updateFurniture: $updateFurniture,
       }}
       children={children}
     />
