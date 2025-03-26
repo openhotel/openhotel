@@ -38,6 +38,8 @@ export type BaseRoomMutable = {
   getTitle: () => string;
   getDescription: () => string;
 
+  getYFromPoint: (point: Point3d) => number | null;
+
   addUser: (user: User, position?: Point3d) => Promise<void>;
   removeUser: (user: User, moveToAnotherRoom?: boolean) => void;
   getUsers: () => string[];
