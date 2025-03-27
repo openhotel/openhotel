@@ -17,12 +17,13 @@ export const tpCommand: Command = {
     const roomId = user.getRoom();
     if (!roomId) return;
     const room = await System.game.rooms.get(roomId);
+    const y = room.getYFromPoint({ x, z }) ?? 0;
 
     user.setPosition({ x, z });
 
     room?.emit(ProxyEvent.SET_POSITION_HUMAN, {
       accountId: user.getAccountId(),
-      position: { x, z, y: 0 },
+      position: { x, z, y },
     });
   },
 };

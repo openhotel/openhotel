@@ -196,6 +196,8 @@ export const getRoom =
       getTitle,
       getDescription,
 
+      getYFromPoint,
+
       addUser,
       removeUser,
       getUsers,
