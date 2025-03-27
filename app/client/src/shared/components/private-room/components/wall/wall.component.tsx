@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useCallback, useMemo, useRef } from "react";
 import {
   ContainerComponent,
   ContainerRef,
@@ -6,24 +6,27 @@ import {
   DisplayObjectProps,
   EventMode,
   GraphicsComponent,
+  GraphicsRef,
   GraphicType,
   NineSliceSpriteComponent,
   SpriteComponent,
 } from "@oh/pixi-components";
 import { CrossDirection, SpriteSheetEnum } from "shared/enums";
 import { getPositionFromIsometricPosition, getSafeZIndex } from "shared/utils";
-import { Point3d } from "shared/types";
+import { Point2d, Point3d } from "shared/types";
 import {
   TILE_SIZE,
   TILE_Y_HEIGHT,
   WALL_HEIGHT,
   WALL_WIDTH,
 } from "shared/consts";
+import { getWallIsometricPositionFromPosition } from "shared/utils/wall.utils";
 
 type Props = {
   direction: CrossDirection.NORTH | CrossDirection.EAST | "corner";
   position: Point3d;
   height?: number;
+  onClickWall?: (position: Point2d) => void;
 } & Omit<DisplayObjectProps<ContainerRef>, "position">;
 
 const TOP_HEIGHT = 15;
@@ -34,8 +37,10 @@ export const PrivateRoomWallComponent: React.FC<Props> = ({
   position,
   height = WALL_HEIGHT,
   pivot,
+  onClickWall,
   ...props
 }) => {
+  const graphicsRef = useRef<GraphicsRef>(null);
   const zIndex = useMemo(() => getSafeZIndex(position, -0.2), [position]);
   const $position = useMemo(
     () =>
@@ -87,6 +92,14 @@ export const PrivateRoomWallComponent: React.FC<Props> = ({
     }
   }, [direction]);
 
+  const onPointerDown = useCallback(
+    (event) => {
+      const position = graphicsRef.current.component.toLocal(event.global);
+      onClickWall?.(getWallIsometricPositionFromPosition(position));
+    },
+    [onClickWall],
+  );
+
   return (
     <ContainerComponent
       zIndex={zIndex}
@@ -107,6 +120,7 @@ export const PrivateRoomWallComponent: React.FC<Props> = ({
       ) : (
         <>
           <GraphicsComponent
+            ref={graphicsRef}
             type={GraphicType.POLYGON}
             polygon={[
               0,
@@ -123,7 +137,7 @@ export const PrivateRoomWallComponent: React.FC<Props> = ({
             ]}
             position={{
               x: direction === CrossDirection.NORTH ? 30 : 0,
-              y: WALL_WIDTH / 2,
+              y: WALL_WIDTH / 2 - 1,
             }}
             scale={{
               x: direction === CrossDirection.NORTH ? -1 : 1,
@@ -131,6 +145,7 @@ export const PrivateRoomWallComponent: React.FC<Props> = ({
             tint={0xff00ff}
             cursor={Cursor.POINTER}
             eventMode={EventMode.STATIC}
+            onPointerDown={onPointerDown}
             alpha={0.4}
             zIndex={zIndex + 1}
           />

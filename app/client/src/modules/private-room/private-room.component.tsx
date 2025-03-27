@@ -119,16 +119,13 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
   const renderFurniture = useMemo(
     () =>
       room?.furniture?.map((furniture) => {
-        const furnitureData = getFurniture(furniture.furnitureId);
-
         return (
           <FurnitureComponent
             key={furniture.id}
             id={furniture.id}
             position={furniture.position}
             furnitureId={furniture.furnitureId}
-            spriteSheet={furnitureData?.spriteSheet}
-            textures={furnitureData?.direction?.[furniture.direction]?.textures}
+            direction={furniture?.direction}
           />
         );
       }),

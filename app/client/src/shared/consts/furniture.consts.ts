@@ -38,12 +38,12 @@ const DUMMY_FURNITURE_FRAME_DIRECTION_NORTH: FurnitureDirectionData = {
     {
       texture: "frame-north",
       bounds: {
-        width: 0,
-        height: 0,
+        width: 24,
+        height: 38,
       },
       pivot: {
-        x: -12,
-        y: -19,
+        x: 13,
+        y: 21,
       },
       zIndex: 0,
       hitArea: [],

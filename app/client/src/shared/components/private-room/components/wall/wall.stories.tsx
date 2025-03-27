@@ -24,7 +24,7 @@ export const NorthWall: Story = () => {
   return (
     <ContainerComponent
       position={{
-        x: 0,
+        x: 10,
         y: 100,
       }}
     >
@@ -36,6 +36,7 @@ export const NorthWall: Story = () => {
           y: 0,
           z: 0,
         }}
+        onClickWall={console.log}
       />
     </ContainerComponent>
   );
@@ -58,6 +59,7 @@ export const EastWall: Story = () => {
           y: 0,
           z: 0,
         }}
+        onClickWall={console.log}
       />
     </ContainerComponent>
   );
