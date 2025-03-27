@@ -6,6 +6,7 @@ import {
   FurnitureComponentWrapper,
 } from "./furniture.component";
 import { SmallRoomComponent } from ".storybook";
+import { CrossDirection } from "shared/enums";
 
 export default {
   title: "Shared/Furniture",
@@ -18,10 +19,19 @@ export default {
 type Story = StoryObj<typeof FurnitureComponent>;
 
 //@ts-ignore
-export const Furniture: Story = () => {
+export const North: Story = () => {
   return (
-    <SmallRoomComponent position={{ x: 10, y: 120 }}>
-      <FurnitureComponentWrapper position={{ x: 1, y: 0, z: -1 }} />
+    <SmallRoomComponent>
+      <FurnitureComponentWrapper position={{ x: 0, y: 0, z: 0 }} />
+    </SmallRoomComponent>
+  );
+};
+
+//@ts-ignore
+export const East: Story = () => {
+  return (
+    <SmallRoomComponent direction={CrossDirection.EAST}>
+      <FurnitureComponentWrapper position={{ x: 0, y: 0, z: 0 }} />
     </SmallRoomComponent>
   );
 };

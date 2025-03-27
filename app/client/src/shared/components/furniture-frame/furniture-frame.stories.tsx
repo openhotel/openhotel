@@ -5,6 +5,7 @@ import {
   FurnitureFrameComponentWrapper,
 } from "./furniture-frame.component";
 import { SmallRoomComponent } from ".storybook";
+import { CrossDirection } from "shared/enums";
 
 export default {
   title: "Shared/Furniture/Frame",
@@ -17,12 +18,25 @@ export default {
 type Story = StoryObj<typeof FurnitureFrameComponent>;
 
 //@ts-ignore
-export const Frame: Story = () => {
+export const North: Story = () => {
   return (
-    <SmallRoomComponent position={{ x: 10, y: 120 }}>
+    <SmallRoomComponent>
       <FurnitureFrameComponentWrapper
-        position={{ x: 0, y: 0, z: 0 }}
-        framePosition={{ x: 19, y: 45 }}
+        position={{ x: -1, y: 0, z: 0 }}
+        framePosition={{ x: 7, y: 45 }}
+      />
+    </SmallRoomComponent>
+  );
+};
+
+//@ts-ignore
+export const East: Story = () => {
+  return (
+    <SmallRoomComponent direction={CrossDirection.EAST}>
+      <FurnitureFrameComponentWrapper
+        position={{ x: 0, y: 0, z: -1 }}
+        framePosition={{ x: 7, y: 45 }}
+        direction={CrossDirection.EAST}
       />
     </SmallRoomComponent>
   );
