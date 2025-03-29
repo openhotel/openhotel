@@ -1,0 +1,49 @@
+{
+  "frames": {
+    "console-off": {
+      "frame": { "x": 0, "y": 0, "w": 15, "h": 23 },
+      "sourceSize": { "w": 15, "h": 23 },
+      "anchor": { "x": 0, "y": 0 }
+    },
+    "console-on": {
+      "frame": { "x": 15, "y": 0, "w": 15, "h": 23 },
+      "sourceSize": { "w": 15, "h": 23 },
+      "anchor": { "x": 0, "y": 0 }
+    },
+    "catalog": {
+      "frame": { "x": 30, "y": 0, "w": 16, "h": 23 },
+      "sourceSize": { "w": 16, "h": 23 },
+      "anchor": { "x": 0, "y": 0 }
+    },
+    "purse": {
+      "frame": { "x": 46, "y": 0, "w": 18, "h": 20 },
+      "sourceSize": { "w": 18, "h": 20 },
+      "anchor": { "x": 0, "y": 0 }
+    },
+    "navigator": {
+      "frame": { "x": 0, "y": 23, "w": 23, "h": 23 },
+      "sourceSize": { "w": 23, "h": 23 },
+      "anchor": { "x": 0, "y": 0 }
+    },
+    "inventory": {
+      "frame": { "x": 23, "y": 23, "w": 20, "h": 19 },
+      "sourceSize": { "w": 20, "h": 19 },
+      "anchor": { "x": 0, "y": 0 }
+    },
+    "club": {
+      "frame": { "x": 23, "y": 42, "w": 23, "h": 21 },
+      "sourceSize": { "w": 23, "h": 21 },
+      "anchor": { "x": 0, "y": 0 }
+    }
+  },
+  "animations": {},
+  "meta": {
+    "format": "RGBA8888",
+    "image": "hot-bar-icons.png",
+    "size": {
+      "w": 64,
+      "h": 64
+    },
+    "scale": 1
+  }
+}

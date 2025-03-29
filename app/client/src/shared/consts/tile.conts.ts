@@ -1,5 +1,8 @@
 import { Size2d } from "shared/types";
 
+/**
+ * DO NOT CHANGE THIS VALUES!!
+ */
 export const TILE_SIZE: Size2d = {
   width: 48,
   height: 24,

@@ -6,7 +6,7 @@
     "install:client": "cd app/client && yarn install",
 
     "start": "deno task start:client & deno task start:server",
-    "start:client": "cd app/client && yarn start",
+    "start:client": "cd app/client && deno task start",
     "start:server": "cd app/server && deno task start",
 
     "start:build:linux": "cd ./build && ./server_linux",

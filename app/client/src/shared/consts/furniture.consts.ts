@@ -10,8 +10,8 @@ const DUMMY_FURNITURE_DIRECTION: FurnitureDirectionData = {
         height: 0,
       },
       pivot: {
-        x: -24,
-        y: -38,
+        x: 0,
+        y: 12,
       },
       zIndex: 0,
       hitArea: [],
@@ -21,6 +21,7 @@ const DUMMY_FURNITURE_DIRECTION: FurnitureDirectionData = {
 
 export const DUMMY_FURNITURE_DATA: FurnitureData = {
   furnitureId: "dummy",
+  icon: null,
   direction: {
     [CrossDirection.NORTH]: DUMMY_FURNITURE_DIRECTION,
     [CrossDirection.EAST]: DUMMY_FURNITURE_DIRECTION,
@@ -37,12 +38,12 @@ const DUMMY_FURNITURE_FRAME_DIRECTION_NORTH: FurnitureDirectionData = {
     {
       texture: "frame-north",
       bounds: {
-        width: 0,
-        height: 0,
+        width: 24,
+        height: 38,
       },
       pivot: {
-        x: -12,
-        y: -19,
+        x: 13,
+        y: 21,
       },
       zIndex: 0,
       hitArea: [],
@@ -54,12 +55,12 @@ const DUMMY_FURNITURE_FRAME_DIRECTION_EAST: FurnitureDirectionData = {
     {
       texture: "frame-east",
       bounds: {
-        width: 0,
-        height: 0,
+        width: 24,
+        height: 38,
       },
       pivot: {
-        x: -12,
-        y: -19,
+        x: 13,
+        y: 21,
       },
       zIndex: 0,
       hitArea: [],
@@ -69,6 +70,7 @@ const DUMMY_FURNITURE_FRAME_DIRECTION_EAST: FurnitureDirectionData = {
 
 export const DUMMY_FURNITURE_FRAME_DATA: FurnitureData = {
   furnitureId: "dummy",
+  icon: null,
   direction: {
     [CrossDirection.NORTH]: DUMMY_FURNITURE_FRAME_DIRECTION_NORTH,
     [CrossDirection.EAST]: DUMMY_FURNITURE_FRAME_DIRECTION_EAST,

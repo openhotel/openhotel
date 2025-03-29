@@ -1,13 +1,16 @@
 import { defineConfig } from "vite";
+import reactRefresh from "@vitejs/plugin-react-refresh";
+import react from "@vitejs/plugin-react";
 import tsconfigPaths from "vite-tsconfig-paths";
-import { plugin } from "@tulib/vite-tulip-plugin";
-import { build } from "./vite/index.ts";
+import { build } from "./vite";
 
 // https://github.com/openhotel/openhotel/issues/469
 const PROXY_URL =
   process.platform === "win32"
     ? "http://127.0.0.1:19940"
     : "http://localhost:19940";
+
+const getHash = () => Math.floor(Math.random() * 90000) + 10000;
 
 export default defineConfig({
   clearScreen: false,
@@ -27,12 +30,29 @@ export default defineConfig({
       "/icon": PROXY_URL,
       "/background": PROXY_URL,
     },
+    hmr: true,
   },
-  plugins: [tsconfigPaths(), plugin(), build()],
-  publicDir: "assets/",
+  plugins: [react(), reactRefresh(), tsconfigPaths(), build()],
+  root: "./src",
+  base: "/",
+  publicDir: "./assets/",
   build: {
-    outDir: "../../build/client",
+    outDir: "../../../build/client",
     emptyOutDir: false, // also necessary
+    rollupOptions: {
+      output: {
+        entryFileNames: `[name]${getHash()}.js`,
+        chunkFileNames: `[name]${getHash()}.js`,
+        assetFileNames: `[name]${getHash()}.js`,
+      },
+    },
+  },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        api: "modern",
+      },
+    },
   },
   define: {
     __APP_VERSION: `{ "version": "__VERSION__" }`,
