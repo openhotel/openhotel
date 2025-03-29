@@ -15,7 +15,7 @@ const config = {
     name: "@storybook/react-vite",
     options: {},
   },
-  staticDirs: ["../src/assets"],
+  staticDirs: ["../src/assets", "../src/.storybook/assets"],
   core: {
     disableWhatsNewNotifications: true,
     disableTelemetry: true,

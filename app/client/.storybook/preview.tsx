@@ -6,7 +6,8 @@ import {
   CoreLoaderComponent,
   InitialLoaderComponent,
 } from "modules/application";
-import { AssetsProvider } from "shared/hooks";
+import { AssetsProvider } from "../src/shared/hooks";
+import { SBFurnitureProvider } from "../src/.storybook";
 
 /** @type { import('@storybook/react').Preview } */
 const preview = {
@@ -78,7 +79,9 @@ export const decorators = [
           <InitialLoaderComponent>
             <AssetsProvider>
               <CoreLoaderComponent>
-                {withConsole()(renderStory)(props)}
+                <SBFurnitureProvider>
+                  {withConsole()(renderStory)(props)}
+                </SBFurnitureProvider>
               </CoreLoaderComponent>
             </AssetsProvider>
           </InitialLoaderComponent>

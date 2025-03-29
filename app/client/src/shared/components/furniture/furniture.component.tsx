@@ -59,7 +59,7 @@ export const FurnitureComponentWrapper: React.FC<PropsWrapper> = ({
           spriteSheet={spriteSheet}
           pivot={{
             x: pivot.x - 1,
-            y: pivot.y + TILE_SIZE.height / 2 + 2,
+            y: pivot.y + TILE_SIZE.height / 2 + 2 + bounds.height / 2,
           }}
           zIndex={
             position.x + position.z + Math.abs(position.y / 100) + zIndex + 0.1

@@ -40,6 +40,7 @@
   "dependencies": {
     "@oh/pixi-components": "npm:@jsr/oh__pixi-components@0.0.1",
     "@oh/queue": "npm:@jsr/oh__queue@1.1.1",
+    "pixi.js": "8.9.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "ulidx": "2.4.1",

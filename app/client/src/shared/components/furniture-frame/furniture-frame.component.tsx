@@ -43,7 +43,6 @@ export const FurnitureFrameComponent: React.FC<Props> = ({
 type PropsWrapper = {
   position: Point3d;
   framePosition: Point2d;
-  direction?: CrossDirection;
 
   spriteSheet?: string;
   textures?: FurnitureDirectionTexture[];
@@ -52,18 +51,13 @@ type PropsWrapper = {
 export const FurnitureFrameComponentWrapper: React.FC<PropsWrapper> = ({
   position,
   framePosition,
-  direction = CrossDirection.NORTH,
   spriteSheet = DUMMY_FURNITURE_FRAME_DATA.spriteSheet,
-  textures,
+  textures = DUMMY_FURNITURE_FRAME_DATA.direction[CrossDirection.NORTH]
+    .textures,
 }) => {
-  let $textures = useMemo(
-    () => textures ?? DUMMY_FURNITURE_FRAME_DATA.direction[direction].textures,
-    [direction, textures],
-  );
-
   const renderSprites = useMemo(
     () =>
-      $textures.map(({ texture, bounds, pivot, zIndex, hitArea }) => {
+      textures.map(({ texture, bounds, pivot, zIndex, hitArea }) => {
         const pos = getWallPositionFromIsometricPosition(framePosition);
         const $position = getPositionFromIsometricPosition({
           x: position.x,
@@ -78,7 +72,7 @@ export const FurnitureFrameComponentWrapper: React.FC<PropsWrapper> = ({
             spriteSheet={spriteSheet}
             pivot={{
               //TODO <<<<<<<<<<<<<<<<<<<
-              x: pivot.x - 1 - bounds.width,
+              x: pivot.x,
               y: pivot.y / 2 - 2,
             }}
             zIndex={
@@ -95,7 +89,7 @@ export const FurnitureFrameComponentWrapper: React.FC<PropsWrapper> = ({
           />
         );
       }),
-    [spriteSheet, $textures],
+    [spriteSheet, textures],
   );
 
   return <>{renderSprites}</>;

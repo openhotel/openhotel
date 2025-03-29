@@ -1,11 +1,12 @@
 import { Meta, StoryObj } from "@storybook/react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   FurnitureComponent,
   FurnitureComponentWrapper,
 } from "./furniture.component";
-import { SmallRoomComponent } from ".storybook";
+import { SBSmallRoomComponent, useSBFurniture } from ".storybook";
+import { FurnitureData } from "shared/types";
 import { CrossDirection } from "shared/enums";
 
 export default {
@@ -19,19 +20,34 @@ export default {
 type Story = StoryObj<typeof FurnitureComponent>;
 
 //@ts-ignore
-export const North: Story = () => {
+export const Loading: Story = () => {
   return (
-    <SmallRoomComponent>
+    <SBSmallRoomComponent>
       <FurnitureComponentWrapper position={{ x: 0, y: 0, z: 0 }} />
-    </SmallRoomComponent>
+    </SBSmallRoomComponent>
+  );
+};
+
+const LoadComponent = () => {
+  const { load, get } = useSBFurniture();
+
+  const [furnitureData, setFurnitureData] = useState<FurnitureData>(null);
+
+  useEffect(() => {
+    const name = "./teleports@telephone";
+    load(name).then(() => setFurnitureData(get(name)));
+  }, [load, get]);
+
+  return (
+    <SBSmallRoomComponent>
+      <FurnitureComponentWrapper
+        position={{ x: 0, y: 0, z: 0 }}
+        spriteSheet={furnitureData?.spriteSheet}
+        textures={furnitureData?.direction?.[CrossDirection.NORTH]?.textures}
+      />
+    </SBSmallRoomComponent>
   );
 };
 
 //@ts-ignore
-export const East: Story = () => {
-  return (
-    <SmallRoomComponent direction={CrossDirection.EAST}>
-      <FurnitureComponentWrapper position={{ x: 0, y: 0, z: 0 }} />
-    </SmallRoomComponent>
-  );
-};
+export const Load: Story = () => <LoadComponent />;
