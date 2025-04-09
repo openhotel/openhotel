@@ -2,6 +2,7 @@ import { System } from "../main.ts";
 import {
   Command,
   CommandRoles,
+  PrivateRoomMutable,
   RoomFurniture,
   RoomMutable,
 } from "shared/types/main.ts";
@@ -10,7 +11,7 @@ import { CrossDirection } from "@oh/utils";
 import { __ } from "shared/utils/languages.utils.ts";
 import { ulid } from "@std/ulid";
 
-const fillDemoRoom = async (room: RoomMutable) => {
+const fillDemoRoom = async (room: PrivateRoomMutable) => {
   const list = await System.game.furniture.getList();
   const furnitures = list.filter((f) => f.type !== FurnitureType.FRAME);
   const frames = list.filter((f) => f.type === FurnitureType.FRAME);
@@ -53,7 +54,7 @@ const fillDemoRoom = async (room: RoomMutable) => {
       id: ulid(),
       direction: side ? CrossDirection.EAST : CrossDirection.NORTH,
       position: { x: side ? row : col, y: 0, z: side ? col : row },
-      framePosition: { x: 0, y: odd ? 35 : 15 },
+      framePosition: { x: 0, y: odd ? 75 : 25 },
     };
 
     await room.addFurniture(frame);

@@ -4,6 +4,7 @@ import { System } from "modules/system/main.ts";
 import { log } from "shared/utils/main.ts";
 import { executeCommand } from "modules/system/commands/main.ts";
 import { getRandomNumberFromSeed } from "@oh/utils";
+import { ulid } from "@std/ulid";
 
 export const messageEvent: ProxyEventType<{ message: string }> = {
   event: ProxyEvent.MESSAGE,
@@ -23,6 +24,7 @@ export const messageEvent: ProxyEventType<{ message: string }> = {
 
     user.setLastMessage(message);
     room.emit(ProxyEvent.MESSAGE, {
+      id: ulid(),
       accountId: user.getAccountId(),
       message,
       color: isOp ? 0 : await getRandomNumberFromSeed(user.getUsername()),
