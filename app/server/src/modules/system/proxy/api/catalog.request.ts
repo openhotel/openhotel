@@ -12,7 +12,12 @@ export const catalogRequest: ProxyRequestType = {
     const catalog = System.game.furniture.getCatalog();
 
     if (!category) {
-      const categories = catalog.categories.map((category) => category.id);
+      const categories = catalog.categories
+        .filter((catalog) => catalog.enabled)
+        .map((category) => ({
+          id: category.id,
+          label: category.label,
+        }));
 
       return {
         status: 200,
@@ -27,7 +32,7 @@ export const catalogRequest: ProxyRequestType = {
     return {
       status: 200,
       data: {
-        catalogFurniture: furniture,
+        furniture,
       },
     };
   },

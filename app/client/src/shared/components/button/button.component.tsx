@@ -28,6 +28,7 @@ export const ButtonComponent: React.FC<Props> = ({
   const [contentSize, setContentSize] = useState<Size>({ width: 0, height: 0 });
 
   useEffect(() => {
+    //TODO Revise this... not working as expected :(
     const { maxX, maxY } = containerRef.current.getBounds();
     setContentSize({ width: maxX, height: maxY });
   }, [text, children]);

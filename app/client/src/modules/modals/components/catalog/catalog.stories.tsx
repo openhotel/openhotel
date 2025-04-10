@@ -8,6 +8,7 @@ export default {
   component: CatalogComponent,
   parameters: {
     layout: "fullscreen",
+    backgrounds: { default: "light" },
   },
 } as Meta<typeof CatalogComponent>;
 

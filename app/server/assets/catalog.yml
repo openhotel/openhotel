@@ -53,7 +53,7 @@ categories:
         price: 0
   - id: xmas
     label: Xmas Collection
-    enabled: true
+    enabled: false
     furniture:
       - id: xmas@tree-0
         price: 0
