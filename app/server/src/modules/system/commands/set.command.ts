@@ -9,6 +9,7 @@ import {
   isWallRenderable,
 } from "shared/utils/rooms.utils.ts";
 import { __ } from "shared/utils/languages.utils.ts";
+import { ulid } from "@std/ulid";
 
 export const setCommand: Command = {
   command: "set",
@@ -51,7 +52,7 @@ export const setCommand: Command = {
     const furniture: RoomFurniture = {
       furnitureId,
       type: $furniture.type,
-      id: crypto.randomUUID(),
+      id: ulid(),
       direction,
       position: {
         x,

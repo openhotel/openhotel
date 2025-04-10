@@ -1,4 +1,5 @@
 import { Migration, DbMutable } from "@oh/utils";
+import { ulid } from "@std/ulid";
 
 export default {
   id: "2025-04-10--11-37-remove-furniture",
@@ -13,11 +14,14 @@ export default {
 
     const { items: rooms } = await db.list({ prefix: ["rooms", "private"] });
     for (const { key, value } of rooms) {
-      db.set(key, {
+      const id = ulid();
+      db.set(["rooms", "private", id], {
         ...value,
+        id,
         ownerId: usersIdMap[value.ownerId] ?? value.ownerId,
         furniture: [],
       });
+      db.delete(key);
     }
 
     const { items: users } = await db.list({ prefix: ["users"] });
