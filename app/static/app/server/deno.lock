@@ -468,6 +468,7 @@
   "workspace": {
     "dependencies": [
       "jsr:@oh/utils@1.5.2",
+      "jsr:@std/path@1.0.6",
       "jsr:@std/ulid@1"
     ]
   }

@@ -10,7 +10,7 @@
     align-items: center;
     justify-content: space-between;
 
-    padding: 2rem;
+    padding: 1rem;
     margin: 0 auto;
     width: 100%;
 
@@ -19,11 +19,6 @@
       flex-direction: row;
       align-items: center;
       gap: 1rem;
-
-      img {
-        width: 50px;
-        height: 50px;
-      }
     }
 
     .items {

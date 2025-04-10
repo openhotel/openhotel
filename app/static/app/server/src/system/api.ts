@@ -6,8 +6,11 @@ import {
   RequestMethod,
   getApiHandler,
   RequestKind,
+  getURL,
+  getContentType,
 } from "@oh/utils";
 import { System } from "system/main.ts";
+import { decodeTime } from "@std/ulid";
 
 export const api = () => {
   const load = () => {
@@ -41,31 +44,38 @@ export const api = () => {
 
           const parsedUrl = new URL(url);
 
-          if (parsedUrl.pathname.startsWith("/_")) {
-            const fileId = parsedUrl.pathname.split("/_/")[1] ?? null;
-            if (!fileId) return getResponse(HttpStatusCode.NOT_FOUND);
+          try {
+            const fileId = parsedUrl.pathname.split("/")[1];
 
-            const fileData = await System.files.get(fileId);
-            if (!fileData) return getResponse(HttpStatusCode.NOT_FOUND);
+            if (decodeTime(fileId) > 0) {
+              const fileData = await System.files.get(fileId);
+              if (!fileData) return getResponse(HttpStatusCode.NOT_FOUND);
 
-            return new Response(fileData.file, {
-              headers: {
-                "Content-Type": fileData.mimeType || "application/octet-stream",
-                "Content-Disposition": "inline",
-                "Cache-Control": `max-age=${60 * 60}`,
-              },
-            });
-          }
+              return new Response(fileData.file, {
+                headers: {
+                  "Content-Type":
+                    fileData.mimeType || "application/octet-stream",
+                  "Content-Disposition": "inline",
+                  "Cache-Control": `max-age=${60 * 60}`,
+                },
+              });
+            }
+          } catch (e) {}
 
           if (!parsedUrl.pathname.startsWith("/api")) {
-            return new Response(
-              await Deno.readTextFile(`./client/index.html`),
-              {
-                headers: {
-                  "content-type": "text/html",
-                },
+            const { pathname } = getURL(url);
+
+            const filePath = pathname.replace("/", "");
+            const targetFile = "./client/" + (filePath || "index.html");
+
+            let fileData = await Deno.readFile(targetFile);
+            if (targetFile === "./client/index.html")
+              fileData = await Deno.readTextFile(targetFile);
+            return new Response(fileData, {
+              headers: {
+                "Content-Type": getContentType(targetFile),
               },
-            );
+            });
           }
 
           return await $apiHandler.on(request);

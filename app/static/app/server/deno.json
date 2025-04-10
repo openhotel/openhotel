@@ -19,6 +19,8 @@
     "@oh/utils": "jsr:@oh/utils@1.5.2",
     "@std/ulid": "jsr:@std/ulid@1",
 
+    "@std/path": "jsr:@std/path@1.0.6",
+
     "deno/": "https://deno.land/std@0.221.0/",
     "loadenv": "https://deno.land/x/loadenv@v1.0.1/mod.ts"
   }

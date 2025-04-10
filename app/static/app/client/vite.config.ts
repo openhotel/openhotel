@@ -7,7 +7,7 @@ export default defineConfig({
   server: {
     port: 1995,
     proxy: {
-      "/_": "http://localhost:19950",
+      "^/[0-7][0-9A-HJKMNP-TV-Z]{25}$": "http://localhost:19950",
       "/api": "http://localhost:19950",
     },
   },

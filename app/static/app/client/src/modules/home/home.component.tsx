@@ -1,13 +1,13 @@
 import React, { useCallback, useEffect } from "react";
 //@ts-ignore
 import styles from "./home.module.scss";
-import { useFiles } from "shared/hooks/index.ts";
+import { useFiles } from "shared/hooks";
 import {
   TableComponent,
   ButtonComponent,
   FileInputComponent,
 } from "@oh/components";
-import { cn } from "shared/utils/class-name.utils.ts";
+import { cn } from "shared/utils";
 import dayjs from "dayjs";
 
 export const HomeComponent: React.FC = () => {
@@ -53,7 +53,7 @@ export const HomeComponent: React.FC = () => {
                   let value = $row[$column.key];
 
                   if ($column.key === "file") {
-                    const url = `${window.location.origin}/_/${$row.id}`;
+                    const url = `${window.location.origin}/${$row.id}`;
                     value = (
                       <>
                         <a href={url} target={"_blank"}>

@@ -1,15 +1,25 @@
 import { System } from "system/main.ts";
 import { type File } from "shared/types/main.ts";
 import { getS3, S3Mutable } from "@oh/utils";
+import { join } from "@std/path";
+
+const FILES_PATH = "files";
 
 export const files = () => {
   let s3Client: S3Mutable;
+  let isEnabled: boolean = false;
 
-  const load = () => {
+  const load = async () => {
     const { enabled, ...configS3 } = System.getConfig().s3;
-    if (!enabled) return;
+    if (!enabled) {
+      try {
+        await Deno.mkdir(FILES_PATH);
+      } catch (e) {}
+      return;
+    }
 
     s3Client = getS3(configS3);
+    isEnabled = true;
   };
 
   const getList = async ({
@@ -38,19 +48,25 @@ export const files = () => {
 
     return {
       ...info,
-      file: await s3Client.getObject(fileId),
+      file: isEnabled
+        ? await s3Client.getObject(fileId)
+        : await Deno.readFile(join(FILES_PATH, fileId)),
     };
   };
 
   const set = async (file: File, buffer: Uint8Array) => {
     await System.db.set(["files", file.id], file);
-    await s3Client.addObject(file.id, buffer);
+    isEnabled
+      ? await s3Client.addObject(file.id, buffer)
+      : Deno.writeFile(join(FILES_PATH, file.id), buffer);
   };
 
   const remove = async (fileId: string) => {
     // deno-lint-ignore ban-ts-comment
     // @ts-ignore
-    await s3Client.removeObjects([{ name: fileId }]);
+    isEnabled
+      ? await s3Client.removeObjects([{ name: fileId }])
+      : await Deno.remove(join(FILES_PATH, name));
     await System.db.delete(["files", fileId]);
   };
 
