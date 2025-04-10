@@ -6,3 +6,6 @@ export * from "./wait.utils";
 export * from "./hit-area.utils";
 export * from "./direction.utils";
 export * from "./languages.utils";
+export * from "./room.utils";
+export * from "./character.utils";
+export * from "./enum.utils";
