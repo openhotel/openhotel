@@ -8,3 +8,5 @@ export const BUBBLE_MESSAGE_HEIGHT = 14 + 1;
 export const MIN_SAFE_MESSAGES = 6;
 
 export const CHAT_RIGHT_MARGIN = 180;
+
+export const MAX_MESSAGE_LENGTH = 128;
