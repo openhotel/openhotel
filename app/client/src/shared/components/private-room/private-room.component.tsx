@@ -123,7 +123,7 @@ export const PrivateRoomComponent: React.FC<Props> = ({
               key={`stairs${x}.${z}`}
               position={position}
               direction={stairsDirection}
-              onPointerDown={() => onPointerTile?.(position)}
+              onPointerUp={() => onPointerTile?.(position)}
               onPointerEnter={() =>
                 $onHoverTile({
                   point: position,
@@ -138,7 +138,7 @@ export const PrivateRoomComponent: React.FC<Props> = ({
               key={`tile${x}.${z}`}
               spawn={spawn}
               position={position}
-              onPointerDown={() => onPointerTile?.(position)}
+							onPointerUp={() => onPointerTile?.(position)}
               onPointerEnter={() =>
                 $onHoverTile({ point: position, type: "tile" })
               }
