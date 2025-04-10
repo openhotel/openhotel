@@ -36,3 +36,23 @@ export const getBorderPolygon = ({ size, border }: BorderPolygonProps) => [
   border,
   border,
 ];
+
+export const getCubePolygon = ({ width, height }: Size2d): number[] => [
+  0,
+  width / 4,
+  //
+  0,
+  width / 4 - height,
+  //
+  width / 2,
+  -height,
+  //
+  width,
+  width / 4 - height,
+  //
+  width,
+  width / 4,
+  //
+  width / 2,
+  width / 2,
+];
