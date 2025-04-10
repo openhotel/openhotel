@@ -1,4 +1,27 @@
 
+<a name="v0.6.0"></a>
+
+## [v0.6.0](https://github.com/openhotel/openhotel/compare/v0.5.33...v0.6.0) (2025-04-10)
+
+### Bug Fixes
+
+- reset users last message - fix [#679](https://github.com/openhotel/openhotel/issues/679) ([#697](https://github.com/openhotel/openhotel/issues/697))
+
+### Chore
+
+- update changelog for v0.5.33 ([#695](https://github.com/openhotel/openhotel/issues/695))
+
+### Code Refactoring
+
+- changed client renderer from tulip to pixi react - fix [#688](https://github.com/openhotel/openhotel/issues/688) ([#700](https://github.com/openhotel/openhotel/issues/700))
+- rooms game system to allow public/private rooms - fix [#693](https://github.com/openhotel/openhotel/issues/693) ([#645](https://github.com/openhotel/openhotel/issues/645))
+
+### Features
+
+- migrate uuid to ulid - fix [#676](https://github.com/openhotel/openhotel/issues/676) ([#699](https://github.com/openhotel/openhotel/issues/699))
+- implement docker configuration for server and client services ([#696](https://github.com/openhotel/openhotel/issues/696))
+
+
 <a name="v0.5.33"></a>
 
 ## [v0.5.33](https://github.com/openhotel/openhotel/compare/v0.5.32...v0.5.33) (2025-02-28)
@@ -714,26 +737,26 @@
 
 <a name="v0.2.26"></a>
 
-## [v0.2.26](https://github.com/openhotel/openhotel/compare/v0.2.24...v0.2.26) (2024-10-02)
+## [v0.2.26](https://github.com/openhotel/openhotel/compare/v0.2.25...v0.2.26) (2024-10-02)
 
 ### Bump
 
 - [@oh](https://github.com/oh)/updater - fix [#338](https://github.com/openhotel/openhotel/issues/338) ([#339](https://github.com/openhotel/openhotel/issues/339))
 
 
-<a name="v0.2.24"></a>
+<a name="v0.2.25"></a>
 
-## [v0.2.24](https://github.com/openhotel/openhotel/compare/v0.2.24.b...v0.2.24) (2024-10-02)
+## [v0.2.25](https://github.com/openhotel/openhotel/compare/v0.2.24.b...v0.2.25) (2024-10-02)
 
 
 <a name="v0.2.24.b"></a>
 
-## [v0.2.24.b](https://github.com/openhotel/openhotel/compare/v0.2.25...v0.2.24.b) (2024-10-02)
+## [v0.2.24.b](https://github.com/openhotel/openhotel/compare/v0.2.24...v0.2.24.b) (2024-10-02)
 
 
-<a name="v0.2.25"></a>
+<a name="v0.2.24"></a>
 
-## [v0.2.25](https://github.com/openhotel/openhotel/compare/v0.2.23...v0.2.25) (2024-10-02)
+## [v0.2.24](https://github.com/openhotel/openhotel/compare/v0.2.23...v0.2.24) (2024-10-02)
 
 ### Features
 
@@ -807,17 +830,17 @@
 
 <a name="v0.2.20-rc.2"></a>
 
-## [v0.2.20-rc.2](https://github.com/openhotel/openhotel/compare/v0.2.19...v0.2.20-rc.2) (2024-09-29)
-
-
-<a name="v0.2.19"></a>
-
-## [v0.2.19](https://github.com/openhotel/openhotel/compare/v0.2.20-rc.1...v0.2.19) (2024-09-29)
+## [v0.2.20-rc.2](https://github.com/openhotel/openhotel/compare/v0.2.20-rc.1...v0.2.20-rc.2) (2024-09-29)
 
 
 <a name="v0.2.20-rc.1"></a>
 
-## [v0.2.20-rc.1](https://github.com/openhotel/openhotel/compare/v0.2.18...v0.2.20-rc.1) (2024-09-29)
+## [v0.2.20-rc.1](https://github.com/openhotel/openhotel/compare/v0.2.19...v0.2.20-rc.1) (2024-09-29)
+
+
+<a name="v0.2.19"></a>
+
+## [v0.2.19](https://github.com/openhotel/openhotel/compare/v0.2.18...v0.2.19) (2024-09-29)
 
 
 <a name="v0.2.18"></a>
@@ -1572,17 +1595,17 @@
 
 <a name="v0.0.7.alpha.1"></a>
 
-## [v0.0.7.alpha.1](https://github.com/openhotel/openhotel/compare/v0.0.6...v0.0.7.alpha.1) (2024-07-01)
-
-
-<a name="v0.0.6"></a>
-
-## [v0.0.6](https://github.com/openhotel/openhotel/compare/v0.0.7-alpha.21...v0.0.6) (2024-06-30)
+## [v0.0.7.alpha.1](https://github.com/openhotel/openhotel/compare/v0.0.7-alpha.21...v0.0.7.alpha.1) (2024-07-01)
 
 
 <a name="v0.0.7-alpha.21"></a>
 
-## [v0.0.7-alpha.21](https://github.com/openhotel/openhotel/compare/v0.0.5...v0.0.7-alpha.21) (2024-06-30)
+## [v0.0.7-alpha.21](https://github.com/openhotel/openhotel/compare/v0.0.6...v0.0.7-alpha.21) (2024-06-30)
+
+
+<a name="v0.0.6"></a>
+
+## [v0.0.6](https://github.com/openhotel/openhotel/compare/v0.0.5...v0.0.6) (2024-06-30)
 
 
 <a name="v0.0.5"></a>
