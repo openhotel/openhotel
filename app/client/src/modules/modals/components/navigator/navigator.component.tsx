@@ -136,7 +136,7 @@ export const NavigatorComponentWrapper: React.FC<Props> = ({
             backgroundAlpha={1}
             padding={{
               left: 4,
-              right: 0,
+              right: 3,
               bottom: 0,
               top: 1,
             }}
