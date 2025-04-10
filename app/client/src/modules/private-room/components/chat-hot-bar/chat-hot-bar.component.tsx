@@ -17,6 +17,7 @@ import { useProxy } from "shared/hooks";
 import {
   CHAT_RIGHT_MARGIN,
   HOT_BAR_HEIGHT,
+  MAX_MESSAGE_LENGTH,
   MAX_MESSAGES_HISTORY,
   STORAGE_KEY,
 } from "shared/consts";
@@ -190,6 +191,7 @@ export const ChatHotBarComponent: React.FC<Props> = ({ width = 0 }) => {
             color: 0x1,
             alpha: 0.5,
           }}
+          maxLength={MAX_MESSAGE_LENGTH}
           backgroundColor={0xff00ff}
           backgroundAlpha={0}
           onEnter={onSendMessage}
