@@ -3846,7 +3846,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:^8.5.1, postcss@npm:^8.5.3":
+"postcss@npm:^8.5.2, postcss@npm:^8.5.3":
   version: 8.5.3
   resolution: "postcss@npm:8.5.3"
   dependencies:
@@ -4228,7 +4228,7 @@ __metadata:
     storybook: "npm:8.5.1"
     storybook-dark-mode: "npm:4.0.2"
     ulidx: "npm:2.4.1"
-    vite: "npm:6.1.0"
+    vite: "npm:6.1.4"
     vite-tsconfig-paths: "npm:5.1.4"
     vitest: "npm:3.0.7"
     yaml: "npm:2.5.0"
@@ -4839,13 +4839,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:6.1.0":
-  version: 6.1.0
-  resolution: "vite@npm:6.1.0"
+"vite@npm:6.1.4":
+  version: 6.1.4
+  resolution: "vite@npm:6.1.4"
   dependencies:
     esbuild: "npm:^0.24.2"
     fsevents: "npm:~2.3.3"
-    postcss: "npm:^8.5.1"
+    postcss: "npm:^8.5.2"
     rollup: "npm:^4.30.1"
   peerDependencies:
     "@types/node": ^18.0.0 || ^20.0.0 || >=22.0.0
@@ -4887,7 +4887,7 @@ __metadata:
       optional: true
   bin:
     vite: bin/vite.js
-  checksum: 10c0/e1cad1cfbd29923a37d2dbd60f7387901ed8356758073a0226cbe844fd032425ba3bf41651332cab4965d5c54d0b51d208889ff32ce81bd282d230c0c9f0f8f1
+  checksum: 10c0/35ee0429b07a8684dbe5bce18810f0b30bc920919b5808b32e46d4463bc3408847c78680e78517952c39212c418ce68699b3437086ec01d94096e32d87a0b05e
   languageName: node
   linkType: hard
 
