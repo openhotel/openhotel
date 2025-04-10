@@ -7,7 +7,7 @@ export type FurnitureDirectionTexture = {
   bounds: Size2d;
   pivot: Point2d;
   zIndex: number;
-  hitArea: number[];
+  hitArea?: number[];
 };
 
 export type FurnitureDirectionData = {
@@ -29,6 +29,7 @@ export type FurnitureData = {
     texture: string;
     bounds: Size2d;
   };
+  size: Size3d;
 };
 
 export type BaseFurniture = {
@@ -40,7 +41,7 @@ export type BaseFurniture = {
 };
 
 export type RoomFurnitureBase = {
-  type: FurnitureType.FURNITURE | FurnitureType.TELEPORT;
+  type: FurnitureType.FURNITURE;
 } & BaseFurniture;
 
 export type RoomFurnitureFrame = {

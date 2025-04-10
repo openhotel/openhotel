@@ -1,1 +1,1 @@
-export * from "./write-contributors.utils.ts";
+export * from "./write-contributors.utils";

@@ -1,0 +1,40 @@
+id: flags@pirate
+type: frame
+version: 3
+icon:
+  texture: icon
+  bounds:
+    width: 18
+    height: 22
+size:
+  width: 17
+  height: 26
+  depth: 0
+direction:
+  north:
+    textures:
+      - texture: east
+        bounds:
+          width: 34
+          height: 43
+        pivot:
+          x: 0
+          y: 0
+        position:
+          x: 0
+          z: 0
+        zIndex: 0
+  east:
+    textures:
+      - texture: north
+        bounds:
+          width: 34
+          height: 43
+        pivot:
+          x: 0
+          y: 0
+        position:
+          x: 0
+          z: 0
+        zIndex: 0
+actions: []

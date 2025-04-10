@@ -9,7 +9,7 @@ import {
 import { FurnitureType, ProxyEvent, RoomPointEnum } from "shared/enums/main.ts";
 import { System } from "modules/system/main.ts";
 import { getInterpolatedPath } from "shared/utils/pathfinding.utils.ts";
-import { WALKABLE_FURNITURE_TYPE } from "shared/consts/main.ts";
+import { WALKABLE_FURNITURE_TYPE, TILE_Y_HEIGHT } from "shared/consts/main.ts";
 import { Direction, isPoint3dEqual, Point3d } from "@oh/utils";
 import { Grid } from "@oh/pathfinding";
 import { getBaseRoomGrid } from "shared/utils/rooms.utils.ts";
@@ -47,38 +47,40 @@ export const getRoom =
         startPosition.y = getYFromPoint(startPosition);
       }
 
-      $user.setRoom(room.id);
+      const mapUser = (user: User) => ({
+        accountId: user.accountId,
+        username: user.username,
+        position: user.position,
+        positionUpdatedAt: user.positionUpdatedAt,
+        bodyDirection: user.bodyDirection,
+      });
+
       $user.setPosition(startPosition);
       $user.setBodyDirection(getSpawnDirection());
 
+      //Add user to room
+      emit(ProxyEvent.ADD_HUMAN, { user: mapUser($user.getObject()) });
+
+      roomUserMap[room.id].push($user.getAccountId());
+      //Load room to user
+      $user.emit(ProxyEvent.LOAD_ROOM, {
+        room: {
+          ...getObject(),
+          users: getUsers()
+            .map((accountId) =>
+              System.game.users.get({ accountId }).getObject(),
+            )
+            .map(mapUser),
+          ownerUsername: await getOwnerUsername(),
+        },
+      });
+
+      $user.setRoom(room.id);
       //Add user to "room" internally
       System.proxy.$emit(ProxyEvent.$ADD_ROOM, {
         accountId: $user.getAccountId(),
         roomId: getId(),
       });
-
-      //Load room to user
-      $user.emit(ProxyEvent.LOAD_ROOM, {
-        room: {
-          ...getObject(),
-          ownerUsername: await getOwnerUsername(),
-        },
-      });
-
-      //Add user to room
-      emit(ProxyEvent.ADD_HUMAN, { user: $user.getObject() });
-
-      //Send every existing user inside room to the user
-      for (const accountId of getUsers()) {
-        const user = System.game.users.get({ accountId });
-        if (!user) continue;
-
-        $user.emit(ProxyEvent.ADD_HUMAN, {
-          user: user.getObject(),
-        });
-      }
-
-      roomUserMap[room.id].push($user.getAccountId());
     };
     const removeUser = (user: User, moveToAnotherRoom: boolean = false) => {
       const $user = System.game.users.get({ accountId: user.accountId });
@@ -188,20 +190,38 @@ export const getRoom =
       return pathfinding;
     };
 
+    const $getFurnitureYPosition = async (
+      position: Point3d,
+    ): Promise<number> => {
+      const pointFurnitureList = getFurnitureFromPoint(position);
+      const pointFurnitureDataList = await Promise.all(
+        [
+          ...new Set(
+            pointFurnitureList.map((furniture) => furniture.furnitureId),
+          ),
+        ].map(System.game.furniture.get),
+      );
+      return pointFurnitureList.reduce(
+        (y, furniture) =>
+          Math.max(
+            y,
+            furniture.position.y +
+              (pointFurnitureDataList.find(
+                ($furniture) => $furniture.id === furniture.furnitureId,
+              )?.size?.height ?? 0),
+          ),
+        getYFromPoint(position) * TILE_Y_HEIGHT,
+      );
+    };
+
     const addFurniture = async (furniture: RoomFurniture) => {
-      furniture.position = {
-        ...furniture.position,
-        y: getYFromPoint(furniture.position),
-      };
+      furniture.position.y = await $getFurnitureYPosition(furniture.position);
       $room.furniture.push(furniture);
 
       await $save();
     };
     const updateFurniture = async (furniture: RoomFurniture) => {
-      furniture.position = {
-        ...furniture.position,
-        y: getYFromPoint(furniture.position),
-      };
+      furniture.position.y = await $getFurnitureYPosition(furniture.position);
       $room.furniture = $room.furniture.map(($furniture) =>
         furniture.id === $furniture.id ? furniture : $furniture,
       );
@@ -217,6 +237,14 @@ export const getRoom =
       await $save();
     };
     const getFurniture = (): RoomFurniture[] => $room.furniture;
+
+    const getFurnitureFromPoint = (
+      point: Omit<Point3d, "y">,
+    ): RoomFurniture[] =>
+      $room.furniture.filter(
+        (furniture) =>
+          furniture.position.x === point.x && furniture.position.z === point.z,
+      );
 
     const getYFromPoint = (point: Partial<Point3d>): number | null => {
       if (!room?.layout?.[point.z]) return null;
@@ -276,6 +304,7 @@ export const getRoom =
       updateFurniture,
       removeFurniture,
       getFurniture,
+      getFurnitureFromPoint,
 
       getObject,
 

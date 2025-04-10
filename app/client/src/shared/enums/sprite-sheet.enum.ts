@@ -1,15 +1,13 @@
 export enum SpriteSheetEnum {
+  DEFAULT_FONT = "fonts/default/default.json",
+  BOLD_FONT = "fonts/bold/bold.json",
+
+  CHARACTER = "character/character.json",
   ROOM = "room/room.json",
-  HUMAN = "human/human.json",
 
-  DEFAULT_FONT = "default-font/default-font.json",
-  BOLD_FONT = "bold-font/bold-font.json",
+  UI = "ui/ui.json",
 
-  SPINNER = "spinner/spinner.json",
-
-  UI = "ui/sheet.json",
-  NAVIGATOR = "navigator/sheet.json",
-  CATALOG = "catalog/sheet.json",
+  HOT_BAR_ICONS = "hot-bar-icons/hot-bar-icons.json",
 
   FURNITURE_DUMMY = "furniture/dummy/sheet.json",
 }

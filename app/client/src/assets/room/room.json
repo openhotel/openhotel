@@ -1,0 +1,89 @@
+{
+  "frames": {
+    "wall-x-top": {
+      "frame": { "x": 0, "y": 0, "w": 30, "h": 15 },
+      "sourceSize": { "w": 30, "h": 15 },
+      "anchor": { "x": 0, "y": 0 }
+    },
+    "wall-x-mid": {
+      "frame": { "x": 0, "y": 16, "w": 30, "h": 3 },
+      "sourceSize": { "w": 30, "h": 3 },
+      "anchor": { "x": 0, "y": 0 }
+    },
+    "wall-x-bottom": {
+      "frame": { "x": 0, "y": 20, "w": 30, "h": 13 },
+      "sourceSize": { "w": 30, "h": 13 },
+      "anchor": { "x": 0, "y": 0 }
+    },
+    "wall-z-top": {
+      "frame": { "x": 30, "y": 0, "w": 30, "h": 15 },
+      "sourceSize": { "w": 30, "h": 15 },
+      "anchor": { "x": 0, "y": 0 }
+    },
+    "wall-z-mid": {
+      "frame": { "x": 30, "y": 16, "w": 30, "h": 3 },
+      "sourceSize": { "w": 30, "h": 3 },
+      "anchor": { "x": 0, "y": 0 }
+    },
+    "wall-z-bottom": {
+      "frame": { "x": 30, "y": 20, "w": 30, "h": 13 },
+      "sourceSize": { "w": 30, "h": 13 },
+      "anchor": { "x": 0, "y": 0 }
+    },
+    "wall-f-top": {
+      "frame": { "x": 60, "y": 0, "w": 12, "h": 6 },
+      "sourceSize": { "w": 12, "h": 6 },
+      "anchor": { "x": 0, "y": 0 }
+    },
+    "wall-f-mid": {
+      "frame": { "x": 60, "y": 7, "w": 12, "h": 3 },
+      "sourceSize": { "w": 12, "h": 3 },
+      "anchor": { "x": 0, "y": 0 }
+    },
+    "wall-f-bottom": {
+      "frame": { "x": 60, "y": 11, "w": 12, "h": 4 },
+      "sourceSize": { "w": 12, "h": 4 },
+      "anchor": { "x": 0, "y": 0 }
+    },
+    "wall-b": {
+      "frame": { "x": 72, "y": 0, "w": 10, "h": 6 },
+      "sourceSize": { "w": 10, "h": 6 },
+      "anchor": { "x": 0, "y": 0 }
+    },
+    "tile": {
+      "frame": { "x": 72, "y": 6, "w": 50, "h": 30 },
+      "sourceSize": { "w": 50, "h": 30 },
+      "anchor": { "x": 0, "y": 0 }
+    },
+    "tile-preview": {
+      "frame": { "x": 0, "y": 81, "w": 46, "h": 24 },
+      "sourceSize": { "w": 46, "h": 24 },
+      "anchor": { "x": 0, "y": 0 }
+    },
+    "stairs-x": {
+      "frame": { "x": 0, "y": 33, "w": 50, "h": 48 },
+      "sourceSize": { "w": 50, "h": 48 },
+      "anchor": { "x": 0, "y": 0 }
+    },
+    "stairs-z": {
+      "frame": { "x": 50, "y": 36, "w": 50, "h": 48 },
+      "sourceSize": { "w": 50, "h": 48 },
+      "anchor": { "x": 0, "y": 0 }
+    },
+    "stairs-preview": {
+      "frame": { "x": 46, "y": 84, "w": 50, "h": 48 },
+      "sourceSize": { "w": 50, "h": 48 },
+      "anchor": { "x": 0, "y": 0 }
+    }
+  },
+  "animations": {},
+  "meta": {
+    "format": "RGBA8888",
+    "image": "room.png",
+    "size": {
+      "w": 128,
+      "h": 128
+    },
+    "scale": 1
+  }
+}
