@@ -22,7 +22,6 @@
     "worker_ionic": "https://deno.land/x/worker_ionic@v1.4.2/mod.ts",
 
     "@zip-js": "jsr:@zip-js/zip-js@2.7.53",
-    "@std/ulid": "jsr:@std/ulid@1",
 
     "imagescript": "https://deno.land/x/imagescript@1.3.0/mod.ts"
   },

@@ -36,7 +36,7 @@ export default {
   down: async (db: DbMutable) => {},
 } as Migration;
 
-const OWNER_ID = "edd8081d-d160-4bf4-b89b-133d046c87ff";
+const OWNER_ID = "01J2H3CDB0C14XBWZKH8Z1QYW3";
 export const DEFAULT_ROOMS = [
   {
     version: 1,

@@ -1,5 +1,5 @@
 import { stringify } from "yaml";
-import { writeFile } from "fs/promises";
+import { writeFile } from "node:fs";
 
 interface Contributor {
   login: string;

@@ -1,0 +1,129 @@
+{
+  "frames": {
+    "ui-base-modal": {
+      "frame": { "x": 0, "y": 0, "w": 37, "h": 43 },
+      "sourceSize": { "w": 37, "h": 43 },
+      "anchor": { "x": 0, "y": 0 }
+    },
+    "ui-base-modal-bar-tile": {
+      "frame": { "x": 7, "y": 4, "w": 6, "h": 9 },
+      "sourceSize": { "w": 6, "h": 9 },
+      "anchor": { "x": 0, "y": 0 }
+    },
+    "ui-tab-modal": {
+      "frame": { "x": 0, "y": 43, "w": 37, "h": 50 },
+      "sourceSize": { "w": 37, "h": 50 },
+      "anchor": { "x": 0, "y": 0 }
+    },
+    "ui-tab-modal-bar-tile": {
+      "frame": { "x": 7, "y": 47, "w": 6, "h": 9 },
+      "sourceSize": { "w": 6, "h": 9 },
+      "anchor": { "x": 0, "y": 0 }
+    },
+    "ui-tab-button-left-unselected": {
+      "frame": { "x": 106, "y": 22, "w": 9, "h": 23 },
+      "sourceSize": { "w": 9, "h": 23 },
+      "anchor": { "x": 0, "y": 0 }
+    },
+    "ui-tab-button-mid-unselected": {
+      "frame": { "x": 115, "y": 22, "w": 7, "h": 18 },
+      "sourceSize": { "w": 7, "h": 18 },
+      "anchor": { "x": 0, "y": 0 }
+    },
+    "ui-tab-button-right-unselected": {
+      "frame": { "x": 122, "y": 22, "w": 9, "h": 18 },
+      "sourceSize": { "w": 9, "h": 18 },
+      "anchor": { "x": 0, "y": 0 }
+    },
+    "ui-tab-button-left-selected": {
+      "frame": { "x": 106, "y": 45, "w": 9, "h": 23 },
+      "sourceSize": { "w": 9, "h": 23 },
+      "anchor": { "x": 0, "y": 0 }
+    },
+    "ui-tab-button-mid-selected": {
+      "frame": { "x": 115, "y": 45, "w": 7, "h": 18 },
+      "sourceSize": { "w": 7, "h": 18 },
+      "anchor": { "x": 0, "y": 0 }
+    },
+    "ui-tab-button-right-selected": {
+      "frame": { "x": 122, "y": 45, "w": 9, "h": 18 },
+      "sourceSize": { "w": 9, "h": 18 },
+      "anchor": { "x": 0, "y": 0 }
+    },
+    "ui-pda-modal": {
+      "frame": { "x": 0, "y": 93, "w": 41, "h": 47 },
+      "sourceSize": { "w": 41, "h": 47 },
+      "anchor": { "x": 0, "y": 0 }
+    },
+    "ui-pda-modal-bar-tile": {
+      "frame": { "x": 7, "y": 97, "w": 6, "h": 9 },
+      "sourceSize": { "w": 6, "h": 9 },
+      "anchor": { "x": 0, "y": 0 }
+    },
+    "ui-purse-modal": {
+      "frame": { "x": 41, "y": 0, "w": 65, "h": 151 },
+      "sourceSize": { "w": 65, "h": 151 },
+      "anchor": { "x": 0, "y": 0 }
+    },
+    "ui-purse-modal-bar-tile": {
+      "frame": { "x": 60, "y": 4, "w": 6, "h": 9 },
+      "sourceSize": { "w": 6, "h": 9 },
+      "anchor": { "x": 0, "y": 0 }
+    },
+    "ui-button": {
+      "frame": { "x": 106, "y": 96, "w": 11, "h": 11 },
+      "sourceSize": { "w": 11, "h": 11 },
+      "anchor": { "x": 0, "y": 0 }
+    },
+    "ui-button-left-slice": {
+      "frame": { "x": 106, "y": 96, "w": 9, "h": 11 },
+      "sourceSize": { "w": 9, "h": 11 },
+      "anchor": { "x": 0, "y": 0 }
+    },
+    "ui-button-right-slice": {
+      "frame": { "x": 108, "y": 96, "w": 9, "h": 11 },
+      "sourceSize": { "w": 9, "h": 11 },
+      "anchor": { "x": 0, "y": 0 }
+    },
+    "arrow": {
+      "frame": { "x": 22, "y": 155, "w": 3, "h": 5 },
+      "sourceSize": { "w": 3, "h": 5 },
+      "anchor": { "x": 0, "y": 0 }
+    },
+    "heart-empty": {
+      "frame": { "x": 48, "y": 153, "w": 7, "h": 7 },
+      "sourceSize": { "w": 7, "h": 7 },
+      "anchor": { "x": 0, "y": 0 }
+    },
+    "heart-full": {
+      "frame": { "x": 55, "y": 153, "w": 7, "h": 7 },
+      "sourceSize": { "w": 7, "h": 7 },
+      "anchor": { "x": 0, "y": 0 }
+    },
+    "bubble-message": {
+      "frame": { "x": 131, "y": 33, "w": 16, "h": 14 },
+      "sourceSize": { "w": 16, "h": 14 },
+      "anchor": { "x": 0, "y": 0 }
+    },
+    "bubble-message-ring": {
+      "frame": { "x": 131, "y": 19, "w": 16, "h": 14 },
+      "sourceSize": { "w": 16, "h": 14 },
+      "anchor": { "x": 0, "y": 0 }
+    },
+    "bubble-user": {
+      "frame": { "x": 147, "y": 19, "w": 12, "h": 10 },
+      "sourceSize": { "w": 12, "h": 10 },
+      "anchor": { "x": 0, "y": 0 }
+    }
+  },
+  "animations": {},
+  "meta": {
+    "format": "RGBA8888",
+    "image": "ui.png",
+    "size": {
+      "w": 160,
+      "h": 160
+    },
+    "scale": 1
+  }
+}

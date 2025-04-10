@@ -1,5 +1,5 @@
 import { Plugin } from "vite";
-import { writeContributors } from "../utils/index.ts";
+import { writeContributors } from "../utils";
 
 export const build = (): Plugin => ({
   name: "build",

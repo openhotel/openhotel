@@ -1,0 +1,66 @@
+id: toys@octopus-0
+type: furniture
+version: 2
+icon:
+  texture: icon
+  bounds:
+    width: 25
+    height: 17
+size:
+  width: 1
+  height: 12
+  depth: 1
+direction:
+  north:
+    textures:
+      - texture: north
+        bounds:
+          width: 34
+          height: 24
+        pivot:
+          x: 0
+          "y": 8
+        position:
+          x: 0
+          z: 0
+        zIndex: 0
+  east:
+    textures:
+      - texture: east
+        bounds:
+          width: 34
+          height: 24
+        pivot:
+          x: 0
+          "y": 8
+        position:
+          x: 0
+          z: 0
+        zIndex: 0
+  south:
+    textures:
+      - texture: south
+        bounds:
+          width: 34
+          height: 24
+        pivot:
+          x: 0
+          "y": 8
+        position:
+          x: 0
+          z: 0
+        zIndex: 0
+  west:
+    textures:
+      - texture: west
+        bounds:
+          width: 34
+          height: 24
+        pivot:
+          x: 0
+          "y": 8
+        position:
+          x: 0
+          z: 0
+        zIndex: 0
+actions: []

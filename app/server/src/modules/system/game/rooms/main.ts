@@ -18,6 +18,8 @@ export const rooms = () => {
   const get = async <Room extends RoomMutable>(
     roomId: string,
   ): Promise<Room | null> => {
+    if (!roomId) return null;
+
     const privateRoomFound = await $$private.get(roomId);
     if (privateRoomFound) return privateRoomFound as Room;
 

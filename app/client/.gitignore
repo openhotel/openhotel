@@ -5,3 +5,5 @@ node_modules
 .vite
 $vite.config.ts
 .yarn
+*storybook.log
+vite.config.ts*

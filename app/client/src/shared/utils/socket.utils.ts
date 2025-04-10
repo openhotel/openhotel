@@ -34,6 +34,20 @@ const getRandomString = (length: number) => {
   return result;
 };
 
+export type ClientSocketMutable = {
+  connect: () => Promise<unknown>;
+  emit: <Event>(
+    event: string | Event,
+    message?: any,
+    response?: (message?: any) => void,
+  ) => void;
+  on: (
+    event: "connected" | "disconnected" | "error" | string,
+    callback: (data?: any) => void,
+  ) => () => void;
+  close: () => void;
+};
+
 export const getClientSocket = ({
   url,
   reconnect = true,
@@ -41,7 +55,7 @@ export const getClientSocket = ({
   reconnectInterval = 1_000,
   silent = false,
   protocols = [],
-}: Props) => {
+}: Props): ClientSocketMutable => {
   const events: Record<string, Function[]> = {};
 
   let socket;
