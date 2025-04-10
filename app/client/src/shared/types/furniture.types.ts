@@ -41,7 +41,7 @@ export type BaseFurniture = {
 };
 
 export type RoomFurnitureBase = {
-  type: FurnitureType.FURNITURE | FurnitureType.TELEPORT;
+  type: FurnitureType.FURNITURE;
 } & BaseFurniture;
 
 export type RoomFurnitureFrame = {

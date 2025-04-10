@@ -1,5 +1,4 @@
 import { Size2d } from "shared/types";
-import { TILE_SIZE } from "shared/consts";
 
 type BorderPolygonProps = {
   size: Size2d;

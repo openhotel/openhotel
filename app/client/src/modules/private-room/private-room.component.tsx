@@ -21,7 +21,12 @@ import {
 } from "@oh/pixi-components";
 import { useAccount, usePrivateRoom, useProxy } from "shared/hooks";
 import { Point2d, Point3d } from "shared/types";
-import { CrossDirection, Direction, Event as ProxyEvent } from "shared/enums";
+import {
+  CrossDirection,
+  Direction,
+  Event as ProxyEvent,
+  PrivateRoomPreviewType,
+} from "shared/enums";
 import {
   ChatHotBarComponent,
   RoomCharactersComponent,
@@ -46,7 +51,7 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
   const { getAccount } = useAccount();
   const { setExtra } = useInfo();
   const { emit } = useProxy();
-  const { room, setSelectedPreview } = usePrivateRoom();
+  const { room, setSelectedPreview, selectedPreview } = usePrivateRoom();
   const { lastUpdate, update } = useUpdate();
 
   const { on: onEvent } = useEvents();
@@ -111,8 +116,24 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
         `// wallX:${wallDataPoint[1]?.x ?? 0} wallY:${wallDataPoint[1]?.y ?? 0}`,
         `<<  WALL`,
       ].join(" "),
+      null,
+      selectedPreview
+        ? [
+            PrivateRoomPreviewType[selectedPreview.type],
+            selectedPreview.title,
+            selectedPreview.id,
+          ].join(" ")
+        : null,
     ]);
-  }, [room, setExtra, roomPosition, hoverTileData, currentUser, wallDataPoint]);
+  }, [
+    room,
+    setExtra,
+    roomPosition,
+    hoverTileData,
+    currentUser,
+    wallDataPoint,
+    selectedPreview,
+  ]);
 
   useEffect(() => {
     if (!room) return;

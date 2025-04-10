@@ -54,7 +54,7 @@ const fillDemoRoom = async (room: PrivateRoomMutable) => {
       id: ulid(),
       direction: side ? CrossDirection.EAST : CrossDirection.NORTH,
       position: { x: side ? row : col, y: 0, z: side ? col : row },
-      framePosition: { x: 0, y: odd ? 75 : 25 },
+      framePosition: { x: 1, y: odd ? 75 : 25 },
     };
 
     await room.addFurniture(frame);

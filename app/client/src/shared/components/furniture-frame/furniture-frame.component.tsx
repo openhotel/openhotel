@@ -158,6 +158,29 @@ export const FurnitureFrameComponentWrapper: React.FC<PropsWrapper> = ({
                 zIndex={$zIndex}
                 position={$$position}
                 eventMode={EventMode.NONE}
+                // mask={
+                //   <GraphicsComponent
+                //     type={GraphicType.POLYGON}
+                //     tint={0xff00ff}
+                //     polygon={[
+                //       0,
+                //       0,
+                //       TILE_SIZE.width / 2,
+                //       0,
+                //       TILE_SIZE.width / 2,
+                //       bounds.height,
+                //       0,
+                //       bounds.height,
+                //     ]}
+                //     zIndex={SAFE_Z_INDEX + $zIndex}
+                //     pivot={{
+                //       x:
+                //         direction === CrossDirection.NORTH
+                //           ? TILE_WIDTH / 2 - 1
+                //           : -TILE_WIDTH - TILE_WIDTH / 2 + 1,
+                //     }}
+                //   />
+                // }
               />
 
               <GraphicsComponent

@@ -41,6 +41,7 @@ export type RoomMessage = {
 };
 
 export type PrivateRoomPreview = {
+  id: string;
   type: PrivateRoomPreviewType;
   data: unknown;
   title: string;

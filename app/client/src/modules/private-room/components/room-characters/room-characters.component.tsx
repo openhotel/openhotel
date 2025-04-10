@@ -48,6 +48,7 @@ export const RoomCharactersComponent: React.FC = () => {
   const onPointerDown = useCallback(
     (user: User) => () => {
       setSelectedPreview({
+        id: user.accountId,
         type: PrivateRoomPreviewType.CHARACTER,
         data: user,
         title: user.username,

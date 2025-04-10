@@ -27,9 +27,14 @@ export const RoomInfoComponent: React.FC = () => {
       align={FLEX_ALIGN.TOP}
     >
       <TextComponent text={room.title} {...TEXT_BACKGROUND_BASE} />
-      <TextComponent text={room.description} {...TEXT_BACKGROUND_BASE} />
+      <TextComponent
+        alpha={0.6}
+        text={room.description}
+        {...TEXT_BACKGROUND_BASE}
+      />
       {room.ownerUsername ? (
         <TextComponent
+          alpha={0.6}
           text={`by ${room.ownerUsername}`}
           {...TEXT_BACKGROUND_BASE}
         />

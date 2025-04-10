@@ -29,7 +29,6 @@ export const isWallRenderable = ({
   )
     return false;
 
-  if (x === 0 && z === 0) console.log("<><<<");
   for (let j = direction === CrossDirection.NORTH ? 1 : 0; j < z + 1; j++) {
     for (let i = direction === CrossDirection.NORTH ? 0 : 1; i < x + 1; i++) {
       const currentPoint = layout[z - j][x - i];

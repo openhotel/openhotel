@@ -6,7 +6,12 @@ import {
   GraphicType,
   SpriteComponent,
 } from "@oh/pixi-components";
-import { DUMMY_FURNITURE_DATA, SAFE_Z_INDEX, TILE_SIZE } from "shared/consts";
+import {
+  DUMMY_FURNITURE_DATA,
+  FURNITURE_SAFE_TILE_MARGIN,
+  SAFE_Z_INDEX,
+  TILE_SIZE,
+} from "shared/consts";
 import { CrossDirection } from "shared/enums";
 import { FurnitureData, Point3d } from "shared/types";
 import { getPositionFromIsometricPosition } from "shared/utils";
@@ -101,12 +106,12 @@ export const FurnitureComponentWrapper: React.FC<PropsWrapper> = ({
                   hitArea ??
                   getCubePolygon({
                     width: TILE_SIZE.width,
-                    height: $size.height,
+                    height: $size.height - FURNITURE_SAFE_TILE_MARGIN,
                   })
                 }
                 pivot={{
                   x: -1,
-                  y: 0,
+                  y: FURNITURE_SAFE_TILE_MARGIN,
                 }}
                 zIndex={SAFE_Z_INDEX + $zIndex}
                 position={$position}

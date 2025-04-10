@@ -89,4 +89,4 @@ export const DUMMY_FURNITURE_FRAME_DATA: FurnitureData = {
   spriteSheet: SpriteSheetEnum.FURNITURE_DUMMY,
 };
 
-export const DEFAULT_FURNITURE = "default@furniture";
+export const FURNITURE_SAFE_TILE_MARGIN = 4;
