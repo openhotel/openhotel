@@ -8,6 +8,7 @@
     "noUnusedLocals": true,
     "lib": ["es2023", "DOM"],
     "baseUrl": "./src",
-    "rootDir": "./src"
+    "rootDir": "./src",
+    "jsx": "react"
   }
 }

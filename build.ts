@@ -49,7 +49,7 @@ log(`Version: ${version}`, "yellow");
 
 const commandInstall = new Deno.Command(Deno.execPath(), {
   args: ["task", "install"],
-  stdout: debug ? "inherit" : "piped",
+  // stdout: debug ? "inherit" : "piped",
 });
 const installChild = await commandInstall.spawn();
 

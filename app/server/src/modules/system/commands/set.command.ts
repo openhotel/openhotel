@@ -8,9 +8,8 @@ import {
   isDoorRenderable,
   isWallRenderable,
 } from "shared/utils/rooms.utils.ts";
-import { TOP_WALL_HEIGHT, WALL_HEIGHT } from "shared/consts/wall.consts.ts";
-import { TILE_Y_HEIGHT, TILE_WIDTH } from "shared/consts/tiles.consts.ts";
 import { __ } from "shared/utils/languages.utils.ts";
+import { ulid } from "@std/ulid";
 
 export const setCommand: Command = {
   command: "set",
@@ -53,7 +52,7 @@ export const setCommand: Command = {
     const furniture: RoomFurniture = {
       furnitureId,
       type: $furniture.type,
-      id: crypto.randomUUID(),
+      id: ulid(),
       direction,
       position: {
         x,
@@ -103,58 +102,6 @@ export const setCommand: Command = {
           message: __(user.getLanguage())("Incorrect frame direction"),
         });
       }
-
-      // TODO: Defaults until furniture metadata is fully updated -> https://github.com/openhotel/asset-editor/issues/14
-      const frameHeight = $furniture?.size?.height || 25;
-      const frameWidth = $furniture?.size?.width || 17;
-
-      const maxX = TILE_WIDTH - Math.round(frameWidth / 2);
-      const minX = -Math.round(frameWidth / 2);
-      if (wallX > maxX)
-        return user.emit(ProxyEvent.SYSTEM_MESSAGE, {
-          message: __(user.getLanguage())(
-            "Frames cannot be placed beyond the allowed X position ({{x}})",
-            {
-              x: maxX,
-            },
-          ),
-        });
-      if (minX > wallX)
-        return user.emit(ProxyEvent.SYSTEM_MESSAGE, {
-          message: __(user.getLanguage())(
-            "Frames cannot be placed beyond the allowed X position ({{x}})",
-            {
-              x: minX,
-            },
-          ),
-        });
-
-      const previewY = -((parseInt(roomPoint + "") ?? 1) - 1);
-      const y = Math.floor(previewY);
-      const wallHeight = WALL_HEIGHT - y * TILE_Y_HEIGHT;
-      const maxY = Math.floor(
-        wallHeight - frameHeight / 2 - TOP_WALL_HEIGHT / 2,
-      );
-      const minY = Math.round(frameHeight / 2);
-
-      if (wallY > maxY)
-        return user.emit(ProxyEvent.SYSTEM_MESSAGE, {
-          message: __(user.getLanguage())(
-            "Frames cannot exceed the height of the wall ({{height}})",
-            {
-              height: maxY,
-            },
-          ),
-        });
-      if (minY > wallY)
-        return user.emit(ProxyEvent.SYSTEM_MESSAGE, {
-          message: __(user.getLanguage())(
-            "Frames cannot exceed the height of the wall ({{height}})",
-            {
-              height: minY,
-            },
-          ),
-        });
     }
 
     furniture.size = $furniture.size;

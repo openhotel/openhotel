@@ -1,6 +1,7 @@
 import { Command, CommandRoles } from "shared/types/main.ts";
 import { ProxyEvent } from "shared/enums/event.enum.ts";
 import { System } from "../main.ts";
+import { ulid } from "@std/ulid";
 
 export const whisperCommand: Command = {
   command: ["whisper", "w"],
@@ -25,6 +26,7 @@ export const whisperCommand: Command = {
     targetUser.setLastWhisper(user);
 
     const data = {
+      id: ulid(),
       accountId: user.getAccountId(),
       message,
       color: 0x1e1e1e,
