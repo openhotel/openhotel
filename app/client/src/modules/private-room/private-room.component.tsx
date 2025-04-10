@@ -69,6 +69,12 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
     [Point3d, Point2d, CrossDirection] | [null, null]
   >([null, null]);
 
+  const isDraggingRef = useRef(false);
+  const dragStartRef = useRef<Point2d | null>(null);
+  const [roomOffset, setRoomOffset] = useState<Point2d>({ x: 0, y: 0 });
+
+  const MARGIN = 50;
+
   const roomPosition = useMemo(() => {
     if (!roomSize) return { x: 0, y: 0 };
     return {
@@ -76,7 +82,29 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
       y: (windowSize.height - roomSize.height - HOT_BAR_HEIGHT_FULL) / 2,
     };
   }, [windowSize, lastUpdate, roomSize]);
-
+	
+	// const roomPosition = useMemo(() => {
+	// 	const roomSize = privateRoomRef?.current?.getSize?.();
+	//
+	// 	if (!roomSize) return { x: roomOffset.x, y: roomOffset.y };
+	//
+	// 	const baseX = (windowSize.width - roomSize.width) / 2 + roomOffset.x / 2;
+	// 	const baseY =
+	// 		(windowSize.height - roomSize.height - HOT_BAR_HEIGHT_FULL) / 2 +
+	// 		roomOffset.y / 2;
+	//
+	// 	const maxX = windowSize.width - roomSize.width + MARGIN;
+	// 	const maxY =
+	// 		windowSize.height - roomSize.height + MARGIN - HOT_BAR_HEIGHT_FULL;
+	// 	const minX = -MARGIN;
+	// 	const minY = -MARGIN;
+	//
+	// 	return {
+	// 		x: Math.max(minX, Math.min(baseX, maxX)),
+	// 		y: Math.max(minY, Math.min(baseY, maxY)),
+	// 	};
+	// }, [windowSize, lastUpdate]);
+	
   const currentAccountId = useMemo(() => getAccount().accountId, [getAccount]);
   const currentUser = useMemo(
     () => room?.users?.find((user) => user.accountId === currentAccountId),
@@ -185,6 +213,41 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
     }),
     [roomPosition, roomPivot],
   );
+
+  useEffect(() => {
+    if (!room) return;
+
+    const onRemovePointerDown = onEvent(Event.POINTER_DOWN, (e: MouseEvent) => {
+      dragStartRef.current = { x: e.clientX, y: e.clientY };
+      isDraggingRef.current = true;
+    });
+
+    const onRemovePointerMove = onEvent(Event.POINTER_MOVE, (e: MouseEvent) => {
+      if (!isDraggingRef.current || !dragStartRef.current) return;
+
+      const dx = e.clientX - dragStartRef.current.x;
+      const dy = e.clientY - dragStartRef.current.y;
+
+      setRoomOffset((prev) => ({
+        x: prev.x + dx,
+        y: prev.y + dy,
+      }));
+
+      dragStartRef.current = { x: e.clientX, y: e.clientY };
+      update();
+    });
+
+    const onRemovePointerUp = onEvent(Event.POINTER_UP, () => {
+      isDraggingRef.current = false;
+      dragStartRef.current = null;
+    });
+
+    return () => {
+      onRemovePointerDown();
+      onRemovePointerMove();
+      onRemovePointerUp();
+    };
+  }, [onEvent, update, room]);
 
   if (!room) return null;
 
