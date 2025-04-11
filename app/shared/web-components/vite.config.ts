@@ -28,7 +28,13 @@ export default defineConfig({
       formats: ["es"], // Supported formats
     },
     rollupOptions: {
-      external: ["react", "react-dom"],
+      external: ["react", "react-dom"], // Exclude peer dependencies
+      output: {
+        globals: {
+          react: "React",
+          "react-dom": "ReactDOM",
+        },
+      },
     },
   },
   css: {

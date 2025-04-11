@@ -1,13 +1,14 @@
 {
   "name": "@openhotel/components",
-  "license": "NC BY-SA 4.0",
-  "version": "0.2.1",
+  "license": "NC BY-NC-SA 4.0",
+  "version": "0.0.0",
   "type": "module",
   "main": "dist/index.es.js",
   "module": "dist/index.es.js",
   "types": "dist/index.d.ts",
   "files": [
-    "dist/**/*"
+    "dist/**/*",
+    "styles.scss"
   ],
   "engines": {
     "node": "22"
@@ -48,6 +49,7 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "build": "vite build",
-    "publish": "npm publish --provenance --access public"
+    "publish": "npm publish --provenance --access public",
+    "link": "npm link"
   }
 }
