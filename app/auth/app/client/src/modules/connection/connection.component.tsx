@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { RedirectComponent } from "shared/components";
-import { useConnection, useHotel, useRedirect } from "shared/hooks";
+import { useAccount, useConnection, useHotel, useRedirect } from "shared/hooks";
 import { PartialConnection } from "shared/types";
 import { arraysMatch } from "shared/utils";
 import { ButtonComponent } from "@openhotel/components";
@@ -9,6 +9,8 @@ import { ButtonComponent } from "@openhotel/components";
 export const ConnectionComponent: React.FC = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+
+  const { isLogged } = useAccount();
 
   const { add, get } = useConnection();
   const { get: getHotel } = useHotel();
@@ -43,7 +45,7 @@ export const ConnectionComponent: React.FC = () => {
   if (!state || !hotelId || !integrationId) return <RedirectComponent to="/" />;
 
   useEffect(() => {
-    if (!hotelId || !integrationId) return;
+    if (!isLogged || !hotelId || !integrationId) return;
 
     getHotel(hotelId, integrationId)
       .then((connection) => {
@@ -58,9 +60,11 @@ export const ConnectionComponent: React.FC = () => {
       .catch(({ status }) => {
         if (status === 403) navigate("/");
       });
-  }, [setConnection, getHotel, get, hotelId, integrationId]);
+  }, [setConnection, getHotel, get, hotelId, integrationId, isLogged]);
 
-  if (connection === undefined) return <div>loading...</div>;
+  if (isLogged === false) return <RedirectComponent to="/login" />;
+  if (isLogged === null || connection === undefined)
+    return <div>loading...</div>;
   if (connection === null) return <RedirectComponent to="/" />;
 
   return (
