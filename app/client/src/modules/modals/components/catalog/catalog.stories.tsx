@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from "@storybook/react";
 import React from "react";
-import { ModalProvider } from "shared/hooks";
+import { CameraProvider, ModalProvider } from "shared/hooks";
 import { CatalogComponent } from "./catalog.component";
 
 export default {
@@ -13,10 +13,13 @@ export default {
 
 type Story = StoryObj<typeof CatalogComponent>;
 
+//@ts-ignore
 export const Primary: Story = () => {
   return (
-    <ModalProvider>
-      <CatalogComponent />
-    </ModalProvider>
+    <CameraProvider>
+      <ModalProvider>
+        <CatalogComponent />
+      </ModalProvider>
+    </CameraProvider>
   );
 };

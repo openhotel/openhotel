@@ -12,3 +12,4 @@ export * from "./furniture";
 export * from "./version";
 export * from "./info";
 export * from "./bubble-message";
+export * from "./camera";
