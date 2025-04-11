@@ -3,7 +3,8 @@ import * as React from "react";
 // @ts-ignore
 import styles from "./nav-item.module.scss";
 import { cn } from "../../../../utils";
-import { BoxProps, ButtonComponent } from "../../../../components";
+import type { BoxProps } from "../../../../components";
+import { ButtonComponent } from "../../../../components";
 
 type Props = {
   className?: string;

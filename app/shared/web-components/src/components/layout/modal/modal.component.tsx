@@ -1,4 +1,4 @@
-import React, { CSSProperties } from "react";
+import type React from "react";
 //@ts-ignore
 import styles from "./modal.module.scss";
 import { cn } from "../../../utils";
@@ -6,7 +6,7 @@ import { cn } from "../../../utils";
 type Props = {
   children?: React.ReactNode;
   className?: string;
-  style?: CSSProperties;
+  style?: React.CSSProperties;
 };
 
 export const ModalComponent: React.FC<Props> = ({

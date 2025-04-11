@@ -3,7 +3,8 @@ import { cn } from "../../utils";
 
 //@ts-ignore
 import styles from "./card.module.scss";
-import { BoxComponent, BoxProps } from "../../components";
+import { BoxComponent } from "../../components";
+import type { BoxProps } from "../../components";
 
 type Props = {
   className?: string;

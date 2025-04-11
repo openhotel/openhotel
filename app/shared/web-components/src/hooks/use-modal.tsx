@@ -1,26 +1,21 @@
-import React, {
-  CSSProperties,
-  ReactNode,
-  useCallback,
-  useContext,
-  useRef,
-} from "react";
+import { createContext, useCallback, useContext, useRef } from "react";
+import type React from "react";
 import { ModalBackgroundComponent, ModalLayoutComponent } from "../components";
 import { createRoot } from "react-dom/client";
 
 type ModalState = {
   open: (props: {
-    children: ReactNode;
+    children: React.ReactNode;
     className?: string;
-    style?: CSSProperties;
+    style?: React.CSSProperties;
   }) => void;
   close: () => void;
 };
 
-const ModalContext = React.createContext<ModalState>(undefined);
+const ModalContext = createContext<ModalState>(undefined);
 
 type ModalProps = {
-  children: ReactNode;
+  children: React.ReactNode;
 };
 
 export const ModalProvider: React.FunctionComponent<ModalProps> = ({

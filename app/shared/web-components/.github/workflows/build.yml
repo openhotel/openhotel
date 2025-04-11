@@ -5,10 +5,9 @@ on:
   pull_request:
 
 jobs:
-  prettier:
-    name: "prettier"
+  build:
+    name: "build"
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
 
@@ -25,29 +24,6 @@ jobs:
 
       - name: run prettier checker
         run: yarn run prettier:check
-  build:
-    name: "build"
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        deno-version: [2.0.0]
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Install Node.js, NPM and Yarn
-        uses: actions/setup-node@v1
-        with:
-          node-version: 22.x
-
-      - name: Enable Corepack
-        run: corepack enable
-
-      - name: Install dependencies
-        run: yarn install --immutable
 
       - name: run build
         run: yarn run build
-
-      - name: check publish
-        run: yarn run publish:check

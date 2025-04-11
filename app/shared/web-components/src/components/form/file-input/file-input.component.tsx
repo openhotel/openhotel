@@ -6,10 +6,10 @@ import { cn } from "../../../utils";
 import { useCallback, useId, useState } from "react";
 import {
   BoxComponent,
-  BoxProps,
   extractBoxProps,
   UploadIconComponent,
 } from "../../../components";
+import type { BoxProps } from "../../../components";
 
 type Props = Partial<BoxProps> &
   React.HTMLProps<HTMLInputElement> & {

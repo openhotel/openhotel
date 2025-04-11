@@ -768,9 +768,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@oh/components@workspace:.":
+"@openhotel/components@workspace:.":
   version: 0.0.0-use.local
-  resolution: "@oh/components@workspace:."
+  resolution: "@openhotel/components@workspace:."
   dependencies:
     "@chromatic-com/storybook": "npm:^3.2.4"
     "@storybook/addon-essentials": "npm:^8.5.1"

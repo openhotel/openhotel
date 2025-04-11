@@ -9,7 +9,15 @@ export default defineConfig({
   plugins: [
     react(),
     dts({
-      insertTypesEntry: true, // Generates a types entry file
+      insertTypesEntry: true,
+      rollupTypes: true,
+      include: ["src"],
+      pathsToAliases: false,
+      compilerOptions: {
+        importsNotUsedAsValues: 1,
+        verbatimModuleSyntax: true, // Forces type-only imports
+        esModuleInterop: true,
+      },
     }),
     build(),
   ],
@@ -20,13 +28,7 @@ export default defineConfig({
       formats: ["es"], // Supported formats
     },
     rollupOptions: {
-      external: ["react", "react-dom"], // Exclude peer dependencies
-      output: {
-        globals: {
-          react: "React",
-          "react-dom": "ReactDOM",
-        },
-      },
+      external: ["react", "react-dom"],
     },
   },
   css: {

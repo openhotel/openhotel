@@ -1,5 +1,6 @@
 import React from "react";
-import { IconComponent, IconProps } from "../icon.component";
+import { IconComponent } from "../icon.component";
+import type { IconProps } from "../icon.component";
 
 export const NoSignalIconComponent: React.FC<IconProps> = ({
   fill = "white",

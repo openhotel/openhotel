@@ -12,6 +12,7 @@
     "sourceMap": false,
     "noUnusedLocals": true,
     "lib": ["dom", "esnext"],
+    "types": ["@types/*"],
     "outDir": "dist",
     "emitDeclarationOnly": true
   },

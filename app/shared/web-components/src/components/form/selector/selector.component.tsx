@@ -1,4 +1,4 @@
-import * as React from "react";
+import type React from "react";
 
 // @ts-ignore
 import styles from "./selector.module.scss";
@@ -8,8 +8,8 @@ import {
   ChevronDownIconComponent,
   CrossIconComponent,
   BoxComponent,
-  BoxProps,
 } from "../../../components";
+import type { BoxProps } from "../../../components";
 import { useClickOutside } from "../../../hooks";
 
 type Option = {

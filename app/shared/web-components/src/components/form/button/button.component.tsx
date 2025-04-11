@@ -3,7 +3,8 @@ import * as React from "react";
 // @ts-ignore
 import styles from "./button.module.scss";
 import { cn } from "../../../utils";
-import { BoxComponent, BoxProps, extractBoxProps } from "../../../components";
+import { BoxComponent, extractBoxProps } from "../../../components";
+import type { BoxProps } from "../../../components";
 
 type Props = {
   variant?: "plain" | "3d";

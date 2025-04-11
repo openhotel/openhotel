@@ -1,11 +1,12 @@
-import React, { ReactNode, useContext } from "react";
+import { createContext, useContext } from "react";
+import type React from "react";
 
 type _TemplateState = {};
 
-const _TemplateContext = React.createContext<_TemplateState>(undefined);
+const _TemplateContext = createContext<_TemplateState>(undefined);
 
 type _TemplateProps = {
-  children: ReactNode;
+  children: React.ReactNode;
 };
 
 export const _TemplateProvider: React.FunctionComponent<_TemplateProps> = ({

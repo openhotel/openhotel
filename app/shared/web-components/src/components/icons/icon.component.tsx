@@ -1,4 +1,4 @@
-import React from "react";
+import type React from "react";
 import { cn } from "../../utils";
 //@ts-ignore
 import styles from "./icon.module.scss";

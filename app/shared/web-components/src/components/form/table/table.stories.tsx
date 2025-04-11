@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { fn } from "@storybook/test";
 import { TableComponent } from "./table.component";
 
@@ -489,7 +489,7 @@ export const CursorPaginated = () => {
       cursor={cursor}
       onNext={handleNext}
       columns={columns}
-      data={data}
+      data={data as any}
       rowFunc={(row, columns) => (
         <tr key={row.id}>
           {columns.map((col) => (

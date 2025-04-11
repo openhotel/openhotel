@@ -4,7 +4,8 @@ import * as React from "react";
 import styles from "./input.module.scss";
 import { cn } from "../../../utils";
 import { useId } from "react";
-import { BoxComponent, BoxProps, extractBoxProps } from "../../../components";
+import { BoxComponent, extractBoxProps } from "../../../components";
+import type { BoxProps } from "../../../components";
 
 type Props = {
   className?: string;

@@ -7,9 +7,6 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        deno-version: [2.0.0]
 
     permissions:
       contents: read
@@ -28,7 +25,7 @@ jobs:
             console.log(tag)
 
       - name: Install Node.js, NPM and Yarn
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v4
         with:
           node-version: 22.x
 
@@ -44,7 +41,7 @@ jobs:
       - name: Add version to package.json
         uses: jaywcjlove/github-action-package@main
         with:
-          path: "./deno.json"
+          path: "./package.json"
           data: |
             {
               "version": "${{ steps.set_version.outputs.tag }}"
@@ -54,4 +51,6 @@ jobs:
         run: yarn run build
 
       - name: Publish package
-        run: yarn run publish
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

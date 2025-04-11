@@ -1,14 +1,11 @@
-import * as React from "react";
-import { FormEvent, useCallback, useState } from "react";
+import type React from "react";
+import { useCallback, useState } from "react";
 
 // @ts-ignore
 import styles from "./form.module.scss";
 import { cn } from "../../../utils";
-import {
-  BoxProps,
-  boxPropsToStyle,
-  extractBoxProps,
-} from "../../../components";
+import { boxPropsToStyle, extractBoxProps } from "../../../components";
+import type { BoxProps } from "../../../components";
 
 type ValidationFunction<Data = unknown> = (props: {
   value: string;
@@ -40,7 +37,7 @@ export const FormComponent: React.FC<Props> = ({
   const style = boxPropsToStyle(boxProps);
 
   const $onSubmit = useCallback(
-    async (event: FormEvent<HTMLFormElement>) => {
+    async (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
 
       const form = event.target as unknown as HTMLFormElement;

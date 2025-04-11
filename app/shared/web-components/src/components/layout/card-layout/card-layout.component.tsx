@@ -2,11 +2,8 @@ import * as React from "react";
 
 // @ts-ignore
 import styles from "./card-layout.module.scss";
-import {
-  BackgroundComponent,
-  BoxProps,
-  CardComponent,
-} from "../../../components";
+import { BackgroundComponent, CardComponent } from "../../../components";
+import type { BoxProps } from "../../../components";
 import { cn } from "../../../utils";
 
 type Props = {
