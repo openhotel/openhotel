@@ -69,7 +69,6 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
     [Point3d, Point2d, CrossDirection] | [null, null]
   >([null, null]);
 
-  const isDraggingRef = useRef(false);
   const wasDraggingRef = useRef(false);
   const dragStartRef = useRef<Point2d | null>(null);
   const dragCurrentRef = useRef<Point2d | null>(null);
@@ -227,14 +226,13 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
     const onRemovePointerDown = onEvent(Event.POINTER_DOWN, (e: MouseEvent) => {
       dragCurrentRef.current = { x: e.clientX, y: e.clientY };
       dragStartRef.current = { x: e.clientX, y: e.clientY };
-      isDraggingRef.current = true;
       wasDraggingRef.current = false;
     });
 
     const MOVEMENT_THRESHOLD = 5;
 
     const onRemovePointerMove = onEvent(Event.POINTER_MOVE, (e: MouseEvent) => {
-      if (!isDraggingRef.current || !dragCurrentRef.current) return;
+      if (!dragCurrentRef.current) return;
 
       const dx = e.clientX - dragCurrentRef.current.x;
       const dy = e.clientY - dragCurrentRef.current.y;
@@ -259,14 +257,13 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
     });
 
     const onRemovePointerUp = onEvent(Event.POINTER_UP, () => {
-      isDraggingRef.current = false;
       dragCurrentRef.current = null;
     });
 
     const onRemoveDisableCameraMovement = on(
       ProxyEvent.DISABLE_CAMERA_MOVEMENT,
       () => {
-        isDraggingRef.current = false;
+        dragCurrentRef.current = null;
       },
     );
 
