@@ -1,5 +1,6 @@
 import React, {
   useCallback,
+  useEffect,
   useImperativeHandle,
   useMemo,
   useRef,
@@ -7,9 +8,13 @@ import React, {
 } from "react";
 import { ContainerComponent, ContainerRef } from "@openhotel/pixi-components";
 import { CrossDirection, RoomPointEnum } from "shared/enums";
-import { isDoorRenderable, isWallRenderable } from "shared/utils";
-import { Point2d, Point3d, PrivateRoom } from "shared/types";
-import { WALL_DOOR_HEIGHT, WALL_HEIGHT } from "shared/consts";
+import {
+  getPositionFromIsometricPosition,
+  isDoorRenderable,
+  isWallRenderable,
+} from "shared/utils";
+import { Point2d, Point3d, PrivateRoom, Size2d } from "shared/types";
+import { WALL_DOOR_HEIGHT, WALL_HEIGHT, WALL_WIDTH } from "shared/consts";
 import {
   PrivateRoomStairs,
   PrivateRoomTile,
@@ -44,7 +49,12 @@ export const PrivateRoomComponent: React.FC<Props> = ({
   children,
 }) => {
   const $ref = useRef<ContainerRef>(null);
+  const $sizeRef = useRef<ContainerRef>(null);
 
+  const [rawRoomSize, setRawRoomSize] = useState<Size2d>({
+    width: 0,
+    height: 0,
+  });
   const [previewData, setPreviewData] = useState<PreviewTileData | null>(null);
 
   const $onHoverTile = useCallback(
@@ -55,14 +65,27 @@ export const PrivateRoomComponent: React.FC<Props> = ({
     [onHoverTile, setPreviewData],
   );
 
-  ref && useImperativeHandle(ref, () => $ref.current);
+  ref &&
+    useImperativeHandle(
+      ref,
+      () => ({
+        ...$ref.current,
+        getSize: () => $sizeRef?.current?.getSize?.() ?? rawRoomSize,
+      }),
+      [rawRoomSize],
+    );
 
-  const tilesAndWalls = useMemo(() => {
+  const [tilesAndWalls, pivot] = useMemo(() => {
     const list = [];
 
     const roomSize = {
       width: Math.max(...layout.map((line) => line.length)),
       depth: layout.length,
+    };
+
+    const accumulatedPivot = {
+      x: 0,
+      y: 0,
     };
 
     for (let z = 0; z < roomSize.depth; z++) {
@@ -80,16 +103,30 @@ export const PrivateRoomComponent: React.FC<Props> = ({
           ? CrossDirection.NORTH
           : CrossDirection.EAST;
 
+        const position = {
+          x,
+          z,
+          y,
+        };
+
+        const currentPosition = getPositionFromIsometricPosition(position);
+        const currentWallPosition = getPositionFromIsometricPosition({
+          ...position,
+          y: 0,
+        });
+        if (accumulatedPivot.x > currentPosition.x)
+          accumulatedPivot.x = currentPosition.x - WALL_WIDTH + 1;
+
         list.push(
           renderNorthStairs || renderEastStairs ? (
             <PrivateRoomStairs
               key={`stairs${x}.${z}`}
-              position={{ x, y: y, z }}
+              position={position}
               direction={stairsDirection}
-              onPointerDown={() => onPointerTile?.({ x, y, z })}
+              onPointerDown={() => onPointerTile?.(position)}
               onPointerEnter={() =>
                 $onHoverTile({
-                  point: { x, y, z },
+                  point: position,
                   type: "stairs",
                   direction: stairsDirection,
                 })
@@ -100,10 +137,10 @@ export const PrivateRoomComponent: React.FC<Props> = ({
             <PrivateRoomTile
               key={`tile${x}.${z}`}
               spawn={spawn}
-              position={{ x, y, z }}
-              onPointerDown={() => onPointerTile?.({ x, y, z })}
+              position={position}
+              onPointerDown={() => onPointerTile?.(position)}
               onPointerEnter={() =>
-                $onHoverTile({ point: { x, y, z }, type: "tile" })
+                $onHoverTile({ point: position, type: "tile" })
               }
               onPointerLeave={() => $onHoverTile(null)}
             />
@@ -131,12 +168,6 @@ export const PrivateRoomComponent: React.FC<Props> = ({
             position: { x, z },
             direction: CrossDirection.NORTH,
           });
-
-          const position = {
-            x,
-            z,
-            y,
-          };
 
           const $onClickWall =
             (direction: CrossDirection) => (point: Point2d) =>
@@ -169,6 +200,11 @@ export const PrivateRoomComponent: React.FC<Props> = ({
               />,
             );
 
+          if (renderEastWall || renderNorthWall) {
+            const target = currentWallPosition.y - WALL_HEIGHT;
+            if (accumulatedPivot.y > target) accumulatedPivot.y = target;
+          }
+
           const wallDoorDirection = renderNorthDoorWall
             ? CrossDirection.NORTH
             : CrossDirection.EAST;
@@ -189,20 +225,37 @@ export const PrivateRoomComponent: React.FC<Props> = ({
       }
     }
 
-    return list;
+    return [list, accumulatedPivot];
   }, [layout, onPointerTile, $onHoverTile]);
 
+  useEffect(() => {
+    setRawRoomSize((size) => $sizeRef?.current?.getSize?.() ?? size);
+  }, [setRawRoomSize, tilesAndWalls]);
+
+  const renderRoomSize = useMemo(
+    () =>
+      rawRoomSize.width && rawRoomSize.height ? null : (
+        <ContainerComponent ref={$sizeRef} alpha={0}>
+          {tilesAndWalls}
+        </ContainerComponent>
+      ),
+    [tilesAndWalls, rawRoomSize],
+  );
+
   return (
-    <ContainerComponent ref={$ref} sortableChildren>
-      {tilesAndWalls}
-      {previewData ? (
-        <PrivateRoomTilePreview
-          type={previewData.type}
-          position={previewData.point}
-          direction={previewData?.direction ?? CrossDirection.EAST}
-        />
-      ) : null}
-      {children}
-    </ContainerComponent>
+    <>
+      <ContainerComponent ref={$ref} sortableChildren pivot={pivot}>
+        {tilesAndWalls}
+        {previewData ? (
+          <PrivateRoomTilePreview
+            type={previewData.type}
+            position={previewData.point}
+            direction={previewData?.direction ?? CrossDirection.EAST}
+          />
+        ) : null}
+        {children}
+      </ContainerComponent>
+      {renderRoomSize}
+    </>
   );
 };

@@ -188,6 +188,7 @@ export const RoomMessagesComponent: React.FC<Props> = ({
     <ContainerComponent
       {...containerProps}
       pivot={{
+        ...containerProps?.pivot,
         y: (containerProps?.pivot?.y ?? 0) + yPivot,
       }}
     >
