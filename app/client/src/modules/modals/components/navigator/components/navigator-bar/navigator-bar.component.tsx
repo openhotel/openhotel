@@ -5,7 +5,7 @@ import {
   EventMode,
   FLEX_JUSTIFY,
   FlexContainerComponent,
-} from "@oh/pixi-components";
+} from "@openhotel/pixi-components";
 import { NavigatorButtonComponent } from "../";
 import { ModalNavigatorTab } from "shared/enums";
 import { MODAL_NAVIGATOR_TAB_NAME_MAP } from "shared/consts";

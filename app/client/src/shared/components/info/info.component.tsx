@@ -9,7 +9,7 @@ import {
   GraphicType,
   useEvents,
   useSystem,
-} from "@oh/pixi-components";
+} from "@openhotel/pixi-components";
 import React, { useEffect, useMemo, useState } from "react";
 import { useAccount, useRouter } from "shared/hooks";
 import { Hemisphere, Route } from "shared/enums";

@@ -5,7 +5,7 @@ import {
   ContainerRef,
   NineSliceSpriteComponent,
   Size,
-} from "@oh/pixi-components";
+} from "@openhotel/pixi-components";
 import { SpriteSheetEnum } from "shared/enums";
 import { TextComponent } from "shared/components/text";
 

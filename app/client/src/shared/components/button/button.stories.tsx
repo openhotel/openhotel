@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { ButtonComponent } from "./button.component";
-import { GraphicsComponent, GraphicType } from "@oh/pixi-components";
+import { GraphicsComponent, GraphicType } from "@openhotel/pixi-components";
 import React from "react";
 
 export default {

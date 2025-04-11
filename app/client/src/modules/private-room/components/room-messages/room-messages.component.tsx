@@ -5,7 +5,7 @@ import {
   Event as OhEvent,
   useEvents,
   useWindow,
-} from "@oh/pixi-components";
+} from "@openhotel/pixi-components";
 import { useAccount, usePrivateRoom, useProxy, useTasks } from "shared/hooks";
 import { Event } from "shared/enums";
 import { RoomMessage, Size2d } from "shared/types";

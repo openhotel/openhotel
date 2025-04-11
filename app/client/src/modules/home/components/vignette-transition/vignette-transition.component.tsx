@@ -8,7 +8,7 @@ import {
   Size,
   useEvents,
   useWindow,
-} from "@oh/pixi-components";
+} from "@openhotel/pixi-components";
 import { useTasks } from "shared/hooks";
 
 const DELTA_MULTIPLIER = 0.35;

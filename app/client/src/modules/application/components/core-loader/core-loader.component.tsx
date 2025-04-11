@@ -1,6 +1,6 @@
 import React, { PropsWithChildren, useMemo } from "react";
 import { AssetEnum, SpriteSheetEnum, TextureEnum } from "shared/enums";
-import { useTextures, useUpdate } from "@oh/pixi-components";
+import { useTextures, useUpdate } from "@openhotel/pixi-components";
 import { LoaderAssetsComponent } from "shared/components";
 import { LoaderItem } from "shared/types";
 import { useAssets } from "shared/hooks";

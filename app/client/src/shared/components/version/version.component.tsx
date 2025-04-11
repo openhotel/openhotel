@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from "react";
-import { Cursor, EventMode } from "@oh/pixi-components";
+import { Cursor, EventMode } from "@openhotel/pixi-components";
 import { TextComponent } from "shared/components";
 import { useConfig } from "shared/hooks";
 import { TEXT_PADDING } from "shared/consts";

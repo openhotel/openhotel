@@ -9,7 +9,7 @@ import {
   GraphicType,
   NineSliceSpriteComponent,
   SpriteComponent,
-} from "@oh/pixi-components";
+} from "@openhotel/pixi-components";
 import { CrossDirection, SpriteSheetEnum } from "shared/enums";
 import { getPositionFromIsometricPosition, getSafeZIndex } from "shared/utils";
 import { Point2d, Point3d } from "shared/types";

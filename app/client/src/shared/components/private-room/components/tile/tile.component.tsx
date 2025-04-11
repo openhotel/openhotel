@@ -8,7 +8,7 @@ import {
   GraphicType,
   SpriteComponent,
   SpriteRef,
-} from "@oh/pixi-components";
+} from "@openhotel/pixi-components";
 import { Point3d } from "shared/types";
 import {
   getPositionFromIsometricPosition,

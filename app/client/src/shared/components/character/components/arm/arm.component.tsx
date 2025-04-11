@@ -11,7 +11,7 @@ import {
 import { useCharacter } from "shared/hooks";
 import { CharacterDirectionData } from "shared/types";
 import { getCharacterBodyPart, getEnumKeyLowCase } from "shared/utils";
-import { SpriteComponent } from "@oh/pixi-components";
+import { SpriteComponent } from "@openhotel/pixi-components";
 
 type Props = {
   skinColor: number;

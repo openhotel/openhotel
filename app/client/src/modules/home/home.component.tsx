@@ -3,7 +3,7 @@ import {
   ContainerComponent,
   FLEX_ALIGN,
   FlexContainerComponent,
-} from "@oh/pixi-components";
+} from "@openhotel/pixi-components";
 import {
   BackgroundComponent,
   ContributorsComponent,

@@ -1,4 +1,4 @@
-import { Sides } from "@oh/pixi-components";
+import { Sides } from "@openhotel/pixi-components";
 
 export const TEXT_PADDING: Partial<Sides> = {
   right: 6,

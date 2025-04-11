@@ -1,6 +1,6 @@
 import React, { StrictMode, useMemo } from "react";
 import "./style.css";
-import { ApplicationProvider } from "@oh/pixi-components";
+import { ApplicationProvider } from "@openhotel/pixi-components";
 import { withConsole } from "@storybook/addon-console";
 import {
   CoreLoaderComponent,

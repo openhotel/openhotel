@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { CrossDirection } from "../shared/enums";
-import { ContainerComponent, ContainerProps } from "@oh/pixi-components";
+import { ContainerComponent, ContainerProps } from "@openhotel/pixi-components";
 import {
   PrivateRoomTile,
   PrivateRoomWallComponent,
