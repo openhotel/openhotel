@@ -1,13 +1,18 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { NavigatorRoomButtonComponent } from "shared/components";
 import {
+  ContainerComponent,
   FLEX_JUSTIFY,
   FlexContainerComponent,
+  NineSliceSpriteComponent,
+  ScrollableContainerComponent,
   Size,
+  SpriteComponent,
+  TilingSpriteComponent,
 } from "@openhotel/pixi-components";
 import { ModalNavigatorTabProps } from "shared/types";
 import { useApi, useProxy } from "shared/hooks";
-import { Event } from "shared/enums";
+import { Event, SpriteSheetEnum } from "shared/enums";
 
 type Props = {
   size: Size;
@@ -92,29 +97,87 @@ export const CategoryRoomsComponent: React.FC<ModalNavigatorTabProps> = ({
   );
 };
 
+const scrollSize = 75;
+
 export const CategoryRoomsComponentWrapper: React.FC<Props> = ({
   size,
   rooms,
   onClickGo,
   onClickFavorite,
 }) => {
+  if (!rooms.length) return null;
+
   return (
-    <FlexContainerComponent justify={FLEX_JUSTIFY.START} direction="y" gap={3}>
-      {rooms.map(({ id, title, users, maxUsers, favorite }, index) => (
-        <NavigatorRoomButtonComponent
-          key={id}
-          size={{
-            width: size.width,
-            height: 16,
-          }}
-          title={title}
-          users={users}
-          maxUsers={maxUsers}
-          favorite={favorite}
-          onClickFavorite={() => onClickFavorite(id)}
-          onClickGo={() => onClickGo(id)}
-        />
-      ))}
-    </FlexContainerComponent>
+    <ScrollableContainerComponent
+      size={{
+        width: size.width - 11,
+        height: size.height,
+      }}
+      scrollbar={{
+        renderTop: () => (
+          <SpriteComponent
+            texture="scrollbar-arrow-top"
+            spriteSheet={SpriteSheetEnum.UI}
+          />
+        ),
+        renderBottom: () => (
+          <SpriteComponent
+            texture="scrollbar-arrow-bottom"
+            spriteSheet={SpriteSheetEnum.UI}
+          />
+        ),
+        renderScrollBackground: () => (
+          <TilingSpriteComponent
+            texture="scrollbar-background"
+            spriteSheet={SpriteSheetEnum.UI}
+            height={size.height - 22}
+          />
+        ),
+        renderScrollBar: () => (
+          <ContainerComponent>
+            <NineSliceSpriteComponent
+              texture="scrollbar-scroll-bar"
+              spriteSheet={SpriteSheetEnum.UI}
+              leftWidth={4}
+              rightWidth={4}
+              topHeight={4}
+              bottomHeight={4}
+              height={scrollSize}
+            />
+            <TilingSpriteComponent
+              texture="scrollbar-scroll-bar-background"
+              spriteSheet={SpriteSheetEnum.UI}
+              height={scrollSize - 6}
+              position={{
+                x: 2,
+                y: 3,
+              }}
+            />
+          </ContainerComponent>
+        ),
+      }}
+    >
+      <FlexContainerComponent
+        justify={FLEX_JUSTIFY.START}
+        direction="y"
+        gap={3}
+      >
+        {rooms.map(({ id, title, users, maxUsers, favorite }, index) => (
+          <NavigatorRoomButtonComponent
+            key={id}
+            size={{
+              width: size.width - 11 - 5,
+              height: 11 + 5,
+            }}
+            title={title}
+            users={users}
+            maxUsers={maxUsers}
+            favorite={favorite}
+            onClickFavorite={() => onClickFavorite(id)}
+            onClickGo={() => onClickGo(id)}
+          />
+        ))}
+      </FlexContainerComponent>
+    </ScrollableContainerComponent>
   );
 };

@@ -850,16 +850,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openhotel/pixi-components@npm:0.0.4":
-  version: 0.0.4
-  resolution: "@openhotel/pixi-components@npm:0.0.4"
+"@openhotel/pixi-components@npm:0.0.6":
+  version: 0.0.6
+  resolution: "@openhotel/pixi-components@npm:0.0.6"
   dependencies:
     "@pixi/react": "npm:8.0.0"
     dayjs: "npm:1.11.13"
     pixi.js: "npm:^8.9.1"
-    react: "npm:19.0.0"
+    react: "npm:19.1.0"
+    react-dom: "npm:19.1.0"
     zustand: "npm:^5.0.3"
-  checksum: 10c0/92f45e6bdedb67679db15507aed413a7395c202e2814e19fcc04a413919bd06c0f4f10faca05c3d6837cca339e8e96ec87fd2d34df747e7cf23a44aedf518f55
+  checksum: 10c0/71a2ee0b45cdcc3f15c916863279db11a45c6a29cff63ef21c1d71c0c2f1cde4a5dc742ed1ace4e18c60428b8aa313585a052536e05e0431b69dd14b94f505bd
   languageName: node
   linkType: hard
 
@@ -4023,6 +4024,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-dom@npm:19.1.0":
+  version: 19.1.0
+  resolution: "react-dom@npm:19.1.0"
+  dependencies:
+    scheduler: "npm:^0.26.0"
+  peerDependencies:
+    react: ^19.1.0
+  checksum: 10c0/3e26e89bb6c67c9a6aa86cb888c7a7f8258f2e347a6d2a15299c17eb16e04c19194e3452bc3255bd34000a61e45e2cb51e46292392340432f133e5a5d2dfb5fc
+  languageName: node
+  linkType: hard
+
 "react-dom@npm:^16.8.0 || ^17.0.0 || ^18.0.0":
   version: 18.3.1
   resolution: "react-dom@npm:18.3.1"
@@ -4078,6 +4090,13 @@ __metadata:
   version: 19.0.0
   resolution: "react@npm:19.0.0"
   checksum: 10c0/9cad8f103e8e3a16d15cb18a0d8115d8bd9f9e1ce3420310aea381eb42aa0a4f812cf047bb5441349257a05fba8a291515691e3cb51267279b2d2c3253f38471
+  languageName: node
+  linkType: hard
+
+"react@npm:19.1.0":
+  version: 19.1.0
+  resolution: "react@npm:19.1.0"
+  checksum: 10c0/530fb9a62237d54137a13d2cfb67a7db6a2156faed43eecc423f4713d9b20c6f2728b026b45e28fcd72e8eadb9e9ed4b089e99f5e295d2f0ad3134251bdd3698
   languageName: node
   linkType: hard
 
@@ -4248,7 +4267,7 @@ __metadata:
   dependencies:
     "@chromatic-com/storybook": "npm:3.2.4"
     "@oh/queue": "npm:@jsr/oh__queue@1.1.1"
-    "@openhotel/pixi-components": "npm:0.0.4"
+    "@openhotel/pixi-components": "npm:0.0.6"
     "@storybook/addon-actions": "npm:8.5.8"
     "@storybook/addon-console": "npm:3.0.0"
     "@storybook/addon-essentials": "npm:8.5.1"
@@ -4314,6 +4333,13 @@ __metadata:
   version: 0.25.0
   resolution: "scheduler@npm:0.25.0"
   checksum: 10c0/a4bb1da406b613ce72c1299db43759526058fdcc413999c3c3e0db8956df7633acf395cb20eb2303b6a65d658d66b6585d344460abaee8080b4aa931f10eaafe
+  languageName: node
+  linkType: hard
+
+"scheduler@npm:^0.26.0":
+  version: 0.26.0
+  resolution: "scheduler@npm:0.26.0"
+  checksum: 10c0/5b8d5bfddaae3513410eda54f2268e98a376a429931921a81b5c3a2873aab7ca4d775a8caac5498f8cbc7d0daeab947cf923dbd8e215d61671f9f4e392d34356
   languageName: node
   linkType: hard
 
