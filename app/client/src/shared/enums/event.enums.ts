@@ -36,4 +36,6 @@ export enum Event {
 
   CONNECTED = "connected",
   DISCONNECTED = "disconnected",
+
+  DISABLE_CAMERA_MOVEMENT = "disable-camera-movement",
 }

@@ -26,6 +26,7 @@ export const PrivateRoomStairs: React.FC<Props> = ({
   position,
   direction,
   onPointerDown,
+  onPointerUp,
   onPointerEnter,
   onPointerLeave,
 }) => {
@@ -59,6 +60,7 @@ export const PrivateRoomStairs: React.FC<Props> = ({
           x: direction === CrossDirection.NORTH ? 1 : -1,
         }}
         onPointerDown={onPointerDown}
+        onPointerUp={onPointerUp}
         onPointerEnter={onPointerEnter}
         onPointerLeave={onPointerLeave}
       />
