@@ -46,7 +46,7 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
 
   const { getAccount } = useAccount();
   const { setExtra } = useInfo();
-  const { emit } = useProxy();
+  const { on, emit } = useProxy();
   const { room, setSelectedPreview, selectedPreview } = usePrivateRoom();
   const { lastUpdate, update } = useUpdate();
 
@@ -263,10 +263,18 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
       dragCurrentRef.current = null;
     });
 
+    const onRemoveDisableCameraMovement = on(
+      ProxyEvent.DISABLE_CAMERA_MOVEMENT,
+      () => {
+        isDraggingRef.current = false;
+      },
+    );
+
     return () => {
       onRemovePointerDown();
       onRemovePointerMove();
       onRemovePointerUp();
+      onRemoveDisableCameraMovement();
     };
   }, [onEvent, update, room]);
 

@@ -3,12 +3,15 @@ import { ModalContext } from "shared/hooks/modal/modal.context";
 import {
   ContainerComponent,
   DragContainerComponent,
+  EventMode,
   useWindow,
 } from "@openhotel/pixi-components";
 import { Modal } from "shared/enums";
 import { Point2d } from "shared/types";
 import { useModalStore } from "./modal.store";
 import { MODAL_COMPONENT_MAP, MODAL_SIZE_MAP } from "shared/consts";
+import { useProxy } from "shared/hooks";
+import { Event as ProxyEvent } from "shared/enums";
 
 type ModalProps = {
   children: ReactNode;
@@ -27,6 +30,7 @@ export const ModalProvider: React.FunctionComponent<ModalProps> = ({
     setPosition,
     isOpen,
   } = useModalStore();
+  const { emit } = useProxy();
 
   const openModal = useCallback(
     (modal: Modal) => {
@@ -62,6 +66,10 @@ export const ModalProvider: React.FunctionComponent<ModalProps> = ({
     [setPosition],
   );
 
+  const disableCamera = () => {
+    emit(ProxyEvent.DISABLE_CAMERA_MOVEMENT, {});
+  };
+
   const renderModals = useMemo(() => {
     return Object.keys(modals)
       .map((modal: any) => {
@@ -74,6 +82,8 @@ export const ModalProvider: React.FunctionComponent<ModalProps> = ({
             children={<Modal />}
             position={position ?? { x: 0, y: 0 }}
             visible={visible}
+            eventMode={EventMode.STATIC}
+            onPointerDown={disableCamera}
           />
         ) : null;
       })
