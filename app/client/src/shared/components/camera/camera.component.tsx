@@ -4,7 +4,7 @@ import {
   Event,
   useEvents,
   useWindow,
-} from "@oh/pixi-components";
+} from "@openhotel/pixi-components";
 import { Point2d } from "shared/types";
 import { useCamera } from "shared/hooks";
 
