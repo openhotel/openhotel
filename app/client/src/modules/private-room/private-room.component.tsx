@@ -20,7 +20,7 @@ import {
   useWindow,
 } from "@openhotel/pixi-components";
 import { useAccount, usePrivateRoom, useProxy } from "shared/hooks";
-import { Point2d, Point3d } from "shared/types";
+import { Point2d, Point3d, Size2d } from "shared/types";
 import {
   CrossDirection,
   Direction,
@@ -37,11 +37,7 @@ import {
 } from ".";
 import { HOT_BAR_HEIGHT_FULL } from "shared/consts";
 import { useInfo } from "shared/hooks/info";
-import {
-  getCrossDirectionFromDirection,
-  getDirection,
-  getRoomPivot,
-} from "shared/utils";
+import { getCrossDirectionFromDirection, getDirection } from "shared/utils";
 
 type Props = {};
 
@@ -57,6 +53,14 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
   const { on: onEvent } = useEvents();
   const { getSize } = useWindow();
   const [windowSize, setWindowSize] = useState<Size>(getSize());
+  const [roomSize, setRoomSize] = useState<Size2d>({
+    width: 0,
+    height: 0,
+  });
+  const [roomPivot, setRoomPivot] = useState<Point2d>({
+    x: 0,
+    y: 0,
+  });
 
   const [hoverTileData, setHoverTileData] = useState<PreviewTileData | null>(
     null,
@@ -66,14 +70,12 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
   >([null, null]);
 
   const roomPosition = useMemo(() => {
-    const roomSize = privateRoomRef?.current?.getSize?.();
-
     if (!roomSize) return { x: 0, y: 0 };
     return {
       x: (windowSize.width - roomSize.width) / 2,
       y: (windowSize.height - roomSize.height - HOT_BAR_HEIGHT_FULL) / 2,
     };
-  }, [windowSize, lastUpdate]);
+  }, [windowSize, lastUpdate, roomSize]);
 
   const currentAccountId = useMemo(() => getAccount().accountId, [getAccount]);
   const currentUser = useMemo(
@@ -140,12 +142,16 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
 
     const onRemoveOnResize = onEvent(Event.RESIZE, setWindowSize);
     setWindowSize(getSize());
+
+    setRoomSize(privateRoomRef.current.getSize());
+    setRoomPivot(privateRoomRef.current.pivot);
+
     update();
 
     return () => {
       onRemoveOnResize();
     };
-  }, [onEvent, update, room]);
+  }, [onEvent, update, room?.id, setRoomSize]);
 
   const onPointerTile = useCallback(
     (position: Point3d) => {
@@ -172,24 +178,19 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
     [setWallDataPoint, setSelectedPreview],
   );
 
-  const roomPivot = useMemo(() => {
-    if (!room) return { x: 0, y: 0 };
-    return getRoomPivot(room);
-  }, [room?.layout, lastUpdate]);
-
   const messagesPivot = useMemo(
     () => ({
-      x: 0,
-      y: -roomPivot.y + roomPosition.y,
+      x: roomPivot.x,
+      y: roomPosition.y,
     }),
-    [roomPivot, roomPosition],
+    [roomPosition, roomPivot],
   );
 
   if (!room) return null;
 
   return (
     <ContainerComponent>
-      <ContainerComponent position={roomPosition} pivot={roomPivot}>
+      <ContainerComponent position={roomPosition}>
         <PrivateRoomComp
           ref={privateRoomRef}
           {...room}
@@ -202,6 +203,14 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
         </PrivateRoomComp>
         <RoomMessagesComponent pivot={messagesPivot} />
       </ContainerComponent>
+      {/*<GraphicsComponent*/}
+      {/*  type={GraphicType.RECTANGLE}*/}
+      {/*  width={roomSize.width}*/}
+      {/*  height={roomSize.height}*/}
+      {/*  position={roomPosition}*/}
+      {/*  alpha={0.5}*/}
+      {/*  eventMode={EventMode.NONE}*/}
+      {/*/>*/}
       <ContainerComponent position={{ y: windowSize.height }}>
         <RoomInfoComponent />
         <ChatHotBarComponent width={windowSize.width} />

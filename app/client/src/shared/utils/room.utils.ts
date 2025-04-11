@@ -59,23 +59,18 @@ export const getRoomPivot = (room: PrivateRoom) => {
   for (let z = 0; z < room.layout.length; z++)
     for (let x = 0; x < room.layout[0].length; x++) {
       const roomPoint = room.layout[z][x] as unknown as number;
-      if (
-        (roomPoint as unknown) === RoomPointEnum.SPAWN ||
-        (roomPoint as unknown) === RoomPointEnum.EMPTY
-      )
-        continue;
-      let zIndex = x + z;
+      if ((roomPoint as unknown) === RoomPointEnum.EMPTY) continue;
       let xIndex = -x + z;
-
-      //top tile
-      if (topZIndex >= zIndex) topZIndex = zIndex;
+      let zIndex = x + z;
 
       //left tile
       if (xIndex >= leftXIndex) leftXIndex = xIndex;
+      //top tile
+      if (topZIndex >= zIndex) topZIndex = zIndex;
     }
 
   return {
-    x: -leftXIndex * (TILE_SIZE.width / 2) - WALL_WIDTH,
+    x: -leftXIndex * (TILE_SIZE.width / 2) - WALL_WIDTH + 1,
     y: topZIndex * (TILE_SIZE.height / 2) - WALL_HEIGHT,
   };
 };
