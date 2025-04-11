@@ -1,8 +1,9 @@
 import React, { ReactNode, useCallback, useMemo } from "react";
-import { ModalContext } from "shared/hooks/modal/modal.context";
+import { useCamera, ModalContext } from "shared/hooks";
 import {
   ContainerComponent,
   DragContainerComponent,
+  EventMode,
   useWindow,
 } from "@openhotel/pixi-components";
 import { Modal } from "shared/enums";
@@ -62,6 +63,16 @@ export const ModalProvider: React.FunctionComponent<ModalProps> = ({
     [setPosition],
   );
 
+  const { setCanDrag } = useCamera();
+
+  const disableCameraMovement = useCallback(() => {
+    setCanDrag(false);
+  }, [setCanDrag]);
+
+  const enableCameraMovement = useCallback(() => {
+    setCanDrag(true);
+  }, [setCanDrag]);
+
   const renderModals = useMemo(() => {
     return Object.keys(modals)
       .map((modal: any) => {
@@ -74,6 +85,10 @@ export const ModalProvider: React.FunctionComponent<ModalProps> = ({
             children={<Modal />}
             position={position ?? { x: 0, y: 0 }}
             visible={visible}
+            eventMode={EventMode.STATIC}
+            onPointerDown={disableCameraMovement}
+            onPointerUp={enableCameraMovement}
+            onPointerLeave={enableCameraMovement}
           />
         ) : null;
       })

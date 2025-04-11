@@ -66,6 +66,8 @@ export const Primary: Story = () => {
     />
   );
 };
+
+//@ts-ignore
 export const Simple: Story = () => {
   const layout = [
     "x1111111",
@@ -99,11 +101,14 @@ export const Simple: Story = () => {
         maxUsers: 10,
         ownerId: "test",
         ownerUsername: "test",
+        users: [],
       }}
       onPointerTile={console.log}
     />
   );
 };
+
+//@ts-ignore
 export const Stairs: Story = () => {
   const layout = [
     "xxxxxxxx11",
@@ -149,11 +154,14 @@ export const Stairs: Story = () => {
         maxUsers: 10,
         ownerId: "test",
         ownerUsername: "test",
+        users: [],
       }}
       onPointerTile={console.log}
     />
   );
 };
+
+//@ts-ignore
 export const Stairs1: Story = () => {
   const layout = [
     "xxxxxxxx11",
@@ -193,6 +201,7 @@ export const Stairs1: Story = () => {
           maxUsers: 10,
           ownerId: "test",
           ownerUsername: "test",
+          users: [],
         }}
         onPointerTile={console.log}
       />
