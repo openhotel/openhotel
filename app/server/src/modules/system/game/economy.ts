@@ -2,7 +2,7 @@ import { log } from "shared/utils/log.utils.ts";
 import { System } from "../main.ts";
 import { ulid } from "@std/ulid";
 import { TransactionType } from "shared/enums/economy.enum.ts";
-import { TransactionParams } from "shared/types/economy.types.ts";
+import { Transaction, TransactionParams } from "shared/types/economy.types.ts";
 import {
   buildAtomicTransaction,
   getBalanceEntry,
@@ -114,7 +114,8 @@ export const economy = () => {
       }
 
       const transactionId = ulid();
-      const transactionData = {
+      const transactionData: Transaction = {
+        id: transactionId,
         type,
         fromAccount: fromAccount || null,
         toAccount: toAccount || null,

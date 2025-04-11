@@ -2,7 +2,7 @@ import {
   CacheUser,
   PrivateRoomMutable,
   PrivateUser,
-  TransactionParams,
+  Transaction,
   User,
   UserMutable,
   UsersConfig,
@@ -203,7 +203,7 @@ export const users = () => {
       $log(`${getUsername()} ${data.join(" ")}`);
     };
 
-    const getTransactions = async (): Promise<TransactionParams> => {
+    const getTransactions = async (): Promise<Transaction> => {
       const accountId = getAccountId();
       return System.db.get(["transactionsByUser", accountId]);
     };

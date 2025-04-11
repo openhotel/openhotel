@@ -43,6 +43,10 @@ export const MODAL_SIZE_MAP: Record<Modal, Size> = {
     width: 250,
     height: 260,
   },
+  [Modal.PURSE]: {
+    width: 220,
+    height: 151,
+  },
 };
 
 export const MODAL_COMPONENT_MAP: Record<Modal, React.FC> = {

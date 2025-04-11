@@ -17,15 +17,24 @@ export const VersionComponent: React.FC = () => {
   }, [getConfig]);
 
   return (
-    <TextComponent
-      text={`${version}-alpha`}
-      eventMode={EventMode.STATIC}
-      cursor={Cursor.POINTER}
-      backgroundColor={0}
-      backgroundAlpha={0.25}
-      color={0xffffff}
-      padding={TEXT_PADDING}
-      onPointerDown={onOpenGithubRelease}
-    />
+    <>
+      <TextComponent
+        text={`${version}-alpha`}
+        eventMode={EventMode.STATIC}
+        cursor={Cursor.POINTER}
+        backgroundColor={0}
+        backgroundAlpha={0.25}
+        color={0xffffff}
+        padding={TEXT_PADDING}
+        onPointerDown={onOpenGithubRelease}
+      />
+      <TextComponent
+        text="alpha: progress may be wiped"
+        backgroundColor={0}
+        backgroundAlpha={0.25}
+        color={0xffffff}
+        padding={TEXT_PADDING}
+      />
+    </>
   );
 };
