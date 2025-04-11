@@ -18,7 +18,7 @@ import {
   useEvents,
   useUpdate,
   useWindow,
-} from "@oh/pixi-components";
+} from "@openhotel/pixi-components";
 import { useAccount, usePrivateRoom, useProxy } from "shared/hooks";
 import { Point2d, Point3d } from "shared/types";
 import {

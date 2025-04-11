@@ -5,7 +5,7 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { ContainerComponent, ContainerRef } from "@oh/pixi-components";
+import { ContainerComponent, ContainerRef } from "@openhotel/pixi-components";
 import { CrossDirection, RoomPointEnum } from "shared/enums";
 import { isDoorRenderable, isWallRenderable } from "shared/utils";
 import { Point2d, Point3d, PrivateRoom } from "shared/types";

@@ -4,7 +4,7 @@ import {
   FLEX_ALIGN,
   FLEX_JUSTIFY,
   FlexContainerComponent,
-} from "@oh/pixi-components";
+} from "@openhotel/pixi-components";
 import { HotBarItemsComponent } from "shared/components";
 import { wait } from "shared/utils";
 import { TickerQueue } from "@oh/queue";

@@ -5,7 +5,7 @@
   "scripts": {
     "start": "vite --host",
     "storybook": "storybook dev -p 7007",
-    "link:pixi-components": "npm link @oh/pixi-components --force",
+    "link:pixi-components": "npm link @openhotel/pixi-components --force",
     "build-storybook": "storybook build"
   },
   "devDependencies": {
@@ -38,9 +38,8 @@
     "vitest": "3.0.7"
   },
   "dependencies": {
-    "@oh/pixi-components": "npm:@jsr/oh__pixi-components@0.0.2",
     "@oh/queue": "npm:@jsr/oh__queue@1.1.1",
-    "pixi.js": "8.9.1",
+    "@openhotel/pixi-components": "0.0.3",
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "ulidx": "2.4.1",

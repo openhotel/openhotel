@@ -5,7 +5,7 @@ import {
   EventMode,
   HorizontalAlign,
   SpriteComponent,
-} from "@oh/pixi-components";
+} from "@openhotel/pixi-components";
 import {
   HOT_BAR_HEIGHT_FULL,
   STEP_TILE_HEIGHT,

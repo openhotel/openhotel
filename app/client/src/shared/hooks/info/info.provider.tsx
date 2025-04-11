@@ -1,7 +1,7 @@
 import React, { ReactNode, useEffect, useState } from "react";
 import { InfoContext } from "./info.context";
 import { InfoComponent } from "shared/components";
-import { Event, useEvents } from "@oh/pixi-components";
+import { Event, useEvents } from "@openhotel/pixi-components";
 import { useInfoStore } from "./info.store";
 import { useRouter } from "shared/hooks/router";
 

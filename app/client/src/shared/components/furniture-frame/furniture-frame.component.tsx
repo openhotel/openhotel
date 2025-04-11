@@ -5,7 +5,7 @@ import {
   GraphicsComponent,
   GraphicType,
   SpriteComponent,
-} from "@oh/pixi-components";
+} from "@openhotel/pixi-components";
 import {
   DUMMY_FURNITURE_FRAME_DATA,
   SAFE_Z_INDEX,

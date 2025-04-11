@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { TextureEnum } from "shared/enums";
-import { SpriteComponent } from "@oh/pixi-components";
+import { SpriteComponent } from "@openhotel/pixi-components";
 import { wait } from "shared/utils";
 import { TickerQueue } from "@oh/queue";
 import { useTasks } from "shared/hooks";

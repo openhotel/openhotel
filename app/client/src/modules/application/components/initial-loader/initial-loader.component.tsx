@@ -1,6 +1,6 @@
 import React, { PropsWithChildren, useEffect, useState } from "react";
 import { SpriteSheetEnum } from "shared/enums";
-import { useTextures } from "@oh/pixi-components";
+import { useTextures } from "@openhotel/pixi-components";
 
 type Props = {} & PropsWithChildren;
 

@@ -4,7 +4,7 @@ import {
   FLEX_ALIGN,
   FLEX_JUSTIFY,
   FlexContainerComponent,
-} from "@oh/pixi-components";
+} from "@openhotel/pixi-components";
 import { LoadingBarComponent, TextComponent } from "shared/components";
 import { LoaderItem } from "shared/types";
 
