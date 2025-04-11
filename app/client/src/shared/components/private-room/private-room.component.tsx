@@ -6,7 +6,11 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { ContainerComponent, ContainerRef, EventMode } from "@openhotel/pixi-components";
+import {
+  ContainerComponent,
+  ContainerRef,
+  EventMode,
+} from "@openhotel/pixi-components";
 import { CrossDirection, RoomPointEnum } from "shared/enums";
 import {
   getPositionFromIsometricPosition,
@@ -72,14 +76,14 @@ export const PrivateRoomComponent: React.FC<Props> = ({
     },
     [onHoverTile, setPreviewData],
   );
-	
-	const $onPointerTile = useCallback(
-		(point: Point3d) => {
-			if (isDraggingRef.current) return;
-			onPointerTile?.(point);
-		},
-		[onPointerTile, isDragging],
-	);
+
+  const $onPointerTile = useCallback(
+    (point: Point3d) => {
+      if (isDraggingRef.current) return;
+      onPointerTile?.(point);
+    },
+    [onPointerTile, isDragging],
+  );
 
   ref &&
     useImperativeHandle(
@@ -154,7 +158,7 @@ export const PrivateRoomComponent: React.FC<Props> = ({
               key={`tile${x}.${z}`}
               spawn={spawn}
               position={position}
-							onPointerUp={() => $onPointerTile?.(position)}
+              onPointerUp={() => $onPointerTile?.(position)}
               onPointerEnter={() =>
                 $onHoverTile({ point: position, type: "tile" })
               }

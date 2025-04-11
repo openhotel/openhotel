@@ -191,34 +191,33 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
 
   return (
     <ContainerComponent>
-			
-			<CameraContainer
-				margin={100}
-				contentRef={privateRoomRef}
-				bottomPadding={HOT_BAR_HEIGHT_FULL}
-			>
-      <ContainerComponent position={roomPosition}>
-        <PrivateRoomComp
-          ref={privateRoomRef}
-          {...room}
-          onPointerTile={onPointerTile}
-          onHoverTile={onHoverTile}
-          onClickWall={onClickWall}
-        >
-          <RoomCharactersComponent />
-          <RoomFurnitureComponent />
-        </PrivateRoomComp>
-        <RoomMessagesComponent pivot={messagesPivot} />
-      </ContainerComponent>
-      {/*<GraphicsComponent*/}
-      {/*  type={GraphicType.RECTANGLE}*/}
-      {/*  width={roomSize.width}*/}
-      {/*  height={roomSize.height}*/}
-      {/*  position={roomPosition}*/}
-      {/*  alpha={0.5}*/}
-      {/*  eventMode={EventMode.NONE}*/}
-      {/*/>*/}
-			</CameraContainer>
+      <CameraContainer
+        margin={100}
+        contentRef={privateRoomRef}
+        bottomPadding={HOT_BAR_HEIGHT_FULL}
+      >
+        <ContainerComponent position={roomPosition}>
+          <PrivateRoomComp
+            ref={privateRoomRef}
+            {...room}
+            onPointerTile={onPointerTile}
+            onHoverTile={onHoverTile}
+            onClickWall={onClickWall}
+          >
+            <RoomCharactersComponent />
+            <RoomFurnitureComponent />
+          </PrivateRoomComp>
+          <RoomMessagesComponent pivot={messagesPivot} />
+        </ContainerComponent>
+        {/*<GraphicsComponent*/}
+        {/*  type={GraphicType.RECTANGLE}*/}
+        {/*  width={roomSize.width}*/}
+        {/*  height={roomSize.height}*/}
+        {/*  position={roomPosition}*/}
+        {/*  alpha={0.5}*/}
+        {/*  eventMode={EventMode.NONE}*/}
+        {/*/>*/}
+      </CameraContainer>
       <ContainerComponent position={{ y: windowSize.height }}>
         <RoomInfoComponent />
         <ChatHotBarComponent width={windowSize.width} />
