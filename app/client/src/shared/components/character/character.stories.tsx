@@ -7,7 +7,7 @@ import {
   EventMode,
   FLEX_JUSTIFY,
   FlexContainerComponent,
-} from "@oh/pixi-components";
+} from "@openhotel/pixi-components";
 import { PrivateRoomTile } from "shared/components/private-room/components";
 import {
   CharacterArmAction,

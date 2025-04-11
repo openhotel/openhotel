@@ -6,7 +6,7 @@ import {
   EventMode,
   GraphicsComponent,
   GraphicType,
-} from "@oh/pixi-components";
+} from "@openhotel/pixi-components";
 import {
   CharacterArmAction,
   CharacterArmSide,

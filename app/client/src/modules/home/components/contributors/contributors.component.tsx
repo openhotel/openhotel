@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { TickerQueue } from "@oh/queue";
 import { CONTRIBUTOR_LOOP_TIME, TEXT_PADDING } from "shared/consts";
-import { Cursor, EventMode } from "@oh/pixi-components";
+import { Cursor, EventMode } from "@openhotel/pixi-components";
 import { TextComponent } from "shared/components";
 import { useContributors, useTasks } from "shared/hooks";
 

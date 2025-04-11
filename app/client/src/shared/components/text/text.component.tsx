@@ -1,5 +1,8 @@
 import React from "react";
-import { SpriteTextComponent, SpriteTextProps } from "@oh/pixi-components";
+import {
+  SpriteTextComponent,
+  SpriteTextProps,
+} from "@openhotel/pixi-components";
 import { SpriteSheetEnum } from "shared/enums";
 
 type Props = {

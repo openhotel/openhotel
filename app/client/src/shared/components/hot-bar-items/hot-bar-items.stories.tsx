@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { HotBarItemsComponent } from "./hot-bar-items.component";
-import { FlexContainerComponent } from "@oh/pixi-components";
+import { FlexContainerComponent } from "@openhotel/pixi-components";
 import React from "react";
 import { ModalProvider } from "shared/hooks";
 

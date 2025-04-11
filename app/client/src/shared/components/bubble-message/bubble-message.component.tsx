@@ -6,7 +6,7 @@ import {
   FLEX_JUSTIFY,
   FlexContainerComponent,
   NineSliceSpriteComponent,
-} from "@oh/pixi-components";
+} from "@openhotel/pixi-components";
 import { TextComponent } from "shared/components/text";
 import { SpriteSheetEnum } from "shared/enums";
 import { TILE_SIZE } from "shared/consts";

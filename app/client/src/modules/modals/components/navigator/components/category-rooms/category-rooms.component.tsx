@@ -4,7 +4,7 @@ import {
   FLEX_JUSTIFY,
   FlexContainerComponent,
   Size,
-} from "@oh/pixi-components";
+} from "@openhotel/pixi-components";
 import { ModalNavigatorTabProps } from "shared/types";
 import { useApi, useProxy } from "shared/hooks";
 import { Event } from "shared/enums";

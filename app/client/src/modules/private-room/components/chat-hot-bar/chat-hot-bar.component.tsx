@@ -10,7 +10,7 @@ import {
   NineSliceSpriteComponent,
   SpriteTextInputComponent,
   useEvents,
-} from "@oh/pixi-components";
+} from "@openhotel/pixi-components";
 import { HotBarItemsComponent } from "shared/components";
 import { Event, SpriteSheetEnum } from "shared/enums";
 import { useProxy } from "shared/hooks";

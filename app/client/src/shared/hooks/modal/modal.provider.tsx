@@ -4,7 +4,7 @@ import {
   ContainerComponent,
   DragContainerComponent,
   useWindow,
-} from "@oh/pixi-components";
+} from "@openhotel/pixi-components";
 import { Modal } from "shared/enums";
 import { Point2d } from "shared/types";
 import { useModalStore } from "./modal.store";
