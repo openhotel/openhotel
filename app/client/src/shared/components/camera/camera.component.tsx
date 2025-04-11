@@ -18,7 +18,7 @@ type Props = {
   onOffsetChange?: (offset: Point2d) => void;
 };
 
-export const CameraContainer: React.FC<Props> = ({
+export const CameraComponent: React.FC<Props> = ({
   children,
   contentRef,
   margin = 50,
@@ -31,15 +31,16 @@ export const CameraContainer: React.FC<Props> = ({
   const [windowSize, setWindowSize] = useState(getSize());
   const [offset, setOffset] = useState<Point2d>({ x: 0, y: 0 });
 
-  const { setDragging, canDrag } = useCamera();
+  const { setDragging, canDrag, setPosition } = useCamera();
   const canDragRef = useRef(canDrag);
-  useEffect(() => {
-    canDragRef.current = canDrag;
-  }, [canDrag]);
 
   const dragStartRef = useRef<Point2d | null>(null);
   const dragCurrentRef = useRef<Point2d | null>(null);
   const wasDraggingRef = useRef(false);
+
+  useEffect(() => {
+    canDragRef.current = canDrag;
+  }, [canDrag]);
 
   useEffect(() => {
     const onRemoveResize = onEvent(Event.RESIZE, () => {
@@ -133,6 +134,10 @@ export const CameraContainer: React.FC<Props> = ({
       y: clampedY,
     };
   }, [offset, contentRef.current, windowSize, margin, bottomPadding]);
+
+  useEffect(() => {
+    setPosition(clampedPosition);
+  }, [setPosition, clampedPosition]);
 
   return (
     <ContainerComponent position={clampedPosition}>

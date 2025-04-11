@@ -6,7 +6,7 @@ import React, {
   useState,
 } from "react";
 import {
-  CameraContainer,
+  CameraComponent,
   PreviewTileData,
   PrivateRoomComponent as PrivateRoomComp,
 } from "shared/components";
@@ -20,7 +20,7 @@ import {
   useUpdate,
   useWindow,
 } from "@openhotel/pixi-components";
-import { useAccount, usePrivateRoom, useProxy } from "shared/hooks";
+import { useAccount, useCamera, usePrivateRoom, useProxy } from "shared/hooks";
 import { Point2d, Point3d, Size2d } from "shared/types";
 import {
   CrossDirection,
@@ -50,6 +50,7 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
   const { emit } = useProxy();
   const { room, setSelectedPreview, selectedPreview } = usePrivateRoom();
   const { lastUpdate, update } = useUpdate();
+  const { isDragging, position: cameraPosition } = useCamera();
 
   const { on: onEvent } = useEvents();
   const { getSize } = useWindow();
@@ -156,12 +157,14 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
 
   const onPointerTile = useCallback(
     (position: Point3d) => {
+      if (isDragging) return;
+
       emit(ProxyEvent.POINTER_TILE, {
         position,
       });
       setSelectedPreview(null);
     },
-    [emit, setSelectedPreview],
+    [emit, setSelectedPreview, isDragging],
   );
 
   const onHoverTile = useCallback(
@@ -182,16 +185,16 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
   const messagesPivot = useMemo(
     () => ({
       x: roomPivot.x,
-      y: roomPosition.y,
+      y: roomPosition.y + cameraPosition.y,
     }),
-    [roomPosition, roomPivot],
+    [roomPosition, roomPivot, cameraPosition],
   );
 
   if (!room) return null;
 
   return (
     <ContainerComponent>
-      <CameraContainer
+      <CameraComponent
         margin={100}
         contentRef={privateRoomRef}
         bottomPadding={HOT_BAR_HEIGHT_FULL}
@@ -217,7 +220,7 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
         {/*  alpha={0.5}*/}
         {/*  eventMode={EventMode.NONE}*/}
         {/*/>*/}
-      </CameraContainer>
+      </CameraComponent>
       <ContainerComponent position={{ y: windowSize.height }}>
         <RoomInfoComponent />
         <ChatHotBarComponent width={windowSize.width} />
