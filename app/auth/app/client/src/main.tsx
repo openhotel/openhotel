@@ -3,8 +3,8 @@ import { createRoot } from "react-dom/client";
 
 // @ts-ignore
 import "./main.scss";
-import "@oh/styles/dist/style.css";
-import "@oh/styles/styles.scss";
+import "@openhotel/styles/dist/style.css";
+import "@openhotel/styles/styles.scss";
 
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";

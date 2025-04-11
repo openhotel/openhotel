@@ -7,7 +7,7 @@ import {
 import { useAccount } from "shared/hooks";
 import styles from "./login.module.scss";
 import { useNavigate } from "react-router-dom";
-import { ButtonComponent, InputComponent } from "@oh/components";
+import { ButtonComponent, InputComponent } from "@openhotel/components";
 
 export const LoginComponent: React.FC = () => {
   const [submittedAt, setSubmittedAt] = useState<number>();

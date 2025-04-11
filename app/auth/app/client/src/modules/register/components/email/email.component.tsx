@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { EMAIL_REGEX } from "shared/consts";
-import { InputComponent } from "@oh/components";
+import { InputComponent } from "@openhotel/components";
 
 //@ts-ignore
 import styles from "./email.module.scss";

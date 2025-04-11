@@ -4,7 +4,7 @@ import {
   ButtonComponent,
   FormComponent,
   SelectorComponent,
-} from "@oh/components";
+} from "@openhotel/components";
 
 //@ts-ignore
 import styles from "./languages.module.scss";

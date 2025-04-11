@@ -4,7 +4,7 @@ import {
   USERNAME_MIN_LEN,
   USERNAME_REGEX,
 } from "shared/consts";
-import { InputComponent } from "@oh/components";
+import { InputComponent } from "@openhotel/components";
 
 //@ts-ignore
 import styles from "./username.module.scss";

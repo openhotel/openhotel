@@ -1,10 +1,9 @@
 import { useAdmin } from "shared/hooks";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { cn, getCensoredEmail } from "shared/utils";
 import dayjs from "dayjs";
-import { TableComponent } from "@oh/components";
+import { TableComponent } from "@openhotel/components";
 import { User } from "shared/types";
-import { EMAIL_REGEX, USERNAME_REGEX } from "shared/consts";
 
 //@ts-ignore
 import styles from "./users.module.scss";

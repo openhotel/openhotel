@@ -8,7 +8,7 @@ import {
 } from "./components";
 //@ts-ignore
 import styles from "./account.module.scss";
-import { ButtonComponent } from "@oh/components";
+import { ButtonComponent } from "@openhotel/components";
 import { LinkComponent } from "shared/components";
 
 export const AccountComponent = () => {

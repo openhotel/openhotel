@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAccount, useApi, useUser } from "shared/hooks";
 import { RequestMethod } from "shared/enums";
-import { ButtonComponent, GithubIconComponent } from "@oh/components";
+import { ButtonComponent, GithubIconComponent } from "@openhotel/components";
 import { RedirectComponent } from "shared/components";
 
 //https://github.com/login/oauth/authorize?client_id=Ov23liP5bbBloeAyvY5h&redirect_uri=http://localhost:2024/account/github&state=akjsdaklsdjkl

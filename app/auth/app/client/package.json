@@ -9,7 +9,7 @@
     "vite-tsconfig-paths": "4.3.2"
   },
   "dependencies": {
-    "@oh/components": "npm:@jsr/oh__components@0.1.41",
+    "@openhotel/components": "0.2.2",
     "@thumbmarkjs/thumbmarkjs": "^0.19.1",
     "@vitejs/plugin-react": "^4.3.1",
     "@vitejs/plugin-react-refresh": "1.3.6",
@@ -28,6 +28,6 @@
   "scripts": {
     "start": "vite --host",
     "build": "vite build",
-    "link": "yarn link @oh/components"
+    "link": "npm link @openhotel/components"
   }
 }

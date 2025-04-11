@@ -7,7 +7,7 @@ import {
   InputComponent,
   SelectorComponent,
   useModal,
-} from "@oh/components";
+} from "@openhotel/components";
 import { EMAIL_REGEX, USERNAME_REGEX } from "shared/consts";
 import { User } from "shared/types";
 import dayjs from "dayjs";

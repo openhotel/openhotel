@@ -2,7 +2,7 @@ import { useAdmin } from "shared/hooks";
 import React, { FormEvent, useCallback, useEffect, useState } from "react";
 //@ts-ignore
 import styles from "./apps.module.scss";
-import { ButtonComponent, InputComponent } from "@oh/components";
+import { ButtonComponent, InputComponent } from "@openhotel/components";
 
 export const AdminAppsComponent = () => {
   const { apps, addApp, removeApps, fetchApps } = useAdmin();

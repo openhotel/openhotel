@@ -3,7 +3,7 @@ import {
   ButtonComponent,
   ConfirmationModalComponent,
   useModal,
-} from "@oh/components";
+} from "@openhotel/components";
 import { useAccount } from "shared/hooks";
 import { useNavigate } from "react-router-dom";
 

@@ -5,9 +5,9 @@ import {
   ButtonComponent,
   ConfirmationModalComponent,
   TableComponent,
-} from "@oh/components";
+  useModal,
+} from "@openhotel/components";
 import { Backup } from "shared/types";
-import { useModal } from "@oh/components";
 import { decodeTime } from "ulidx";
 
 //@ts-ignore

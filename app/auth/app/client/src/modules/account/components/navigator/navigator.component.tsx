@@ -10,7 +10,7 @@ import {
   HotelIconComponent,
   KeysIconComponent,
   NavItemComponent,
-} from "@oh/components";
+} from "@openhotel/components";
 import { LinkComponent } from "shared/components";
 import { useAccount, useUser } from "shared/hooks";
 //@ts-ignore

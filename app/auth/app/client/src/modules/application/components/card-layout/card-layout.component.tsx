@@ -5,10 +5,9 @@ import {
   CardComponent,
   SocialComponent,
   LicenseComponent,
-} from "@oh/components";
+} from "@openhotel/components";
 //@ts-ignore
 import styles from "./card-layout.module.scss";
-import { cn } from "shared/utils";
 
 type Props = {
   children?: React.ReactNode;

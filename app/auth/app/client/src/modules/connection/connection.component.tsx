@@ -4,7 +4,7 @@ import { RedirectComponent } from "shared/components";
 import { useConnection, useHotel, useRedirect } from "shared/hooks";
 import { PartialConnection } from "shared/types";
 import { arraysMatch } from "shared/utils";
-import { ButtonComponent } from "@oh/components";
+import { ButtonComponent } from "@openhotel/components";
 
 export const ConnectionComponent: React.FC = () => {
   const [searchParams] = useSearchParams();

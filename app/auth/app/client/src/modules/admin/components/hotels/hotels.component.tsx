@@ -8,7 +8,7 @@ import {
   OfficialIconComponent,
   TableComponent,
   VerifiedIconComponent,
-} from "@oh/components";
+} from "@openhotel/components";
 import { HotelFormComponent } from "./hotel-form";
 import { cn } from "shared/utils";
 

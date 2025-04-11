@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from "react";
 import { Hotel, HotelIntegration } from "shared/types";
 import { useMyHotels } from "shared/hooks";
-import { ButtonComponent } from "@oh/components";
+import { ButtonComponent } from "@openhotel/components";
 import { cn } from "shared/utils";
 
 //@ts-ignore

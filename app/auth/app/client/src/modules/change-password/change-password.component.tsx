@@ -1,5 +1,5 @@
 import React, { FormEvent, useCallback, useState } from "react";
-import { ButtonComponent } from "@oh/components";
+import { ButtonComponent } from "@openhotel/components";
 import {
   LinkComponent,
   PasswordComponent,

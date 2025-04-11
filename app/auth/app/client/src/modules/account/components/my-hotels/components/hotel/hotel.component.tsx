@@ -12,7 +12,7 @@ import {
   InputComponent,
   SelectorComponent,
   useModal,
-} from "@oh/components";
+} from "@openhotel/components";
 import { IntegrationComponent } from "../integration/integration.component";
 import { cn } from "shared/utils";
 

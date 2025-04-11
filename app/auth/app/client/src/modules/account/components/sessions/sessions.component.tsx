@@ -2,14 +2,14 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 //@ts-ignore
 import styles from "./sessions.module.scss";
 import { useAccount } from "shared/hooks";
-import { cn, getCensoredEmail } from "shared/utils";
+import { cn } from "shared/utils";
 import {
   ButtonComponent,
   CrossIconComponent,
   FormComponent,
   InputComponent,
   TableComponent,
-} from "@oh/components";
+} from "@openhotel/components";
 import { AccountSession } from "shared/types";
 
 import dayjs from "dayjs";

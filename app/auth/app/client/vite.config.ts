@@ -27,7 +27,7 @@ export default defineConfig({
     alias: {
       modules: "/modules",
       shared: "/shared",
-      "@oh/styles": "../node_modules/@oh/components/",
+      "@openhotel/styles": "../node_modules/@openhotel/components/",
     },
   },
 });

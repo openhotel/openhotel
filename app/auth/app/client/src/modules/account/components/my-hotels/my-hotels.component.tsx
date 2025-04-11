@@ -1,7 +1,7 @@
 import React, { FormEvent, useCallback, useEffect, useState } from "react";
 import { Hotel } from "shared/types";
 import { useMyHotels } from "shared/hooks";
-import { ButtonComponent, InputComponent } from "@oh/components";
+import { ButtonComponent, InputComponent } from "@openhotel/components";
 import { HotelComponent } from "./components";
 
 //@ts-ignore
