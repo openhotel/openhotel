@@ -31,6 +31,7 @@ export default defineConfig({
       "/background": PROXY_URL,
     },
     hmr: true,
+    allowedHosts: ["hotel.local"],
   },
   plugins: [react(), reactRefresh(), tsconfigPaths(), build()],
   root: "./src",
