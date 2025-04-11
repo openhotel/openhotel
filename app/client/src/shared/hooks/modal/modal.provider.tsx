@@ -1,5 +1,5 @@
 import React, { ReactNode, useCallback, useMemo } from "react";
-import { ModalContext } from "shared/hooks/modal/modal.context";
+import { useCamera, ModalContext } from "shared/hooks";
 import {
   ContainerComponent,
   DragContainerComponent,
@@ -10,8 +10,6 @@ import { Modal } from "shared/enums";
 import { Point2d } from "shared/types";
 import { useModalStore } from "./modal.store";
 import { MODAL_COMPONENT_MAP, MODAL_SIZE_MAP } from "shared/consts";
-import { useProxy } from "shared/hooks";
-import { Event as ProxyEvent } from "shared/enums";
 
 type ModalProps = {
   children: ReactNode;
@@ -30,7 +28,6 @@ export const ModalProvider: React.FunctionComponent<ModalProps> = ({
     setPosition,
     isOpen,
   } = useModalStore();
-  const { emit } = useProxy();
 
   const openModal = useCallback(
     (modal: Modal) => {
@@ -66,9 +63,15 @@ export const ModalProvider: React.FunctionComponent<ModalProps> = ({
     [setPosition],
   );
 
-  const disableCamera = () => {
-    emit(ProxyEvent.DISABLE_CAMERA_MOVEMENT, {});
-  };
+  const { setCanDrag } = useCamera();
+
+  const disableCameraMovement = useCallback(() => {
+    setCanDrag(false);
+  }, [setCanDrag]);
+
+  const enableCameraMovement = useCallback(() => {
+    setCanDrag(true);
+  }, [setCanDrag]);
 
   const renderModals = useMemo(() => {
     return Object.keys(modals)
@@ -83,7 +86,9 @@ export const ModalProvider: React.FunctionComponent<ModalProps> = ({
             position={position ?? { x: 0, y: 0 }}
             visible={visible}
             eventMode={EventMode.STATIC}
-            onPointerDown={disableCamera}
+            onPointerDown={disableCameraMovement}
+            onPointerUp={enableCameraMovement}
+            onPointerLeave={enableCameraMovement}
           />
         ) : null;
       })

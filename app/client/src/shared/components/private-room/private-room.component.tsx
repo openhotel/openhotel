@@ -6,7 +6,7 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { ContainerComponent, ContainerRef } from "@openhotel/pixi-components";
+import { ContainerComponent, ContainerRef, EventMode } from "@openhotel/pixi-components";
 import { CrossDirection, RoomPointEnum } from "shared/enums";
 import {
   getPositionFromIsometricPosition,
@@ -21,6 +21,7 @@ import {
   PrivateRoomTilePreview,
   PrivateRoomWallComponent,
 } from "./components";
+import { useCamera } from "shared/hooks";
 
 type Props = {
   ref?: React.Ref<ContainerRef>;
@@ -51,6 +52,13 @@ export const PrivateRoomComponent: React.FC<Props> = ({
   const $ref = useRef<ContainerRef>(null);
   const $sizeRef = useRef<ContainerRef>(null);
 
+  const { isDragging } = useCamera();
+  const isDraggingRef = useRef(isDragging);
+
+  useEffect(() => {
+    isDraggingRef.current = isDragging;
+  }, [isDragging]);
+
   const [rawRoomSize, setRawRoomSize] = useState<Size2d>({
     width: 0,
     height: 0,
@@ -64,6 +72,14 @@ export const PrivateRoomComponent: React.FC<Props> = ({
     },
     [onHoverTile, setPreviewData],
   );
+	
+	const $onPointerTile = useCallback(
+		(point: Point3d) => {
+			if (isDraggingRef.current) return;
+			onPointerTile?.(point);
+		},
+		[onPointerTile, isDragging],
+	);
 
   ref &&
     useImperativeHandle(
@@ -123,7 +139,7 @@ export const PrivateRoomComponent: React.FC<Props> = ({
               key={`stairs${x}.${z}`}
               position={position}
               direction={stairsDirection}
-              onPointerUp={() => onPointerTile?.(position)}
+              onPointerUp={() => $onPointerTile?.(position)}
               onPointerEnter={() =>
                 $onHoverTile({
                   point: position,
@@ -138,7 +154,7 @@ export const PrivateRoomComponent: React.FC<Props> = ({
               key={`tile${x}.${z}`}
               spawn={spawn}
               position={position}
-							onPointerUp={() => onPointerTile?.(position)}
+							onPointerUp={() => $onPointerTile?.(position)}
               onPointerEnter={() =>
                 $onHoverTile({ point: position, type: "tile" })
               }
@@ -226,7 +242,7 @@ export const PrivateRoomComponent: React.FC<Props> = ({
     }
 
     return [list, accumulatedPivot];
-  }, [layout, onPointerTile, $onHoverTile]);
+  }, [layout, $onPointerTile, $onHoverTile]);
 
   useEffect(() => {
     setRawRoomSize((size) => $sizeRef?.current?.getSize?.() ?? size);

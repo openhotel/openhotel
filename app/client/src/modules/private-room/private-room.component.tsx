@@ -6,6 +6,7 @@ import React, {
   useState,
 } from "react";
 import {
+  CameraContainer,
   PreviewTileData,
   PrivateRoomComponent as PrivateRoomComp,
 } from "shared/components";
@@ -46,7 +47,7 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
 
   const { getAccount } = useAccount();
   const { setExtra } = useInfo();
-  const { on, emit } = useProxy();
+  const { emit } = useProxy();
   const { room, setSelectedPreview, selectedPreview } = usePrivateRoom();
   const { lastUpdate, update } = useUpdate();
 
@@ -69,13 +70,6 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
     [Point3d, Point2d, CrossDirection] | [null, null]
   >([null, null]);
 
-  const wasDraggingRef = useRef(false);
-  const dragStartRef = useRef<Point2d | null>(null);
-  const dragCurrentRef = useRef<Point2d | null>(null);
-  const [roomOffset, setRoomOffset] = useState<Point2d>({ x: 0, y: 0 });
-
-  const CAMERA_MOVEMENT_MARGIN = 50;
-
   const roomPosition = useMemo(() => {
     if (!roomSize) return { x: 0, y: 0 };
     return {
@@ -83,32 +77,7 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
       y: (windowSize.height - roomSize.height - HOT_BAR_HEIGHT_FULL) / 2,
     };
   }, [windowSize, lastUpdate, roomSize]);
-	
-	// const roomPosition = useMemo(() => {
-	// 	const roomSize = privateRoomRef?.current?.getSize?.();
-	//
-	// 	if (!roomSize) return { x: roomOffset.x, y: roomOffset.y };
-	//
-	// 	const baseX = (windowSize.width - roomSize.width) / 2 + roomOffset.x / 2;
-	// 	const baseY =
-	// 		(windowSize.height - roomSize.height - HOT_BAR_HEIGHT_FULL) / 2 +
-	// 		roomOffset.y / 2;
-	//
-	// 	const maxX = windowSize.width - roomSize.width + CAMERA_MOVEMENT_MARGIN;
-	// 	const maxY =
-	// 		windowSize.height -
-	// 		roomSize.height +
-	// 		CAMERA_MOVEMENT_MARGIN -
-	// 		HOT_BAR_HEIGHT_FULL;
-	// 	const minX = -CAMERA_MOVEMENT_MARGIN;
-	// 	const minY = -CAMERA_MOVEMENT_MARGIN;
-	//
-	// 	return {
-	// 		x: Math.max(minX, Math.min(baseX, maxX)),
-	// 		y: Math.max(minY, Math.min(baseY, maxY)),
-	// 	};
-	// }, [windowSize, lastUpdate]);
-	
+
   const currentAccountId = useMemo(() => getAccount().accountId, [getAccount]);
   const currentUser = useMemo(
     () => room?.users?.find((user) => user.accountId === currentAccountId),
@@ -187,8 +156,6 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
 
   const onPointerTile = useCallback(
     (position: Point3d) => {
-      if (wasDraggingRef.current) return;
-
       emit(ProxyEvent.POINTER_TILE, {
         position,
       });
@@ -220,65 +187,16 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
     [roomPosition, roomPivot],
   );
 
-  useEffect(() => {
-    if (!room) return;
-
-    const onRemovePointerDown = onEvent(Event.POINTER_DOWN, (e: MouseEvent) => {
-      dragCurrentRef.current = { x: e.clientX, y: e.clientY };
-      dragStartRef.current = { x: e.clientX, y: e.clientY };
-      wasDraggingRef.current = false;
-    });
-
-    const MOVEMENT_THRESHOLD = 5;
-
-    const onRemovePointerMove = onEvent(Event.POINTER_MOVE, (e: MouseEvent) => {
-      if (!dragCurrentRef.current) return;
-
-      const dx = e.clientX - dragCurrentRef.current.x;
-      const dy = e.clientY - dragCurrentRef.current.y;
-
-      setRoomOffset((prev) => ({
-        x: prev.x + dx,
-        y: prev.y + dy,
-      }));
-
-      const totalDx = e.clientX - dragStartRef.current.x;
-      const totalDy = e.clientY - dragStartRef.current.y;
-
-      if (
-        Math.abs(totalDx) > MOVEMENT_THRESHOLD ||
-        Math.abs(totalDy) > MOVEMENT_THRESHOLD
-      ) {
-        wasDraggingRef.current = true;
-      }
-
-      dragCurrentRef.current = { x: e.clientX, y: e.clientY };
-      update();
-    });
-
-    const onRemovePointerUp = onEvent(Event.POINTER_UP, () => {
-      dragCurrentRef.current = null;
-    });
-
-    const onRemoveDisableCameraMovement = on(
-      ProxyEvent.DISABLE_CAMERA_MOVEMENT,
-      () => {
-        dragCurrentRef.current = null;
-      },
-    );
-
-    return () => {
-      onRemovePointerDown();
-      onRemovePointerMove();
-      onRemovePointerUp();
-      onRemoveDisableCameraMovement();
-    };
-  }, [onEvent, update, room]);
-
   if (!room) return null;
 
   return (
     <ContainerComponent>
+			
+			<CameraContainer
+				margin={100}
+				contentRef={privateRoomRef}
+				bottomPadding={HOT_BAR_HEIGHT_FULL}
+			>
       <ContainerComponent position={roomPosition}>
         <PrivateRoomComp
           ref={privateRoomRef}
@@ -300,6 +218,7 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
       {/*  alpha={0.5}*/}
       {/*  eventMode={EventMode.NONE}*/}
       {/*/>*/}
+			</CameraContainer>
       <ContainerComponent position={{ y: windowSize.height }}>
         <RoomInfoComponent />
         <ChatHotBarComponent width={windowSize.width} />

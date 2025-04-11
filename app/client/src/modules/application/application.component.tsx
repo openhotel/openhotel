@@ -13,6 +13,7 @@ import {
   TasksProvider,
   PrivateRoomProvider,
   RouterProviderWrapper,
+  CameraProvider,
 } from "shared/hooks";
 import { NesterComponent } from "shared/components";
 import { FurnitureProvider } from "shared/hooks";
@@ -30,6 +31,7 @@ export const ApplicationComponent = () => {
       AssetsProvider,
       CoreLoaderComponent,
       AccountProvider,
+      CameraProvider, // Before 'ModalProvider' so 'ModalProvider' can use 'useCamera'
       ModalProvider,
       RouterProvider,
       InfoProvider,
