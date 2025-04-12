@@ -1,4 +1,29 @@
 
+<a name="v0.6.1-rc.8"></a>
+
+## [v0.6.1-rc.8](https://github.com/openhotel/openhotel/compare/v0.6.1...v0.6.1-rc.8) (2025-04-13)
+
+
+<a name="v0.6.1"></a>
+
+## [v0.6.1](https://github.com/openhotel/openhotel/compare/v0.6.0...v0.6.1) (2025-04-11)
+
+### Bug Fixes
+
+- prevent room from changing size when furniture is placed - fix [#732](https://github.com/openhotel/openhotel/issues/732) ([#740](https://github.com/openhotel/openhotel/issues/740))
+- add chat message length limit - fix [#721](https://github.com/openhotel/openhotel/issues/721) ([#731](https://github.com/openhotel/openhotel/issues/731))
+
+### Chore
+
+- update changelog for v0.6.0 ([#713](https://github.com/openhotel/openhotel/issues/713))
+
+### Features
+
+- added navigator scroll - fix [#730](https://github.com/openhotel/openhotel/issues/730) ([#742](https://github.com/openhotel/openhotel/issues/742))
+- add camera movement in rooms - fix [#720](https://github.com/openhotel/openhotel/issues/720) ([#736](https://github.com/openhotel/openhotel/issues/736))
+- update pixi-components dependency - fix [#737](https://github.com/openhotel/openhotel/issues/737)  ([#738](https://github.com/openhotel/openhotel/issues/738))
+
+
 <a name="v0.6.0"></a>
 
 ## [v0.6.0](https://github.com/openhotel/openhotel/compare/v0.5.33...v0.6.0) (2025-04-10)
@@ -737,26 +762,26 @@
 
 <a name="v0.2.26"></a>
 
-## [v0.2.26](https://github.com/openhotel/openhotel/compare/v0.2.25...v0.2.26) (2024-10-02)
+## [v0.2.26](https://github.com/openhotel/openhotel/compare/v0.2.24...v0.2.26) (2024-10-02)
 
 ### Bump
 
 - [@oh](https://github.com/oh)/updater - fix [#338](https://github.com/openhotel/openhotel/issues/338) ([#339](https://github.com/openhotel/openhotel/issues/339))
 
 
-<a name="v0.2.25"></a>
+<a name="v0.2.24"></a>
 
-## [v0.2.25](https://github.com/openhotel/openhotel/compare/v0.2.24.b...v0.2.25) (2024-10-02)
+## [v0.2.24](https://github.com/openhotel/openhotel/compare/v0.2.24.b...v0.2.24) (2024-10-02)
 
 
 <a name="v0.2.24.b"></a>
 
-## [v0.2.24.b](https://github.com/openhotel/openhotel/compare/v0.2.24...v0.2.24.b) (2024-10-02)
+## [v0.2.24.b](https://github.com/openhotel/openhotel/compare/v0.2.25...v0.2.24.b) (2024-10-02)
 
 
-<a name="v0.2.24"></a>
+<a name="v0.2.25"></a>
 
-## [v0.2.24](https://github.com/openhotel/openhotel/compare/v0.2.23...v0.2.24) (2024-10-02)
+## [v0.2.25](https://github.com/openhotel/openhotel/compare/v0.2.23...v0.2.25) (2024-10-02)
 
 ### Features
 
@@ -830,17 +855,17 @@
 
 <a name="v0.2.20-rc.2"></a>
 
-## [v0.2.20-rc.2](https://github.com/openhotel/openhotel/compare/v0.2.20-rc.1...v0.2.20-rc.2) (2024-09-29)
-
-
-<a name="v0.2.20-rc.1"></a>
-
-## [v0.2.20-rc.1](https://github.com/openhotel/openhotel/compare/v0.2.19...v0.2.20-rc.1) (2024-09-29)
+## [v0.2.20-rc.2](https://github.com/openhotel/openhotel/compare/v0.2.19...v0.2.20-rc.2) (2024-09-29)
 
 
 <a name="v0.2.19"></a>
 
-## [v0.2.19](https://github.com/openhotel/openhotel/compare/v0.2.18...v0.2.19) (2024-09-29)
+## [v0.2.19](https://github.com/openhotel/openhotel/compare/v0.2.20-rc.1...v0.2.19) (2024-09-29)
+
+
+<a name="v0.2.20-rc.1"></a>
+
+## [v0.2.20-rc.1](https://github.com/openhotel/openhotel/compare/v0.2.18...v0.2.20-rc.1) (2024-09-29)
 
 
 <a name="v0.2.18"></a>
