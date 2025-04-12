@@ -45,6 +45,4 @@ jobs:
           author_email: actions@openhotel.club
           message: "chore: update CHANGELOG for ${{ github.ref_name }}"
           add: CHANGELOG.md
-          branch: master
           push: true
-          token: ${{ secrets.PUSH_MASTER_SECRET_TOKEN || secrets.GITHUB_TOKEN }}
