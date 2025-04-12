@@ -1,6 +1,6 @@
 import React from "react";
-import { ContainerComponent, ContainerProps } from "@oh/pixi-components";
-import { ButtonComponent, TextComponent } from "shared/components";
+import { ContainerComponent, ContainerProps } from "@openhotel/pixi-components";
+import { TextComponent } from "shared/components";
 
 type Props = {} & ContainerProps;
 
