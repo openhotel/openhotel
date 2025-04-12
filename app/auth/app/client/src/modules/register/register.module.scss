@@ -5,6 +5,7 @@
   flex-direction: column;
   height: 100%;
   flex: 1;
+  align-items: center;
 }
 
 .form {
@@ -25,4 +26,30 @@
   margin-top: auto;
   padding-top: 2rem;
   text-align: center;
+}
+
+.success {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  height: 100%;
+
+  h1 {
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 1rem;
+    font-size: 2.2rem;
+  }
+
+  .warning {
+    color: var(--text-danger);
+    font-size: 1.4rem;
+    text-align: center;
+  }
+
+  div {
+    max-width: 300px;
+    text-align: center;
+  }
 }

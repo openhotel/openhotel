@@ -23,6 +23,7 @@ export const RegisterComponent: React.FC = () => {
   const [submittedAt, setSubmittedAt] = useState<number>();
   const [errorMessage, setErrorMessage] = useState<string>();
   const [captchaId, setCaptchaId] = useState<string>();
+  const [success, setSuccess] = useState<boolean>(false);
 
   const { register, isLogged } = useAccount();
   let navigate = useNavigate();
@@ -58,7 +59,7 @@ export const RegisterComponent: React.FC = () => {
         languages: [language],
       })
         .then(() => {
-          navigate("/login");
+          setSuccess(true);
         })
         .catch(({ status, message }) => {
           setSubmittedAt(performance.now());
@@ -70,9 +71,25 @@ export const RegisterComponent: React.FC = () => {
     [captchaId, navigate],
   );
 
+  const handleSuccessRedirect = () => {
+    navigate("/login");
+  };
+
   if (isLogged) return <RedirectComponent to="/" />;
 
-  return (
+  return success ? (
+    <div className={styles.success}>
+      <h1>Registration Successful</h1>
+      <div>
+        <p>Congratulations! You can now login to your account.</p>
+        <p className={styles.warning}>
+          Please verify your email address within 24 hours to prevent account
+          deletion.
+        </p>
+      </div>
+      <ButtonComponent onClick={handleSuccessRedirect}>OK</ButtonComponent>
+    </div>
+  ) : (
     <div className={styles.wrapper}>
       <form className={styles.form} onSubmit={onSubmit}>
         <h1 className={styles.title}>Register</h1>
@@ -87,12 +104,13 @@ export const RegisterComponent: React.FC = () => {
         />
         <CaptchaComponent submittedAt={submittedAt} onResolve={setCaptchaId} />
         <ButtonComponent fullWidth>Register</ButtonComponent>
-        {errorMessage ? (
+        {errorMessage && (
           <label key="backend-error" className={styles.error}>
             {errorMessage}
           </label>
-        ) : null}
+        )}
       </form>
+
       <LinkComponent className={styles.link} to="/login">
         Already registered? Login here.
       </LinkComponent>
