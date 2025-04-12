@@ -1,7 +1,7 @@
 
-<a name="v0.6.2-rc.1"></a>
+<a name="v0.6.2-rc.2"></a>
 
-## [v0.6.2-rc.1](https://github.com/openhotel/openhotel/compare/v0.6.1...v0.6.2-rc.1) (2025-04-13)
+## [v0.6.2-rc.2](https://github.com/openhotel/openhotel/compare/v0.6.1...v0.6.2-rc.2) (2025-04-13)
 
 ### Chore
 
@@ -11,6 +11,7 @@
 
 ### Features
 
+- ignore bots from changelog - fix [#750](https://github.com/openhotel/openhotel/issues/750)
 - ignore bots from changelog - fix [#750](https://github.com/openhotel/openhotel/issues/750)
 - change changelog auto pr to automatic commit to master - fix [#746](https://github.com/openhotel/openhotel/issues/746)  ([#747](https://github.com/openhotel/openhotel/issues/747))
 
