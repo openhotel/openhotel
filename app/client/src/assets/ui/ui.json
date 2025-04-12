@@ -120,6 +120,36 @@
       "sourceSize": { "w": 10, "h": 10 },
       "anchor": { "x": 0, "y": 0 }
     },
+    "catalog-button-top-selected": {
+      "frame": { "x": 106, "y": 107, "w": 7, "h": 7 },
+      "sourceSize": { "w": 7, "h": 7 },
+      "anchor": { "x": 0, "y": 0 }
+    },
+    "catalog-button-middle-selected": {
+      "frame": { "x": 106, "y": 114, "w": 7, "h": 7 },
+      "sourceSize": { "w": 7, "h": 7 },
+      "anchor": { "x": 0, "y": 0 }
+    },
+    "catalog-button-bottom-selected": {
+      "frame": { "x": 106, "y": 121, "w": 7, "h": 7 },
+      "sourceSize": { "w": 7, "h": 7 },
+      "anchor": { "x": 0, "y": 0 }
+    },
+    "catalog-button-top": {
+      "frame": { "x": 113, "y": 107, "w": 7, "h": 7 },
+      "sourceSize": { "w": 7, "h": 7 },
+      "anchor": { "x": 0, "y": 0 }
+    },
+    "catalog-button-middle": {
+      "frame": { "x": 113, "y": 114, "w": 7, "h": 7 },
+      "sourceSize": { "w": 7, "h": 7 },
+      "anchor": { "x": 0, "y": 0 }
+    },
+    "catalog-button-bottom": {
+      "frame": { "x": 113, "y": 121, "w": 7, "h": 7 },
+      "sourceSize": { "w": 7, "h": 7 },
+      "anchor": { "x": 0, "y": 0 }
+    },
     "scrollbar-arrow-top": {
       "frame": { "x": 106, "y": 0, "w": 11, "h": 11 },
       "sourceSize": { "w": 11, "h": 11 },
