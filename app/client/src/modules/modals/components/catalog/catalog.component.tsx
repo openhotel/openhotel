@@ -73,6 +73,12 @@ export const CatalogComponent: React.FC = () => {
             }}
           />
         </FlexContainerComponent>
+        <CategoriesComponent
+          position={{
+            x: overModalPosition.x + overModalSize.width,
+            y: headerHeight + contentPadding,
+          }}
+        />
         <GraphicsComponent
           type={GraphicType.RECTANGLE}
           tint={0}
@@ -83,12 +89,6 @@ export const CatalogComponent: React.FC = () => {
             x: 1,
           }}
           position={overModalPosition}
-        />
-        <CategoriesComponent
-          position={{
-            x: overModalPosition.x + overModalSize.width,
-            y: headerHeight + contentPadding,
-          }}
         />
       </ContainerComponent>
       <ContainerComponent position={overModalPosition}>
