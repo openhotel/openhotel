@@ -45,7 +45,7 @@ export const HotBarComponent: React.FC<Props> = ({ onDone }) => {
         setYPosition(TARGET_Y);
       });
     });
-  }, [setYPosition, addTask, onDone]);
+  }, [setYPosition, addTask]);
 
   return (
     <ContainerComponent
