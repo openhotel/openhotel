@@ -1,10 +1,15 @@
 
-<a name="v0.6.2-rc.3"></a>
+<a name="v0.6.2"></a>
 
-## [v0.6.2-rc.3](https://github.com/openhotel/openhotel/compare/v0.6.1...v0.6.2-rc.3) (2025-04-13)
+## [v0.6.2](https://github.com/openhotel/openhotel/compare/v0.6.1...v0.6.2) (2025-04-14)
+
+### Bug Fixes
+
+- Navigator reopening after closing - fix [#745](https://github.com/openhotel/openhotel/issues/745) ([#753](https://github.com/openhotel/openhotel/issues/753))
 
 ### Features
 
+- animate walk movement - fix [#722](https://github.com/openhotel/openhotel/issues/722) ([#754](https://github.com/openhotel/openhotel/issues/754))
 - ignore bots from changelog - fix [#750](https://github.com/openhotel/openhotel/issues/750) ([#751](https://github.com/openhotel/openhotel/issues/751))
 - change changelog auto pr to automatic commit to master - fix [#746](https://github.com/openhotel/openhotel/issues/746)  ([#747](https://github.com/openhotel/openhotel/issues/747))
 
