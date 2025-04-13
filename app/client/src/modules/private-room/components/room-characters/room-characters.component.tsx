@@ -190,7 +190,7 @@ export const RoomCharactersComponent: React.FC = () => {
         return (
           <CharacterComponent
             key={user.accountId}
-            bodyAction={userData.bodyAction}
+            bodyAction={userData.bodyAction ?? CharacterBodyAction.IDLE}
             bodyDirection={user.bodyDirection}
             headDirection={user.bodyDirection}
             leftArmAction={CharacterArmAction.IDLE}
