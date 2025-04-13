@@ -19,6 +19,12 @@ export type PrivateRoomState = {
     position: Point3d,
     bodyDirection?: Direction,
   ) => void;
+  setUserTargetPosition: (
+    accountId: string,
+    position: Point3d,
+    bodyDirection: Direction,
+  ) => void;
+  setUserBodyDirection: (accountId: string, bodyDirection: Direction) => void;
 
   addFurniture: (furniture: RoomFurniture) => void;
   updateFurniture: (furniture: RoomFurniture) => void;

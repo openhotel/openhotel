@@ -15,7 +15,7 @@ import {
 } from "shared/consts";
 import { FurnitureData, Point2d, Size2d, User } from "shared/types";
 import {
-  CharacterComponent,
+  CharacterWrapperComponent,
   FurnitureComponentWrapper,
   TextComponent,
 } from "shared/components";
@@ -73,7 +73,7 @@ export const SelectionPreviewComponent: React.FC = () => {
       case PrivateRoomPreviewType.CHARACTER:
         const user = selectedPreview.data as User;
         return (
-          <CharacterComponent
+          <CharacterWrapperComponent
             bodyAction={CharacterBodyAction.IDLE}
             bodyDirection={Direction.EAST}
             headDirection={Direction.EAST}

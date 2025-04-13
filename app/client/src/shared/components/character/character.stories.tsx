@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from "@storybook/react";
 import React, { useCallback, useEffect, useState } from "react";
-import { CharacterComponent } from "./character.component";
+import { CharacterWrapperComponent } from "./character.component";
 import {
   ContainerComponent,
   Cursor,
@@ -15,16 +15,17 @@ import {
   Direction,
 } from "shared/enums";
 import { TextComponent } from "shared/components/text";
+import { getPositionFromIsometricPosition } from "shared/utils";
 
 export default {
   title: "Shared/Character",
-  component: CharacterComponent,
+  component: CharacterWrapperComponent,
   parameters: {
     layout: "fullscreen",
   },
-} as Meta<typeof CharacterComponent>;
+} as Meta<typeof CharacterWrapperComponent>;
 
-type Story = StoryObj<typeof CharacterComponent>;
+type Story = StoryObj<typeof CharacterWrapperComponent>;
 
 //@ts-ignore
 export const Character: Story = () => {
@@ -108,14 +109,14 @@ export const Character: Story = () => {
         y: 55,
       }}
     >
-      <CharacterComponent
+      <CharacterWrapperComponent
         bodyDirection={bodyDirection}
         headDirection={headDirection ?? bodyDirection}
         leftArmAction={leftArmAction}
         rightArmAction={rightArmAction}
         bodyAction={bodyAnimation}
         skinColor={0xefcfb1}
-        position={{ x: 0, y: 0, z: 0 }}
+        position={getPositionFromIsometricPosition({ x: 0, y: 0, z: 0 })}
       />
       <PrivateRoomTile position={{ x: 0, y: 0, z: 0 }} />
 
