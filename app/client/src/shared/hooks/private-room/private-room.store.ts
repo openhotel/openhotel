@@ -29,7 +29,6 @@ export const usePrivateRoomStore = create<{
     position: Point3d,
     bodyDirection: Direction,
   ) => void;
-  setUserBodyDirection: (accountId: string, bodyDirection: Direction) => void;
 
   //
   addFurniture: (furniture: RoomFurniture) => void;
@@ -105,22 +104,6 @@ export const usePrivateRoomStore = create<{
                 ...user,
                 targetPosition,
                 bodyDirection: bodyDirection ?? user.bodyDirection,
-              }
-            : user,
-        ),
-      },
-    })),
-
-  setUserBodyDirection: (accountId: string, bodyDirection: Direction) =>
-    set((store) => ({
-      ...store,
-      room: {
-        ...store.room,
-        users: store.room.users.map((user) =>
-          user.accountId === accountId
-            ? {
-                ...user,
-                bodyDirection,
               }
             : user,
         ),

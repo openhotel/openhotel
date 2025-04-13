@@ -12,7 +12,6 @@ export const RoomCharactersComponent: React.FC = () => {
     removeUser,
     setUserPosition,
     setSelectedPreview,
-    setUserBodyDirection,
     setUserTargetPosition,
   } = usePrivateRoom();
 
@@ -54,15 +53,7 @@ export const RoomCharactersComponent: React.FC = () => {
       removeOnMoveHuman();
       removeOnSetPositionHuman();
     };
-  }, [
-    room,
-    on,
-    addUser,
-    removeUser,
-    setUserPosition,
-    setUserBodyDirection,
-    setUserTargetPosition,
-  ]);
+  }, [room, on, addUser, removeUser, setUserPosition, setUserTargetPosition]);
 
   const onPointerDown = useCallback(
     (user: User) => () => {
