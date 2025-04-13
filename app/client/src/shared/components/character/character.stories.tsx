@@ -15,6 +15,7 @@ import {
   Direction,
 } from "shared/enums";
 import { TextComponent } from "shared/components/text";
+import { getPositionFromIsometricPosition } from "shared/utils";
 
 export default {
   title: "Shared/Character",
@@ -115,7 +116,7 @@ export const Character: Story = () => {
         rightArmAction={rightArmAction}
         bodyAction={bodyAnimation}
         skinColor={0xefcfb1}
-        position={{ x: 0, y: 0, z: 0 }}
+        position={getPositionFromIsometricPosition({ x: 0, y: 0, z: 0 })}
       />
       <PrivateRoomTile position={{ x: 0, y: 0, z: 0 }} />
 
