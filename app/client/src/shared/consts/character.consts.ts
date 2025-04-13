@@ -1,4 +1,8 @@
-import { CharacterDirection, Direction } from "shared/enums";
+import {
+  CharacterBodyAction,
+  CharacterDirection,
+  Direction,
+} from "shared/enums";
 
 export const CHARACTER_DIRECTION_MAP: Record<Direction, CharacterDirection> = {
   [Direction.NORTH]: CharacterDirection.NORTH,
@@ -23,3 +27,12 @@ export const CHARACTER_DIRECTION_SCALE_MAP: Record<Direction, number> = {
   [Direction.NORTH_WEST]: 1,
   [Direction.NONE]: null,
 };
+
+export const CHARACTER_WALK_FRAME_DURATION_MS = 100;
+
+export const CHARACTER_WALK_FRAMES: CharacterBodyAction[] = [
+  CharacterBodyAction.WALK_0,
+  CharacterBodyAction.WALK_1,
+  CharacterBodyAction.WALK_2,
+  CharacterBodyAction.WALK_3,
+];

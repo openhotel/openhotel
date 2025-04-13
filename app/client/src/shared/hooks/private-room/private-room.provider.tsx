@@ -19,6 +19,7 @@ export const PrivateRoomProvider: React.FunctionComponent<PrivateRoomProps> = ({
     removeUser,
     room,
     setUserPosition,
+    setUserBodyDirection,
     addFurniture,
     removeFurniture,
     updateFurniture,
@@ -75,6 +76,11 @@ export const PrivateRoomProvider: React.FunctionComponent<PrivateRoomProps> = ({
       room && setUserPosition(accountId, position, bodyDirection),
     [setUserPosition, room],
   );
+  const $setUserBodyDirection = useCallback(
+    (accountId: string, bodyDirection: Direction) =>
+      room && setUserBodyDirection(accountId, bodyDirection),
+    [setUserPosition, room],
+  );
   const $addFurniture = useCallback(
     (furniture: RoomFurniture) => room && addFurniture(furniture),
     [addFurniture, room],
@@ -96,6 +102,7 @@ export const PrivateRoomProvider: React.FunctionComponent<PrivateRoomProps> = ({
         getUser,
         removeUser: $removeUser,
         setUserPosition: $setUserPosition,
+        setUserBodyDirection: $setUserBodyDirection,
         addFurniture: $addFurniture,
         removeFurniture: $removeFurniture,
         updateFurniture: $updateFurniture,

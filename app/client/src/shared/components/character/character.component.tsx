@@ -80,7 +80,7 @@ export const CharacterComponent: React.FC<Props> = ({
   //   return null;
 
   const $zIndex = useMemo(
-    () => position.x + position.z + Math.abs(position.y / 100) + 0.5,
+    () => position.x + position.z + Math.abs(position.y / 100) + 1,
     [position],
   );
   const $pivot = useMemo(
