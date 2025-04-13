@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo } from "react";
-import { CharacterComponent } from "shared/components";
+import { RoomCharacterComponent } from "../";
 import { Event as ProxyEvent, PrivateRoomPreviewType } from "shared/enums";
 import { usePrivateRoom, useProxy } from "shared/hooks";
 import { User } from "shared/types";
@@ -33,10 +33,6 @@ export const RoomCharactersComponent: React.FC = () => {
         if (!user) return;
 
         setUserTargetPosition(accountId, position, bodyDirection);
-        //TODO Clear this
-        setTimeout(() => {
-          setUserPosition(accountId, position);
-        }, 500);
       },
     );
 
@@ -70,7 +66,7 @@ export const RoomCharactersComponent: React.FC = () => {
   return useMemo(
     () =>
       room.users.map((user) => (
-        <CharacterComponent
+        <RoomCharacterComponent
           key={user.accountId}
           user={user}
           onPointerDown={onPointerDown(user)}

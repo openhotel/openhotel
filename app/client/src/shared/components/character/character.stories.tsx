@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from "@storybook/react";
 import React, { useCallback, useEffect, useState } from "react";
-import { CharacterWrapperComponent } from "./character.component";
+import { CharacterComponent } from "./character.component";
 import {
   ContainerComponent,
   Cursor,
@@ -19,13 +19,13 @@ import { getPositionFromIsometricPosition } from "shared/utils";
 
 export default {
   title: "Shared/Character",
-  component: CharacterWrapperComponent,
+  component: CharacterComponent,
   parameters: {
     layout: "fullscreen",
   },
-} as Meta<typeof CharacterWrapperComponent>;
+} as Meta<typeof CharacterComponent>;
 
-type Story = StoryObj<typeof CharacterWrapperComponent>;
+type Story = StoryObj<typeof CharacterComponent>;
 
 //@ts-ignore
 export const Character: Story = () => {
@@ -109,7 +109,7 @@ export const Character: Story = () => {
         y: 55,
       }}
     >
-      <CharacterWrapperComponent
+      <CharacterComponent
         bodyDirection={bodyDirection}
         headDirection={headDirection ?? bodyDirection}
         leftArmAction={leftArmAction}

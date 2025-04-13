@@ -102,6 +102,7 @@ export const usePrivateRoomStore = create<{
           user.accountId === accountId
             ? {
                 ...user,
+                position: user.targetPosition ?? user.position,
                 targetPosition,
                 bodyDirection: bodyDirection ?? user.bodyDirection,
               }
