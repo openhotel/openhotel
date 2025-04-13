@@ -40,10 +40,7 @@ export const RoomCharacterComponent: React.FC<Props> = ({
 
   const [$position, $setPosition] = useState<Point2d | null>(null);
   const [$zIndex, $setZIndex] = useState<number>(null);
-  // const [bodyAction, setBodyAction] = useState<CharacterBodyAction>(
-  //   CharacterBodyAction.IDLE,
-  // );
-  //
+
   useEffect(() => {
     if (!user?.targetPosition) return;
 
@@ -163,7 +160,6 @@ export const RoomCharacterComponent: React.FC<Props> = ({
       leftArmAction={CharacterArmAction.IDLE}
       rightArmAction={CharacterArmAction.IDLE}
       skinColor={user.skinColor ?? 0xefcfb1}
-      // @ts-ignore
       position={position}
       zIndex={zIndex}
       {...containerProps}

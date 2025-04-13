@@ -44,42 +44,6 @@ export const CharacterComponent: React.FC<Props> = ({
   onPointerDown,
   ...containerProps
 }) => {
-  // const { data } = useCharacter();
-  //
-  // const [bodyAction, setBodyAction] = useState<CharacterBodyAction>(null);
-  //
-  // useEffect(() => {
-  //   const animationBodyActions =
-  //     CHARACTER_BODY_ANIMATION_MAP?.[bodyDirection]?.[bodyAnimation];
-  //
-  //   if (!Array.isArray(animationBodyActions))
-  //     return setBodyAction(animationBodyActions);
-  //
-  //   setBodyAction(animationBodyActions[0]);
-  //   return System.tasks.add({
-  //     type: TickerQueue.REPEAT,
-  //     repeatEvery: 120,
-  //     repeats: undefined,
-  //     onFunc: () => {
-  //       setBodyAction((animation) => {
-  //         const index = animationBodyActions.indexOf(animation) + 1;
-  //         return animationBodyActions[index] ?? animationBodyActions[0];
-  //       });
-  //     },
-  //   });
-  // }, [bodyAnimation, bodyDirection, setBodyAction]);
-  //
-  // if (
-  //   bodyAction === null ||
-  //   isNaN(bodyAction) ||
-  //   !getBodyData(bodyDirection, bodyAction)
-  // )
-  //   return null;
-
-  // const $zIndex = useMemo(
-  //   () => position.x + position.z + Math.abs(position.y / 100) + 1,
-  //   [position],
-  // );
   const $pivot = useMemo(
     () => ({
       x: -(TILE_SIZE.width + 2) / 2,
