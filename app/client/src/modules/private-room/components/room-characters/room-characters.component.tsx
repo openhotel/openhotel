@@ -1,18 +1,19 @@
 import React, { useCallback, useEffect, useMemo } from "react";
-import { CharacterComponent } from "shared/components";
-import {
-  CharacterArmAction,
-  CharacterBodyAction,
-  Event as ProxyEvent,
-  PrivateRoomPreviewType,
-} from "shared/enums";
+import { RoomCharacterComponent } from "../";
+import { Event as ProxyEvent, PrivateRoomPreviewType } from "shared/enums";
 import { usePrivateRoom, useProxy } from "shared/hooks";
 import { User } from "shared/types";
 
 export const RoomCharactersComponent: React.FC = () => {
-  const { on, emit } = useProxy();
-  const { room, addUser, removeUser, setUserPosition, setSelectedPreview } =
-    usePrivateRoom();
+  const { on } = useProxy();
+  const {
+    room,
+    addUser,
+    removeUser,
+    setUserPosition,
+    setSelectedPreview,
+    setUserTargetPosition,
+  } = usePrivateRoom();
 
   useEffect(() => {
     if (!room) return;
@@ -20,6 +21,7 @@ export const RoomCharactersComponent: React.FC = () => {
     const removeOnAddHuman = on(ProxyEvent.ADD_HUMAN, ({ user }) => {
       addUser(user);
     });
+
     const removeOnRemoveHuman = on(ProxyEvent.REMOVE_HUMAN, ({ accountId }) => {
       removeUser(accountId);
     });
@@ -27,7 +29,10 @@ export const RoomCharactersComponent: React.FC = () => {
     const removeOnMoveHuman = on(
       ProxyEvent.MOVE_HUMAN,
       ({ accountId, position, bodyDirection }) => {
-        setUserPosition(accountId, position, bodyDirection);
+        const user = room.users.find((u) => u.accountId === accountId);
+        if (!user) return;
+
+        setUserTargetPosition(accountId, position, bodyDirection);
       },
     );
 
@@ -37,13 +42,14 @@ export const RoomCharactersComponent: React.FC = () => {
         setUserPosition(accountId, position);
       },
     );
+
     return () => {
       removeOnAddHuman();
       removeOnRemoveHuman();
       removeOnMoveHuman();
       removeOnSetPositionHuman();
     };
-  }, [room, on, emit, addUser, removeUser, setUserPosition]);
+  }, [room, on, addUser, removeUser, setUserPosition, setUserTargetPosition]);
 
   const onPointerDown = useCallback(
     (user: User) => () => {
@@ -60,15 +66,9 @@ export const RoomCharactersComponent: React.FC = () => {
   return useMemo(
     () =>
       room.users.map((user) => (
-        <CharacterComponent
+        <RoomCharacterComponent
           key={user.accountId}
-          bodyAction={CharacterBodyAction.IDLE}
-          bodyDirection={user.bodyDirection}
-          headDirection={user.bodyDirection}
-          leftArmAction={CharacterArmAction.IDLE}
-          rightArmAction={CharacterArmAction.IDLE}
-          skinColor={user.skinColor ?? 0xefcfb1}
-          position={user.position}
+          user={user}
           onPointerDown={onPointerDown(user)}
         />
       )),
