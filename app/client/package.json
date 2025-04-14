@@ -6,7 +6,8 @@
     "start": "vite --host",
     "storybook": "storybook dev -p 7007",
     "link:pixi-components": "npm link @openhotel/pixi-components --force",
-    "build-storybook": "storybook build"
+    "storybook:build": "storybook build --debug --test",
+    "storybook:test": "storybook dev --smoke-test --debug"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "3.2.4",
