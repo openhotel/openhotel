@@ -46,6 +46,11 @@ export const ConfigProvider: React.FunctionComponent<ConfigProps> = ({
   const getConfig = useCallback(() => configRef.current, []);
   const getChangeLog = useCallback(() => changeLogRef.current, []);
 
+  const getVersion = useCallback(
+    () => `${configRef.current.version}-alpha`,
+    [],
+  );
+
   const isDevelopment = useCallback(
     () => configRef.current.version === "development",
     [],
@@ -56,6 +61,7 @@ export const ConfigProvider: React.FunctionComponent<ConfigProps> = ({
       value={{
         getChangeLog,
         getConfig,
+        getVersion,
 
         isDevelopment,
       }}

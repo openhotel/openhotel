@@ -4,6 +4,7 @@ import { ConfigTypes } from "shared/types";
 export type ConfigState = {
   getChangeLog: () => unknown;
   getConfig: () => ConfigTypes;
+  getVersion: () => string;
 
   isDevelopment: () => boolean;
 };
