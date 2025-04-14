@@ -11,10 +11,10 @@ import {
   LicenseComponent,
   LogoComponent,
   VignetteTransitionComponent,
+  VersionComponent,
 } from "./components";
 import { useModal } from "shared/hooks";
 import { Modal } from "shared/enums";
-import { VersionComponent } from "shared/components";
 
 export const HomeComponent: React.FC = () => {
   const { openModal, isModalOpen } = useModal();
