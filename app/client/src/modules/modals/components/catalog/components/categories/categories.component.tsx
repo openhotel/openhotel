@@ -1,58 +1,52 @@
-import React from "react";
+import React, { useCallback, useState } from "react";
 import {
   ContainerComponent,
   ContainerProps,
-  NineSliceSpriteComponent,
+  Cursor,
+  EventMode,
 } from "@openhotel/pixi-components";
-import { TextComponent } from "shared/components";
-import { SpriteSheetEnum } from "shared/enums";
+import { CategoryOptionComponent } from "../";
 
-type Props = {} & ContainerProps;
+type Props = {
+  width: number;
+  categories: string[];
+} & ContainerProps;
 
-export const CategoriesComponent: React.FC<Props> = ({ ...containerProps }) => {
-  const width = 75;
+export const CategoriesComponent: React.FC<Props> = ({
+  width,
+  categories,
+  ...containerProps
+}) => {
+  const [selectedCategory, setSelectedCategory] = useState<number>(0);
+
+  const onSelectedCategory = useCallback(
+    (index) => () => setSelectedCategory(index),
+    [setSelectedCategory],
+  );
+
   return (
     <ContainerComponent {...containerProps}>
-      <NineSliceSpriteComponent
-        texture={"catalog-button-top-selected"}
-        spriteSheet={SpriteSheetEnum.UI}
-        leftWidth={3}
-        rightWidth={3}
-        topHeight={3}
-        bottomHeight={3}
-        width={width}
-        height={14}
-      />
-      <TextComponent
-        text="alpha"
-        color={0}
-        position={{
-          x: 10,
-          y: 4,
-        }}
-      />
-      <NineSliceSpriteComponent
-        texture={"catalog-button-middle-selected"}
-        spriteSheet={SpriteSheetEnum.UI}
-        leftWidth={3}
-        rightWidth={3}
-        topHeight={3}
-        bottomHeight={3}
-        width={width}
-        height={14}
-        position={{ y: 13 }}
-      />
-      <NineSliceSpriteComponent
-        texture={"catalog-button-bottom-selected"}
-        spriteSheet={SpriteSheetEnum.UI}
-        leftWidth={3}
-        rightWidth={3}
-        topHeight={3}
-        bottomHeight={3}
-        width={width}
-        height={14}
-        position={{ y: 13 * 2 }}
-      />
+      {categories.map((category, index) => (
+        <CategoryOptionComponent
+          key={index}
+          type={
+            index === 0
+              ? "top"
+              : index === categories.length - 1
+                ? "bottom"
+                : "middle"
+          }
+          text={category}
+          selected={selectedCategory === index}
+          width={width}
+          position={{
+            y: 13 * index,
+          }}
+          onPointerDown={onSelectedCategory(index)}
+          eventMode={EventMode.STATIC}
+          cursor={Cursor.POINTER}
+        />
+      ))}
     </ContainerComponent>
   );
 };
