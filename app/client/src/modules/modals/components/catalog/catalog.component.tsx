@@ -9,7 +9,7 @@ import {
   GraphicType,
 } from "@openhotel/pixi-components";
 import { SpriteSheetEnum } from "shared/enums";
-import { TextComponent } from "shared/components";
+import { ScrollComponent, TextComponent } from "shared/components";
 import { CategoriesComponent } from "modules/modals/components/catalog/components";
 
 export const CatalogComponent: React.FC = () => {
@@ -25,8 +25,13 @@ export const CatalogComponent: React.FC = () => {
   };
   const overModalPadding = 5;
 
+  const categorySize = {
+    width: 75,
+    height: height - 28 - 5,
+  };
+
   const overModalSize = {
-    width: width - 100,
+    width: width - (categorySize.width + 25),
     height: height + overModalPadding * 2,
   };
 
@@ -73,12 +78,36 @@ export const CatalogComponent: React.FC = () => {
             }}
           />
         </FlexContainerComponent>
-        <CategoriesComponent
+        <ScrollComponent
+          size={{
+            height: categorySize.height,
+            width: categorySize.width - 10,
+          }}
           position={{
             x: overModalPosition.x + overModalSize.width,
             y: headerHeight + contentPadding,
           }}
-        />
+        >
+          <CategoriesComponent
+            width={categorySize.width - 15}
+            categories={[
+              "1",
+              "2",
+              "3",
+              "4",
+              "5",
+              "6",
+              "7",
+              "8",
+              "9",
+              "10",
+              "11",
+              "12",
+              "13",
+              "14",
+            ]}
+          />
+        </ScrollComponent>
         <GraphicsComponent
           type={GraphicType.RECTANGLE}
           tint={0}
