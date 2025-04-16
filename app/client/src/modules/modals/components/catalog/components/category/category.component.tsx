@@ -8,7 +8,7 @@ import {
   NineSliceSpriteComponent,
   SpriteComponent,
 } from "@openhotel/pixi-components";
-import { FurnitureComponentWrapper, TextComponent } from "shared/components";
+import { TextComponent } from "shared/components";
 import { useApi, useFurniture } from "shared/hooks";
 import { SpriteSheetEnum } from "shared/enums";
 
@@ -42,48 +42,55 @@ export const CategoryComponent: React.FC<Props> = ({
     );
   }, [fetch, categoryId, setIsLoading, setCategoryData]);
 
-  const renderItems = useMemo(
-    () =>
-      isLoading
-        ? null
-        : categoryData.furniture.map((furniture, index) => {
-            const data = get(furniture.id);
+  const renderItems = useMemo(() => {
+    if (isLoading) return;
 
-            const x = (index % 3) * (24 + 3);
-            const y = Math.trunc(index / 3) * (24 + 3);
+    const items = [];
+    for (let x = 0; x < 3; x++) {
+      for (let y = 0; y < 7; y++) {
+        const index = x * 3 + y;
+        const furniture = categoryData.furniture[index];
 
-            return (
-              <ContainerComponent key={furniture.id} position={{ x, y }}>
-                <NineSliceSpriteComponent
-                  spriteSheet={SpriteSheetEnum.UI}
-                  texture="background-circle-x6"
-                  leftWidth={2}
-                  rightWidth={2}
-                  topHeight={2}
-                  bottomHeight={2}
-                  width={24}
-                  height={24}
-                  tint={0xe0e0e0}
-                />
-                {/*<FurnitureComponentWrapper*/}
-                {/*  position={{ x: 0, y: 0, z: 0 }}*/}
-                {/*  id={furniture.id}*/}
-                {/*  data={get(furniture.id)}*/}
-                {/*/>*/}
-                <SpriteComponent
-                  position={{ x: 1, y: 1 }}
-                  texture={data.icon.texture}
-                  spriteSheet={data.spriteSheet}
-                  pivot={{
-                    x: (data.icon.bounds.width - 22) / 2,
-                    y: (data.icon.bounds.height - 22) / 2,
-                  }}
-                />
-              </ContainerComponent>
-            );
-          }),
-    [isLoading, categoryData],
-  );
+        const data = furniture ? get(furniture.id) : null;
+
+        items.push(
+          <ContainerComponent
+            key={furniture?.id ?? index + "furni"}
+            position={{ x: x * 25, y: y * 25 }}
+          >
+            <NineSliceSpriteComponent
+              spriteSheet={SpriteSheetEnum.UI}
+              texture="background-circle-x6"
+              leftWidth={2}
+              rightWidth={2}
+              topHeight={2}
+              bottomHeight={2}
+              width={24}
+              height={24}
+              tint={0xe0e0e0}
+            />
+            {/*<FurnitureComponentWrapper*/}
+            {/*  position={{ x: 0, y: 0, z: 0 }}*/}
+            {/*  id={furniture.id}*/}
+            {/*  data={get(furniture.id)}*/}
+            {/*/>*/}
+            {furniture ? (
+              <SpriteComponent
+                position={{ x: 1, y: 1 }}
+                texture={data.icon.texture}
+                spriteSheet={data.spriteSheet}
+                pivot={{
+                  x: (data.icon.bounds.width - 22) / 2,
+                  y: (data.icon.bounds.height - 22) / 2,
+                }}
+              />
+            ) : null}
+          </ContainerComponent>,
+        );
+      }
+    }
+    return items;
+  }, [isLoading, categoryData]);
 
   return (
     <ContainerComponent {...containerProps}>
