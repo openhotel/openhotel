@@ -59,3 +59,9 @@ categories:
         price: 0
       - id: xmas@tree-1
         price: 0
+  - id: cakes
+    label: Cakes Collection
+    enabled: true
+    furniture:
+      - id: cakes@chocolate-small
+        price: 0
