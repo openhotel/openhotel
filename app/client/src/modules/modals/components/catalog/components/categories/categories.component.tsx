@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React from "react";
 import {
   ContainerComponent,
   ContainerProps,
@@ -6,29 +6,35 @@ import {
   EventMode,
 } from "@openhotel/pixi-components";
 import { CategoryOptionComponent } from "../";
+import { CatalogCategory } from "shared/types";
 
 type Props = {
   width: number;
-  categories: string[];
+  categories: CatalogCategory[];
+
+  selectedCategoryId: string;
+  onSelectedCategory: (categoryId: string) => void;
 } & ContainerProps;
 
 export const CategoriesComponent: React.FC<Props> = ({
   width,
   categories,
+  selectedCategoryId,
+  onSelectedCategory,
   ...containerProps
 }) => {
-  const [selectedCategory, setSelectedCategory] = useState<number>(0);
-
-  const onSelectedCategory = useCallback(
-    (index) => () => setSelectedCategory(index),
-    [setSelectedCategory],
-  );
+  // const [selectedCategory, setSelectedCategory] = useState<number>(0);
+  //
+  // const onSelectedCategory = useCallback(
+  //   (index) => () => setSelectedCategory(index),
+  //   [setSelectedCategory],
+  // );
 
   return (
     <ContainerComponent {...containerProps}>
       {categories.map((category, index) => (
         <CategoryOptionComponent
-          key={index}
+          key={category.id}
           type={
             index === 0
               ? "top"
@@ -36,13 +42,13 @@ export const CategoriesComponent: React.FC<Props> = ({
                 ? "bottom"
                 : "middle"
           }
-          text={category}
-          selected={selectedCategory === index}
+          text={category.label}
+          selected={selectedCategoryId === category.id}
           width={width}
           position={{
             y: 13 * index,
           }}
-          onPointerDown={onSelectedCategory(index)}
+          onPointerDown={() => onSelectedCategory(category.id)}
           eventMode={EventMode.STATIC}
           cursor={Cursor.POINTER}
         />
