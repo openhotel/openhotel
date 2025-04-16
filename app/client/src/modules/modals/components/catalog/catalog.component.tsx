@@ -25,7 +25,7 @@ const OVER_MODAL_POSITION = {
 const OVER_MODAL_PADDING = 5;
 
 type WrapperProps = {
-  onPointerDown: () => void;
+  onPointerDown?: () => void;
 };
 
 export const CatalogComponentWrapper: React.FC<WrapperProps> = ({

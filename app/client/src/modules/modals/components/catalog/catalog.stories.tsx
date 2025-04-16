@@ -2,6 +2,7 @@ import { Meta, StoryObj } from "@storybook/react";
 import React from "react";
 import { CameraProvider, ModalProvider } from "shared/hooks";
 import { CatalogComponentWrapper } from "./catalog.component";
+import { DragContainerProvider } from "@openhotel/pixi-components";
 
 export default {
   title: "Modules/Modals/Catalog",
@@ -17,10 +18,12 @@ type Story = StoryObj<typeof CatalogComponentWrapper>;
 //@ts-ignore
 export const Primary: Story = () => {
   return (
-    <CameraProvider>
-      <ModalProvider>
-        <CatalogComponentWrapper />
-      </ModalProvider>
-    </CameraProvider>
+    <DragContainerProvider>
+      <CameraProvider>
+        <ModalProvider>
+          <CatalogComponentWrapper />
+        </ModalProvider>
+      </CameraProvider>
+    </DragContainerProvider>
   );
 };
