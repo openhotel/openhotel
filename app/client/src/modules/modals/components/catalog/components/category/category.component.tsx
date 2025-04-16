@@ -8,7 +8,7 @@ import {
   NineSliceSpriteComponent,
   SpriteComponent,
 } from "@openhotel/pixi-components";
-import { TextComponent } from "shared/components";
+import { ScrollComponent, TextComponent } from "shared/components";
 import { useApi, useFurniture } from "shared/hooks";
 import { SpriteSheetEnum } from "shared/enums";
 
@@ -33,7 +33,6 @@ export const CategoryComponent: React.FC<Props> = ({
     setCategoryData(null);
     fetch(`/catalog?category=${categoryId}`).then(
       (category: CatalogCategoryData) => {
-        console.log(category.furniture.map((furniture) => furniture.id));
         load(...category.furniture.map((furniture) => furniture.id)).then(() =>
           setIsLoading(false),
         );
@@ -43,18 +42,37 @@ export const CategoryComponent: React.FC<Props> = ({
   }, [fetch, categoryId, setIsLoading, setCategoryData]);
 
   const renderItems = useMemo(() => {
-    if (isLoading) return;
-
+    if (isLoading) return null;
     const items = [];
-    for (let x = 0; x < 3; x++) {
-      for (let y = 0; y < 7; y++) {
-        const index = x * 3 + y;
+    const yLength = Math.max(7, (categoryData?.furniture?.length ?? 1) / 3);
+    for (let y = 0; y < yLength; y++) {
+      for (let x = 0; x < 3; x++) {
+        // if (isLoading) {
+        //   items.push(() => (
+        //     <ContainerComponent position={{ x: x * (24 + 3), y: y * (24 + 3) }}>
+        //       <NineSliceSpriteComponent
+        //         spriteSheet={SpriteSheetEnum.UI}
+        //         texture="background-circle-x6"
+        //         leftWidth={2}
+        //         rightWidth={2}
+        //         topHeight={2}
+        //         bottomHeight={2}
+        //         width={24}
+        //         height={24}
+        //         tint={0xe0e0e0}
+        //       />
+        //     </ContainerComponent>
+        //   ));
+        //   continue;
+        // }
+
+        const index = x + y * 3;
         const furniture = categoryData.furniture[index];
 
         const data = furniture ? get(furniture.id) : null;
 
         items.push(() => (
-          <ContainerComponent position={{ x: x * 25, y: y * 25 }}>
+          <ContainerComponent position={{ x: x * (24 + 3), y: y * (24 + 3) }}>
             <NineSliceSpriteComponent
               spriteSheet={SpriteSheetEnum.UI}
               texture="background-circle-x6"
@@ -66,11 +84,6 @@ export const CategoryComponent: React.FC<Props> = ({
               height={24}
               tint={0xe0e0e0}
             />
-            {/*<FurnitureComponentWrapper*/}
-            {/*  position={{ x: 0, y: 0, z: 0 }}*/}
-            {/*  id={furniture.id}*/}
-            {/*  data={get(furniture.id)}*/}
-            {/*/>*/}
             {furniture ? (
               <SpriteComponent
                 position={{ x: 1, y: 1 }}
@@ -98,9 +111,14 @@ export const CategoryComponent: React.FC<Props> = ({
         tint={0xff00ff}
       />
       <TextComponent text={categoryId} />
-      <ContainerComponent position={{ y: 32 + 5 }}>
-        {renderItems}
-      </ContainerComponent>
+      {!isLoading ? (
+        <ScrollComponent
+          size={{ width: (24 + 3) * 3, height: size.height - 32 - 5 }}
+          position={{ y: 32 + 5 }}
+        >
+          {renderItems}
+        </ScrollComponent>
+      ) : null}
     </ContainerComponent>
   );
 };
