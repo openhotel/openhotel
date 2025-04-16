@@ -31,13 +31,13 @@ export const ApplicationComponent = () => {
       AssetsProvider,
       CoreLoaderComponent,
       AccountProvider,
+      FurnitureProvider,
       CameraProvider, // Before 'ModalProvider' so 'ModalProvider' can use 'useCamera'
       ModalProvider,
       RouterProvider,
       InfoProvider,
       //|\\|//|\\|//|\\|//|\\|//|\\|//|\\|//|\\|
       //|\\|//|\\|//|\\|//|\\|//|\\|//|\\|//|\\|
-      FurnitureProvider,
       PrivateRoomProvider,
       //|\\|//|\\|//|\\|//|\\|//|\\|//|\\|//|\\|
       //|\\|//|\\|//|\\|//|\\|//|\\|//|\\|//|\\|,

@@ -1,9 +1,8 @@
 import { Modal, ModalNavigatorTab } from "shared/enums";
 import {
-  CatalogComponentWrapper,
+  CatalogComponent,
   ClubComponent,
   ConsoleComponent,
-  InventoryComponent,
   NavigatorComponent,
   PurseComponent,
 } from "modules/modals";
@@ -56,8 +55,8 @@ export const MODAL_SIZE_MAP: Record<Modal, Size> = {
 export const MODAL_COMPONENT_MAP: Record<Modal, React.FC> = {
   [Modal.CONSOLE]: ConsoleComponent,
   [Modal.NAVIGATOR]: NavigatorComponent,
-  [Modal.CATALOG]: CatalogComponentWrapper,
-  [Modal.INVENTORY]: CatalogComponentWrapper,
+  [Modal.CATALOG]: CatalogComponent,
+  [Modal.INVENTORY]: CatalogComponent,
   [Modal.PURSE]: PurseComponent,
   [Modal.CLUB]: ClubComponent,
 };

@@ -1,6 +1,6 @@
 categories:
   - id: alpha
-    label: Alpha collection
+    label: Alpha
     enabled: true
     furniture:
       - id: alpha@small-lamp
@@ -60,7 +60,7 @@ categories:
       - id: xmas@tree-1
         price: 0
   - id: cakes
-    label: Cakes Collection
+    label: Cakes
     enabled: true
     furniture:
       - id: cakes@chocolate-small
