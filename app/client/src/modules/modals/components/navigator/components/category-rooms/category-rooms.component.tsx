@@ -133,7 +133,7 @@ export const CategoryRoomsComponentWrapper: React.FC<Props> = ({
   return (
     <ScrollComponent
       size={{
-        width: size.width - 11,
+        width: size.width - 13,
         height: size.height,
       }}
       children={content}

@@ -193,7 +193,7 @@ export const CatalogComponentWrapper: React.FC<WrapperProps> = ({
             }}
           >
             <CategoriesComponent
-              width={categorySize.width - 15}
+              width={categorySize.width - 13}
               categories={catalog.categories}
               selectedCategoryId={selectedCategoryId}
               onSelectedCategory={setSelectedCategoryId}
