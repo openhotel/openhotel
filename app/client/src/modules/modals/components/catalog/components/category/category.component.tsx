@@ -53,11 +53,8 @@ export const CategoryComponent: React.FC<Props> = ({
 
         const data = furniture ? get(furniture.id) : null;
 
-        items.push(
-          <ContainerComponent
-            key={furniture?.id ?? index + "furni"}
-            position={{ x: x * 25, y: y * 25 }}
-          >
+        items.push(() => (
+          <ContainerComponent position={{ x: x * 25, y: y * 25 }}>
             <NineSliceSpriteComponent
               spriteSheet={SpriteSheetEnum.UI}
               texture="background-circle-x6"
@@ -85,11 +82,11 @@ export const CategoryComponent: React.FC<Props> = ({
                 }}
               />
             ) : null}
-          </ContainerComponent>,
-        );
+          </ContainerComponent>
+        ));
       }
     }
-    return items;
+    return items.map((Comp, index) => <Comp key={`furni_${index}`} />);
   }, [isLoading, categoryData]);
 
   return (
