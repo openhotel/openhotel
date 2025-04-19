@@ -48,12 +48,15 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
   const { getAccount } = useAccount();
   const { setExtra } = useInfo();
   const { emit } = useProxy();
-  const { room, setSelectedPreview, selectedPreview } = usePrivateRoom();
+  const { room, setSelectedPreview, selectedPreview, setLastPositionData } =
+    usePrivateRoom();
   const { lastUpdate, update } = useUpdate();
   const { isDragging, position: cameraPosition } = useCamera();
 
   const { on: onEvent } = useEvents();
   const { getSize } = useWindow();
+
+  const [isShiftDown, setIsShiftDown] = useState<boolean>(false);
   const [windowSize, setWindowSize] = useState<Size>(getSize());
   const [roomSize, setRoomSize] = useState<Size2d>({
     width: 0,
@@ -139,10 +142,26 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
     selectedPreview,
   ]);
 
+  const onKeyDown = useCallback(
+    (event: KeyboardEvent) => {
+      if (event.code.includes("Shift")) setIsShiftDown(true);
+    },
+    [setIsShiftDown],
+  );
+
+  const onKeyUp = useCallback(
+    (event: KeyboardEvent) => {
+      if (event.code.includes("Shift")) setIsShiftDown(false);
+    },
+    [setIsShiftDown],
+  );
+
   useEffect(() => {
     if (!room) return;
 
     const onRemoveOnResize = onEvent(Event.RESIZE, setWindowSize);
+    const onRemoveKeyDown = onEvent(Event.KEY_DOWN, onKeyDown);
+    const onRemoveKeyUp = onEvent(Event.KEY_UP, onKeyUp);
     setWindowSize(getSize());
 
     setRoomSize(privateRoomRef.current.getSize());
@@ -152,19 +171,29 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
 
     return () => {
       onRemoveOnResize();
+      onRemoveKeyDown();
+      onRemoveKeyUp();
     };
-  }, [onEvent, update, room?.id, setRoomSize]);
+  }, [onEvent, update, room?.id, setRoomSize, onKeyDown, onKeyUp]);
 
   const onPointerTile = useCallback(
     (position: Point3d) => {
       if (isDragging) return;
+
+      if (isShiftDown) {
+        setLastPositionData({
+          position,
+          direction: CrossDirection.NORTH,
+        });
+        return;
+      }
 
       emit(ProxyEvent.POINTER_TILE, {
         position,
       });
       setSelectedPreview(null);
     },
-    [emit, setSelectedPreview, isDragging],
+    [emit, setSelectedPreview, isDragging, isShiftDown, setLastPositionData],
   );
 
   const onHoverTile = useCallback(
@@ -175,11 +204,16 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
   );
 
   const onClickWall = useCallback(
-    (position: Point3d, point: Point2d, direction: CrossDirection) => {
-      setWallDataPoint([position, point, direction]);
+    (position: Point3d, wallPosition: Point2d, direction: CrossDirection) => {
+      setLastPositionData({
+        position,
+        wallPosition,
+        direction,
+      });
+      setWallDataPoint([position, wallPosition, direction]);
       setSelectedPreview(null);
     },
-    [setWallDataPoint, setSelectedPreview],
+    [setWallDataPoint, setSelectedPreview, setLastPositionData],
   );
 
   const messagesPivot = useMemo(

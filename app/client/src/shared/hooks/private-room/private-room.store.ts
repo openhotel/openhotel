@@ -8,6 +8,7 @@ import {
   User,
 } from "shared/types";
 import { Direction } from "shared/enums";
+import { PositionData } from "shared/hooks/private-room/private-room.context";
 
 export const usePrivateRoomStore = create<{
   room: PrivateRoom;
@@ -38,6 +39,9 @@ export const usePrivateRoomStore = create<{
   //
   selectedPreview: PrivateRoomPreview | null;
   setSelectedPreview: (data: PrivateRoomPreview | null) => void;
+
+  lastPositionData: PositionData | null;
+  setLastPositionData: (data: PositionData | null) => void;
 }>((set) => ({
   room: null,
   messages: [],
@@ -145,5 +149,12 @@ export const usePrivateRoomStore = create<{
     set((store) => ({
       ...store,
       selectedPreview,
+    })),
+  //
+  lastPositionData: null,
+  setLastPositionData: (lastPositionData: PositionData | null) =>
+    set((store) => ({
+      ...store,
+      lastPositionData,
     })),
 }));
