@@ -58,13 +58,16 @@ export const RoomFurnitureComponent: React.FC = () => {
 
   const onPointerDown = useCallback(
     (furniture: RoomFurniture) => () => {
+      const data = getFurniture(furniture.furnitureId);
+      if (!data) return;
+
       setSelectedPreview({
         id: furniture.id,
         type:
           furniture.type === FurnitureType.FURNITURE
             ? PrivateRoomPreviewType.FURNITURE
             : PrivateRoomPreviewType.FRAME,
-        data: getFurniture(furniture.furnitureId),
+        data,
         title:
           getFurniture(furniture.furnitureId)?.label ?? furniture.furnitureId,
       });

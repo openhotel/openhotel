@@ -80,7 +80,7 @@ export const SelectionPreviewComponent: React.FC = () => {
             leftArmAction={CharacterArmAction.IDLE}
             rightArmAction={CharacterArmAction.IDLE}
             skinColor={user.skinColor ?? 0xefcfb1}
-            position={{ x: 0, y: 0, z: 0 }}
+            position={{ x: 0, y: 0 }}
           />
         );
       case PrivateRoomPreviewType.FRAME:
