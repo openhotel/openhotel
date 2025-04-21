@@ -51,6 +51,8 @@ export const usePrivateRoomStore = create<{
     set({
       room: null,
       messages: [],
+      selectedPreview: null,
+      lastPositionData: null,
     }),
 
   //////////////////
