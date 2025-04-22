@@ -76,8 +76,25 @@ export const ItemListComponent: React.FC<Props> = ({
               bottomHeight={2}
               width={FURNITURE_ICON_SIZE}
               height={FURNITURE_ICON_SIZE}
-              tint={selectedIndex === index ? 0xff00ff : 0xe0e0e0}
+              tint={0xe0e0e0}
             />
+            {selectedIndex === index ? (
+              <NineSliceSpriteComponent
+                spriteSheet={SpriteSheetEnum.UI}
+                texture="background-circle-x6"
+                leftWidth={2}
+                rightWidth={2}
+                topHeight={2}
+                bottomHeight={2}
+                width={FURNITURE_ICON_SIZE - 2}
+                height={FURNITURE_ICON_SIZE - 2}
+                position={{
+                  x: 1,
+                  y: 1,
+                }}
+                tint={0xffffff}
+              />
+            ) : null}
           </ContainerComponent>
         ));
       }
