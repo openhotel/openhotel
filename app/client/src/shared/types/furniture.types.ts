@@ -20,6 +20,7 @@ export type FurnitureDirectionDataMap = Record<
 >;
 
 export type FurnitureData = {
+  type: FurnitureType;
   furnitureId: string;
   label: string;
   description: string;

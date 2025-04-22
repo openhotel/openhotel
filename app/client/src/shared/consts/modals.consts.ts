@@ -43,7 +43,7 @@ export const MODAL_SIZE_MAP: Record<Modal, Size> = {
     height: 260,
   },
   [Modal.CATALOG]: {
-    width: 319,
+    width: 349,
     height: 237,
   },
   [Modal.INVENTORY]: {

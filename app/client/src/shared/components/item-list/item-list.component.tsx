@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
   ContainerComponent,
   ContainerProps,
@@ -129,6 +129,10 @@ export const ItemListComponent: React.FC<Props> = ({
     }
     return $items.map((Comp, index) => <Comp key={`item_${index}`} />);
   }, [rows, cols, items]);
+
+  useEffect(() => {
+    setSelected(null);
+  }, [items, setSelected]);
 
   return height ? (
     <ScrollComponent

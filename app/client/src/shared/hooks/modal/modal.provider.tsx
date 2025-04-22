@@ -90,7 +90,11 @@ export const ModalProvider: React.FunctionComponent<ModalProps> = ({
 
   useEffect(() => {
     on(Event.POINTER_DOWN, () => {
-      if (cursorOverModalRef.current === null) return;
+      if (
+        cursorOverModalRef.current === null ||
+        focusedModalRef.current === cursorOverModalRef.current
+      )
+        return;
       focusedModalRef.current = cursorOverModalRef.current;
       update();
     });
