@@ -11,7 +11,7 @@ import {
   SpriteComponent,
   TilingSpriteComponent,
   useDragContainer,
-} from "@oh/pixi-components";
+} from "@openhotel/pixi-components";
 import { Modal, SpriteSheetEnum, TransactionType } from "shared/enums";
 import { MODAL_SIZE_MAP } from "shared/consts";
 import { TextComponent } from "shared/components";

@@ -51,6 +51,7 @@ export enum ProxyEvent {
   SYSTEM_MESSAGE = "system-message",
 
   REDIRECT = "redirect",
+  DISABLE_CAMERA_MOVEMENT = "disable-camera-movement",
 }
 
 export enum OnetEvent {

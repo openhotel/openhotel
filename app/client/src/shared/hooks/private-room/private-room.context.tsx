@@ -5,8 +5,15 @@ import {
   PrivateRoom,
   User,
   PrivateRoomPreview,
+  Point2d,
 } from "shared/types";
-import { Direction } from "shared/enums";
+import { CrossDirection, Direction } from "shared/enums";
+
+export type PositionData = {
+  position: Point3d;
+  wallPosition?: Point2d;
+  direction?: CrossDirection;
+};
 
 export type PrivateRoomState = {
   room: PrivateRoom;
@@ -19,6 +26,11 @@ export type PrivateRoomState = {
     position: Point3d,
     bodyDirection?: Direction,
   ) => void;
+  setUserTargetPosition: (
+    accountId: string,
+    position: Point3d,
+    bodyDirection: Direction,
+  ) => void;
 
   addFurniture: (furniture: RoomFurniture) => void;
   updateFurniture: (furniture: RoomFurniture) => void;
@@ -26,6 +38,9 @@ export type PrivateRoomState = {
 
   selectedPreview: PrivateRoomPreview | null;
   setSelectedPreview: (data: PrivateRoomPreview | null) => void;
+
+  lastPositionData: PositionData | null;
+  setLastPositionData: (data: PositionData | null) => void;
 };
 
 export const PrivateRoomContext =

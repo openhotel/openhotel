@@ -7,13 +7,14 @@ import {
   FlexContainerComponent,
   GraphicsComponent,
   GraphicType,
+  KeyboardEventExtended,
   NineSliceSpriteComponent,
   SpriteTextInputComponent,
   useEvents,
-} from "@oh/pixi-components";
+} from "@openhotel/pixi-components";
 import { HotBarItemsComponent } from "shared/components";
 import { Event, SpriteSheetEnum } from "shared/enums";
-import { useProxy } from "shared/hooks";
+import { usePrivateRoom, useProxy } from "shared/hooks";
 import {
   CHAT_RIGHT_MARGIN,
   HOT_BAR_HEIGHT,
@@ -29,6 +30,7 @@ type Props = {
 export const ChatHotBarComponent: React.FC<Props> = ({ width = 0 }) => {
   const { on } = useEvents();
   const { emit } = useProxy();
+  const { lastPositionData } = usePrivateRoom();
 
   const [focusInputNow, setFocusInputNow] = useState<number>(null);
 
@@ -46,8 +48,13 @@ export const ChatHotBarComponent: React.FC<Props> = ({ width = 0 }) => {
   const onKeyDown = useCallback(
     ({ code }: KeyboardEvent) => {
       if (code === "KeyC") return setFocusInputNow(performance.now());
+    },
+    [setFocusInputNow, setValue],
+  );
 
-      if (!focusedRef.current || 0 >= historyRef.current.length) return;
+  const onChangeMessage = useCallback(
+    ({ code, target }: KeyboardEventExtended) => {
+      const $message = target.value;
 
       if (code === "ArrowUp") {
         historyIndexRef.current = Math.min(
@@ -67,49 +74,47 @@ export const ChatHotBarComponent: React.FC<Props> = ({ width = 0 }) => {
         );
         return;
       }
+      if (code === "Enter") {
+        let message = $message.trim();
+        if (!message.length) return;
+        historyIndexRef.current = -1;
+
+        historyRef.current.unshift(message);
+        if (historyRef.current.length > MAX_MESSAGES_HISTORY)
+          historyRef.current.pop();
+
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(historyRef.current));
+
+        if (
+          message.startsWith("/set") &&
+          message.split(" ").length === 2 &&
+          lastPositionData
+        ) {
+          message += ` ${lastPositionData.position.x} ${lastPositionData.position.z} ${lastPositionData.direction}`;
+          if (lastPositionData.wallPosition)
+            message += ` ${lastPositionData.wallPosition.x} ${lastPositionData.wallPosition.y}`;
+        }
+
+        emit(Event.MESSAGE, { message });
+        setValue("");
+
+        return;
+      }
+      setValue(target.value);
+
+      if (!typingRef.current) {
+        emit(Event.TYPING_START, {});
+      }
+
+      typingRef.current = true;
+      clearTimeout(typingTimeoutRef.current);
+      // @ts-ignore
+      typingTimeoutRef.current = setTimeout(() => {
+        typingRef.current = false;
+        emit(Event.TYPING_END, {});
+      }, 800);
     },
-    [setFocusInputNow, setValue],
-  );
-
-  useEffect(() => {
-    const removeOnKeyDown = on(OhEvent.KEY_DOWN, onKeyDown);
-
-    return () => {
-      removeOnKeyDown();
-    };
-  }, [on, onKeyDown]);
-
-  const onChangeMessage = useCallback((message: string) => {
-    if (message.startsWith("/")) return;
-    if (!typingRef.current) {
-      emit(Event.TYPING_START, {});
-    }
-
-    typingRef.current = true;
-    clearTimeout(typingTimeoutRef.current);
-    // @ts-ignore
-    typingTimeoutRef.current = setTimeout(() => {
-      typingRef.current = false;
-      emit(Event.TYPING_END, {});
-    }, 800);
-  }, []);
-
-  const onSendMessage = useCallback(
-    ($message: string) => {
-      const message = $message.trim();
-      if (!message.length) return;
-      historyIndexRef.current = -1;
-
-      historyRef.current.unshift(message);
-      if (historyRef.current.length > MAX_MESSAGES_HISTORY)
-        historyRef.current.pop();
-
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(historyRef.current));
-
-      emit(Event.MESSAGE, { message });
-      setValue(null);
-    },
-    [emit, setValue],
+    [emit, setValue, lastPositionData],
   );
 
   const onFocus = useCallback(() => {
@@ -119,6 +124,14 @@ export const ChatHotBarComponent: React.FC<Props> = ({ width = 0 }) => {
   const onBlur = useCallback(() => {
     focusedRef.current = false;
   }, []);
+
+  useEffect(() => {
+    const removeOnKeyDown = on(OhEvent.KEY_DOWN, onKeyDown);
+
+    return () => {
+      removeOnKeyDown();
+    };
+  }, [onKeyDown]);
 
   return (
     <ContainerComponent
@@ -194,13 +207,12 @@ export const ChatHotBarComponent: React.FC<Props> = ({ width = 0 }) => {
           maxLength={MAX_MESSAGE_LENGTH}
           backgroundColor={0xff00ff}
           backgroundAlpha={0}
-          onEnter={onSendMessage}
-          onValueChange={onChangeMessage}
+          value={value}
+          onChange={onChangeMessage}
           clearOnEnter={true}
           focusNow={focusInputNow}
           onFocus={onFocus}
           onBlur={onBlur}
-          value={value}
         />
       </ContainerComponent>
 

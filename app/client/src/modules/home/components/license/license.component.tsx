@@ -1,7 +1,7 @@
 import React, { useCallback } from "react";
-import { Cursor, EventMode } from "@oh/pixi-components";
+import { Cursor, EventMode } from "@openhotel/pixi-components";
 import { TextComponent } from "shared/components";
-import { TEXT_PADDING } from "shared/consts";
+import { TEXT_BACKGROUND_BASE } from "shared/consts";
 
 export const LicenseComponent: React.FC = () => {
   const onOpenLicense = useCallback(() => {
@@ -10,12 +10,10 @@ export const LicenseComponent: React.FC = () => {
   return (
     <TextComponent
       text="CC BY-NC-SA 4.0"
-      padding={TEXT_PADDING}
       eventMode={EventMode.STATIC}
       cursor={Cursor.POINTER}
-      backgroundColor={1}
-      backgroundAlpha={0.25}
       onPointerDown={onOpenLicense}
+      {...TEXT_BACKGROUND_BASE}
     />
   );
 };

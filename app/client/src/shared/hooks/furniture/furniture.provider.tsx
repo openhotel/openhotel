@@ -2,7 +2,7 @@ import React, { ReactNode, useCallback } from "react";
 import { FurnitureContext } from "./furniture.context";
 import { useFurnitureStore } from "./furniture.store";
 import { useApi } from "shared/hooks/use-api";
-import { useTextures } from "@oh/pixi-components";
+import { useTextures } from "@openhotel/pixi-components";
 import { CrossDirectionKeys, FurnitureDirectionDataMap } from "shared/types";
 import { CrossDirection } from "shared/enums";
 

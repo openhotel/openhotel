@@ -8,7 +8,7 @@ import {
   PurseComponent,
 } from "modules/modals";
 import React from "react";
-import { Size } from "@oh/pixi-components";
+import { Size } from "@openhotel/pixi-components";
 
 export const MODAL_NAVIGATOR_TAB_NAME_MAP: Record<ModalNavigatorTab, string> = {
   [ModalNavigatorTab.HOTEL]: "Hotel",

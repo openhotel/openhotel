@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from "react";
-import { Cursor, EventMode, SpriteComponent } from "@oh/pixi-components";
+import { Cursor, EventMode, SpriteComponent } from "@openhotel/pixi-components";
 import { Modal, SpriteSheetEnum } from "shared/enums";
 import { useModal } from "shared/hooks";
 import { MODAL_HOT_BAR_ITEMS } from "shared/consts";

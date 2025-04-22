@@ -1,7 +1,7 @@
 import React from "react";
 import { CrossDirection, SpriteSheetEnum } from "shared/enums";
 import { getPositionFromIsometricPosition } from "shared/utils";
-import { EventMode, SpriteComponent } from "@oh/pixi-components";
+import { EventMode, SpriteComponent } from "@openhotel/pixi-components";
 import { Point3d } from "shared/types";
 
 type Props = {

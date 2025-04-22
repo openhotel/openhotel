@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { TickerQueue } from "@oh/queue";
-import { CONTRIBUTOR_LOOP_TIME, TEXT_PADDING } from "shared/consts";
-import { Cursor, EventMode } from "@oh/pixi-components";
+import { CONTRIBUTOR_LOOP_TIME, TEXT_BACKGROUND_BASE } from "shared/consts";
+import { Cursor, EventMode } from "@openhotel/pixi-components";
 import { TextComponent } from "shared/components";
 import { useContributors, useTasks } from "shared/hooks";
 
@@ -50,12 +50,10 @@ export const ContributorsComponent: React.FC = () => {
   return (
     <TextComponent
       text={text}
-      padding={TEXT_PADDING}
-      backgroundColor={1}
-      backgroundAlpha={0.25}
       eventMode={EventMode.STATIC}
       cursor={Cursor.POINTER}
       onPointerDown={onOpenGithub}
+      {...TEXT_BACKGROUND_BASE}
     />
   );
 };

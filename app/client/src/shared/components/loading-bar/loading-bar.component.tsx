@@ -3,7 +3,7 @@ import {
   ContainerComponent,
   GraphicsComponent,
   GraphicType,
-} from "@oh/pixi-components";
+} from "@openhotel/pixi-components";
 
 type Props = {
   width: number;

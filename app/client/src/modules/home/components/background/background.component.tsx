@@ -11,7 +11,7 @@ import {
   SpriteComponent,
   useEvents,
   useWindow,
-} from "@oh/pixi-components";
+} from "@openhotel/pixi-components";
 import { TextureEnum } from "shared/enums";
 
 export const BackgroundComponent: React.FC = () => {

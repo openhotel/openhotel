@@ -10,7 +10,7 @@ import {
   NineSliceSpriteComponent,
   TilingSpriteComponent,
   useDragContainer,
-} from "@oh/pixi-components";
+} from "@openhotel/pixi-components";
 import { Modal, ModalNavigatorTab, SpriteSheetEnum } from "shared/enums";
 import { TextComponent } from "shared/components";
 import {

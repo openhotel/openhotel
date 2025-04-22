@@ -19,11 +19,14 @@ export const PrivateRoomProvider: React.FunctionComponent<PrivateRoomProps> = ({
     removeUser,
     room,
     setUserPosition,
+    setUserTargetPosition,
     addFurniture,
     removeFurniture,
     updateFurniture,
     selectedPreview,
     setSelectedPreview,
+    lastPositionData,
+    setLastPositionData,
   } = usePrivateRoomStore();
 
   const { on, emit } = useProxy();
@@ -75,6 +78,11 @@ export const PrivateRoomProvider: React.FunctionComponent<PrivateRoomProps> = ({
       room && setUserPosition(accountId, position, bodyDirection),
     [setUserPosition, room],
   );
+  const $setUserTargetPosition = useCallback(
+    (accountId: string, position: Point3d, bodyDirection?: Direction) =>
+      room && setUserTargetPosition(accountId, position, bodyDirection),
+    [setUserPosition, room],
+  );
   const $addFurniture = useCallback(
     (furniture: RoomFurniture) => room && addFurniture(furniture),
     [addFurniture, room],
@@ -96,11 +104,14 @@ export const PrivateRoomProvider: React.FunctionComponent<PrivateRoomProps> = ({
         getUser,
         removeUser: $removeUser,
         setUserPosition: $setUserPosition,
+        setUserTargetPosition: $setUserTargetPosition,
         addFurniture: $addFurniture,
         removeFurniture: $removeFurniture,
         updateFurniture: $updateFurniture,
         selectedPreview,
         setSelectedPreview,
+        lastPositionData,
+        setLastPositionData,
       }}
       children={children}
     />

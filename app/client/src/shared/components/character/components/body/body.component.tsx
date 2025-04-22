@@ -9,7 +9,10 @@ import {
 import { useCharacter } from "shared/hooks";
 import { getCharacterBodyPart, getEnumKeyLowCase } from "shared/utils";
 import { CharacterDirectionData } from "shared/types";
-import { ContainerComponent, SpriteComponent } from "@oh/pixi-components";
+import {
+  ContainerComponent,
+  SpriteComponent,
+} from "@openhotel/pixi-components";
 
 type Props = {
   direction: Direction;

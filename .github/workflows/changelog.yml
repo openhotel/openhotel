@@ -14,12 +14,13 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      pull-requests: write
 
     steps:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
+          ref: master
+          token: ${{ secrets.PUSH_MASTER_SECRET_TOKEN || secrets.GITHUB_TOKEN }}
 
       - name: Install git-chglog
         run: |
@@ -28,35 +29,20 @@ jobs:
           sudo mv git-chglog /usr/local/bin/
           rm git-chglog_${{ env.CHGLOG_VERSION }}_linux_amd64.tar.gz
 
+      - name: Fetch All Tags
+        run: git fetch --tags --force
+
       - name: Generate CHANGELOG
+        id: generate_changelog
         run: |
-          git fetch --tags --force
-          latest_tag=$(git describe --tags --abbrev=0)
-          git-chglog -o CHANGELOG.md "v0.0.1..$latest_tag"
+          current_tag=${GITHUB_REF#refs/tags/}
+          git-chglog -o CHANGELOG.md "v0.0.1..$current_tag"
 
-      - name: Create Branch and Commit
-        run: |
-          git config user.name "OpenHotel Actions"
-          git config user.email "actions@openhotel.club"
-
-          git fetch --tags --force
-          latest_tag=$(git describe --tags --abbrev=0)
-
-          branch_name="chore/changelog-$latest_tag"
-          git checkout -b "$branch_name"
-
-          git add CHANGELOG.md
-          git commit -m "chore: update CHANGELOG for $latest_tag"
-
-          git push origin "$branch_name"
-
-      - name: Create Pull Request
-        run: |
-          latest_tag=$(git describe --tags --abbrev=0)
-          branch_name="chore/changelog-$latest_tag"
-
-          gh pr create \
-            --title "chore: update changelog for $latest_tag" \
-            --body "Automated changelog update for release $latest_tag. Please review and merge." \
-            --base master \
-            --head "$branch_name"
+      - name: Commit to Master
+        uses: EndBug/add-and-commit@v9
+        with:
+          author_name: OpenHotel Actions
+          author_email: actions@openhotel.club
+          message: "chore: update CHANGELOG for ${{ github.ref_name }}"
+          add: CHANGELOG.md
+          push: true

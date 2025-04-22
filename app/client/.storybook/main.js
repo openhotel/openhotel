@@ -2,7 +2,7 @@ import "@storybook/addon-console";
 
 /** @type { import('@storybook/react-vite').StorybookConfig } */
 const config = {
-  stories: ["../src/**/*.mdx", "../src/**/*.stories.@(js|jsx|mjs|ts|tsx|json)"],
+  stories: ["../src/**/*.stories.@(js|jsx|mjs|ts|tsx|json)"],
   addons: [
     "@storybook/addon-onboarding",
     "@storybook/addon-links",

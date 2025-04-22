@@ -8,6 +8,7 @@ import {
   User,
 } from "shared/types";
 import { Direction } from "shared/enums";
+import { PositionData } from "shared/hooks/private-room/private-room.context";
 
 export const usePrivateRoomStore = create<{
   room: PrivateRoom;
@@ -24,6 +25,11 @@ export const usePrivateRoomStore = create<{
     position: Point3d,
     bodyDirection?: Direction,
   ) => void;
+  setUserTargetPosition: (
+    accountId: string,
+    position: Point3d,
+    bodyDirection: Direction,
+  ) => void;
 
   //
   addFurniture: (furniture: RoomFurniture) => void;
@@ -33,6 +39,9 @@ export const usePrivateRoomStore = create<{
   //
   selectedPreview: PrivateRoomPreview | null;
   setSelectedPreview: (data: PrivateRoomPreview | null) => void;
+
+  lastPositionData: PositionData | null;
+  setLastPositionData: (data: PositionData | null) => void;
 }>((set) => ({
   room: null,
   messages: [],
@@ -42,6 +51,8 @@ export const usePrivateRoomStore = create<{
     set({
       room: null,
       messages: [],
+      selectedPreview: null,
+      lastPositionData: null,
     }),
 
   //////////////////
@@ -83,6 +94,28 @@ export const usePrivateRoomStore = create<{
         ),
       },
     })),
+
+  setUserTargetPosition: (
+    accountId: string,
+    targetPosition: Point3d,
+    bodyDirection: Direction,
+  ) =>
+    set((store) => ({
+      ...store,
+      room: {
+        ...store.room,
+        users: store.room.users.map((user) =>
+          user.accountId === accountId
+            ? {
+                ...user,
+                position: user.targetPosition ?? user.position,
+                targetPosition,
+                bodyDirection: bodyDirection ?? user.bodyDirection,
+              }
+            : user,
+        ),
+      },
+    })),
   /////////////////
   addFurniture: (furniture: RoomFurniture) =>
     set((store) => ({
@@ -118,5 +151,12 @@ export const usePrivateRoomStore = create<{
     set((store) => ({
       ...store,
       selectedPreview,
+    })),
+  //
+  lastPositionData: null,
+  setLastPositionData: (lastPositionData: PositionData | null) =>
+    set((store) => ({
+      ...store,
+      lastPositionData,
     })),
 }));

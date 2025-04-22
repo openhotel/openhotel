@@ -8,7 +8,7 @@ import {
   GraphicType,
   SpriteComponent,
   SpriteRef,
-} from "@oh/pixi-components";
+} from "@openhotel/pixi-components";
 import { Point3d } from "shared/types";
 import {
   getPositionFromIsometricPosition,
@@ -30,6 +30,7 @@ export const PrivateRoomTile: React.FC<Props> = ({
   position,
   spawn,
   onPointerDown,
+  onPointerUp,
   onPointerEnter,
   onPointerLeave,
   color,
@@ -56,6 +57,7 @@ export const PrivateRoomTile: React.FC<Props> = ({
         tint={0xcccc00}
         alpha={0}
         onPointerDown={onPointerDown}
+        onPointerUp={onPointerUp}
         onPointerEnter={onPointerEnter}
         onPointerLeave={onPointerLeave}
       />

@@ -30,3 +30,11 @@ export const isPosition3dEqual = (
   { x: x1, z: z1 }: Pick<Point3d, "x" | "z">,
   { x: x2, z: z2 }: Pick<Point3d, "x" | "z">,
 ) => x1 === x2 && z1 === z2;
+
+export const isPosition2dEqual = (
+  { x: x1, y: y1 }: Point2d,
+  { x: x2, y: y2 }: Point2d,
+) => x1 === x2 && y1 === y2;
+
+export const getZIndex = (position: Point3d): number =>
+  position.x + position.z + Math.abs(position.y / 100) + 1;

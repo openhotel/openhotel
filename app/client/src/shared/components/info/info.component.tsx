@@ -9,11 +9,10 @@ import {
   GraphicType,
   useEvents,
   useSystem,
-} from "@oh/pixi-components";
+} from "@openhotel/pixi-components";
 import React, { useEffect, useMemo, useState } from "react";
-import { useAccount, useRouter } from "shared/hooks";
+import { useAccount, useConfig, useRouter } from "shared/hooks";
 import { Hemisphere, Route } from "shared/enums";
-import { VersionComponent } from "shared/components/version";
 
 const Text = ({ text }) => (
   <TextComponent
@@ -41,6 +40,7 @@ export const InfoComponent: React.FC<Props> = ({ extra = [] }) => {
   const { on } = useEvents();
   const { getRoute } = useRouter();
   const { getAccount } = useAccount();
+  const { getVersion } = useConfig();
   const system = useSystem();
 
   const [fps, setFps] = useState<number>(0);
@@ -55,6 +55,7 @@ export const InfoComponent: React.FC<Props> = ({ extra = [] }) => {
 
   const route = useMemo(() => Route[getRoute()], [getRoute]);
   const hemisphere = useMemo(() => getAccount().hemisphere, [getAccount]);
+  const version = useMemo(() => getVersion(), [getVersion]);
 
   return (
     <FlexContainerComponent
@@ -68,11 +69,12 @@ export const InfoComponent: React.FC<Props> = ({ extra = [] }) => {
     >
       <Text text={`${fps} FPS`} />
       <Line />
+      <Text text={version} />
+      <Line />
       <Text text={`${system.browser.name} (${system.browser.version})`} />
       <Text text={`${system.cpu.arch} (x${system.cpu.cores})`} />
       <Text text={`${system.gpu.name} (${system.gpu.vendor})`} />
       <Line />
-      <VersionComponent />
       <Text text={`hem: ${Hemisphere[hemisphere]}`} />
       <Text text={`route: ${route}`} />
       {extra.length ? (
