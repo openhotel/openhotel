@@ -52,8 +52,8 @@ categories:
       - id: toys@octopus-0
         price: 0
   - id: xmas
-    label: Xmas Collection
-    enabled: false
+    label: Xmas
+    enabled: true
     furniture:
       - id: xmas@tree-0
         price: 0

@@ -21,7 +21,7 @@ export const Primary: Story = () => {
     <DragContainerProvider>
       <CameraProvider>
         <ModalProvider>
-          <CatalogComponentWrapper />
+          <CatalogComponentWrapper catalog={{ categories: [] }} />
         </ModalProvider>
       </CameraProvider>
     </DragContainerProvider>

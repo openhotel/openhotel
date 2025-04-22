@@ -17,7 +17,7 @@ export const furniture = () => {
       ))
         await unzipZipFile(childEntry, `${dirEntry.name}/`);
     }
-    if (!dirEntry.name.includes(".zip")) return;
+    if (!dirEntry.name.includes(".furniture")) return;
 
     const furniturePathname = `./assets/furniture/${path + dirEntry.name}`;
 

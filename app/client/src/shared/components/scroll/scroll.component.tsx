@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useMemo } from "react";
 import {
   ContainerComponent,
   ContainerProps,
@@ -14,39 +14,74 @@ import { SCROLL_HEIGHT } from "shared/consts";
 type Props = {
   size: Size2d;
   scrollHeight?: number;
+  /**
+   * Renders only the empty scroll without the fancy stuff
+   */
+  mock?: boolean;
 } & ContainerProps;
 
 export const ScrollComponent: React.FC<Props> = ({
   size,
   scrollHeight = SCROLL_HEIGHT,
   children,
+  mock,
   ...containerProps
 }) => {
+  const renderTop = useCallback(
+    () => (
+      <SpriteComponent
+        texture="scrollbar-arrow-top"
+        spriteSheet={SpriteSheetEnum.UI}
+      />
+    ),
+    [],
+  );
+  const renderBottom = useCallback(
+    () => (
+      <SpriteComponent
+        texture="scrollbar-arrow-bottom"
+        spriteSheet={SpriteSheetEnum.UI}
+      />
+    ),
+    [],
+  );
+  const renderScrollBackground = useCallback(
+    () => (
+      <TilingSpriteComponent
+        texture="scrollbar-background"
+        spriteSheet={SpriteSheetEnum.UI}
+        height={size.height - 22}
+      />
+    ),
+    [size.height],
+  );
+
+  if (mock) {
+    return (
+      <>
+        <ContainerComponent position={{ x: size.width }}>
+          <ContainerComponent>{renderTop()}</ContainerComponent>
+          <ContainerComponent position={{ y: 11 }}>
+            {renderScrollBackground()}
+          </ContainerComponent>
+          <ContainerComponent position={{ y: size.height - 11 }}>
+            {renderBottom()}
+          </ContainerComponent>
+        </ContainerComponent>
+        {children}
+      </>
+    );
+  }
+
   if (!children) return null;
 
   return (
     <ScrollableContainerComponent
       size={size}
       scrollbar={{
-        renderTop: () => (
-          <SpriteComponent
-            texture="scrollbar-arrow-top"
-            spriteSheet={SpriteSheetEnum.UI}
-          />
-        ),
-        renderBottom: () => (
-          <SpriteComponent
-            texture="scrollbar-arrow-bottom"
-            spriteSheet={SpriteSheetEnum.UI}
-          />
-        ),
-        renderScrollBackground: () => (
-          <TilingSpriteComponent
-            texture="scrollbar-background"
-            spriteSheet={SpriteSheetEnum.UI}
-            height={size.height - 22}
-          />
-        ),
+        renderTop,
+        renderBottom,
+        renderScrollBackground,
         renderScrollBar: () => (
           <ContainerComponent>
             <NineSliceSpriteComponent
