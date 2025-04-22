@@ -121,18 +121,24 @@ export const CameraComponent: React.FC<Props> = ({
     const contentSize = contentRef.current?.getSize?.();
     if (!contentSize) return offset;
 
-    let minX = -contentSize.width / 2 + margin;
-    let maxX = contentSize.width / 2 - margin;
-    let minY = -contentSize.height / 2 + margin;
-    let maxY = contentSize.height / 2 - bottomPadding / 2 - margin;
+    const { width: contentWidth, height: contentHeight } = contentSize;
+    const { width: screenWidth, height: screenHeight } = windowSize;
 
-    const clampedX = Math.max(minX, Math.min(offset.x / 2, maxX));
-    const clampedY = Math.max(minY, Math.min(offset.y / 2, maxY));
+    const overflowX = Math.abs(screenWidth - contentWidth);
+    let overflowY = Math.abs(screenHeight - contentHeight - bottomPadding);
 
-    return {
-      x: clampedX,
-      y: clampedY,
-    };
+    const clamp = (value: number, min: number, max: number) =>
+      Math.max(min, Math.min(value, max));
+
+    const minX = -overflowX / 2 - margin;
+    const maxX = overflowX / 2 + margin;
+    const clampedX = clamp(offset.x / 2, minX, maxX);
+
+    const minY = -overflowY / 2 - margin;
+    const maxY = overflowY / 2 + margin;
+    const clampedY = clamp(offset.y / 2, minY, maxY);
+
+    return { x: clampedX, y: clampedY };
   }, [offset, contentRef.current, windowSize, margin, bottomPadding]);
 
   useEffect(() => {
