@@ -99,56 +99,64 @@ export const CategoryComponent: React.FC<Props> = ({
     const isFurniture = selectedFurnitureData?.type === FurnitureType.FURNITURE;
 
     return (
-      <ContainerComponent
-        position={{
-          x: 47 - (isFurniture ? 0 : 16),
-          y: 80 + (isFurniture ? 0 : 14),
-        }}
-      >
-        {isFurniture ? (
-          <>
-            <FurnitureComponentWrapper
-              position={{ x: 0, y: 0, z: 0 }}
-              data={selectedFurnitureData}
-            />
-            <PrivateRoomTile position={{ x: -1, y: 0, z: -1 }} />
-            <PrivateRoomTile position={{ x: -1, y: 0, z: 0 }} />
-            <PrivateRoomTile position={{ x: -1, y: 0, z: 1 }} />
-            <PrivateRoomTile position={{ x: 0, y: 0, z: -1 }} />
-            <PrivateRoomTile position={{ x: 0, y: 0, z: 0 }} />
-            <PrivateRoomTile position={{ x: 0, y: 0, z: 1 }} />
-            <PrivateRoomTile position={{ x: 1, y: 0, z: -1 }} />
-            <PrivateRoomTile position={{ x: 1, y: 0, z: 0 }} />
-            <PrivateRoomTile position={{ x: 1, y: 0, z: 1 }} />
-          </>
-        ) : (
-          <>
-            <FurnitureFrameComponentWrapper
-              position={{ x: 0, y: 0, z: 0 }}
-              framePosition={{
-                x: 6,
-                y: selectedFurnitureData.size.height,
-              }}
-              data={selectedFurnitureData}
-              direction={CrossDirection.EAST}
-            />
-            <PrivateRoomWallComponent
-              direction={CrossDirection.EAST}
-              position={{ x: 0, y: 0, z: 0 }}
-              height={85}
-            />
-            <PrivateRoomWallComponent
-              direction={CrossDirection.EAST}
-              position={{ x: -1, y: 0, z: 0 }}
-              height={85}
-            />
-            <PrivateRoomWallComponent
-              direction={CrossDirection.EAST}
-              position={{ x: 1, y: 0, z: 0 }}
-              height={85}
-            />
-          </>
-        )}
+      <ContainerComponent>
+        <ContainerComponent
+          position={{
+            x: 47 - (isFurniture ? 0 : 16),
+            y: 80 + (isFurniture ? 0 : 14),
+          }}
+        >
+          {isFurniture ? (
+            <>
+              <FurnitureComponentWrapper
+                position={{ x: 0, y: 0, z: 0 }}
+                data={selectedFurnitureData}
+              />
+              <PrivateRoomTile position={{ x: -1, y: 0, z: -1 }} />
+              <PrivateRoomTile position={{ x: -1, y: 0, z: 0 }} />
+              <PrivateRoomTile position={{ x: -1, y: 0, z: 1 }} />
+              <PrivateRoomTile position={{ x: 0, y: 0, z: -1 }} />
+              <PrivateRoomTile position={{ x: 0, y: 0, z: 0 }} />
+              <PrivateRoomTile position={{ x: 0, y: 0, z: 1 }} />
+              <PrivateRoomTile position={{ x: 1, y: 0, z: -1 }} />
+              <PrivateRoomTile position={{ x: 1, y: 0, z: 0 }} />
+              <PrivateRoomTile position={{ x: 1, y: 0, z: 1 }} />
+            </>
+          ) : (
+            <>
+              <FurnitureFrameComponentWrapper
+                position={{ x: 0, y: 0, z: 0 }}
+                framePosition={{
+                  x: 6,
+                  y: selectedFurnitureData.size.height,
+                }}
+                data={selectedFurnitureData}
+                direction={CrossDirection.EAST}
+              />
+              <PrivateRoomWallComponent
+                direction={CrossDirection.EAST}
+                position={{ x: 0, y: 0, z: 0 }}
+                height={85}
+              />
+              <PrivateRoomWallComponent
+                direction={CrossDirection.EAST}
+                position={{ x: -1, y: 0, z: 0 }}
+                height={85}
+              />
+              <PrivateRoomWallComponent
+                direction={CrossDirection.EAST}
+                position={{ x: 1, y: 0, z: 0 }}
+                height={85}
+              />
+            </>
+          )}
+        </ContainerComponent>
+        <TextComponent
+          text={selectedFurnitureData.furnitureId}
+          color={0}
+          bold
+        />
+        <TextComponent text={selectedFurnitureData.description} color={0} />
       </ContainerComponent>
     );
   }, [selectedFurnitureData]);
