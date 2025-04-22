@@ -138,7 +138,7 @@ export const CameraComponent: React.FC<Props> = ({
     const maxY = overflowY / 2 + margin;
     const clampedY = clamp(offset.y / 2, minY, maxY);
 
-    return { x: clampedX, y: clampedY };
+    return { x: Math.round(clampedX), y: Math.round(clampedY) };
   }, [offset, contentRef.current, windowSize, margin, bottomPadding]);
 
   useEffect(() => {
