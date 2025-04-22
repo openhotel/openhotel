@@ -229,7 +229,7 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
   return (
     <ContainerComponent>
       <CameraComponent
-        margin={100}
+        margin={50}
         contentRef={privateRoomRef}
         bottomPadding={HOT_BAR_HEIGHT_FULL}
       >
