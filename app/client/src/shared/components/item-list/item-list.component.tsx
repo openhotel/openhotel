@@ -92,7 +92,7 @@ export const ItemListComponent: React.FC<Props> = ({
                   x: 1,
                   y: 1,
                 }}
-                tint={0xffffff}
+                tint={0xf5f5f5}
               />
             ) : null}
           </ContainerComponent>
