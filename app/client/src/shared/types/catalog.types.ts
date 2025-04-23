@@ -10,6 +10,7 @@ export type CatalogCategoryData = {
 export type CatalogCategory = {
   id: string;
   label: string;
+  description: string;
 };
 
 export type Catalog = {

@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback } from "react";
 import {
   ContainerComponent,
   ContainerProps,
@@ -9,7 +9,7 @@ import {
 } from "@openhotel/pixi-components";
 import { Size2d } from "shared/types";
 import { SpriteSheetEnum } from "shared/enums";
-import { SCROLL_HEIGHT } from "shared/consts";
+import { SCROLL_BAR_WIDTH, SCROLL_HEIGHT } from "shared/consts";
 
 type Props = {
   size: Size2d;
@@ -50,7 +50,7 @@ export const ScrollComponent: React.FC<Props> = ({
       <TilingSpriteComponent
         texture="scrollbar-background"
         spriteSheet={SpriteSheetEnum.UI}
-        height={size.height - 22}
+        height={size.height - SCROLL_BAR_WIDTH * 2}
       />
     ),
     [size.height],
@@ -61,10 +61,10 @@ export const ScrollComponent: React.FC<Props> = ({
       <>
         <ContainerComponent position={{ x: size.width }}>
           <ContainerComponent>{renderTop()}</ContainerComponent>
-          <ContainerComponent position={{ y: 11 }}>
+          <ContainerComponent position={{ y: SCROLL_BAR_WIDTH }}>
             {renderScrollBackground()}
           </ContainerComponent>
-          <ContainerComponent position={{ y: size.height - 11 }}>
+          <ContainerComponent position={{ y: size.height - SCROLL_BAR_WIDTH }}>
             {renderBottom()}
           </ContainerComponent>
         </ContainerComponent>

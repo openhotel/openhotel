@@ -8,8 +8,7 @@ import {
 } from "@openhotel/pixi-components";
 import { SpriteSheetEnum } from "shared/enums";
 import { ScrollComponent } from "shared/components/scroll";
-
-const FURNITURE_ICON_SIZE = 24;
+import { FURNITURE_ICON_BOX_SIZE, FURNITURE_ICON_SIZE } from "shared/consts";
 
 export type Item = {
   key: string;
@@ -55,13 +54,13 @@ export const ItemListComponent: React.FC<Props> = ({
     const $items = [];
     for (let y = 0; y < rows; y++) {
       for (let x = 0; x < cols; x++) {
-        const index = x + y * 3;
+        const index = x + y * cols;
 
         $items.push(() => (
           <ContainerComponent
             position={{
-              x: x * (FURNITURE_ICON_SIZE + 3),
-              y: y * (FURNITURE_ICON_SIZE + 3),
+              x: x * (FURNITURE_ICON_BOX_SIZE + 3),
+              y: y * (FURNITURE_ICON_BOX_SIZE + 3),
             }}
             eventMode={EventMode.STATIC}
             cursor={Cursor.POINTER}
@@ -74,8 +73,8 @@ export const ItemListComponent: React.FC<Props> = ({
               rightWidth={2}
               topHeight={2}
               bottomHeight={2}
-              width={FURNITURE_ICON_SIZE}
-              height={FURNITURE_ICON_SIZE}
+              width={FURNITURE_ICON_BOX_SIZE}
+              height={FURNITURE_ICON_BOX_SIZE}
               tint={0xe0e0e0}
             />
             {selectedIndex === index ? (
@@ -86,8 +85,8 @@ export const ItemListComponent: React.FC<Props> = ({
                 rightWidth={2}
                 topHeight={2}
                 bottomHeight={2}
-                width={FURNITURE_ICON_SIZE - 2}
-                height={FURNITURE_ICON_SIZE - 2}
+                width={FURNITURE_ICON_SIZE}
+                height={FURNITURE_ICON_SIZE}
                 position={{
                   x: 1,
                   y: 1,
@@ -106,15 +105,15 @@ export const ItemListComponent: React.FC<Props> = ({
     const $items = [];
     for (let y = 0; y < rows; y++) {
       for (let x = 0; x < cols; x++) {
-        const index = x + y * 3;
+        const index = x + y * cols;
         const item = items[index];
         if (!item) continue;
 
         $items.push(() => (
           <ContainerComponent
             position={{
-              x: x * (FURNITURE_ICON_SIZE + 3),
-              y: y * (FURNITURE_ICON_SIZE + 3),
+              x: x * (FURNITURE_ICON_BOX_SIZE + 3),
+              y: y * (FURNITURE_ICON_BOX_SIZE + 3),
             }}
             pivot={{
               x: -1,
@@ -138,7 +137,7 @@ export const ItemListComponent: React.FC<Props> = ({
     <ScrollComponent
       size={{
         height,
-        width: (FURNITURE_ICON_SIZE + 3) * cols,
+        width: (FURNITURE_ICON_BOX_SIZE + 3) * cols,
       }}
       {...containerProps}
     >

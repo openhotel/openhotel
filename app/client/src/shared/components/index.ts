@@ -9,6 +9,8 @@ export * from "./navigator-room-button";
 export * from "./nester";
 export * from "./character";
 export * from "./furniture";
+export * from "./furniture-frame";
+export * from "./furniture-preview";
 export * from "./info";
 export * from "./bubble-message";
 export * from "./camera";

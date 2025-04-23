@@ -20,6 +20,7 @@ export const HomeComponent: React.FC = () => {
   const { openModal, isModalOpen } = useModal();
 
   const onDone = useCallback(() => {
+    openModal(Modal.CATALOG);
     if (isModalOpen(Modal.NAVIGATOR)) return;
     openModal(Modal.NAVIGATOR);
   }, [openModal]);

@@ -18,7 +18,14 @@ import {
 import { Modal } from "shared/enums";
 import { Point2d } from "shared/types";
 import { useModalStore } from "./modal.store";
-import { MODAL_COMPONENT_MAP, MODAL_SIZE_MAP } from "shared/consts";
+import { MODAL_SIZE_MAP } from "shared/consts";
+import {
+  CatalogComponent,
+  ClubComponent,
+  ConsoleComponent,
+  NavigatorComponent,
+  PurseComponent,
+} from "modules/modals";
 
 type ModalProps = {
   children: ReactNode;
@@ -115,6 +122,18 @@ export const ModalProvider: React.FunctionComponent<ModalProps> = ({
         cursorOverModalRef.current = null;
     },
     [enableCameraMovement],
+  );
+
+  const MODAL_COMPONENT_MAP: Record<Modal, React.FC> = useMemo(
+    () => ({
+      [Modal.CONSOLE]: ConsoleComponent,
+      [Modal.NAVIGATOR]: NavigatorComponent,
+      [Modal.CATALOG]: CatalogComponent,
+      [Modal.INVENTORY]: CatalogComponent,
+      [Modal.PURSE]: PurseComponent,
+      [Modal.CLUB]: ClubComponent,
+    }),
+    [],
   );
 
   const renderModals = useMemo(() => {

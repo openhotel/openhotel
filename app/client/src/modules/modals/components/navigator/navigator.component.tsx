@@ -127,7 +127,7 @@ export const NavigatorComponentWrapper: React.FC<Props> = ({
             width,
           }}
           position={{
-            y: 4,
+            y: 3,
           }}
         >
           <TextComponent
@@ -138,7 +138,7 @@ export const NavigatorComponentWrapper: React.FC<Props> = ({
               left: 4,
               right: 3,
               bottom: 0,
-              top: 1,
+              top: 2,
             }}
           />
         </FlexContainerComponent>

@@ -1,6 +1,7 @@
 categories:
   - id: alpha
     label: Alpha
+    description: The alpha collection, only available now!
     enabled: true
     furniture:
       - id: alpha@small-lamp
@@ -13,6 +14,7 @@ categories:
         price: 0
   - id: flags
     label: Flags
+    description: Put a flag on that wall, show who you are.
     enabled: true
     furniture:
       - id: flags@country-spain
@@ -41,6 +43,7 @@ categories:
         price: 0
   - id: teleports
     label: Teleports
+    description: Travel between rooms or between servers. Buy two and link them.
     enabled: true
     furniture:
       - id: teleports@telephone
@@ -53,6 +56,7 @@ categories:
         price: 0
   - id: xmas
     label: Xmas
+    description: Xmas time is here!
     enabled: true
     furniture:
       - id: xmas@tree-0
@@ -61,6 +65,7 @@ categories:
         price: 0
   - id: cakes
     label: Cakes
+    description: Delicious cakes...
     enabled: true
     furniture:
       - id: cakes@chocolate-small

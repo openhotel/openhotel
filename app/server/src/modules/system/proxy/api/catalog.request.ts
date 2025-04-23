@@ -17,6 +17,7 @@ export const catalogRequest: ProxyRequestType = {
         .map((category) => ({
           id: category.id,
           label: category.label,
+          description: category.description,
         }));
 
       return {

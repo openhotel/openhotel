@@ -17,7 +17,10 @@ import { CategoriesComponent } from ".";
 import { MODAL_SIZE_MAP } from "shared/consts";
 import { useApi, useModal } from "shared/hooks";
 import { Catalog } from "shared/types";
-import { CategoryComponent } from "modules/modals/components/catalog/components/category/category.component";
+import {
+  CategoryComponent,
+  HEADER_SIZE,
+} from "modules/modals/components/catalog/components/category/category.component";
 
 const HEADER_HEIGHT = 17;
 const CONTENT_PADDING = 5;
@@ -37,11 +40,15 @@ export const CatalogComponent: React.FC = () => {
     fetch("/catalog").then(setCatalog);
   }, [fetch, setCatalog]);
 
-  return (
-    <CatalogComponentWrapper
-      onPointerDown={() => closeModal(Modal.CATALOG)}
-      catalog={catalog}
-    />
+  return useMemo(
+    () =>
+      catalog ? (
+        <CatalogComponentWrapper
+          onPointerDown={() => closeModal(Modal.CATALOG)}
+          catalog={catalog}
+        />
+      ) : null,
+    [catalog],
   );
 };
 
@@ -57,7 +64,9 @@ export const CatalogComponentWrapper: React.FC<WrapperProps> = ({
   const { setDragPolygon } = useDragContainer();
   const { width, height } = MODAL_SIZE_MAP[Modal.CATALOG];
 
-  const [selectedCategoryId, setSelectedCategoryId] = useState<string>(null);
+  const [selectedCategoryId, setSelectedCategoryId] = useState<string>(
+    catalog.categories[0].id,
+  );
 
   const categorySize = useMemo(
     () => ({
@@ -102,10 +111,10 @@ export const CatalogComponentWrapper: React.FC<WrapperProps> = ({
       20,
       //
       overModalSize.width + OVER_MODAL_POSITION.x - 6,
-      6,
+      6 + HEADER_SIZE,
       //
       OVER_MODAL_POSITION.x + 6,
-      6,
+      6 + HEADER_SIZE,
       //
       OVER_MODAL_POSITION.x + 6,
       20,
@@ -115,14 +124,13 @@ export const CatalogComponentWrapper: React.FC<WrapperProps> = ({
     ]);
   }, [setDragPolygon, overModalSize]);
 
-  useEffect(() => {
-    if (!catalog) return;
-    setSelectedCategoryId(
-      (categoryId) => categoryId ?? catalog.categories[0]?.id,
-    );
-  }, [catalog, setSelectedCategoryId]);
-
-  if (!catalog || !selectedCategoryId) return null;
+  const category = useMemo(
+    () =>
+      catalog?.categories?.find(
+        (category) => category.id === selectedCategoryId,
+      ),
+    [selectedCategoryId, catalog],
+  );
 
   return (
     <>
@@ -161,44 +169,50 @@ export const CatalogComponentWrapper: React.FC<WrapperProps> = ({
             }}
             width={width - 35}
           />
-          <FlexContainerComponent
-            justify={FLEX_JUSTIFY.CENTER}
-            size={{
-              width,
-            }}
-            position={{
-              y: 4,
-            }}
-          >
-            <TextComponent
-              text="Catalog"
-              backgroundColor={0xacc1ed}
-              backgroundAlpha={1}
-              padding={{
-                left: 4,
-                right: 3,
-                bottom: 0,
-                top: 1,
-              }}
-            />
-          </FlexContainerComponent>
-          <ScrollComponent
-            size={{
-              height: categorySize.height,
-              width: categorySize.width - 10,
-            }}
+          <ContainerComponent
             position={{
               x: OVER_MODAL_POSITION.x + overModalSize.width,
-              y: HEADER_HEIGHT + CONTENT_PADDING,
             }}
           >
-            <CategoriesComponent
-              width={categorySize.width - 13}
-              categories={catalog.categories}
-              selectedCategoryId={selectedCategoryId}
-              onSelectedCategory={setSelectedCategoryId}
-            />
-          </ScrollComponent>
+            <FlexContainerComponent
+              justify={FLEX_JUSTIFY.CENTER}
+              size={{
+                width: categorySize.width - 13,
+              }}
+              position={{
+                y: 4,
+              }}
+            >
+              <TextComponent
+                text="Catalog"
+                backgroundColor={0xacc1ed}
+                backgroundAlpha={1}
+                padding={{
+                  left: 4,
+                  right: 3,
+                  bottom: 0,
+                  top: 2,
+                }}
+              />
+            </FlexContainerComponent>
+            <ScrollComponent
+              size={{
+                height: categorySize.height,
+                width: categorySize.width - 10,
+              }}
+              position={{
+                y: HEADER_HEIGHT + CONTENT_PADDING,
+              }}
+            >
+              <CategoriesComponent
+                width={categorySize.width - 13}
+                categories={catalog.categories}
+                selectedCategoryId={selectedCategoryId}
+                onSelectedCategory={setSelectedCategoryId}
+              />
+            </ScrollComponent>
+          </ContainerComponent>
+
           <GraphicsComponent
             type={GraphicType.RECTANGLE}
             tint={0}
@@ -228,6 +242,7 @@ export const CatalogComponentWrapper: React.FC<WrapperProps> = ({
               height: overModalSize.height - 16,
             }}
             position={{ x: 6, y: 6 }}
+            category={category}
             categoryId={selectedCategoryId}
           />
         </ContainerComponent>
