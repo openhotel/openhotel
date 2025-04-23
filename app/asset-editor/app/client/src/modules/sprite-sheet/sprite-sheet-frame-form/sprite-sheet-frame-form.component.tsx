@@ -1,7 +1,7 @@
 import React, { useCallback } from "react";
 import { cn, setObject } from "shared/utils";
 import { SpriteComponent } from "shared/components";
-import { ButtonComponent, InputComponent } from "@oh/components";
+import { ButtonComponent, InputComponent } from "@openhotel/components";
 import { SpriteSheet, SpriteSheetFrame } from "shared/types";
 
 //@ts-ignore

@@ -5,7 +5,7 @@ import styles from "./tab-content.module.scss";
 import {
   ChevronDownIconComponent,
   ChevronUpIconComponent,
-} from "@oh/components";
+} from "@openhotel/components";
 
 type Props = {
   title: string;

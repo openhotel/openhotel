@@ -2,7 +2,7 @@ import React from "react";
 import { Outlet } from "react-router-dom";
 import { ContentComponent, FooterComponent } from "modules/application";
 import { HeaderComponent } from "../header";
-import { BackgroundComponent } from "@oh/components";
+import { BackgroundComponent } from "@openhotel/components";
 //@ts-ignore
 import styles from "./layout.module.scss";
 

@@ -4,7 +4,7 @@ import {
   FormComponent,
   InputComponent,
   SelectorComponent,
-} from "@oh/components";
+} from "@openhotel/components";
 import { FurnitureActionType } from "shared/enums";
 import { useFurniture } from "shared/hooks";
 import { cn } from "shared/utils";

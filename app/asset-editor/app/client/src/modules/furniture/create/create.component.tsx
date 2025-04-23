@@ -7,7 +7,7 @@ import {
   FileInputComponent,
   UploadIconComponent,
   useModal,
-} from "@oh/components";
+} from "@openhotel/components";
 import { FurnitureDataFormComponent } from "../furniture-data-form";
 import { useApi, useAppSession, useFurniture } from "shared/hooks";
 import { SpriteSheetFormComponent } from "modules/sprite-sheet";
@@ -160,7 +160,7 @@ export const CreateFurnitureComponent: React.FC = () => {
                 className={styles.button}
                 onClick={onDownloadFurniture}
               >
-                <BYIconComponent className={styles.icon} /> Download zip
+                <BYIconComponent className={styles.icon} /> Download furniture
               </ButtonComponent>
             </>
           ) : (

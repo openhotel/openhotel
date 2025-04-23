@@ -3,7 +3,7 @@ import {
   ButtonComponent,
   FileInputComponent,
   InputComponent,
-} from "@oh/components";
+} from "@openhotel/components";
 //@ts-ignore
 import styles from "./sprite-sheet-form.module.scss";
 import { SpriteSheet, SpriteSheetFrame } from "shared/types";
