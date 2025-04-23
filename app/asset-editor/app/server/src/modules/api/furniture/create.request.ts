@@ -31,7 +31,7 @@ export const createRequest: RequestType = {
     return new Response(zipBlob, {
       headers: {
         "Content-Type": "application/zip",
-        "Content-Disposition": 'attachment; filename="archive.zip"',
+        "Content-Disposition": 'attachment; filename="archive.furniture"',
       },
     });
   },

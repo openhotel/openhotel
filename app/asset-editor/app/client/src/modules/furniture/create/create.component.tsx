@@ -84,7 +84,7 @@ export const CreateFurnitureComponent: React.FC = () => {
 
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
-    link.download = `${data.furniture.id}.zip`;
+    link.download = `${data.furniture.id}.furniture`;
     link.click();
   }, [data]);
 
@@ -125,10 +125,12 @@ export const CreateFurnitureComponent: React.FC = () => {
     <div className={styles.content}>
       <div className={styles.header}>
         {!data ? (
-          <FileInputComponent accept=".zip" onChange={onUploadFurniture}>
+          <FileInputComponent accept=".furniture" onChange={onUploadFurniture}>
             <>
               <UploadIconComponent className={styles.icon} />
-              <span>Upload *.zip furniture</span>
+              <span>
+                Upload <b>*.furniture</b> file
+              </span>
             </>
           </FileInputComponent>
         ) : (
