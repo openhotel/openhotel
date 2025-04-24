@@ -1,6 +1,9 @@
 import { FurnitureData, FurnitureDirectionData } from "shared/types";
 import { CrossDirection, SpriteSheetEnum } from "shared/enums";
 
+export const FURNITURE_ICON_SIZE = 22;
+export const FURNITURE_ICON_BOX_SIZE = FURNITURE_ICON_SIZE + 2;
+
 const DUMMY_FURNITURE_DIRECTION: FurnitureDirectionData = {
   textures: [
     {

@@ -1,15 +1,31 @@
-import React, { ReactNode, useCallback, useMemo } from "react";
-import { useCamera, ModalContext } from "shared/hooks";
+import React, {
+  ReactNode,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+} from "react";
+import { ModalContext, useCamera } from "shared/hooks";
 import {
   ContainerComponent,
   DragContainerComponent,
+  Event,
   EventMode,
+  useEvents,
+  useUpdate,
   useWindow,
 } from "@openhotel/pixi-components";
 import { Modal } from "shared/enums";
 import { Point2d } from "shared/types";
 import { useModalStore } from "./modal.store";
-import { MODAL_COMPONENT_MAP, MODAL_SIZE_MAP } from "shared/consts";
+import { MODAL_SIZE_MAP } from "shared/consts";
+import {
+  CatalogComponent,
+  ClubComponent,
+  ConsoleComponent,
+  NavigatorComponent,
+  PurseComponent,
+} from "modules/modals";
 
 type ModalProps = {
   children: ReactNode;
@@ -28,6 +44,12 @@ export const ModalProvider: React.FunctionComponent<ModalProps> = ({
     setPosition,
     isOpen,
   } = useModalStore();
+  const { on } = useEvents();
+  const { lastUpdate, update } = useUpdate();
+
+  const lastModalList = useRef<Modal[]>([]);
+  const cursorOverModalRef = useRef<Modal | null>(null);
+  const focusedModalRef = useRef<Modal | null>(null);
 
   const openModal = useCallback(
     (modal: Modal) => {
@@ -73,27 +95,86 @@ export const ModalProvider: React.FunctionComponent<ModalProps> = ({
     setCanDrag(true);
   }, [setCanDrag]);
 
+  useEffect(() => {
+    on(Event.POINTER_DOWN, () => {
+      if (
+        cursorOverModalRef.current === null ||
+        focusedModalRef.current === cursorOverModalRef.current
+      )
+        return;
+      focusedModalRef.current = cursorOverModalRef.current;
+      update();
+    });
+  }, [modals, on, update]);
+
+  const onPointerEnter = useCallback(
+    (modal: Modal) => () => {
+      cursorOverModalRef.current = modal;
+    },
+    [],
+  );
+
+  const onPointerLeave = useCallback(
+    (modal: Modal) => () => {
+      enableCameraMovement();
+      //only if last was this modal
+      if (cursorOverModalRef.current === modal)
+        cursorOverModalRef.current = null;
+    },
+    [enableCameraMovement],
+  );
+
+  const MODAL_COMPONENT_MAP: Record<Modal, React.FC> = useMemo(
+    () => ({
+      [Modal.CONSOLE]: ConsoleComponent,
+      [Modal.NAVIGATOR]: NavigatorComponent,
+      [Modal.CATALOG]: CatalogComponent,
+      [Modal.INVENTORY]: CatalogComponent,
+      [Modal.PURSE]: PurseComponent,
+      [Modal.CLUB]: ClubComponent,
+    }),
+    [],
+  );
+
   const renderModals = useMemo(() => {
-    return Object.keys(modals)
-      .map((modal: any) => {
+    const targetModals = Object.keys(modals).map(
+      (modalId) => parseInt(modalId) as Modal,
+    );
+    const visibleModals = targetModals.filter((modal) => get(modal).visible);
+    const newModals = visibleModals.filter(
+      (modal) => !lastModalList.current.includes(modal),
+    );
+    //save current modals to check if there's a new one
+    //@ts-ignore
+    lastModalList.current = visibleModals;
+    return targetModals
+      .map((modal: Modal) => {
         const { position, visible } = get(modal);
-        const Modal = MODAL_COMPONENT_MAP[modal];
-        return Modal ? (
+        const ModalComp = MODAL_COMPONENT_MAP[modal];
+        const zIndex = newModals.includes(modal)
+          ? 150
+          : focusedModalRef.current === modal
+            ? 100
+            : 50;
+        return ModalComp ? (
           <DragContainerComponent
             key={modal}
-            zIndex={100}
-            children={<Modal />}
+            zIndex={zIndex}
+            maxZIndex={zIndex}
+            minZIndex={zIndex}
+            children={<ModalComp />}
             position={position ?? { x: 0, y: 0 }}
             visible={visible}
             eventMode={EventMode.STATIC}
             onPointerDown={disableCameraMovement}
             onPointerUp={enableCameraMovement}
-            onPointerLeave={enableCameraMovement}
+            onPointerEnter={onPointerEnter(modal)}
+            onPointerLeave={onPointerLeave(modal)}
           />
         ) : null;
       })
       .filter(Boolean);
-  }, [modals, get]);
+  }, [modals, get, enableCameraMovement, disableCameraMovement, lastUpdate]);
 
   return (
     <ModalContext.Provider

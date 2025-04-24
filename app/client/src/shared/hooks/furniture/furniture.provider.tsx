@@ -38,6 +38,7 @@ export const FurnitureProvider: React.FunctionComponent<FurnitureProps> = ({
 
         add({
           furnitureId,
+          type: furnitureData.type,
           spriteSheet: spriteSheetPath,
           label: furnitureData.label,
           description: furnitureData.description,

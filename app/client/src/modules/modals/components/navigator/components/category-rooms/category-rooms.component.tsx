@@ -1,18 +1,16 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { NavigatorRoomButtonComponent } from "shared/components";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
-  ContainerComponent,
+  NavigatorRoomButtonComponent,
+  ScrollComponent,
+} from "shared/components";
+import {
   FLEX_JUSTIFY,
   FlexContainerComponent,
-  NineSliceSpriteComponent,
-  ScrollableContainerComponent,
   Size,
-  SpriteComponent,
-  TilingSpriteComponent,
 } from "@openhotel/pixi-components";
 import { ModalNavigatorTabProps } from "shared/types";
 import { useApi, useProxy } from "shared/hooks";
-import { Event, SpriteSheetEnum } from "shared/enums";
+import { Event } from "shared/enums";
 
 type Props = {
   size: Size;
@@ -97,8 +95,6 @@ export const CategoryRoomsComponent: React.FC<ModalNavigatorTabProps> = ({
   );
 };
 
-const scrollSize = 75;
-
 export const CategoryRoomsComponentWrapper: React.FC<Props> = ({
   size,
   rooms,
@@ -107,56 +103,8 @@ export const CategoryRoomsComponentWrapper: React.FC<Props> = ({
 }) => {
   if (!rooms.length) return null;
 
-  return (
-    <ScrollableContainerComponent
-      size={{
-        width: size.width - 11,
-        height: size.height,
-      }}
-      scrollbar={{
-        renderTop: () => (
-          <SpriteComponent
-            texture="scrollbar-arrow-top"
-            spriteSheet={SpriteSheetEnum.UI}
-          />
-        ),
-        renderBottom: () => (
-          <SpriteComponent
-            texture="scrollbar-arrow-bottom"
-            spriteSheet={SpriteSheetEnum.UI}
-          />
-        ),
-        renderScrollBackground: () => (
-          <TilingSpriteComponent
-            texture="scrollbar-background"
-            spriteSheet={SpriteSheetEnum.UI}
-            height={size.height - 22}
-          />
-        ),
-        renderScrollBar: () => (
-          <ContainerComponent>
-            <NineSliceSpriteComponent
-              texture="scrollbar-scroll-bar"
-              spriteSheet={SpriteSheetEnum.UI}
-              leftWidth={4}
-              rightWidth={4}
-              topHeight={4}
-              bottomHeight={4}
-              height={scrollSize}
-            />
-            <TilingSpriteComponent
-              texture="scrollbar-scroll-bar-background"
-              spriteSheet={SpriteSheetEnum.UI}
-              height={scrollSize - 6}
-              position={{
-                x: 2,
-                y: 3,
-              }}
-            />
-          </ContainerComponent>
-        ),
-      }}
-    >
+  const content = useMemo(
+    () => (
       <FlexContainerComponent
         justify={FLEX_JUSTIFY.START}
         direction="y"
@@ -178,6 +126,17 @@ export const CategoryRoomsComponentWrapper: React.FC<Props> = ({
           />
         ))}
       </FlexContainerComponent>
-    </ScrollableContainerComponent>
+    ),
+    [rooms, size, onClickGo, onClickFavorite],
+  );
+
+  return (
+    <ScrollComponent
+      size={{
+        width: size.width - 13,
+        height: size.height,
+      }}
+      children={content}
+    />
   );
 };

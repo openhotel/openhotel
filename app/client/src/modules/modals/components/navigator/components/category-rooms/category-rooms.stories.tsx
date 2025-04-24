@@ -41,6 +41,13 @@ export const Primary: Story = {
         maxUsers: 20,
         users: 15,
       },
+      {
+        id: "4",
+        title: "aha aha",
+        favorite: true,
+        maxUsers: 20,
+        users: 20,
+      },
     ],
   },
 };
