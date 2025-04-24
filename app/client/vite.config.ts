@@ -2,7 +2,6 @@ import { defineConfig } from "vite";
 import reactRefresh from "@vitejs/plugin-react-refresh";
 import react from "@vitejs/plugin-react";
 import tsconfigPaths from "vite-tsconfig-paths";
-import { build } from "./vite";
 
 // https://github.com/openhotel/openhotel/issues/469
 const PROXY_URL =
@@ -33,7 +32,7 @@ export default defineConfig({
     hmr: true,
     allowedHosts: ["hotel.local"],
   },
-  plugins: [react(), reactRefresh(), tsconfigPaths(), build()],
+  plugins: [react(), reactRefresh(), tsconfigPaths()],
   root: "./src",
   base: "/",
   publicDir: "./assets/",
