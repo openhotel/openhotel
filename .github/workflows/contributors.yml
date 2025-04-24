@@ -92,14 +92,11 @@ jobs:
           echo $sorted_json
           # ─── Emit YAML by hand ────────────────────────────────────────────────────
           {
-            echo "# Contributors sorted by contributions (descending)"
-            echo ""
-            # Iterate each object in the sorted array:
             echo "$sorted_json" | jq -c '.[]' | while read -r obj; do
-            echo "- login:       $(jq -r .login         <<<"$obj")"
-            echo "  html_url:    $(jq -r .html_url      <<<"$obj")"
-            echo "  avatar_url:  $(jq -r .avatar_url    <<<"$obj")"
-            echo "  type:        $(jq -r .type          <<<"$obj")"
+            echo "- login: $(jq -r .login         <<<"$obj")"
+            echo "  html_url: $(jq -r .html_url      <<<"$obj")"
+            echo "  avatar_url: $(jq -r .avatar_url    <<<"$obj")"
+            echo "  type: $(jq -r .type          <<<"$obj")"
             echo "  contributions: $(jq -r .contributions <<<"$obj")"
             done
           } > app/client/src/assets/contributors.yml
