@@ -2,6 +2,7 @@ import { TransactionType } from "../enums";
 
 export interface TransactionParams {
   type: TransactionType;
+  description: string;
   amount: number;
   fromAccount?: string;
   toAccount?: string;

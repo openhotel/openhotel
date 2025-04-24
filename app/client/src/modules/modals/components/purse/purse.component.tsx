@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   ContainerComponent,
   Cursor,
@@ -12,47 +12,46 @@ import {
   TilingSpriteComponent,
   useDragContainer,
 } from "@openhotel/pixi-components";
-import { Modal, SpriteSheetEnum, TransactionType } from "shared/enums";
+import { Modal, SpriteSheetEnum } from "shared/enums";
 import { MODAL_SIZE_MAP } from "shared/consts";
 import { TextComponent } from "shared/components";
-import { useModal } from "shared/hooks";
+import { useApi, useModal } from "shared/hooks";
 import { Transaction } from "shared/types";
 import { TransactionComponent } from "./components";
 
 export const PurseComponent: React.FC = () => {
+  const { fetch } = useApi();
   const { closeModal } = useModal();
   const { setDragPolygon } = useDragContainer();
 
+  const [credits, setCredits] = useState(0);
+  const [transactions, setTransactions] = useState([]);
+
+  const $request = useCallback(() => {
+    fetch("/economy").then(
+      ({
+        credits,
+        transactions,
+      }: {
+        credits: number;
+        transactions: Transaction[];
+      }) => {
+        setCredits(credits);
+        setTransactions(transactions);
+      },
+    );
+  }, [fetch, setCredits, setTransactions]);
+
+  useEffect(() => {
+    $request();
+  }, [$request]);
+
+  console.log({ credits, transactions });
   return (
     <PurseComponentWrapper
-      credits={100}
-      transactions={[
-        {
-          id: "1a",
-          type: TransactionType.PURCHASE,
-          amount: 10,
-          fromAccount: "0",
-          toAccount: "1",
-          timestamp: Date.now(),
-        },
-        {
-          id: "sofa",
-          type: TransactionType.PURCHASE,
-          amount: 3,
-          fromAccount: "0",
-          toAccount: "1",
-          timestamp: Date.now(),
-        },
-        {
-          id: "2b",
-          type: TransactionType.REWARD,
-          amount: 10,
-          fromAccount: "0",
-          toAccount: "1",
-          timestamp: Date.now(),
-        },
-      ]}
-      onPointerDown={() => closeModal(Modal.NAVIGATOR)}
+      credits={credits}
+      transactions={transactions}
+      onPointerDown={() => closeModal(Modal.PURSE)}
       setDragPolygon={setDragPolygon}
     />
   );

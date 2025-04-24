@@ -7,7 +7,7 @@ import {
   FLEX_JUSTIFY,
   FlexContainerComponent,
   NineSliceSpriteComponent,
-} from "@oh/pixi-components";
+} from "@openhotel/pixi-components";
 import {
   Modal,
   SpriteSheetEnum,

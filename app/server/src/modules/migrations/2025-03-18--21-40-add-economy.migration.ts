@@ -6,7 +6,7 @@ export default {
   up: async (db: DbMutable) => {
     const { items: users } = await db.list({ prefix: ["users"] });
     for (const { value } of users) {
-      await db.set(["users", value.accountId, "balance"], 0);
+      await db.set(["users", value.accountId, "balance"], 100);
     }
 
     await db.set(["hotel", "balance"], 1000);

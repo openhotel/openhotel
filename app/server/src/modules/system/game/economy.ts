@@ -12,6 +12,18 @@ import {
 export const economy = () => {
   const load = async () => {
     log("> Loading economy...");
+
+    // await executeTransaction({
+    //   type: TransactionType.PURCHASE,
+    //   description: "catalog - silla",
+    //   amount: 10,
+    //   fromAccount: "01JRMG847JP57CPYG06NPX8R92",
+    //   toAccount: "hotel",
+    //   meta: {
+    //     furnitureId: 1,
+    //   },
+    // });
+
     log("> Economy loaded!");
   };
 
@@ -20,7 +32,7 @@ export const economy = () => {
   };
 
   const executeTransaction = async (params: TransactionParams) => {
-    const { type, amount, fromAccount, toAccount, meta } = params;
+    const { type, description, amount, fromAccount, toAccount, meta } = params;
 
     if (amount <= 0) {
       throw new Error("The amount must be greater than zero.");
@@ -61,6 +73,8 @@ export const economy = () => {
             getBalanceEntry("users", fromAccount),
             getBalanceEntry("hotel"),
           ]);
+
+          console.log(userEntry, hotelEntry);
 
           validateBalance(userEntry, amount);
           validateBalance(hotelEntry, 0);
@@ -117,6 +131,7 @@ export const economy = () => {
       const transactionData: Transaction = {
         id: transactionId,
         type,
+        description,
         fromAccount: fromAccount || null,
         toAccount: toAccount || null,
         amount,

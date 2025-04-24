@@ -2,6 +2,7 @@ import { TransactionType } from "../enums/economy.enum.ts";
 
 export interface TransactionParams {
   type: TransactionType;
+  description: string;
   amount: number;
   fromAccount?: string;
   toAccount?: string;

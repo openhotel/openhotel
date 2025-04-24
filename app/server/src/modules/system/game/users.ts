@@ -203,6 +203,10 @@ export const users = () => {
       $log(`${getUsername()} ${data.join(" ")}`);
     };
 
+    const getCredits = async (): Promise<number> => {
+      const accountId = getAccountId();
+      return System.db.get(["users", accountId, "balance"]);
+    };
     const getTransactions = async (): Promise<Transaction> => {
       const accountId = getAccountId();
       return System.db.get(["transactionsByUser", accountId]);
@@ -255,6 +259,7 @@ export const users = () => {
 
       log,
 
+      getCredits,
       getTransactions,
     };
   };
@@ -270,7 +275,7 @@ export const users = () => {
       username: user.username,
     });
     await System.db.set(["usersByUsername", user.username], user.accountId);
-    await System.db.set(["users", user.accountId, "balance"], 0);
+    await System.db.set(["users", user.accountId, "balance"], 100);
 
     await $user.log("joined");
   };
