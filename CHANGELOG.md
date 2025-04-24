@@ -1,12 +1,7 @@
 
-<a name="v0.6.5-rc.2"></a>
+<a name="v0.6.5-rc.3"></a>
 
-## [v0.6.5-rc.2](https://github.com/openhotel/openhotel/compare/v0.6.5-rc.1...v0.6.5-rc.2) (2025-04-24)
-
-
-<a name="v0.6.5-rc.1"></a>
-
-## [v0.6.5-rc.1](https://github.com/openhotel/openhotel/compare/v0.6.4...v0.6.5-rc.1) (2025-04-24)
+## [v0.6.5-rc.3](https://github.com/openhotel/openhotel/compare/v0.6.4...v0.6.5-rc.3) (2025-04-24)
 
 
 <a name="v0.6.4"></a>
@@ -729,22 +724,22 @@
 
 <a name="v0.2.26"></a>
 
-## [v0.2.26](https://github.com/openhotel/openhotel/compare/v0.2.25...v0.2.26) (2024-10-02)
-
-
-<a name="v0.2.25"></a>
-
-## [v0.2.25](https://github.com/openhotel/openhotel/compare/v0.2.24.b...v0.2.25) (2024-10-02)
-
-
-<a name="v0.2.24.b"></a>
-
-## [v0.2.24.b](https://github.com/openhotel/openhotel/compare/v0.2.24...v0.2.24.b) (2024-10-02)
+## [v0.2.26](https://github.com/openhotel/openhotel/compare/v0.2.24...v0.2.26) (2024-10-02)
 
 
 <a name="v0.2.24"></a>
 
-## [v0.2.24](https://github.com/openhotel/openhotel/compare/v0.2.23...v0.2.24) (2024-10-02)
+## [v0.2.24](https://github.com/openhotel/openhotel/compare/v0.2.24.b...v0.2.24) (2024-10-02)
+
+
+<a name="v0.2.24.b"></a>
+
+## [v0.2.24.b](https://github.com/openhotel/openhotel/compare/v0.2.25...v0.2.24.b) (2024-10-02)
+
+
+<a name="v0.2.25"></a>
+
+## [v0.2.25](https://github.com/openhotel/openhotel/compare/v0.2.23...v0.2.25) (2024-10-02)
 
 ### Features
 
