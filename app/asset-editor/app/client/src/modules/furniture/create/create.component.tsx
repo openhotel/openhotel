@@ -124,18 +124,12 @@ export const CreateFurnitureComponent: React.FC = () => {
   return (
     <div className={styles.content}>
       <div className={styles.header}>
-        {!data ? (
-          <FileInputComponent accept=".furniture" onChange={onUploadFurniture}>
-            <>
-              <UploadIconComponent className={styles.icon} />
-              <span>
-                Upload <b>*.furniture</b> file
-              </span>
-            </>
-          </FileInputComponent>
-        ) : (
-          <div />
-        )}
+        <FileInputComponent accept=".furniture" onChange={onUploadFurniture}>
+          <UploadIconComponent className={styles.icon} />
+          <span>
+            Upload <b>*.furniture</b> file
+          </span>
+        </FileInputComponent>
         <div className={styles.right}>
           {data ? (
             <>
