@@ -39,3 +39,8 @@ export enum Event {
 
   DISABLE_CAMERA_MOVEMENT = "disable-camera-movement",
 }
+
+export enum InternalEvent {
+  SAFE_RESIZE = "safe_resize",
+  SAFE_POSITION_X = "safe_position_x",
+}

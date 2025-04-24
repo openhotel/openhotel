@@ -8,6 +8,7 @@ export * from "./tasks";
 export * from "./private-room";
 export * from "./furniture";
 export * from "./camera";
+export * from "./safe-window";
 
 export * from "./use-character";
 export * from "./use-api";
