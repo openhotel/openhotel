@@ -1,4 +1,20 @@
 
+<a name="v0.6.4"></a>
+
+## [v0.6.4](https://github.com/openhotel/openhotel/compare/v0.6.3...v0.6.4) (2025-04-24)
+
+### Bug Fixes
+
+- prevent selecting unloaded furniture - fix [#716](https://github.com/openhotel/openhotel/issues/716) ([#769](https://github.com/openhotel/openhotel/issues/769))
+- clear preview when traveling between rooms - fix [#765](https://github.com/openhotel/openhotel/issues/765) ([#767](https://github.com/openhotel/openhotel/issues/767))
+
+### Features
+
+- added catalog - fix [#523](https://github.com/openhotel/openhotel/issues/523) ([#749](https://github.com/openhotel/openhotel/issues/749))
+- improve camera movement - fix [#770](https://github.com/openhotel/openhotel/issues/770) ([#771](https://github.com/openhotel/openhotel/issues/771))
+- simplify set command to last clicked tile with shift or wall point - fix [#761](https://github.com/openhotel/openhotel/issues/761) ([#766](https://github.com/openhotel/openhotel/issues/766))
+
+
 <a name="v0.6.3"></a>
 
 ## [v0.6.3](https://github.com/openhotel/openhotel/compare/v0.6.2...v0.6.3) (2025-04-16)
@@ -703,7 +719,12 @@
 
 <a name="v0.2.26"></a>
 
-## [v0.2.26](https://github.com/openhotel/openhotel/compare/v0.2.24.b...v0.2.26) (2024-10-02)
+## [v0.2.26](https://github.com/openhotel/openhotel/compare/v0.2.25...v0.2.26) (2024-10-02)
+
+
+<a name="v0.2.25"></a>
+
+## [v0.2.25](https://github.com/openhotel/openhotel/compare/v0.2.24.b...v0.2.25) (2024-10-02)
 
 
 <a name="v0.2.24.b"></a>
@@ -713,12 +734,7 @@
 
 <a name="v0.2.24"></a>
 
-## [v0.2.24](https://github.com/openhotel/openhotel/compare/v0.2.25...v0.2.24) (2024-10-02)
-
-
-<a name="v0.2.25"></a>
-
-## [v0.2.25](https://github.com/openhotel/openhotel/compare/v0.2.23...v0.2.25) (2024-10-02)
+## [v0.2.24](https://github.com/openhotel/openhotel/compare/v0.2.23...v0.2.24) (2024-10-02)
 
 ### Features
 
