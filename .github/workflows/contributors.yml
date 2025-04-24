@@ -90,6 +90,7 @@ jobs:
             } | jq -s 'sort_by(.contributions) | reverse'
           )
 
+          echo $sorted_json
           # ─── Emit YAML by hand ────────────────────────────────────────────────────
           {
             echo "# Contributors sorted by contributions (descending)"
