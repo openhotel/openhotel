@@ -1,13 +1,4 @@
 import { Modal, ModalNavigatorTab } from "shared/enums";
-import {
-  CatalogComponent,
-  ClubComponent,
-  ConsoleComponent,
-  InventoryComponent,
-  NavigatorComponent,
-  PurseComponent,
-} from "modules/modals";
-import React from "react";
 import { Size } from "@openhotel/pixi-components";
 
 export const MODAL_NAVIGATOR_TAB_NAME_MAP: Record<ModalNavigatorTab, string> = {
@@ -43,13 +34,12 @@ export const MODAL_SIZE_MAP: Record<Modal, Size> = {
     width: 250,
     height: 260,
   },
-};
-
-export const MODAL_COMPONENT_MAP: Record<Modal, React.FC> = {
-  [Modal.CONSOLE]: ConsoleComponent,
-  [Modal.NAVIGATOR]: NavigatorComponent,
-  [Modal.CATALOG]: CatalogComponent,
-  [Modal.INVENTORY]: InventoryComponent,
-  [Modal.PURSE]: PurseComponent,
-  [Modal.CLUB]: ClubComponent,
+  [Modal.CATALOG]: {
+    width: 349,
+    height: 271,
+  },
+  [Modal.INVENTORY]: {
+    width: 320,
+    height: 240,
+  },
 };
