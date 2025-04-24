@@ -6,6 +6,12 @@
   width: 100%;
   gap: 1rem;
 
+  .dragContainer {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
   .input {
     display: none;
   }
@@ -33,5 +39,15 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+
+  .fileItem {
+    cursor: pointer;
+    transition: opacity 0.2s ease-in-out;
+  }
+
+  .fileItem:hover {
+    opacity: 0.7;
+    text-decoration: line-through;
   }
 }
