@@ -15,9 +15,10 @@ const TARGET_Y = 0;
 
 type Props = {
   onDone?: () => void;
+  width: number;
 };
 
-export const HotBarComponent: React.FC<Props> = ({ onDone }) => {
+export const HotBarComponent: React.FC<Props> = ({ onDone, width }) => {
   const { add: addTask } = useTasks();
 
   const [yPosition, setYPosition] = useState<number>(50);
@@ -61,6 +62,7 @@ export const HotBarComponent: React.FC<Props> = ({ onDone }) => {
           justify={FLEX_JUSTIFY.SPACE_EVENLY}
           align={FLEX_ALIGN.CENTER}
           size={{
+            width,
             height: 40,
           }}
         >

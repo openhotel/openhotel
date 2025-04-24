@@ -1,5 +1,5 @@
-export * from "./tile.conts";
-export * from "./wall.conts";
+export * from "./tile.consts";
+export * from "./wall.consts";
 export * from "./chat.consts";
 export * from "./preview.consts";
 export * from "./navigator.consts";
@@ -11,3 +11,4 @@ export * from "./room.consts";
 export * from "./furniture.consts";
 export * from "./text.consts";
 export * from "./scroll.consts";
+export * from "./window.consts";
