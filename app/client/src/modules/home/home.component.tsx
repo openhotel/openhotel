@@ -1,8 +1,10 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   ContainerComponent,
   FLEX_ALIGN,
   FlexContainerComponent,
+  Size,
+  useEvents,
 } from "@openhotel/pixi-components";
 import {
   BackgroundComponent,
@@ -10,41 +12,65 @@ import {
   HotBarComponent,
   LicenseComponent,
   LogoComponent,
-  VignetteTransitionComponent,
   VersionComponent,
+  VignetteTransitionComponent,
 } from "./components";
-import { useModal } from "shared/hooks";
-import { Modal } from "shared/enums";
+import { useModal, useSafeWindow } from "shared/hooks";
+import { InternalEvent, Modal } from "shared/enums";
 
 export const HomeComponent: React.FC = () => {
   const { openModal, isModalOpen } = useModal();
+  const { on } = useEvents();
+  const { getSafeXPosition, getSafeSize } = useSafeWindow();
+
+  const [safeWindowResize, setSafeWindowResize] = useState<Size>(getSafeSize());
+  const [safeXPosition, setSafeXPosition] =
+    useState<number>(getSafeXPosition());
 
   const onDone = useCallback(() => {
     if (isModalOpen(Modal.NAVIGATOR)) return;
     openModal(Modal.NAVIGATOR);
   }, [openModal]);
 
+  useEffect(() => {
+    const removeOnSafeResize = on(
+      InternalEvent.SAFE_RESIZE,
+      setSafeWindowResize,
+    );
+    const removeOnSafePositionX = on(
+      InternalEvent.SAFE_POSITION_X,
+      setSafeXPosition,
+    );
+
+    return () => {
+      removeOnSafeResize();
+      removeOnSafePositionX();
+    };
+  }, [on, setSafeWindowResize, setSafeXPosition]);
+
   return (
     <ContainerComponent sortableChildren={true}>
       <BackgroundComponent />
 
       <VignetteTransitionComponent />
-      <LogoComponent />
-      <HotBarComponent onDone={onDone} />
+      <ContainerComponent pivot={{ x: safeXPosition }}>
+        <LogoComponent />
+        <HotBarComponent onDone={onDone} width={safeWindowResize.width} />
 
-      <FlexContainerComponent
-        align={FLEX_ALIGN.BOTTOM}
-        pivot={{
-          x: -5,
-          y: 55,
-        }}
-      >
-        <FlexContainerComponent direction="y">
-          <VersionComponent />
-          <LicenseComponent />
-          <ContributorsComponent />
+        <FlexContainerComponent
+          align={FLEX_ALIGN.BOTTOM}
+          pivot={{
+            x: -5,
+            y: 55,
+          }}
+        >
+          <FlexContainerComponent direction="y">
+            <VersionComponent />
+            <LicenseComponent />
+            <ContributorsComponent />
+          </FlexContainerComponent>
         </FlexContainerComponent>
-      </FlexContainerComponent>
+      </ContainerComponent>
     </ContainerComponent>
   );
 };
