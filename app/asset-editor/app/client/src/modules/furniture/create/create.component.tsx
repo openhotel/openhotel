@@ -17,6 +17,7 @@ import { TabContentComponent } from "shared/components";
 import styles from "./create.module.scss";
 import { getBase64FromBody, getImageSize } from "shared/utils";
 import { RequestMethod } from "shared/enums";
+import { ulid } from "ulidx";
 
 export const CreateFurnitureComponent: React.FC = () => {
   const { setData, data } = useFurniture();
@@ -45,7 +46,7 @@ export const CreateFurnitureComponent: React.FC = () => {
       },
       furniture: {
         id: "new@furniture",
-        version: 1,
+        revision: ulid(),
       },
     });
   }, []);
@@ -62,7 +63,7 @@ export const CreateFurnitureComponent: React.FC = () => {
     const reader = response.body.getReader();
 
     // Step 2: get total length
-    const contentLength = +response.headers.get("Content-Length");
+    // const contentLength = +response.headers.get("Content-Length");
 
     // Step 3: read the data
     let receivedLength = 0; // received that many bytes at the moment
@@ -76,8 +77,6 @@ export const CreateFurnitureComponent: React.FC = () => {
 
       chunks.push(value);
       receivedLength += value.length;
-
-      console.log(receivedLength / contentLength);
     }
 
     const blob = new Blob(chunks);

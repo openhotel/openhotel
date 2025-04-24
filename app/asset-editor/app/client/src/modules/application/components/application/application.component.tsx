@@ -15,7 +15,7 @@ export const ApplicationComponent = () => {
         <SideContentProvider>
           <ScaleProvider>
             <FurnitureProvider>
-              <RouterComponent></RouterComponent>
+              <RouterComponent />
             </FurnitureProvider>
           </ScaleProvider>
         </SideContentProvider>

@@ -4,6 +4,7 @@ import {
   FurnitureDirection,
   FurnitureType,
 } from "shared/enums";
+import { ulid } from "ulidx";
 
 export const parseFurniture = (
   $furniture: Partial<FurnitureData>,
@@ -39,19 +40,19 @@ export const parseFurniture = (
         .filter((texture) => texture.texture) ?? [],
   });
 
-  console.log(
-    furniture?.actions
-      ?.map((action) => ({
-        type: actionTypes.includes(action.type) ? action.type : null,
-        meta: action.meta,
-      }))
-      .filter((action) => !action.type) ?? [],
-  );
+  // console.log(
+  //   furniture?.actions
+  //     ?.map((action) => ({
+  //       type: actionTypes.includes(action.type) ? action.type : null,
+  //       meta: action.meta,
+  //     }))
+  //     .filter((action) => !action.type) ?? [],
+  // );
 
   return {
     id: furniture?.id ?? "",
     type: furniture.type,
-    version: furniture.version,
+    revision: ulid(),
     icon: {
       texture: furniture?.icon?.texture ?? "",
       bounds: {

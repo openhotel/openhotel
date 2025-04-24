@@ -5,11 +5,11 @@ import { SpriteComponent } from "shared/components";
 import { useFurniture, useSideContent } from "shared/hooks";
 import { FurniturePreviewComponent } from "modules/furniture/furniture-preview";
 import { FurnitureDataDirectionsComponent } from "modules/furniture/furniture-data-directions";
+import { FurnitureDataActionsComponent } from "modules/furniture/furniture-data-actions";
+import { FurnitureFramePreviewComponent } from "modules/furniture/furniture-frame-preview";
 
 //@ts-ignore
 import styles from "./furniture-data-form.module.scss";
-import { FurnitureDataActionsComponent } from "modules/furniture/furniture-data-actions";
-import { FurnitureFramePreviewComponent } from "modules/furniture/furniture-frame-preview";
 
 type Props = {};
 
@@ -83,10 +83,9 @@ export const FurnitureDataFormComponent: React.FC<Props> = () => {
           onChange={onChangeFurniture("id")}
         />
         <InputComponent
-          placeholder="version"
-          value={furniture.version}
-          onChange={onChangeFurniture("version")}
-          type="number"
+          placeholder="revision"
+          value={furniture.revision}
+          disabled
         />
         <SelectorComponent
           placeholder="type"
@@ -113,7 +112,9 @@ export const FurnitureDataFormComponent: React.FC<Props> = () => {
             onChangeFurniture("icon.texture")({
               target: { value: option?.value },
             });
-            const frame = sheet.frames[option?.value]?.frame;
+            if (!option?.value) return;
+            //@ts-ignore
+            const frame = sheet.frames?.[option.value]?.frame;
             if (!frame) return;
 
             onChangeFurniture("icon.bounds.width")({

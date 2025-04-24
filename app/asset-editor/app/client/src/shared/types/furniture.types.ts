@@ -48,7 +48,7 @@ export type FurnitureAction = {
 };
 
 export type FurnitureData = {
-  version: number;
+  revision: string;
   id: string;
 
   size?: FurnitureSize;
