@@ -1,0 +1,116 @@
+name: Update Contributors
+on:
+  schedule:
+    - cron: "0 0 * * *" # Runs at midnight UTC daily
+  workflow_dispatch:
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+jobs:
+  update-contributors:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          ref: master
+          token: ${{ secrets.PUSH_MASTER_SECRET_TOKEN || secrets.GITHUB_TOKEN }}
+
+      - name: Run optimized contributor script
+        run: |
+          #!/usr/bin/env bash
+          set -euo pipefail
+
+          repos=(
+            "openhotel"
+            "asset-editor"
+            "pixi-components"
+            "auth"
+            "components"
+            "static"
+            "pathfinding"
+            "utils"
+            "onet"
+            "web"
+          )
+            
+          declare -A contributors
+            
+          for repo in "${repos[@]}"; do
+            echo "Processing repository: $repo" >&2
+
+            resp=$(curl -s \
+              -H "Authorization: token $GITHUB_TOKEN" \
+              -H "Accept: application/vnd.github.v3+json" \
+              -H "User-Agent: oh" \
+              "https://api.github.com/repos/openhotel/$repo/contributors")
+
+            while read -r contrib; do
+              login=$(jq -r '.login' <<<"$contrib")
+              [[ "$login" == "null" ]] && continue
+
+              type=$(jq -r '.type' <<<"$contrib")
+              [[ "$type" != "User" ]] && continue
+
+              html_url=$(jq -r '.html_url'     <<<"$contrib")
+              avatar_url=$(jq -r '.avatar_url' <<<"$contrib")
+              type=$(jq -r '.type'             <<<"$contrib")
+              cnt=$(jq -r '.contributions'     <<<"$contrib")
+            
+              if [[ -n "${contributors[$login]+x}" ]]; then
+                IFS='|' read -r _ _ _ existing_cnt <<<"${contributors[$login]}"
+                cnt=$((existing_cnt + cnt))
+              fi
+            
+              contributors["$login"]="$html_url|$avatar_url|$type|$cnt"
+            done < <(echo "$resp" | jq -c '.[]')  # <<< THIS avoids a subshell!
+            
+          done
+            
+          # ─── Build sorted JSON array ───────────────────────────────────────────────
+          sorted_json=$(
+            {
+              for login in "${!contributors[@]}"; do
+                IFS='|' read -r html_url avatar_url type contributions \
+                  <<<"${contributors[$login]}"
+            
+                jq -n \
+                  --arg login         "$login"         \
+                  --arg html_url      "$html_url"      \
+                  --arg avatar_url    "$avatar_url"    \
+                  --arg type          "$type"          \
+                  --argjson contributions "$contributions" \
+                  '{ login: $login, html_url: $html_url, avatar_url: $avatar_url, type: $type, contributions: ($contributions | tonumber) }'
+              done
+            } | jq -s 'sort_by(.contributions) | reverse'
+          )
+
+          echo $sorted_json
+          # ─── Emit YAML by hand ────────────────────────────────────────────────────
+          {
+            echo "# Contributors sorted by contributions (descending)"
+            echo ""
+            # Iterate each object in the sorted array:
+            echo "$sorted_json" | jq -c '.[]' | while read -r obj; do
+            echo "- login:       $(jq -r .login         <<<"$obj")"
+            echo "  html_url:    $(jq -r .html_url      <<<"$obj")"
+            echo "  avatar_url:  $(jq -r .avatar_url    <<<"$obj")"
+            echo "  type:        $(jq -r .type          <<<"$obj")"
+            echo "  contributions: $(jq -r .contributions <<<"$obj")"
+            done
+          } > app/client/src/assets/contributors.yml
+            
+          echo "→ Written contributors.yml" >&2
+
+      - name: Commit to Master
+        uses: EndBug/add-and-commit@v9
+        with:
+          author_name: OpenHotel Actions
+          author_email: actions@openhotel.club
+          message: "chore: update CONTRIBUTORS"
+          add: app/client/src/assets/contributors.yml
+          push: true
