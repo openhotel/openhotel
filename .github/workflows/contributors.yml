@@ -9,7 +9,6 @@ on:
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  CHGLOG_VERSION: "0.15.4"
 
 jobs:
   update-contributors:
@@ -56,7 +55,10 @@ jobs:
             while read -r contrib; do
               login=$(jq -r '.login' <<<"$contrib")
               [[ "$login" == "null" ]] && continue
-            
+
+              type=$(jq -r '.type' <<<"$contrib")
+              [[ "$type" != "User" ]] && continue
+
               html_url=$(jq -r '.html_url'     <<<"$contrib")
               avatar_url=$(jq -r '.avatar_url' <<<"$contrib")
               type=$(jq -r '.type'             <<<"$contrib")
