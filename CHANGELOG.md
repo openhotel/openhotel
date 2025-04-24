@@ -1,7 +1,15 @@
 
-<a name="v0.6.5-rc.3"></a>
+<a name="v0.6.5"></a>
 
-## [v0.6.5-rc.3](https://github.com/openhotel/openhotel/compare/v0.6.4...v0.6.5-rc.3) (2025-04-24)
+## [v0.6.5](https://github.com/openhotel/openhotel/compare/v0.6.4...v0.6.5) (2025-04-24)
+
+### Bug Fixes
+
+- contributors with prettier - fix [#776](https://github.com/openhotel/openhotel/issues/776) ([#777](https://github.com/openhotel/openhotel/issues/777))
+
+### Features
+
+- add contributors as a cron job on github actions once a day - fix [#759](https://github.com/openhotel/openhotel/issues/759) ([#775](https://github.com/openhotel/openhotel/issues/775))
 
 
 <a name="v0.6.4"></a>
