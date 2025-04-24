@@ -111,7 +111,7 @@ export const DefaultCategoryComponent: React.FC<Props> = ({
       return (
         <GraphicsComponent
           type={GraphicType.RECTANGLE}
-          tint={0xff00ff}
+          tint={0}
           width={previewWidth}
           height={size.height}
           alpha={0.2}

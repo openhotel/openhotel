@@ -64,9 +64,7 @@ export const CatalogComponentWrapper: React.FC<WrapperProps> = ({
   const { setDragPolygon } = useDragContainer();
   const { width, height } = MODAL_SIZE_MAP[Modal.CATALOG];
 
-  const [selectedCategoryId, setSelectedCategoryId] = useState<string>(
-    catalog.categories[0].id,
-  );
+  const [selectedCategoryId, setSelectedCategoryId] = useState<string>("home");
 
   const categorySize = useMemo(
     () => ({
@@ -130,6 +128,14 @@ export const CatalogComponentWrapper: React.FC<WrapperProps> = ({
         (category) => category.id === selectedCategoryId,
       ),
     [selectedCategoryId, catalog],
+  );
+
+  const contentSize = useMemo(
+    () => ({
+      width: overModalSize.width - 12,
+      height: overModalSize.height - 16,
+    }),
+    [overModalSize],
   );
 
   return (
@@ -236,15 +242,23 @@ export const CatalogComponentWrapper: React.FC<WrapperProps> = ({
             width={overModalSize.width}
             height={overModalSize.height}
           />
-          <CategoryComponent
-            size={{
-              width: overModalSize.width - 12,
-              height: overModalSize.height - 16,
-            }}
-            position={{ x: 6, y: 6 }}
-            category={category}
-            categoryId={selectedCategoryId}
-          />
+          <ContainerComponent position={{ x: 6, y: 6 }}>
+            {selectedCategoryId === "home" ? (
+              <GraphicsComponent
+                type={GraphicType.RECTANGLE}
+                tint={0}
+                alpha={0.2}
+                width={contentSize.width}
+                height={contentSize.height}
+              />
+            ) : (
+              <CategoryComponent
+                size={contentSize}
+                category={category}
+                categoryId={selectedCategoryId}
+              />
+            )}
+          </ContainerComponent>
         </ContainerComponent>
       </ContainerComponent>
     </>

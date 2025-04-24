@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import {
   ContainerComponent,
   ContainerProps,
@@ -30,9 +30,20 @@ export const CategoriesComponent: React.FC<Props> = ({
   //   [setSelectedCategory],
   // );
 
+  const allCategories = useMemo(
+    () => [
+      {
+        id: "home",
+        label: "Front P.",
+      },
+      ...categories,
+    ],
+    [categories],
+  );
+
   return (
     <ContainerComponent {...containerProps}>
-      {categories.map((category, index) => (
+      {allCategories.map((category, index) => (
         <CategoryOptionComponent
           key={category.id}
           type={

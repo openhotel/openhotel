@@ -29,7 +29,7 @@ export const HeaderComponent: React.FC<Props> = ({ size, description }) => {
         type={GraphicType.RECTANGLE}
         width={size.width}
         height={coverHeight}
-        tint={0xff00ff}
+        tint={0}
         alpha={0.2}
       />
       <TextComponent
