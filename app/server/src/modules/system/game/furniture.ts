@@ -84,7 +84,7 @@ export const furniture = () => {
       "minutes",
     );
 
-    //check if any file was been modified
+    //check if any file was modified
     if (
       dataModificationDiffTime !== 0 ||
       sheetModificationDiffTime !== 0 ||
