@@ -3,9 +3,6 @@ on:
   schedule:
     - cron: "0 0 * * *" # Runs at midnight UTC daily
   workflow_dispatch:
-  push:
-    tags:
-      - "*"
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
