@@ -49,7 +49,7 @@ export const CategoriesComponent: React.FC<Props> = ({
           type={
             index === 0
               ? "top"
-              : index === categories.length - 1
+              : index === allCategories.length - 1
                 ? "bottom"
                 : "middle"
           }
