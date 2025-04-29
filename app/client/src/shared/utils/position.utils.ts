@@ -37,4 +37,4 @@ export const isPosition2dEqual = (
 ) => x1 === x2 && y1 === y2;
 
 export const getZIndex = (position: Point3d): number =>
-  position.x + position.z + Math.abs(position.y / 100) + 1;
+  position.x + position.z + Math.abs(position.y / 100) + 0.5;
