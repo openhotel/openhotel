@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   ContainerComponent,
   ContainerProps,
@@ -16,6 +16,7 @@ import {
   SoftBadgeComponent,
   TextComponent,
 } from "shared/components";
+import { useApiPath } from "shared/hooks";
 
 type Props = {
   size: Size;
@@ -29,16 +30,20 @@ export const RoomPreviewComponent: React.FC<Props> = ({
   onJoin,
   ...containerProps
 }) => {
+  const { getPath } = useApiPath();
   const { loadTexture, getTexture } = useTextures();
 
   const [$texture, $setTexture] = useState<string>(TextureEnum.ROOM_PREVIEW);
 
+  const previewUrl = useMemo(
+    () => getPath(`/capture?id=${room.id}`),
+    [room, getPath],
+  );
+
   useEffect(() => {
     $setTexture(TextureEnum.ROOM_PREVIEW);
-    loadTexture(`http://localhost:19940/api/capture?id=${room.id}`).then(() => {
-      $setTexture(`http://localhost:19940/api/capture?id=${room.id}`);
-    });
-  }, [room, loadTexture, getTexture, $setTexture]);
+    loadTexture(previewUrl).then(() => $setTexture(previewUrl));
+  }, [loadTexture, getTexture, $setTexture, previewUrl]);
 
   return (
     <ContainerComponent {...containerProps}>
