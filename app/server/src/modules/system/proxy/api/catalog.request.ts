@@ -1,6 +1,7 @@
 import { ProxyRequestType } from "shared/types/api.types.ts";
 import { System } from "modules/system/main.ts";
 import { RequestMethod } from "@oh/utils";
+import dayjs from "dayjs";
 
 export const catalogRequest: ProxyRequestType = {
   pathname: "/catalog",
@@ -9,10 +10,25 @@ export const catalogRequest: ProxyRequestType = {
   func: async ({}, url) => {
     const category = url.searchParams.get("category");
 
-    const catalog = System.game.furniture.getCatalog();
+    const catalog = await System.game.furniture.getCatalog();
 
     if (!category) {
-      const categories = catalog.categories.map((category) => category.id);
+      const categories = catalog.categories
+        .filter((catalog) => {
+          const from = catalog?.range?.from;
+          const to = catalog?.range?.to;
+
+          return (
+            catalog.enabled &&
+            (!from || dayjs(dayjs()).diff(from, "minutes") >= 0) &&
+            (!to || dayjs(to).diff(dayjs(), "minutes") > 0)
+          );
+        })
+        .map((category) => ({
+          id: category.id,
+          label: category.label,
+          description: category.description,
+        }));
 
       return {
         status: 200,
@@ -27,7 +43,7 @@ export const catalogRequest: ProxyRequestType = {
     return {
       status: 200,
       data: {
-        catalogFurniture: furniture,
+        furniture,
       },
     };
   },

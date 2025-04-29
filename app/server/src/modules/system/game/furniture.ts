@@ -5,11 +5,10 @@ import { parse } from "@std/yaml";
 import { System } from "modules/system/main.ts";
 import { log } from "shared/utils/log.utils.ts";
 import { FurnitureType } from "shared/enums/furniture.enum.ts";
+import { decodeTime } from "@std/ulid";
+import dayjs from "dayjs";
 
 export const furniture = () => {
-  let $catalog: Catalog;
-  // const $furnitureMap: Record<string, FurnitureData> = {};
-
   const unzipZipFile = async (dirEntry: Deno.DirEntry, path: string = "") => {
     if (!dirEntry.isFile) {
       for await (const childEntry of Deno.readDir(
@@ -17,7 +16,7 @@ export const furniture = () => {
       ))
         await unzipZipFile(childEntry, `${dirEntry.name}/`);
     }
-    if (!dirEntry.name.includes(".zip")) return;
+    if (!dirEntry.name.includes(".furniture")) return;
 
     const furniturePathname = `./assets/furniture/${path + dirEntry.name}`;
 
@@ -54,19 +53,58 @@ export const furniture = () => {
     );
     const furnitureData = await parse(await furnitureBlob.text());
 
-    if (isNaN(furnitureData.version)) {
-      log(`! Furniture (${furnitureData.id}) has an incorrect version!`);
-      return;
+    if (!furnitureData.revision)
+      return log(
+        `e001 Furniture (${furnitureData.id}) has an incorrect revision!`,
+      );
+
+    let revisionTime;
+    try {
+      revisionTime = decodeTime(furnitureData.revision);
+    } catch (e) {
+      return log(
+        `e002 Furniture (${furnitureData.id}) has an incorrect revision!`,
+      );
     }
+    const revisionDate = dayjs(revisionTime);
+
+    const dataModificationDiffTime = revisionDate.diff(
+      dayjs(dataFile.lastModDate),
+      "minutes",
+    );
+    const sheetModificationDiffTime = revisionDate.diff(
+      dayjs(sheetFile.lastModDate),
+      "minutes",
+    );
+    const spriteModificationDiffTime = revisionDate.diff(
+      dayjs(spriteFile.lastModDate),
+      "minutes",
+    );
+
+    //check if any file was modified
+    if (
+      dataModificationDiffTime !== 0 ||
+      sheetModificationDiffTime !== 0 ||
+      spriteModificationDiffTime !== 0
+    )
+      return log(
+        `e003 Furniture (${furnitureData.id}) has an incorrect revision!`,
+      );
 
     const foundFurniture = await get(furnitureData.id);
 
-    const versionUpdateText = `[${foundFurniture?.version} >= ${furnitureData.version}]`;
-    if (foundFurniture?.version >= furnitureData.version) {
-      log(
-        `! Furniture (${furnitureData.id}) is already in latest version ${versionUpdateText}!`,
+    if (foundFurniture?.revision) {
+      const currentRevisionDate = dayjs(decodeTime(foundFurniture.revision));
+      const revisionDiffTime = currentRevisionDate.diff(
+        revisionDate,
+        "minutes",
       );
-      return;
+      //file is the same
+      if (
+        revisionDiffTime === 0 &&
+        foundFurniture.revision === furnitureData.revision
+      )
+        return;
     }
 
     // sheet
@@ -82,7 +120,7 @@ export const furniture = () => {
       [furnitureUint8Array, sheetUint8Array, spriteUint8Array],
     );
     log(
-      `- Furniture (${furnitureData.id}) ${foundFurniture ? "updated" : "loaded"} ${versionUpdateText}!`,
+      `- Furniture (${furnitureData.id}) ${foundFurniture ? "updated" : "loaded"}!`,
     );
   };
 
@@ -92,24 +130,25 @@ export const furniture = () => {
     for await (const dirEntry of Deno.readDir("./assets/furniture"))
       await unzipZipFile(dirEntry);
     log("> Furniture loaded!");
+  };
 
+  const getCatalog = async (): Promise<Catalog> => {
     const catalogDir = "./assets/catalog.yml";
+    let $catalog = {
+      categories: [],
+    };
     try {
       $catalog = await readYaml(catalogDir);
     } catch (e) {
-      $catalog = {
-        categories: [],
-      };
       await writeYaml(catalogDir, $catalog);
     }
+    return $catalog;
   };
 
-  const getCatalog = (): Catalog => $catalog;
-
   const getCatalogFurniture = async (category: string) => {
-    const catalog = getCatalog();
+    const catalog = await getCatalog();
     const catalogCategory = catalog.categories.find(
-      ($category) => $category.id === category,
+      ($category) => $category.id === category && $category.enabled,
     );
     if (!catalogCategory) {
       return [];

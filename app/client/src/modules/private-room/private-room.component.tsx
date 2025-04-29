@@ -20,12 +20,19 @@ import {
   useUpdate,
   useWindow,
 } from "@openhotel/pixi-components";
-import { useAccount, useCamera, usePrivateRoom, useProxy } from "shared/hooks";
+import {
+  useAccount,
+  useCamera,
+  usePrivateRoom,
+  useProxy,
+  useSafeWindow,
+} from "shared/hooks";
 import { Point2d, Point3d, Size2d } from "shared/types";
 import {
   CrossDirection,
   Direction,
   Event as ProxyEvent,
+  InternalEvent,
   PrivateRoomPreviewType,
 } from "shared/enums";
 import {
@@ -48,16 +55,23 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
   const { getAccount } = useAccount();
   const { setExtra } = useInfo();
   const { emit } = useProxy();
-  const { room, setSelectedPreview, selectedPreview, setLastPositionData } =
-    usePrivateRoom();
+  const {
+    room,
+    setSelectedPreview,
+    selectedPreview,
+    setLastPositionData,
+    setAbsoluteRoomPosition,
+  } = usePrivateRoom();
   const { lastUpdate, update } = useUpdate();
   const { isDragging, position: cameraPosition } = useCamera();
 
   const { on: onEvent } = useEvents();
-  const { getSize } = useWindow();
+  const { getSize, getScale } = useWindow();
+  const { getSafeSize } = useSafeWindow();
 
   const [isShiftDown, setIsShiftDown] = useState<boolean>(false);
   const [windowSize, setWindowSize] = useState<Size>(getSize());
+  const [safeWindowSize, setSafeWindowSize] = useState<Size>(getSafeSize());
   const [roomSize, setRoomSize] = useState<Size2d>({
     width: 0,
     height: 0,
@@ -77,10 +91,13 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
   const roomPosition = useMemo(() => {
     if (!roomSize) return { x: 0, y: 0 };
     return {
-      x: (windowSize.width - roomSize.width) / 2,
-      y: (windowSize.height - roomSize.height - HOT_BAR_HEIGHT_FULL) / 2,
+      x: Math.round((windowSize.width - roomSize.width) / 2),
+      y: Math.round(
+        (windowSize.height - roomSize.height) / 2 -
+          HOT_BAR_HEIGHT_FULL / getScale(),
+      ),
     };
-  }, [windowSize, lastUpdate, roomSize]);
+  }, [windowSize, lastUpdate, roomSize, getScale]);
 
   const currentAccountId = useMemo(() => getAccount().accountId, [getAccount]);
   const currentUser = useMemo(
@@ -142,6 +159,14 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
     selectedPreview,
   ]);
 
+  useEffect(() => {
+    const absolutePosition = {
+      x: roomPosition.x + cameraPosition.x,
+      y: roomPosition.y + cameraPosition.y,
+    };
+    setAbsoluteRoomPosition(absolutePosition);
+  }, [cameraPosition, roomPosition, setAbsoluteRoomPosition]);
+
   const onKeyDown = useCallback(
     (event: KeyboardEvent) => {
       if (event.code.includes("Shift")) setIsShiftDown(true);
@@ -160,6 +185,10 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
     if (!room) return;
 
     const onRemoveOnResize = onEvent(Event.RESIZE, setWindowSize);
+    const onRemoveOnSafeResize = onEvent(
+      InternalEvent.SAFE_RESIZE,
+      setSafeWindowSize,
+    );
     const onRemoveKeyDown = onEvent(Event.KEY_DOWN, onKeyDown);
     const onRemoveKeyUp = onEvent(Event.KEY_UP, onKeyUp);
     setWindowSize(getSize());
@@ -171,6 +200,7 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
 
     return () => {
       onRemoveOnResize();
+      onRemoveOnSafeResize();
       onRemoveKeyDown();
       onRemoveKeyUp();
     };
@@ -224,6 +254,11 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
     [roomPosition, roomPivot, cameraPosition],
   );
 
+  const safeXPosition = useMemo(
+    () => Math.round((windowSize.width - safeWindowSize.width) / 2),
+    [windowSize, safeWindowSize],
+  );
+
   if (!room) return null;
 
   return (
@@ -255,10 +290,18 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
         {/*  eventMode={EventMode.NONE}*/}
         {/*/>*/}
       </CameraComponent>
-      <ContainerComponent position={{ y: windowSize.height }}>
+      <ContainerComponent
+        position={{
+          x: safeXPosition,
+          y: windowSize.height,
+        }}
+      >
         <RoomInfoComponent />
-        <ChatHotBarComponent width={windowSize.width} />
-        <ContainerComponent position={{ x: windowSize.width }}>
+        <ChatHotBarComponent
+          maxWidth={windowSize.width}
+          width={safeWindowSize.width}
+        />
+        <ContainerComponent position={{ x: safeWindowSize.width }}>
           <SelectionPreviewComponent />
         </ContainerComponent>
       </ContainerComponent>

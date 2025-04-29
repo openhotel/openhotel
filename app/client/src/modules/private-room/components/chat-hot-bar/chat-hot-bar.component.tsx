@@ -1,4 +1,10 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import {
   ContainerComponent,
   Event as OhEvent,
@@ -10,6 +16,8 @@ import {
   KeyboardEventExtended,
   NineSliceSpriteComponent,
   SpriteTextInputComponent,
+  useApplication,
+  useCursor,
   useEvents,
 } from "@openhotel/pixi-components";
 import { HotBarItemsComponent } from "shared/components";
@@ -24,13 +32,19 @@ import {
 } from "shared/consts";
 
 type Props = {
+  maxWidth: number;
   width: number;
 };
 
-export const ChatHotBarComponent: React.FC<Props> = ({ width = 0 }) => {
+export const ChatHotBarComponent: React.FC<Props> = ({
+  maxWidth,
+  width = 0,
+}) => {
   const { on } = useEvents();
   const { emit } = useProxy();
-  const { lastPositionData } = usePrivateRoom();
+  const { scale } = useApplication();
+  const { lastPositionData, absoluteRoomPosition } = usePrivateRoom();
+  const { getPosition: getCursorPosition } = useCursor();
 
   const [focusInputNow, setFocusInputNow] = useState<number>(null);
 
@@ -85,6 +99,7 @@ export const ChatHotBarComponent: React.FC<Props> = ({ width = 0 }) => {
 
         localStorage.setItem(STORAGE_KEY, JSON.stringify(historyRef.current));
 
+        //---- /set ------------------------------------------------------------
         if (
           message.startsWith("/set") &&
           message.split(" ").length === 2 &&
@@ -93,6 +108,16 @@ export const ChatHotBarComponent: React.FC<Props> = ({ width = 0 }) => {
           message += ` ${lastPositionData.position.x} ${lastPositionData.position.z} ${lastPositionData.direction}`;
           if (lastPositionData.wallPosition)
             message += ` ${lastPositionData.wallPosition.x} ${lastPositionData.wallPosition.y}`;
+        }
+
+        //---- /photo ------------------------------------------------------------
+        if (message.startsWith("/photo")) {
+          const cursor = getCursorPosition();
+          const position = {
+            x: Math.round(absoluteRoomPosition.x - cursor.x),
+            y: Math.round(absoluteRoomPosition.y - cursor.y),
+          };
+          message += ` ${position.x} ${position.y} 3`;
         }
 
         emit(Event.MESSAGE, { message });
@@ -114,7 +139,15 @@ export const ChatHotBarComponent: React.FC<Props> = ({ width = 0 }) => {
         emit(Event.TYPING_END, {});
       }, 800);
     },
-    [emit, setValue, lastPositionData],
+    [
+      emit,
+      setValue,
+      lastPositionData,
+      maxWidth,
+      absoluteRoomPosition,
+      scale,
+      getCursorPosition,
+    ],
   );
 
   const onFocus = useCallback(() => {
@@ -133,36 +166,43 @@ export const ChatHotBarComponent: React.FC<Props> = ({ width = 0 }) => {
     };
   }, [onKeyDown]);
 
+  const startXPivot = useMemo(
+    () => Math.round((maxWidth - width) / 2),
+    [maxWidth, width],
+  );
+
   return (
     <ContainerComponent
       pivot={{
         y: HOT_BAR_HEIGHT,
       }}
     >
-      <GraphicsComponent
-        type={GraphicType.RECTANGLE}
-        width={width}
-        height={1}
-        tint={1}
-        pivot={{
-          y: 2,
-        }}
-      />
-      <GraphicsComponent
-        type={GraphicType.RECTANGLE}
-        width={width}
-        height={1}
-        tint={0x969696}
-        pivot={{
-          y: 1,
-        }}
-      />
-      <GraphicsComponent
-        type={GraphicType.RECTANGLE}
-        width={width}
-        height={HOT_BAR_HEIGHT}
-        tint={0x4b4c4f}
-      />
+      <ContainerComponent pivot={{ x: startXPivot }}>
+        <GraphicsComponent
+          type={GraphicType.RECTANGLE}
+          width={maxWidth}
+          height={1}
+          tint={1}
+          pivot={{
+            y: 2,
+          }}
+        />
+        <GraphicsComponent
+          type={GraphicType.RECTANGLE}
+          width={maxWidth}
+          height={1}
+          tint={0x969696}
+          pivot={{
+            y: 1,
+          }}
+        />
+        <GraphicsComponent
+          type={GraphicType.RECTANGLE}
+          width={maxWidth}
+          height={HOT_BAR_HEIGHT}
+          tint={0x4b4c4f}
+        />
+      </ContainerComponent>
       <ContainerComponent
         position={{
           x: 5,
@@ -216,19 +256,22 @@ export const ChatHotBarComponent: React.FC<Props> = ({ width = 0 }) => {
         />
       </ContainerComponent>
 
-      <FlexContainerComponent
-        justify={FLEX_JUSTIFY.END}
-        align={FLEX_ALIGN.CENTER}
-        size={{
-          height: 30,
-        }}
-        gap={5}
-        pivot={{
-          x: 10,
-        }}
-      >
-        <HotBarItemsComponent />
-      </FlexContainerComponent>
+      <ContainerComponent>
+        <FlexContainerComponent
+          justify={FLEX_JUSTIFY.END}
+          align={FLEX_ALIGN.CENTER}
+          size={{
+            width,
+            height: 30,
+          }}
+          pivot={{
+            x: 10,
+          }}
+          gap={5}
+        >
+          <HotBarItemsComponent />
+        </FlexContainerComponent>
+      </ContainerComponent>
     </ContainerComponent>
   );
 };

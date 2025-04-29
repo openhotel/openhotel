@@ -235,7 +235,7 @@ export const Proxy = (() => {
         console.error(e);
       }
     });
-    log(`Started on :${config.port}`);
+    log(`Started on http://localhost:${config.port}`);
   };
   serverWorker.on("start", load);
 

@@ -45,6 +45,10 @@ export const NavigatorComponent: React.FC = () => {
   );
 };
 
+const HORIZONTAL_MARGIN = 12 * 2;
+const TOP_MARGIN = 38;
+const BOTTOM_MARGIN = 12;
+
 type Props = {
   onPointerDown: () => void;
   navigatorTabMap: Record<ModalNavigatorTab, React.FC<ModalNavigatorTabProps>>;
@@ -56,10 +60,6 @@ export const NavigatorComponentWrapper: React.FC<Props> = ({
 }) => {
   const { setDragPolygon } = useDragContainer();
   const { width, height } = MODAL_SIZE_MAP[Modal.NAVIGATOR];
-
-  const horizontalMargin = 12 * 2;
-  const topMargin = 38;
-  const bottomMargin = 12;
 
   const [selectedCategory, setSelectedCategory] = useState<ModalNavigatorTab>(
     ModalNavigatorTab.ROOMS,
@@ -80,10 +80,10 @@ export const NavigatorComponentWrapper: React.FC<Props> = ({
 
   const contentSize = useMemo(
     () => ({
-      width: width - horizontalMargin,
-      height: height - topMargin - bottomMargin,
+      width: width - HORIZONTAL_MARGIN,
+      height: height - TOP_MARGIN - BOTTOM_MARGIN,
     }),
-    [width, horizontalMargin, height, topMargin, bottomMargin],
+    [width, HORIZONTAL_MARGIN, height, TOP_MARGIN, BOTTOM_MARGIN],
   );
 
   return (
@@ -127,7 +127,7 @@ export const NavigatorComponentWrapper: React.FC<Props> = ({
             width,
           }}
           position={{
-            y: 4,
+            y: 3,
           }}
         >
           <TextComponent
@@ -136,9 +136,9 @@ export const NavigatorComponentWrapper: React.FC<Props> = ({
             backgroundAlpha={1}
             padding={{
               left: 4,
-              right: 0,
+              right: 3,
               bottom: 0,
-              top: 1,
+              top: 2,
             }}
           />
         </FlexContainerComponent>

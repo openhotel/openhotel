@@ -43,12 +43,21 @@ export const MODAL_SIZE_MAP: Record<Modal, Size> = {
     width: 250,
     height: 260,
   },
+  [Modal.CATALOG]: {
+    width: 349,
+    height: 271,
+  },
+  [Modal.INVENTORY]: {
+    width: 320,
+    height: 240,
+  },
   [Modal.PURSE]: {
     width: 220,
     height: 151,
   },
 };
 
+// TODO: check desaparision!!!
 export const MODAL_COMPONENT_MAP: Record<Modal, React.FC> = {
   [Modal.CONSOLE]: ConsoleComponent,
   [Modal.NAVIGATOR]: NavigatorComponent,

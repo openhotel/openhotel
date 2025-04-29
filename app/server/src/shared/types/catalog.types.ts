@@ -6,7 +6,12 @@ export type CatalogFurniture = {
 export type CatalogCategory = {
   id: string;
   label: string;
+  description: string;
   enabled: boolean;
+  range?: {
+    from?: string;
+    to?: string;
+  };
   furniture: CatalogFurniture[];
 };
 
