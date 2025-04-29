@@ -15,4 +15,11 @@ export type ConfigTypes = {
     enabled: boolean;
     api: string;
   };
+  phantom: {
+    enabled: boolean;
+    browser: {
+      name: string;
+      buildId: string;
+    };
+  };
 };

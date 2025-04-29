@@ -16,6 +16,8 @@ import {
   KeyboardEventExtended,
   NineSliceSpriteComponent,
   SpriteTextInputComponent,
+  useApplication,
+  useCursor,
   useEvents,
 } from "@openhotel/pixi-components";
 import { HotBarItemsComponent } from "shared/components";
@@ -40,7 +42,9 @@ export const ChatHotBarComponent: React.FC<Props> = ({
 }) => {
   const { on } = useEvents();
   const { emit } = useProxy();
-  const { lastPositionData } = usePrivateRoom();
+  const { scale } = useApplication();
+  const { lastPositionData, absoluteRoomPosition } = usePrivateRoom();
+  const { getPosition: getCursorPosition } = useCursor();
 
   const [focusInputNow, setFocusInputNow] = useState<number>(null);
 
@@ -95,6 +99,7 @@ export const ChatHotBarComponent: React.FC<Props> = ({
 
         localStorage.setItem(STORAGE_KEY, JSON.stringify(historyRef.current));
 
+        //---- /set ------------------------------------------------------------
         if (
           message.startsWith("/set") &&
           message.split(" ").length === 2 &&
@@ -103,6 +108,16 @@ export const ChatHotBarComponent: React.FC<Props> = ({
           message += ` ${lastPositionData.position.x} ${lastPositionData.position.z} ${lastPositionData.direction}`;
           if (lastPositionData.wallPosition)
             message += ` ${lastPositionData.wallPosition.x} ${lastPositionData.wallPosition.y}`;
+        }
+
+        //---- /photo ------------------------------------------------------------
+        if (message.startsWith("/photo")) {
+          const cursor = getCursorPosition();
+          const position = {
+            x: Math.round(absoluteRoomPosition.x - cursor.x),
+            y: Math.round(absoluteRoomPosition.y - cursor.y),
+          };
+          message += ` ${position.x} ${position.y} 3`;
         }
 
         emit(Event.MESSAGE, { message });
@@ -124,7 +139,15 @@ export const ChatHotBarComponent: React.FC<Props> = ({
         emit(Event.TYPING_END, {});
       }, 800);
     },
-    [emit, setValue, lastPositionData],
+    [
+      emit,
+      setValue,
+      lastPositionData,
+      maxWidth,
+      absoluteRoomPosition,
+      scale,
+      getCursorPosition,
+    ],
   );
 
   const onFocus = useCallback(() => {

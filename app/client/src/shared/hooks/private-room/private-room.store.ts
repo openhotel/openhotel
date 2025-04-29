@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import {
+  Point2d,
   Point3d,
   PrivateRoom,
   PrivateRoomPreview,
@@ -42,6 +43,9 @@ export const usePrivateRoomStore = create<{
 
   lastPositionData: PositionData | null;
   setLastPositionData: (data: PositionData | null) => void;
+
+  absoluteRoomPosition: Point2d | null;
+  setAbsoluteRoomPosition: (point: Point2d | null) => void;
 }>((set) => ({
   room: null,
   messages: [],
@@ -158,5 +162,12 @@ export const usePrivateRoomStore = create<{
     set((store) => ({
       ...store,
       lastPositionData,
+    })),
+  //
+  absoluteRoomPosition: null,
+  setAbsoluteRoomPosition: (point: Point2d | null) =>
+    set((store) => ({
+      ...store,
+      absoluteRoomPosition: point,
     })),
 }));

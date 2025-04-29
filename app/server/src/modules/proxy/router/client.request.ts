@@ -1,7 +1,6 @@
 import { getContentType, getURL } from "@oh/utils";
-import { ConfigTypes } from "shared/types/config.types.ts";
 
-export const requestClient = async (request: Request, config: ConfigTypes) => {
+export const requestClient = async (request: Request) => {
   const ROOT_DIR_PATH = "/";
 
   try {

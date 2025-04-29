@@ -1,10 +1,10 @@
 import React, { ReactNode, useCallback } from "react";
 import { FurnitureContext } from "./furniture.context";
 import { useFurnitureStore } from "./furniture.store";
-import { useApi } from "shared/hooks/use-api";
 import { useTextures } from "@openhotel/pixi-components";
 import { CrossDirectionKeys, FurnitureDirectionDataMap } from "shared/types";
 import { CrossDirection } from "shared/enums";
+import { useApiPath } from "shared/hooks";
 
 type FurnitureProps = {
   children: ReactNode;
@@ -14,7 +14,7 @@ export const FurnitureProvider: React.FunctionComponent<FurnitureProps> = ({
   children,
 }) => {
   const { loadSpriteSheet, getSpriteSheet } = useTextures();
-  const { getPath } = useApi();
+  const { getPath } = useApiPath();
   const { add, get: $get, furniture } = useFurnitureStore();
 
   const load = useCallback(

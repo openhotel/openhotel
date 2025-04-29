@@ -12,4 +12,5 @@ export * from "./safe-window";
 
 export * from "./use-character";
 export * from "./use-api";
+export * from "./use-api-path";
 export * from "./use-contributors";

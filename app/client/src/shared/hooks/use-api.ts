@@ -1,9 +1,9 @@
 import { useCallback } from "react";
-import { useAccount, useConfig } from "shared/hooks";
+import { useAccount, useApiPath } from "shared/hooks";
 
 export const useApi = () => {
-  const { isDevelopment } = useConfig();
   const { getAccount } = useAccount();
+  const { getPath } = useApiPath();
 
   const $fetch = useCallback(
     async (
@@ -38,15 +38,8 @@ export const useApi = () => {
 
       return responseData;
     },
-    [getAccount],
+    [getAccount, getPath],
   );
 
-  const getPath = useCallback(
-    (pathname: string) => {
-      return `${isDevelopment() ? "proxy" : ""}/api${pathname}`;
-    },
-    [isDevelopment],
-  );
-
-  return { fetch: $fetch, getPath };
+  return { fetch: $fetch };
 };
