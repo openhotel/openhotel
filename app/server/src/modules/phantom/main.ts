@@ -103,7 +103,6 @@ import { getChromeExecutablePath } from "shared/utils/phantom.utils.ts";
       const canvas = await page.$("canvas");
       if (!canvas) return;
 
-      // const screenshotName = `screenshot-${Date.now()}.png`;
       const image = await canvas.screenshot();
       const imageData = (await quantizeToPalette(
         $Image,
@@ -112,7 +111,6 @@ import { getChromeExecutablePath } from "shared/utils/phantom.utils.ts";
       )) as Uint8Array;
 
       serverWorker.emit("save-capture", { id, imageData: imageData.buffer });
-      // await Deno.writeFile(`./photo_${id}.png`, data);
 
       const duration = performance.now() - startTime;
       log(`Phantom capture (${id}) done in ${duration}ms!`);
