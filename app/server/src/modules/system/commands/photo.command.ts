@@ -4,11 +4,7 @@ import {
   CommandRoles,
   PrivateRoomMutable,
 } from "shared/types/main.ts";
-import {
-  CAMERA_BW_PALETTE,
-  // CAMERA_GREEN_PALETTE,
-  // CAMERA_SEPIA_PALETTE,
-} from "shared/consts/camera.consts.ts";
+import { CAMERA_SEPIA_PALETTE } from "shared/consts/camera.consts.ts";
 import { ProxyEvent } from "shared/enums/event.enum.ts";
 
 export const photoCommand: Command = {
@@ -37,7 +33,7 @@ export const photoCommand: Command = {
       room: await room.getObjectWithUsers(),
       position,
       size,
-      palette: CAMERA_BW_PALETTE,
+      palette: CAMERA_SEPIA_PALETTE,
     });
     user.emit(ProxyEvent.SYSTEM_MESSAGE, { message: `Photo id ${id}` });
   },
