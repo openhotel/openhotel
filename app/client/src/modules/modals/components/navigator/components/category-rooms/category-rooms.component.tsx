@@ -9,8 +9,8 @@ import {
   Size,
 } from "@openhotel/pixi-components";
 import { ModalNavigatorTabProps } from "shared/types";
-import { useApi, useProxy } from "shared/hooks";
-import { Event } from "shared/enums";
+import { useApi, useModal, useProxy } from "shared/hooks";
+import { Event, Modal } from "shared/enums";
 
 type Props = {
   size: Size;
@@ -32,6 +32,7 @@ export const CategoryRoomsComponent: React.FC<ModalNavigatorTabProps> = ({
 }) => {
   const { fetch } = useApi();
   const { emit } = useProxy();
+  const { isModalOpen } = useModal();
 
   const [rooms, setRooms] = useState([]);
 
@@ -64,6 +65,8 @@ export const CategoryRoomsComponent: React.FC<ModalNavigatorTabProps> = ({
 
   useEffect(() => {
     const interval = setInterval(() => {
+      if (!isModalOpen(Modal.NAVIGATOR)) return;
+
       $reload();
     }, 30_000);
     $reload();

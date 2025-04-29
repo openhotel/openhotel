@@ -9,9 +9,6 @@ import { decodeTime } from "@std/ulid";
 import dayjs from "dayjs";
 
 export const furniture = () => {
-  let $catalog: Catalog;
-  // const $furnitureMap: Record<string, FurnitureData> = {};
-
   const unzipZipFile = async (dirEntry: Deno.DirEntry, path: string = "") => {
     if (!dirEntry.isFile) {
       for await (const childEntry of Deno.readDir(
@@ -133,22 +130,23 @@ export const furniture = () => {
     for await (const dirEntry of Deno.readDir("./assets/furniture"))
       await unzipZipFile(dirEntry);
     log("> Furniture loaded!");
+  };
 
+  const getCatalog = async (): Promise<Catalog> => {
     const catalogDir = "./assets/catalog.yml";
+    let $catalog = {
+      categories: [],
+    };
     try {
       $catalog = await readYaml(catalogDir);
     } catch (e) {
-      $catalog = {
-        categories: [],
-      };
       await writeYaml(catalogDir, $catalog);
     }
+    return $catalog;
   };
 
-  const getCatalog = (): Catalog => $catalog;
-
   const getCatalogFurniture = async (category: string) => {
-    const catalog = getCatalog();
+    const catalog = await getCatalog();
     const catalogCategory = catalog.categories.find(
       ($category) => $category.id === category && $category.enabled,
     );

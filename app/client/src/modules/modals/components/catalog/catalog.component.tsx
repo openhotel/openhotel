@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
   ContainerComponent,
   Cursor,
@@ -31,14 +31,28 @@ const OVER_MODAL_POSITION = {
 const OVER_MODAL_PADDING = 5;
 
 export const CatalogComponent: React.FC = () => {
-  const { closeModal } = useModal();
+  const { closeModal, isModalOpen } = useModal();
   const { fetch } = useApi();
 
   const [catalog, setCatalog] = useState<Catalog>(null);
 
+  const $reload = useCallback(
+    () => fetch("/catalog").then(setCatalog),
+    [fetch],
+  );
+
   useEffect(() => {
-    fetch("/catalog").then(setCatalog);
-  }, [fetch, setCatalog]);
+    const interval = setInterval(() => {
+      if (!isModalOpen(Modal.CATALOG)) return;
+
+      $reload();
+    }, 30_000);
+    $reload();
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [$reload]);
 
   return useMemo(
     () =>
@@ -243,7 +257,7 @@ export const CatalogComponentWrapper: React.FC<WrapperProps> = ({
             height={overModalSize.height}
           />
           <ContainerComponent position={{ x: 6, y: 6 }}>
-            {selectedCategoryId === "home" ? (
+            {selectedCategoryId === "home" || !category ? (
               <GraphicsComponent
                 type={GraphicType.RECTANGLE}
                 tint={0}
