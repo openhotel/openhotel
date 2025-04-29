@@ -8,12 +8,9 @@ import {
   FlexContainerComponent,
   NineSliceSpriteComponent,
 } from "@openhotel/pixi-components";
-import {
-  Modal,
-  SpriteSheetEnum,
-  TransactionType,
-} from "../../../../../../shared/enums";
-import { MODAL_SIZE_MAP } from "../../../../../../shared/consts";
+import { Modal, SpriteSheetEnum, TransactionType } from "shared/enums";
+import { MODAL_SIZE_MAP } from "shared/consts";
+import dayjs from "dayjs";
 
 type Props = {
   transaction: Transaction;
@@ -52,7 +49,7 @@ export const TransactionComponent: React.FC<Props> = ({ transaction }) => {
         zIndex={10}
       >
         <TextComponent
-          text={new Date(transaction.timestamp).toLocaleDateString()}
+          text={dayjs(transaction.timestamp).format("DD/MM/YYYY")}
           color={0x000}
         />
         <TextComponent text={transaction.description} color={0x000} />
