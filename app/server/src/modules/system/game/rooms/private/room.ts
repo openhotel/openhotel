@@ -9,12 +9,14 @@ import {
 import { FurnitureType, ProxyEvent, RoomPointEnum } from "shared/enums/main.ts";
 import { System } from "modules/system/main.ts";
 import { getInterpolatedPath } from "shared/utils/pathfinding.utils.ts";
+import { WALKABLE_FURNITURE_TYPE, TILE_Y_HEIGHT } from "shared/consts/main.ts";
 import {
-  WALKABLE_FURNITURE_TYPE,
-  TILE_Y_HEIGHT,
-  CAMERA_SEPIA_PALETTE,
-} from "shared/consts/main.ts";
-import { Direction, isPoint3dEqual, Point3d } from "@oh/utils";
+  Direction,
+  isPoint3dEqual,
+  Point3d,
+  getRandomNumber,
+  Point2d,
+} from "@oh/utils";
 import { Grid } from "@oh/pathfinding";
 import { getBaseRoomGrid } from "shared/utils/rooms.utils.ts";
 import { getPositionFromIsometricPosition } from "shared/utils/position.utils.ts";
@@ -68,11 +70,9 @@ export const getRoom =
 
       roomUserMap[room.id].push($user.getAccountId());
 
-      const roomData = await getObjectWithUsers();
-
       //Load room to user
       $user.emit(ProxyEvent.LOAD_ROOM, {
-        room: roomData,
+        room: await getObjectWithUsers(),
       });
 
       $user.setRoom(room.id);
@@ -82,11 +82,12 @@ export const getRoom =
         roomId: getId(),
       });
 
-      const pos = getPositionFromIsometricPosition(startPosition);
+      // Make capture
+      const pos = getPositionFromIsometricPosition(getRandomPoint());
 
       System.phantom.capture({
         id: room.id,
-        room: roomData,
+        room: getObject(),
         size: {
           width: 128,
           height: 128,
@@ -122,6 +123,13 @@ export const getRoom =
       emit(ProxyEvent.REMOVE_HUMAN, { accountId: $user.getAccountId() });
     };
     const getUsers = () => roomUserMap[room.id];
+
+    const getRandomPoint = (): Point2d => {
+      const z = getRandomNumber(0, room.layout.length - 1);
+      const x = getRandomNumber(0, room.layout[z].length - 1);
+      if (room.layout[z][x] === undefined) return getRandomPoint();
+      return { x, z };
+    };
 
     const getPoint = (position: Point3d) =>
       room.layout?.[position.z]?.[position.x];
