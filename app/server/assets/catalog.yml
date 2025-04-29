@@ -63,10 +63,13 @@ categories:
         price: 0
       - id: xmas@tree-1
         price: 0
-  - id: cakes
-    label: Cakes
-    description: Delicious cakes...
+  - id: b-day
+    label: B-Day
+    description: Delicious cake por a birthday...
     enabled: true
+    range:
+      from: "2025-04-19 00:00:00"
+      to: "2025-04-20 00:00:00"
     furniture:
       - id: cakes@chocolate-small
         price: 0
