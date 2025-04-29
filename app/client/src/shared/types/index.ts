@@ -13,3 +13,4 @@ export * from "./account.types";
 export * from "./character.types";
 export * from "./modal.types";
 export * from "./catalog.types";
+export * from "./economy.types";

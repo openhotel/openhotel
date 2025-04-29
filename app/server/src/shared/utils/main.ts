@@ -7,3 +7,4 @@ export * from "./position.utils.ts";
 export * from "./bytes.utils.ts";
 export * from "./changelog.utils.ts";
 export * from "./image.utils.ts";
+export * from "./economy.utils.ts";
