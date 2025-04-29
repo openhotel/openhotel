@@ -46,3 +46,13 @@ export type PrivateRoomPreview = {
   data: unknown;
   title: string;
 };
+
+export type NavigatorRoom = {
+  id: string;
+  title: string;
+  description: string;
+  ownerUsername: string;
+  users: number;
+  maxUsers: number;
+  favorite: boolean;
+};

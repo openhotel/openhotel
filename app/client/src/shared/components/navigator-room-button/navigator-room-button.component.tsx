@@ -47,7 +47,11 @@ export const NavigatorRoomButtonComponent: React.FC<Props> = ({
   }, [users, maxUsers]);
 
   return (
-    <ContainerComponent {...containerProps}>
+    <ContainerComponent
+      {...containerProps}
+      eventMode={EventMode.STATIC}
+      cursor={Cursor.POINTER}
+    >
       <NineSliceSpriteComponent
         spriteSheet={SpriteSheetEnum.UI}
         texture="ui-button-left-slice"

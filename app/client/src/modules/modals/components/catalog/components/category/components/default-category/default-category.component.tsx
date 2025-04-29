@@ -2,23 +2,18 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
   ContainerComponent,
   ContainerProps,
-  Cursor,
-  EventMode,
-  FLEX_ALIGN,
-  FLEX_JUSTIFY,
-  FlexContainerComponent,
   GraphicsComponent,
   GraphicType,
-  NineSliceSpriteComponent,
   Size,
   SpriteComponent,
 } from "@openhotel/pixi-components";
 import {
+  ButtonComponent,
   FurniturePreviewComponent,
   ItemListComponent,
+  SoftBadgeComponent,
   TextComponent,
 } from "shared/components";
-import { SpriteSheetEnum } from "shared/enums";
 import { CatalogCategoryData } from "shared/types";
 import { useApi, useFurniture } from "shared/hooks";
 import {
@@ -152,43 +147,23 @@ export const DefaultCategoryComponent: React.FC<Props> = ({
           />
         </ContainerComponent>
         <ContainerComponent position={{ y: height }}>
-          <NineSliceSpriteComponent
-            spriteSheet={SpriteSheetEnum.UI}
-            texture="background-circle-x6"
-            leftWidth={2}
-            rightWidth={2}
-            topHeight={2}
-            bottomHeight={2}
-            width={previewWidth}
-            height={bottomHeight}
-            tint={0xe0e0e0}
+          <SoftBadgeComponent
+            size={{
+              width: previewWidth,
+              height: bottomHeight,
+            }}
           />
-          <ContainerComponent
+          <ButtonComponent
+            size={{
+              width: 37,
+              height: 14,
+            }}
             position={{
               x: previewWidth - 37 - 3,
               y: 3,
             }}
-          >
-            <NineSliceSpriteComponent
-              spriteSheet={SpriteSheetEnum.UI}
-              texture="ui-button"
-              leftWidth={3}
-              rightWidth={3}
-              topHeight={3}
-              bottomHeight={3}
-              width={37}
-              height={14}
-              eventMode={EventMode.STATIC}
-              cursor={Cursor.POINTER}
-            />
-            <FlexContainerComponent
-              size={{ width: 37, height: 14 }}
-              justify={FLEX_JUSTIFY.CENTER}
-              align={FLEX_ALIGN.CENTER}
-            >
-              <TextComponent text="Buy" color={0} />
-            </FlexContainerComponent>
-          </ContainerComponent>
+            text="Buy"
+          />
         </ContainerComponent>
       </>
     );

@@ -1,8 +1,12 @@
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
 import {
   ContainerComponent,
   ContainerProps,
-  ContainerRef,
+  Cursor,
+  EventMode,
+  FLEX_ALIGN,
+  FLEX_JUSTIFY,
+  FlexContainerComponent,
   NineSliceSpriteComponent,
   Size,
 } from "@openhotel/pixi-components";
@@ -10,33 +14,21 @@ import { SpriteSheetEnum } from "shared/enums";
 import { TextComponent } from "shared/components/text";
 
 type Props = {
-  text?: string;
-  color?: number;
-  padding?: [number, number, number, number];
-  children?: React.ReactNode;
+  text: string;
+  size: Size;
 } & ContainerProps;
 
 export const ButtonComponent: React.FC<Props> = ({
   text,
-  color = 0x1,
-  padding = [0, 0, 0, 0],
-  children,
+  size,
   ...containerProps
 }) => {
-  const containerRef = useRef<ContainerRef>(null);
-
-  const [contentSize, setContentSize] = useState<Size>({ width: 0, height: 0 });
-
-  useEffect(() => {
-    //TODO Revise this... not working as expected :(
-    const { maxX, maxY } = containerRef.current.getBounds();
-    setContentSize({ width: maxX, height: maxY });
-  }, [text, children]);
-
-  const [topPadding, rightPadding, bottomPadding, leftPadding] = padding;
-
   return (
-    <ContainerComponent {...containerProps}>
+    <ContainerComponent
+      {...containerProps}
+      eventMode={EventMode.STATIC}
+      cursor={Cursor.POINTER}
+    >
       <NineSliceSpriteComponent
         spriteSheet={SpriteSheetEnum.UI}
         texture="ui-button"
@@ -44,18 +36,18 @@ export const ButtonComponent: React.FC<Props> = ({
         rightWidth={3}
         topHeight={3}
         bottomHeight={3}
-        width={contentSize.width + rightPadding + leftPadding}
-        height={contentSize.height + topPadding + bottomPadding}
+        width={size.width}
+        height={size.height}
+        eventMode={EventMode.STATIC}
+        cursor={Cursor.POINTER}
       />
-      <ContainerComponent
-        ref={containerRef}
-        position={{
-          x: leftPadding,
-          y: topPadding,
-        }}
+      <FlexContainerComponent
+        size={size}
+        justify={FLEX_JUSTIFY.CENTER}
+        align={FLEX_ALIGN.CENTER}
       >
-        {children ?? <TextComponent text={text} color={color} />}
-      </ContainerComponent>
+        <TextComponent text={text} color={0} />
+      </FlexContainerComponent>
     </ContainerComponent>
   );
 };

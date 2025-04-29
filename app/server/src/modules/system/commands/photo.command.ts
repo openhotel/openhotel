@@ -5,15 +5,15 @@ import {
   PrivateRoomMutable,
 } from "shared/types/main.ts";
 import {
-  // CAMERA_BW_PALETTE,
+  CAMERA_BW_PALETTE,
   // CAMERA_GREEN_PALETTE,
-  CAMERA_SEPIA_PALETTE,
+  // CAMERA_SEPIA_PALETTE,
 } from "shared/consts/camera.consts.ts";
 import { ProxyEvent } from "shared/enums/event.enum.ts";
 
 export const photoCommand: Command = {
   command: "photo",
-  usages: ["<x> <y> <scale>"],
+  usages: ["<x> <y> <size>"],
   // usages: [],
   role: CommandRoles.OP,
   description: "command.photo.description",
@@ -22,20 +22,22 @@ export const photoCommand: Command = {
       user.getRoom(),
     )) as PrivateRoomMutable;
 
+    const $size = parseInt(<string>args[2]);
+
     const size = {
-      width: 256,
-      height: 256,
+      width: $size,
+      height: $size,
     };
 
     const position = {
-      x: parseInt(args[0]) + size.width / 2,
-      y: parseInt(args[1]) + size.height / 2,
+      x: parseInt(<string>args[0]) + size.width / 2,
+      y: parseInt(<string>args[1]) + size.height / 2,
     };
     const id = System.phantom.capture({
       room: await room.getObjectWithUsers(),
       position,
       size,
-      palette: CAMERA_SEPIA_PALETTE,
+      palette: CAMERA_BW_PALETTE,
     });
     user.emit(ProxyEvent.SYSTEM_MESSAGE, { message: `Photo id ${id}` });
   },
