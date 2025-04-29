@@ -40,6 +40,7 @@ import { quantizeToPalette } from "shared/utils/image.utils.ts";
     });
     log(`${browserName} installed!`);
 
+    log("Launching browser...");
     browser = await puppeteer.launch({
       executablePath,
       headless: "new",
@@ -53,6 +54,7 @@ import { quantizeToPalette } from "shared/utils/image.utils.ts";
         "--enable-unsafe-swiftshader",
       ],
     });
+    log("Browser launched!");
   };
 
   let captures = [];
