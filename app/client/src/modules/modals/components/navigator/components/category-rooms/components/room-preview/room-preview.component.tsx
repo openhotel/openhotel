@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   ContainerComponent,
   ContainerProps,
@@ -7,6 +7,7 @@ import {
   NineSliceSpriteComponent,
   Size,
   SpriteComponent,
+  useTextures,
 } from "@openhotel/pixi-components";
 import { SpriteSheetEnum, TextureEnum } from "shared/enums";
 import { NavigatorRoom } from "shared/types";
@@ -28,10 +29,21 @@ export const RoomPreviewComponent: React.FC<Props> = ({
   onJoin,
   ...containerProps
 }) => {
+  const { loadTexture, getTexture } = useTextures();
+
+  const [$texture, $setTexture] = useState<string>(TextureEnum.ROOM_PREVIEW);
+
+  useEffect(() => {
+    $setTexture(TextureEnum.ROOM_PREVIEW);
+    loadTexture(`http://localhost:19940/api/capture?id=${room.id}`).then(() => {
+      $setTexture(`http://localhost:19940/api/capture?id=${room.id}`);
+    });
+  }, [room, loadTexture, getTexture, $setTexture]);
+
   return (
     <ContainerComponent {...containerProps}>
       <SpriteComponent
-        texture={TextureEnum.ROOM_PREVIEW}
+        texture={$texture}
         position={{
           x: 1,
           y: 1,

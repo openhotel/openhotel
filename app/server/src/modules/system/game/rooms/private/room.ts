@@ -9,10 +9,15 @@ import {
 import { FurnitureType, ProxyEvent, RoomPointEnum } from "shared/enums/main.ts";
 import { System } from "modules/system/main.ts";
 import { getInterpolatedPath } from "shared/utils/pathfinding.utils.ts";
-import { WALKABLE_FURNITURE_TYPE, TILE_Y_HEIGHT } from "shared/consts/main.ts";
+import {
+  WALKABLE_FURNITURE_TYPE,
+  TILE_Y_HEIGHT,
+  CAMERA_SEPIA_PALETTE,
+} from "shared/consts/main.ts";
 import { Direction, isPoint3dEqual, Point3d } from "@oh/utils";
 import { Grid } from "@oh/pathfinding";
 import { getBaseRoomGrid } from "shared/utils/rooms.utils.ts";
+import { getPositionFromIsometricPosition } from "shared/utils/position.utils.ts";
 
 export const getRoom =
   (roomUserMap: Record<string, string[]>) =>
@@ -62,9 +67,12 @@ export const getRoom =
       emit(ProxyEvent.ADD_HUMAN, { user: mapUser($user.getObject()) });
 
       roomUserMap[room.id].push($user.getAccountId());
+
+      const roomData = await getObjectWithUsers();
+
       //Load room to user
       $user.emit(ProxyEvent.LOAD_ROOM, {
-        room: await getObjectWithUsers(),
+        room: roomData,
       });
 
       $user.setRoom(room.id);
@@ -72,6 +80,21 @@ export const getRoom =
       System.proxy.$emit(ProxyEvent.$ADD_ROOM, {
         accountId: $user.getAccountId(),
         roomId: getId(),
+      });
+
+      const pos = getPositionFromIsometricPosition(startPosition);
+
+      System.phantom.capture({
+        id: room.id,
+        room: roomData,
+        size: {
+          width: 128,
+          height: 128,
+        },
+        position: {
+          x: -pos.x,
+          y: -pos.y + 60,
+        },
       });
     };
     const removeUser = (user: User, moveToAnotherRoom: boolean = false) => {

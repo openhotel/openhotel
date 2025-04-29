@@ -5,6 +5,8 @@ export const quantizeToPalette = async (
 ) => {
   const sourceImage = await Image.decode(data);
 
+  if (!palette) return await sourceImage.encode();
+
   const $palette = palette.map((color) => {
     const r = (color >>> 16) & 0xff;
     const g = (color >>> 8) & 0xff;

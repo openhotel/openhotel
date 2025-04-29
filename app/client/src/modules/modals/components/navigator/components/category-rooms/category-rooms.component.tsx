@@ -26,7 +26,6 @@ export const CategoryRoomsComponent: React.FC<Props> = ({ size }) => {
     fetch("/room-list", {
       type: "private",
     }).then(({ rooms }: { rooms: any[] }) => {
-      console.log(rooms);
       setRooms(
         rooms.map((room) => ({
           id: room.id,
@@ -57,7 +56,6 @@ export const CategoryRoomsComponent: React.FC<Props> = ({ size }) => {
   const onClick = useCallback(
     (roomId: string) => {
       setSelectedRoomId(roomId);
-      console.log(roomId);
     },
     [setSelectedRoomId],
   );
