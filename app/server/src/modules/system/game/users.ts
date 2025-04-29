@@ -2,6 +2,7 @@ import {
   CacheUser,
   PrivateRoomMutable,
   PrivateUser,
+  Transaction,
   User,
   UserMutable,
   UsersConfig,
@@ -15,6 +16,7 @@ import { Direction, getConfig, Point3d } from "@oh/utils";
 import { exists } from "deno/fs/mod.ts";
 import { log as $log } from "shared/utils/log.utils.ts";
 import { UserAction } from "shared/enums/user.enums.ts";
+import { INITIAL_PLAYER_BALANCE } from "shared/consts/economy.consts.ts";
 
 export const users = () => {
   let $privateUserMap: Record<string, PrivateUser> = {};
@@ -202,6 +204,15 @@ export const users = () => {
       $log(`${getUsername()} ${data.join(" ")}`);
     };
 
+    const getCredits = async (): Promise<number> => {
+      const accountId = getAccountId();
+      return System.db.get(["users", accountId, "balance"]);
+    };
+    const getTransactions = async (): Promise<Transaction> => {
+      const accountId = getAccountId();
+      return System.db.get(["transactionsByUser", accountId]);
+    };
+
     return {
       getAccountId,
       getUsername,
@@ -248,6 +259,9 @@ export const users = () => {
       emit,
 
       log,
+
+      getCredits,
+      getTransactions,
     };
   };
 
@@ -262,6 +276,10 @@ export const users = () => {
       username: user.username,
     });
     await System.db.set(["usersByUsername", user.username], user.accountId);
+    await System.db.set(
+      ["users", user.accountId, "balance"],
+      INITIAL_PLAYER_BALANCE,
+    );
 
     await $user.log("joined");
   };

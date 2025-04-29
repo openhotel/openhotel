@@ -7,3 +7,4 @@ export * from "./wall.consts.ts";
 export * from "./icon.consts.ts";
 export * from "./messages.consts.ts";
 export * from "./camera.consts.ts";
+export * from "./economy.consts.ts";
