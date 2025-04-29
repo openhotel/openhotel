@@ -36,7 +36,7 @@ export const TransactionComponent: React.FC<Props> = ({ transaction }) => {
     <ContainerComponent>
       <NineSliceSpriteComponent
         spriteSheet={SpriteSheetEnum.UI}
-        texture="ui-purse-transaction"
+        texture="background-circle-x6"
         leftWidth={2}
         rightWidth={2}
         topHeight={1}
