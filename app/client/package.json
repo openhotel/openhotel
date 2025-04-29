@@ -40,9 +40,11 @@
   },
   "dependencies": {
     "@oh/queue": "npm:@jsr/oh__queue@1.1.1",
-    "@openhotel/pixi-components": "0.0.10",
+    "@openhotel/pixi-components": "0.0.12",
     "react": "19.0.0",
     "react-dom": "19.0.0",
+    "react-router": "^7.5.2",
+    "react-router-dom": "^7.5.2",
     "ulidx": "2.4.1",
     "yaml": "2.5.0",
     "zustand": "5.0.3"

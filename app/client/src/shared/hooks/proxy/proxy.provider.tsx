@@ -54,7 +54,8 @@ export const ProxyProvider: React.FunctionComponent<ProxyProps> = ({
     }
     //connection
     setLoadingMessage("Connecting...");
-    window.history.pushState(null, null, "/");
+    if (window.location.pathname !== "/phantom")
+      window.history.pushState(null, null, "/");
 
     const $socket = getClientSocket({
       url: getWebSocketUrl(`${window.location.origin}/proxy`),

@@ -86,16 +86,20 @@ export const RoomMessagesComponent: React.FC<Props> = ({
         }),
     );
 
-    const removeOnSystemMessage = onProxy(Event.SYSTEM_MESSAGE, ({ message }) =>
-      addMessage({
-        id: ulid(),
-        accountId: null,
-        username: "System",
-        message,
-        color: 0xffffff,
-        backgroundColor: 0xdba935,
-        messageColor: 0xffffff,
-      }),
+    const removeOnSystemMessage = onProxy(
+      Event.SYSTEM_MESSAGE,
+      ({ message }) => {
+        addMessage({
+          id: ulid(),
+          accountId: null,
+          username: "System",
+          message,
+          color: 0xffffff,
+          backgroundColor: 0xdba935,
+          messageColor: 0xffffff,
+        });
+        console.log(`System: ${message}`);
+      },
     );
 
     return () => {
