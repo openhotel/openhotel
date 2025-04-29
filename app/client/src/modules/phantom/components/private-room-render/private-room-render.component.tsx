@@ -116,7 +116,7 @@ export const PrivateRoomRenderComponent = () => {
         height={size.height}
         tint={0}
       />
-      <PrivateRoomComponent {...room}>
+      <PrivateRoomComponent {...room} computePivot={false}>
         {renderFurniture}
         {renderCharacters}
       </PrivateRoomComponent>

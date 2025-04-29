@@ -31,7 +31,7 @@ export const MODAL_HOT_BAR_ITEMS = {
 
 export const MODAL_SIZE_MAP: Record<Modal, Size> = {
   [Modal.NAVIGATOR]: {
-    width: 250,
+    width: 349,
     height: 260,
   },
   [Modal.CATALOG]: {

@@ -16,3 +16,4 @@ export * from "./bubble-message";
 export * from "./camera";
 export * from "./scroll";
 export * from "./item-list";
+export * from "./soft-badge";

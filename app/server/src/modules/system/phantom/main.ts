@@ -24,16 +24,16 @@ export const phantom = () => {
     });
   };
 
-  const capture = ({ room, position, size, palette }) => {
-    const id = ulid();
+  const capture = ({ id, room, position, size, palette }: any) => {
+    const $id = id ?? ulid();
     $worker.emit("capture-private-room", {
-      id,
+      id: $id,
       room,
       position,
       size,
       palette,
     });
-    return id;
+    return $id;
   };
 
   const getCapture = async (id: string) => {
