@@ -14,7 +14,7 @@ import {
 } from "@openhotel/pixi-components";
 import { Modal, SpriteSheetEnum } from "shared/enums";
 import { MODAL_SIZE_MAP } from "shared/consts";
-import { TextComponent } from "shared/components";
+import { ScrollComponent, TextComponent } from "shared/components";
 import { useApi, useModal } from "shared/hooks";
 import { Transaction } from "shared/types";
 import { TransactionComponent } from "./components";
@@ -146,18 +146,19 @@ export const PurseComponentWrapper: React.FC<Props> = ({
           <TextComponent text="credits" color={0x000} />
         </FlexContainerComponent>
 
-        <FlexContainerComponent
-          direction="y"
-          gap={3}
+        <ScrollComponent
           position={{ x: 22, y: 50 }}
+          size={{ width: width - 22 - 30, height: height - 70 }}
         >
-          {transactions.map((transaction, index) => (
-            <TransactionComponent
-              key={`transaction-${index}`}
-              transaction={transaction}
-            />
-          ))}
-        </FlexContainerComponent>
+          <FlexContainerComponent direction="y" gap={3}>
+            {transactions.map((transaction, index) => (
+              <TransactionComponent
+                key={`transaction-${index}`}
+                transaction={transaction}
+              />
+            ))}
+          </FlexContainerComponent>
+        </ScrollComponent>
       </ContainerComponent>
     </>
   );

@@ -19,7 +19,7 @@ type Props = {
 export const TransactionComponent: React.FC<Props> = ({ transaction }) => {
   const { width: $width } = MODAL_SIZE_MAP[Modal.PURSE];
 
-  const width = $width - 22 * 2;
+  const width = $width - 22 * 2 - 10;
 
   const isIncome = useMemo(() => {
     return [
