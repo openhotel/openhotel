@@ -74,8 +74,6 @@ export const economy = () => {
             getBalanceEntry("hotel"),
           ]);
 
-          console.log(userEntry, hotelEntry);
-
           validateBalance(userEntry, amount);
           validateBalance(hotelEntry, 0);
 

@@ -55,7 +55,7 @@ export const TransactionComponent: React.FC<Props> = ({ transaction }) => {
           text={new Date(transaction.timestamp).toLocaleDateString()}
           color={0x000}
         />
-        <TextComponent text={transaction.id} color={0x000} />
+        <TextComponent text={transaction.description} color={0x000} />
         <TextComponent
           text={`${isIncome ? "+" : "-"}${transaction.amount}`}
           color={isIncome ? 0x87c053 : 0xb73d22}

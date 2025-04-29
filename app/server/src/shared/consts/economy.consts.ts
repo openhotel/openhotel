@@ -1,0 +1,2 @@
+export const INITIAL_PLAYER_BALANCE = 100;
+export const INITIAL_HOTEL_BALANCE = 1000;

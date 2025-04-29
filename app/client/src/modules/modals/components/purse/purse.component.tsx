@@ -21,32 +21,39 @@ import { TransactionComponent } from "./components";
 
 export const PurseComponent: React.FC = () => {
   const { fetch } = useApi();
-  const { closeModal } = useModal();
+  const { closeModal, isModalOpen } = useModal();
   const { setDragPolygon } = useDragContainer();
 
   const [credits, setCredits] = useState(0);
   const [transactions, setTransactions] = useState([]);
 
-  const $request = useCallback(() => {
-    fetch("/economy").then(
-      ({
-        credits,
-        transactions,
-      }: {
-        credits: number;
-        transactions: Transaction[];
-      }) => {
-        setCredits(credits);
-        setTransactions(transactions);
-      },
-    );
-  }, [fetch, setCredits, setTransactions]);
+  const $reload = useCallback(
+    () =>
+      fetch("/economy").then(
+        ({
+          credits,
+          transactions,
+        }: {
+          credits: number;
+          transactions: Transaction[];
+        }) => {
+          setCredits(credits);
+          setTransactions(transactions);
+        },
+      ),
+    [fetch, setCredits, setTransactions],
+  );
 
   useEffect(() => {
-    $request();
-  }, [$request]);
+    const interval = setInterval(() => {
+      if (!isModalOpen(Modal.PURSE)) return;
+      $reload();
+    }, 30_000);
+    $reload();
 
-  console.log({ credits, transactions });
+    return () => clearInterval(interval);
+  }, [$reload]);
+
   return (
     <PurseComponentWrapper
       credits={credits}

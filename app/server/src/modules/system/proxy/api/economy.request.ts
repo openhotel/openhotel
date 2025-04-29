@@ -1,6 +1,7 @@
-import { ProxyRequestType } from "shared/types/api.types.ts";
 import { RequestMethod } from "@oh/utils";
+import { ProxyRequestType } from "shared/types/api.types.ts";
 import { TransactionType } from "shared/enums/economy.enum.ts";
+import { Transaction } from "shared/types/economy.types.ts";
 import { log } from "shared/utils/log.utils.ts";
 
 export const economyRequest: ProxyRequestType = {
@@ -12,30 +13,33 @@ export const economyRequest: ProxyRequestType = {
 
     log("userId", user.getAccountId());
 
-    const demo = [
+    const demo: Transaction[] = [
       {
-        id: "1a",
+        id: "01JT1K807MS6ES2AG7Y81Y56DY",
+        description: "alpha@p-24",
         type: TransactionType.PURCHASE,
-        amount: 10,
-        fromAccount: "0",
+        amount: 30,
+        fromAccount: user.getAccountId(),
         toAccount: "hotel",
         timestamp: Date.now(),
       },
       {
-        id: "sofa",
+        id: "01JT1K84ZBQT0MGSG1G5VEAD8R",
+        description: "alpha@a-24",
         type: TransactionType.PURCHASE,
-        amount: 3,
-        fromAccount: "0",
+        amount: 29,
+        fromAccount: user.getAccountId(),
         toAccount: "hotel",
-        timestamp: Date.now(),
+        timestamp: Date.now() - 1000 * 60 * 60 * 24,
       },
       {
-        id: "2b",
+        id: "01JT1K87WGDERA7SPW1A8CR92X",
+        description: "Furni Wars",
         type: TransactionType.REWARD,
-        amount: 10,
+        amount: 95,
         fromAccount: "hotel",
         toAccount: user.getAccountId(),
-        timestamp: Date.now(),
+        timestamp: Date.now() - 1000 * 60 * 60 * 24 * 3,
       },
     ];
     return {
@@ -45,6 +49,5 @@ export const economyRequest: ProxyRequestType = {
         transactions: transactions ?? demo,
       },
     };
-    // }
   },
 };

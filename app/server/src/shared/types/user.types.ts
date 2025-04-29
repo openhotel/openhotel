@@ -5,7 +5,7 @@ import {
   Hemisphere,
   UserAction,
 } from "shared/enums/main.ts";
-import { TransactionParams } from "./economy.types.ts";
+import { Transaction } from "./economy.types.ts";
 
 export type CacheUser = {
   accountId: string;
@@ -107,5 +107,5 @@ export type UserMutable = {
   log: (...data: string[]) => Promise<void>;
 
   getCredits: () => Promise<number>;
-  getTransactions: () => Promise<TransactionParams>;
+  getTransactions: () => Promise<Transaction>;
 };
