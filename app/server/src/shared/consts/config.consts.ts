@@ -17,4 +17,11 @@ export const CONFIG_DEFAULT: ConfigTypes = {
     enabled: false,
     api: "https://onet.openhotel.club",
   },
+  phantom: {
+    enabled: true,
+    browser: {
+      name: "chrome",
+      buildId: "135.0.7049.114",
+    },
+  },
 };

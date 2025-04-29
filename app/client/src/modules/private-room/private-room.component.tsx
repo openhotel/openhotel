@@ -55,13 +55,18 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
   const { getAccount } = useAccount();
   const { setExtra } = useInfo();
   const { emit } = useProxy();
-  const { room, setSelectedPreview, selectedPreview, setLastPositionData } =
-    usePrivateRoom();
+  const {
+    room,
+    setSelectedPreview,
+    selectedPreview,
+    setLastPositionData,
+    setAbsoluteRoomPosition,
+  } = usePrivateRoom();
   const { lastUpdate, update } = useUpdate();
   const { isDragging, position: cameraPosition } = useCamera();
 
   const { on: onEvent } = useEvents();
-  const { getSize } = useWindow();
+  const { getSize, getScale } = useWindow();
   const { getSafeSize } = useSafeWindow();
 
   const [isShiftDown, setIsShiftDown] = useState<boolean>(false);
@@ -86,10 +91,13 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
   const roomPosition = useMemo(() => {
     if (!roomSize) return { x: 0, y: 0 };
     return {
-      x: (windowSize.width - roomSize.width) / 2,
-      y: (windowSize.height - roomSize.height - HOT_BAR_HEIGHT_FULL) / 2,
+      x: Math.round((windowSize.width - roomSize.width) / 2),
+      y: Math.round(
+        (windowSize.height - roomSize.height) / 2 -
+          HOT_BAR_HEIGHT_FULL / getScale(),
+      ),
     };
-  }, [windowSize, lastUpdate, roomSize]);
+  }, [windowSize, lastUpdate, roomSize, getScale]);
 
   const currentAccountId = useMemo(() => getAccount().accountId, [getAccount]);
   const currentUser = useMemo(
@@ -150,6 +158,14 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
     wallDataPoint,
     selectedPreview,
   ]);
+
+  useEffect(() => {
+    const absolutePosition = {
+      x: roomPosition.x + cameraPosition.x,
+      y: roomPosition.y + cameraPosition.y,
+    };
+    setAbsoluteRoomPosition(absolutePosition);
+  }, [cameraPosition, roomPosition, setAbsoluteRoomPosition]);
 
   const onKeyDown = useCallback(
     (event: KeyboardEvent) => {

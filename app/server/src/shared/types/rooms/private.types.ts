@@ -3,6 +3,7 @@ import {
   BaseRoomMutable,
   RoomFurniture,
   RoomPoint,
+  User,
 } from "shared/types/main.ts";
 import { Point3d, Direction } from "@oh/utils";
 
@@ -31,4 +32,10 @@ export type PrivateRoomMutable = BaseRoomMutable & {
   getFurnitureFromPoint: (point: Omit<Point3d, "y">) => RoomFurniture[];
 
   getObject: () => PrivateRoom;
+  getObjectWithUsers: () => Promise<
+    PrivateRoom & {
+      users: Partial<User>[];
+      ownerUsername: string;
+    }
+  >;
 };

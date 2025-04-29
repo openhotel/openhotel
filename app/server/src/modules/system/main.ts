@@ -1,5 +1,6 @@
 import { Envs } from "shared/types/main.ts";
 import { proxy } from "./proxy/main.ts";
+import { phantom } from "./phantom/main.ts";
 import { game } from "./game/main.ts";
 import { debug, initLog, log } from "shared/utils/main.ts";
 import { tasks } from "./tasks.ts";
@@ -13,6 +14,7 @@ export const System = (() => {
   let $envs: Envs;
 
   const $proxy = proxy();
+  const $phantom = phantom();
   const $tasks = tasks();
   const $game = game();
   const $db: DbMutable = getDb({ pathname: `./server-database` });
@@ -53,13 +55,17 @@ export const System = (() => {
 
     log("server");
 
-    await $auth.load($config.get(), true);
+    const config = $config.get();
+
+    await $auth.load(config, true);
     $proxy.load();
     await $db.load();
     await Migrations.load($db);
     await $game.load();
     $tasks.load();
     await $onet.load();
+
+    if (config.phantom.enabled) $phantom.load();
   };
 
   const getEnvs = () => $envs;
@@ -71,6 +77,7 @@ export const System = (() => {
 
     game: $game,
     proxy: $proxy,
+    phantom: $phantom,
     tasks: $tasks,
     db: $db,
     onet: $onet,

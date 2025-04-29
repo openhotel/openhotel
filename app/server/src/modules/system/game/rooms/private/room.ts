@@ -37,6 +37,14 @@ export const getRoom =
     const getSpawnPoint = (): Point3d => room.spawnPoint;
     const getSpawnDirection = (): Direction => room.spawnDirection;
 
+    const mapUser = (user: User) => ({
+      accountId: user.accountId,
+      username: user.username,
+      position: user.position,
+      positionUpdatedAt: user.positionUpdatedAt,
+      bodyDirection: user.bodyDirection,
+    });
+
     const addUser = async (user: User, position?: Point3d) => {
       const $user = System.game.users.get({ accountId: user.accountId });
       if (!$user) return;
@@ -47,14 +55,6 @@ export const getRoom =
         startPosition.y = getYFromPoint(startPosition);
       }
 
-      const mapUser = (user: User) => ({
-        accountId: user.accountId,
-        username: user.username,
-        position: user.position,
-        positionUpdatedAt: user.positionUpdatedAt,
-        bodyDirection: user.bodyDirection,
-      });
-
       $user.setPosition(startPosition);
       $user.setBodyDirection(getSpawnDirection());
 
@@ -64,15 +64,7 @@ export const getRoom =
       roomUserMap[room.id].push($user.getAccountId());
       //Load room to user
       $user.emit(ProxyEvent.LOAD_ROOM, {
-        room: {
-          ...getObject(),
-          users: getUsers()
-            .map((accountId) =>
-              System.game.users.get({ accountId }).getObject(),
-            )
-            .map(mapUser),
-          ownerUsername: await getOwnerUsername(),
-        },
+        room: await getObjectWithUsers(),
       });
 
       $user.setRoom(room.id);
@@ -266,6 +258,14 @@ export const getRoom =
       ...$room,
     });
 
+    const getObjectWithUsers = async () => ({
+      ...getObject(),
+      users: getUsers()
+        .map((accountId) => System.game.users.get({ accountId }).getObject())
+        .map(mapUser),
+      ownerUsername: await getOwnerUsername(),
+    });
+
     const emit = <Data extends any>(
       event: ProxyEvent,
       data: Data = {} as Data,
@@ -307,6 +307,7 @@ export const getRoom =
       getFurnitureFromPoint,
 
       getObject,
+      getObjectWithUsers,
 
       emit,
     };

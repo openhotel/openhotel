@@ -3,8 +3,10 @@ import { roomPutRequest, roomRequest } from "./room.request.ts";
 import { onlineUsersRequest } from "./online-users.request.ts";
 import { furnitureRequest } from "./furniture.request.ts";
 import { catalogRequest } from "./catalog.request.ts";
+import { phantomRequest } from "./phantom.request.ts";
 
 import { RequestType, getPathRequestList } from "@oh/utils";
+import { captureRequest } from "./capture.request.ts";
 
 export const requestList: RequestType[] = getPathRequestList({
   requestList: [
@@ -15,6 +17,9 @@ export const requestList: RequestType[] = getPathRequestList({
     onlineUsersRequest,
     catalogRequest,
     furnitureRequest,
+
+    phantomRequest,
+    captureRequest,
   ],
   pathname: "",
 });

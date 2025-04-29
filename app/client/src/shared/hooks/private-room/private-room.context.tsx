@@ -41,6 +41,9 @@ export type PrivateRoomState = {
 
   lastPositionData: PositionData | null;
   setLastPositionData: (data: PositionData | null) => void;
+
+  absoluteRoomPosition: Point2d | null;
+  setAbsoluteRoomPosition: (point: Point2d | null) => void;
 };
 
 export const PrivateRoomContext =

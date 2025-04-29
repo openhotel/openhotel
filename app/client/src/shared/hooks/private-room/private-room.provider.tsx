@@ -27,6 +27,8 @@ export const PrivateRoomProvider: React.FunctionComponent<PrivateRoomProps> = ({
     setSelectedPreview,
     lastPositionData,
     setLastPositionData,
+    absoluteRoomPosition,
+    setAbsoluteRoomPosition,
   } = usePrivateRoomStore();
 
   const { on, emit } = useProxy();
@@ -112,6 +114,8 @@ export const PrivateRoomProvider: React.FunctionComponent<PrivateRoomProps> = ({
         setSelectedPreview,
         lastPositionData,
         setLastPositionData,
+        absoluteRoomPosition,
+        setAbsoluteRoomPosition,
       }}
       children={children}
     />

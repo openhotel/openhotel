@@ -23,7 +23,10 @@
 
     "@zip-js": "jsr:@zip-js/zip-js@2.7.53",
 
-    "imagescript": "https://deno.land/x/imagescript@1.3.0/mod.ts"
+    "imagescript": "https://deno.land/x/imagescript@1.3.0/mod.ts",
+
+    "puppeter-browser": "npm:@puppeteer/browsers@2.10.2",
+    "puppeter": "npm:puppeteer@22.8.2"
   },
   "nodeModulesDir": "auto"
 }
