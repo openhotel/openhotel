@@ -184,6 +184,11 @@
       "frame": { "x": 16, "y": 154, "w": 6, "h": 6 },
       "sourceSize": { "w": 6, "h": 6 },
       "anchor": { "x": 0, "y": 0 }
+    },
+    "preview-image-border": {
+      "frame": { "x": 120, "y": 96, "w": 8, "h": 8 },
+      "sourceSize": { "w": 8, "h": 8 },
+      "anchor": { "x": 0, "y": 0 }
     }
   },
   "animations": {},

@@ -16,7 +16,6 @@ export const captureRequest: ProxyRequestType = {
 
     const imageData = await System.phantom.getCapture(captureId);
 
-    console.log(imageData);
     if (!imageData)
       return {
         status: 404,

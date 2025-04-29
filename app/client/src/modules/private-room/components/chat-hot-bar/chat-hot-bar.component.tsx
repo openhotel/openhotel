@@ -111,13 +111,13 @@ export const ChatHotBarComponent: React.FC<Props> = ({
         }
 
         //---- /photo ------------------------------------------------------------
-        if (message.startsWith("/photo")) {
+        if (message.startsWith("/photo") && message.split(" ").length === 1) {
           const cursor = getCursorPosition();
           const position = {
             x: Math.round(absoluteRoomPosition.x - cursor.x),
             y: Math.round(absoluteRoomPosition.y - cursor.y),
           };
-          message += ` ${position.x} ${position.y} 3`;
+          message += ` ${position.x} ${position.y} 256`;
         }
 
         emit(Event.MESSAGE, { message });

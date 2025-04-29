@@ -1,16 +1,16 @@
 import { Meta, StoryObj } from "@storybook/react";
-import { CategoryRoomsComponentWrapper } from "./category-rooms.component";
+import { RoomsListComponentWrapper } from "./rooms-list.component";
 
 export default {
-  title: "Modules/Modals/Navigator/Category/Rooms",
-  component: CategoryRoomsComponentWrapper,
+  title: "Modules/Modals/Navigator/Category/Rooms/List",
+  component: RoomsListComponentWrapper,
   parameters: {
     layout: "fullscreen",
     backgrounds: { default: "light" },
   },
-} as Meta<typeof CategoryRoomsComponentWrapper>;
+} as Meta<typeof RoomsListComponentWrapper>;
 
-type Story = StoryObj<typeof CategoryRoomsComponentWrapper>;
+type Story = StoryObj<typeof RoomsListComponentWrapper>;
 
 //@ts-ignore
 export const Primary: Story = {
