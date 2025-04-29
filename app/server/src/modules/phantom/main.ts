@@ -7,7 +7,6 @@ import puppeteer from "puppeter";
 import { install } from "puppeter-browser";
 import { log } from "shared/utils/log.utils.ts";
 import { quantizeToPalette } from "shared/utils/image.utils.ts";
-import { getChromeExecutablePath } from "shared/utils/phantom.utils.ts";
 
 (() => {
   const serverWorker = getChildWorker();
@@ -15,7 +14,6 @@ import { getChromeExecutablePath } from "shared/utils/phantom.utils.ts";
   let $config: ConfigTypes;
   let $envs: Envs;
   let $token;
-  let executablePath: string = "";
   let browser;
 
   let $Image;
@@ -35,17 +33,12 @@ import { getChromeExecutablePath } from "shared/utils/phantom.utils.ts";
     const browserName = `${config.phantom.browser.name}@${config.phantom.browser.buildId}`;
 
     log(`Installing ${browserName}...`);
-    await install({
+    const { executablePath } = await install({
       cacheDir: Deno.cwd(),
       browser: config.phantom.browser.name,
       buildId: config.phantom.browser.buildId,
     });
     log(`${browserName} installed!`);
-
-    if (config.phantom.browser.name !== "chrome")
-      throw `You are not using chrome as default browser, please open an issue to implement '${config.phantom.browser.name}' browser!`;
-
-    executablePath = await getChromeExecutablePath();
 
     browser = await puppeteer.launch({
       executablePath,
