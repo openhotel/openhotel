@@ -2,6 +2,9 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
   ContainerComponent,
   ContainerProps,
+  FLEX_ALIGN,
+  FLEX_JUSTIFY,
+  FlexContainerComponent,
   GraphicsComponent,
   GraphicType,
   Size,
@@ -22,6 +25,7 @@ import {
   SCROLL_BAR_WIDTH,
 } from "shared/consts";
 import { CATALOG_DEFAULT_CATEGORY_ITEM_LIST_SIZE } from "shared/consts/catalog.consts";
+import { SpriteSheetEnum } from "shared/enums";
 
 type Props = {
   categoryId: string;
@@ -80,10 +84,18 @@ export const DefaultCategoryComponent: React.FC<Props> = ({
     [setSelectedFurniture],
   );
 
-  const selectedFurnitureData = useMemo(
-    () => (selectedFurniture ? get(selectedFurniture) : null),
-    [get, selectedFurniture],
-  );
+  const selectedFurnitureData = useMemo(() => {
+    const furniture = categoryData?.furniture.find(
+      (f) => f.id === selectedFurniture,
+    );
+
+    return selectedFurniture
+      ? {
+          ...get(selectedFurniture),
+          price: furniture?.price ?? 0,
+        }
+      : null;
+  }, [get, categoryData, selectedFurniture]);
 
   const previewPositionX = useMemo(
     () =>
@@ -164,18 +176,41 @@ export const DefaultCategoryComponent: React.FC<Props> = ({
               height: bottomHeight,
             }}
           />
-          <ButtonComponent
+          <FlexContainerComponent
+            justify={FLEX_JUSTIFY.END}
+            align={FLEX_ALIGN.CENTER}
+            gap={6}
             size={{
-              width: 37,
-              height: 14,
+              width: previewWidth - 3,
+              height: bottomHeight,
             }}
-            position={{
-              x: previewWidth - 37 - 3,
-              y: 3,
-            }}
-            text="Buy"
-            onPointerUp={onBuyFurniture}
-          />
+          >
+            <FlexContainerComponent
+              align={FLEX_ALIGN.CENTER}
+              gap={2}
+              size={{
+                width: 20,
+                height: bottomHeight / 2,
+              }}
+            >
+              <TextComponent
+                text={selectedFurnitureData.price.toString()}
+                color={0x000}
+              />
+              <SpriteComponent
+                texture={"coin"}
+                spriteSheet={SpriteSheetEnum.UI}
+              />
+            </FlexContainerComponent>
+            <ButtonComponent
+              size={{
+                width: 37,
+                height: 14,
+              }}
+              text="Buy"
+              onPointerUp={onBuyFurniture}
+            />
+          </FlexContainerComponent>
         </ContainerComponent>
       </>
     );
