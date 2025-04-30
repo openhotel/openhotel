@@ -23,6 +23,7 @@ import {
   CatalogComponent,
   ClubComponent,
   ConsoleComponent,
+  ConfigComponent,
   InventoryComponent,
   NavigatorComponent,
   PurseComponent,
@@ -133,6 +134,7 @@ export const ModalProvider: React.FunctionComponent<ModalProps> = ({
       [Modal.INVENTORY]: InventoryComponent,
       [Modal.PURSE]: PurseComponent,
       [Modal.CLUB]: ClubComponent,
+      [Modal.CONFIG]: ConfigComponent,
     }),
     [],
   );

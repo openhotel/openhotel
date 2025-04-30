@@ -37,5 +37,9 @@
     "floor": "floor",
     "wall": "wall",
     "ceiling": "ceiling"
+  },
+  "config": {
+    "title": "Configuration",
+    "selected_language": "Selected language"
   }
 }

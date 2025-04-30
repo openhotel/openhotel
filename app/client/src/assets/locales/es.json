@@ -37,5 +37,9 @@
     "floor": "pisos",
     "wall": "paredes",
     "ceiling": "techo"
+  },
+  "config": {
+    "title": "Configuracion",
+    "selected_language": "Idioma seleccionado"
   }
 }
