@@ -101,14 +101,14 @@ export const ConfigComponent: React.FC = () => {
 
       <ContainerComponent
         position={{
-          x: 12,
+          x: 10,
           y: 38,
         }}
       >
         <FlexContainerComponent
           justify={FLEX_JUSTIFY.CENTER}
           size={{
-            width: width - 25,
+            width: width - 20,
           }}
           position={{
             x: 0,
@@ -127,7 +127,7 @@ export const ConfigComponent: React.FC = () => {
 
         <ContainerComponent
           position={{
-            x: 0,
+            x: 5,
             y: 30,
           }}
         >
@@ -144,8 +144,8 @@ export const ConfigComponent: React.FC = () => {
               <ButtonComponent
                 key={key}
                 size={{
-                  width: language.label.length * 6,
                   height: 14,
+                  width: 80,
                 }}
                 text={language.label}
                 onPointerDown={() => selectLanguage(key)}
