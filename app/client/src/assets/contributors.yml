@@ -2,17 +2,17 @@
   html_url: https://github.com/pagoru
   avatar_url: https://avatars.githubusercontent.com/u/1551265?v=4
   type: User
-  contributions: 659
+  contributions: 667
 - login: alqubo
   html_url: https://github.com/alqubo
   avatar_url: https://avatars.githubusercontent.com/u/9885515?v=4
   type: User
-  contributions: 119
+  contributions: 123
 - login: diegogliarte
   html_url: https://github.com/diegogliarte
   avatar_url: https://avatars.githubusercontent.com/u/63498452?v=4
   type: User
-  contributions: 29
+  contributions: 30
 - login: mcmacker4
   html_url: https://github.com/mcmacker4
   avatar_url: https://avatars.githubusercontent.com/u/5296194?v=4
@@ -46,6 +46,11 @@
 - login: mmoya26
   html_url: https://github.com/mmoya26
   avatar_url: https://avatars.githubusercontent.com/u/46541558?v=4
+  type: User
+  contributions: 1
+- login: bcortezf
+  html_url: https://github.com/bcortezf
+  avatar_url: https://avatars.githubusercontent.com/u/51462063?v=4
   type: User
   contributions: 1
 - login: Fmaldonado6
