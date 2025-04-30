@@ -5,71 +5,71 @@ categories:
     enabled: true
     furniture:
       - id: alpha@small-lamp
-        price: 0
+        price: 10
       - id: alpha@mid-lamp
-        price: 0
+        price: 10
       - id: alpha@p-24
-        price: 0
+        price: 10
       - id: alpha@a-24
-        price: 0
+        price: 10
   - id: flags
     label: Flags
     description: Put a flag on that wall, show who you are.
     enabled: true
     furniture:
       - id: flags@country-spain
-        price: 0
+        price: 5
       - id: flags@europe
-        price: 0
+        price: 5
       - id: flags@pirate
-        price: 0
+        price: 5
       - id: flags@pride-aromanticism
-        price: 0
+        price: 5
       - id: flags@pride-asexual
-        price: 0
+        price: 5
       - id: flags@pride-bi
-        price: 0
+        price: 5
       - id: flags@pride-intersex
-        price: 0
+        price: 5
       - id: flags@pride-lesbian
-        price: 0
+        price: 5
       - id: flags@pride-lgtb
-        price: 0
+        price: 5
       - id: flags@pride-non-binary
-        price: 0
+        price: 5
       - id: flags@pride-pansexuality
-        price: 0
+        price: 5
       - id: flags@pride-trans
-        price: 0
+        price: 5
   - id: teleports
     label: Teleports
     description: Travel between rooms or between servers. Buy two and link them.
     enabled: true
     furniture:
       - id: teleports@telephone
-        price: 0
+        price: 30
   - id: toys
     label: Toys
     enabled: true
     furniture:
       - id: toys@octopus-0
-        price: 0
+        price: 15
   - id: xmas
     label: Xmas
     description: Xmas time is here!
     enabled: true
     furniture:
       - id: xmas@tree-0
-        price: 0
+        price: 49
       - id: xmas@tree-1
-        price: 0
+        price: 69
   - id: b-day
     label: B-Day
     description: Delicious cake por a birthday...
     enabled: true
     range:
-      from: "2025-04-19 00:00:00"
-      to: "2025-04-20 00:00:00"
+      from: "2025-05-08 00:00:00"
+      to: "2025-05-09 00:00:00"
     furniture:
       - id: cakes@chocolate-small
-        price: 0
+        price: 1

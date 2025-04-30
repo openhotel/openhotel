@@ -189,6 +189,11 @@
       "frame": { "x": 120, "y": 96, "w": 8, "h": 8 },
       "sourceSize": { "w": 8, "h": 8 },
       "anchor": { "x": 0, "y": 0 }
+    },
+    "coin": {
+      "frame": { "x": 62, "y": 152, "w": 8, "h": 8 },
+      "sourceSize": { "w": 8, "h": 8 },
+      "anchor": { "x": 0, "y": 0 }
     }
   },
   "animations": {},
