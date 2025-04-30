@@ -30,6 +30,7 @@ import {
   MAX_MESSAGES_HISTORY,
   STORAGE_KEY,
 } from "shared/consts";
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   maxWidth: number;
@@ -40,6 +41,7 @@ export const ChatHotBarComponent: React.FC<Props> = ({
   maxWidth,
   width = 0,
 }) => {
+  const { t } = useTranslation();
   const { on } = useEvents();
   const { emit } = useProxy();
   const { scale } = useApplication();
@@ -239,7 +241,7 @@ export const ChatHotBarComponent: React.FC<Props> = ({
             top: 4,
             bottom: 0,
           }}
-          placeholder="Click here or press 'c' to write a message"
+          placeholder = {t("chat.hot_bar_placeholder")}
           placeholderProps={{
             color: 0x1,
             alpha: 0.5,

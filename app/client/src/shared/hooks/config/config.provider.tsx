@@ -8,6 +8,7 @@ import React, {
 import { ConfigContext } from "./config.context";
 import { LoaderComponent } from "shared/components";
 import { ConfigTypes } from "shared/types";
+import { useTranslation } from "react-i18next";
 
 type ConfigProps = {
   children: ReactNode;
@@ -16,11 +17,12 @@ type ConfigProps = {
 export const ConfigProvider: React.FunctionComponent<ConfigProps> = ({
   children,
 }) => {
+  const { t } = useTranslation();
   const configRef = useRef<ConfigTypes>(null);
   const changeLogRef = useRef<unknown>(null);
 
   const [loadingMessage, setLoadingMessage] =
-    useState<string>("Loading config...");
+    useState<string>(t("system.loading_config"));
 
   useEffect(() => {
     fetch("/info")

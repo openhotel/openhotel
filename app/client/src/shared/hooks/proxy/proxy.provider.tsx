@@ -10,6 +10,7 @@ import {
 import { ulid } from "ulidx";
 import { Event } from "shared/enums";
 import { LoaderComponent } from "shared/components";
+import { useTranslation } from "react-i18next";
 
 type ProxyProps = {
   children: ReactNode;
@@ -18,10 +19,11 @@ type ProxyProps = {
 export const ProxyProvider: React.FunctionComponent<ProxyProps> = ({
   children,
 }) => {
+  const { t } = useTranslation();
   const { getConfig } = useConfig();
-
-  const [loadingMessage, setLoadingMessage] = useState<string>("Connecting...");
-
+  
+  const [loadingMessage, setLoadingMessage] = useState<string>(t("system.connecting"));
+  
   const params = new URLSearchParams(location.search);
   const state = params.get("state");
   const token = params.get("token");
@@ -42,18 +44,18 @@ export const ProxyProvider: React.FunctionComponent<ProxyProps> = ({
         .then((data) => data.json())
         .then(({ status, data }) => {
           if (status !== 200)
-            return setLoadingMessage("Something went wrong :(");
+            return setLoadingMessage(t("system.something_went_wrong"));
 
           const redirectUrl = new URL(data.redirectUrl);
           if (meta) redirectUrl.searchParams.append("meta", meta);
           window.location.replace(redirectUrl);
         });
 
-      setLoadingMessage("Redirecting...");
+      setLoadingMessage(t("system.redirecting"));
       return;
     }
     //connection
-    setLoadingMessage("Connecting...");
+    setLoadingMessage(t("system.connecting"));
     if (window.location.pathname !== "/phantom")
       window.history.pushState(null, null, "/");
 
@@ -77,10 +79,10 @@ export const ProxyProvider: React.FunctionComponent<ProxyProps> = ({
       $ping();
     });
     $socket.on("disconnected", () => {
-      setLoadingMessage("Proxy disconnected!");
+      setLoadingMessage(t("system.proxy_disconnected"));
     });
     $socket.connect().catch(() => {
-      setLoadingMessage("Proxy is not reachable! :(");
+      setLoadingMessage(t("proxy_not_reachable"));
     });
 
     return $socket;

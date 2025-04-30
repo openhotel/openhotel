@@ -4,8 +4,10 @@ import { CONTRIBUTOR_LOOP_TIME, TEXT_BACKGROUND_BASE } from "shared/consts";
 import { Cursor, EventMode } from "@openhotel/pixi-components";
 import { TextComponent } from "shared/components";
 import { useContributors, useTasks } from "shared/hooks";
+import { useTranslation } from "react-i18next";
 
 export const ContributorsComponent: React.FC = () => {
+  const { t } = useTranslation();
   const { getContributors, getCreators } = useContributors();
   const { add: addTask } = useTasks();
 
@@ -23,11 +25,11 @@ export const ContributorsComponent: React.FC = () => {
     const contributors = getContributors();
 
     if (creators.length > creatorIndexRef.current) {
-      setText(`Created by ${creators[creatorIndexRef.current].login}`);
+      setText(`${t("system.created_by")} ${creators[creatorIndexRef.current].login}`);
       creatorIndexRef.current++;
     } else if (contributors.length > contributorIndexRef.current) {
       setText(
-        `Developed by ${contributors[contributorIndexRef.current].login}`,
+        `${t("system.developed_by")} ${contributors[contributorIndexRef.current].login}`,
       );
       contributorIndexRef.current++;
     }
