@@ -1,10 +1,10 @@
-import { ProxyEvent } from "shared/enums/main.ts";
 import * as bcrypt from "@da/bcrypt";
 import { getRandomString, getURL } from "@oh/utils";
+import { ProxyEvent } from "shared/enums/main.ts";
 import { Proxy } from "modules/proxy/main.ts";
 
 export const getApiRequest = {
-  method: ["GET", "PUT"],
+  method: ["GET", "PUT", "POST"],
   pathname: "/api",
   fn: async (request: Request): Promise<Response> => {
     const { headers, method } = request;
