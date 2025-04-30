@@ -73,6 +73,7 @@ export const RoomPreviewComponent: React.FC<Props> = ({
           <TextComponent text={room ? room.title : "No room selected"} bold color={0} />
           <TextComponent
             text={room ? room.description : "Please select a room to join"}
+            color={0}
             maxWidth={size.width - 10}
             position={{
               y: 10,
