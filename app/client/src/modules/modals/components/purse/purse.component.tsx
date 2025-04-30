@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
   ContainerComponent,
   Cursor,
@@ -85,6 +85,14 @@ export const PurseComponentWrapper: React.FC<Props> = ({
     setDragPolygon?.([0, 0, width, 0, width, 15, 0, 15]);
   }, [setDragPolygon]);
 
+  const scrollSize = useMemo(
+    () => ({
+      width: width - 28 * 2,
+      height: height - 23 - 50,
+    }),
+    [width, height],
+  );
+
   return (
     <>
       <GraphicsComponent
@@ -140,6 +148,28 @@ export const PurseComponentWrapper: React.FC<Props> = ({
             width,
           }}
           position={{
+            y: 4,
+          }}
+        >
+          <TextComponent
+            text="Purse"
+            backgroundColor={0xb3a49a}
+            backgroundAlpha={1}
+            padding={{
+              left: 4,
+              right: 3,
+              bottom: 0,
+              top: 2,
+            }}
+          />
+        </FlexContainerComponent>
+
+        <FlexContainerComponent
+          justify={FLEX_JUSTIFY.CENTER}
+          size={{
+            width,
+          }}
+          position={{
             y: 28,
           }}
           gap={4}
@@ -148,15 +178,13 @@ export const PurseComponentWrapper: React.FC<Props> = ({
           <TextComponent text={t("economy.credits")} color={0x000} />
         </FlexContainerComponent>
 
-        <ScrollComponent
-          position={{ x: 22, y: 50 }}
-          size={{ width: width - 22 - 30, height: height - 70 }}
-        >
+        <ScrollComponent position={{ x: 23, y: 50 }} size={scrollSize}>
           <FlexContainerComponent direction="y" gap={3}>
             {transactions.map((transaction, index) => (
               <TransactionComponent
                 key={`transaction-${index}`}
                 transaction={transaction}
+                scrollSize={scrollSize}
               />
             ))}
           </FlexContainerComponent>

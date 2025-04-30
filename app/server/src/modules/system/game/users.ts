@@ -208,9 +208,14 @@ export const users = () => {
       const accountId = getAccountId();
       return System.db.get(["users", accountId, "balance"]);
     };
-    const getTransactions = async (): Promise<Transaction> => {
+
+    const getTransactions = async (): Promise<Transaction[]> => {
       const accountId = getAccountId();
-      return System.db.get(["transactionsByUser", accountId]);
+      const { items } = await System.db.list({
+        prefix: ["transactionsByUser", accountId],
+      });
+
+      return items.map((item) => item.value);
     };
 
     return {

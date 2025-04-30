@@ -1,12 +1,11 @@
-import { ProxyRequestType } from "shared/types/api.types.ts";
-import { System } from "modules/system/main.ts";
 import { RequestMethod } from "@oh/utils";
-import dayjs from "dayjs";
+import { System } from "modules/system/main.ts";
+import { ProxyRequestType } from "shared/types/api.types.ts";
+import { isCatalogCategoryAvailable } from "shared/utils/catalog.utils.ts";
 
 export const catalogRequest: ProxyRequestType = {
-  pathname: "/catalog",
+  pathname: "",
   method: RequestMethod.GET,
-  public: true,
   func: async ({}, url) => {
     const category = url.searchParams.get("category");
 
@@ -14,16 +13,7 @@ export const catalogRequest: ProxyRequestType = {
 
     if (!category) {
       const categories = catalog.categories
-        .filter((catalog) => {
-          const from = catalog?.range?.from;
-          const to = catalog?.range?.to;
-
-          return (
-            catalog.enabled &&
-            (!from || dayjs(dayjs()).diff(from, "minutes") >= 0) &&
-            (!to || dayjs(to).diff(dayjs(), "minutes") > 0)
-          );
-        })
+        .filter(isCatalogCategoryAvailable)
         .map((category) => ({
           id: category.id,
           label: category.label,
