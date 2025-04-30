@@ -36,7 +36,7 @@ export const RoomPreviewComponent: React.FC<Props> = ({
   const [$texture, $setTexture] = useState<string>(TextureEnum.ROOM_PREVIEW);
 
   const previewUrl = useMemo(
-    () => getPath(`/capture?id=${room.id}`),
+    () => room ? getPath(`/capture?id=${room.id}`) : null,
     [room, getPath],
   );
 
@@ -70,10 +70,9 @@ export const RoomPreviewComponent: React.FC<Props> = ({
         }}
       >
         <ContainerComponent position={{ x: 5 }}>
-          <TextComponent text={room.title} bold color={0} />
+          <TextComponent text={room ? room.title : "No room selected"} bold color={0} />
           <TextComponent
-            text={room.description}
-            color={0}
+            text={room ? room.description : "Please select a room to join"}
             maxWidth={size.width - 10}
             position={{
               y: 10,
@@ -81,24 +80,25 @@ export const RoomPreviewComponent: React.FC<Props> = ({
           />
         </ContainerComponent>
       </ContainerComponent>
-      <ContainerComponent position={{ y: size.height - 20 }}>
+      {room && (
+        <ContainerComponent position={{ y: size.height - 20 }}>
         <SoftBadgeComponent
           size={{
             width: size.width,
             height: 20,
           }}
         />
-        <FlexContainerComponent
-          size={{
-            width: size.width - 37 - 3 - 5,
-          }}
+          <FlexContainerComponent
+            size={{
+              width: size.width - 37 - 3 - 5,
+            }}
           position={{
             y: 7,
           }}
           justify={FLEX_JUSTIFY.END}
         >
-          <TextComponent text={`${room.users}/${room.maxUsers}`} color={0} />
-        </FlexContainerComponent>
+            <TextComponent text={`${room.users}/${room.maxUsers}`} color={0} />
+          </FlexContainerComponent>
         <ButtonComponent
           size={{
             width: 37,
@@ -111,7 +111,8 @@ export const RoomPreviewComponent: React.FC<Props> = ({
           text="Join"
           onPointerDown={onJoin}
         />
-      </ContainerComponent>
+        </ContainerComponent>
+      )}
     </ContainerComponent>
   );
 };

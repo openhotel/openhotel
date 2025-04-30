@@ -109,20 +109,11 @@ export const CategoryRoomsComponent: React.FC<Props> = ({ size }) => {
           x: size.width - 130,
         }}
       >
-        {selectedRoomId && $selectedRoom ? (
-          <RoomPreviewComponent
-            size={previewSize}
-            room={$selectedRoom}
-            onJoin={onJoinRoom}
-          />
-        ) : (
-          <GraphicsComponent
-            type={GraphicType.RECTANGLE}
-            width={previewSize.width}
-            height={previewSize.height}
-            tint={0xff00ff}
-          />
-        )}
+        <RoomPreviewComponent
+          size={previewSize}
+          room={$selectedRoom}
+          onJoin={onJoinRoom}
+        />
       </ContainerComponent>
     </>
   );
