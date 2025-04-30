@@ -21,7 +21,7 @@ import {
   useEvents,
 } from "@openhotel/pixi-components";
 import { HotBarItemsComponent } from "shared/components";
-import { Event, SpriteSheetEnum } from "shared/enums";
+import { Event, Modal, SpriteSheetEnum } from "shared/enums";
 import { usePrivateRoom, useProxy } from "shared/hooks";
 import {
   CHAT_RIGHT_MARGIN,
@@ -271,7 +271,7 @@ export const ChatHotBarComponent: React.FC<Props> = ({
           }}
           gap={5}
         >
-          <HotBarItemsComponent />
+          <HotBarItemsComponent exclude={[ Modal.CONFIG ]} />
         </FlexContainerComponent>
       </ContainerComponent>
     </ContainerComponent>
