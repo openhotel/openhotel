@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
   ContainerComponent,
   Cursor,
@@ -82,6 +82,14 @@ export const PurseComponentWrapper: React.FC<Props> = ({
   useEffect(() => {
     setDragPolygon?.([0, 0, width, 0, width, 15, 0, 15]);
   }, [setDragPolygon]);
+
+  const scrollSize = useMemo(
+    () => ({
+      width: width - 28 * 2,
+      height: height - 23 - 50,
+    }),
+    [width, height],
+  );
 
   return (
     <>
@@ -168,15 +176,13 @@ export const PurseComponentWrapper: React.FC<Props> = ({
           <TextComponent text="credits" color={0x000} />
         </FlexContainerComponent>
 
-        <ScrollComponent
-          position={{ x: 22, y: 50 }}
-          size={{ width: width - 22 - 30, height: height - 70 }}
-        >
+        <ScrollComponent position={{ x: 23, y: 50 }} size={scrollSize}>
           <FlexContainerComponent direction="y" gap={3}>
             {transactions.map((transaction, index) => (
               <TransactionComponent
                 key={`transaction-${index}`}
                 transaction={transaction}
+                scrollSize={scrollSize}
               />
             ))}
           </FlexContainerComponent>
