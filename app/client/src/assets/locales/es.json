@@ -19,6 +19,7 @@
   },
   "navigator": {
     "title": "Navegador",
+    "join": "Unirse",
     "tabs": {
       "hotel": "Hotel",
       "rooms": "Salas",

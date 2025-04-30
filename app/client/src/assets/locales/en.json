@@ -19,6 +19,7 @@
   },
   "navigator": {
     "title": "Navigator",
+    "join": "Join",
     "tabs": {
       "hotel": "Hotel",
       "rooms": "Rooms",
