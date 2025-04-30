@@ -138,6 +138,28 @@ export const PurseComponentWrapper: React.FC<Props> = ({
             width,
           }}
           position={{
+            y: 4,
+          }}
+        >
+          <TextComponent
+            text="Purse"
+            backgroundColor={0xb3a49a}
+            backgroundAlpha={1}
+            padding={{
+              left: 4,
+              right: 3,
+              bottom: 0,
+              top: 2,
+            }}
+          />
+        </FlexContainerComponent>
+
+        <FlexContainerComponent
+          justify={FLEX_JUSTIFY.CENTER}
+          size={{
+            width,
+          }}
+          position={{
             y: 28,
           }}
           gap={4}
