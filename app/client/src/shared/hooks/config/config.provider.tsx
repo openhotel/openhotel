@@ -9,6 +9,7 @@ import { ConfigContext } from "./config.context";
 import { LoaderComponent } from "shared/components";
 import { ConfigTypes } from "shared/types";
 import { useTranslation } from "react-i18next";
+import i18n from "modules/application/i18n";
 
 type ConfigProps = {
   children: ReactNode;
@@ -31,7 +32,11 @@ export const ConfigProvider: React.FunctionComponent<ConfigProps> = ({
         configRef.current = config;
         const lastVersion = localStorage.getItem("version");
         localStorage.setItem("version", config.version);
-
+        
+        if (config.lang) {
+          localStorage.setItem("i18nextLng", config.lang);
+          i18n.changeLanguage(config.lang);
+        }
         if (lastVersion === config.version) return setLoadingMessage(null);
 
         setLoadingMessage("Loading changelog...");
