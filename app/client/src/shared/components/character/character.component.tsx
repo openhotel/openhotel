@@ -13,7 +13,7 @@ import {
   CharacterBodyAction,
   Direction,
 } from "shared/enums";
-import { TILE_SIZE } from "shared/consts";
+import { SAFE_Z_INDEX, TILE_SIZE } from "shared/consts";
 import { ArmComponent, BodyComponent, HeadComponent } from "./components";
 import { getCubePolygon } from "shared/utils/polygon.utils";
 
@@ -61,7 +61,7 @@ export const CharacterComponent: React.FC<Props> = ({
         polygon={getCubePolygon({ width: 26, height: 65 })}
         eventMode={EventMode.STATIC}
         cursor={Cursor.CROSSHAIR}
-        zIndex={zIndex}
+        zIndex={zIndex + SAFE_Z_INDEX}
         position={position}
         pivot={{
           x: -11,
