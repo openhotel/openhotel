@@ -2,6 +2,11 @@ import { RequestMethod } from "@oh/utils";
 import { System } from "modules/system/main.ts";
 import { ProxyRequestType } from "shared/types/api.types.ts";
 import { TransactionType } from "shared/enums/economy.enum.ts";
+import { isCatalogCategoryAvailable } from "shared/utils/catalog.utils.ts";
+import {
+  CatalogCategory,
+  CatalogFurniture,
+} from "shared/types/catalog.types.ts";
 
 export const catalogBuyRequest: ProxyRequestType = {
   pathname: "/buy",
@@ -9,21 +14,35 @@ export const catalogBuyRequest: ProxyRequestType = {
   func: async ({ user, data }) => {
     const { furnitureId } = data;
 
-    const furniture = await System.game.furniture.get(furnitureId);
-    if (!furniture) {
+    const catalog = await System.game.furniture.getCatalog();
+    const catalogData = catalog.categories.reduce<{
+      category: CatalogCategory;
+      furniture: CatalogFurniture;
+    } | null>((found, category) => {
+      if (found) return found;
+      const furniture = category.furniture.find((f) => f.id === furnitureId);
+      return furniture ? { category, furniture } : null;
+    }, null);
+
+    if (!catalogData)
+      return {
+        status: 404,
+        error: "Furniture not found",
+      };
+
+    const { category, furniture } = catalogData;
+    const isAvailable = isCatalogCategoryAvailable(category);
+    if (!isAvailable) {
       return {
         status: 404,
         error: "Furniture not found",
       };
     }
 
-    // TODO: https://github.com/openhotel/openhotel/issues/819
-    // @ts-ignore
-    const price = furniture?.price ?? 10;
     const transaction = await System.game.economy.executeTransaction({
       type: TransactionType.PURCHASE,
-      description: `Buy ${furniture.id}`,
-      amount: price,
+      description: `Buy ${furniture.id}`, // TODO: add furniture name
+      amount: furniture.price,
       fromAccount: user.getAccountId(),
       toAccount: "hotel",
       meta: {
