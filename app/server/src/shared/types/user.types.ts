@@ -107,5 +107,5 @@ export type UserMutable = {
   log: (...data: string[]) => Promise<void>;
 
   getCredits: () => Promise<number>;
-  getTransactions: () => Promise<Transaction>;
+  getTransactions: () => Promise<Transaction[]>;
 };

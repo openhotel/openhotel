@@ -101,6 +101,17 @@ export const DefaultCategoryComponent: React.FC<Props> = ({
 
   const bottomHeight = 20;
 
+  const onBuyFurniture = useCallback(() => {
+    fetch(
+      "/catalog/buy",
+      { furnitureId: selectedFurnitureData.furnitureId },
+      false,
+      "POST",
+    ).then((r) => {
+      console.log(r);
+    });
+  }, [fetch, selectedFurnitureData]);
+
   const renderPreview = useMemo(() => {
     if (!selectedFurnitureData)
       return (
@@ -163,11 +174,12 @@ export const DefaultCategoryComponent: React.FC<Props> = ({
               y: 3,
             }}
             text="Buy"
+            onPointerUp={onBuyFurniture}
           />
         </ContainerComponent>
       </>
     );
-  }, [selectedFurnitureData, previewWidth, bottomHeight, size]);
+  }, [selectedFurnitureData, previewWidth, bottomHeight, size, onBuyFurniture]);
 
   return (
     <ContainerComponent {...containerProps}>

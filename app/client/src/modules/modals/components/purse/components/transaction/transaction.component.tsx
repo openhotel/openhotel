@@ -1,6 +1,5 @@
-import React, { useMemo } from "react";
-import { TextComponent } from "shared/components";
-import { Transaction } from "shared/types";
+import React from "react";
+import dayjs from "dayjs";
 import {
   ContainerComponent,
   FLEX_ALIGN,
@@ -8,26 +7,20 @@ import {
   FlexContainerComponent,
   NineSliceSpriteComponent,
 } from "@openhotel/pixi-components";
-import { Modal, SpriteSheetEnum, TransactionType } from "shared/enums";
-import { MODAL_SIZE_MAP } from "shared/consts";
-import dayjs from "dayjs";
+import { SpriteSheetEnum } from "shared/enums";
+import { TextComponent } from "shared/components";
+import { Size2d, Transaction } from "shared/types";
 
 type Props = {
   transaction: Transaction;
+  scrollSize: Size2d;
 };
 
-export const TransactionComponent: React.FC<Props> = ({ transaction }) => {
-  const { width: $width } = MODAL_SIZE_MAP[Modal.PURSE];
-
-  const width = $width - 22 * 2 - 10;
-
-  const isIncome = useMemo(() => {
-    return [
-      TransactionType.REWARD,
-      TransactionType.REFUND,
-      TransactionType.DEPOSIT,
-    ].includes(transaction.type);
-  }, [transaction.type]);
+export const TransactionComponent: React.FC<Props> = ({
+  transaction,
+  scrollSize,
+}) => {
+  const width = scrollSize.width - 3;
 
   return (
     <ContainerComponent>
@@ -42,20 +35,28 @@ export const TransactionComponent: React.FC<Props> = ({ transaction }) => {
         width={width}
       />
       <FlexContainerComponent
-        justify={FLEX_JUSTIFY.SPACE_EVENLY}
+        justify={FLEX_JUSTIFY.SPACE_BETWEEN}
         align={FLEX_ALIGN.CENTER}
-        size={{ width, height: 12 }}
-        gap={10}
+        position={{ x: 4 }}
+        size={{ width: width - 8, height: 12 }}
+        gap={4}
         zIndex={10}
       >
         <TextComponent
-          text={dayjs(transaction.timestamp).format("DD/MM/YYYY")}
+          text={dayjs(transaction.timestamp).format("DD/MM/YY")}
           color={0x000}
         />
-        <TextComponent text={transaction.description} color={0x000} />
         <TextComponent
-          text={`${isIncome ? "+" : "-"}${transaction.amount}`}
-          color={isIncome ? 0x87c053 : 0xb73d22}
+          text={
+            transaction.description.length > 22
+              ? `${transaction.description.slice(0, 22)}...`
+              : transaction.description
+          }
+          color={0x000}
+        />
+        <TextComponent
+          text={transaction.amount.toString()}
+          color={transaction.amount >= 0 ? 0x87c053 : 0xb73d22}
         />
       </FlexContainerComponent>
     </ContainerComponent>
