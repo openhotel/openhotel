@@ -34,8 +34,8 @@ export const economy = () => {
   const executeTransaction = async (params: TransactionParams) => {
     const { type, description, amount, fromAccount, toAccount, meta } = params;
 
-    if (amount <= 0) {
-      throw new Error("The amount must be greater than zero.");
+    if (amount < 0) {
+      throw new Error("The amount must be greater than 0.");
     }
 
     try {
