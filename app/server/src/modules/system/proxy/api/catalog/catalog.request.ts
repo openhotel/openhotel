@@ -4,9 +4,8 @@ import { RequestMethod } from "@oh/utils";
 import dayjs from "dayjs";
 
 export const catalogRequest: ProxyRequestType = {
-  pathname: "/catalog",
+  pathname: "",
   method: RequestMethod.GET,
-  public: true,
   func: async ({}, url) => {
     const category = url.searchParams.get("category");
 
