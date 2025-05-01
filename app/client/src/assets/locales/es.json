@@ -33,11 +33,7 @@
     "buy": "comprar"
   },
   "catalog": {
-    "title": "Catalogo",
-    "furniture": "muebles",
-    "floor": "pisos",
-    "wall": "paredes",
-    "ceiling": "techo"
+    "title": "Catalogo"
   },
   "config": {
     "title": "Configuracion",

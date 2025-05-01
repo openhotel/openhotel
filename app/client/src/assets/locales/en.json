@@ -33,11 +33,7 @@
     "buy": "buy"
   },
   "catalog": {
-    "title": "Catalog",
-    "furniture": "furniture",
-    "floor": "floor",
-    "wall": "wall",
-    "ceiling": "ceiling"
+    "title": "Catalog"
   },
   "config": {
     "title": "Configuration",
