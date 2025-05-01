@@ -28,6 +28,7 @@
     }
   },
   "economy": {
+    "purse_title": "Purse",
     "credits": "credits",
     "buy": "buy"
   },

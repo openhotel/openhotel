@@ -28,6 +28,7 @@
     }
   },
   "economy": {
+    "purse_title": "Monedero",
     "credits": "creditos",
     "buy": "comprar"
   },

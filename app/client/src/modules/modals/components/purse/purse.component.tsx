@@ -152,7 +152,7 @@ export const PurseComponentWrapper: React.FC<Props> = ({
           }}
         >
           <TextComponent
-            text="Purse"
+            text={t("economy.purse_title")}
             backgroundColor={0xb3a49a}
             backgroundAlpha={1}
             padding={{
