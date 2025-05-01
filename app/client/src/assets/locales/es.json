@@ -34,18 +34,5 @@
   },
   "catalog": {
     "title": "Catalogo"
-  },
-  "config": {
-    "title": "Configuracion",
-    "selected_language": "Idioma seleccionado",
-    "language_settings": "Configuracion de idioma",
-    "sound_settings": "Configuracion de sonido",
-    "sound_on": "Sonido encendido",
-    "sound_off": "Sonido apagado",
-    "audio_settings": "Configuracion de audio",
-    "sound_effects": "Efectos de sonido",
-    "music": "Musica",
-    "display_settings": "Configuracion de pantalla",
-    "fullscreen": "Pantalla completa"
   }
 }

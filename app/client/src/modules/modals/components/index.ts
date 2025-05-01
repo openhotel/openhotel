@@ -4,4 +4,3 @@ export * from "./console";
 export * from "./inventory";
 export * from "./navigator";
 export * from "./purse";
-export * from "./config";

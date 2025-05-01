@@ -34,11 +34,6 @@
       "frame": { "x": 23, "y": 42, "w": 23, "h": 21 },
       "sourceSize": { "w": 23, "h": 21 },
       "anchor": { "x": 0, "y": 0 }
-    },
-    "config": {
-      "frame": { "x": 46, "y": 23, "w": 16, "h": 16 },
-      "sourceSize": { "w": 16, "h": 16 },
-      "anchor": { "x": 0, "y": 0 }
     }
   },
   "animations": {},

@@ -27,9 +27,6 @@ export const MODAL_HOT_BAR_ITEMS = {
   [Modal.CLUB]: {
     icon: "club",
   },
-  [Modal.CONFIG]: {
-    icon: "config",
-  },
 };
 
 export const MODAL_SIZE_MAP: Record<Modal, Size> = {
@@ -56,9 +53,5 @@ export const MODAL_SIZE_MAP: Record<Modal, Size> = {
   [Modal.CONSOLE]: {
     width: 0,
     height: 0,
-  },
-  [Modal.CONFIG]: {
-    width: 200,
-    height: 150,
   },
 };

@@ -34,18 +34,5 @@
   },
   "catalog": {
     "title": "Catalog"
-  },
-  "config": {
-    "title": "Configuration",
-    "selected_language": "Selected language",
-    "language_settings": "Language settings",
-    "sound_settings": "Sound settings",
-    "sound_on": "Sound on",
-    "sound_off": "Sound off",
-    "audio_settings": "Audio settings",
-    "sound_effects": "Sound effects",
-    "music": "Music",
-    "display_settings": "Display settings",
-    "fullscreen": "Fullscreen"
   }
 }
