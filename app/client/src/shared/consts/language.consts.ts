@@ -6,12 +6,6 @@ export const LANGUAGES = {
   en: {
     label: "English",
   },
-  fr: {
-    label: "Français",
-  },
-  de: {
-    label: "Deutsch",
-  },
 } as const;
 
 export const LANGUAGE_PREFERENCE_KEY = "openHotel_lang";
