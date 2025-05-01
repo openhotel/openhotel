@@ -16,7 +16,10 @@ import { Modal, SpriteSheetEnum } from "shared/enums";
 import { ButtonComponent, TextComponent } from "shared/components";
 import { useModal } from "shared/hooks";
 import { MODAL_SIZE_MAP } from "shared/consts";
-import { LANGUAGES } from "shared/consts/language.consts";
+import {
+  LANGUAGE_PREFERENCE_KEY,
+  LANGUAGES,
+} from "shared/consts/language.consts";
 import i18n from "modules/application/i18n";
 
 export const ConfigComponent: React.FC = () => {
@@ -25,14 +28,66 @@ export const ConfigComponent: React.FC = () => {
   const { setDragPolygon } = useDragContainer();
   const { width, height } = MODAL_SIZE_MAP[Modal.CONFIG];
   const [languageSelected, setLanguageSelected] = useState<string>("en");
+  const [soundEnabled, setSoundEnabled] = useState<boolean>(true);
+  const [musicEnabled, setMusicEnabled] = useState<boolean>(true);
+  const [fullscreen, setFullscreen] = useState<boolean>(false);
 
   useEffect(() => {
     setDragPolygon?.([0, 0, width, 0, width, 15, 0, 15]);
   }, [setDragPolygon, width]);
 
+  const setSound = (enabled: boolean) => {
+    setSoundEnabled(enabled);
+    localStorage.setItem("soundEnabled", enabled.toString());
+  };
+
+  const setMusic = (enabled: boolean) => {
+    setMusicEnabled(enabled);
+    localStorage.setItem("musicEnabled", enabled.toString());
+  };
+
+  const toggleFullscreen = () => {
+    const newState = !fullscreen;
+    setFullscreen(newState);
+    if (newState) {
+      document.documentElement.requestFullscreen();
+    } else {
+      document.exitFullscreen();
+    }
+  };
+
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      setFullscreen(!!document.fullscreenElement);
+    };
+
+    document.addEventListener("fullscreenchange", handleFullscreenChange);
+    return () => {
+      document.removeEventListener("fullscreenchange", handleFullscreenChange);
+    };
+  }, []);
+
+  useEffect(() => {
+    const savedSound = localStorage.getItem("soundEnabled");
+    if (savedSound) {
+      setSoundEnabled(savedSound === "true");
+    }
+
+    const savedMusic = localStorage.getItem("musicEnabled");
+    if (savedMusic) {
+      setMusicEnabled(savedMusic === "true");
+    }
+
+    const savedLanguage = localStorage.getItem(LANGUAGE_PREFERENCE_KEY);
+    if (savedLanguage) {
+      setLanguageSelected(savedLanguage);
+    }
+  }, []);
+
   const selectLanguage = (key: string) => {
     setLanguageSelected(key);
     i18n.changeLanguage(key);
+    localStorage.setItem(LANGUAGE_PREFERENCE_KEY, key);
   };
 
   return (
@@ -53,10 +108,10 @@ export const ConfigComponent: React.FC = () => {
       <ContainerComponent>
         <NineSliceSpriteComponent
           spriteSheet={SpriteSheetEnum.UI}
-          texture="ui-tab-modal"
+          texture="ui-base-modal"
           leftWidth={14}
           rightWidth={21}
-          topHeight={38}
+          topHeight={22}
           bottomHeight={11}
           height={height}
           width={width}
@@ -76,7 +131,7 @@ export const ConfigComponent: React.FC = () => {
             width,
           }}
           position={{
-            y: 3,
+            y: 4,
           }}
         >
           <TextComponent
@@ -84,8 +139,8 @@ export const ConfigComponent: React.FC = () => {
             backgroundColor={0xacc1ed}
             backgroundAlpha={1}
             padding={{
-              left: 4,
-              right: 3,
+              left: 5,
+              right: 5,
               bottom: 0,
               top: 2,
             }}
@@ -96,78 +151,164 @@ export const ConfigComponent: React.FC = () => {
       <ContainerComponent
         position={{
           x: 10,
-          y: 38,
+          y: 12,
         }}
       >
-        <FlexContainerComponent
-          justify={FLEX_JUSTIFY.CENTER}
-          size={{
-            width: width - 20,
-          }}
+        {/* Language Settings Section */}
+        <ContainerComponent
           position={{
             x: 0,
-            y: 0,
+            y: 10,
           }}
         >
           <TextComponent
+            text={t("config.language_settings")}
+            color={0x1a1a1a}
+            bold
+          />
+          <TextComponent
             text={`${t("config.selected_language")}: ${LANGUAGES[languageSelected].label}`}
-            color={0}
+            color={0x999999}
             position={{
-              x: 0,
               y: 10,
             }}
           />
-        </FlexContainerComponent>
+          <ContainerComponent
+            position={{
+              y: 20,
+            }}
+          >
+            {Object.entries(LANGUAGES)
+              .reduce((rows, [key, language], index) => {
+                const rowIndex = Math.floor(index / 4);
+                if (!rows[rowIndex]) {
+                  rows[rowIndex] = [];
+                }
 
+                rows[rowIndex].push(
+                  <ButtonComponent
+                    key={key}
+                    size={{
+                      height: 14,
+                      width: LANGUAGES[key].label.length * 5 + 3,
+                    }}
+                    text={language.label}
+                    onPointerDown={() => selectLanguage(key)}
+                    color={key === languageSelected ? 0 : 0x999999}
+                  />,
+                );
+
+                return rows;
+              }, [] as React.ReactNode[][])
+              .map((row, rowIndex) => (
+                <FlexContainerComponent
+                  key={`row-${rowIndex}`}
+                  justify={FLEX_JUSTIFY.CENTER}
+                  gap={2}
+                  size={{
+                    width: width - 40,
+                    height: 20,
+                  }}
+                  position={{
+                    y: rowIndex * 20,
+                  }}
+                >
+                  {row}
+                </FlexContainerComponent>
+              ))}
+          </ContainerComponent>
+        </ContainerComponent>
+
+        {/* Audio Settings Section */}
         <ContainerComponent
           position={{
-            x: 5,
-            y: 30,
+            y: 50,
           }}
         >
-          {Object.entries(LANGUAGES)
-            .reduce((rows, [key, language], index) => {
-              // Row calculation in order to distribute the buttons
-              // evenly and vertically (in case of more than 3 languages)
-              const rowIndex = Math.floor(index / 3);
-              if (!rows[rowIndex]) {
-                rows[rowIndex] = [];
-              }
+          <TextComponent
+            text={t("config.audio_settings")}
+            color={0x1a1a1a}
+            bold
+          />
 
-              rows[rowIndex].push(
-                <ButtonComponent
-                  key={key}
-                  size={{
-                    height: 14,
-                    width: 80,
-                  }}
-                  text={language.label}
-                  onPointerDown={() => selectLanguage(key)}
-                  position={{
-                    x: (index % 3) * 45,
-                    y: 0,
-                  }}
-                />,
-              );
+          <FlexContainerComponent
+            justify={FLEX_JUSTIFY.START}
+            gap={4}
+            position={{
+              y: 15,
+            }}
+          >
+            <ButtonComponent
+              size={{
+                height: 14,
+                width: 35,
+              }}
+              position={{
+                y: -4,
+              }}
+              text={soundEnabled ? "ON" : "OFF"}
+              onPointerDown={() => setSound(!soundEnabled)}
+              color={soundEnabled ? 0x1a1a1a : 0x999999}
+            />
+            <TextComponent text={t("config.sound_effects")} color={0x999999} />
+          </FlexContainerComponent>
 
-              return rows;
-            }, [] as React.ReactNode[][])
-            .map((row, rowIndex) => (
-              <FlexContainerComponent
-                key={`row-${rowIndex}`}
-                justify={FLEX_JUSTIFY.CENTER}
-                gap={10}
-                size={{
-                  width: width - 25,
-                  height: 20,
-                }}
-                position={{
-                  y: rowIndex * 20,
-                }}
-              >
-                {row}
-              </FlexContainerComponent>
-            ))}
+          <FlexContainerComponent
+            justify={FLEX_JUSTIFY.START}
+            gap={4}
+            position={{
+              y: 35,
+            }}
+          >
+            <ButtonComponent
+              size={{
+                height: 14,
+                width: 35,
+              }}
+              position={{
+                y: -4,
+              }}
+              text={musicEnabled ? "ON" : "OFF"}
+              onPointerDown={() => setMusic(!musicEnabled)}
+              color={musicEnabled ? 0x1a1a1a : 0x999999}
+            />
+            <TextComponent text={t("config.music")} color={0x999999} />
+          </FlexContainerComponent>
+        </ContainerComponent>
+
+        {/* Display Settings Section */}
+        <ContainerComponent
+          position={{
+            y: 100,
+          }}
+        >
+          <TextComponent
+            text={t("config.display_settings")}
+            color={0x1a1a1a}
+            bold
+          />
+
+          <FlexContainerComponent
+            justify={FLEX_JUSTIFY.START}
+            gap={4}
+            position={{
+              y: 15,
+            }}
+          >
+            <ButtonComponent
+              size={{
+                height: 14,
+                width: 35,
+              }}
+              position={{
+                y: -4,
+              }}
+              text={fullscreen ? "ON" : "OFF"}
+              onPointerDown={toggleFullscreen}
+              color={fullscreen ? 0x1a1a1a : 0x999999}
+            />
+            <TextComponent text={t("config.fullscreen")} color={0x999999} />
+          </FlexContainerComponent>
         </ContainerComponent>
       </ContainerComponent>
     </>

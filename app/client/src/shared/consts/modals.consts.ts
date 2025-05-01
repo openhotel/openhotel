@@ -59,6 +59,6 @@ export const MODAL_SIZE_MAP: Record<Modal, Size> = {
   },
   [Modal.CONFIG]: {
     width: 200,
-    height: 100,
+    height: 150,
   },
 };
