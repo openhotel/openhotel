@@ -24,20 +24,14 @@ export const ConfigComponent: React.FC = () => {
   const { closeModal } = useModal();
   const { setDragPolygon } = useDragContainer();
   const { width, height } = MODAL_SIZE_MAP[Modal.CONFIG];
-  const [languageSelected, setLanguageSelected] = useState<string>("es");
+  const [languageSelected, setLanguageSelected] = useState<string>("en");
 
   useEffect(() => {
-    const language = localStorage.getItem("i18nextLng");
-    if (language) {
-      setLanguageSelected(language);
-    }
-
     setDragPolygon?.([0, 0, width, 0, width, 15, 0, 15]);
   }, [setDragPolygon, width]);
 
   const selectLanguage = (key: string) => {
     setLanguageSelected(key);
-    localStorage.setItem("i18nextLng", key);
     i18n.changeLanguage(key);
   };
 

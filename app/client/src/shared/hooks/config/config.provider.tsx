@@ -10,6 +10,10 @@ import { LoaderComponent } from "shared/components";
 import { ConfigTypes } from "shared/types";
 import { useTranslation } from "react-i18next";
 import i18n from "modules/application/i18n";
+import {
+  LANGUAGE_FALLBACK,
+  LANGUAGE_PREFERENCE_KEY,
+} from "shared/consts/language.consts";
 
 type ConfigProps = {
   children: ReactNode;
@@ -34,10 +38,11 @@ export const ConfigProvider: React.FunctionComponent<ConfigProps> = ({
         const lastVersion = localStorage.getItem("version");
         localStorage.setItem("version", config.version);
 
-        if (config.lang) {
-          localStorage.setItem("i18nextLng", config.lang);
-          i18n.changeLanguage(config.lang);
+        const lang = localStorage.getItem(LANGUAGE_PREFERENCE_KEY);
+        if (lang == "NONE") {
+          i18n.changeLanguage(config.lang ?? LANGUAGE_FALLBACK);
         }
+
         if (lastVersion === config.version) return setLoadingMessage(null);
 
         setLoadingMessage("Loading changelog...");
