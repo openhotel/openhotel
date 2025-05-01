@@ -21,9 +21,11 @@ export const ProxyProvider: React.FunctionComponent<ProxyProps> = ({
 }) => {
   const { t } = useTranslation();
   const { getConfig } = useConfig();
-  
-  const [loadingMessage, setLoadingMessage] = useState<string>(t("system.connecting"));
-  
+
+  const [loadingMessage, setLoadingMessage] = useState<string>(
+    t("system.connecting"),
+  );
+
   const params = new URLSearchParams(location.search);
   const state = params.get("state");
   const token = params.get("token");

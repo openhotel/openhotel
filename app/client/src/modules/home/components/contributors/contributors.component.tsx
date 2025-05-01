@@ -25,7 +25,9 @@ export const ContributorsComponent: React.FC = () => {
     const contributors = getContributors();
 
     if (creators.length > creatorIndexRef.current) {
-      setText(`${t("system.created_by")} ${creators[creatorIndexRef.current].login}`);
+      setText(
+        `${t("system.created_by")} ${creators[creatorIndexRef.current].login}`,
+      );
       creatorIndexRef.current++;
     } else if (contributors.length > contributorIndexRef.current) {
       setText(

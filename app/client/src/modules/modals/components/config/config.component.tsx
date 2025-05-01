@@ -131,50 +131,51 @@ export const ConfigComponent: React.FC = () => {
             y: 30,
           }}
         >
-          {Object.entries(LANGUAGES).reduce((rows, [key, language], index) => {
-            
-            // Row calculation in order to distribute the buttons 
-            // evenly and vertically (in case of more than 3 languages)
-            const rowIndex = Math.floor(index / 3);
-            if (!rows[rowIndex]) {
-              rows[rowIndex] = [];
-            }
+          {Object.entries(LANGUAGES)
+            .reduce((rows, [key, language], index) => {
+              // Row calculation in order to distribute the buttons
+              // evenly and vertically (in case of more than 3 languages)
+              const rowIndex = Math.floor(index / 3);
+              if (!rows[rowIndex]) {
+                rows[rowIndex] = [];
+              }
 
-            rows[rowIndex].push(
-              <ButtonComponent
-                key={key}
+              rows[rowIndex].push(
+                <ButtonComponent
+                  key={key}
+                  size={{
+                    height: 14,
+                    width: 80,
+                  }}
+                  text={language.label}
+                  onPointerDown={() => selectLanguage(key)}
+                  position={{
+                    x: (index % 3) * 45,
+                    y: 0,
+                  }}
+                />,
+              );
+
+              return rows;
+            }, [] as React.ReactNode[][])
+            .map((row, rowIndex) => (
+              <FlexContainerComponent
+                key={`row-${rowIndex}`}
+                justify={FLEX_JUSTIFY.CENTER}
+                gap={10}
                 size={{
-                  height: 14,
-                  width: 80,
+                  width: width - 25,
+                  height: 20,
                 }}
-                text={language.label}
-                onPointerDown={() => selectLanguage(key)}
                 position={{
-                  x: (index % 3) * 45,
-                  y: 0,
+                  y: rowIndex * 20,
                 }}
-              />
-            );
-            
-            return rows;
-          }, [] as React.ReactNode[][]).map((row, rowIndex) => (
-            <FlexContainerComponent
-              key={`row-${rowIndex}`}
-              justify={FLEX_JUSTIFY.CENTER}
-              gap={10}
-              size={{
-                width: width - 25,
-                height: 20,
-              }}
-              position={{
-                y: rowIndex * 20,
-              }}
-            >
-              {row}
-            </FlexContainerComponent>
-          ))}
+              >
+                {row}
+              </FlexContainerComponent>
+            ))}
         </ContainerComponent>
       </ContainerComponent>
     </>
   );
-}; 
+};

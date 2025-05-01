@@ -30,7 +30,7 @@ import {
   MAX_MESSAGES_HISTORY,
   STORAGE_KEY,
 } from "shared/consts";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 
 type Props = {
   maxWidth: number;
@@ -241,7 +241,7 @@ export const ChatHotBarComponent: React.FC<Props> = ({
             top: 4,
             bottom: 0,
           }}
-          placeholder = {t("chat.hot_bar_placeholder")}
+          placeholder={t("chat.hot_bar_placeholder")}
           placeholderProps={{
             color: 0x1,
             alpha: 0.5,
@@ -271,7 +271,7 @@ export const ChatHotBarComponent: React.FC<Props> = ({
           }}
           gap={5}
         >
-          <HotBarItemsComponent exclude={[ Modal.CONFIG ]} />
+          <HotBarItemsComponent exclude={[Modal.CONFIG]} />
         </FlexContainerComponent>
       </ContainerComponent>
     </ContainerComponent>

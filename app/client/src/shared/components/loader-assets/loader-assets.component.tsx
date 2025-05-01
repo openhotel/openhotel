@@ -21,8 +21,10 @@ export const LoaderAssetsComponent: React.FC<Props> = ({
 }) => {
   const currentPercentageRef = useRef<number>(0);
   const { t } = useTranslation();
-  
-  const [currentText, setCurrentText] = useState<string>(`${t("system.loading")}...	`);
+
+  const [currentText, setCurrentText] = useState<string>(
+    `${t("system.loading")}...	`,
+  );
   useEffect(() => {
     if (!loaderItems) return;
     (async () => {
@@ -31,11 +33,7 @@ export const LoaderAssetsComponent: React.FC<Props> = ({
         0,
       );
       let currentItem = 0;
-      for (const {
-        items,
-        func,
-        label,
-      } of loaderItems) {
+      for (const { items, func, label } of loaderItems) {
         setCurrentText(`${t("system.loading")} ${label}`);
         for (const item of items) {
           setCurrentText(`${t("system.loading")} ${item.split(".")[0]}`);

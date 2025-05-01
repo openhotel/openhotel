@@ -49,7 +49,7 @@ export const NavigatorBarComponent: React.FC<Props> = ({
           }}
         >
           <NavigatorButtonComponent
-            text={t(MODAL_NAVIGATOR_TAB_NAME_MAP[category]) }
+            text={t(MODAL_NAVIGATOR_TAB_NAME_MAP[category])}
             selected={selectedCategory === category}
             type={
               index === 0

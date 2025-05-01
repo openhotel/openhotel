@@ -22,8 +22,9 @@ export const ConfigProvider: React.FunctionComponent<ConfigProps> = ({
   const configRef = useRef<ConfigTypes>(null);
   const changeLogRef = useRef<unknown>(null);
 
-  const [loadingMessage, setLoadingMessage] =
-    useState<string>(t("system.loading_config"));
+  const [loadingMessage, setLoadingMessage] = useState<string>(
+    t("system.loading_config"),
+  );
 
   useEffect(() => {
     fetch("/info")
@@ -32,7 +33,7 @@ export const ConfigProvider: React.FunctionComponent<ConfigProps> = ({
         configRef.current = config;
         const lastVersion = localStorage.getItem("version");
         localStorage.setItem("version", config.version);
-        
+
         if (config.lang) {
           localStorage.setItem("i18nextLng", config.lang);
           i18n.changeLanguage(config.lang);

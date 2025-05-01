@@ -40,7 +40,7 @@ export const DefaultCategoryComponent: React.FC<Props> = ({
 }) => {
   const { fetch } = useApi();
   const { load, get } = useFurniture();
-  
+
   const { t } = useTranslation();
   const [selectedFurniture, setSelectedFurniture] = useState<string>(null);
 

@@ -27,7 +27,7 @@ import { useTranslation } from "react-i18next";
 
 export const NavigatorComponent: React.FC = () => {
   const { closeModal } = useModal();
-  
+
   const navigatorTabMap = useMemo(
     (): Record<ModalNavigatorTab, React.FC<ModalNavigatorTabProps>> => ({
       [ModalNavigatorTab.HOTEL]: CategoryHotelComponent,

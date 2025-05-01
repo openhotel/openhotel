@@ -1,1 +1,1 @@
-export { ConfigComponent } from "./config.component"; 
+export { ConfigComponent } from "./config.component";
