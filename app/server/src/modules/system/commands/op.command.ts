@@ -1,4 +1,4 @@
-import { __ } from "shared/utils/main.ts";
+import { getTextFromArgs } from "shared/utils/main.ts";
 import { Command, CommandRoles } from "shared/types/main.ts";
 import { ProxyEvent } from "shared/enums/main.ts";
 import { System } from "modules/system/main.ts";
@@ -14,7 +14,7 @@ export const opCommand: Command = {
     const config = await System.game.users.getConfig();
     if (config.op.users.includes(username)) {
       user.emit(ProxyEvent.SYSTEM_MESSAGE, {
-        message: __(user.getLanguage())("User {{username}} was already op", {
+        message: getTextFromArgs("User {{username}} was already op", {
           username,
         }),
       });
@@ -25,7 +25,7 @@ export const opCommand: Command = {
     await System.game.users.setConfig(config);
 
     user.emit(ProxyEvent.SYSTEM_MESSAGE, {
-      message: __(user.getLanguage())("User {{username}} is now op", {
+      message: getTextFromArgs("User {{username}} is now op", {
         username,
       }),
     });

@@ -1,10 +1,5 @@
 import { Point3d, Direction } from "@oh/utils";
-import {
-  ProxyEvent,
-  Language,
-  Hemisphere,
-  UserAction,
-} from "shared/enums/main.ts";
+import { ProxyEvent, Hemisphere, UserAction } from "shared/enums/main.ts";
 import { Transaction } from "./economy.types.ts";
 
 export type CacheUser = {
@@ -17,7 +12,7 @@ export type PrivateUser = {
   username: string;
 
   clientId: string;
-  language?: Language;
+  languages?: string[];
 
   apiToken: string;
 
@@ -92,9 +87,6 @@ export type UserMutable = {
   getLastWhisper: () => UserMutable | null;
 
   getObject: () => User;
-
-  setLanguage: (language: Language) => void;
-  getLanguage: () => Language;
 
   getMeta: () => (number | string)[] | null;
 

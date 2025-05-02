@@ -1,7 +1,6 @@
 import { Command, CommandRoles } from "shared/types/main.ts";
 import { System } from "modules/system/main.ts";
 import { ProxyEvent } from "shared/enums/main.ts";
-import { __ } from "shared/utils/main.ts";
 
 export const unsetCommand: Command = {
   command: "unset",
@@ -25,7 +24,7 @@ export const unsetCommand: Command = {
 
     if (!furniture) {
       user.emit(ProxyEvent.SYSTEM_MESSAGE, {
-        message: __(user.getLanguage())("Furniture not found!"),
+        message: "Furniture not found!",
       });
       return;
     }

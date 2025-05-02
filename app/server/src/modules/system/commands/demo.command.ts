@@ -4,12 +4,11 @@ import {
   CommandRoles,
   PrivateRoomMutable,
   RoomFurniture,
-  RoomMutable,
 } from "shared/types/main.ts";
 import { FurnitureType, ProxyEvent } from "shared/enums/main.ts";
 import { CrossDirection } from "@oh/utils";
-import { __ } from "shared/utils/languages.utils.ts";
 import { ulid } from "@std/ulid";
+import { getTextFromArgs } from "shared/utils/args.utils.ts";
 
 const fillDemoRoom = async (room: PrivateRoomMutable) => {
   const list = await System.game.furniture.getList();
@@ -70,7 +69,7 @@ const fillDemoRoom = async (room: PrivateRoomMutable) => {
     }
   }
 };
-const fillRoom1 = async (room: RoomMutable) => {
+const fillRoom1 = async (room: PrivateRoomMutable) => {
   // Mock furniture data
   const mockFurnitureData = [
     {
@@ -190,10 +189,9 @@ export const demoCommand: Command = {
 
     if (!filler[currentRoom.getTitle()]) {
       user.emit(ProxyEvent.SYSTEM_MESSAGE, {
-        message: __(user.getLanguage())(
-          "Demo command is not configured in {{room}}",
-          { room: currentRoom.getTitle() },
-        ),
+        message: getTextFromArgs("Demo command is not configured in {{room}}", {
+          room: currentRoom.getTitle(),
+        }),
       });
       return;
     }

@@ -20,6 +20,8 @@ import { NesterComponent } from "shared/components";
 import { FurnitureProvider } from "shared/hooks";
 import { InfoProvider } from "shared/hooks/info";
 import { ApplicationProvider } from "@openhotel/pixi-components";
+import { ChangelogProvider } from "shared/hooks/changelog";
+import { languageProvider } from "shared/hooks/language";
 
 export const ApplicationComponent = () => {
   const providers = useMemo(
@@ -30,6 +32,8 @@ export const ApplicationComponent = () => {
       TasksProvider,
       InitialLoaderComponent,
       ConfigProvider,
+      languageProvider,
+      ChangelogProvider,
       ProxyProvider,
       AssetsProvider,
       CoreLoaderComponent,

@@ -1,7 +1,6 @@
 import { Command, CommandRoles } from "shared/types/main.ts";
 import { System } from "modules/system/main.ts";
 import { FurnitureType, ProxyEvent } from "shared/enums/main.ts";
-import { __ } from "shared/utils/main.ts";
 import { CrossDirection } from "@oh/utils";
 
 export const rotateCommand: Command = {
@@ -24,7 +23,7 @@ export const rotateCommand: Command = {
 
     if (!furniture) {
       user.emit(ProxyEvent.SYSTEM_MESSAGE, {
-        message: __(user.getLanguage())("Furniture not found!"),
+        message: "Furniture not found!",
       });
       return;
     }

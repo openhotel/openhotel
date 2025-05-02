@@ -1,7 +1,7 @@
-import { __ } from "shared/utils/main.ts";
 import { Command, CommandRoles } from "shared/types/main.ts";
 import { ProxyEvent } from "shared/enums/main.ts";
 import { System } from "modules/system/main.ts";
+import { getTextFromArgs } from "shared/utils/args.utils.ts";
 
 export const deopCommand: Command = {
   command: "deop",
@@ -18,7 +18,7 @@ export const deopCommand: Command = {
     await System.game.users.setConfig(config);
 
     user.emit(ProxyEvent.SYSTEM_MESSAGE, {
-      message: __(user.getLanguage())("User {{username}} is no longer op", {
+      message: getTextFromArgs("User {{username}} is no longer op", {
         username,
       }),
     });

@@ -39,7 +39,7 @@ export const ContributorsComponent: React.FC = () => {
       creatorIndexRef.current = 0;
       contributorIndexRef.current = 0;
     }
-  }, [getCreators, getContributors]);
+  }, [getCreators, getContributors, t]);
 
   useEffect(() => {
     doLoop();

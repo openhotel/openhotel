@@ -1,6 +1,5 @@
 import { Command } from "../types/commands.types.ts";
-import { UserMutable } from "../types/user.types.ts";
-import { __ } from "./languages.utils.ts";
+import { getTextFromArgs } from "shared/utils/args.utils.ts";
 
 export const parseCommandArgs = (message: string) => {
   const args = message
@@ -24,7 +23,6 @@ export const parseCommandArgs = (message: string) => {
 export const validateCommandUsages = (
   foundCommand: Command,
   args: string[],
-  user: UserMutable,
 ): { isValid: boolean; errorMessage?: string } => {
   const argsRegex = /<[^>]+>|\[[^\]]+\]|\S+/g; // Matches "<...>", "[...]", "<...|...|...>", "[...|...|...]" and literals
   for (const usage of foundCommand.usages) {
@@ -79,7 +77,7 @@ export const validateCommandUsages = (
 
   return {
     isValid: false,
-    errorMessage: __(user.getLanguage())(
+    errorMessage: getTextFromArgs(
       "Invalid arguments. None of the following usages matched: {{usages}}",
       {
         usages: foundCommand.usages

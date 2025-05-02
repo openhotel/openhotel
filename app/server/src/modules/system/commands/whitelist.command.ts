@@ -1,4 +1,3 @@
-import { __ } from "shared/utils/main.ts";
 import {
   Command,
   CommandRoles,
@@ -8,18 +7,19 @@ import {
 } from "shared/types/main.ts";
 import { ProxyEvent } from "shared/enums/main.ts";
 import { System } from "modules/system/main.ts";
+import { getTextFromArgs } from "shared/utils/args.utils.ts";
 
 const on = (config: UsersConfig, _: string[], user: UserMutable) => {
   config.whitelist.active = true;
   user.emit(ProxyEvent.SYSTEM_MESSAGE, {
-    message: __(user.getLanguage())("Whitelist enabled"),
+    message: "Whitelist enabled",
   });
   return config;
 };
 const off = (config: UsersConfig, _: string[], user: UserMutable) => {
   config.whitelist.active = false;
   user.emit(ProxyEvent.SYSTEM_MESSAGE, {
-    message: __(user.getLanguage())("Whitelist disabled"),
+    message: "Whitelist disabled",
   });
   return config;
 };
@@ -29,7 +29,7 @@ const add = (config: UsersConfig, args: string[], user: UserMutable) => {
 
   config.whitelist.users.push(username);
   user.emit(ProxyEvent.SYSTEM_MESSAGE, {
-    message: __(user.getLanguage())("User {{username}} added to whitelist", {
+    message: getTextFromArgs("User {{username}} added to whitelist", {
       username,
     }),
   });
@@ -39,12 +39,9 @@ const remove = (config: UsersConfig, args: string[], user: UserMutable) => {
   const username = args[0];
   config.whitelist.users = config.whitelist.users.filter((u) => u !== username);
   user.emit(ProxyEvent.SYSTEM_MESSAGE, {
-    message: __(user.getLanguage())(
-      "User {{username}} removed from whitelist",
-      {
-        username,
-      },
-    ),
+    message: getTextFromArgs("User {{username}} removed from whitelist", {
+      username,
+    }),
   });
   return config;
 };
@@ -52,7 +49,7 @@ const list = (config: UsersConfig, _: string[], user: UserMutable) => {
   user.emit(ProxyEvent.SYSTEM_MESSAGE, {
     message:
       config.whitelist.users.join(", ") ||
-      __(user.getLanguage())("There is no users on the whitelist"),
+      getTextFromArgs("There is no users on the whitelist"),
   });
   return config;
 };

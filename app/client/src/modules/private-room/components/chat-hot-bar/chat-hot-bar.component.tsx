@@ -271,7 +271,7 @@ export const ChatHotBarComponent: React.FC<Props> = ({
           }}
           gap={5}
         >
-          <HotBarItemsComponent exclude={[Modal.CONFIG]} />
+          <HotBarItemsComponent />
         </FlexContainerComponent>
       </ContainerComponent>
     </ContainerComponent>

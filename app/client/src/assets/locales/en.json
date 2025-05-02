@@ -7,6 +7,7 @@
     "loading": "Loading",
     "progress_may_be_wiped": "The progress may be wiped",
     "loading_config": "Loading config...",
+    "loading_changelog": "Loading changelog...",
     "redirecting": "Redirecting...",
     "proxy_disconnected": "Proxy disconnected! :(",
     "proxy_not_reachable": "Proxy not reachable! :(",

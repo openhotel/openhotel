@@ -46,7 +46,7 @@ export const LoaderAssetsComponent: React.FC<Props> = ({
       setCurrentText(null);
       onDone?.();
     })();
-  }, [loaderItems, setCurrentText, onDone]);
+  }, [loaderItems, setCurrentText, onDone, t]);
 
   return currentText ? (
     <ContainerComponent>

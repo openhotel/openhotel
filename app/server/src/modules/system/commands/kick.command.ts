@@ -1,7 +1,7 @@
 import { System } from "modules/system/main.ts";
 import { Command, CommandRoles } from "shared/types/main.ts";
 import { ProxyEvent } from "shared/enums/main.ts";
-import { __ } from "shared/utils/main.ts";
+import { getTextFromArgs } from "shared/utils/args.utils.ts";
 
 export const kickCommand: Command = {
   command: "kick",
@@ -18,7 +18,7 @@ export const kickCommand: Command = {
     kickUser.disconnect();
 
     user.emit(ProxyEvent.SYSTEM_MESSAGE, {
-      message: __(user.getLanguage())("User {{username}} kicked", { username }),
+      message: getTextFromArgs("User {{username}} kicked", { username }),
     });
   },
 };
