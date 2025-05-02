@@ -28,7 +28,6 @@ import {
   parseCommandArgs,
   validateCommandUsages,
 } from "shared/utils/commands.utils.ts";
-import { __ } from "shared/utils/languages.utils.ts";
 import { CommandRoles } from "shared/types/commands.types.ts";
 
 export const commandList = [
@@ -76,16 +75,16 @@ export const executeCommand = async ({
 }) => {
   if (!message.startsWith("/")) return false;
 
-  const _ = parseCommandArgs(message);
+  const args = parseCommandArgs(message);
 
   const foundCommand = commandList.find(({ command }) => {
-    if (typeof command === "string") return _[0] === command;
-    return command.find((c) => _[0] === c);
+    if (typeof command === "string") return args[0] === command;
+    return command.find((c) => args[0] === c);
   });
 
   if (!foundCommand) {
     user.emit(ProxyEvent.SYSTEM_MESSAGE, {
-      message: __(user.getLanguage())("Command not found"),
+      message: "Command not found",
     });
     return true;
   }
@@ -93,18 +92,18 @@ export const executeCommand = async ({
   const isOp = await user.isOp();
   if (foundCommand.role === CommandRoles.OP && !isOp) {
     user.emit(ProxyEvent.SYSTEM_MESSAGE, {
-      message: __(user.getLanguage())("Insufficient permissions"),
+      message: "Insufficient permissions",
     });
     return true;
   }
 
   log(`Command /${foundCommand.command} executed by ${user.getUsername()}!`);
-  _.shift();
+  args.shift();
 
   const usages = foundCommand.usages || [];
 
   if (usages.length > 0) {
-    const validation = validateCommandUsages(foundCommand, _, user);
+    const validation = validateCommandUsages(foundCommand, args);
     if (!validation.isValid) {
       user.emit(ProxyEvent.SYSTEM_MESSAGE, {
         message: `${validation.errorMessage}`,
@@ -114,7 +113,7 @@ export const executeCommand = async ({
   }
 
   try {
-    foundCommand.func({ user, args: _ } as any);
+    foundCommand.func({ user, args: args } as any);
   } catch (e) {
     console.error(`Something went wrong with command ${message}`);
   }

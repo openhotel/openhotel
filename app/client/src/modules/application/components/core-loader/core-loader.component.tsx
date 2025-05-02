@@ -57,6 +57,7 @@ export const CoreLoaderComponent: React.FC<Props> = ({ children }) => {
     getSpriteSheet,
     getAsset,
     lastUpdate,
+    t,
   ]);
 
   return (
