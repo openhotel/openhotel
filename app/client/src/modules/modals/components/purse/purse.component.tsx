@@ -154,6 +154,7 @@ export const PurseComponentWrapper: React.FC<Props> = ({
           <TextComponent
             text={t("economy.purse_title")}
             backgroundColor={0xb3a49a}
+            color={0x6e5859}
             backgroundAlpha={1}
             padding={{
               left: 4,
