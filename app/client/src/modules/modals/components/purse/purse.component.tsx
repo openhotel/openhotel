@@ -87,8 +87,8 @@ export const PurseComponentWrapper: React.FC<Props> = ({
 
   const scrollSize = useMemo(
     () => ({
-      width: width - 28 * 2,
-      height: height - 23 - 50,
+      width: width - 28 * 2 - 1,
+      height: height - 23 - 50 + 1,
     }),
     [width, height],
   );
