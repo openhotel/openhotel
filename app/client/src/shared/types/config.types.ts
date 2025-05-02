@@ -11,4 +11,5 @@ export type ConfigTypes = {
   };
   users: number;
   maxUsers: number;
+  languages: string[];
 };

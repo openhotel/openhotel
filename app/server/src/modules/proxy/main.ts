@@ -120,6 +120,7 @@ export const Proxy = (() => {
               connectionToken: "AUTH_TOKEN",
             },
             ip,
+            languages: ["en", "es"],
             hemisphere,
             admin: true,
           });
@@ -136,7 +137,7 @@ export const Proxy = (() => {
         if (!getScopes().every((scope) => targetScopes.includes(scope)))
           return false;
 
-        const { accountId, username, admin } = await $auth.fetch({
+        const { accountId, username, admin, languages } = await $auth.fetch({
           url: "/user/@me",
           connectionToken,
         });
@@ -158,6 +159,7 @@ export const Proxy = (() => {
           ip,
           hemisphere,
           admin,
+          languages,
         });
         return true;
       },

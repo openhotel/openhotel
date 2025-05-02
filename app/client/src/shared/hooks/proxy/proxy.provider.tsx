@@ -2,7 +2,6 @@ import React, { ReactNode, useCallback, useState } from "react";
 import { ProxyContext } from "./proxy.context";
 import { useConfig } from "shared/hooks";
 import {
-  getBrowserLanguage,
   getClientSocket,
   getRandomString,
   getWebSocketUrl,
@@ -75,9 +74,6 @@ export const ProxyProvider: React.FunctionComponent<ProxyProps> = ({
     $socket.on("connected", () => {
       setLoadingMessage(null);
 
-      $socket.emit<Event>(Event.SET_LANGUAGE, {
-        language: getBrowserLanguage(),
-      });
       $ping();
     });
     $socket.on("disconnected", () => {
@@ -106,7 +102,7 @@ export const ProxyProvider: React.FunctionComponent<ProxyProps> = ({
         if (status !== 200) return emit(Event.DISCONNECTED, {});
         setTimeout($ping, data.estimatedNextPingIn);
       });
-  }, [getConfig()]);
+  }, [getConfig]);
 
   const emit = useCallback(
     (event: Event, message: unknown) => {

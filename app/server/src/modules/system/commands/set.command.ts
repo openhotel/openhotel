@@ -8,8 +8,8 @@ import {
   isDoorRenderable,
   isWallRenderable,
 } from "shared/utils/rooms.utils.ts";
-import { __ } from "shared/utils/languages.utils.ts";
 import { ulid } from "@std/ulid";
+import { getTextFromArgs } from "shared/utils/args.utils.ts";
 
 export const setCommand: Command = {
   command: "set",
@@ -67,7 +67,7 @@ export const setCommand: Command = {
       roomPoint === RoomPointEnum.SPAWN
     ) {
       user.emit(ProxyEvent.SYSTEM_MESSAGE, {
-        message: __(user.getLanguage())(
+        message: getTextFromArgs(
           "The furniture cannot be placed at position {{x}},{{z}}",
           { x, z },
         ),
@@ -86,9 +86,7 @@ export const setCommand: Command = {
 
       if (!isWallOrDoorX && !isWallOrDoorZ) {
         return user.emit(ProxyEvent.SYSTEM_MESSAGE, {
-          message: __(user.getLanguage())(
-            "Frames need to be attached to the wall",
-          ),
+          message: "Frames need to be attached to the wall",
         });
       }
 
@@ -99,7 +97,7 @@ export const setCommand: Command = {
         (!isWallOrDoorX && isWallOrDoorZ && direction === CrossDirection.EAST)
       ) {
         return user.emit(ProxyEvent.SYSTEM_MESSAGE, {
-          message: __(user.getLanguage())("Incorrect frame direction"),
+          message: "Incorrect frame direction",
         });
       }
     }

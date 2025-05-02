@@ -6,20 +6,20 @@ import {
   UsersConfig,
 } from "shared/types/main.ts";
 import { ProxyEvent } from "shared/enums/main.ts";
-import { __ } from "shared/utils/main.ts";
 import { System } from "modules/system/main.ts";
+import { getTextFromArgs } from "shared/utils/args.utils.ts";
 
 const on = (config: UsersConfig, _: string[], user: UserMutable) => {
   config.blacklist.active = true;
   user.emit(ProxyEvent.SYSTEM_MESSAGE, {
-    message: __(user.getLanguage())("Blacklist enabled"),
+    message: "Blacklist enabled",
   });
   return config;
 };
 const off = (config: UsersConfig, _: string[], user: UserMutable) => {
   config.blacklist.active = false;
   user.emit(ProxyEvent.SYSTEM_MESSAGE, {
-    message: __(user.getLanguage())("Blacklist disabled"),
+    message: "Blacklist disabled",
   });
   return config;
 };
@@ -29,7 +29,7 @@ const add = (config: UsersConfig, args: string[], user: UserMutable) => {
 
   config.blacklist.users.push(username);
   user.emit(ProxyEvent.SYSTEM_MESSAGE, {
-    message: __(user.getLanguage())("User {{username}} added to blacklist", {
+    message: getTextFromArgs("User {{username}} added to blacklist", {
       username,
     }),
   });
@@ -39,12 +39,9 @@ const remove = (config: UsersConfig, args: string[], user: UserMutable) => {
   const username = args[0];
   config.blacklist.users = config.blacklist.users.filter((u) => u !== username);
   user.emit(ProxyEvent.SYSTEM_MESSAGE, {
-    message: __(user.getLanguage())(
-      "User {{username}} removed from blacklist",
-      {
-        username,
-      },
-    ),
+    message: getTextFromArgs("User {{username}} removed from blacklist", {
+      username,
+    }),
   });
   return config;
 };
@@ -52,7 +49,7 @@ const list = (config: UsersConfig, _: string[], user: UserMutable) => {
   user.emit(ProxyEvent.SYSTEM_MESSAGE, {
     message:
       config.blacklist.users.join(", ") ||
-      __(user.getLanguage())("There is no users on the blacklist"),
+      getTextFromArgs("There is no users on the blacklist"),
   });
   return config;
 };
