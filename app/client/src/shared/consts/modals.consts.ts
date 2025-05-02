@@ -2,10 +2,10 @@ import { Modal, ModalNavigatorTab } from "shared/enums";
 import { Size } from "@openhotel/pixi-components";
 
 export const MODAL_NAVIGATOR_TAB_NAME_MAP: Record<ModalNavigatorTab, string> = {
-  [ModalNavigatorTab.HOTEL]: "Hotel",
-  [ModalNavigatorTab.ROOMS]: "Rooms",
-  [ModalNavigatorTab.ME]: "Me",
-  [ModalNavigatorTab.SEARCH]: "Search",
+  [ModalNavigatorTab.HOTEL]: "navigator.tabs.hotel",
+  [ModalNavigatorTab.ROOMS]: "navigator.tabs.rooms",
+  [ModalNavigatorTab.ME]: "navigator.tabs.me",
+  [ModalNavigatorTab.SEARCH]: "navigator.tabs.search",
 };
 
 export const MODAL_HOT_BAR_ITEMS = {

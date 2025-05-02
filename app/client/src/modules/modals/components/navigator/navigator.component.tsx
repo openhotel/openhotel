@@ -23,6 +23,7 @@ import {
 import { useModal } from "shared/hooks";
 import { MODAL_SIZE_MAP } from "shared/consts";
 import { ModalNavigatorTabProps } from "shared/types";
+import { useTranslation } from "react-i18next";
 
 export const NavigatorComponent: React.FC = () => {
   const { closeModal } = useModal();
@@ -58,6 +59,7 @@ export const NavigatorComponentWrapper: React.FC<Props> = ({
   onPointerDown,
   navigatorTabMap,
 }) => {
+  const { t } = useTranslation();
   const { setDragPolygon } = useDragContainer();
   const { width, height } = MODAL_SIZE_MAP[Modal.NAVIGATOR];
 
@@ -131,7 +133,7 @@ export const NavigatorComponentWrapper: React.FC<Props> = ({
           }}
         >
           <TextComponent
-            text="Navigator"
+            text={t("navigator.title")}
             backgroundColor={0xacc1ed}
             backgroundAlpha={1}
             padding={{

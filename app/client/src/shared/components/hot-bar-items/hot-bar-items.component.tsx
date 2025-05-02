@@ -4,9 +4,11 @@ import { Modal, SpriteSheetEnum } from "shared/enums";
 import { useModal } from "shared/hooks";
 import { MODAL_HOT_BAR_ITEMS } from "shared/consts";
 
-type Props = {};
+type Props = {
+  exclude?: Modal[];
+};
 
-export const HotBarItemsComponent: React.FC<Props> = () => {
+export const HotBarItemsComponent: React.FC<Props> = ({ exclude }) => {
   const { openModal, closeModal, isModalOpen } = useModal();
 
   const onPointerDown = useCallback(
@@ -23,6 +25,7 @@ export const HotBarItemsComponent: React.FC<Props> = () => {
         .map((modal) => {
           const modalId = Number(modal) as Modal;
           const { icon } = MODAL_HOT_BAR_ITEMS[modalId];
+          if (exclude?.includes(modalId)) return null;
           return (
             <SpriteComponent
               key={modal}

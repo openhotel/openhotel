@@ -10,6 +10,7 @@ export const getInfoRequest = {
       auth,
       onet,
       limits: { players: maxUsers },
+      lang,
     } = Proxy.getConfig();
     const { version } = Proxy.getEnvs();
     const userList = Proxy.getUserList();
@@ -21,6 +22,7 @@ export const getInfoRequest = {
           name,
           description,
           version,
+          lang,
           auth: {
             enabled: auth.enabled,
             api: auth.api,

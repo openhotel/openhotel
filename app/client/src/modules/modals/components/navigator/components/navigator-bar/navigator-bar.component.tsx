@@ -10,6 +10,7 @@ import { NavigatorButtonComponent } from "../";
 import { ModalNavigatorTab } from "shared/enums";
 import { MODAL_NAVIGATOR_TAB_NAME_MAP } from "shared/consts";
 
+import { useTranslation } from "react-i18next";
 type Props = {
   selectedCategory?: ModalNavigatorTab;
   onSelectCategory?: (category: ModalNavigatorTab) => void;
@@ -19,6 +20,7 @@ export const NavigatorBarComponent: React.FC<Props> = ({
   selectedCategory,
   onSelectCategory,
 }) => {
+  const { t } = useTranslation();
   const $onSelectCategory = useCallback(
     (category: ModalNavigatorTab) => () => {
       onSelectCategory?.(category);
@@ -47,7 +49,7 @@ export const NavigatorBarComponent: React.FC<Props> = ({
           }}
         >
           <NavigatorButtonComponent
-            text={MODAL_NAVIGATOR_TAB_NAME_MAP[category]}
+            text={t(MODAL_NAVIGATOR_TAB_NAME_MAP[category])}
             selected={selectedCategory === category}
             type={
               index === 0

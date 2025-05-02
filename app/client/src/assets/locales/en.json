@@ -1,16 +1,38 @@
 {
-  "Register instead": "Register instead",
-  "Login instead": "Login instead",
-  "Login": "Login",
-  "Register": "Register",
-  "You have been disconnected from the server!": "You have been disconnected from the server!",
-  "Return to the hotel": "Return to the hotel",
-  "username": "username",
-  "password": "password",
-  "repeat password": "repeat password",
-  "Click here or press 'c' to write a message": "Click here or press 'c' to write a message",
-  "New room": "New room",
-  "Room name": "Room name",
-  "Room description": "Room description",
-  "Create": "Create"
+  "system": {
+    "connecting": "Connecting...",
+    "asset_label": "assets",
+    "sprite_sheet_label": "sprite sheets",
+    "texture_label": "textures",
+    "loading": "Loading",
+    "progress_may_be_wiped": "The progress may be wiped",
+    "loading_config": "Loading config...",
+    "redirecting": "Redirecting...",
+    "proxy_disconnected": "Proxy disconnected! :(",
+    "proxy_not_reachable": "Proxy not reachable! :(",
+    "something_went_wrong": "Something went wrong! :(",
+    "created_by": "Created by",
+    "developed_by": "Developed by"
+  },
+  "chat": {
+    "hot_bar_placeholder": "Click here or press 'c' to write"
+  },
+  "navigator": {
+    "title": "Navigator",
+    "join": "Join",
+    "tabs": {
+      "hotel": "Hotel",
+      "rooms": "Rooms",
+      "me": "Me",
+      "search": "Search"
+    }
+  },
+  "economy": {
+    "purse_title": "Purse",
+    "credits": "credits",
+    "buy": "buy"
+  },
+  "catalog": {
+    "title": "Catalog"
+  }
 }

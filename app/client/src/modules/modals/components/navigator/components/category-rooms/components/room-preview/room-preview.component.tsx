@@ -17,6 +17,7 @@ import {
   TextComponent,
 } from "shared/components";
 import { useApiPath } from "shared/hooks";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   size: Size;
@@ -30,6 +31,7 @@ export const RoomPreviewComponent: React.FC<Props> = ({
   onJoin,
   ...containerProps
 }) => {
+  const { t } = useTranslation();
   const { getPath } = useApiPath();
   const { loadTexture, getTexture } = useTextures();
 
@@ -108,7 +110,7 @@ export const RoomPreviewComponent: React.FC<Props> = ({
             x: size.width - 37 - 3,
             y: 3,
           }}
-          text="Join"
+          text={t("navigator.join")}
           onPointerDown={onJoin}
         />
       </ContainerComponent>

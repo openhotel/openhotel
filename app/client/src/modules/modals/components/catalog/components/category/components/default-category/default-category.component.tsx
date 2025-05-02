@@ -19,6 +19,7 @@ import {
 } from "shared/components";
 import { CatalogCategoryData } from "shared/types";
 import { useApi, useFurniture } from "shared/hooks";
+import { useTranslation } from "react-i18next";
 import {
   FURNITURE_ICON_BOX_SIZE,
   FURNITURE_ICON_SIZE,
@@ -40,6 +41,7 @@ export const DefaultCategoryComponent: React.FC<Props> = ({
   const { fetch } = useApi();
   const { load, get } = useFurniture();
 
+  const { t } = useTranslation();
   const [selectedFurniture, setSelectedFurniture] = useState<string>(null);
 
   const [categoryData, setCategoryData] = useState<CatalogCategoryData>(null);
@@ -207,7 +209,7 @@ export const DefaultCategoryComponent: React.FC<Props> = ({
                 width: 37,
                 height: 14,
               }}
-              text="Buy"
+              text={t("economy.buy")}
               onPointerUp={onBuyFurniture}
             />
           </FlexContainerComponent>
