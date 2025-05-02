@@ -25,6 +25,9 @@ export const phantom = () => {
   };
 
   const capture = ({ id, room, position, size, palette }: any) => {
+    const config = System.config.get();
+    if (!config.phantom.enabled) return;
+
     const $id = id ?? ulid();
     $worker.emit("capture-private-room", {
       id: $id,
