@@ -25,7 +25,7 @@ export const ButtonComponent: React.FC<Props> = ({
   color,
   ...containerProps
 }) => {
-  const [tint, setTint] = useState<number | undefined>(undefined);
+  const [tint, setTint] = useState<number>(0xffffff);
 
   return (
     <ContainerComponent
