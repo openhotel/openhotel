@@ -270,10 +270,13 @@ export const users = () => {
       username: user.username,
     });
     await System.db.set(["usersByUsername", user.username], user.accountId);
-    await System.db.set(
-      ["users", user.accountId, "balance"],
-      INITIAL_PLAYER_BALANCE,
-    );
+    const credits = await $user.getCredits();
+    if (credits === null) {
+      await System.db.set(
+        ["users", user.accountId, "balance"],
+        INITIAL_PLAYER_BALANCE,
+      );
+    }
 
     await $user.log("joined");
   };
