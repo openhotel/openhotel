@@ -4,7 +4,7 @@ import { ProxyEvent } from "shared/enums/main.ts";
 import { Proxy } from "modules/proxy/main.ts";
 
 export const getApiRequest = {
-  method: ["GET", "PUT", "POST"],
+  method: ["GET", "PUT", "POST", "DELETE"],
   pathname: "/api",
   fn: async (request: Request): Promise<Response> => {
     const { headers, method } = request;
@@ -23,9 +23,11 @@ export const getApiRequest = {
     for (const [key, value] of searchParams as any) data[key] = value;
 
     if (request.body) {
-      data = {
-        ...(await request.json()),
-      };
+      try {
+        data = {
+          ...(await request.json()),
+        };
+      } catch (e) {}
     }
 
     const eventName = user?.accountId + getRandomString(32);
