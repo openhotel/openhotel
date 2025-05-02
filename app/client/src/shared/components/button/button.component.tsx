@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {
   ContainerComponent,
   ContainerProps,
@@ -25,11 +25,15 @@ export const ButtonComponent: React.FC<Props> = ({
   color,
   ...containerProps
 }) => {
+  const [tint, setTint] = useState<number | undefined>(undefined);
+
   return (
     <ContainerComponent
       {...containerProps}
       eventMode={EventMode.STATIC}
       cursor={Cursor.POINTER}
+      onPointerEnter={() => setTint(0xdddddd)}
+      onPointerLeave={() => setTint(0xffffff)}
     >
       <NineSliceSpriteComponent
         spriteSheet={SpriteSheetEnum.UI}
@@ -42,6 +46,7 @@ export const ButtonComponent: React.FC<Props> = ({
         height={size.height}
         eventMode={EventMode.STATIC}
         cursor={Cursor.POINTER}
+        tint={tint}
       />
       <FlexContainerComponent
         size={size}
