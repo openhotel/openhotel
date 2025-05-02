@@ -16,11 +16,13 @@ import { TextComponent } from "shared/components/text";
 type Props = {
   text: string;
   size: Size;
+  color?: number;
 } & ContainerProps;
 
 export const ButtonComponent: React.FC<Props> = ({
   text,
   size,
+  color,
   ...containerProps
 }) => {
   return (
@@ -46,7 +48,7 @@ export const ButtonComponent: React.FC<Props> = ({
         justify={FLEX_JUSTIFY.CENTER}
         align={FLEX_ALIGN.CENTER}
       >
-        <TextComponent text={text} color={0} />
+        <TextComponent text={text} color={color ?? 0} />
       </FlexContainerComponent>
     </ContainerComponent>
   );

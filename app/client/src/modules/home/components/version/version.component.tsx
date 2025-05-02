@@ -3,10 +3,11 @@ import { Cursor, EventMode } from "@openhotel/pixi-components";
 import { TextComponent } from "shared/components";
 import { useConfig } from "shared/hooks";
 import { TEXT_BACKGROUND_BASE } from "shared/consts";
+import { useTranslation } from "react-i18next";
 
 export const VersionComponent: React.FC = () => {
   const { getVersion, getConfig } = useConfig();
-
+  const { t } = useTranslation();
   const version = useMemo(() => getVersion(), [getVersion]);
 
   const onOpenGithubRelease = useCallback(() => {
@@ -26,7 +27,7 @@ export const VersionComponent: React.FC = () => {
         {...TEXT_BACKGROUND_BASE}
       />
       <TextComponent
-        text="alpha: progress may be wiped"
+        text={`alpha: ${t("system.progress_may_be_wiped")}`}
         {...TEXT_BACKGROUND_BASE}
       />
     </>

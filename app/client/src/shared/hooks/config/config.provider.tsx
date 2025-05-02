@@ -8,6 +8,12 @@ import React, {
 import { ConfigContext } from "./config.context";
 import { LoaderComponent } from "shared/components";
 import { ConfigTypes } from "shared/types";
+import { useTranslation } from "react-i18next";
+import i18n from "modules/application/i18n";
+import {
+  LANGUAGE_FALLBACK,
+  LANGUAGE_PREFERENCE_KEY,
+} from "shared/consts/language.consts";
 
 type ConfigProps = {
   children: ReactNode;
@@ -16,11 +22,13 @@ type ConfigProps = {
 export const ConfigProvider: React.FunctionComponent<ConfigProps> = ({
   children,
 }) => {
+  const { t } = useTranslation();
   const configRef = useRef<ConfigTypes>(null);
   const changeLogRef = useRef<unknown>(null);
 
-  const [loadingMessage, setLoadingMessage] =
-    useState<string>("Loading config...");
+  const [loadingMessage, setLoadingMessage] = useState<string>(
+    t("system.loading_config"),
+  );
 
   useEffect(() => {
     fetch("/info")
@@ -29,6 +37,11 @@ export const ConfigProvider: React.FunctionComponent<ConfigProps> = ({
         configRef.current = config;
         const lastVersion = localStorage.getItem("version");
         localStorage.setItem("version", config.version);
+
+        const lang = localStorage.getItem(LANGUAGE_PREFERENCE_KEY);
+        if (lang == "NONE") {
+          i18n.changeLanguage(config.lang ?? LANGUAGE_FALLBACK);
+        }
 
         if (lastVersion === config.version) return setLoadingMessage(null);
 

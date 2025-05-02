@@ -1,16 +1,38 @@
 {
-  "Register instead": "O registrate",
-  "Login instead": "O inicia sesion",
-  "Login": "Iniciar sesion",
-  "Register": "Registrarse",
-  "You have been disconnected from the server!": "¡Te has desconectado del servidor!",
-  "Return to the hotel": "Volver al hotel",
-  "username": "usuario",
-  "password": "contraseña",
-  "repeat password": "repetir constraseña",
-  "Click here or press 'c' to write a message": "Click aqui o presiona 'c' para escribir",
-  "New room": "Nueva sala",
-  "Room name": "Nombre de la sala",
-  "Room description": "Descripción de la sala",
-  "Create": "Crear"
+  "system": {
+    "connecting": "Conectando...",
+    "asset_label": "recursos",
+    "sprite_sheet_label": "hojas de sprites",
+    "texture_label": "texturas",
+    "loading": "Cargando",
+    "progress_may_be_wiped": "El progreso podria ser borrado",
+    "loading_config": "Cargando configuración...",
+    "redirecting": "Redirigiendo...",
+    "proxy_disconnected": "¡Proxy desconectado! :(",
+    "proxy_not_reachable": "¡Proxy no accesible! :(",
+    "something_went_wrong": "¡Algo salio mal! :(",
+    "created_by": "Creado por",
+    "developed_by": "Desarrollado por"
+  },
+  "chat": {
+    "hot_bar_placeholder": "Click aqui o presiona 'c' para escribir"
+  },
+  "navigator": {
+    "title": "Navegador",
+    "join": "Unirse",
+    "tabs": {
+      "hotel": "Hotel",
+      "rooms": "Salas",
+      "me": "Yo",
+      "search": "Buscar"
+    }
+  },
+  "economy": {
+    "purse_title": "Monedero",
+    "credits": "creditos",
+    "buy": "comprar"
+  },
+  "catalog": {
+    "title": "Catalogo"
+  }
 }

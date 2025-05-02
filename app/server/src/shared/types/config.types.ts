@@ -6,6 +6,7 @@ export type ConfigTypes = {
   limits: {
     players: number;
   };
+  lang: string;
   auth: {
     enabled: boolean;
     licenseToken?: string;

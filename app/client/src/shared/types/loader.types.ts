@@ -1,10 +1,5 @@
 export type LoaderItem = {
-  startLabel: string;
-  endLabel: string;
-
-  prefix?: string;
-  suffix?: string;
+  label: string;
   items: string[];
-
   func: (props: unknown) => Promise<unknown>;
 };

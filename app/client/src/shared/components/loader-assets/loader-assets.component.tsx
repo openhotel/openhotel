@@ -7,6 +7,7 @@ import {
 } from "@openhotel/pixi-components";
 import { LoadingBarComponent, TextComponent } from "shared/components";
 import { LoaderItem } from "shared/types";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   loaderItems: LoaderItem[];
@@ -19,8 +20,11 @@ export const LoaderAssetsComponent: React.FC<Props> = ({
   children,
 }) => {
   const currentPercentageRef = useRef<number>(0);
-  const [currentText, setCurrentText] = useState<string>("Loading...");
+  const { t } = useTranslation();
 
+  const [currentText, setCurrentText] = useState<string>(
+    `${t("system.loading")}...	`,
+  );
   useEffect(() => {
     if (!loaderItems) return;
     (async () => {
@@ -29,22 +33,15 @@ export const LoaderAssetsComponent: React.FC<Props> = ({
         0,
       );
       let currentItem = 0;
-      for (const {
-        items,
-        func,
-        startLabel,
-        endLabel,
-        prefix,
-        suffix,
-      } of loaderItems) {
-        setCurrentText(startLabel);
+      for (const { items, func, label } of loaderItems) {
+        setCurrentText(`${t("system.loading")} ${label}`);
         for (const item of items) {
-          setCurrentText(`${prefix} ${item.split(".")[0]} ${suffix}`);
+          setCurrentText(`${t("system.loading")} ${item.split(".")[0]}`);
           await func(item);
           currentItem++;
           currentPercentageRef.current = currentItem / totalItems;
         }
-        setCurrentText(endLabel);
+        setCurrentText(`${t("system.loading")} ${label}`);
       }
       setCurrentText(null);
       onDone?.();
