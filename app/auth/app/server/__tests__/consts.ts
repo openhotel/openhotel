@@ -5,7 +5,11 @@ export const USER_1 = {
   email: "Jorji@Obristan.obr",
   username: "Jorji",
   password: "*dry$yVnidc0Utp}_Da*($P}kQ&_M{",
-  languages: [LANGUAGE_LIST[2], LANGUAGE_LIST[20], LANGUAGE_LIST[42]],
+  languages: [
+    LANGUAGE_LIST[2].code,
+    LANGUAGE_LIST[20].code,
+    LANGUAGE_LIST[42].code,
+  ],
 
   connectionScopes: [Scope.ONET_MESSAGES_READ, Scope.ONET_MESSAGES_WRITE],
 };
@@ -14,7 +18,7 @@ export const USER_2 = {
   email: "Frank@bobba.su",
   username: "Frank",
   password: "*}_DaP}}kQ&_VndUtpkQ&_V*($P",
-  languages: [LANGUAGE_LIST[1]],
+  languages: [LANGUAGE_LIST[1].code],
 
   connectionScopes: [Scope.ONET_MESSAGES_READ, Scope.ONET_FRIENDS_WRITE],
 };

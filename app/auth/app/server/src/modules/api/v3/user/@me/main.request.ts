@@ -40,7 +40,10 @@ export const mainPatchRequest: RequestType = {
 
     if (
       !languages?.length ||
-      languages.find((language) => !LANGUAGE_LIST.includes(language))
+      languages.find(
+        (language) =>
+          !LANGUAGE_LIST.map((lang) => lang.code).includes(language),
+      )
     )
       return getResponse(HttpStatusCode.BAD_REQUEST, {
         message: "Language is not valid!",

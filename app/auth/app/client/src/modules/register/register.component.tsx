@@ -35,7 +35,11 @@ export const RegisterComponent: React.FC = () => {
   }, [fetchLanguages]);
 
   const languageOptions = useMemo(
-    () => languages.map((language) => ({ key: language, value: language })),
+    () =>
+      languages.map((language) => ({
+        key: language.code,
+        value: language.name,
+      })),
     [languages],
   );
 

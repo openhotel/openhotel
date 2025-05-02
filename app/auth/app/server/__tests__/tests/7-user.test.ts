@@ -36,7 +36,7 @@ describe("8. user", () => {
         method: "PATCH",
         headers: STATE.getSessionHeaders(USER_1.email),
         body: JSON.stringify({
-          languages: [LANGUAGE_LIST[4]],
+          languages: [LANGUAGE_LIST[4].code],
         }),
       });
       assertEquals(status, 200);
@@ -48,7 +48,7 @@ describe("8. user", () => {
       assertEquals(userMeResponse.status, 200);
       assertEquals(userMeResponse.data, {
         accountId: STATE.getUser(USER_1.email).accountId,
-        languages: [LANGUAGE_LIST[4]],
+        languages: [LANGUAGE_LIST[4].code],
         username: USER_1.username,
       });
 
