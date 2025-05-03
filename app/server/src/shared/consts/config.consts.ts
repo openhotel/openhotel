@@ -8,6 +8,7 @@ export const CONFIG_DEFAULT: ConfigTypes = {
   limits: {
     players: 100,
   },
+  languages: ["en", "es"],
   auth: {
     enabled: false,
     licenseToken: "",

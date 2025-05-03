@@ -1,7 +1,7 @@
 import { Command, CommandRoles } from "shared/types/main.ts";
 import { ProxyEvent } from "shared/enums/main.ts";
 import { commandList } from "./main.ts";
-import { __ } from "shared/utils/main.ts";
+import { getTextFromArgs } from "shared/utils/args.utils.ts";
 
 export const helpCommand: Command = {
   command: "help",
@@ -14,17 +14,17 @@ export const helpCommand: Command = {
       const cmd = commandList.find((c) => c.command === command);
       if (!cmd) {
         user.emit(ProxyEvent.SYSTEM_MESSAGE, {
-          message: __(user.getLanguage())("Command not found"),
+          message: "Command not found",
         });
         return;
       }
 
       const description = cmd.description
-        ? __(user.getLanguage())(cmd.description)
-        : __(user.getLanguage())("No description available");
+        ? getTextFromArgs(cmd.description)
+        : "No description available";
 
       user.emit(ProxyEvent.SYSTEM_MESSAGE, {
-        message: __(user.getLanguage())("{{command}}: {{description}}", {
+        message: getTextFromArgs("{{command}}: {{description}}", {
           command: cmd.command,
           description: description,
         }),
@@ -35,7 +35,7 @@ export const helpCommand: Command = {
     const isOp = await user.isOp();
 
     user.emit(ProxyEvent.SYSTEM_MESSAGE, {
-      message: __(user.getLanguage())("Available commands: {{commands}}", {
+      message: getTextFromArgs("Available commands: {{commands}}", {
         commands: commandList
           .filter((c) =>
             c.command !== "help" && !isOp ? c.role === CommandRoles.USER : true,

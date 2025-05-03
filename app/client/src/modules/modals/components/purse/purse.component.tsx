@@ -18,6 +18,7 @@ import { ScrollComponent, TextComponent } from "shared/components";
 import { useApi, useModal } from "shared/hooks";
 import { Transaction } from "shared/types";
 import { TransactionComponent } from "./components";
+import { useTranslation } from "react-i18next";
 
 export const PurseComponent: React.FC = () => {
   const { fetch } = useApi();
@@ -77,6 +78,7 @@ export const PurseComponentWrapper: React.FC<Props> = ({
   onPointerDown,
   setDragPolygon,
 }) => {
+  const { t } = useTranslation();
   const { width, height } = MODAL_SIZE_MAP[Modal.PURSE];
 
   useEffect(() => {
@@ -85,8 +87,8 @@ export const PurseComponentWrapper: React.FC<Props> = ({
 
   const scrollSize = useMemo(
     () => ({
-      width: width - 28 * 2,
-      height: height - 23 - 50,
+      width: width - 28 * 2 - 1,
+      height: height - 23 - 50 + 1,
     }),
     [width, height],
   );
@@ -150,8 +152,9 @@ export const PurseComponentWrapper: React.FC<Props> = ({
           }}
         >
           <TextComponent
-            text="Purse"
+            text={t("economy.purse_title")}
             backgroundColor={0xb3a49a}
+            color={0x6e5859}
             backgroundAlpha={1}
             padding={{
               left: 4,
@@ -173,7 +176,7 @@ export const PurseComponentWrapper: React.FC<Props> = ({
           gap={4}
         >
           <TextComponent text={credits.toString()} color={0x000} bold />
-          <TextComponent text="credits" color={0x000} />
+          <TextComponent text={t("economy.credits")} color={0x000} />
         </FlexContainerComponent>
 
         <ScrollComponent position={{ x: 23, y: 50 }} size={scrollSize}>

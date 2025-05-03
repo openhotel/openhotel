@@ -9,7 +9,6 @@ import {
 } from "shared/types/main.ts";
 import { System } from "modules/system/main.ts";
 import { ProxyEvent } from "shared/enums/event.enum.ts";
-import { Language } from "shared/enums/languages.enum.ts";
 import { RoomPointEnum } from "shared/enums/room.enums.ts";
 import { USERS_CONFIG_DEFAULT } from "shared/consts/users.consts.ts";
 import { Direction, getConfig, Point3d } from "@oh/utils";
@@ -164,13 +163,6 @@ export const users = () => {
 
     const getObject = (): User => $user;
 
-    const setLanguage = (language: Language) => {
-      if (!Language[language.toUpperCase()]) return;
-      $privateUserMap[user.accountId].language = language;
-    };
-    const getLanguage = () =>
-      $privateUserMap[user.accountId].language ?? Language.EN;
-
     const getMeta = () => $user.meta ?? null;
 
     const isOP = async () =>
@@ -254,9 +246,6 @@ export const users = () => {
 
       disconnect,
 
-      setLanguage,
-      getLanguage,
-
       getMeta,
 
       isOp: isOP,
@@ -281,10 +270,13 @@ export const users = () => {
       username: user.username,
     });
     await System.db.set(["usersByUsername", user.username], user.accountId);
-    await System.db.set(
-      ["users", user.accountId, "balance"],
-      INITIAL_PLAYER_BALANCE,
-    );
+    const credits = await $user.getCredits();
+    if (credits === null) {
+      await System.db.set(
+        ["users", user.accountId, "balance"],
+        INITIAL_PLAYER_BALANCE,
+      );
+    }
 
     await $user.log("joined");
   };

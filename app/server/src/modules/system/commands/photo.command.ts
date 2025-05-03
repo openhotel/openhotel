@@ -35,6 +35,13 @@ export const photoCommand: Command = {
       size,
       palette: CAMERA_SEPIA_PALETTE,
     });
+
+    if (!id) {
+      return user.emit(ProxyEvent.SYSTEM_MESSAGE, {
+        message: "Phantom is disabled! Check server config.",
+      });
+    }
+
     user.emit(ProxyEvent.SYSTEM_MESSAGE, { message: `Photo id ${id}` });
   },
 };

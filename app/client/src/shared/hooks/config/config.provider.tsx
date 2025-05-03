@@ -17,26 +17,21 @@ export const ConfigProvider: React.FunctionComponent<ConfigProps> = ({
   children,
 }) => {
   const configRef = useRef<ConfigTypes>(null);
-  const changeLogRef = useRef<unknown>(null);
+  const lastVersionRef = useRef<string>(null);
 
-  const [loadingMessage, setLoadingMessage] =
-    useState<string>("Loading config...");
+  const [loadingMessage, setLoadingMessage] = useState<string>(
+    "Loading configuration...",
+  );
 
   useEffect(() => {
     fetch("/info")
       .then((response) => response.json())
       .then(async ({ data: config }) => {
         configRef.current = config;
-        const lastVersion = localStorage.getItem("version");
+        lastVersionRef.current = localStorage.getItem("version");
         localStorage.setItem("version", config.version);
 
-        if (lastVersion === config.version) return setLoadingMessage(null);
-
-        setLoadingMessage("Loading changelog...");
-        (changeLogRef.current = (
-          await (await fetch(`/changelog?from=${lastVersion}`)).json()
-        ).data),
-          setLoadingMessage(null);
+        setLoadingMessage(null);
       })
       .catch(() => {
         setLoadingMessage("Server is not reachable!");
@@ -44,7 +39,7 @@ export const ConfigProvider: React.FunctionComponent<ConfigProps> = ({
   }, [setLoadingMessage]);
 
   const getConfig = useCallback(() => configRef.current, []);
-  const getChangeLog = useCallback(() => changeLogRef.current, []);
+  const getLastVersion = useCallback(() => lastVersionRef.current, []);
 
   const getVersion = useCallback(
     () => `${configRef.current.version}-alpha`,
@@ -59,7 +54,7 @@ export const ConfigProvider: React.FunctionComponent<ConfigProps> = ({
   return (
     <ConfigContext.Provider
       value={{
-        getChangeLog,
+        getLastVersion,
         getConfig,
         getVersion,
 

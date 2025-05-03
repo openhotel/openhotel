@@ -6,7 +6,7 @@ import { MODAL_HOT_BAR_ITEMS } from "shared/consts";
 
 type Props = {};
 
-export const HotBarItemsComponent: React.FC<Props> = () => {
+export const HotBarItemsComponent: React.FC<Props> = ({}) => {
   const { openModal, closeModal, isModalOpen } = useModal();
 
   const onPointerDown = useCallback(

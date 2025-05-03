@@ -21,6 +21,7 @@ import {
   CategoryComponent,
   HEADER_SIZE,
 } from "modules/modals/components/catalog/components/category/category.component";
+import { useTranslation } from "react-i18next";
 
 const HEADER_HEIGHT = 17;
 const CONTENT_PADDING = 5;
@@ -151,6 +152,7 @@ export const CatalogComponentWrapper: React.FC<WrapperProps> = ({
     }),
     [overModalSize],
   );
+  const { t } = useTranslation();
 
   return (
     <>
@@ -204,7 +206,7 @@ export const CatalogComponentWrapper: React.FC<WrapperProps> = ({
               }}
             >
               <TextComponent
-                text="Catalog"
+                text={t("catalog.title")}
                 backgroundColor={0xacc1ed}
                 backgroundAlpha={1}
                 padding={{

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   ContainerComponent,
   ContainerProps,
@@ -19,19 +19,25 @@ type Props = {
   text: string;
   size: Size;
   isLoading?: boolean;
+  color?: number;
 } & ContainerProps;
 
 export const ButtonComponent: React.FC<Props> = ({
   text,
   size,
   isLoading,
+  color,
   ...containerProps
 }) => {
+  const [tint, setTint] = useState<number>(0xffffff);
+
   return (
     <ContainerComponent
       {...containerProps}
       eventMode={EventMode.STATIC}
       cursor={Cursor.POINTER}
+      onPointerEnter={() => setTint(0xdddddd)}
+      onPointerLeave={() => setTint(0xffffff)}
     >
       <NineSliceSpriteComponent
         spriteSheet={SpriteSheetEnum.UI}
@@ -45,6 +51,7 @@ export const ButtonComponent: React.FC<Props> = ({
         eventMode={EventMode.STATIC}
         cursor={Cursor.POINTER}
         alpha={isLoading ? 0.25 : 1}
+        tint={tint}
       />
       <FlexContainerComponent
         size={size}
@@ -54,7 +61,7 @@ export const ButtonComponent: React.FC<Props> = ({
         {isLoading ? (
           <LoadingIconComponent icon={LOADING_STYLES.PULSE} />
         ) : (
-          <TextComponent text={text} color={0} />
+          <TextComponent text={text} color={color ??0} />
         )}
       </FlexContainerComponent>
     </ContainerComponent>

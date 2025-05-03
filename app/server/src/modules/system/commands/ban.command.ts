@@ -1,7 +1,7 @@
-import { __ } from "shared/utils/main.ts";
 import { System } from "../main.ts";
 import { Command, CommandRoles } from "shared/types/main.ts";
 import { ProxyEvent } from "shared/enums/main.ts";
+import { getTextFromArgs } from "shared/utils/args.utils.ts";
 
 export const banCommand: Command = {
   command: "ban",
@@ -23,7 +23,7 @@ export const banCommand: Command = {
 
     bannedUser.disconnect();
     user.emit(ProxyEvent.SYSTEM_MESSAGE, {
-      message: __(user.getLanguage())("User {{username}} has been banned", {
+      message: getTextFromArgs("User {{username}} has been banned", {
         username,
       }),
     });

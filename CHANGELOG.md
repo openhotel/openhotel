@@ -1,4 +1,28 @@
 
+<a name="v0.6.9"></a>
+
+## [v0.6.9](https://github.com/openhotel/openhotel/compare/v0.6.8...v0.6.9) (2025-05-02)
+
+### Bug Fixes
+
+- incorrect padding on left and right on purse - fix [#842](https://github.com/openhotel/openhotel/issues/842) ([#843](https://github.com/openhotel/openhotel/issues/843))
+- purse title color - fix [#837](https://github.com/openhotel/openhotel/issues/837) ([#839](https://github.com/openhotel/openhotel/issues/839))
+- character hitbox - fix [#808](https://github.com/openhotel/openhotel/issues/808) ([#820](https://github.com/openhotel/openhotel/issues/820))
+
+### Code Refactoring
+
+- client internationalization - fix [#783](https://github.com/openhotel/openhotel/issues/783) [#825](https://github.com/openhotel/openhotel/issues/825) ([#812](https://github.com/openhotel/openhotel/issues/812))
+
+### Features
+
+- change i18n to work as a provider + retrieve lang from auth - fix [#836](https://github.com/openhotel/openhotel/issues/836) ([#838](https://github.com/openhotel/openhotel/issues/838))
+- update furniture prices and add coin icon - fix [#819](https://github.com/openhotel/openhotel/issues/819) ([#824](https://github.com/openhotel/openhotel/issues/824))
+- check if catalog is available when buying furniture - fix [#822](https://github.com/openhotel/openhotel/issues/822) ([#823](https://github.com/openhotel/openhotel/issues/823))
+- add purse transaction when buying furniture - fix [#802](https://github.com/openhotel/openhotel/issues/802) ([#821](https://github.com/openhotel/openhotel/issues/821))
+- add purse title - fix [#809](https://github.com/openhotel/openhotel/issues/809) ([#815](https://github.com/openhotel/openhotel/issues/815))
+- add scroll to transaction list in purse component - fix [#805](https://github.com/openhotel/openhotel/issues/805) ([#811](https://github.com/openhotel/openhotel/issues/811))
+
+
 <a name="v0.6.8"></a>
 
 ## [v0.6.8](https://github.com/openhotel/openhotel/compare/v0.6.7...v0.6.8) (2025-04-30)
