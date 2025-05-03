@@ -194,9 +194,28 @@
       "frame": { "x": 62, "y": 152, "w": 8, "h": 8 },
       "sourceSize": { "w": 8, "h": 8 },
       "anchor": { "x": 0, "y": 0 }
+    },
+    "pulse-1": {
+      "frame": { "x": 0, "y": 140, "w": 8, "h": 8 },
+      "sourceSize": { "w": 8, "h": 8 },
+      "anchor": { "x": 0, "y": 0 }
+    },
+    "pulse-2": {
+      "frame": { "x": 8, "y": 140, "w": 8, "h": 8 },
+      "sourceSize": { "w": 8, "h": 8 },
+      "anchor": { "x": 0, "y": 0 }
+    },
+    "pulse-3": {
+      "frame": { "x": 16, "y": 140, "w": 8, "h": 8 },
+      "sourceSize": { "w": 8, "h": 8 },
+      "anchor": { "x": 0, "y": 0 }
+    },
+    "pulse-4": {
+      "frame": { "x": 24, "y": 140, "w": 8, "h": 8 },
+      "sourceSize": { "w": 8, "h": 8 },
+      "anchor": { "x": 0, "y": 0 }
     }
   },
-  "animations": {},
   "meta": {
     "format": "RGBA8888",
     "image": "ui.png",

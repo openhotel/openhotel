@@ -16,6 +16,7 @@ import {
   ItemListComponent,
   SoftBadgeComponent,
   TextComponent,
+  LoadingIconComponent
 } from "shared/components";
 import { CatalogCategoryData } from "shared/types";
 import { useApi, useFurniture } from "shared/hooks";
@@ -23,6 +24,7 @@ import {
   FURNITURE_ICON_BOX_SIZE,
   FURNITURE_ICON_SIZE,
   SCROLL_BAR_WIDTH,
+  LOADING_STYLES
 } from "shared/consts";
 import { CATALOG_DEFAULT_CATEGORY_ITEM_LIST_SIZE } from "shared/consts/catalog.consts";
 import { SpriteSheetEnum } from "shared/enums";
@@ -41,6 +43,7 @@ export const DefaultCategoryComponent: React.FC<Props> = ({
   const { load, get } = useFurniture();
 
   const [selectedFurniture, setSelectedFurniture] = useState<string>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [categoryData, setCategoryData] = useState<CatalogCategoryData>(null);
 
@@ -71,7 +74,9 @@ export const DefaultCategoryComponent: React.FC<Props> = ({
                   y: (data.icon.bounds.height - FURNITURE_ICON_SIZE) / 2,
                 }}
               />
-            ) : null,
+            ) : (
+              <LoadingIconComponent icon={LOADING_STYLES.PULSE} />
+            ),
         };
       }),
     [categoryData, get],
@@ -114,6 +119,8 @@ export const DefaultCategoryComponent: React.FC<Props> = ({
   const bottomHeight = 20;
 
   const onBuyFurniture = useCallback(() => {
+    if (isLoading) return;
+    setIsLoading(true);
     fetch(
       "/catalog/buy",
       { furnitureId: selectedFurnitureData.furnitureId },
@@ -121,8 +128,10 @@ export const DefaultCategoryComponent: React.FC<Props> = ({
       "POST",
     ).then((r) => {
       console.log(r);
+    }).finally(() => {
+      setIsLoading(false);
     });
-  }, [fetch, selectedFurnitureData]);
+  }, [fetch, selectedFurnitureData, isLoading]);
 
   const renderPreview = useMemo(() => {
     if (!selectedFurnitureData)
@@ -209,6 +218,7 @@ export const DefaultCategoryComponent: React.FC<Props> = ({
               }}
               text="Buy"
               onPointerUp={onBuyFurniture}
+              isLoading={isLoading}
             />
           </FlexContainerComponent>
         </ContainerComponent>
