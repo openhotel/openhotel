@@ -6,6 +6,7 @@ import { phantomRequest } from "./phantom.request.ts";
 import { economyRequest } from "./economy.request.ts";
 import { captureRequest } from "./capture.request.ts";
 import { requestList as catalogRequestList } from "./catalog/main.ts";
+import { requestList as companiesRequestList } from "./company/main.ts";
 
 import { RequestType, getPathRequestList } from "@oh/utils";
 
@@ -24,6 +25,7 @@ export const requestList: RequestType[] = getPathRequestList({
     economyRequest,
 
     ...catalogRequestList,
+    ...companiesRequestList,
   ],
   pathname: "",
 });
