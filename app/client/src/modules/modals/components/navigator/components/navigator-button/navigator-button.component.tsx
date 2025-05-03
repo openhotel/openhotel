@@ -53,7 +53,7 @@ export const NavigatorButtonComponent: React.FC<Props> = ({
 
   useEffect(() => {
     setWidth(textRef.current.getSize().width + padding);
-  }, [setWidth, padding]);
+  }, [setWidth]);
 
   const props = useMemo(
     () => ({
@@ -63,26 +63,29 @@ export const NavigatorButtonComponent: React.FC<Props> = ({
     [type, selected],
   );
 
-  return (
-    <>
-      <NineSliceSpriteComponent
-        zIndex={10}
-        spriteSheet={SpriteSheetEnum.UI}
-        width={width}
-        {...props}
-      />
-      <FlexContainerComponent
-        zIndex={11}
-        position={{
-          y: 7,
-        }}
-        justify={FLEX_JUSTIFY.CENTER}
-        size={{
-          width,
-        }}
-      >
-        <TextComponent ref={textRef} text={text} tint={color} />
-      </FlexContainerComponent>
-    </>
+  return useMemo(
+    () => (
+      <>
+        <NineSliceSpriteComponent
+          zIndex={10}
+          spriteSheet={SpriteSheetEnum.UI}
+          width={width}
+          {...props}
+        />
+        <FlexContainerComponent
+          zIndex={11}
+          position={{
+            y: 7,
+          }}
+          justify={FLEX_JUSTIFY.CENTER}
+          size={{
+            width,
+          }}
+        >
+          <TextComponent ref={textRef} text={text} tint={color} />
+        </FlexContainerComponent>
+      </>
+    ),
+    [width, props, text, color],
   );
 };

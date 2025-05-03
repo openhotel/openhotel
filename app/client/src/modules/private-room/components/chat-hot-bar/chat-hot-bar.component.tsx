@@ -21,7 +21,7 @@ import {
   useEvents,
 } from "@openhotel/pixi-components";
 import { HotBarItemsComponent } from "shared/components";
-import { Event, Modal, SpriteSheetEnum } from "shared/enums";
+import { Event, SpriteSheetEnum } from "shared/enums";
 import { usePrivateRoom, useProxy } from "shared/hooks";
 import {
   CHAT_RIGHT_MARGIN,
@@ -173,107 +173,119 @@ export const ChatHotBarComponent: React.FC<Props> = ({
     [maxWidth, width],
   );
 
-  return (
-    <ContainerComponent
-      pivot={{
-        y: HOT_BAR_HEIGHT,
-      }}
-    >
-      <ContainerComponent pivot={{ x: startXPivot }}>
-        <GraphicsComponent
-          type={GraphicType.RECTANGLE}
-          width={maxWidth}
-          height={1}
-          tint={1}
-          pivot={{
-            y: 2,
-          }}
-        />
-        <GraphicsComponent
-          type={GraphicType.RECTANGLE}
-          width={maxWidth}
-          height={1}
-          tint={0x969696}
-          pivot={{
-            y: 1,
-          }}
-        />
-        <GraphicsComponent
-          type={GraphicType.RECTANGLE}
-          width={maxWidth}
-          height={HOT_BAR_HEIGHT}
-          tint={0x4b4c4f}
-        />
-      </ContainerComponent>
+  return useMemo(
+    () => (
       <ContainerComponent
-        position={{
-          x: 5,
-          y: 8,
+        pivot={{
+          y: HOT_BAR_HEIGHT,
         }}
       >
-        <NineSliceSpriteComponent
-          texture="bubble-message"
-          spriteSheet={SpriteSheetEnum.UI}
-          leftWidth={7}
-          rightWidth={7}
-          topHeight={7}
-          bottomHeight={7}
-          width={width - CHAT_RIGHT_MARGIN + 20}
-          tint={0xffffff}
-        />
-        <NineSliceSpriteComponent
-          texture="bubble-message-ring"
-          spriteSheet={SpriteSheetEnum.UI}
-          leftWidth={7}
-          rightWidth={7}
-          topHeight={7}
-          bottomHeight={7}
-          width={width - CHAT_RIGHT_MARGIN + 20}
-          tint={0}
-        />
-        <SpriteTextInputComponent
-          width={width - CHAT_RIGHT_MARGIN}
-          height={10}
-          spriteSheet={SpriteSheetEnum.DEFAULT_FONT}
-          padding={{
-            left: 10,
-            right: 10,
-            top: 4,
-            bottom: 0,
+        <ContainerComponent pivot={{ x: startXPivot }}>
+          <GraphicsComponent
+            type={GraphicType.RECTANGLE}
+            width={maxWidth}
+            height={1}
+            tint={1}
+            pivot={{
+              y: 2,
+            }}
+          />
+          <GraphicsComponent
+            type={GraphicType.RECTANGLE}
+            width={maxWidth}
+            height={1}
+            tint={0x969696}
+            pivot={{
+              y: 1,
+            }}
+          />
+          <GraphicsComponent
+            type={GraphicType.RECTANGLE}
+            width={maxWidth}
+            height={HOT_BAR_HEIGHT}
+            tint={0x4b4c4f}
+          />
+        </ContainerComponent>
+        <ContainerComponent
+          position={{
+            x: 5,
+            y: 8,
           }}
-          placeholder={t("chat.hot_bar_placeholder")}
-          placeholderProps={{
-            color: 0x1,
-            alpha: 0.5,
-          }}
-          maxLength={MAX_MESSAGE_LENGTH}
-          backgroundColor={0xff00ff}
-          backgroundAlpha={0}
-          value={value}
-          onChange={onChangeMessage}
-          clearOnEnter={true}
-          focusNow={focusInputNow}
-          onFocus={onFocus}
-          onBlur={onBlur}
-        />
-      </ContainerComponent>
-
-      <ContainerComponent>
-        <FlexContainerComponent
-          justify={FLEX_JUSTIFY.END}
-          align={FLEX_ALIGN.CENTER}
-          size={{
-            width,
-            height: 30,
-          }}
-          pivot={{
-            x: 10,
-          }}
-          gap={5}
         >
-          <HotBarItemsComponent />
-        </FlexContainerComponent>
+          <NineSliceSpriteComponent
+            texture="bubble-message"
+            spriteSheet={SpriteSheetEnum.UI}
+            leftWidth={7}
+            rightWidth={7}
+            topHeight={7}
+            bottomHeight={7}
+            width={width - CHAT_RIGHT_MARGIN + 20}
+            tint={0xffffff}
+          />
+          <NineSliceSpriteComponent
+            texture="bubble-message-ring"
+            spriteSheet={SpriteSheetEnum.UI}
+            leftWidth={7}
+            rightWidth={7}
+            topHeight={7}
+            bottomHeight={7}
+            width={width - CHAT_RIGHT_MARGIN + 20}
+            tint={0}
+          />
+          <SpriteTextInputComponent
+            width={width - CHAT_RIGHT_MARGIN}
+            height={10}
+            spriteSheet={SpriteSheetEnum.DEFAULT_FONT}
+            padding={{
+              left: 10,
+              right: 10,
+              top: 4,
+              bottom: 0,
+            }}
+            placeholder={t("chat.hot_bar_placeholder")}
+            placeholderProps={{
+              color: 0x1,
+              alpha: 0.5,
+            }}
+            maxLength={MAX_MESSAGE_LENGTH}
+            backgroundColor={0xff00ff}
+            backgroundAlpha={0}
+            value={value}
+            onChange={onChangeMessage}
+            clearOnEnter={true}
+            focusNow={focusInputNow}
+            onFocus={onFocus}
+            onBlur={onBlur}
+          />
+        </ContainerComponent>
+
+        <ContainerComponent>
+          <FlexContainerComponent
+            justify={FLEX_JUSTIFY.END}
+            align={FLEX_ALIGN.CENTER}
+            size={{
+              width,
+              height: 30,
+            }}
+            pivot={{
+              x: 10,
+            }}
+            gap={5}
+          >
+            <HotBarItemsComponent />
+          </FlexContainerComponent>
+        </ContainerComponent>
       </ContainerComponent>
-    </ContainerComponent>
+    ),
+    [
+      startXPivot,
+      maxWidth,
+      width,
+      value,
+      onChangeMessage,
+      focusInputNow,
+      onFocus,
+      onBlur,
+    ],
   );
 };

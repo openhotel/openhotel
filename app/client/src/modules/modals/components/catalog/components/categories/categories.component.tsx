@@ -23,13 +23,6 @@ export const CategoriesComponent: React.FC<Props> = ({
   onSelectedCategory,
   ...containerProps
 }) => {
-  // const [selectedCategory, setSelectedCategory] = useState<number>(0);
-  //
-  // const onSelectedCategory = useCallback(
-  //   (index) => () => setSelectedCategory(index),
-  //   [setSelectedCategory],
-  // );
-
   const allCategories = useMemo(
     () => [
       {
@@ -41,9 +34,9 @@ export const CategoriesComponent: React.FC<Props> = ({
     [categories],
   );
 
-  return (
-    <ContainerComponent {...containerProps}>
-      {allCategories.map((category, index) => (
+  const renderCategories = useMemo(
+    () =>
+      allCategories.map((category, index) => (
         <CategoryOptionComponent
           key={category.id}
           type={
@@ -63,7 +56,16 @@ export const CategoriesComponent: React.FC<Props> = ({
           eventMode={EventMode.STATIC}
           cursor={Cursor.POINTER}
         />
-      ))}
-    </ContainerComponent>
+      )),
+    [allCategories, width],
+  );
+
+  return useMemo(
+    () => (
+      <ContainerComponent {...containerProps}>
+        {renderCategories}
+      </ContainerComponent>
+    ),
+    [renderCategories, containerProps],
   );
 };

@@ -38,11 +38,19 @@ export const NavigatorComponent: React.FC = () => {
     [],
   );
 
-  return (
-    <NavigatorComponentWrapper
-      onPointerDown={() => closeModal(Modal.NAVIGATOR)}
-      navigatorTabMap={navigatorTabMap}
-    />
+  const onCloseModal = useCallback(
+    () => closeModal(Modal.NAVIGATOR),
+    [closeModal],
+  );
+
+  return useMemo(
+    () => (
+      <NavigatorComponentWrapper
+        onPointerDown={onCloseModal}
+        navigatorTabMap={navigatorTabMap}
+      />
+    ),
+    [navigatorTabMap, onCloseModal],
   );
 };
 
@@ -88,82 +96,93 @@ export const NavigatorComponentWrapper: React.FC<Props> = ({
     [width, HORIZONTAL_MARGIN, height, TOP_MARGIN, BOTTOM_MARGIN],
   );
 
-  return (
-    <>
-      <GraphicsComponent
-        type={GraphicType.CIRCLE}
-        radius={6.5}
-        alpha={0}
-        cursor={Cursor.POINTER}
-        eventMode={EventMode.STATIC}
-        position={{
-          x: width - 23,
-          y: 1.5,
-        }}
-        onPointerDown={onPointerDown}
-        zIndex={20}
-      />
-      <ContainerComponent>
-        <NineSliceSpriteComponent
-          spriteSheet={SpriteSheetEnum.UI}
-          texture="ui-tab-modal"
-          leftWidth={14}
-          rightWidth={21}
-          topHeight={38}
-          bottomHeight={11}
-          height={height}
-          width={width}
-        />
-        <TilingSpriteComponent
-          texture="ui-tab-modal-bar-tile"
-          spriteSheet={SpriteSheetEnum.UI}
+  return useMemo(
+    () => (
+      <>
+        <GraphicsComponent
+          type={GraphicType.CIRCLE}
+          radius={6.5}
+          alpha={0}
+          cursor={Cursor.POINTER}
+          eventMode={EventMode.STATIC}
           position={{
-            x: 11,
-            y: 4,
+            x: width - 23,
+            y: 1.5,
           }}
-          width={width - 35}
+          onPointerDown={onPointerDown}
+          zIndex={20}
         />
-        <FlexContainerComponent
-          justify={FLEX_JUSTIFY.CENTER}
-          size={{
-            width,
-          }}
-          position={{
-            y: 3,
-          }}
-        >
-          <TextComponent
-            text={t("navigator.title")}
-            backgroundColor={0xacc1ed}
-            backgroundAlpha={1}
-            padding={{
-              left: 4,
-              right: 3,
-              bottom: 0,
-              top: 2,
+        <ContainerComponent>
+          <NineSliceSpriteComponent
+            spriteSheet={SpriteSheetEnum.UI}
+            texture="ui-tab-modal"
+            leftWidth={14}
+            rightWidth={21}
+            topHeight={38}
+            bottomHeight={11}
+            height={height}
+            width={width}
+          />
+          <TilingSpriteComponent
+            texture="ui-tab-modal-bar-tile"
+            spriteSheet={SpriteSheetEnum.UI}
+            position={{
+              x: 11,
+              y: 4,
             }}
+            width={width - 35}
           />
-        </FlexContainerComponent>
-        <ContainerComponent
-          position={{
-            x: 5,
-            y: 15,
-          }}
-        >
-          <NavigatorBarComponent
-            onSelectCategory={onSelectCategoryTab}
-            selectedCategory={selectedCategory}
-          />
+          <FlexContainerComponent
+            justify={FLEX_JUSTIFY.CENTER}
+            size={{
+              width,
+            }}
+            position={{
+              y: 3,
+            }}
+          >
+            <TextComponent
+              text={t("navigator.title")}
+              backgroundColor={0xacc1ed}
+              backgroundAlpha={1}
+              padding={{
+                left: 4,
+                right: 3,
+                bottom: 0,
+                top: 2,
+              }}
+            />
+          </FlexContainerComponent>
+          <ContainerComponent
+            position={{
+              x: 5,
+              y: 15,
+            }}
+          >
+            <NavigatorBarComponent
+              onSelectCategory={onSelectCategoryTab}
+              selectedCategory={selectedCategory}
+            />
+          </ContainerComponent>
+          <ContainerComponent
+            position={{
+              x: 12,
+              y: 38,
+            }}
+          >
+            <SelectedCategoryContent size={contentSize} />
+          </ContainerComponent>
         </ContainerComponent>
-        <ContainerComponent
-          position={{
-            x: 12,
-            y: 38,
-          }}
-        >
-          <SelectedCategoryContent size={contentSize} />
-        </ContainerComponent>
-      </ContainerComponent>
-    </>
+      </>
+    ),
+    [
+      t,
+      width,
+      onPointerDown,
+      height,
+      onSelectCategoryTab,
+      selectedCategory,
+      contentSize,
+    ],
   );
 };

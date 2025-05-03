@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import {
   ContainerComponent,
   ContainerProps,
@@ -21,26 +21,29 @@ export const CategoryOptionComponent: React.FC<Props> = ({
   width,
   ...containerProps
 }) => {
-  return (
-    <ContainerComponent {...containerProps}>
-      <NineSliceSpriteComponent
-        texture={`catalog-button-${type}${selected ? "-selected" : ""}`}
-        spriteSheet={SpriteSheetEnum.UI}
-        leftWidth={3}
-        rightWidth={3}
-        topHeight={3}
-        bottomHeight={3}
-        width={width}
-        height={14}
-      />
-      <TextComponent
-        text={text}
-        color={0}
-        position={{
-          x: 10,
-          y: 4,
-        }}
-      />
-    </ContainerComponent>
+  return useMemo(
+    () => (
+      <ContainerComponent {...containerProps}>
+        <NineSliceSpriteComponent
+          texture={`catalog-button-${type}${selected ? "-selected" : ""}`}
+          spriteSheet={SpriteSheetEnum.UI}
+          leftWidth={3}
+          rightWidth={3}
+          topHeight={3}
+          bottomHeight={3}
+          width={width}
+          height={14}
+        />
+        <TextComponent
+          text={text}
+          color={0}
+          position={{
+            x: 10,
+            y: 4,
+          }}
+        />
+      </ContainerComponent>
+    ),
+    [containerProps, type, selected, text, width],
   );
 };

@@ -42,41 +42,56 @@ export const PrivateRoomTile: React.FC<Props> = ({
     [position],
   );
 
-  return (
-    <>
-      <GraphicsComponent
-        zIndex={SAFE_Z_INDEX + zIndex}
-        type={GraphicType.POLYGON}
-        polygon={getTilePolygon({ width: 12, height: 12 })}
-        eventMode={EventMode.STATIC}
-        cursor={Cursor.POINTER}
-        position={$position}
-        pivot={{
-          x: -27,
-        }}
-        tint={0xcccc00}
-        alpha={0}
-        onPointerDown={onPointerDown}
-        onPointerUp={onPointerUp}
-        onPointerEnter={onPointerEnter}
-        onPointerLeave={onPointerLeave}
-      />
-      <SpriteComponent
-        texture="tile"
-        zIndex={zIndex}
-        spriteSheet={SpriteSheetEnum.ROOM}
-        position={$position}
-        eventMode={EventMode.NONE}
-        tint={
-          color ??
-          (spawn
-            ? 0x2f2f2f
-            : Math.round(zIndex) % 2 === 0
-              ? 0xa49f7e
-              : 0xb2ad8e)
-        }
-        {...props}
-      />
-    </>
+  return useMemo(
+    () => (
+      <>
+        <GraphicsComponent
+          zIndex={SAFE_Z_INDEX + zIndex}
+          type={GraphicType.POLYGON}
+          polygon={getTilePolygon({ width: 12, height: 12 })}
+          eventMode={EventMode.STATIC}
+          cursor={Cursor.POINTER}
+          position={$position}
+          pivot={{
+            x: -27,
+          }}
+          tint={0xcccc00}
+          alpha={0}
+          onPointerDown={onPointerDown}
+          onPointerUp={onPointerUp}
+          onPointerEnter={onPointerEnter}
+          onPointerLeave={onPointerLeave}
+        />
+        <SpriteComponent
+          texture="tile"
+          zIndex={zIndex}
+          spriteSheet={SpriteSheetEnum.ROOM}
+          position={$position}
+          eventMode={EventMode.NONE}
+          tint={
+            color ??
+            (spawn
+              ? 0x2f2f2f
+              : Math.round(zIndex) % 2 === 0
+                ? 0xa49f7e
+                : 0xb2ad8e)
+          }
+          {...props}
+        />
+      </>
+    ),
+    [
+      zIndex,
+      $position,
+      onPointerDown,
+      onPointerUp,
+      onPointerEnter,
+      onPointerLeave,
+      zIndex,
+      $position,
+      color,
+      spawn,
+      props,
+    ],
   );
 };

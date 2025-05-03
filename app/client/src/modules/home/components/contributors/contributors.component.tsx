@@ -1,4 +1,10 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { TickerQueue } from "@oh/queue";
 import { CONTRIBUTOR_LOOP_TIME, TEXT_BACKGROUND_BASE } from "shared/consts";
 import { Cursor, EventMode } from "@openhotel/pixi-components";
@@ -51,13 +57,16 @@ export const ContributorsComponent: React.FC = () => {
     });
   }, [setText, doLoop, addTask]);
 
-  return (
-    <TextComponent
-      text={text}
-      eventMode={EventMode.STATIC}
-      cursor={Cursor.POINTER}
-      onPointerDown={onOpenGithub}
-      {...TEXT_BACKGROUND_BASE}
-    />
+  return useMemo(
+    () => (
+      <TextComponent
+        text={text}
+        eventMode={EventMode.STATIC}
+        cursor={Cursor.POINTER}
+        onPointerDown={onOpenGithub}
+        {...TEXT_BACKGROUND_BASE}
+      />
+    ),
+    [text, onOpenGithub],
   );
 };

@@ -36,9 +36,9 @@ export const NavigatorBarComponent: React.FC<Props> = ({
     [],
   );
 
-  return (
-    <FlexContainerComponent justify={FLEX_JUSTIFY.START}>
-      {categories.map((category: ModalNavigatorTab, index) => (
+  const renderCategories = useMemo(
+    () =>
+      categories.map((category: ModalNavigatorTab, index) => (
         <ContainerComponent
           key={category}
           onPointerDown={$onSelectCategory(category)}
@@ -60,7 +60,16 @@ export const NavigatorBarComponent: React.FC<Props> = ({
             }
           />
         </ContainerComponent>
-      ))}
-    </FlexContainerComponent>
+      )),
+    [categories, selectedCategory, t],
+  );
+
+  return useMemo(
+    () => (
+      <FlexContainerComponent justify={FLEX_JUSTIFY.START}>
+        {renderCategories}
+      </FlexContainerComponent>
+    ),
+    [renderCategories],
   );
 };

@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from "react";
+import React, { PropsWithChildren, useMemo } from "react";
 import {
   ContainerComponent,
   FLEX_ALIGN,
@@ -12,16 +12,20 @@ type Props = {
 } & PropsWithChildren;
 
 export const LoaderComponent: React.FC<Props> = ({ message, children }) => {
-  return message ? (
-    <ContainerComponent>
-      <FlexContainerComponent
-        justify={FLEX_JUSTIFY.CENTER}
-        align={FLEX_ALIGN.CENTER}
-      >
-        <TextComponent text={message} />
-      </FlexContainerComponent>
-    </ContainerComponent>
-  ) : (
-    children
-  );
+  if (message)
+    return useMemo(
+      () => (
+        <ContainerComponent>
+          <FlexContainerComponent
+            justify={FLEX_JUSTIFY.CENTER}
+            align={FLEX_ALIGN.CENTER}
+          >
+            <TextComponent text={message} />
+          </FlexContainerComponent>
+        </ContainerComponent>
+      ),
+      [message],
+    );
+
+  return useMemo(() => children, [children]);
 };

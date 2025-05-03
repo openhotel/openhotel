@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import {
   ContainerComponent,
   ContainerProps,
@@ -27,13 +27,16 @@ export const ButtonComponent: React.FC<Props> = ({
 }) => {
   const [tint, setTint] = useState<number>(0xffffff);
 
+  const onPointerEnter = useCallback(() => setTint(0xe0e0e0), [setTint]);
+  const onPointerLeave = useCallback(() => setTint(0xffffff), [setTint]);
+
   return (
     <ContainerComponent
       {...containerProps}
       eventMode={EventMode.STATIC}
       cursor={Cursor.POINTER}
-      onPointerEnter={() => setTint(0xdddddd)}
-      onPointerLeave={() => setTint(0xffffff)}
+      onPointerEnter={onPointerEnter}
+      onPointerLeave={onPointerLeave}
     >
       <NineSliceSpriteComponent
         spriteSheet={SpriteSheetEnum.UI}
