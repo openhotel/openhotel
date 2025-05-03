@@ -44,7 +44,7 @@ export const languageProvider: React.FunctionComponent<ConfigProps> = ({
       .then(() => {
         setLoadingMessage(null);
       });
-  });
+  }, [getConfig, isDevelopment, setLoadingMessage]);
 
   const changeLanguage = useCallback(async (language: string) => {
     await i18next.changeLanguage(language);
