@@ -1,2 +1,3 @@
 export const INITIAL_PLAYER_BALANCE = 100;
 export const INITIAL_HOTEL_BALANCE = 1000;
+export const INITIAL_COMPANY_BALANCE = 0;
