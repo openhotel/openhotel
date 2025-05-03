@@ -12,9 +12,9 @@ type Props = {
 } & PropsWithChildren;
 
 export const LoaderComponent: React.FC<Props> = ({ message, children }) => {
-  if (message)
-    return useMemo(
-      () => (
+  return useMemo(
+    () =>
+      message ? (
         <ContainerComponent>
           <FlexContainerComponent
             justify={FLEX_JUSTIFY.CENTER}
@@ -23,9 +23,9 @@ export const LoaderComponent: React.FC<Props> = ({ message, children }) => {
             <TextComponent text={message} />
           </FlexContainerComponent>
         </ContainerComponent>
+      ) : (
+        children
       ),
-      [message],
-    );
-
-  return useMemo(() => children, [children]);
+    [message, children],
+  );
 };
