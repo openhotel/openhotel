@@ -16,7 +16,7 @@ import {
   ItemListComponent,
   SoftBadgeComponent,
   TextComponent,
-  LoadingIconComponent
+  LoadingIconComponent,
 } from "shared/components";
 import { CatalogCategoryData } from "shared/types";
 import { useApi, useFurniture } from "shared/hooks";
@@ -24,7 +24,7 @@ import {
   FURNITURE_ICON_BOX_SIZE,
   FURNITURE_ICON_SIZE,
   SCROLL_BAR_WIDTH,
-  LOADING_STYLES
+  LOADING_STYLES,
 } from "shared/consts";
 import { CATALOG_DEFAULT_CATEGORY_ITEM_LIST_SIZE } from "shared/consts/catalog.consts";
 import { SpriteSheetEnum } from "shared/enums";
@@ -126,11 +126,13 @@ export const DefaultCategoryComponent: React.FC<Props> = ({
       { furnitureId: selectedFurnitureData.furnitureId },
       false,
       "POST",
-    ).then((r) => {
-      console.log(r);
-    }).finally(() => {
-      setIsLoading(false);
-    });
+    )
+      .then((r) => {
+        console.log(r);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   }, [fetch, selectedFurnitureData, isLoading]);
 
   const renderPreview = useMemo(() => {

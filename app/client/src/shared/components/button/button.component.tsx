@@ -52,7 +52,7 @@ export const ButtonComponent: React.FC<Props> = ({
         align={FLEX_ALIGN.CENTER}
       >
         {isLoading ? (
-            <LoadingIconComponent icon={LOADING_STYLES.PULSE} />
+          <LoadingIconComponent icon={LOADING_STYLES.PULSE} />
         ) : (
           <TextComponent text={text} color={0} />
         )}
