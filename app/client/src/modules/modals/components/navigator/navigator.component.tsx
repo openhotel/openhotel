@@ -73,33 +73,6 @@ export const NavigatorComponent: React.FC<Props> = ({}) => {
     [],
   );
 
-  const r = useMemo(
-    () => (
-      <>
-        <ContainerComponent
-          position={{
-            x: 5,
-            y: 15,
-          }}
-        >
-          <NavigatorBarComponent
-            onSelectCategory={setSelectedCategory}
-            selectedCategory={selectedCategory}
-          />
-        </ContainerComponent>
-        <ContainerComponent
-          position={{
-            x: 12,
-            y: 38,
-          }}
-        >
-          <SelectedCategoryContent size={contentSize} />
-        </ContainerComponent>
-      </>
-    ),
-    [setSelectedCategory, selectedCategory, contentSize],
-  );
-
   return useMemo(
     () => (
       <>
@@ -157,10 +130,28 @@ export const NavigatorComponent: React.FC<Props> = ({}) => {
               }}
             />
           </FlexContainerComponent>
-          {r}
+          <ContainerComponent
+            position={{
+              x: 5,
+              y: 15,
+            }}
+          >
+            <NavigatorBarComponent
+              onSelectCategory={setSelectedCategory}
+              selectedCategory={selectedCategory}
+            />
+          </ContainerComponent>
+          <ContainerComponent
+            position={{
+              x: 12,
+              y: 38,
+            }}
+          >
+            <SelectedCategoryContent size={contentSize} />
+          </ContainerComponent>
         </ContainerComponent>
       </>
     ),
-    [t, onCloseModal],
+    [t, onCloseModal, setSelectedCategory, selectedCategory, contentSize],
   );
 };

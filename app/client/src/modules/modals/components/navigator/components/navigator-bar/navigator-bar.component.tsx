@@ -5,6 +5,7 @@ import {
   EventMode,
   FLEX_JUSTIFY,
   FlexContainerComponent,
+  useUpdate,
 } from "@openhotel/pixi-components";
 import { NavigatorButtonComponent } from "../";
 import { ModalNavigatorTab } from "shared/enums";
@@ -36,32 +37,44 @@ export const NavigatorBarComponent: React.FC<Props> = ({
     [],
   );
 
+  // const { update, lastUpdate } = useUpdate();
+  //
+  // const onLoaded = useCallback(() => {
+  //   update();
+  // }, [update]);
+
   const renderCategories = useMemo(
-    () =>
-      categories.map((category: ModalNavigatorTab, index) => (
-        <ContainerComponent
-          key={category}
-          onPointerDown={$onSelectCategory(category)}
-          eventMode={EventMode.STATIC}
-          cursor={Cursor.POINTER}
-          pivot={{
-            x: index,
-          }}
-        >
-          <NavigatorButtonComponent
-            text={t(MODAL_NAVIGATOR_TAB_NAME_MAP[category])}
-            selected={selectedCategory === category}
-            type={
-              index === 0
-                ? "left"
-                : index === categories.length - 1
-                  ? "right"
-                  : "mid"
-            }
-          />
-        </ContainerComponent>
-      )),
-    [categories, selectedCategory, t, $onSelectCategory],
+    () => (
+      <FlexContainerComponent
+        justify={FLEX_JUSTIFY.START}
+        // onChildLoaded={onLoaded}
+      >
+        {categories.map((category: ModalNavigatorTab, index) => (
+          <ContainerComponent
+            key={category}
+            onPointerDown={$onSelectCategory(category)}
+            eventMode={EventMode.STATIC}
+            cursor={Cursor.POINTER}
+            pivot={{
+              x: index,
+            }}
+          >
+            <NavigatorButtonComponent
+              text={t(MODAL_NAVIGATOR_TAB_NAME_MAP[category])}
+              selected={selectedCategory === category}
+              type={
+                index === 0
+                  ? "left"
+                  : index === categories.length - 1
+                    ? "right"
+                    : "mid"
+              }
+            />
+          </ContainerComponent>
+        ))}
+      </FlexContainerComponent>
+    ),
+    [categories, selectedCategory, t, $onSelectCategory, lastUpdate],
   );
 
   return useMemo(
