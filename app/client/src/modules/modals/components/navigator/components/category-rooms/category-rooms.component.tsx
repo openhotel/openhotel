@@ -41,16 +41,16 @@ export const CategoryRoomsComponent: React.FC<Props> = ({ size }) => {
   }, [setRooms, fetch]);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      if (!isModalOpen(Modal.NAVIGATOR)) return;
-
-      $reload();
-    }, 30_000);
+    // const interval = setInterval(() => {
+    //   if (!isModalOpen(Modal.NAVIGATOR)) return;
+    //
+    //   $reload();
+    // }, 30_000);
     $reload();
 
-    return () => {
-      clearInterval(interval);
-    };
+    // return () => {
+    //   clearInterval(interval);
+    // };
   }, [$reload]);
 
   const onClick = useCallback(
@@ -67,7 +67,7 @@ export const CategoryRoomsComponent: React.FC<Props> = ({ size }) => {
       });
       $reload();
     },
-    [$reload],
+    [emit, $reload],
   );
 
   const onClickFavorite = useCallback(() => {}, []);
@@ -90,7 +90,7 @@ export const CategoryRoomsComponent: React.FC<Props> = ({ size }) => {
     emit(Event.PRE_JOIN_ROOM, {
       roomId: selectedRoomId,
     });
-  }, [selectedRoomId]);
+  }, [emit, selectedRoomId]);
 
   return (
     <>

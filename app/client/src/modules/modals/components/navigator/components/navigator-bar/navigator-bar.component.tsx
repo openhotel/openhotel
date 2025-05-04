@@ -61,7 +61,7 @@ export const NavigatorBarComponent: React.FC<Props> = ({
           />
         </ContainerComponent>
       )),
-    [categories, selectedCategory, t],
+    [categories, selectedCategory, t, $onSelectCategory],
   );
 
   return useMemo(

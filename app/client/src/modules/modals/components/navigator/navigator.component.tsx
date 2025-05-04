@@ -25,8 +25,21 @@ import { MODAL_SIZE_MAP } from "shared/consts";
 import { ModalNavigatorTabProps } from "shared/types";
 import { useTranslation } from "react-i18next";
 
-export const NavigatorComponent: React.FC = () => {
+const HORIZONTAL_MARGIN = 12 * 2;
+const TOP_MARGIN = 38;
+const BOTTOM_MARGIN = 12;
+const MODAL_SIZE = MODAL_SIZE_MAP[Modal.NAVIGATOR];
+
+type Props = {};
+
+export const NavigatorComponent: React.FC<Props> = ({}) => {
   const { closeModal } = useModal();
+  const { t } = useTranslation();
+  const { setDragPolygon } = useDragContainer();
+
+  const [selectedCategory, setSelectedCategory] = useState<ModalNavigatorTab>(
+    ModalNavigatorTab.ROOMS,
+  );
 
   const navigatorTabMap = useMemo(
     (): Record<ModalNavigatorTab, React.FC<ModalNavigatorTabProps>> => ({
@@ -43,44 +56,8 @@ export const NavigatorComponent: React.FC = () => {
     [closeModal],
   );
 
-  return useMemo(
-    () => (
-      <NavigatorComponentWrapper
-        onPointerDown={onCloseModal}
-        navigatorTabMap={navigatorTabMap}
-      />
-    ),
-    [navigatorTabMap, onCloseModal],
-  );
-};
-
-const HORIZONTAL_MARGIN = 12 * 2;
-const TOP_MARGIN = 38;
-const BOTTOM_MARGIN = 12;
-
-type Props = {
-  onPointerDown: () => void;
-  navigatorTabMap: Record<ModalNavigatorTab, React.FC<ModalNavigatorTabProps>>;
-};
-
-export const NavigatorComponentWrapper: React.FC<Props> = ({
-  onPointerDown,
-  navigatorTabMap,
-}) => {
-  const { t } = useTranslation();
-  const { setDragPolygon } = useDragContainer();
-  const { width, height } = MODAL_SIZE_MAP[Modal.NAVIGATOR];
-
-  const [selectedCategory, setSelectedCategory] = useState<ModalNavigatorTab>(
-    ModalNavigatorTab.ROOMS,
-  );
-
-  const onSelectCategoryTab = useCallback((tab: ModalNavigatorTab) => {
-    setSelectedCategory(tab);
-  }, []);
-
   useEffect(() => {
-    setDragPolygon?.([0, 0, width, 0, width, 15, 0, 15]);
+    setDragPolygon?.([0, 0, MODAL_SIZE.width, 0, MODAL_SIZE.width, 15, 0, 15]);
   }, [setDragPolygon]);
 
   const SelectedCategoryContent = useMemo(
@@ -90,10 +67,37 @@ export const NavigatorComponentWrapper: React.FC<Props> = ({
 
   const contentSize = useMemo(
     () => ({
-      width: width - HORIZONTAL_MARGIN,
-      height: height - TOP_MARGIN - BOTTOM_MARGIN,
+      width: MODAL_SIZE.width - HORIZONTAL_MARGIN,
+      height: MODAL_SIZE.height - TOP_MARGIN - BOTTOM_MARGIN,
     }),
-    [width, HORIZONTAL_MARGIN, height, TOP_MARGIN, BOTTOM_MARGIN],
+    [],
+  );
+
+  const r = useMemo(
+    () => (
+      <>
+        <ContainerComponent
+          position={{
+            x: 5,
+            y: 15,
+          }}
+        >
+          <NavigatorBarComponent
+            onSelectCategory={setSelectedCategory}
+            selectedCategory={selectedCategory}
+          />
+        </ContainerComponent>
+        <ContainerComponent
+          position={{
+            x: 12,
+            y: 38,
+          }}
+        >
+          <SelectedCategoryContent size={contentSize} />
+        </ContainerComponent>
+      </>
+    ),
+    [setSelectedCategory, selectedCategory, contentSize],
   );
 
   return useMemo(
@@ -106,10 +110,10 @@ export const NavigatorComponentWrapper: React.FC<Props> = ({
           cursor={Cursor.POINTER}
           eventMode={EventMode.STATIC}
           position={{
-            x: width - 23,
+            x: MODAL_SIZE.width - 23,
             y: 1.5,
           }}
-          onPointerDown={onPointerDown}
+          onPointerDown={onCloseModal}
           zIndex={20}
         />
         <ContainerComponent>
@@ -120,8 +124,8 @@ export const NavigatorComponentWrapper: React.FC<Props> = ({
             rightWidth={21}
             topHeight={38}
             bottomHeight={11}
-            height={height}
-            width={width}
+            height={MODAL_SIZE.height}
+            width={MODAL_SIZE.width}
           />
           <TilingSpriteComponent
             texture="ui-tab-modal-bar-tile"
@@ -130,12 +134,12 @@ export const NavigatorComponentWrapper: React.FC<Props> = ({
               x: 11,
               y: 4,
             }}
-            width={width - 35}
+            width={MODAL_SIZE.width - 35}
           />
           <FlexContainerComponent
             justify={FLEX_JUSTIFY.CENTER}
             size={{
-              width,
+              width: MODAL_SIZE.width,
             }}
             position={{
               y: 3,
@@ -153,36 +157,10 @@ export const NavigatorComponentWrapper: React.FC<Props> = ({
               }}
             />
           </FlexContainerComponent>
-          <ContainerComponent
-            position={{
-              x: 5,
-              y: 15,
-            }}
-          >
-            <NavigatorBarComponent
-              onSelectCategory={onSelectCategoryTab}
-              selectedCategory={selectedCategory}
-            />
-          </ContainerComponent>
-          <ContainerComponent
-            position={{
-              x: 12,
-              y: 38,
-            }}
-          >
-            <SelectedCategoryContent size={contentSize} />
-          </ContainerComponent>
+          {r}
         </ContainerComponent>
       </>
     ),
-    [
-      t,
-      width,
-      onPointerDown,
-      height,
-      onSelectCategoryTab,
-      selectedCategory,
-      contentSize,
-    ],
+    [t, onCloseModal],
   );
 };
