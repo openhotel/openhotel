@@ -3,12 +3,16 @@ import {
   ContainerComponent,
   GraphicsComponent,
   GraphicType,
+  KeyboardEventExtended,
+  NineSliceSpriteComponent,
   Size,
+  SpriteTextInputComponent,
 } from "@openhotel/pixi-components";
 import { useApi, useModal, useProxy } from "shared/hooks";
-import { Event, Modal } from "shared/enums";
+import { Event, Modal, SpriteSheetEnum } from "shared/enums";
 import { RoomPreviewComponent, RoomsListComponentWrapper } from "./components";
 import { NavigatorRoom } from "shared/types";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   size: Size;
@@ -18,9 +22,23 @@ export const CategoryRoomsComponent: React.FC<Props> = ({ size }) => {
   const { fetch } = useApi();
   const { emit } = useProxy();
   const { isModalOpen } = useModal();
-
+  const { t } = useTranslation();
   const [selectedRoomId, setSelectedRoomId] = useState<string>(null);
   const [rooms, setRooms] = useState<NavigatorRoom[]>([]);
+  const [search, setSearch] = useState("");
+  const [filteredRooms, setFilteredRooms] = useState<NavigatorRoom[]>([]);
+
+  useEffect(() => {
+    if (!search) {
+      setFilteredRooms(rooms);
+    }
+
+    setFilteredRooms(
+      rooms.filter((room) =>
+        room.title.toLowerCase().includes(search.toLowerCase()),
+      ),
+    );
+  }, [rooms, search]);
 
   const $reload = useCallback(() => {
     fetch("/room-list", {
@@ -92,18 +110,77 @@ export const CategoryRoomsComponent: React.FC<Props> = ({ size }) => {
     });
   }, [selectedRoomId]);
 
+  const searchFunction = useCallback(
+    (event: KeyboardEventExtended) => {
+      setSearch(event.target.value);
+
+      setFilteredRooms(
+        rooms.filter((room) => {
+          return room.title
+            .toLowerCase()
+            .includes(event.target.value.toLowerCase());
+        }),
+      );
+    },
+    [rooms],
+  );
+
   return (
     <>
-      <RoomsListComponentWrapper
-        size={{
-          ...size,
-          width: size.width - 130,
+      <ContainerComponent>
+        <NineSliceSpriteComponent
+          texture="bubble-message-ring"
+          spriteSheet={SpriteSheetEnum.UI}
+          leftWidth={7}
+          rightWidth={7}
+          topHeight={7}
+          bottomHeight={7}
+          width={size.width - 133}
+          tint={0}
+          alpha={1}
+        />
+
+        <SpriteTextInputComponent
+          width={size.width - 133}
+          height={10}
+          spriteSheet={SpriteSheetEnum.DEFAULT_FONT}
+          padding={{
+            left: 10,
+            right: 10,
+            top: 4,
+            bottom: 0,
+          }}
+          placeholder={t("navigator.search")}
+          placeholderProps={{
+            color: 0x1,
+            alpha: 0.5,
+          }}
+          maxLength={100}
+          backgroundColor={0xff00ff}
+          backgroundAlpha={0}
+          value={search}
+          onChange={searchFunction}
+        />
+      </ContainerComponent>
+
+      <ContainerComponent
+        position={{
+          x: 0,
+          y: 20,
         }}
-        rooms={rooms}
-        onClick={onClick}
-        onClickGo={onClickGo}
-        onClickFavorite={onClickFavorite}
-      />
+      >
+        <RoomsListComponentWrapper
+          size={{
+            ...size,
+            width: size.width - 130,
+            height: size.height - 20,
+          }}
+          rooms={filteredRooms}
+          onClick={onClick}
+          onClickGo={onClickGo}
+          onClickFavorite={onClickFavorite}
+        />
+      </ContainerComponent>
       <ContainerComponent
         position={{
           x: size.width - 130,
