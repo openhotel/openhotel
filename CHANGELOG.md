@@ -1,4 +1,22 @@
 
+<a name="v0.6.10"></a>
+
+## [v0.6.10](https://github.com/openhotel/openhotel/compare/v0.6.9...v0.6.10) (2025-05-06)
+
+### Bug Fixes
+
+- navigator not being refreshed - fix [#859](https://github.com/openhotel/openhotel/issues/859) ([#860](https://github.com/openhotel/openhotel/issues/860))
+- update dependency array in useEffect for language provider - fix [#849](https://github.com/openhotel/openhotel/issues/849) ([#853](https://github.com/openhotel/openhotel/issues/853))
+- set user balance only if credits are null - fix [#846](https://github.com/openhotel/openhotel/issues/846) ([#847](https://github.com/openhotel/openhotel/issues/847))
+- check phantom config in capture function ([#845](https://github.com/openhotel/openhotel/issues/845))
+
+### Features
+
+- improved performance and prevented rerenders - fix [#782](https://github.com/openhotel/openhotel/issues/782) ([#854](https://github.com/openhotel/openhotel/issues/854))
+- add companies module - fix [#831](https://github.com/openhotel/openhotel/issues/831) ([#851](https://github.com/openhotel/openhotel/issues/851))
+- add hover color on buttons - fix [#848](https://github.com/openhotel/openhotel/issues/848) ([#850](https://github.com/openhotel/openhotel/issues/850))
+
+
 <a name="v0.6.9"></a>
 
 ## [v0.6.9](https://github.com/openhotel/openhotel/compare/v0.6.8...v0.6.9) (2025-05-02)
@@ -891,17 +909,17 @@
 
 <a name="v0.2.20-rc.2"></a>
 
-## [v0.2.20-rc.2](https://github.com/openhotel/openhotel/compare/v0.2.19...v0.2.20-rc.2) (2024-09-29)
-
-
-<a name="v0.2.19"></a>
-
-## [v0.2.19](https://github.com/openhotel/openhotel/compare/v0.2.20-rc.1...v0.2.19) (2024-09-29)
+## [v0.2.20-rc.2](https://github.com/openhotel/openhotel/compare/v0.2.20-rc.1...v0.2.20-rc.2) (2024-09-29)
 
 
 <a name="v0.2.20-rc.1"></a>
 
-## [v0.2.20-rc.1](https://github.com/openhotel/openhotel/compare/v0.2.18...v0.2.20-rc.1) (2024-09-29)
+## [v0.2.20-rc.1](https://github.com/openhotel/openhotel/compare/v0.2.19...v0.2.20-rc.1) (2024-09-29)
+
+
+<a name="v0.2.19"></a>
+
+## [v0.2.19](https://github.com/openhotel/openhotel/compare/v0.2.18...v0.2.19) (2024-09-29)
 
 
 <a name="v0.2.18"></a>
