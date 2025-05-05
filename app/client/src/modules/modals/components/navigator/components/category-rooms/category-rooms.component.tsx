@@ -67,7 +67,7 @@ export const CategoryRoomsComponent: React.FC<Props> = ({ size }) => {
       });
       $reload();
     },
-    [$reload],
+    [emit, $reload],
   );
 
   const onClickFavorite = useCallback(() => {}, []);
@@ -90,7 +90,7 @@ export const CategoryRoomsComponent: React.FC<Props> = ({ size }) => {
     emit(Event.PRE_JOIN_ROOM, {
       roomId: selectedRoomId,
     });
-  }, [selectedRoomId]);
+  }, [emit, selectedRoomId]);
 
   return (
     <>

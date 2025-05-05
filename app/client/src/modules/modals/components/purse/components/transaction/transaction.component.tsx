@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import dayjs from "dayjs";
 import {
   ContainerComponent,
@@ -20,45 +20,48 @@ export const TransactionComponent: React.FC<Props> = ({
   transaction,
   scrollSize,
 }) => {
-  const width = scrollSize.width - 3;
+  const width = useMemo(() => scrollSize.width - 3, [scrollSize]);
 
-  return (
-    <ContainerComponent>
-      <NineSliceSpriteComponent
-        spriteSheet={SpriteSheetEnum.UI}
-        texture="background-circle-x6"
-        leftWidth={2}
-        rightWidth={2}
-        topHeight={1}
-        bottomHeight={1}
-        height={12}
-        width={width}
-      />
-      <FlexContainerComponent
-        justify={FLEX_JUSTIFY.SPACE_BETWEEN}
-        align={FLEX_ALIGN.CENTER}
-        position={{ x: 4 }}
-        size={{ width: width - 8, height: 12 }}
-        gap={4}
-        zIndex={10}
-      >
-        <TextComponent
-          text={dayjs(transaction.timestamp).format("DD/MM/YY")}
-          color={0x000}
+  return useMemo(
+    () => (
+      <ContainerComponent>
+        <NineSliceSpriteComponent
+          spriteSheet={SpriteSheetEnum.UI}
+          texture="background-circle-x6"
+          leftWidth={2}
+          rightWidth={2}
+          topHeight={1}
+          bottomHeight={1}
+          height={12}
+          width={width}
         />
-        <TextComponent
-          text={
-            transaction.description.length > 22
-              ? `${transaction.description.slice(0, 22)}...`
-              : transaction.description
-          }
-          color={0x000}
-        />
-        <TextComponent
-          text={transaction.amount.toString()}
-          color={transaction.amount >= 0 ? 0x87c053 : 0xb73d22}
-        />
-      </FlexContainerComponent>
-    </ContainerComponent>
+        <FlexContainerComponent
+          justify={FLEX_JUSTIFY.SPACE_BETWEEN}
+          align={FLEX_ALIGN.CENTER}
+          position={{ x: 4 }}
+          size={{ width: width - 8, height: 12 }}
+          gap={4}
+          zIndex={10}
+        >
+          <TextComponent
+            text={dayjs(transaction.timestamp).format("DD/MM/YY")}
+            color={0x000}
+          />
+          <TextComponent
+            text={
+              transaction.description.length > 22
+                ? `${transaction.description.slice(0, 22)}...`
+                : transaction.description
+            }
+            color={0x000}
+          />
+          <TextComponent
+            text={transaction.amount.toString()}
+            color={transaction.amount >= 0 ? 0x87c053 : 0xb73d22}
+          />
+        </FlexContainerComponent>
+      </ContainerComponent>
+    ),
+    [width, transaction],
   );
 };

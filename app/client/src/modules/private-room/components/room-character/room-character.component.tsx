@@ -152,17 +152,20 @@ export const RoomCharacterComponent: React.FC<Props> = ({
     [$zIndex, user.position],
   );
 
-  return (
-    <CharacterComponent
-      bodyAction={bodyAction}
-      bodyDirection={user.bodyDirection}
-      headDirection={user.bodyDirection}
-      leftArmAction={CharacterArmAction.IDLE}
-      rightArmAction={CharacterArmAction.IDLE}
-      skinColor={user.skinColor ?? 0xefcfb1}
-      position={position}
-      zIndex={zIndex}
-      {...containerProps}
-    />
+  return useMemo(
+    () => (
+      <CharacterComponent
+        bodyAction={bodyAction}
+        bodyDirection={user.bodyDirection}
+        headDirection={user.bodyDirection}
+        leftArmAction={CharacterArmAction.IDLE}
+        rightArmAction={CharacterArmAction.IDLE}
+        skinColor={user.skinColor ?? 0xefcfb1}
+        position={position}
+        zIndex={zIndex}
+        {...containerProps}
+      />
+    ),
+    [bodyAction, user, position, zIndex, containerProps],
   );
 };

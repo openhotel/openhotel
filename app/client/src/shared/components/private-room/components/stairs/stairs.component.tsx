@@ -41,40 +41,52 @@ export const PrivateRoomStairs: React.FC<Props> = ({
     [direction],
   );
 
-  return (
-    <>
-      <GraphicsComponent
-        zIndex={SAFE_Z_INDEX + zIndex}
-        type={GraphicType.POLYGON}
-        polygon={[-2, -7, 24, 30, 0, 42, -25, 6]}
-        eventMode={EventMode.STATIC}
-        cursor={Cursor.POINTER}
-        position={$position}
-        pivot={{
-          x: direction === CrossDirection.NORTH ? -26 : -24,
-          y: 18,
-        }}
-        tint={0x00cccc}
-        alpha={0}
-        scale={{
-          x: direction === CrossDirection.NORTH ? 1 : -1,
-        }}
-        onPointerDown={onPointerDown}
-        onPointerUp={onPointerUp}
-        onPointerEnter={onPointerEnter}
-        onPointerLeave={onPointerLeave}
-      />
-      <SpriteComponent
-        zIndex={zIndex}
-        texture={`stairs-${directionText}`}
-        spriteSheet={SpriteSheetEnum.ROOM}
-        position={$position}
-        eventMode={EventMode.NONE}
-        tint={Math.round(zIndex) % 2 === 0 ? 0xa49f7e : 0xb2ad8e}
-        pivot={{
-          y: TILE_Y_HEIGHT - STEP_TILE_HEIGHT,
-        }}
-      />
-    </>
+  return useMemo(
+    () => (
+      <>
+        <GraphicsComponent
+          zIndex={SAFE_Z_INDEX + zIndex}
+          type={GraphicType.POLYGON}
+          polygon={[-2, -7, 24, 30, 0, 42, -25, 6]}
+          eventMode={EventMode.STATIC}
+          cursor={Cursor.POINTER}
+          position={$position}
+          pivot={{
+            x: direction === CrossDirection.NORTH ? -26 : -24,
+            y: 18,
+          }}
+          tint={0x00cccc}
+          alpha={0}
+          scale={{
+            x: direction === CrossDirection.NORTH ? 1 : -1,
+          }}
+          onPointerDown={onPointerDown}
+          onPointerUp={onPointerUp}
+          onPointerEnter={onPointerEnter}
+          onPointerLeave={onPointerLeave}
+        />
+        <SpriteComponent
+          zIndex={zIndex}
+          texture={`stairs-${directionText}`}
+          spriteSheet={SpriteSheetEnum.ROOM}
+          position={$position}
+          eventMode={EventMode.NONE}
+          tint={Math.round(zIndex) % 2 === 0 ? 0xa49f7e : 0xb2ad8e}
+          pivot={{
+            y: TILE_Y_HEIGHT - STEP_TILE_HEIGHT,
+          }}
+        />
+      </>
+    ),
+    [
+      zIndex,
+      $position,
+      direction,
+      onPointerDown,
+      onPointerUp,
+      onPointerEnter,
+      onPointerLeave,
+      directionText,
+    ],
   );
 };
