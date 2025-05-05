@@ -38,8 +38,6 @@ export const NavigatorBarComponent: React.FC<Props> = ({
   //   update();
   // }, [update]);
 
-  console.log(t(MODAL_NAVIGATOR_TAB_NAME_MAP["0"]));
-
   const renderCategories = useMemo(
     () =>
       CATEGORIES.map((category: ModalNavigatorTab, index) => (
@@ -70,7 +68,7 @@ export const NavigatorBarComponent: React.FC<Props> = ({
 
   return useMemo(
     () => (
-      <FlexContainerComponent justify={FLEX_JUSTIFY.START}>
+      <FlexContainerComponent justify={FLEX_JUSTIFY.START} test={true}>
         {renderCategories}
       </FlexContainerComponent>
     ),

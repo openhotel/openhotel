@@ -49,11 +49,11 @@ export const NavigatorButtonComponent: React.FC<Props> = ({
 }) => {
   const textRef = useRef<ContainerRef>(null);
 
-  // const [width, setWidth] = useState<number>(null);
-  //
-  // useEffect(() => {
-  //   setWidth((width) => width ?? textRef.current.getSize().width + padding);
-  // }, [setWidth, padding]);
+  const [width, setWidth] = useState<number>(null);
+
+  useEffect(() => {
+    setWidth((width) => width ?? textRef.current.getSize().width + padding);
+  }, [setWidth, padding]);
 
   const props = useMemo(
     () => ({
@@ -65,7 +65,7 @@ export const NavigatorButtonComponent: React.FC<Props> = ({
 
   // console.log(width, "<<<<<<<<<<<<<", text);
 
-  const width = (textRef?.current?.getSize?.()?.width ?? 0) + padding;
+  // const width = (textRef?.current?.getSize?.()?.width ?? 0) + padding;
 
   return (
     <>
