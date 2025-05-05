@@ -11,7 +11,7 @@ export const CameraProvider: React.FC<CameraProviderProps> = ({ children }) => {
   const {
     isDragging,
     canDrag,
-    position,
+    getPosition,
     setDragging: $setDragging,
     setCanDrag: $setCanDrag,
     setPosition: $setPosition,
@@ -37,7 +37,7 @@ export const CameraProvider: React.FC<CameraProviderProps> = ({ children }) => {
       value={{
         isDragging,
         canDrag,
-        position,
+        getPosition,
         setDragging,
         setCanDrag,
         setPosition,

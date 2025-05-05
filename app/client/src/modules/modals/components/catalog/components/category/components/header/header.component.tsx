@@ -23,23 +23,26 @@ export const HeaderComponent: React.FC<Props> = ({ size, description }) => {
     [size],
   );
 
-  return (
-    <ContainerComponent>
-      <GraphicsComponent
-        type={GraphicType.RECTANGLE}
-        width={size.width}
-        height={coverHeight}
-        tint={0}
-        alpha={0.2}
-      />
-      <TextComponent
-        text={description}
-        maxWidth={size.width}
-        color={0}
-        position={{
-          y: coverHeight + 5,
-        }}
-      />
-    </ContainerComponent>
+  return useMemo(
+    () => (
+      <ContainerComponent>
+        <GraphicsComponent
+          type={GraphicType.RECTANGLE}
+          width={size.width}
+          height={coverHeight}
+          tint={0}
+          alpha={0.2}
+        />
+        <TextComponent
+          text={description}
+          maxWidth={size.width}
+          color={0}
+          position={{
+            y: coverHeight + 5,
+          }}
+        />
+      </ContainerComponent>
+    ),
+    [size, coverHeight, description],
   );
 };

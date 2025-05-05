@@ -17,19 +17,22 @@ export const VersionComponent: React.FC = () => {
     );
   }, [getConfig]);
 
-  return (
-    <>
-      <TextComponent
-        text={version}
-        eventMode={EventMode.STATIC}
-        cursor={Cursor.POINTER}
-        onPointerDown={onOpenGithubRelease}
-        {...TEXT_BACKGROUND_BASE}
-      />
-      <TextComponent
-        text={`alpha: ${t("system.progress_may_be_wiped")}`}
-        {...TEXT_BACKGROUND_BASE}
-      />
-    </>
+  return useMemo(
+    () => (
+      <>
+        <TextComponent
+          text={version}
+          eventMode={EventMode.STATIC}
+          cursor={Cursor.POINTER}
+          onPointerDown={onOpenGithubRelease}
+          {...TEXT_BACKGROUND_BASE}
+        />
+        <TextComponent
+          text={`alpha: ${t("system.progress_may_be_wiped")}`}
+          {...TEXT_BACKGROUND_BASE}
+        />
+      </>
+    ),
+    [version, onOpenGithubRelease, t],
   );
 };
