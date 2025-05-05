@@ -17,7 +17,7 @@ type Props = {
 export const CategoryRoomsComponent: React.FC<Props> = ({ size }) => {
   const { fetch } = useApi();
   const { emit } = useProxy();
-  const { isModalOpen } = useModal();
+  // const { isModalOpen } = useModal();
 
   const [selectedRoomId, setSelectedRoomId] = useState<string>(null);
   const [rooms, setRooms] = useState<NavigatorRoom[]>([]);
