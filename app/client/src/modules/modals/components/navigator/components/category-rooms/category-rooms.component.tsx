@@ -17,7 +17,7 @@ type Props = {
 export const CategoryRoomsComponent: React.FC<Props> = ({ size }) => {
   const { fetch } = useApi();
   const { emit } = useProxy();
-  // const { isModalOpen } = useModal();
+  const { isModalOpen } = useModal();
 
   const [selectedRoomId, setSelectedRoomId] = useState<string>(null);
   const [rooms, setRooms] = useState<NavigatorRoom[]>([]);
@@ -41,16 +41,16 @@ export const CategoryRoomsComponent: React.FC<Props> = ({ size }) => {
   }, [setRooms, fetch]);
 
   useEffect(() => {
-    // const interval = setInterval(() => {
-    //   if (!isModalOpen(Modal.NAVIGATOR)) return;
-    //
-    //   $reload();
-    // }, 30_000);
+    const interval = setInterval(() => {
+      if (!isModalOpen(Modal.NAVIGATOR)) return;
+
+      $reload();
+    }, 30_000);
     $reload();
 
-    // return () => {
-    //   clearInterval(interval);
-    // };
+    return () => {
+      clearInterval(interval);
+    };
   }, [$reload]);
 
   const onClick = useCallback(
