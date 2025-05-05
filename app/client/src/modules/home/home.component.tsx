@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
   ContainerComponent,
   FLEX_ALIGN,
@@ -48,29 +48,32 @@ export const HomeComponent: React.FC = () => {
     };
   }, [on, setSafeWindowResize, setSafeXPosition]);
 
-  return (
-    <ContainerComponent sortableChildren={true}>
-      <BackgroundComponent />
+  return useMemo(
+    () => (
+      <ContainerComponent sortableChildren={true}>
+        <BackgroundComponent />
 
-      <VignetteTransitionComponent />
-      <ContainerComponent pivot={{ x: safeXPosition }}>
-        <LogoComponent />
-        <HotBarComponent onDone={onDone} width={safeWindowResize.width} />
+        <VignetteTransitionComponent />
+        <ContainerComponent pivot={{ x: safeXPosition }}>
+          <LogoComponent />
+          <HotBarComponent onDone={onDone} width={safeWindowResize.width} />
 
-        <FlexContainerComponent
-          align={FLEX_ALIGN.BOTTOM}
-          pivot={{
-            x: -5,
-            y: 55,
-          }}
-        >
-          <FlexContainerComponent direction="y">
-            <VersionComponent />
-            <LicenseComponent />
-            <ContributorsComponent />
+          <FlexContainerComponent
+            align={FLEX_ALIGN.BOTTOM}
+            pivot={{
+              x: -5,
+              y: 55,
+            }}
+          >
+            <FlexContainerComponent direction="y">
+              <VersionComponent />
+              <LicenseComponent />
+              <ContributorsComponent />
+            </FlexContainerComponent>
           </FlexContainerComponent>
-        </FlexContainerComponent>
+        </ContainerComponent>
       </ContainerComponent>
-    </ContainerComponent>
+    ),
+    [safeXPosition, onDone, safeWindowResize],
   );
 };

@@ -244,24 +244,41 @@ export const PrivateRoomComponent: React.FC<Props> = ({
     [tilesAndWalls, rawRoomSize],
   );
 
-  return (
-    <>
-      <ContainerComponent
-        ref={$ref}
-        sortableChildren
-        pivot={computePivot ? pivot : null}
-      >
-        {tilesAndWalls}
-        {previewData ? (
-          <PrivateRoomTilePreview
-            type={previewData.type}
-            position={previewData.point}
-            direction={previewData?.direction ?? CrossDirection.EAST}
-          />
-        ) : null}
-        {children}
-      </ContainerComponent>
-      {renderRoomSize}
-    </>
+  const renderPreviewTile = useMemo(
+    () =>
+      previewData ? (
+        <PrivateRoomTilePreview
+          type={previewData.type}
+          position={previewData.point}
+          direction={previewData?.direction ?? CrossDirection.EAST}
+        />
+      ) : null,
+    [previewData],
+  );
+
+  const $pivot = useMemo(
+    () => (computePivot ? pivot : null),
+    [computePivot, pivot],
+  );
+
+  return useMemo(
+    () => (
+      <>
+        <ContainerComponent ref={$ref} sortableChildren pivot={$pivot}>
+          {tilesAndWalls}
+          {renderPreviewTile}
+          {children}
+        </ContainerComponent>
+        {renderRoomSize}
+      </>
+    ),
+    [
+      $pivot,
+      tilesAndWalls,
+      previewData,
+      renderPreviewTile,
+      children,
+      renderRoomSize,
+    ],
   );
 };

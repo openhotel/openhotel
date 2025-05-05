@@ -89,19 +89,21 @@ export const ArmComponent: React.FC<Props> = ({
     };
   }, [bodyDirection, bodyAction, action]);
 
-  //DO NOT CHANGE TO !visible
-  if (visible === false) return null;
-
-  return (
-    <SpriteComponent
-      texture={texture}
-      spriteSheet={SpriteSheetEnum.CHARACTER}
-      tint={skinColor}
-      scale={{
-        x: scale,
-      }}
-      zIndex={zIndex}
-      pivot={pivot}
-    />
+  return useMemo(
+    () =>
+      //DO NOT CHANGE TO !visible
+      visible === false ? null : (
+        <SpriteComponent
+          texture={texture}
+          spriteSheet={SpriteSheetEnum.CHARACTER}
+          tint={skinColor}
+          scale={{
+            x: scale,
+          }}
+          zIndex={zIndex}
+          pivot={pivot}
+        />
+      ),
+    [texture, scale, zIndex, pivot],
   );
 };

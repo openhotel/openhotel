@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { TickerQueue } from "@oh/queue";
 import {
   ContainerComponent,
@@ -49,29 +49,33 @@ export const VignetteTransitionComponent: React.FC<Props> = ({ onDone }) => {
     };
   }, [setSize, on, setUpperYPosition, setBelowYPosition, addTask]);
 
-  return isDone ? null : (
-    <ContainerComponent zIndex={Number.MAX_SAFE_INTEGER}>
-      <GraphicsComponent
-        type={GraphicType.RECTANGLE}
-        width={size.width}
-        height={size.height / 2}
-        tint={1}
-        position={{
-          y: upperYPosition,
-        }}
-      />
-      <GraphicsComponent
-        type={GraphicType.RECTANGLE}
-        width={size.width}
-        height={size.height / 2}
-        pivot={{
-          y: -size.height / 2,
-        }}
-        position={{
-          y: belowYPosition,
-        }}
-        tint={1}
-      />
-    </ContainerComponent>
+  return useMemo(
+    () =>
+      isDone ? null : (
+        <ContainerComponent zIndex={Number.MAX_SAFE_INTEGER}>
+          <GraphicsComponent
+            type={GraphicType.RECTANGLE}
+            width={size.width}
+            height={size.height / 2}
+            tint={1}
+            position={{
+              y: upperYPosition,
+            }}
+          />
+          <GraphicsComponent
+            type={GraphicType.RECTANGLE}
+            width={size.width}
+            height={size.height / 2}
+            pivot={{
+              y: -size.height / 2,
+            }}
+            position={{
+              y: belowYPosition,
+            }}
+            tint={1}
+          />
+        </ContainerComponent>
+      ),
+    [isDone, size, upperYPosition, belowYPosition],
   );
 };

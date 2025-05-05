@@ -16,7 +16,7 @@ export const HotBarItemsComponent: React.FC<Props> = ({}) => {
     [openModal, isModalOpen, closeModal],
   );
 
-  const renderItems = useMemo(
+  return useMemo(
     () =>
       Object.keys(MODAL_HOT_BAR_ITEMS)
         .filter((modal) => !isNaN(modal as any))
@@ -36,5 +36,4 @@ export const HotBarItemsComponent: React.FC<Props> = ({}) => {
         }),
     [onPointerDown],
   );
-  return <>{renderItems}</>;
 };

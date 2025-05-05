@@ -13,14 +13,10 @@ import {
 } from "@openhotel/pixi-components";
 import { Modal, SpriteSheetEnum } from "shared/enums";
 import { ScrollComponent, TextComponent } from "shared/components";
-import { CategoriesComponent } from ".";
+import { CategoriesComponent, CategoryComponent, HEADER_SIZE } from ".";
 import { MODAL_SIZE_MAP } from "shared/consts";
 import { useApi, useModal } from "shared/hooks";
 import { Catalog } from "shared/types";
-import {
-  CategoryComponent,
-  HEADER_SIZE,
-} from "modules/modals/components/catalog/components/category/category.component";
 import { useTranslation } from "react-i18next";
 
 const HEADER_HEIGHT = 17;
@@ -76,8 +72,10 @@ export const CatalogComponentWrapper: React.FC<WrapperProps> = ({
   onPointerDown,
   catalog,
 }) => {
+  const { t } = useTranslation();
   const { setDragPolygon } = useDragContainer();
-  const { width, height } = MODAL_SIZE_MAP[Modal.CATALOG];
+
+  const { width, height } = useMemo(() => MODAL_SIZE_MAP[Modal.CATALOG], []);
 
   const [selectedCategoryId, setSelectedCategoryId] = useState<string>("home");
 
@@ -135,7 +133,7 @@ export const CatalogComponentWrapper: React.FC<WrapperProps> = ({
       0,
       20,
     ]);
-  }, [setDragPolygon, overModalSize]);
+  }, [setDragPolygon, overModalSize, width, height]);
 
   const category = useMemo(
     () =>
@@ -152,131 +150,144 @@ export const CatalogComponentWrapper: React.FC<WrapperProps> = ({
     }),
     [overModalSize],
   );
-  const { t } = useTranslation();
 
-  return (
-    <>
-      <GraphicsComponent
-        type={GraphicType.CIRCLE}
-        radius={6.5}
-        alpha={0}
-        cursor={Cursor.POINTER}
-        eventMode={EventMode.STATIC}
-        position={{
-          x: width - 23,
-          y: 1.5,
-        }}
-        onPointerDown={onPointerDown}
-        zIndex={20}
-        pivot={{ x: 0, y: -5 }}
-      />
-      <ContainerComponent>
-        <ContainerComponent position={{ y: OVER_MODAL_PADDING }}>
-          <NineSliceSpriteComponent
-            spriteSheet={SpriteSheetEnum.UI}
-            texture="ui-base-modal"
-            leftWidth={14}
-            rightWidth={21}
-            topHeight={22}
-            bottomHeight={11}
-            height={height}
-            width={width}
-          />
-          <TilingSpriteComponent
-            texture="ui-base-modal-bar-tile"
-            spriteSheet={SpriteSheetEnum.UI}
-            position={{
-              x: 11,
-              y: 4,
-            }}
-            width={width - 35}
-          />
-          <ContainerComponent
-            position={{
-              x: OVER_MODAL_POSITION.x + overModalSize.width,
-            }}
-          >
-            <FlexContainerComponent
-              justify={FLEX_JUSTIFY.CENTER}
-              size={{
-                width: categorySize.width - 13,
-              }}
+  return useMemo(
+    () => (
+      <>
+        <GraphicsComponent
+          type={GraphicType.CIRCLE}
+          radius={6.5}
+          alpha={0}
+          cursor={Cursor.POINTER}
+          eventMode={EventMode.STATIC}
+          position={{
+            x: width - 23,
+            y: 1.5,
+          }}
+          onPointerDown={onPointerDown}
+          zIndex={20}
+          pivot={{ x: 0, y: -5 }}
+        />
+        <ContainerComponent>
+          <ContainerComponent position={{ y: OVER_MODAL_PADDING }}>
+            <NineSliceSpriteComponent
+              spriteSheet={SpriteSheetEnum.UI}
+              texture="ui-base-modal"
+              leftWidth={14}
+              rightWidth={21}
+              topHeight={22}
+              bottomHeight={11}
+              height={height}
+              width={width}
+            />
+            <TilingSpriteComponent
+              texture="ui-base-modal-bar-tile"
+              spriteSheet={SpriteSheetEnum.UI}
               position={{
+                x: 11,
                 y: 4,
               }}
-            >
-              <TextComponent
-                text={t("catalog.title")}
-                backgroundColor={0xacc1ed}
-                backgroundAlpha={1}
-                padding={{
-                  left: 4,
-                  right: 3,
-                  bottom: 0,
-                  top: 2,
-                }}
-              />
-            </FlexContainerComponent>
-            <ScrollComponent
-              size={{
-                height: categorySize.height,
-                width: categorySize.width - 10,
-              }}
+              width={width - 35}
+            />
+            <ContainerComponent
               position={{
-                y: HEADER_HEIGHT + CONTENT_PADDING,
+                x: OVER_MODAL_POSITION.x + overModalSize.width,
               }}
             >
-              <CategoriesComponent
-                width={categorySize.width - 13}
-                categories={catalog.categories}
-                selectedCategoryId={selectedCategoryId}
-                onSelectedCategory={setSelectedCategoryId}
-              />
-            </ScrollComponent>
-          </ContainerComponent>
+              <FlexContainerComponent
+                justify={FLEX_JUSTIFY.CENTER}
+                size={{
+                  width: categorySize.width - 13,
+                }}
+                position={{
+                  y: 4,
+                }}
+              >
+                <TextComponent
+                  text={t("catalog.title")}
+                  backgroundColor={0xacc1ed}
+                  backgroundAlpha={1}
+                  padding={{
+                    left: 4,
+                    right: 3,
+                    bottom: 0,
+                    top: 2,
+                  }}
+                />
+              </FlexContainerComponent>
+              <ScrollComponent
+                size={{
+                  height: categorySize.height,
+                  width: categorySize.width - 10,
+                }}
+                position={{
+                  y: HEADER_HEIGHT + CONTENT_PADDING,
+                }}
+              >
+                <CategoriesComponent
+                  width={categorySize.width - 13}
+                  categories={catalog.categories}
+                  selectedCategoryId={selectedCategoryId}
+                  onSelectedCategory={setSelectedCategoryId}
+                />
+              </ScrollComponent>
+            </ContainerComponent>
 
-          <GraphicsComponent
-            type={GraphicType.RECTANGLE}
-            tint={0}
-            alpha={0.125}
-            width={overModalSize.width + 2}
-            height={height}
-            pivot={{
-              x: 1,
-            }}
-            position={OVER_MODAL_POSITION}
-          />
-        </ContainerComponent>
-        <ContainerComponent position={OVER_MODAL_POSITION}>
-          <NineSliceSpriteComponent
-            spriteSheet={SpriteSheetEnum.UI}
-            texture="catalog-base-modal"
-            leftWidth={3}
-            rightWidth={3}
-            topHeight={3}
-            bottomHeight={6}
-            width={overModalSize.width}
-            height={overModalSize.height}
-          />
-          <ContainerComponent position={{ x: 6, y: 6 }}>
-            {selectedCategoryId === "home" || !category ? (
-              <GraphicsComponent
-                type={GraphicType.RECTANGLE}
-                tint={0}
-                alpha={0.2}
-                width={contentSize.width}
-                height={contentSize.height}
-              />
-            ) : (
-              <CategoryComponent
-                size={contentSize}
-                category={category}
-                categoryId={selectedCategoryId}
-              />
-            )}
+            <GraphicsComponent
+              type={GraphicType.RECTANGLE}
+              tint={0}
+              alpha={0.125}
+              width={overModalSize.width + 2}
+              height={height}
+              pivot={{
+                x: 1,
+              }}
+              position={OVER_MODAL_POSITION}
+            />
+          </ContainerComponent>
+          <ContainerComponent position={OVER_MODAL_POSITION}>
+            <NineSliceSpriteComponent
+              spriteSheet={SpriteSheetEnum.UI}
+              texture="catalog-base-modal"
+              leftWidth={3}
+              rightWidth={3}
+              topHeight={3}
+              bottomHeight={6}
+              width={overModalSize.width}
+              height={overModalSize.height}
+            />
+            <ContainerComponent position={{ x: 6, y: 6 }}>
+              {selectedCategoryId === "home" || !category ? (
+                <GraphicsComponent
+                  type={GraphicType.RECTANGLE}
+                  tint={0}
+                  alpha={0.2}
+                  width={contentSize.width}
+                  height={contentSize.height}
+                />
+              ) : (
+                <CategoryComponent
+                  size={contentSize}
+                  category={category}
+                  categoryId={selectedCategoryId}
+                />
+              )}
+            </ContainerComponent>
           </ContainerComponent>
         </ContainerComponent>
-      </ContainerComponent>
-    </>
+      </>
+    ),
+    [
+      width,
+      height,
+      onPointerDown,
+      categorySize,
+      catalog,
+      selectedCategoryId,
+      setSelectedCategoryId,
+      overModalSize,
+      contentSize,
+      category,
+    ],
   );
 };

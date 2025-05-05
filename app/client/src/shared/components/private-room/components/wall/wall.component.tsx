@@ -122,85 +122,102 @@ export const PrivateRoomWallComponent: React.FC<Props> = ({
     [onPointerDown, $getPointFromEvent],
   );
 
-  return (
-    <ContainerComponent
-      zIndex={zIndex}
-      position={$position}
-      pivot={{
-        x: $pivot.x + (pivot?.x ?? 0),
-        y: height - WALL_WIDTH / 2 + $pivot.y + (pivot?.y ?? 0),
-      }}
-      tint={0xc4d3dd}
-      {...props}
-    >
-      {direction === "corner" ? (
+  const renderWall = useMemo(() => {
+    if (direction === "corner")
+      return (
         <SpriteComponent
           zIndex={zIndex}
           texture={`wall-${directionText}`}
           spriteSheet={SpriteSheetEnum.ROOM}
         />
-      ) : (
-        <>
-          <GraphicsComponent
-            ref={graphicsRef}
-            type={GraphicType.POLYGON}
-            polygon={[
-              0,
-              0,
-              //
-              TILE_SIZE.width / 2,
-              TILE_SIZE.height / 2,
-              //
-              TILE_SIZE.width / 2,
-              TOP_HEIGHT + middleHeight + TILE_SIZE.height / 2,
-              //
-              0,
-              TOP_HEIGHT + middleHeight,
-            ]}
-            position={{
-              x: direction === CrossDirection.NORTH ? 30 : 0,
-              y: WALL_WIDTH / 2 - 1,
-            }}
-            scale={{
-              x: direction === CrossDirection.NORTH ? -1 : 1,
-            }}
-            tint={0xff00ff}
-            // cursor={Cursor.POINTER}
-            eventMode={EventMode.STATIC}
-            onPointerDown={$onPointerDown}
-            onPointerEnter={onPointerEnter}
-            onPointerLeave={onPointerLeave}
-            alpha={0}
-            zIndex={zIndex + 1}
-          />
-          <SpriteComponent
-            zIndex={zIndex}
-            texture={`wall-${directionText}-top`}
-            spriteSheet={SpriteSheetEnum.ROOM}
-          />
-          <NineSliceSpriteComponent
-            zIndex={zIndex}
-            spriteSheet={SpriteSheetEnum.ROOM}
-            texture={`wall-${directionText}-mid`}
-            leftWidth={8}
-            rightWidth={1}
-            topHeight={1}
-            bottomHeight={1}
-            height={middleHeight}
-            position={{
-              y: TOP_HEIGHT,
-            }}
-          />
-          <SpriteComponent
-            zIndex={zIndex}
-            texture={`wall-${directionText}-bottom`}
-            spriteSheet={SpriteSheetEnum.ROOM}
-            position={{
-              y: TOP_HEIGHT + middleHeight,
-            }}
-          />
-        </>
-      )}
-    </ContainerComponent>
+      );
+    return (
+      <>
+        <GraphicsComponent
+          ref={graphicsRef}
+          type={GraphicType.POLYGON}
+          polygon={[
+            0,
+            0,
+            //
+            TILE_SIZE.width / 2,
+            TILE_SIZE.height / 2,
+            //
+            TILE_SIZE.width / 2,
+            TOP_HEIGHT + middleHeight + TILE_SIZE.height / 2,
+            //
+            0,
+            TOP_HEIGHT + middleHeight,
+          ]}
+          position={{
+            x: direction === CrossDirection.NORTH ? 30 : 0,
+            y: WALL_WIDTH / 2 - 1,
+          }}
+          scale={{
+            x: direction === CrossDirection.NORTH ? -1 : 1,
+          }}
+          tint={0xff00ff}
+          // cursor={Cursor.POINTER}
+          eventMode={EventMode.STATIC}
+          onPointerDown={$onPointerDown}
+          onPointerEnter={onPointerEnter}
+          onPointerLeave={onPointerLeave}
+          alpha={0}
+          zIndex={zIndex + 1}
+        />
+        <SpriteComponent
+          zIndex={zIndex}
+          texture={`wall-${directionText}-top`}
+          spriteSheet={SpriteSheetEnum.ROOM}
+        />
+        <NineSliceSpriteComponent
+          zIndex={zIndex}
+          spriteSheet={SpriteSheetEnum.ROOM}
+          texture={`wall-${directionText}-mid`}
+          leftWidth={8}
+          rightWidth={1}
+          topHeight={1}
+          bottomHeight={1}
+          height={middleHeight}
+          position={{
+            y: TOP_HEIGHT,
+          }}
+        />
+        <SpriteComponent
+          zIndex={zIndex}
+          texture={`wall-${directionText}-bottom`}
+          spriteSheet={SpriteSheetEnum.ROOM}
+          position={{
+            y: TOP_HEIGHT + middleHeight,
+          }}
+        />
+      </>
+    );
+  }, [
+    direction,
+    directionText,
+    middleHeight,
+    $onPointerDown,
+    onPointerEnter,
+    onPointerLeave,
+    zIndex,
+  ]);
+
+  return useMemo(
+    () => (
+      <ContainerComponent
+        zIndex={zIndex}
+        position={$position}
+        pivot={{
+          x: $pivot.x + (pivot?.x ?? 0),
+          y: height - WALL_WIDTH / 2 + $pivot.y + (pivot?.y ?? 0),
+        }}
+        tint={0xc4d3dd}
+        {...props}
+      >
+        {renderWall}
+      </ContainerComponent>
+    ),
+    [zIndex, $position, $pivot, pivot, height, props],
   );
 };

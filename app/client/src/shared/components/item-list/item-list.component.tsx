@@ -133,21 +133,30 @@ export const ItemListComponent: React.FC<Props> = ({
     setSelected(null);
   }, [items, setSelected]);
 
-  return height ? (
-    <ScrollComponent
-      size={{
-        height,
-        width: (FURNITURE_ICON_BOX_SIZE + 3) * cols,
-      }}
-      {...containerProps}
-    >
-      {renderItemsBackgrounds}
-      {renderItems}
-    </ScrollComponent>
-  ) : (
-    <ContainerComponent {...containerProps}>
-      {renderItemsBackgrounds}
-      {renderItems}
-    </ContainerComponent>
+  if (height)
+    return useMemo(
+      () => (
+        <ScrollComponent
+          size={{
+            height,
+            width: (FURNITURE_ICON_BOX_SIZE + 3) * cols,
+          }}
+          {...containerProps}
+        >
+          {renderItemsBackgrounds}
+          {renderItems}
+        </ScrollComponent>
+      ),
+      [height, cols, containerProps, renderItemsBackgrounds, renderItems],
+    );
+
+  return useMemo(
+    () => (
+      <ContainerComponent {...containerProps}>
+        {renderItemsBackgrounds}
+        {renderItems}
+      </ContainerComponent>
+    ),
+    [containerProps, renderItemsBackgrounds, renderItems],
   );
 };

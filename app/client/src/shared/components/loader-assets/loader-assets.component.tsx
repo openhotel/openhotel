@@ -1,4 +1,10 @@
-import React, { PropsWithChildren, useEffect, useRef, useState } from "react";
+import React, {
+  PropsWithChildren,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import {
   ContainerComponent,
   FLEX_ALIGN,
@@ -48,22 +54,26 @@ export const LoaderAssetsComponent: React.FC<Props> = ({
     })();
   }, [loaderItems, setCurrentText, onDone, t]);
 
-  return currentText ? (
-    <ContainerComponent>
-      <FlexContainerComponent
-        align={FLEX_ALIGN.CENTER}
-        justify={FLEX_JUSTIFY.CENTER}
-        direction="y"
-      >
-        <TextComponent text={currentText} pivot={{ y: 4 }} />
-        <LoadingBarComponent
-          width={200}
-          height={10}
-          percentage={currentPercentageRef.current}
-        />
-      </FlexContainerComponent>
-    </ContainerComponent>
-  ) : (
-    children
-  );
+  if (currentText)
+    return useMemo(
+      () => (
+        <ContainerComponent>
+          <FlexContainerComponent
+            align={FLEX_ALIGN.CENTER}
+            justify={FLEX_JUSTIFY.CENTER}
+            direction="y"
+          >
+            <TextComponent text={currentText} pivot={{ y: 4 }} />
+            <LoadingBarComponent
+              width={200}
+              height={10}
+              percentage={currentPercentageRef.current}
+            />
+          </FlexContainerComponent>
+        </ContainerComponent>
+      ),
+      [currentText],
+    );
+
+  return useMemo(() => children, [children]);
 };

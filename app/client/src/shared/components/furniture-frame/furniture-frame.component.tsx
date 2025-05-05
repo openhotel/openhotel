@@ -82,7 +82,7 @@ export const FurnitureFrameComponentWrapper: React.FC<PropsWrapper> = ({
     [data, direction],
   );
 
-  const renderSprites = useMemo(
+  return useMemo(
     () =>
       $data.direction[$direction].textures.map(
         ({ texture, bounds, pivot, zIndex, hitArea }) => {
@@ -201,6 +201,4 @@ export const FurnitureFrameComponentWrapper: React.FC<PropsWrapper> = ({
       ),
     [$data, $direction, position, id],
   );
-
-  return <>{renderSprites}</>;
 };

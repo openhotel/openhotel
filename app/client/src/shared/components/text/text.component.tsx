@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import {
   SpriteTextComponent,
   SpriteTextProps,
@@ -10,12 +10,15 @@ type Props = {
 } & Omit<SpriteTextProps, "spriteSheet">;
 
 export const TextComponent: React.FC<Props> = ({ bold, ...props }) => {
-  return (
-    <SpriteTextComponent
-      spriteSheet={
-        bold ? SpriteSheetEnum.BOLD_FONT : SpriteSheetEnum.DEFAULT_FONT
-      }
-      {...props}
-    />
+  return useMemo(
+    () => (
+      <SpriteTextComponent
+        spriteSheet={
+          bold ? SpriteSheetEnum.BOLD_FONT : SpriteSheetEnum.DEFAULT_FONT
+        }
+        {...props}
+      />
+    ),
+    [bold, props],
   );
 };

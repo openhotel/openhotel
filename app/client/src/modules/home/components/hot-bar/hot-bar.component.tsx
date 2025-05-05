@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   ContainerComponent,
   FLEX_ALIGN,
@@ -48,27 +48,30 @@ export const HotBarComponent: React.FC<Props> = ({ onDone, width }) => {
     });
   }, [setYPosition, addTask]);
 
-  return (
-    <ContainerComponent
-      pivot={{
-        y: 25,
-      }}
-      position={{
-        y: yPosition,
-      }}
-    >
-      <FlexContainerComponent align={FLEX_ALIGN.BOTTOM}>
-        <FlexContainerComponent
-          justify={FLEX_JUSTIFY.SPACE_EVENLY}
-          align={FLEX_ALIGN.CENTER}
-          size={{
-            width,
-            height: 40,
-          }}
-        >
-          <HotBarItemsComponent />
+  return useMemo(
+    () => (
+      <ContainerComponent
+        pivot={{
+          y: 25,
+        }}
+        position={{
+          y: yPosition,
+        }}
+      >
+        <FlexContainerComponent align={FLEX_ALIGN.BOTTOM}>
+          <FlexContainerComponent
+            justify={FLEX_JUSTIFY.SPACE_EVENLY}
+            align={FLEX_ALIGN.CENTER}
+            size={{
+              width,
+              height: 40,
+            }}
+          >
+            <HotBarItemsComponent />
+          </FlexContainerComponent>
         </FlexContainerComponent>
-      </FlexContainerComponent>
-    </ContainerComponent>
+      </ContainerComponent>
+    ),
+    [yPosition, width],
   );
 };

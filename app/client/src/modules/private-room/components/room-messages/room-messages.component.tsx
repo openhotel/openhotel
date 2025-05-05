@@ -188,15 +188,9 @@ export const RoomMessagesComponent: React.FC<Props> = ({
     };
   }, [messages, setMessages, maxMessages, addTask, setYPivot]);
 
-  return (
-    <ContainerComponent
-      {...containerProps}
-      pivot={{
-        ...containerProps?.pivot,
-        y: (containerProps?.pivot?.y ?? 0) + yPivot,
-      }}
-    >
-      {messages.map((messageData, index) => {
+  const renderMessages = useMemo(
+    () =>
+      messages.map((messageData, index) => {
         if (!messageData) return null;
         const {
           id,
@@ -223,7 +217,22 @@ export const RoomMessagesComponent: React.FC<Props> = ({
             align="center"
           />
         );
-      })}
-    </ContainerComponent>
+      }),
+    [messages],
+  );
+
+  return useMemo(
+    () => (
+      <ContainerComponent
+        {...containerProps}
+        pivot={{
+          ...containerProps?.pivot,
+          y: (containerProps?.pivot?.y ?? 0) + yPivot,
+        }}
+      >
+        {renderMessages}
+      </ContainerComponent>
+    ),
+    [renderMessages, containerProps],
   );
 };

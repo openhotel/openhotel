@@ -45,27 +45,30 @@ export const BubbleActionComponent: React.FC<Props> = ({
     });
   }, [setSize, $padding]);
 
-  return (
-    <ContainerComponent {...containerProps}>
-      <NineSliceSpriteComponent
-        texture="bubble-user"
-        spriteSheet={SpriteSheetEnum.UI}
-        leftWidth={8}
-        rightWidth={4}
-        topHeight={4}
-        bottomHeight={5}
-        width={size.width}
-        height={size.height}
-      />
-      <TextComponent
-        ref={textRef}
-        position={{
-          x: $padding.left,
-          y: $padding.top,
-        }}
-        text={text}
-        color={0}
-      />
-    </ContainerComponent>
+  return useMemo(
+    () => (
+      <ContainerComponent {...containerProps}>
+        <NineSliceSpriteComponent
+          texture="bubble-user"
+          spriteSheet={SpriteSheetEnum.UI}
+          leftWidth={8}
+          rightWidth={4}
+          topHeight={4}
+          bottomHeight={5}
+          width={size.width}
+          height={size.height}
+        />
+        <TextComponent
+          ref={textRef}
+          position={{
+            x: $padding.left,
+            y: $padding.top,
+          }}
+          text={text}
+          color={0}
+        />
+      </ContainerComponent>
+    ),
+    [containerProps, size, $padding, text],
   );
 };

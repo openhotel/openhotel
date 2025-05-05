@@ -55,13 +55,18 @@ export const PurseComponent: React.FC = () => {
     return () => clearInterval(interval);
   }, [$reload]);
 
-  return (
-    <PurseComponentWrapper
-      credits={credits}
-      transactions={transactions}
-      onPointerDown={() => closeModal(Modal.PURSE)}
-      setDragPolygon={setDragPolygon}
-    />
+  const onCloseModal = useCallback(() => closeModal(Modal.PURSE), [closeModal]);
+
+  return useMemo(
+    () => (
+      <PurseComponentWrapper
+        credits={credits}
+        transactions={transactions}
+        onPointerDown={onCloseModal}
+        setDragPolygon={setDragPolygon}
+      />
+    ),
+    [credits, transactions, setDragPolygon, onCloseModal],
   );
 };
 
@@ -93,104 +98,113 @@ export const PurseComponentWrapper: React.FC<Props> = ({
     [width, height],
   );
 
-  return (
-    <>
-      <GraphicsComponent
-        type={GraphicType.CIRCLE}
-        radius={6.5}
-        alpha={0}
-        cursor={Cursor.POINTER}
-        eventMode={EventMode.STATIC}
-        position={{
-          x: width - 35,
-          y: 1.5,
-        }}
-        onPointerDown={onPointerDown}
-        zIndex={20}
-      />
-      <ContainerComponent>
-        <NineSliceSpriteComponent
-          spriteSheet={SpriteSheetEnum.UI}
-          texture="ui-purse-modal"
-          leftWidth={30}
-          rightWidth={33}
-          topHeight={50}
-          bottomHeight={21}
-          height={height}
-          width={width}
+  const renderTransactions = useMemo(
+    () =>
+      transactions.map((transaction, index) => (
+        <TransactionComponent
+          key={`transaction-${index}`}
+          transaction={transaction}
+          scrollSize={scrollSize}
         />
-        <TilingSpriteComponent
-          texture="ui-purse-modal-bar-tile"
-          spriteSheet={SpriteSheetEnum.UI}
-          position={{
-            x: 27,
-            y: 4,
-          }}
-          width={width - 63}
-        />
+      )),
+    [transactions],
+  );
 
-        <SpriteComponent
-          spriteSheet={SpriteSheetEnum.UI}
-          texture="ui-purse-top"
+  return useMemo(
+    () => (
+      <>
+        <GraphicsComponent
+          type={GraphicType.CIRCLE}
+          radius={6.5}
+          alpha={0}
+          cursor={Cursor.POINTER}
+          eventMode={EventMode.STATIC}
           position={{
-            x: width / 2,
-            y: 0,
+            x: width - 35,
+            y: 1.5,
           }}
-          pivot={{
-            x: 11,
-            y: 17,
-          }}
+          onPointerDown={onPointerDown}
+          zIndex={20}
         />
+        <ContainerComponent>
+          <NineSliceSpriteComponent
+            spriteSheet={SpriteSheetEnum.UI}
+            texture="ui-purse-modal"
+            leftWidth={30}
+            rightWidth={33}
+            topHeight={50}
+            bottomHeight={21}
+            height={height}
+            width={width}
+          />
+          <TilingSpriteComponent
+            texture="ui-purse-modal-bar-tile"
+            spriteSheet={SpriteSheetEnum.UI}
+            position={{
+              x: 27,
+              y: 4,
+            }}
+            width={width - 63}
+          />
 
-        <FlexContainerComponent
-          justify={FLEX_JUSTIFY.CENTER}
-          size={{
-            width,
-          }}
-          position={{
-            y: 4,
-          }}
-        >
-          <TextComponent
-            text={t("economy.purse_title")}
-            backgroundColor={0xb3a49a}
-            color={0x6e5859}
-            backgroundAlpha={1}
-            padding={{
-              left: 4,
-              right: 3,
-              bottom: 0,
-              top: 2,
+          <SpriteComponent
+            spriteSheet={SpriteSheetEnum.UI}
+            texture="ui-purse-top"
+            position={{
+              x: width / 2,
+              y: 0,
+            }}
+            pivot={{
+              x: 11,
+              y: 17,
             }}
           />
-        </FlexContainerComponent>
 
-        <FlexContainerComponent
-          justify={FLEX_JUSTIFY.CENTER}
-          size={{
-            width,
-          }}
-          position={{
-            y: 28,
-          }}
-          gap={4}
-        >
-          <TextComponent text={credits.toString()} color={0x000} bold />
-          <TextComponent text={t("economy.credits")} color={0x000} />
-        </FlexContainerComponent>
-
-        <ScrollComponent position={{ x: 23, y: 50 }} size={scrollSize}>
-          <FlexContainerComponent direction="y" gap={3}>
-            {transactions.map((transaction, index) => (
-              <TransactionComponent
-                key={`transaction-${index}`}
-                transaction={transaction}
-                scrollSize={scrollSize}
-              />
-            ))}
+          <FlexContainerComponent
+            justify={FLEX_JUSTIFY.CENTER}
+            size={{
+              width,
+            }}
+            position={{
+              y: 4,
+            }}
+          >
+            <TextComponent
+              text={t("economy.purse_title")}
+              backgroundColor={0xb3a49a}
+              color={0x6e5859}
+              backgroundAlpha={1}
+              padding={{
+                left: 4,
+                right: 3,
+                bottom: 0,
+                top: 2,
+              }}
+            />
           </FlexContainerComponent>
-        </ScrollComponent>
-      </ContainerComponent>
-    </>
+
+          <FlexContainerComponent
+            justify={FLEX_JUSTIFY.CENTER}
+            size={{
+              width,
+            }}
+            position={{
+              y: 28,
+            }}
+            gap={4}
+          >
+            <TextComponent text={credits.toString()} color={0x000} bold />
+            <TextComponent text={t("economy.credits")} color={0x000} />
+          </FlexContainerComponent>
+
+          <ScrollComponent position={{ x: 23, y: 50 }} size={scrollSize}>
+            <FlexContainerComponent direction="y" gap={3}>
+              {renderTransactions}
+            </FlexContainerComponent>
+          </ScrollComponent>
+        </ContainerComponent>
+      </>
+    ),
+    [width, height, credits, onPointerDown, scrollSize, renderTransactions],
   );
 };

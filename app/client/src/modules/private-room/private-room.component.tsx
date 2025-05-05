@@ -63,7 +63,7 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
     setAbsoluteRoomPosition,
   } = usePrivateRoom();
   const { lastUpdate, update } = useUpdate();
-  const { isDragging, position: cameraPosition } = useCamera();
+  const { isDragging, getPosition: getCameraPosition } = useCamera();
 
   const { on: onEvent } = useEvents();
   const { getSize, getScale } = useWindow();
@@ -160,12 +160,13 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
   ]);
 
   useEffect(() => {
+    const cameraPosition = getCameraPosition();
     const absolutePosition = {
       x: roomPosition.x + cameraPosition.x,
       y: roomPosition.y + cameraPosition.y,
     };
     setAbsoluteRoomPosition(absolutePosition);
-  }, [cameraPosition, roomPosition, setAbsoluteRoomPosition]);
+  }, [getCameraPosition, roomPosition, setAbsoluteRoomPosition]);
 
   const onKeyDown = useCallback(
     (event: KeyboardEvent) => {
@@ -208,7 +209,7 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
 
   const onPointerTile = useCallback(
     (position: Point3d) => {
-      if (isDragging) return;
+      if (isDragging()) return;
 
       if (isShiftDown) {
         setLastPositionData({
@@ -246,65 +247,76 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
     [setWallDataPoint, setSelectedPreview, setLastPositionData],
   );
 
-  const messagesPivot = useMemo(
-    () => ({
+  const messagesPivot = useMemo(() => {
+    const cameraPosition = getCameraPosition();
+    return {
       x: roomPivot.x,
       y: roomPosition.y + cameraPosition.y,
-    }),
-    [roomPosition, roomPivot, cameraPosition],
-  );
+    };
+  }, [roomPosition, roomPivot, getCameraPosition]);
 
   const safeXPosition = useMemo(
     () => Math.round((windowSize.width - safeWindowSize.width) / 2),
     [windowSize, safeWindowSize],
   );
 
-  if (!room) return null;
-
-  return (
-    <ContainerComponent>
-      <CameraComponent
-        margin={50}
-        contentRef={privateRoomRef}
-        bottomPadding={HOT_BAR_HEIGHT_FULL}
-      >
-        <ContainerComponent position={roomPosition}>
-          <PrivateRoomComp
-            ref={privateRoomRef}
-            {...room}
-            onPointerTile={onPointerTile}
-            onHoverTile={onHoverTile}
-            onClickWall={onClickWall}
+  return useMemo(
+    () =>
+      room ? (
+        <ContainerComponent>
+          <CameraComponent
+            margin={50}
+            contentRef={privateRoomRef}
+            bottomPadding={HOT_BAR_HEIGHT_FULL}
           >
-            <RoomCharactersComponent />
-            <RoomFurnitureComponent />
-          </PrivateRoomComp>
-          <RoomMessagesComponent pivot={messagesPivot} />
+            <ContainerComponent position={roomPosition}>
+              <PrivateRoomComp
+                ref={privateRoomRef}
+                {...room}
+                onPointerTile={onPointerTile}
+                onHoverTile={onHoverTile}
+                onClickWall={onClickWall}
+              >
+                <RoomCharactersComponent />
+                <RoomFurnitureComponent />
+              </PrivateRoomComp>
+              <RoomMessagesComponent pivot={messagesPivot} />
+            </ContainerComponent>
+            {/*<GraphicsComponent*/}
+            {/*  type={GraphicType.RECTANGLE}*/}
+            {/*  width={roomSize.width}*/}
+            {/*  height={roomSize.height}*/}
+            {/*  position={roomPosition}*/}
+            {/*  alpha={0.5}*/}
+            {/*  eventMode={EventMode.NONE}*/}
+            {/*/>*/}
+          </CameraComponent>
+          <ContainerComponent
+            position={{
+              x: safeXPosition,
+              y: windowSize.height,
+            }}
+          >
+            <RoomInfoComponent />
+            <ChatHotBarComponent
+              maxWidth={windowSize.width}
+              width={safeWindowSize.width}
+            />
+            <ContainerComponent position={{ x: safeWindowSize.width }}>
+              <SelectionPreviewComponent />
+            </ContainerComponent>
+          </ContainerComponent>
         </ContainerComponent>
-        {/*<GraphicsComponent*/}
-        {/*  type={GraphicType.RECTANGLE}*/}
-        {/*  width={roomSize.width}*/}
-        {/*  height={roomSize.height}*/}
-        {/*  position={roomPosition}*/}
-        {/*  alpha={0.5}*/}
-        {/*  eventMode={EventMode.NONE}*/}
-        {/*/>*/}
-      </CameraComponent>
-      <ContainerComponent
-        position={{
-          x: safeXPosition,
-          y: windowSize.height,
-        }}
-      >
-        <RoomInfoComponent />
-        <ChatHotBarComponent
-          maxWidth={windowSize.width}
-          width={safeWindowSize.width}
-        />
-        <ContainerComponent position={{ x: safeWindowSize.width }}>
-          <SelectionPreviewComponent />
-        </ContainerComponent>
-      </ContainerComponent>
-    </ContainerComponent>
+      ) : null,
+    [
+      room,
+      windowSize,
+      roomPosition,
+      safeWindowSize,
+      safeXPosition,
+      onPointerTile,
+      onHoverTile,
+      onClickWall,
+    ],
   );
 };

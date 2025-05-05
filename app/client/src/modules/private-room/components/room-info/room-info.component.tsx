@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
   ContainerRef,
   FLEX_ALIGN,
@@ -19,26 +19,29 @@ export const RoomInfoComponent: React.FC = () => {
     setHeight(containerRef.current.getSize().height);
   }, [setHeight]);
 
-  return (
-    <FlexContainerComponent
-      ref={containerRef}
-      pivot={{ y: HOT_BAR_HEIGHT_FULL + height + 5, x: -5 }}
-      direction="y"
-      align={FLEX_ALIGN.TOP}
-    >
-      <TextComponent text={room.title} {...TEXT_BACKGROUND_BASE} />
-      <TextComponent
-        alpha={0.6}
-        text={room.description}
-        {...TEXT_BACKGROUND_BASE}
-      />
-      {room.ownerUsername ? (
+  return useMemo(
+    () => (
+      <FlexContainerComponent
+        ref={containerRef}
+        pivot={{ y: HOT_BAR_HEIGHT_FULL + height + 5, x: -5 }}
+        direction="y"
+        align={FLEX_ALIGN.TOP}
+      >
+        <TextComponent text={room.title} {...TEXT_BACKGROUND_BASE} />
         <TextComponent
           alpha={0.6}
-          text={`by ${room.ownerUsername}`}
+          text={room.description}
           {...TEXT_BACKGROUND_BASE}
         />
-      ) : null}
-    </FlexContainerComponent>
+        {room.ownerUsername ? (
+          <TextComponent
+            alpha={0.6}
+            text={`by ${room.ownerUsername}`}
+            {...TEXT_BACKGROUND_BASE}
+          />
+        ) : null}
+      </FlexContainerComponent>
+    ),
+    [room, height],
   );
 };

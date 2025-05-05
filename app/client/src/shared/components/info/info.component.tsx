@@ -66,43 +66,55 @@ export const InfoComponent: React.FC<Props> = ({ extra = [] }) => {
   const hemisphere = useMemo(() => getAccount().hemisphere, [getAccount]);
   const version = useMemo(() => getVersion(), [getVersion]);
 
-  return (
-    <FlexContainerComponent
-      align={FLEX_ALIGN.BOTTOM}
-      zIndex={Number.MAX_SAFE_INTEGER}
-      size={{
-        width: safeWindowSize.width,
-      }}
-      direction="y"
-      pivot={{
-        x: 6 + safeXPosition,
-        y: -5,
-      }}
-    >
-      <Text text={`${fps} FPS`} />
-      <Line />
-      <Text text={version} />
-      <Line />
-      <Text text={`${system.browser.name} (${system.browser.version})`} />
-      <Text text={`${system.cpu.arch} (x${system.cpu.cores})`} />
-      <Text text={`${system.gpu.name} (${system.gpu.vendor})`} />
-      <Line />
-      <Text text={`hem: ${Hemisphere[hemisphere]}`} />
-      <Text text={`route: ${route}`} />
-      {extra.length ? (
-        <>
-          <Line />
-          <Text text="///////////////////////" />
-          <Line />
-          {extra.map((text, index) =>
-            text ? (
-              <Text key={`${index}_${text}`} text={text} />
-            ) : (
-              <Line key={`${index}`} />
-            ),
-          )}
-        </>
-      ) : null}
-    </FlexContainerComponent>
+  return useMemo(
+    () => (
+      <FlexContainerComponent
+        align={FLEX_ALIGN.BOTTOM}
+        zIndex={Number.MAX_SAFE_INTEGER}
+        size={{
+          width: safeWindowSize.width,
+        }}
+        direction="y"
+        pivot={{
+          x: 6 + safeXPosition,
+          y: -5,
+        }}
+      >
+        <Text text={`${fps} FPS`} />
+        <Line />
+        <Text text={version} />
+        <Line />
+        <Text text={`${system.browser.name} (${system.browser.version})`} />
+        <Text text={`${system.cpu.arch} (x${system.cpu.cores})`} />
+        <Text text={`${system.gpu.name} (${system.gpu.vendor})`} />
+        <Line />
+        <Text text={`hem: ${Hemisphere[hemisphere]}`} />
+        <Text text={`route: ${route}`} />
+        {extra.length ? (
+          <>
+            <Line />
+            <Text text="///////////////////////" />
+            <Line />
+            {extra.map((text, index) =>
+              text ? (
+                <Text key={`${index}_${text}`} text={text} />
+              ) : (
+                <Line key={`${index}`} />
+              ),
+            )}
+          </>
+        ) : null}
+      </FlexContainerComponent>
+    ),
+    [
+      safeWindowSize,
+      safeXPosition,
+      fps,
+      version,
+      system,
+      hemisphere,
+      route,
+      extra,
+    ],
   );
 };

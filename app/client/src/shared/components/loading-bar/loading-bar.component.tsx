@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import {
   ContainerComponent,
   GraphicsComponent,
@@ -20,53 +20,56 @@ export const LoadingBarComponent: React.FC<Props> = ({
   height,
   percentage = 0.5,
 }) => {
-  return (
-    <ContainerComponent>
-      <GraphicsComponent
-        type={GraphicType.RECTANGLE}
-        width={(width - padding * 4) * percentage}
-        height={height - padding * 4}
-        position={{
-          x: padding * 2,
-          y: padding * 2,
-        }}
-        tint={color}
-      />
-      <GraphicsComponent
-        type={GraphicType.POLYGON}
-        polygon={[
-          0,
-          0,
-          //
-          width,
-          0,
-          //
-          width,
-          height,
-          //
-          0,
-          height,
-          //
-          0,
-          padding,
-          //
-          padding,
-          padding,
-          //
-          padding,
-          height - padding,
-          //
-          width - padding,
-          height - padding,
-          //
-          width - padding,
-          padding,
-          //
-          0,
-          padding,
-        ]}
-        tint={color}
-      />
-    </ContainerComponent>
+  return useMemo(
+    () => (
+      <ContainerComponent>
+        <GraphicsComponent
+          type={GraphicType.RECTANGLE}
+          width={(width - padding * 4) * percentage}
+          height={height - padding * 4}
+          position={{
+            x: padding * 2,
+            y: padding * 2,
+          }}
+          tint={color}
+        />
+        <GraphicsComponent
+          type={GraphicType.POLYGON}
+          polygon={[
+            0,
+            0,
+            //
+            width,
+            0,
+            //
+            width,
+            height,
+            //
+            0,
+            height,
+            //
+            0,
+            padding,
+            //
+            padding,
+            padding,
+            //
+            padding,
+            height - padding,
+            //
+            width - padding,
+            height - padding,
+            //
+            width - padding,
+            padding,
+            //
+            0,
+            padding,
+          ]}
+          tint={color}
+        />
+      </ContainerComponent>
+    ),
+    [width, padding, percentage, height, color],
   );
 };

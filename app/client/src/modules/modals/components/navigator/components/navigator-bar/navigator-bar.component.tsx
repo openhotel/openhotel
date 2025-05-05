@@ -9,12 +9,16 @@ import {
 import { NavigatorButtonComponent } from "../";
 import { ModalNavigatorTab } from "shared/enums";
 import { MODAL_NAVIGATOR_TAB_NAME_MAP } from "shared/consts";
-
 import { useTranslation } from "react-i18next";
+
 type Props = {
   selectedCategory?: ModalNavigatorTab;
   onSelectCategory?: (category: ModalNavigatorTab) => void;
 };
+
+const CATEGORIES = Object.keys(ModalNavigatorTab)
+  .filter((num) => !isNaN(num as unknown as number))
+  .map(Number) as unknown[] as ModalNavigatorTab[];
 
 export const NavigatorBarComponent: React.FC<Props> = ({
   selectedCategory,
@@ -28,17 +32,15 @@ export const NavigatorBarComponent: React.FC<Props> = ({
     [onSelectCategory],
   );
 
-  const categories = useMemo(
-    () =>
-      Object.keys(ModalNavigatorTab)
-        .filter((num) => !isNaN(num as unknown as number))
-        .map(Number) as unknown[] as ModalNavigatorTab[],
-    [],
-  );
+  // const { update, lastUpdate } = useUpdate();
+  //
+  // const onLoaded = useCallback(() => {
+  //   update();
+  // }, [update]);
 
-  return (
-    <FlexContainerComponent justify={FLEX_JUSTIFY.START}>
-      {categories.map((category: ModalNavigatorTab, index) => (
+  const renderCategories = useMemo(
+    () =>
+      CATEGORIES.map((category: ModalNavigatorTab, index) => (
         <ContainerComponent
           key={category}
           onPointerDown={$onSelectCategory(category)}
@@ -54,13 +56,22 @@ export const NavigatorBarComponent: React.FC<Props> = ({
             type={
               index === 0
                 ? "left"
-                : index === categories.length - 1
+                : index === CATEGORIES.length - 1
                   ? "right"
                   : "mid"
             }
           />
         </ContainerComponent>
-      ))}
-    </FlexContainerComponent>
+      )),
+    [selectedCategory, t, $onSelectCategory],
+  );
+
+  return useMemo(
+    () => (
+      <FlexContainerComponent justify={FLEX_JUSTIFY.START} test={true}>
+        {renderCategories}
+      </FlexContainerComponent>
+    ),
+    [renderCategories],
   );
 };

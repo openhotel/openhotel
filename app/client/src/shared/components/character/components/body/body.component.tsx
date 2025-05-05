@@ -53,21 +53,25 @@ export const BodyComponent: React.FC<Props> = ({
 
   if (!bodyData) return null;
 
-  return (
-    <ContainerComponent sortableChildren pivot={bodyData.position}>
-      <SpriteComponent
-        texture={bodyData.texture}
-        spriteSheet={SpriteSheetEnum.CHARACTER}
-        tint={skinColor}
-        scale={{
-          x: bodyData.scale ?? 1,
-        }}
-        pivot={{
-          x: bodyData?.pivot?.x ?? 0,
-          y: bodyData?.pivot?.y ?? 0,
-        }}
-      />
-      {children}
-    </ContainerComponent>
+  return useMemo(
+    () =>
+      bodyData ? (
+        <ContainerComponent sortableChildren pivot={bodyData.position}>
+          <SpriteComponent
+            texture={bodyData.texture}
+            spriteSheet={SpriteSheetEnum.CHARACTER}
+            tint={skinColor}
+            scale={{
+              x: bodyData.scale ?? 1,
+            }}
+            pivot={{
+              x: bodyData?.pivot?.x ?? 0,
+              y: bodyData?.pivot?.y ?? 0,
+            }}
+          />
+          {children}
+        </ContainerComponent>
+      ) : null,
+    [bodyData, children],
   );
 };

@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useMemo } from "react";
 import {
   ContainerComponent,
   ContainerProps,
@@ -57,56 +57,72 @@ export const ScrollComponent: React.FC<Props> = ({
   );
 
   if (mock) {
-    return (
-      <>
-        <ContainerComponent position={{ x: size.width }}>
-          <ContainerComponent>{renderTop()}</ContainerComponent>
-          <ContainerComponent position={{ y: SCROLL_BAR_WIDTH }}>
-            {renderScrollBackground()}
+    return useMemo(
+      () => (
+        <>
+          <ContainerComponent position={{ x: size.width }}>
+            <ContainerComponent>{renderTop()}</ContainerComponent>
+            <ContainerComponent position={{ y: SCROLL_BAR_WIDTH }}>
+              {renderScrollBackground()}
+            </ContainerComponent>
+            <ContainerComponent
+              position={{ y: size.height - SCROLL_BAR_WIDTH }}
+            >
+              {renderBottom()}
+            </ContainerComponent>
           </ContainerComponent>
-          <ContainerComponent position={{ y: size.height - SCROLL_BAR_WIDTH }}>
-            {renderBottom()}
-          </ContainerComponent>
-        </ContainerComponent>
-        {children}
-      </>
+          {children}
+        </>
+      ),
+      [size, renderScrollBackground, renderBottom, children],
     );
   }
 
   if (!children) return null;
 
-  return (
-    <ScrollableContainerComponent
-      size={size}
-      scrollbar={{
-        renderTop,
-        renderBottom,
-        renderScrollBackground,
-        renderScrollBar: () => (
-          <ContainerComponent>
-            <NineSliceSpriteComponent
-              texture="scrollbar-scroll-bar"
-              spriteSheet={SpriteSheetEnum.UI}
-              leftWidth={4}
-              rightWidth={4}
-              topHeight={4}
-              bottomHeight={4}
-              height={scrollHeight}
-            />
-            <TilingSpriteComponent
-              texture="scrollbar-scroll-bar-background"
-              spriteSheet={SpriteSheetEnum.UI}
-              height={scrollHeight - 6}
-              position={{
-                x: 2,
-                y: 3,
-              }}
-            />
-          </ContainerComponent>
-        ),
-      }}
-      children={children}
-      {...containerProps}
-    />
+  return useMemo(
+    () => (
+      <ScrollableContainerComponent
+        size={size}
+        scrollbar={{
+          renderTop,
+          renderBottom,
+          renderScrollBackground,
+          renderScrollBar: () => (
+            <ContainerComponent>
+              <NineSliceSpriteComponent
+                texture="scrollbar-scroll-bar"
+                spriteSheet={SpriteSheetEnum.UI}
+                leftWidth={4}
+                rightWidth={4}
+                topHeight={4}
+                bottomHeight={4}
+                height={scrollHeight}
+              />
+              <TilingSpriteComponent
+                texture="scrollbar-scroll-bar-background"
+                spriteSheet={SpriteSheetEnum.UI}
+                height={scrollHeight - 6}
+                position={{
+                  x: 2,
+                  y: 3,
+                }}
+              />
+            </ContainerComponent>
+          ),
+        }}
+        children={children}
+        {...containerProps}
+      />
+    ),
+    [
+      size,
+      renderTop,
+      renderBottom,
+      renderScrollBackground,
+      scrollHeight,
+      children,
+      containerProps,
+    ],
   );
 };

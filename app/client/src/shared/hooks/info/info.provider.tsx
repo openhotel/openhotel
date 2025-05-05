@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect, useState } from "react";
+import React, { ReactNode, useEffect, useMemo, useState } from "react";
 import { InfoContext } from "./info.context";
 import { InfoComponent } from "shared/components";
 import { Event, useEvents } from "@openhotel/pixi-components";
@@ -39,6 +39,11 @@ export const InfoProvider: React.FunctionComponent<InfoProps> = ({
     };
   }, [on, setShowInfo]);
 
+  const renderInfo = useMemo(
+    () => (showInfo ? <InfoComponent extra={extra} /> : null),
+    [showInfo, extra],
+  );
+
   return (
     <InfoContext.Provider
       value={{
@@ -47,7 +52,7 @@ export const InfoProvider: React.FunctionComponent<InfoProps> = ({
       }}
       children={
         <>
-          {showInfo ? <InfoComponent extra={extra} /> : null}
+          {renderInfo}
           {children}
         </>
       }

@@ -25,6 +25,8 @@ type Props = {
   onClickGo: () => void;
 } & ContainerProps;
 
+const usersWidth = 40;
+
 export const NavigatorRoomButtonComponent: React.FC<Props> = ({
   title,
   favorite,
@@ -36,8 +38,6 @@ export const NavigatorRoomButtonComponent: React.FC<Props> = ({
   onClickGo,
   ...containerProps
 }) => {
-  const usersWidth = 40;
-
   const usersColor = useMemo(() => {
     if (users >= maxUsers) return 0xb73d22;
     if (users >= maxUsers - 5) return 0xffd826;
@@ -46,94 +46,108 @@ export const NavigatorRoomButtonComponent: React.FC<Props> = ({
     return 0xe0e0e0;
   }, [users, maxUsers]);
 
-  return (
-    <ContainerComponent
-      {...containerProps}
-      eventMode={EventMode.STATIC}
-      cursor={Cursor.POINTER}
-    >
-      <NineSliceSpriteComponent
-        spriteSheet={SpriteSheetEnum.UI}
-        texture="ui-button-left-slice"
-        leftWidth={3}
-        rightWidth={3}
-        topHeight={3}
-        bottomHeight={3}
-        width={size.width - usersWidth}
-        height={size.height}
-      />
+  return useMemo(
+    () => (
       <ContainerComponent
-        position={{
-          x: 8,
-          y: size.height / 2 - 4,
-        }}
-      >
-        <SpriteComponent
-          spriteSheet={SpriteSheetEnum.UI}
-          texture={favorite ? "heart-full" : "heart-empty"}
-          eventMode={EventMode.STATIC}
-          cursor={Cursor.POINTER}
-          onPointerDown={onClickFavorite}
-        />
-        <TextComponent
-          text={title}
-          color={0x1}
-          maxWidth={size.width - usersWidth - 28}
-          wrap={false}
-          position={{
-            x: 15,
-            y: 1,
-          }}
-        />
-      </ContainerComponent>
-      <ContainerComponent
-        position={{
-          x: size.width - usersWidth,
-        }}
+        {...containerProps}
         eventMode={EventMode.STATIC}
         cursor={Cursor.POINTER}
-        onPointerDown={onClickGo}
       >
         <NineSliceSpriteComponent
           spriteSheet={SpriteSheetEnum.UI}
-          texture="ui-button-right-slice"
-          leftWidth={4}
-          rightWidth={4}
-          topHeight={4}
-          bottomHeight={4}
-          width={usersWidth}
+          texture="ui-button-left-slice"
+          leftWidth={3}
+          rightWidth={3}
+          topHeight={3}
+          bottomHeight={3}
+          width={size.width - usersWidth}
           height={size.height}
-          tint={usersColor}
         />
-        <FlexContainerComponent
-          size={{ width: usersWidth - 8, height: size.height }}
-          justify={FLEX_JUSTIFY.CENTER}
-          align={FLEX_ALIGN.CENTER}
-        >
-          <TextComponent
-            text={users + ""}
-            pivot={{
-              x: -2,
-            }}
-            bold
-          />
-        </FlexContainerComponent>
-        <FlexContainerComponent
-          size={{ width: usersWidth - 8, height: size.height }}
-          align={FLEX_ALIGN.CENTER}
+        <ContainerComponent
           position={{
-            x: usersWidth - 7,
+            x: 8,
+            y: size.height / 2 - 4,
           }}
         >
           <SpriteComponent
             spriteSheet={SpriteSheetEnum.UI}
-            texture="arrow"
-            pivot={{
+            texture={favorite ? "heart-full" : "heart-empty"}
+            eventMode={EventMode.STATIC}
+            cursor={Cursor.POINTER}
+            onPointerDown={onClickFavorite}
+          />
+          <TextComponent
+            text={title}
+            color={0x1}
+            maxWidth={size.width - usersWidth - 28}
+            wrap={false}
+            position={{
+              x: 15,
               y: 1,
             }}
           />
-        </FlexContainerComponent>
+        </ContainerComponent>
+        <ContainerComponent
+          position={{
+            x: size.width - usersWidth,
+          }}
+          eventMode={EventMode.STATIC}
+          cursor={Cursor.POINTER}
+          onPointerDown={onClickGo}
+        >
+          <NineSliceSpriteComponent
+            spriteSheet={SpriteSheetEnum.UI}
+            texture="ui-button-right-slice"
+            leftWidth={4}
+            rightWidth={4}
+            topHeight={4}
+            bottomHeight={4}
+            width={usersWidth}
+            height={size.height}
+            tint={usersColor}
+          />
+          <FlexContainerComponent
+            size={{ width: usersWidth - 8, height: size.height }}
+            justify={FLEX_JUSTIFY.CENTER}
+            align={FLEX_ALIGN.CENTER}
+          >
+            <TextComponent
+              text={users + ""}
+              pivot={{
+                x: -2,
+              }}
+              bold
+            />
+          </FlexContainerComponent>
+          <FlexContainerComponent
+            size={{ width: usersWidth - 8, height: size.height }}
+            align={FLEX_ALIGN.CENTER}
+            position={{
+              x: usersWidth - 7,
+            }}
+          >
+            <SpriteComponent
+              spriteSheet={SpriteSheetEnum.UI}
+              texture="arrow"
+              pivot={{
+                y: 1,
+              }}
+            />
+          </FlexContainerComponent>
+        </ContainerComponent>
       </ContainerComponent>
-    </ContainerComponent>
+    ),
+    [
+      title,
+      favorite,
+      users,
+      size,
+
+      onClickFavorite,
+      onClickGo,
+      containerProps,
+
+      usersColor,
+    ],
   );
 };

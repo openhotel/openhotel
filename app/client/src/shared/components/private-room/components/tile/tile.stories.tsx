@@ -12,6 +12,7 @@ export default {
 
 type Story = StoryObj<typeof PrivateRoomTile>;
 
+//@ts-ignore
 export const Primary: Story = () => {
   return (
     <PrivateRoomTile

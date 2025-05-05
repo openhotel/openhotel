@@ -52,8 +52,8 @@ export const CharacterComponent: React.FC<Props> = ({
     [],
   );
 
-  return (
-    <React.Fragment>
+  const renderHitbox = useMemo(
+    () => (
       <GraphicsComponent
         type={GraphicType.POLYGON}
         tint={0x00ffff}
@@ -69,54 +69,91 @@ export const CharacterComponent: React.FC<Props> = ({
         }}
         onPointerDown={onPointerDown}
       />
+    ),
+    [onPointerDown, zIndex, position],
+  );
+
+  const renderLeftArm = useMemo(
+    () => (
+      <ArmComponent
+        skinColor={skinColor}
+        bodyDirection={bodyDirection}
+        bodyAction={bodyAction}
+        side={CharacterArmSide.LEFT}
+        action={leftArmAction}
+      />
+    ),
+    [skinColor, bodyDirection, bodyAction, leftArmAction],
+  );
+
+  const renderRightArm = useMemo(
+    () => (
+      <ArmComponent
+        skinColor={skinColor}
+        bodyDirection={bodyDirection}
+        bodyAction={bodyAction}
+        side={CharacterArmSide.RIGHT}
+        action={leftArmAction}
+      />
+    ),
+    [skinColor, bodyDirection, bodyAction, rightArmAction],
+  );
+
+  const renderHead = useMemo(
+    () => (
+      <HeadComponent
+        skinColor={skinColor}
+        bodyDirection={bodyDirection}
+        bodyAction={bodyAction}
+        direction={headDirection}
+      />
+    ),
+    [skinColor, bodyDirection, bodyAction, headDirection],
+  );
+
+  const renderBody = useMemo(
+    () => (
+      <BodyComponent
+        action={bodyAction}
+        direction={bodyDirection}
+        skinColor={skinColor}
+      >
+        {renderHead}
+        {renderLeftArm}
+        {renderRightArm}
+      </BodyComponent>
+    ),
+    [
+      bodyAction,
+      bodyDirection,
+      skinColor,
+      renderHead,
+      renderLeftArm,
+      renderRightArm,
+    ],
+  );
+
+  const renderCharacter = useMemo(
+    () => (
       <ContainerComponent
         pivot={$pivot}
         zIndex={zIndex}
         position={position}
         {...containerProps}
       >
-        <BodyComponent
-          action={bodyAction}
-          direction={bodyDirection}
-          skinColor={skinColor}
-        >
-          <HeadComponent
-            skinColor={skinColor}
-            bodyDirection={bodyDirection}
-            bodyAction={bodyAction}
-            direction={headDirection}
-          />
-          <ArmComponent
-            skinColor={skinColor}
-            bodyDirection={bodyDirection}
-            bodyAction={bodyAction}
-            side={CharacterArmSide.LEFT}
-            action={leftArmAction}
-          />
-          <ArmComponent
-            skinColor={skinColor}
-            bodyDirection={bodyDirection}
-            bodyAction={bodyAction}
-            side={CharacterArmSide.RIGHT}
-            action={rightArmAction}
-          />
-          {/*<BubbleActionComponent*/}
-          {/*  pivot={{*/}
-          {/*    x: 0,*/}
-          {/*    y: 15,*/}
-          {/*  }}*/}
-          {/*  scale={{ x: -1 }}*/}
-          {/*  text="..."*/}
-          {/*  zIndex={100}*/}
-          {/*  padding={{*/}
-          {/*    top: 0,*/}
-          {/*    right: 3,*/}
-          {/*    left: 3,*/}
-          {/*    bottom: 3,*/}
-          {/*  }}*/}
-          {/*/>*/}
-        </BodyComponent>
+        {renderBody}
       </ContainerComponent>
-    </React.Fragment>
+    ),
+    [$pivot, zIndex, position, containerProps, renderBody],
+  );
+
+  return useMemo(
+    () => (
+      <React.Fragment>
+        {renderHitbox}
+        {renderCharacter}
+      </React.Fragment>
+    ),
+    [renderHitbox, renderCharacter],
   );
 };
