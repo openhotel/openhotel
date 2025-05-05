@@ -20,3 +20,4 @@ export * from "./version.utils.ts";
 export * from "./wait.utils.ts";
 export * from "./zip.utils.ts";
 export * from "./sss.utils.ts";
+export * from "./company.utils.ts";

@@ -27,6 +27,7 @@
     "npm:eventemitter3@^5.0.1": "5.0.1",
     "npm:fast-xml-parser@^4.4.1": "4.5.2",
     "npm:ipaddr.js@^2.0.1": "2.2.0",
+    "npm:jest@29.7.0": "29.7.0",
     "npm:jest@^29.7.0": "29.7.0",
     "npm:jsr@~0.13.2": "0.13.3",
     "npm:lodash@^4.17.21": "4.17.21",
