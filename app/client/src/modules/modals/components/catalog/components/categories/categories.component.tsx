@@ -57,7 +57,7 @@ export const CategoriesComponent: React.FC<Props> = ({
           cursor={Cursor.POINTER}
         />
       )),
-    [allCategories, width],
+    [allCategories, width, selectedCategoryId, onSelectedCategory],
   );
 
   return useMemo(
