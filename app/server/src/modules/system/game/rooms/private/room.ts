@@ -23,12 +23,18 @@ import { getPositionFromIsometricPosition } from "shared/utils/position.utils.ts
 
 export const getRoom =
   (roomUserMap: Record<string, string[]>) =>
-  (room: PrivateRoom): PrivateRoomMutable => {
+  async (room: PrivateRoom): Promise<PrivateRoomMutable> => {
     let $room: PrivateRoom = { ...room };
 
     if (!roomUserMap[room.id]) roomUserMap[room.id] = [];
 
-    const $baseRoomGrid: RoomPoint[][] = getBaseRoomGrid($room.layout);
+    const { layout, spawnPoint, spawnDirection } = await System.db.get([
+      "rooms",
+      "layouts",
+      $room.layoutIndex,
+    ]);
+
+    const $baseRoomGrid: RoomPoint[][] = getBaseRoomGrid(layout);
 
     const getId = () => room.id;
     const getTitle = () => room.title;
@@ -41,8 +47,8 @@ export const getRoom =
       return user.username;
     };
 
-    const getSpawnPoint = (): Point3d => room.spawnPoint;
-    const getSpawnDirection = (): Direction => room.spawnDirection;
+    const getSpawnPoint = (): Point3d => spawnPoint;
+    const getSpawnDirection = (): Direction => spawnDirection;
 
     const mapUser = (user: User) => ({
       accountId: user.accountId,
@@ -125,14 +131,13 @@ export const getRoom =
     const getUsers = () => roomUserMap[room.id];
 
     const getRandomPoint = (): Point2d => {
-      const z = getRandomNumber(0, room.layout.length - 1);
-      const x = getRandomNumber(0, room.layout[z].length - 1);
-      if (room.layout[z][x] === undefined) return getRandomPoint();
+      const z = getRandomNumber(0, layout.length - 1);
+      const x = getRandomNumber(0, layout[z].length - 1);
+      if (layout[z][x] === undefined) return getRandomPoint();
       return { x, z };
     };
 
-    const getPoint = (position: Point3d) =>
-      room.layout?.[position.z]?.[position.x];
+    const getPoint = (position: Point3d) => layout?.[position.z]?.[position.x];
 
     const isPointFree = (position: Point3d, accountId?: string) => {
       if (getPoint(position) === RoomPointEnum.EMPTY) return false;
@@ -270,23 +275,26 @@ export const getRoom =
       );
 
     const getYFromPoint = (point: Partial<Point3d>): number | null => {
-      if (!room?.layout?.[point.z]) return null;
-      const roomPoint = room.layout?.[point.z]?.[point.x];
+      if (!layout?.[point.z]) return null;
+      const roomPoint = layout?.[point.z]?.[point.x];
 
       if (roomPoint === RoomPointEnum.EMPTY) return null;
       if (roomPoint === RoomPointEnum.SPAWN) return 0;
 
       const onStairs =
-        room?.layout?.[point.z] &&
-        (roomPoint > room?.layout?.[point.z]?.[point.x - 1] ||
-          roomPoint > room?.layout?.[point.z - 1]?.[point.x]);
+        layout?.[point.z] &&
+        (roomPoint > layout?.[point.z]?.[point.x - 1] ||
+          roomPoint > layout?.[point.z - 1]?.[point.x]);
 
       return -(parseInt(roomPoint + "") - 1) + (onStairs ? 0.5 : 0);
     };
 
+    const getLayout = () => layout;
+
     const getObject = () => ({
       type: "private",
       ...$room,
+      layout: getLayout(),
     });
 
     const getObjectWithUsers = async () => ({
@@ -330,6 +338,8 @@ export const getRoom =
       getPoint,
       isPointFree,
       findPath,
+
+      getLayout,
 
       addFurniture,
       updateFurniture,
