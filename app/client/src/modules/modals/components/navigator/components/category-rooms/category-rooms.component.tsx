@@ -143,6 +143,10 @@ export const CategoryRoomsComponent: React.FC<Props> = ({ size }) => {
         <SpriteComponent
           spriteSheet={SpriteSheetEnum.UI}
           texture="search-bubble-icon"
+          position={{
+            x: 1,
+            y: 1,
+          }}
         />
 
         <SpriteTextInputComponent
@@ -150,7 +154,7 @@ export const CategoryRoomsComponent: React.FC<Props> = ({ size }) => {
           height={10}
           spriteSheet={SpriteSheetEnum.DEFAULT_FONT}
           padding={{
-            left: 20,
+            left: 30,
             right: 10,
             top: 4,
             bottom: 0,

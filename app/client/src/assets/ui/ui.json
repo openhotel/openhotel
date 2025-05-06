@@ -196,8 +196,8 @@
       "anchor": { "x": 0, "y": 0 }
     },
     "search-bubble-icon": {
-      "frame": { "x": 132, "y": 63, "w": 17, "h": 14 },
-      "sourceSize": { "w": 17, "h": 14 },
+      "frame": { "x": 132, "y": 48, "w": 22, "h": 12 },
+      "sourceSize": { "w": 22, "h": 12 },
       "anchor": { "x": 0, "y": 0 }
     }
   },
