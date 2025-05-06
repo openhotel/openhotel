@@ -194,6 +194,11 @@
       "frame": { "x": 62, "y": 152, "w": 8, "h": 8 },
       "sourceSize": { "w": 8, "h": 8 },
       "anchor": { "x": 0, "y": 0 }
+    },
+    "search-bubble-icon": {
+      "frame": { "x": 132, "y": 63, "w": 17, "h": 14 },
+      "sourceSize": { "w": 17, "h": 14 },
+      "anchor": { "x": 0, "y": 0 }
     }
   },
   "animations": {},

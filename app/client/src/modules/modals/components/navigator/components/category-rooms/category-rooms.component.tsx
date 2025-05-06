@@ -6,6 +6,7 @@ import {
   KeyboardEventExtended,
   NineSliceSpriteComponent,
   Size,
+  SpriteComponent,
   SpriteTextInputComponent,
 } from "@openhotel/pixi-components";
 import { useApi, useModal, useProxy } from "shared/hooks";
@@ -137,7 +138,11 @@ export const CategoryRoomsComponent: React.FC<Props> = ({ size }) => {
           bottomHeight={7}
           width={size.width - 133}
           tint={0}
-          alpha={1}
+          alpha={0.8}
+        />
+        <SpriteComponent
+          spriteSheet={SpriteSheetEnum.UI}
+          texture="search-bubble-icon"
         />
 
         <SpriteTextInputComponent
@@ -145,20 +150,21 @@ export const CategoryRoomsComponent: React.FC<Props> = ({ size }) => {
           height={10}
           spriteSheet={SpriteSheetEnum.DEFAULT_FONT}
           padding={{
-            left: 10,
+            left: 20,
             right: 10,
             top: 4,
             bottom: 0,
           }}
           placeholder={t("navigator.search")}
           placeholderProps={{
-            color: 0x1,
-            alpha: 0.5,
+            color: 0x0,
+            alpha: 0.8,
           }}
           maxLength={100}
-          backgroundColor={0xff00ff}
+          backgroundColor={0x88}
           backgroundAlpha={0}
           value={search}
+          focusNow={0}
           onChange={searchFunction}
         />
       </ContainerComponent>
@@ -166,7 +172,7 @@ export const CategoryRoomsComponent: React.FC<Props> = ({ size }) => {
       <ContainerComponent
         position={{
           x: 0,
-          y: 20,
+          y: 17,
         }}
       >
         <RoomsListComponentWrapper
