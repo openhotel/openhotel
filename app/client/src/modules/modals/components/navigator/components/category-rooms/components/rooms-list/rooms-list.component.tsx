@@ -2,6 +2,7 @@ import React, { useMemo } from "react";
 import {
   NavigatorRoomButtonComponent,
   ScrollComponent,
+  TextComponent,
 } from "shared/components";
 import {
   FLEX_JUSTIFY,
@@ -9,6 +10,7 @@ import {
   Size,
 } from "@openhotel/pixi-components";
 import { NavigatorRoom } from "shared/types";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   size: Size;
@@ -27,7 +29,7 @@ export const RoomsListComponentWrapper: React.FC<Props> = ({
   onClickFavorite,
   onClick,
 }) => {
-  if (!rooms.length) return null;
+  const { t } = useTranslation();
 
   const content = useMemo(
     () => (
@@ -56,6 +58,9 @@ export const RoomsListComponentWrapper: React.FC<Props> = ({
     ),
     [rooms, size, onClickGo, onClick, onClickFavorite],
   );
+
+  if (!rooms.length)
+    return <TextComponent tint={0} text={t("navigator.no_results")} />;
 
   return (
     <ScrollComponent
