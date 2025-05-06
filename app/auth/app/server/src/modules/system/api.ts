@@ -104,12 +104,13 @@ export const api = () => {
           if (!account) return false;
 
           return await account.checkToken(request);
-        case RequestKind.LICENSE:
+        case RequestKind.LICENSE: {
           if (!licenseToken) return false;
 
           const licenseHotel = await System.hotels.getHotel({ licenseToken });
           return Boolean(licenseHotel);
-        case RequestKind.CONNECTION:
+        }
+        case RequestKind.CONNECTION: {
           if (!licenseToken) return false;
 
           const hotel = await System.hotels.getHotel({ licenseToken });
@@ -128,19 +129,29 @@ export const api = () => {
             connection.integrationId,
           );
           return Boolean(hotelIntegration);
-        case RequestKind.ADMIN:
+        }
+        case RequestKind.ADMIN: {
           if (!accountId) return false;
 
           account = await System.accounts.getAccount({ accountId });
           if (!account || !(await account.checkToken(request))) return false;
 
-          return await account.isAdmin();
-        case RequestKind.TOKEN:
+          const { version } = System.getConfig();
+          const isDevelopment = version === "development";
+
+          const isAdmin = await account.isAdmin();
+          const isVerified = await account.otp.isVerified();
+
+          return isAdmin && (isDevelopment || isVerified);
+        }
+        case RequestKind.TOKEN: {
           const appToken = request.headers.get("app-token");
           return appToken && (await System.tokens.verify(appToken));
-        case RequestKind.APPS:
+        }
+        case RequestKind.APPS: {
           const $appToken = request.headers.get("app-token");
           return $appToken && (await System.apps.verify($appToken));
+        }
         default:
           return false;
       }
