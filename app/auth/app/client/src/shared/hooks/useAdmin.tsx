@@ -198,7 +198,13 @@ export const AdminProvider: React.FunctionComponent<ProviderProps> = ({
       method: RequestMethod.GET,
       pathname: "/admin/hotel",
       headers: getAccountHeaders(),
-    }).then((response) => setHotels(response.data.hotels));
+    }).then((response) =>
+      setHotels(
+        response.data.hotels.sort(
+          (a: DbHotel, b: DbHotel) => b.accounts.length - a.accounts.length,
+        ),
+      ),
+    );
   }, [fetch, getAccountHeaders]);
 
   const deleteHotel = useCallback(
