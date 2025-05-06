@@ -32,7 +32,6 @@ type Props = {
     direction: CrossDirection,
   ) => void;
   children?: React.ReactNode;
-  computePivot?: boolean;
 } & PrivateRoom;
 
 export type PreviewTileData = {
@@ -48,7 +47,6 @@ export const PrivateRoomComponent: React.FC<Props> = ({
   onHoverTile,
   onClickWall,
   children,
-  computePivot = true,
 }) => {
   const $ref = useRef<ContainerRef>(null);
   const $sizeRef = useRef<ContainerRef>(null);
@@ -256,15 +254,10 @@ export const PrivateRoomComponent: React.FC<Props> = ({
     [previewData],
   );
 
-  const $pivot = useMemo(
-    () => (computePivot ? pivot : null),
-    [computePivot, pivot],
-  );
-
   return useMemo(
     () => (
       <>
-        <ContainerComponent ref={$ref} sortableChildren pivot={$pivot}>
+        <ContainerComponent ref={$ref} sortableChildren pivot={pivot}>
           {tilesAndWalls}
           {renderPreviewTile}
           {children}
@@ -273,7 +266,7 @@ export const PrivateRoomComponent: React.FC<Props> = ({
       </>
     ),
     [
-      $pivot,
+      pivot,
       tilesAndWalls,
       previewData,
       renderPreviewTile,
