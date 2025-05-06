@@ -61,59 +61,76 @@ export const BubbleMessageComponent: React.FC<Props> = ({
     [width, align],
   );
 
-  return (
-    <ContainerComponent
-      {...containerProps}
-      pivot={{
-        x: pivotX,
-      }}
-      //prevents flickering
-      visible={Boolean(width)}
-    >
-      <NineSliceSpriteComponent
-        texture="bubble-message"
-        spriteSheet={SpriteSheetEnum.UI}
-        leftWidth={7}
-        rightWidth={7}
-        topHeight={7}
-        bottomHeight={7}
-        width={width}
-        tint={backgroundColor ?? 0xffffff}
-      />
-      <NineSliceSpriteComponent
-        texture="bubble-message-ring"
-        spriteSheet={SpriteSheetEnum.UI}
-        leftWidth={7}
-        rightWidth={7}
-        topHeight={7}
-        bottomHeight={7}
-        width={width}
-        tint={borderColor ?? 0}
-      />
-      <FlexContainerComponent
-        position={{
-          x: -1,
-          y: 4,
+  return useMemo(
+    () => (
+      <ContainerComponent
+        {...containerProps}
+        pivot={{
+          x: pivotX,
         }}
-        justify={FLEX_JUSTIFY.CENTER}
-        size={{
-          width: width,
-          height: 6,
-        }}
+        //prevents flickering
+        visible={Boolean(width)}
       >
-        <TextComponent
-          ref={userContainerRef}
-          text={username}
-          tint={usernameColor ?? 0}
-          bold
+        <NineSliceSpriteComponent
+          texture="bubble-message"
+          spriteSheet={SpriteSheetEnum.UI}
+          leftWidth={7}
+          rightWidth={7}
+          topHeight={7}
+          bottomHeight={7}
+          width={width}
+          tint={backgroundColor ?? 0xffffff}
         />
-        <TextComponent pivot={{ x: -1 }} text=": " tint={usernameColor ?? 0} />
-        <TextComponent
-          ref={messageContainerRef}
-          text={message}
-          tint={messageColor ?? 0}
+        <NineSliceSpriteComponent
+          texture="bubble-message-ring"
+          spriteSheet={SpriteSheetEnum.UI}
+          leftWidth={7}
+          rightWidth={7}
+          topHeight={7}
+          bottomHeight={7}
+          width={width}
+          tint={borderColor ?? 0}
         />
-      </FlexContainerComponent>
-    </ContainerComponent>
+        <FlexContainerComponent
+          position={{
+            x: -1,
+            y: 4,
+          }}
+          justify={FLEX_JUSTIFY.CENTER}
+          size={{
+            width: width,
+            height: 6,
+          }}
+        >
+          <TextComponent
+            ref={userContainerRef}
+            text={username}
+            tint={usernameColor ?? 0}
+            bold
+          />
+          <TextComponent
+            pivot={{ x: -1 }}
+            text=": "
+            tint={usernameColor ?? 0}
+          />
+          <TextComponent
+            ref={messageContainerRef}
+            text={message}
+            tint={messageColor ?? 0}
+          />
+        </FlexContainerComponent>
+      </ContainerComponent>
+    ),
+    [
+      containerProps,
+      pivotX,
+      width,
+      backgroundColor,
+      borderColor,
+      username,
+      usernameColor,
+      message,
+      messageColor,
+    ],
   );
 };

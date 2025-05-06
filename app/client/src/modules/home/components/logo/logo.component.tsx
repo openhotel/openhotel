@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { TextureEnum } from "shared/enums";
 import { SpriteComponent } from "@openhotel/pixi-components";
 import { wait } from "shared/utils";
@@ -35,12 +35,15 @@ export const LogoComponent: React.FC = () => {
     });
   }, [setYPosition, addTask]);
 
-  return (
-    <SpriteComponent
-      texture={TextureEnum.HOME_LOGO}
-      position={{
-        y: yPosition,
-      }}
-    />
+  return useMemo(
+    () => (
+      <SpriteComponent
+        texture={TextureEnum.HOME_LOGO}
+        position={{
+          y: yPosition,
+        }}
+      />
+    ),
+    [yPosition],
   );
 };

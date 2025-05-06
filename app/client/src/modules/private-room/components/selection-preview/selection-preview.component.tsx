@@ -29,17 +29,19 @@ import {
 import { FurnitureFrameComponentWrapper } from "shared/components/furniture-frame";
 import { usePrivateRoom } from "shared/hooks";
 
-const color = 0xc0bead;
-
-const TileComponent: React.FC<{ position: Point2d }> = ({ position }) => (
-  <SpriteComponent
-    texture="tile"
-    spriteSheet={SpriteSheetEnum.ROOM}
-    eventMode={EventMode.NONE}
-    tint={color}
-    position={position}
-  />
-);
+const TileComponent: React.FC<{ position: Point2d }> = ({ position }) =>
+  useMemo(
+    () => (
+      <SpriteComponent
+        texture="tile"
+        spriteSheet={SpriteSheetEnum.ROOM}
+        eventMode={EventMode.NONE}
+        tint={0xc0bead}
+        position={position}
+      />
+    ),
+    [position],
+  );
 
 export const SelectionPreviewComponent: React.FC = () => {
   const textContainerRef = useRef<ContainerRef>(null);

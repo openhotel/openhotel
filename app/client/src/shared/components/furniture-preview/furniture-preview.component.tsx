@@ -71,6 +71,6 @@ export const FurniturePreviewComponent: React.FC<Props> = ({
         </ContainerComponent>
       </ContainerComponent>
     ),
-    [isFurniture, furnitureData, size],
+    [containerProps, isFurniture, furnitureData, size],
   );
 };

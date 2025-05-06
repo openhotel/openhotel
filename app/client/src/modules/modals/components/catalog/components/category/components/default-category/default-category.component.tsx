@@ -33,6 +33,8 @@ type Props = {
   size: Size;
 } & ContainerProps;
 
+const bottomHeight = 20;
+
 export const DefaultCategoryComponent: React.FC<Props> = ({
   categoryId,
   size,
@@ -112,8 +114,6 @@ export const DefaultCategoryComponent: React.FC<Props> = ({
     () => size.width - previewPositionX - 3,
     [previewPositionX],
   );
-
-  const bottomHeight = 20;
 
   const onBuyFurniture = useCallback(() => {
     fetch(
@@ -218,22 +218,39 @@ export const DefaultCategoryComponent: React.FC<Props> = ({
     );
   }, [selectedFurnitureData, previewWidth, bottomHeight, size, onBuyFurniture]);
 
-  return (
-    <ContainerComponent {...containerProps}>
-      <ItemListComponent
-        rows={Math.max(
-          CATALOG_DEFAULT_CATEGORY_ITEM_LIST_SIZE.rows,
-          (categoryData?.furniture?.length ?? 1) /
-            CATALOG_DEFAULT_CATEGORY_ITEM_LIST_SIZE.cols,
-        )}
-        cols={CATALOG_DEFAULT_CATEGORY_ITEM_LIST_SIZE.cols}
-        height={size.height}
-        items={items}
-        onSelect={onSelectFurniture}
-      />
-      <ContainerComponent position={{ x: previewPositionX + 3 }}>
-        {renderPreview}
+  const rows = useMemo(
+    () =>
+      Math.max(
+        CATALOG_DEFAULT_CATEGORY_ITEM_LIST_SIZE.rows,
+        (categoryData?.furniture?.length ?? 1) /
+          CATALOG_DEFAULT_CATEGORY_ITEM_LIST_SIZE.cols,
+      ),
+    [categoryData],
+  );
+
+  return useMemo(
+    () => (
+      <ContainerComponent {...containerProps}>
+        <ItemListComponent
+          rows={rows}
+          cols={CATALOG_DEFAULT_CATEGORY_ITEM_LIST_SIZE.cols}
+          height={size.height}
+          items={items}
+          onSelect={onSelectFurniture}
+        />
+        <ContainerComponent position={{ x: previewPositionX + 3 }}>
+          {renderPreview}
+        </ContainerComponent>
       </ContainerComponent>
-    </ContainerComponent>
+    ),
+    [
+      containerProps,
+      size,
+      items,
+      onSelectFurniture,
+      previewPositionX,
+      renderPreview,
+      rows,
+    ],
   );
 };

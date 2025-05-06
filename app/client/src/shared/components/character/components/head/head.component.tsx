@@ -91,16 +91,19 @@ export const HeadComponent: React.FC<Props> = ({
     };
   }, [getDataFromDirection, data, dataFixes, bodyDirection, direction]);
 
-  return (
-    <SpriteComponent
-      texture={texture}
-      spriteSheet={SpriteSheetEnum.CHARACTER}
-      scale={{
-        x: scale,
-      }}
-      pivot={pivot}
-      tint={skinColor}
-      zIndex={2}
-    />
+  return useMemo(
+    () => (
+      <SpriteComponent
+        texture={texture}
+        spriteSheet={SpriteSheetEnum.CHARACTER}
+        scale={{
+          x: scale,
+        }}
+        pivot={pivot}
+        tint={skinColor}
+        zIndex={2}
+      />
+    ),
+    [texture, scale, pivot, skinColor],
   );
 };
