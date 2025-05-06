@@ -137,8 +137,8 @@ export const CategoryRoomsComponent: React.FC<Props> = ({ size }) => {
           topHeight={7}
           bottomHeight={7}
           width={size.width - 133}
-          tint={0}
-          alpha={0.8}
+          tint={0x3b3b3b}
+          alpha={1}
         />
         <SpriteComponent
           spriteSheet={SpriteSheetEnum.UI}
@@ -161,8 +161,8 @@ export const CategoryRoomsComponent: React.FC<Props> = ({ size }) => {
           }}
           placeholder={t("navigator.search")}
           placeholderProps={{
-            color: 0x0,
-            alpha: 0.8,
+            color: 0x1,
+            alpha: 0.5,
           }}
           maxLength={100}
           backgroundColor={0x88}
@@ -176,7 +176,7 @@ export const CategoryRoomsComponent: React.FC<Props> = ({ size }) => {
       <ContainerComponent
         position={{
           x: 0,
-          y: 17,
+          y: 19,
         }}
       >
         <RoomsListComponentWrapper

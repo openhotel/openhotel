@@ -27,7 +27,8 @@
       "rooms": "Rooms",
       "me": "Me",
       "search": "Search"
-    }
+    },
+    "no_results": "No results... :("
   },
   "economy": {
     "purse_title": "Purse",

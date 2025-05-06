@@ -26,7 +26,8 @@
       "rooms": "Salas",
       "me": "Yo",
       "search": "Buscar"
-    }
+    },
+    "no_results": "Sin resultados... :("
   },
   "economy": {
     "purse_title": "Monedero",
