@@ -11,8 +11,4 @@ export default {
 
 type Story = StoryObj<typeof NavigatorBarComponent>;
 
-export const Primary: Story = {
-  args: {
-    categories: ["Hotel", "Rooms", "Me", "Search"],
-  },
-};
+export const Primary: Story = {};
