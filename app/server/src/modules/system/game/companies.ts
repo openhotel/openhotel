@@ -38,15 +38,15 @@ export const companies = () => {
     };
 
     const addContract = async (contract: Contract) => {
-      const contractKey = ["contracts", $company.id, contract.userId];
-      const contractsByUserKey = ["contractsByUser", contract.userId];
+      const contractKey = ["contracts", $company.id, contract.accountId];
+      const contractsByUserKey = ["contractsByUser", contract.accountId];
 
       const existing = await System.db.get(contractKey);
       if (existing) {
         return;
       }
 
-      if (contract.userId === $company.ownerId) {
+      if (contract.accountId === $company.ownerId) {
         return;
       }
 
@@ -56,8 +56,11 @@ export const companies = () => {
 
       await System.db.set(contractKey, contract);
     };
-    const editContract = async (userId: string, updates: Partial<Contract>) => {
-      const key = ["contracts", $company.id, userId];
+    const editContract = async (
+      accountId: string,
+      updates: Partial<Contract>,
+    ) => {
+      const key = ["contracts", $company.id, accountId];
       const curr = await System.db.get(key);
       if (!curr) return;
 
@@ -65,13 +68,13 @@ export const companies = () => {
         ...curr,
         ...updates,
         companyId: $company.id,
-        userId,
+        accountId,
       };
       await System.db.set(key, updated);
     };
-    const removeContract = async (userId: string) => {
-      const contractKey = ["contracts", $company.id, userId];
-      const contractsByUserKey = ["contractsByUser", userId];
+    const removeContract = async (accountId: string) => {
+      const contractKey = ["contracts", $company.id, accountId];
+      const contractsByUserKey = ["contractsByUser", accountId];
 
       const contractsByUser = await System.db.get(contractsByUserKey);
       if (contractsByUser) {

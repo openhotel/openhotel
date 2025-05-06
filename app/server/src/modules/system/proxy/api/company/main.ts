@@ -4,8 +4,21 @@ import {
   companyPutRequest,
   companyRequest,
 } from "./company.request.ts";
+import {
+  contractDeleteRequest,
+  contractPutRequest,
+  contractRequest,
+} from "./contract.request.ts";
 
 export const requestList: RequestType[] = getPathRequestList({
-  requestList: [companyRequest, companyPutRequest, companyDeleteRequest],
+  requestList: [
+    companyRequest,
+    companyPutRequest,
+    companyDeleteRequest,
+
+    contractRequest,
+    contractPutRequest,
+    contractDeleteRequest,
+  ],
   pathname: "/company",
 });

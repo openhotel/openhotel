@@ -18,12 +18,21 @@ export type CompanyMutable = {
   removeRoom: (roomId: string) => Promise<void>;
 
   addContract: (contract: Contract) => Promise<void>;
-  editContract: (userId: string, updates: Partial<Contract>) => Promise<void>;
-  removeContract: (userId: string) => Promise<void>;
+  editContract: (
+    accountId: string,
+    updates: Partial<Contract>,
+  ) => Promise<void>;
+  removeContract: (accountId: string) => Promise<void>;
+
+  // addUser: (userId: string) => Promise<void>;
+  // removeUser: (userId: string) => Promise<void>;
+
+  // addBalance: (amount: number) => Promise<void>;
+  // removeBalance: (amount: number) => Promise<void>;
 };
 
 export type Contract = {
-  userId: string;
+  accountId: string;
   companyId: string;
   permissions: number;
   startDate: number;

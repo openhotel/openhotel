@@ -6,7 +6,7 @@ export const companyRequest: ProxyRequestType = {
   pathname: "",
   method: RequestMethod.GET,
   func: async ({}, url) => {
-    const companyId = url.searchParams.get("company");
+    const companyId = url.searchParams.get("companyId");
     if (!companyId) {
       return {
         status: 400,
@@ -74,8 +74,8 @@ export const companyPutRequest: ProxyRequestType = {
 export const companyDeleteRequest: ProxyRequestType = {
   pathname: "",
   method: RequestMethod.DELETE,
-  func: async ({ data, user }) => {
-    const { companyId } = data;
+  func: async ({ user }, url) => {
+    const companyId = url.searchParams.get("companyId");
     if (!companyId) {
       return {
         status: 400,
