@@ -148,9 +148,9 @@ export const ModalProvider: React.FunctionComponent<ModalProps> = ({
     //save current modals to check if there's a new one
     //@ts-ignore
     lastModalList.current = visibleModals;
-    return targetModals
+    return visibleModals
       .map((modal: Modal) => {
-        const { position, visible } = get(modal);
+        const { position } = get(modal);
         const ModalComp = MODAL_COMPONENT_MAP[modal];
         const zIndex = newModals.includes(modal)
           ? 150
@@ -165,7 +165,6 @@ export const ModalProvider: React.FunctionComponent<ModalProps> = ({
             minZIndex={zIndex}
             children={<ModalComp />}
             position={position ?? { x: 0, y: 0 }}
-            visible={visible}
             eventMode={EventMode.STATIC}
             onPointerDown={disableCameraMovement}
             onPointerUp={enableCameraMovement}
