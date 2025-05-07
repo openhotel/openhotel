@@ -51,3 +51,8 @@ export type RoomFurnitureFrame = {
 } & BaseFurniture;
 
 export type RoomFurniture = RoomFurnitureFrame | RoomFurnitureBase;
+
+export type InventoryFurniture = {
+  furnitureId: string;
+  ids: string[];
+};
