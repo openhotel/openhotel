@@ -1,4 +1,4 @@
-# Company API
+# Contracts API
 
 ### Get contracts
 GET http://localhost:1994/proxy/api/company/contract

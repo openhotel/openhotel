@@ -1,7 +1,7 @@
 import { RequestMethod } from "@oh/utils";
 import { ProxyRequestType } from "shared/types/api.types.ts";
 import { System } from "modules/system/main.ts";
-import { Contract } from "../../../../../shared/types/company.types.ts";
+import { Contract } from "shared/types/company.types.ts";
 
 export const contractRequest: ProxyRequestType = {
   pathname: "/contract",
@@ -75,10 +75,21 @@ export const contractDeleteRequest: ProxyRequestType = {
       };
     }
 
-    console.log("@@ remover", companyId);
-
     const company = await System.game.companies.get(companyId);
-    await company.removeContract(user.getAccountId());
+    if (!company) {
+      return {
+        status: 404,
+        error: "Company not found",
+      };
+    }
+
+    const userId = url.searchParams.get("userId");
+    const userIdToRemove =
+      userId && company.getOwnerId() === user.getAccountId()
+        ? userId
+        : user.getAccountId();
+
+    await company.removeContract(userIdToRemove);
 
     return {
       status: 200,
