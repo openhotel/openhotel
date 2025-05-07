@@ -6,12 +6,14 @@ import {
   EventMode,
   GraphicsComponent,
   GraphicType,
+  SpriteComponent,
 } from "@openhotel/pixi-components";
 import {
   CharacterArmAction,
   CharacterArmSide,
   CharacterBodyAction,
   Direction,
+  SpriteSheetEnum,
 } from "shared/enums";
 import { SAFE_Z_INDEX, TILE_SIZE } from "shared/consts";
 import { ArmComponent, BodyComponent, HeadComponent } from "./components";
@@ -146,12 +148,30 @@ export const CharacterComponent: React.FC<Props> = ({
     ),
     [$pivot, zIndex, position, containerProps, renderBody],
   );
+  const renderShadow = useMemo(
+    () => (
+      <SpriteComponent
+        spriteSheet={SpriteSheetEnum.CHARACTER}
+        texture="shadow"
+        pivot={{
+          x: -11,
+          y: -6,
+        }}
+        alpha={0.2}
+        tint={0}
+        position={position}
+        zIndex={zIndex - 0.1}
+      />
+    ),
+    [position, zIndex],
+  );
 
   return useMemo(
     () => (
       <React.Fragment>
         {renderHitbox}
         {renderCharacter}
+        {renderShadow}
       </React.Fragment>
     ),
     [renderHitbox, renderCharacter],

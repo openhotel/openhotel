@@ -299,6 +299,11 @@
       "frame": { "x": 137, "y": 145, "w": 13, "h": 47 },
       "sourceSize": { "w": 13, "h": 47 },
       "anchor": { "x": 0, "y": 0 }
+    },
+    "shadow": {
+      "frame": { "x": 180, "y": 196, "w": 28, "h": 12 },
+      "sourceSize": { "w": 28, "h": 12 },
+      "anchor": { "x": 0, "y": 0 }
     }
   },
   "animations": {},
