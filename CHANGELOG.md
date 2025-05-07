@@ -1,4 +1,19 @@
 
+<a name="v0.6.11"></a>
+
+## [v0.6.11](https://github.com/openhotel/openhotel/compare/v0.6.10...v0.6.11) (2025-05-07)
+
+### Bug Fixes
+
+- phantom misaligned - fix [#866](https://github.com/openhotel/openhotel/issues/866) ([#867](https://github.com/openhotel/openhotel/issues/867))
+- scroll when children is updated - fix [#840](https://github.com/openhotel/openhotel/issues/840) ([#862](https://github.com/openhotel/openhotel/issues/862))
+
+### Features
+
+- navigator search tweaks - fix [#868](https://github.com/openhotel/openhotel/issues/868) ([#869](https://github.com/openhotel/openhotel/issues/869))
+- search bar on navigator - fix [#855](https://github.com/openhotel/openhotel/issues/855) ([#861](https://github.com/openhotel/openhotel/issues/861))
+
+
 <a name="v0.6.10"></a>
 
 ## [v0.6.10](https://github.com/openhotel/openhotel/compare/v0.6.9...v0.6.10) (2025-05-06)
@@ -820,7 +835,12 @@
 
 <a name="v0.2.26"></a>
 
-## [v0.2.26](https://github.com/openhotel/openhotel/compare/v0.2.24...v0.2.26) (2024-10-02)
+## [v0.2.26](https://github.com/openhotel/openhotel/compare/v0.2.25...v0.2.26) (2024-10-02)
+
+
+<a name="v0.2.25"></a>
+
+## [v0.2.25](https://github.com/openhotel/openhotel/compare/v0.2.24...v0.2.25) (2024-10-02)
 
 
 <a name="v0.2.24"></a>
@@ -830,12 +850,7 @@
 
 <a name="v0.2.24.b"></a>
 
-## [v0.2.24.b](https://github.com/openhotel/openhotel/compare/v0.2.25...v0.2.24.b) (2024-10-02)
-
-
-<a name="v0.2.25"></a>
-
-## [v0.2.25](https://github.com/openhotel/openhotel/compare/v0.2.23...v0.2.25) (2024-10-02)
+## [v0.2.24.b](https://github.com/openhotel/openhotel/compare/v0.2.23...v0.2.24.b) (2024-10-02)
 
 ### Features
 
@@ -1701,5 +1716,5 @@
 
 <a name="v0.0.1"></a>
 
-## [v0.0.1](https://github.com/openhotel/openhotel/compare/v0.0.1-alpha.23...v0.0.1) (2024-06-29)
+## [v0.0.1](https://github.com/openhotel/openhotel/compare/v0.0.1-alpha.22...v0.0.1) (2024-06-29)
 
