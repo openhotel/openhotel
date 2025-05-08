@@ -20,7 +20,7 @@ export const ContributorsComponent: React.FC = () => {
   const creatorIndexRef = useRef<number>(0);
   const contributorIndexRef = useRef<number>(0);
 
-  const [text, setText] = useState<string>();
+  const [text, setText] = useState<string>(" ");
 
   const onOpenGithub = useCallback(() => {
     window.open("https://github.com/openhotel", "_blank");
