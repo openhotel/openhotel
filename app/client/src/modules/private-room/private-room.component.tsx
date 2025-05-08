@@ -208,7 +208,6 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
 
   const onPointerTile = useCallback(
     (position: Point3d) => {
-      console.log(isDragging());
       if (isDragging()) return;
 
       if (isShiftDown) {

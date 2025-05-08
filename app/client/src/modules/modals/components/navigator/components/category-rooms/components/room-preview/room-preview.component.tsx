@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import {
   ContainerComponent,
   ContainerProps,
+  FLEX_ALIGN,
   FLEX_JUSTIFY,
   FlexContainerComponent,
   NineSliceSpriteComponent,
@@ -92,27 +93,23 @@ export const RoomPreviewComponent: React.FC<Props> = ({
         />
         <FlexContainerComponent
           size={{
-            width: size.width - 37 - 3 - 5,
-          }}
-          position={{
-            y: 7,
+            width: size.width - 3,
+            height: 20,
           }}
           justify={FLEX_JUSTIFY.END}
+          align={FLEX_ALIGN.CENTER}
+          gap={6}
         >
           <TextComponent text={`${room.users}/${room.maxUsers}`} color={0} />
+          <ButtonComponent
+            size={{
+              height: 14,
+            }}
+            autoWidth={true}
+            text={t("navigator.join")}
+            onPointerDown={onJoin}
+          />
         </FlexContainerComponent>
-        <ButtonComponent
-          size={{
-            width: 37,
-            height: 14,
-          }}
-          position={{
-            x: size.width - 37 - 3,
-            y: 3,
-          }}
-          text={t("navigator.join")}
-          onPointerDown={onJoin}
-        />
       </ContainerComponent>
     </ContainerComponent>
   );

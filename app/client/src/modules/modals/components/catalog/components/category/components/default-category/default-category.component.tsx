@@ -206,9 +206,9 @@ export const DefaultCategoryComponent: React.FC<Props> = ({
             </FlexContainerComponent>
             <ButtonComponent
               size={{
-                width: 37,
                 height: 14,
               }}
+              autoWidth={true}
               text={t("economy.buy")}
               onPointerUp={onBuyFurniture}
             />
