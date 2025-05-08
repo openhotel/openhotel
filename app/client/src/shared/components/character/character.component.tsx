@@ -41,7 +41,7 @@ export const CharacterComponent: React.FC<Props> = ({
   speaking = false,
 
   position,
-  zIndex,
+  zIndex = 0,
 
   onPointerDown,
   ...containerProps
