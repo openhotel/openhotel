@@ -63,7 +63,7 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
     setAbsoluteRoomPosition,
   } = usePrivateRoom();
   const { lastUpdate, update } = useUpdate();
-  const { isDragging, getPosition: getCameraPosition } = useCamera();
+  const { isDragging, position: cameraPosition } = useCamera();
 
   const { on: onEvent } = useEvents();
   const { getSize, getScale } = useWindow();
@@ -160,13 +160,12 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
   ]);
 
   useEffect(() => {
-    const cameraPosition = getCameraPosition();
     const absolutePosition = {
       x: roomPosition.x + cameraPosition.x,
       y: roomPosition.y + cameraPosition.y,
     };
     setAbsoluteRoomPosition(absolutePosition);
-  }, [getCameraPosition, roomPosition, setAbsoluteRoomPosition]);
+  }, [cameraPosition, roomPosition, setAbsoluteRoomPosition]);
 
   const onKeyDown = useCallback(
     (event: KeyboardEvent) => {
@@ -209,6 +208,7 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
 
   const onPointerTile = useCallback(
     (position: Point3d) => {
+      console.log(isDragging());
       if (isDragging()) return;
 
       if (isShiftDown) {
@@ -248,12 +248,11 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
   );
 
   const messagesPivot = useMemo(() => {
-    const cameraPosition = getCameraPosition();
     return {
       x: roomPivot.x,
       y: roomPosition.y + cameraPosition.y,
     };
-  }, [roomPosition, roomPivot, getCameraPosition]);
+  }, [roomPosition, roomPivot, cameraPosition]);
 
   const safeXPosition = useMemo(
     () => Math.round((windowSize.width - safeWindowSize.width) / 2),
@@ -317,6 +316,7 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
       onPointerTile,
       onHoverTile,
       onClickWall,
+      messagesPivot,
     ],
   );
 };
