@@ -91,6 +91,7 @@ export const getRoom =
       // Make capture
       const pos = getPositionFromIsometricPosition(getRandomPoint());
 
+      console.log(getObject());
       System.phantom.capture({
         id: room.id,
         room: getObject(),
@@ -100,7 +101,7 @@ export const getRoom =
         },
         position: {
           x: -pos.x,
-          y: -pos.y + 60,
+          y: -pos.y,
         },
       });
     };
