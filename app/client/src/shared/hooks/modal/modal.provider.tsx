@@ -90,7 +90,6 @@ export const ModalProvider: React.FunctionComponent<ModalProps> = ({
 
   const disableCameraMovement = useCallback(() => {
     setCanDrag(false);
-    console.log("< false");
   }, [setCanDrag]);
 
   const enableCameraMovement = useCallback(() => {
