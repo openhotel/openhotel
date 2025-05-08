@@ -25,6 +25,11 @@ export const getBaseRoomGrid = (layout: RoomPoint[][]): RoomPoint[][] => {
   return $baseRoomGrid;
 };
 
+export const getParsedRoomLayout = (layout: string[]) =>
+  layout.map((line) =>
+    line.split("").map((value) => (parseInt(value) ? parseInt(value) : value)),
+  );
+
 export const getRoomSpawnPoint = (layout: RoomPoint[][]): Point3d => {
   if (!layout.length) return null;
 
