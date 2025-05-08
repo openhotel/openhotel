@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import {
   ContainerComponent,
   ContainerProps,
@@ -44,7 +44,10 @@ export const ButtonComponent: React.FC<Props> = ({
   const { getTextLength } = useText(SpriteSheetEnum.DEFAULT_FONT);
 
   // @ts-ignore
-  const width = autoWidth ? getTextLength(text) + 8 : size.width;
+  const width = useMemo(
+    () => (autoWidth ? getTextLength(text) + 16 : (size as Size).width),
+    [autoWidth, getTextLength, size],
+  );
 
   return (
     <ContainerComponent
