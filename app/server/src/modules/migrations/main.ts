@@ -9,6 +9,7 @@ const MIGRATION_LIST = [
   await import("./2025-01-24--23-32-add-private-rooms.migration.ts"),
   await import("./2025-04-10--11-37-remove-furniture.migration.ts"),
   await import("./2025-03-18--21-40-add-economy.migration.ts"),
+  await import("./2025-05-06--16-20-private-rooms-index-list.migration.ts"),
 ];
 
 export const Migrations = (() => {

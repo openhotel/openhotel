@@ -14,7 +14,7 @@ export const $private = () => {
     try {
       const roomData = await System.db.get(["rooms", "private", roomId]);
       if (!roomData) return null;
-      return $getRoom(roomData);
+      return await $getRoom(roomData);
     } catch (e) {
       return null;
     }
@@ -22,7 +22,7 @@ export const $private = () => {
 
   const getList = async (): Promise<PrivateRoomMutable[]> => {
     const { items } = await System.db.list({ prefix: ["rooms", "private"] });
-    return items.map((item) => $getRoom(item.value));
+    return await Promise.all(items.map((item) => $getRoom(item.value)));
   };
 
   const getByName = async (

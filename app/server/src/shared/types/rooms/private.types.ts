@@ -5,16 +5,14 @@ import {
   RoomPoint,
   User,
 } from "shared/types/main.ts";
-import { Point3d, Direction } from "@oh/utils";
+import { Point3d } from "@oh/utils";
 
 export type PrivateRoom = BaseRoom & {
   type: "private";
 
   ownerId: string;
-  layout: RoomPoint[][];
+  layoutIndex: number;
   furniture: RoomFurniture[];
-  spawnPoint: Point3d;
-  spawnDirection: Direction;
   maxUsers: number;
 };
 
@@ -28,6 +26,8 @@ export type PrivateRoomMutable = BaseRoomMutable & {
   updateFurniture: (furniture: RoomFurniture) => Promise<void>;
   removeFurniture: (furniture: RoomFurniture) => Promise<void>;
   getFurniture: () => RoomFurniture[];
+
+  getLayout: () => RoomPoint[][];
 
   getFurnitureFromPoint: (point: Omit<Point3d, "y">) => RoomFurniture[];
 

@@ -28,7 +28,6 @@
   "command.ban.description": "Banea a un usuario",
   "command.blacklist.description": "Administra la lista negra",
   "command.clear.description": "Elimina todos los muebles de la sala",
-  "command.demo.description": "Puebla la Room 1 con muchos muebles",
   "command.deop.description": "Revoca el estado de operador a un usuario",
   "command.help.description": "Muestra una lista de comandos disponibles o información sobre un comando específico",
   "command.kick.description": "Expulsa a un usuario",
@@ -45,7 +44,6 @@
   "command.whitelist.description": "Administra la lista blanca",
   "command.whisper.description": "Envía un mensaje privado a un usuario",
 
-  "Demo command is not configured in {{room}}": "Comando demo no esta configurado en {{room}}",
   "Insufficient permissions": "Permisos insuficientes",
   "The furniture cannot be placed at position {{x}},{{z}}": "No puede ponerse en la posicion {{x}},{{z}}",
   "Frames need to be attached to the wall": "Los cuadros necesitan estar pegados a la pared",

@@ -18,7 +18,6 @@ import { teleportCommand } from "./teleport.command.ts";
 import { clearCommand } from "./clear.command.ts";
 import { rotateCommand } from "./rotate.command.ts";
 import { moveCommand } from "./move.command.ts";
-import { demoCommand } from "./demo.command.ts";
 import { whisperCommand } from "./whisper.command.ts";
 import { replyCommand } from "./reply.command.ts";
 import { photoCommand } from "./photo.command.ts";
@@ -51,7 +50,6 @@ export const commandList = [
   unsetCommand,
 
   helpCommand,
-  demoCommand,
 
   teleportCommand,
 
@@ -75,7 +73,7 @@ export const executeCommand = async ({
 }) => {
   if (!message.startsWith("/")) return false;
 
-  const args = parseCommandArgs(message);
+  const args = parseCommandArgs(message) as string[];
 
   const foundCommand = commandList.find(({ command }) => {
     if (typeof command === "string") return args[0] === command;
