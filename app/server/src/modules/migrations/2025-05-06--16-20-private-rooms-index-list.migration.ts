@@ -134,6 +134,7 @@ export default {
       description: `Welcome to my room!`,
       furniture: [],
       layoutIndex: 6,
+      maxUsers: 10,
     });
   },
   down: async (db: DbMutable) => {},
