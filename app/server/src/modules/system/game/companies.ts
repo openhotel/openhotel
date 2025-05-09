@@ -37,6 +37,14 @@ export const companies = () => {
       await $save();
     };
 
+    const getContracts = async (): Promise<Contract[]> => {
+      const { items } = await System.db.list({
+        prefix: ["contracts", $company.id],
+      });
+
+      return items.map((item) => item.value);
+    };
+
     const addContract = async (contract: Contract) => {
       const contractKey = ["contracts", $company.id, contract.accountId];
       const contractsByUserKey = ["contractsByUser", contract.accountId];
@@ -101,6 +109,7 @@ export const companies = () => {
       addRoom,
       removeRoom,
 
+      getContracts,
       addContract,
       editContract,
       removeContract,
@@ -158,7 +167,11 @@ export const companies = () => {
       }
     }
 
-    // TODO: delete contracts
+    // Delete contracts
+    const contracts = await $company.getContracts();
+    await Promise.all(
+      contracts.map((contract) => $company.removeContract(contract.accountId)),
+    );
 
     await System.db.delete(["companies", companyId]);
     await System.db.delete(["companies", companyId, "balance"]);
