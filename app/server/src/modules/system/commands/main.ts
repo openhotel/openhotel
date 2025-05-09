@@ -21,6 +21,7 @@ import { moveCommand } from "./move.command.ts";
 import { whisperCommand } from "./whisper.command.ts";
 import { replyCommand } from "./reply.command.ts";
 import { photoCommand } from "./photo.command.ts";
+import { creditsCommand } from "./credits.command.ts";
 
 import { ProxyEvent } from "shared/enums/event.enum.ts";
 import {
@@ -62,6 +63,8 @@ export const commandList = [
   replyCommand,
 
   photoCommand,
+
+  creditsCommand,
 ];
 
 export const executeCommand = async ({
