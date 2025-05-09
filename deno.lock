@@ -14,7 +14,7 @@
     "npm:dayjs@1.11.13": "1.11.13",
     "npm:prettier@3.5.2": "3.5.2",
     "npm:vite@5.2.14": "5.2.14",
-    "npm:vite@6.3.4": "6.3.4_picomatch@4.0.2"
+    "npm:vite@6.3.5": "6.3.5_picomatch@4.0.2"
   },
   "jsr": {
     "@da/bcrypt@1.0.1": {
@@ -501,8 +501,8 @@
         "rollup@4.30.1"
       ]
     },
-    "vite@6.3.4_picomatch@4.0.2": {
-      "integrity": "sha512-BiReIiMS2fyFqbqNT/Qqt4CVITDU9M9vE+DKcVAsB+ZV0wvTKd+3hMbkpxz1b+NmEDMegpVbisKiAZOnvO92Sw==",
+    "vite@6.3.5_picomatch@4.0.2": {
+      "integrity": "sha512-cZn6NDFE7wdTpINgs++ZJ4N49W2vRp8LCKrn3Ob1kYNtOo21vfDoaV5GzBfLU4MovSAB8uNRm4jgzVQZ+mBzPQ==",
       "dependencies": [
         "esbuild@0.25.3",
         "fdir",
@@ -523,7 +523,7 @@
     "packageJson": {
       "dependencies": [
         "npm:prettier@3.5.2",
-        "npm:vite@6.3.4"
+        "npm:vite@6.3.5"
       ]
     }
   }

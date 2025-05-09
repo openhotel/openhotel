@@ -1,4 +1,4 @@
-import { System } from "../../modules/system/main.ts";
+import { System } from "modules/system/main.ts";
 
 export const getBalanceEntry = async (
   entity: "hotel" | "users",

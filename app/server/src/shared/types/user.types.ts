@@ -1,6 +1,7 @@
 import { Point3d, Direction } from "@oh/utils";
 import { ProxyEvent, Hemisphere, UserAction } from "shared/enums/main.ts";
 import { Transaction } from "./economy.types.ts";
+import { Contract } from "./company.types.ts";
 
 export type CacheUser = {
   accountId: string;
@@ -100,4 +101,5 @@ export type UserMutable = {
 
   getCredits: () => Promise<number>;
   getTransactions: () => Promise<Transaction[]>;
+  getContracts: () => Promise<Contract[]>;
 };

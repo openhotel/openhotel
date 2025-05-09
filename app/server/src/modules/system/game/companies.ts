@@ -1,8 +1,12 @@
 import { System } from "modules/system/main.ts";
 import { INITIAL_COMPANY_BALANCE } from "shared/consts/economy.consts.ts";
-import { Company, CompanyMutable } from "shared/types/company.types.ts";
+import {
+  Company,
+  CompanyMutable,
+  Contract,
+} from "shared/types/company.types.ts";
 import { ulid } from "@std/ulid";
-import { log } from "../../../shared/utils/log.utils.ts";
+import { log } from "shared/utils/log.utils.ts";
 
 export const companies = () => {
   const $getCompany = (company: Company): CompanyMutable => {
@@ -33,6 +37,64 @@ export const companies = () => {
       await $save();
     };
 
+    const getContracts = async (): Promise<Contract[]> => {
+      const { items } = await System.db.list({
+        prefix: ["contracts", $company.id],
+      });
+
+      return items.map((item) => item.value);
+    };
+
+    const addContract = async (contract: Contract) => {
+      const contractKey = ["contracts", $company.id, contract.accountId];
+      const contractsByUserKey = ["contractsByUser", contract.accountId];
+
+      const existing = await System.db.get(contractKey);
+      if (existing) {
+        return;
+      }
+
+      if (contract.accountId === $company.ownerId) {
+        return;
+      }
+
+      const contractsByUser = await System.db.get(contractsByUserKey);
+      const prev = contractsByUser ?? [];
+      await System.db.set(contractsByUserKey, [...prev, contract.companyId]);
+
+      await System.db.set(contractKey, contract);
+    };
+    const editContract = async (
+      accountId: string,
+      updates: Partial<Contract>,
+    ) => {
+      const key = ["contracts", $company.id, accountId];
+      const curr = await System.db.get(key);
+      if (!curr) return;
+
+      const updated: Contract = {
+        ...curr,
+        ...updates,
+        companyId: $company.id,
+        accountId,
+      };
+      await System.db.set(key, updated);
+    };
+    const removeContract = async (accountId: string) => {
+      const contractKey = ["contracts", $company.id, accountId];
+      const contractsByUserKey = ["contractsByUser", accountId];
+
+      const contractsByUser = await System.db.get(contractsByUserKey);
+      if (contractsByUser) {
+        const newContractsByUser = contractsByUser.filter(
+          (id: string) => id !== $company.id,
+        );
+        await System.db.set(contractsByUserKey, newContractsByUser);
+      }
+
+      await System.db.delete(contractKey);
+    };
+
     const $save = async () =>
       await System.db.set(["companies", $company.id], $company);
 
@@ -46,6 +108,11 @@ export const companies = () => {
 
       addRoom,
       removeRoom,
+
+      getContracts,
+      addContract,
+      editContract,
+      removeContract,
     };
   };
 
@@ -100,7 +167,11 @@ export const companies = () => {
       }
     }
 
-    // TODO: delete contracts
+    // Delete contracts
+    const contracts = await $company.getContracts();
+    await Promise.all(
+      contracts.map((contract) => $company.removeContract(contract.accountId)),
+    );
 
     await System.db.delete(["companies", companyId]);
     await System.db.delete(["companies", companyId, "balance"]);

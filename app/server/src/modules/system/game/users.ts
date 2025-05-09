@@ -1,5 +1,6 @@
 import {
   CacheUser,
+  Contract,
   PrivateRoomMutable,
   PrivateUser,
   Transaction,
@@ -210,6 +211,21 @@ export const users = () => {
       return items.map((item) => item.value);
     };
 
+    const getContracts = async (): Promise<Contract[]> => {
+      const accountId = getAccountId();
+      const contracts: string[] = await System.db.get([
+        "contractsByUser",
+        accountId,
+      ]);
+      if (!contracts) return [];
+
+      return Promise.all(
+        contracts.map((companyId) =>
+          System.db.get(["contracts", companyId, accountId]),
+        ),
+      );
+    };
+
     return {
       getAccountId,
       getUsername,
@@ -256,6 +272,8 @@ export const users = () => {
 
       getCredits,
       getTransactions,
+
+      getContracts,
     };
   };
 
