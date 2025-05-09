@@ -37,5 +37,14 @@
   },
   "catalog": {
     "title": "Catalog"
+  },
+  "inventory": {
+    "title": "Inventory",
+    "tabs": {
+      "furniture": "Furniture",
+      "frames": "Frames",
+      "pets": "Pets",
+      "rares": "Rares"
+    }
   }
 }
