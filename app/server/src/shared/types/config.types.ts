@@ -22,5 +22,6 @@ export type ConfigTypes = {
       name: string;
       buildId: string;
     };
+    sleep: number;
   };
 };

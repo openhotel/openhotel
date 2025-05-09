@@ -14,9 +14,45 @@ import { quantizeToPalette } from "shared/utils/image.utils.ts";
   let $config: ConfigTypes;
   let $envs: Envs;
   let $token;
-  let browser;
+
+  let $executablePath;
+  let $browser;
+  let $killTimeout;
 
   let $Image;
+
+  const killBrowser = () => {
+    //if negative, don't kill the browser
+    if (0 > $config.phantom.sleep) return;
+
+    clearTimeout($killTimeout);
+    $killTimeout = setTimeout(() => {
+      const browser = $browser;
+      $browser = null;
+      browser.close();
+      log("Browser closed!");
+    }, $config.phantom.sleep * 1000);
+  };
+
+  const launchBrowser = async () => {
+    if ($browser) return;
+
+    log("Launching browser...");
+    $browser = await puppeteer.launch({
+      executablePath: $executablePath,
+      headless: "new",
+      args: [
+        "--no-sandbox",
+        "--disable-setuid-sandbox",
+        "--disable-dev-shm-usage",
+        "--disable-gpu",
+        "--single-process",
+        "--no-zygote",
+        "--enable-unsafe-swiftshader",
+      ],
+    });
+    log("Browser launched!");
+  };
 
   const load = async ({
     envs,
@@ -38,23 +74,8 @@ import { quantizeToPalette } from "shared/utils/image.utils.ts";
       browser: config.phantom.browser.name,
       buildId: config.phantom.browser.buildId,
     });
+    $executablePath = executablePath;
     log(`${browserName} installed!`);
-
-    log("Launching browser...");
-    browser = await puppeteer.launch({
-      executablePath,
-      headless: "new",
-      args: [
-        "--no-sandbox",
-        "--disable-setuid-sandbox",
-        "--disable-dev-shm-usage",
-        "--disable-gpu",
-        "--single-process",
-        "--no-zygote",
-        "--enable-unsafe-swiftshader",
-      ],
-    });
-    log("Browser launched!");
   };
 
   let captures = [];
@@ -63,11 +84,13 @@ import { quantizeToPalette } from "shared/utils/image.utils.ts";
   const processCapture = async () => {
     const { id, size, position, room, palette } = captures.shift();
 
+    await launchBrowser();
+
     const startTime = performance.now();
     log(`Phantom capture (${id}) in progress...`);
 
     try {
-      const page = await browser.newPage();
+      const page = await $browser.newPage();
       await page.setViewport({ width: size.width, height: size.height });
       await page.setRequestInterception(true);
 
@@ -115,6 +138,7 @@ import { quantizeToPalette } from "shared/utils/image.utils.ts";
       console.error(e);
       log(`Phantom capture (${id}) error!!!`);
     }
+    killBrowser();
   };
   const processCaptures = async () => {
     if (isRunning) return;
