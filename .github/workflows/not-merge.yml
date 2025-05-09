@@ -21,6 +21,4 @@ jobs:
           if git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} | grep -E '\.(js|ts|jsx|tsx)$' | xargs grep -H '//[[:space:]]*DO[[:space:]]*NOT[[:space:]]*MERGE'; then
             echo "::error::Found // DO NOT MERGE in the code. Please remove it before merging."
             exit 1
-          else
-            echo "No // DO NOT MERGE found."
           fi
