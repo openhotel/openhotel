@@ -8,15 +8,18 @@ import {
   GraphicsComponent,
   GraphicType,
   NineSliceSpriteComponent,
-  SpriteComponent,
   TilingSpriteComponent,
   useDragContainer,
 } from "@openhotel/pixi-components";
 import { Modal, ModalInventoryTab, SpriteSheetEnum } from "shared/enums";
-import { useApi, useFurniture, useModal } from "shared/hooks";
+import { useApi, useModal } from "shared/hooks";
 import { InventoryFurniture } from "shared/types";
-import { ItemListComponent, TextComponent } from "shared/components";
-import { FURNITURE_ICON_SIZE, MODAL_SIZE_MAP } from "shared/consts";
+import {
+  FurnitureItemComponent,
+  ItemListComponent,
+  TextComponent,
+} from "shared/components";
+import { MODAL_SIZE_MAP } from "shared/consts";
 import { useTranslation } from "react-i18next";
 import { InventoryBarComponent } from ".";
 
@@ -30,7 +33,6 @@ export const InventoryComponent: React.FC = () => {
   const { t } = useTranslation();
   const { closeModal } = useModal();
   const { setDragPolygon } = useDragContainer();
-  const { get, load } = useFurniture();
 
   const [furniture, setFurniture] = useState<InventoryFurniture[]>([]);
 
@@ -46,6 +48,9 @@ export const InventoryComponent: React.FC = () => {
         ] as string[];
         setFurniture(
           uniqueFurnitureIds.map((furnitureId) => ({
+            type: furniture.find(
+              (furniture) => furniture.furnitureId === furnitureId,
+            ).type,
             furnitureId,
             ids: furniture
               .filter((furniture) => furniture.furnitureId === furnitureId)
@@ -102,28 +107,19 @@ export const InventoryComponent: React.FC = () => {
   const items = useMemo(
     () =>
       furniture?.map(($furniture) => {
-        const data = $furniture ? get($furniture.furnitureId) : null;
         return {
           key: $furniture.furnitureId,
-          render: () =>
-            data ? (
-              <SpriteComponent
-                texture={data.icon.texture}
-                spriteSheet={data.spriteSheet}
-                pivot={{
-                  x: (data.icon.bounds.width - FURNITURE_ICON_SIZE) / 2,
-                  y: (data.icon.bounds.height - FURNITURE_ICON_SIZE) / 2,
-                }}
-              />
-            ) : null,
+          render: () => (
+            <FurnitureItemComponent
+              furnitureId={$furniture.furnitureId}
+              type={$furniture.type}
+              amount={$furniture.ids.length}
+            />
+          ),
         };
       }),
-    [furniture, get],
+    [furniture],
   );
-
-  useEffect(() => {
-    load(...furniture.map((furniture) => furniture.furnitureId));
-  }, [furniture]);
 
   return useMemo(
     () => (
@@ -207,7 +203,6 @@ export const InventoryComponent: React.FC = () => {
               items={items}
               onSelect={null}
             />
-            {/*<SelectedCategoryContent size={contentSize} />*/}
           </ContainerComponent>
         </ContainerComponent>
       </>

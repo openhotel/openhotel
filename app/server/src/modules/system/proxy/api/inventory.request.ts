@@ -6,7 +6,6 @@ export const inventoryRequest: ProxyRequestType = {
   method: RequestMethod.GET,
   func: async ({ user }) => {
     const furniture = await user.getInventory();
-
     return {
       status: 200,
       data: {

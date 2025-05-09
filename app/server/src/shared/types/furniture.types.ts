@@ -43,12 +43,12 @@ export type FurnitureData = {
 export type Furniture = {
   id: string;
   furnitureId: string;
+  type: FurnitureType;
 };
 
 export type RoomFurniture = {
   position: Point3d;
   direction: CrossDirection;
-  type: FurnitureType;
   size?: Size3d;
   framePosition?: Point2d;
 } & Furniture;
