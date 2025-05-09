@@ -63,6 +63,50 @@ export const contractPutRequest: ProxyRequestType = {
   },
 };
 
+export const contractRespondPostRequest: ProxyRequestType = {
+  pathname: "/contract/respond",
+  method: RequestMethod.POST,
+  func: async ({ data, user }) => {
+    const { companyId, action } = data;
+    if (!companyId) {
+      return {
+        status: 400,
+        error: "companyId is required",
+      };
+    }
+
+    const company = await System.game.companies.get(companyId);
+    if (!company) {
+      return {
+        status: 404,
+        error: "Company not found",
+      };
+    }
+
+    const contract = await System.db.get([
+      "contracts",
+      company.getId(),
+      user.getAccountId(),
+    ]);
+
+    if (!contract || contract.status !== "pending") {
+      return {
+        status: 404,
+        error: "Contract not found or not pending",
+      };
+    }
+
+    await company.editContract(user.getAccountId(), {
+      status: action === "accept" ? "active" : "rejected",
+    });
+
+    return {
+      status: 200,
+      data: {},
+    };
+  },
+};
+
 export const contractDeleteRequest: ProxyRequestType = {
   pathname: "/contract",
   method: RequestMethod.DELETE,

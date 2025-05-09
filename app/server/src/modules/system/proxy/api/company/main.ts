@@ -8,6 +8,7 @@ import {
   contractDeleteRequest,
   contractPutRequest,
   contractRequest,
+  contractRespondPostRequest,
 } from "./contract.request.ts";
 
 export const requestList: RequestType[] = getPathRequestList({
@@ -19,6 +20,7 @@ export const requestList: RequestType[] = getPathRequestList({
     contractRequest,
     contractPutRequest,
     contractDeleteRequest,
+    contractRespondPostRequest,
   ],
   pathname: "/company",
 });

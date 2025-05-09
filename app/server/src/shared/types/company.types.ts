@@ -23,12 +23,6 @@ export type CompanyMutable = {
     updates: Partial<Contract>,
   ) => Promise<void>;
   removeContract: (accountId: string) => Promise<void>;
-
-  // addUser: (userId: string) => Promise<void>;
-  // removeUser: (userId: string) => Promise<void>;
-
-  // addBalance: (amount: number) => Promise<void>;
-  // removeBalance: (amount: number) => Promise<void>;
 };
 
 export type Contract = {
@@ -37,6 +31,6 @@ export type Contract = {
   permissions: number;
   startDate: number;
   endDate?: number;
-  status: "active" | "terminated" | "pending";
+  status: "active" | "terminated" | "pending" | "rejected";
   salary: number;
 };

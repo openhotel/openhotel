@@ -16,3 +16,12 @@ Content-Type: application/json
 
 ### Remove contract
 DELETE http://localhost:1994/proxy/api/company/contract?companyId=01JT91MNF31P5N1ZYG954SKZWM
+
+### Respond to contract
+POST http://localhost:1994/proxy/api/company/contract/respond
+Content-Type: application/json
+
+{
+  "companyId": "",
+  "action": "accept"
+}
