@@ -54,5 +54,7 @@ export const ApplicationComponent = () => {
     [],
   );
 
+  // DO NOT MERGE - This is a test
+
   return <NesterComponent components={providers} />;
 };
