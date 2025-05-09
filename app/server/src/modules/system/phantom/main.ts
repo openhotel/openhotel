@@ -9,6 +9,8 @@ export const phantom = () => {
 
   const load = () => {
     const config = System.config.get();
+    if (!config.phantom.enabled) return;
+
     const envs = System.getEnvs();
 
     $worker = getParentWorker({
