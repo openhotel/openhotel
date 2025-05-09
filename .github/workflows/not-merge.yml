@@ -18,13 +18,16 @@ jobs:
     permissions:
       contents: read
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          ref: master
 
       - name: Debugging
         run: |
-          echo "event.base_ref: ${{ github.event.base_ref }}"
+          echo "event.base_ref: ${{ github.event.before }}"
           echo "Current sha: ${{ github.sha }}"
-          git diff --name-only ${{ github.event.base_ref }} ${{ github.sha }}
+          git diff --name-only ${{ github.event.before }} ${{ github.sha }}
           git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -E '\.(js|ts|jsx|tsx)$' | xargs echo
 
       - name: Check for DO NOT MERGE comments
