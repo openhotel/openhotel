@@ -97,7 +97,7 @@ export const ModalProvider: React.FunctionComponent<ModalProps> = ({
   }, [setCanDrag]);
 
   useEffect(() => {
-    on(Event.POINTER_DOWN, () => {
+    const removeOnPointerDown = on(Event.POINTER_DOWN, () => {
       if (
         cursorOverModalRef.current === null ||
         focusedModalRef.current === cursorOverModalRef.current
@@ -106,7 +106,15 @@ export const ModalProvider: React.FunctionComponent<ModalProps> = ({
       focusedModalRef.current = cursorOverModalRef.current;
       update();
     });
-  }, [modals, on, update]);
+    const removeOnPointerUp = on(Event.POINTER_UP, () => {
+      enableCameraMovement();
+    });
+
+    return () => {
+      removeOnPointerDown();
+      removeOnPointerUp();
+    };
+  }, [modals, on, update, enableCameraMovement]);
 
   const onPointerEnter = useCallback(
     (modal: Modal) => () => {

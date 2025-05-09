@@ -120,11 +120,6 @@ export const economy = () => {
           throw new Error("Unsupported transaction type");
       }
 
-      const result = await atomic.commit();
-      if (!result.ok) {
-        throw new Error("Transaction failed: conditions were not met.");
-      }
-
       const transactionId = ulid();
       const transactionData: Transaction = {
         id: transactionId,
@@ -137,24 +132,22 @@ export const economy = () => {
         meta,
       };
 
-      await System.db.set(["transactions", transactionId], transactionData);
+      atomic.set(["transactions", transactionId], transactionData);
 
-      if (fromAccount) {
-        await System.db.set(
-          ["transactionsByUser", fromAccount, transactionId],
-          {
-            ...transactionData,
-            amount: -amount,
-          },
-        );
-      }
+      if (fromAccount)
+        atomic.set(["transactionsByUser", fromAccount, transactionId], {
+          ...transactionData,
+          amount: -amount,
+        });
 
-      if (toAccount) {
-        await System.db.set(
+      if (toAccount)
+        atomic.set(
           ["transactionsByUser", toAccount, transactionId],
           transactionData,
         );
-      }
+
+      const result = await atomic.commit();
+      if (!result.ok) throw new Error("Conditions were not met.");
 
       return { success: true, transactionId };
     } catch (error) {

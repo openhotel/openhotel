@@ -208,3 +208,47 @@ export const Stairs1: Story = () => {
     </FlexContainerComponent>
   );
 };
+
+//@ts-ignore
+export const RoomLayout: Story = () => {
+  const layout = [
+    "xxx11111",
+    "xxs11111",
+    "xxx11111",
+    "xxx11111",
+    "xxx22222",
+    "xxx22222",
+    "22222222",
+    "22222222",
+    "22222222",
+    "22222222",
+  ];
+
+  return (
+    <PrivateRoomComponent
+      {...{
+        type: "private",
+        version: 1,
+        id: "test",
+        title: "Room 1",
+        description: `Test`,
+        layout: layout.map((line) =>
+          line
+            .split("")
+            .map(
+              (value) =>
+                (parseInt(value) ? parseInt(value) : value) as RoomPoint,
+            ),
+        ),
+        spawnPoint: { x: 0, z: 5, y: 0 },
+        spawnDirection: CrossDirection.NORTH,
+        furniture: [],
+        maxUsers: 10,
+        ownerId: "test",
+        ownerUsername: "test",
+        users: [],
+      }}
+      onPointerTile={console.log}
+    />
+  );
+};

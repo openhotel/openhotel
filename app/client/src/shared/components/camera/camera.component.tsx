@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   ContainerComponent,
   Event,
@@ -33,10 +33,6 @@ export const CameraComponent: React.FC<Props> = ({
 
   const { setDragging, canDrag, setPosition } = useCamera();
 
-  const dragStartRef = useRef<Point2d | null>(null);
-  const dragCurrentRef = useRef<Point2d | null>(null);
-  const wasDraggingRef = useRef(false);
-
   useEffect(() => {
     const onRemoveResize = onEvent(Event.RESIZE, () => {
       setWindowSize(getSize());
@@ -52,15 +48,17 @@ export const CameraComponent: React.FC<Props> = ({
   useEffect(() => {
     const MOVEMENT_THRESHOLD = 5;
 
+    let dragCurrent = null;
+    let dragStart = null;
+
     const onRemovePointerDown = onEvent(
       Event.POINTER_DOWN,
       (e: MouseEvent | TouchEvent) => {
         const { clientX: x, clientY: y } =
           (e as TouchEvent).touches?.[0] ?? (e as MouseEvent);
 
-        dragCurrentRef.current = { x, y };
-        dragStartRef.current = { x, y };
-        wasDraggingRef.current = false;
+        dragCurrent = { x, y };
+        dragStart = { x, y };
         setDragging(false);
       },
     );
@@ -68,17 +66,17 @@ export const CameraComponent: React.FC<Props> = ({
     const onRemovePointerMove = onEvent(
       Event.POINTER_MOVE,
       (e: MouseEvent | TouchEvent) => {
-        if (!dragCurrentRef.current || !canDrag()) {
-          dragCurrentRef.current = null;
-          dragStartRef.current = null;
+        if (!dragCurrent || !canDrag()) {
+          dragCurrent = null;
+          dragStart = null;
           return;
         }
 
         const { clientX: x, clientY: y } =
           (e as TouchEvent).touches?.[0] ?? (e as MouseEvent);
 
-        const dx = x - dragCurrentRef.current.x;
-        const dy = y - dragCurrentRef.current.y;
+        const dx = x - dragCurrent.x;
+        const dy = y - dragCurrent.y;
 
         setOffset((prev) => {
           const next = { x: prev.x + dx, y: prev.y + dy };
@@ -86,23 +84,23 @@ export const CameraComponent: React.FC<Props> = ({
           return next;
         });
 
-        const totalDx = x - dragStartRef.current.x;
-        const totalDy = y - dragStartRef.current.y;
+        const totalDx = x - dragStart.x;
+        const totalDy = y - dragStart.y;
 
         if (
           Math.abs(totalDx) > MOVEMENT_THRESHOLD ||
           Math.abs(totalDy) > MOVEMENT_THRESHOLD
         ) {
           setDragging(true);
-          wasDraggingRef.current = true;
         }
 
-        dragCurrentRef.current = { x, y };
+        dragCurrent = { x, y };
       },
     );
 
     const onRemovePointerUp = onEvent(Event.POINTER_UP, () => {
-      dragCurrentRef.current = null;
+      dragCurrent = null;
+      setDragging(false);
     });
 
     return () => {
@@ -110,7 +108,7 @@ export const CameraComponent: React.FC<Props> = ({
       onRemovePointerMove();
       onRemovePointerUp();
     };
-  }, [onEvent, onOffsetChange, canDrag]);
+  }, [onEvent, onOffsetChange, canDrag, setDragging]);
 
   const clampedPosition = useMemo(() => {
     const contentSize = contentRef.current?.getSize?.();
