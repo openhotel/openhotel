@@ -1,6 +1,9 @@
+import { FurnitureType } from "shared/enums";
+
 export type CatalogFurniture = {
   id: string;
   price: number;
+  type: FurnitureType;
 };
 
 export type CatalogCategoryData = {

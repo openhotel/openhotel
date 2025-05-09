@@ -1,5 +1,6 @@
 import {
   CacheUser,
+  Furniture,
   Contract,
   PrivateRoomMutable,
   PrivateUser,
@@ -226,6 +227,46 @@ export const users = () => {
       );
     };
 
+    const addFurniture = async (
+      furnitureId: string,
+      id: string,
+    ): Promise<void> => {
+      const accountId = getAccountId();
+      return System.db.set(["users", accountId, "inventory", id], {
+        furnitureId,
+        id,
+      } as Furniture);
+    };
+
+    const removeFurniture = async (id: string): Promise<void> => {
+      const accountId = getAccountId();
+      return System.db.delete(["users", accountId, "inventory", id]);
+    };
+
+    const getFurniture = async (id: string): Promise<Furniture> => {
+      const accountId = getAccountId();
+      return System.db.get(["users", accountId, "inventory", id]);
+    };
+
+    const getInventory = async (): Promise<Furniture[]> => {
+      const accountId = getAccountId();
+      const { items } = await System.db.list({
+        prefix: ["users", accountId, "inventory"],
+      });
+
+      return await Promise.all(
+        items
+          .map((item) => item.value as Furniture)
+          .map(async (furniture) => {
+            const data = await System.game.furniture.get(furniture.furnitureId);
+            return {
+              ...furniture,
+              type: data.type,
+            };
+          }),
+      );
+    };
+
     return {
       getAccountId,
       getUsername,
@@ -272,8 +313,12 @@ export const users = () => {
 
       getCredits,
       getTransactions,
-
       getContracts,
+
+      addFurniture,
+      removeFurniture,
+      getFurniture,
+      getInventory,
     };
   };
 
