@@ -254,7 +254,17 @@ export const users = () => {
         prefix: ["users", accountId, "inventory"],
       });
 
-      return items.map((item) => item.value as Furniture);
+      return await Promise.all(
+        items
+          .map((item) => item.value as Furniture)
+          .map(async (furniture) => {
+            const data = await System.game.furniture.get(furniture.furnitureId);
+            return {
+              ...furniture,
+              type: data.type,
+            };
+          }),
+      );
     };
 
     return {

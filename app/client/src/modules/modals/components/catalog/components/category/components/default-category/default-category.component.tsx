@@ -12,6 +12,7 @@ import {
 } from "@openhotel/pixi-components";
 import {
   ButtonComponent,
+  FurnitureItemComponent,
   FurniturePreviewComponent,
   ItemListComponent,
   SoftBadgeComponent,
@@ -20,11 +21,7 @@ import {
 import { CatalogCategoryData } from "shared/types";
 import { useApi, useFurniture, SoundsEnum, useSound } from "shared/hooks";
 import { useTranslation } from "react-i18next";
-import {
-  FURNITURE_ICON_BOX_SIZE,
-  FURNITURE_ICON_SIZE,
-  SCROLL_BAR_WIDTH,
-} from "shared/consts";
+import { FURNITURE_ICON_BOX_SIZE, SCROLL_BAR_WIDTH } from "shared/consts";
 import { CATALOG_DEFAULT_CATEGORY_ITEM_LIST_SIZE } from "shared/consts/catalog.consts";
 import { SpriteSheetEnum } from "shared/enums";
 
@@ -41,7 +38,7 @@ export const DefaultCategoryComponent: React.FC<Props> = ({
   ...containerProps
 }) => {
   const { fetch } = useApi();
-  const { load, get } = useFurniture();
+  const { get } = useFurniture();
   const { play } = useSound();
 
   const { t } = useTranslation();
@@ -54,7 +51,6 @@ export const DefaultCategoryComponent: React.FC<Props> = ({
     setSelectedFurniture(null);
     fetch(`/catalog?category=${categoryId}`).then(
       (category: CatalogCategoryData) => {
-        load(...category.furniture.map((furniture) => furniture.id));
         setCategoryData(category);
       },
     );
@@ -63,23 +59,17 @@ export const DefaultCategoryComponent: React.FC<Props> = ({
   const items = useMemo(
     () =>
       categoryData?.furniture?.map((furniture) => {
-        const data = furniture ? get(furniture.id) : null;
         return {
           key: furniture.id,
-          render: () =>
-            data ? (
-              <SpriteComponent
-                texture={data.icon.texture}
-                spriteSheet={data.spriteSheet}
-                pivot={{
-                  x: (data.icon.bounds.width - FURNITURE_ICON_SIZE) / 2,
-                  y: (data.icon.bounds.height - FURNITURE_ICON_SIZE) / 2,
-                }}
-              />
-            ) : null,
+          render: () => (
+            <FurnitureItemComponent
+              furnitureId={furniture.id}
+              type={furniture.type}
+            />
+          ),
         };
       }),
-    [categoryData, get],
+    [categoryData],
   );
 
   const onSelectFurniture = useCallback(
