@@ -15,12 +15,21 @@ on:
 jobs:
   check-do-not-merge:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@v3
+
+      - name: Debugging
+        run: |
+          git diff --name-only ${{ github.event.before }} ${{ github.sha }}
+          git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -E '\.(js|ts|jsx|tsx)$' | xargs echo
 
       - name: Check for DO NOT MERGE comments
         run: |
           if git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -E '\.(js|ts|jsx|tsx)$' | xargs grep -H '//[[:space:]]*DO[[:space:]]*NOT[[:space:]]*MERGE'; then
             echo "Found // DO NOT MERGE in the code. Please remove it before merging."
             exit 1
+          else
+            echo "No // DO NOT MERGE found."
           fi
