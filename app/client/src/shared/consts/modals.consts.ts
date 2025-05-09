@@ -43,8 +43,8 @@ export const MODAL_SIZE_MAP: Record<Modal, Size> = {
     height: 240,
   },
   [Modal.PURSE]: {
-    width: 250,
-    height: 151,
+    width: 306,
+    height: 227,
   },
   [Modal.CLUB]: {
     width: 0,
