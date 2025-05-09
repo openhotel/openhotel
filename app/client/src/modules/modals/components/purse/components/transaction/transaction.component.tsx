@@ -49,8 +49,8 @@ export const TransactionComponent: React.FC<Props> = ({
           />
           <TextComponent
             text={
-              transaction.description.length > 22
-                ? `${transaction.description.slice(0, 22)}...`
+              transaction.description.length > 33
+                ? `${transaction.description.slice(0, 33)}...`
                 : transaction.description
             }
             color={0x000}
