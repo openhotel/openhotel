@@ -13,13 +13,12 @@ import {
   useDragContainer,
 } from "@openhotel/pixi-components";
 import { Modal, ModalInventoryTab, SpriteSheetEnum } from "shared/enums";
-import { useApi, useModal } from "shared/hooks";
+import { useApi, useFurniture, useModal } from "shared/hooks";
 import { InventoryFurniture } from "shared/types";
 import { ItemListComponent, TextComponent } from "shared/components";
-import { MODAL_SIZE_MAP } from "shared/consts";
+import { FURNITURE_ICON_SIZE, MODAL_SIZE_MAP } from "shared/consts";
 import { useTranslation } from "react-i18next";
 import { InventoryBarComponent } from ".";
-import { CATALOG_DEFAULT_CATEGORY_ITEM_LIST_SIZE } from "shared/consts/catalog.consts";
 
 const HORIZONTAL_MARGIN = 12 * 2;
 const TOP_MARGIN = 38;
@@ -31,6 +30,7 @@ export const InventoryComponent: React.FC = () => {
   const { t } = useTranslation();
   const { closeModal } = useModal();
   const { setDragPolygon } = useDragContainer();
+  const { get, load } = useFurniture();
 
   const [furniture, setFurniture] = useState<InventoryFurniture[]>([]);
 
@@ -98,6 +98,32 @@ export const InventoryComponent: React.FC = () => {
   //     </FlexContainerComponent>
   //   </ContainerComponent>
   // );
+
+  const items = useMemo(
+    () =>
+      furniture?.map(($furniture) => {
+        const data = $furniture ? get($furniture.furnitureId) : null;
+        return {
+          key: $furniture.furnitureId,
+          render: () =>
+            data ? (
+              <SpriteComponent
+                texture={data.icon.texture}
+                spriteSheet={data.spriteSheet}
+                pivot={{
+                  x: (data.icon.bounds.width - FURNITURE_ICON_SIZE) / 2,
+                  y: (data.icon.bounds.height - FURNITURE_ICON_SIZE) / 2,
+                }}
+              />
+            ) : null,
+        };
+      }),
+    [furniture, get],
+  );
+
+  useEffect(() => {
+    load(...furniture.map((furniture) => furniture.furnitureId));
+  }, [furniture]);
 
   return useMemo(
     () => (
@@ -178,7 +204,7 @@ export const InventoryComponent: React.FC = () => {
               rows={10}
               cols={6}
               height={MODAL_SIZE.height - TOP_MARGIN - BOTTOM_MARGIN}
-              items={[]}
+              items={items}
               onSelect={null}
             />
             {/*<SelectedCategoryContent size={contentSize} />*/}
@@ -186,6 +212,6 @@ export const InventoryComponent: React.FC = () => {
         </ContainerComponent>
       </>
     ),
-    [t, onCloseModal, setSelectedCategory, selectedCategory],
+    [t, onCloseModal, setSelectedCategory, selectedCategory, items],
   );
 };
