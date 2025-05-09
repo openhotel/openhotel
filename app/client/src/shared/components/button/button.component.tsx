@@ -66,8 +66,6 @@ export const ButtonComponent: React.FC<Props> = ({
         bottomHeight={3}
         width={width}
         height={size.height}
-        eventMode={EventMode.STATIC}
-        cursor={Cursor.POINTER}
         tint={tint}
       />
       <FlexContainerComponent
