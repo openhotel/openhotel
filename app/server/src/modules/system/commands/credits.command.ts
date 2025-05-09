@@ -2,6 +2,7 @@ import { Command, CommandRoles } from "shared/types/main.ts";
 import { ProxyEvent } from "shared/enums/event.enum.ts";
 import { System } from "modules/system/main.ts";
 import { TransactionType } from "shared/enums/economy.enum.ts";
+import { getTextFromArgs } from "shared/utils/args.utils.ts";
 
 export const creditsCommand: Command = {
   command: "credits",
@@ -17,21 +18,22 @@ export const creditsCommand: Command = {
     if (!targetUser || isNaN(amount)) return;
 
     const { success } = await System.game.economy.executeTransaction({
-      type: TransactionType.TRANSFER,
+      type: TransactionType.REWARD,
       amount,
-      description: `${user.getUsername()} giving credits to`,
+      description: `motherlode`,
       toAccount: targetUser.getAccountId(),
     });
-    const roomId = user.getRoom();
-    if (!roomId) return;
-    const room = await System.game.rooms.get(roomId);
-    const y = room.getYFromPoint({ x, z }) ?? 0;
 
-    user.setPosition({ x, z });
-
-    room?.emit(ProxyEvent.SET_POSITION_HUMAN, {
-      accountId: user.getAccountId(),
-      position: { x, z, y },
+    user.emit(ProxyEvent.SYSTEM_MESSAGE, {
+      message: success
+        ? getTextFromArgs(
+            "{{amount}} credits transferred to {{username}} successfully!",
+            {
+              username,
+              amount,
+            },
+          )
+        : "Transaction cannot be processed!",
     });
   },
 };
