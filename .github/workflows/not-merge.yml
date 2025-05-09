@@ -1,11 +1,5 @@
 name: Validate Code for Merging
 on:
-  push:
-    branches: [master]
-    paths:
-      - .github/**
-      - app/server/**
-      - app/client/**
   pull_request:
     paths:
       - .github/**
@@ -21,19 +15,18 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-          ref: master
 
       - name: Debugging
         run: |
-          echo "event.base_ref: ${{ github.event.before }}"
-          echo "Current sha: ${{ github.sha }}"
-          git diff --name-only ${{ github.event.before }} ${{ github.sha }}
-          git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -E '\.(js|ts|jsx|tsx)$' | xargs echo
+          echo "base: ${{ github.event.pull_request.base.sha }}"
+          echo "head: ${{ github.event.pull_request.head.sha }}"
+          git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }}
+          git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} | grep -E '\.(js|ts|jsx|tsx)$' | xargs echo
 
       - name: Check for DO NOT MERGE comments
         run: |
-          if git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -E '\.(js|ts|jsx|tsx)$' | xargs grep -H '//[[:space:]]*DO[[:space:]]*NOT[[:space:]]*MERGE'; then
-            echo "Found // DO NOT MERGE in the code. Please remove it before merging."
+          if git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} | grep -E '\.(js|ts|jsx|tsx)$' | xargs grep -H '//[[:space:]]*DO[[:space:]]*NOT[[:space:]]*MERGE'; then
+            echo "::error::Found // DO NOT MERGE in the code. Please remove it before merging."
             exit 1
           else
             echo "No // DO NOT MERGE found."
