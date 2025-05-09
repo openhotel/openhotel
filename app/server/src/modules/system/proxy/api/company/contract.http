@@ -1,0 +1,27 @@
+# Contracts API
+
+### Get contracts
+GET http://localhost:1994/proxy/api/company/contract
+
+### Create a new contract
+PUT http://localhost:1994/proxy/api/company/contract
+Content-Type: application/json
+
+{
+  "companyId": "",
+  "accountId": "",
+  "permissions": 0,
+  "salary": 0
+}
+
+### Remove contract
+DELETE http://localhost:1994/proxy/api/company/contract?companyId=01JT91MNF31P5N1ZYG954SKZWM
+
+### Respond to contract
+POST http://localhost:1994/proxy/api/company/contract/respond
+Content-Type: application/json
+
+{
+  "companyId": "",
+  "action": "accept"
+}

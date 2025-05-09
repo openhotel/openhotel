@@ -1,7 +1,7 @@
 # Company API
 
 ### Get company
-GET http://localhost:1994/proxy/api/company?company=01JT8ZS5D8YDT3ZVZWKNG1423H
+GET http://localhost:1994/proxy/api/company?companyId=01JT8ZS5D8YDT3ZVZWKNG1423H
 
 ### Create a new company
 PUT http://localhost:1994/proxy/api/company
@@ -12,4 +12,4 @@ Content-Type: application/json
 }
 
 ### Delete a company
-DELETE http://localhost:1994/proxy/api/company?company=01JT91MNF31P5N1ZYG954SKZWM
+DELETE http://localhost:1994/proxy/api/company?companyId=01JT91MNF31P5N1ZYG954SKZWM
