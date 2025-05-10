@@ -107,14 +107,13 @@ export const DefaultCategoryComponent: React.FC<Props> = ({
   );
 
   const onBuyFurniture = useCallback(() => {
-    play(SoundsEnum.CLICK);
     fetch(
       "/catalog/buy",
       { furnitureId: selectedFurnitureData.furnitureId },
       false,
       "POST",
-    ).then((r) => {
-      console.log(r);
+    ).then(({ transaction }) => {
+      if (transaction?.success) play(SoundsEnum.BUY);
     });
   }, [fetch, selectedFurnitureData, play]);
 
