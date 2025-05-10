@@ -17,6 +17,7 @@ import {
 } from "./components";
 import { useModal, useSafeWindow } from "shared/hooks";
 import { InternalEvent, Modal } from "shared/enums";
+import { GameContainer } from "modules/games";
 
 export const HomeComponent: React.FC = () => {
   const { openModal, isModalOpen } = useModal();
@@ -48,6 +49,7 @@ export const HomeComponent: React.FC = () => {
     };
   }, [on, setSafeWindowResize, setSafeXPosition]);
 
+  // DO NOT MERGE - GameContainer tests
   return useMemo(
     () => (
       <ContainerComponent sortableChildren={true}>
@@ -71,6 +73,9 @@ export const HomeComponent: React.FC = () => {
               <ContributorsComponent />
             </FlexContainerComponent>
           </FlexContainerComponent>
+        </ContainerComponent>
+        <ContainerComponent position={{ x: 100, y: 120 }}>
+          <GameContainer gameId={"sample-game"} />
         </ContainerComponent>
       </ContainerComponent>
     ),

@@ -7,6 +7,7 @@ import { economyRequest } from "./economy.request.ts";
 import { captureRequest } from "./capture.request.ts";
 import { requestList as catalogRequestList } from "./catalog/main.ts";
 import { requestList as companiesRequestList } from "./company/main.ts";
+import { requestList as gamesRequestList } from "./games/main.ts";
 
 import { RequestType, getPathRequestList } from "@oh/utils";
 
@@ -26,6 +27,8 @@ export const requestList: RequestType[] = getPathRequestList({
 
     ...catalogRequestList,
     ...companiesRequestList,
+
+    ...gamesRequestList,
   ],
   pathname: "",
 });

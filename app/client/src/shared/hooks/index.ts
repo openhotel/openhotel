@@ -14,3 +14,5 @@ export * from "./use-character";
 export * from "./use-api";
 export * from "./use-api-path";
 export * from "./use-contributors";
+
+export * from "./games";

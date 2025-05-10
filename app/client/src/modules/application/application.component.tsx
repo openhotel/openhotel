@@ -15,6 +15,7 @@ import {
   RouterProviderWrapper,
   CameraProvider,
   SafeWindowProvider,
+  GamesProvider,
 } from "shared/hooks";
 import { NesterComponent } from "shared/components";
 import { FurnitureProvider } from "shared/hooks";
@@ -44,6 +45,7 @@ export const ApplicationComponent = () => {
       ModalProvider,
       RouterProvider,
       InfoProvider,
+      GamesProvider,
       //|\\|//|\\|//|\\|//|\\|//|\\|//|\\|//|\\|
       //|\\|//|\\|//|\\|//|\\|//|\\|//|\\|//|\\|
       PrivateRoomProvider,
