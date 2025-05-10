@@ -8,6 +8,7 @@ import {
   RequestKind,
   getURL,
   getContentType,
+  appendCORSHeaders,
 } from "@oh/utils";
 import { System } from "system/main.ts";
 import { decodeTime } from "@std/ulid";
@@ -51,14 +52,17 @@ export const api = () => {
               const fileData = await System.files.get(fileId);
               if (!fileData) return getResponse(HttpStatusCode.NOT_FOUND);
 
+              const headers = new Headers();
+              headers.set(
+                "Content-Type",
+                fileData.mimeType || "application/octet-stream",
+              );
+              headers.set("Content-Disposition", "inline");
+              headers.set("Cache-Control", `max-age=${60 * 60}`);
+              appendCORSHeaders(headers);
+
               return new Response(fileData.file, {
-                headers: {
-                  "Content-Type":
-                    fileData.mimeType || "application/octet-stream",
-                  "Content-Disposition": "inline",
-                  "Cache-Control": `max-age=${60 * 60}`,
-                  ...getCORSHeaders(),
-                },
+                headers,
               });
             }
           } catch (e) {}
