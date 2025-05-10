@@ -6,7 +6,7 @@
     "jsr:@da/socket@2.3.0": "2.3.0",
     "jsr:@oh/pathfinding@2.0.3": "2.0.3",
     "jsr:@oh/queue@1.1.1": "1.1.1",
-    "jsr:@oh/utils@1.5.6": "1.5.6",
+    "jsr:@oh/utils@1.5.8": "1.5.8",
     "jsr:@oh/yaml@1.1.0": "1.1.0",
     "jsr:@std/encoding@1.0.5": "1.0.5",
     "jsr:@std/fs@1.0.4": "1.0.4",
@@ -50,8 +50,8 @@
     "@oh/queue@1.1.1": {
       "integrity": "8e8ec809202c48beaf436b3ea01b4c3a17f8c015ca686d906822482c9c881390"
     },
-    "@oh/utils@1.5.6": {
-      "integrity": "110f410f5645c4f4b9d2cf861a70a8caff5eff83a9523333667e79e1e01fdebc",
+    "@oh/utils@1.5.8": {
+      "integrity": "b322d11f5008576e60689dc1bfa681db3291027cae8a2bd9353d09442bc00a2f",
       "dependencies": [
         "jsr:@da/bcrypt@1.0.1",
         "jsr:@oh/yaml",
@@ -1298,7 +1298,7 @@
       "jsr:@da/socket@2.3.0",
       "jsr:@oh/pathfinding@2.0.3",
       "jsr:@oh/queue@1.1.1",
-      "jsr:@oh/utils@1.5.6",
+      "jsr:@oh/utils@1.5.8",
       "jsr:@std/ulid@1",
       "jsr:@std/yaml@1.0.5",
       "jsr:@zip-js/zip-js@2.7.53",

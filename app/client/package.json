@@ -40,6 +40,7 @@
   },
   "dependencies": {
     "@oh/queue": "npm:@jsr/oh__queue@1.1.1",
+    "@oh/utils": "npm:@jsr/oh__utils@1.5.7",
     "@openhotel/pixi-components": "0.0.17",
     "i18next": "25.0.2",
     "i18next-http-backend": "3.0.2",

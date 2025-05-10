@@ -9,6 +9,7 @@ import { onet } from "./onet/main.ts";
 import { auth } from "modules/shared/auth.ts";
 import { config } from "./config.ts";
 import { Migrations } from "../migrations/main.ts";
+import { games } from "./games/main.ts";
 
 export const System = (() => {
   let $envs: Envs;
@@ -21,6 +22,7 @@ export const System = (() => {
   const $onet = onet();
   const $auth = auth();
   const $config = config();
+  const $games = games();
 
   const load = async (envs: Envs) => {
     console.clear();
@@ -64,6 +66,7 @@ export const System = (() => {
     await $game.load();
     $tasks.load();
     await $onet.load();
+    await $games.load();
 
     if (config.phantom.enabled) $phantom.load();
   };
@@ -83,5 +86,6 @@ export const System = (() => {
     onet: $onet,
     auth: $auth,
     config: $config,
+    games: $games,
   };
 })();
