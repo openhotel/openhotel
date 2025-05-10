@@ -15,9 +15,10 @@ import {
   RouterProviderWrapper,
   CameraProvider,
   SafeWindowProvider,
+  FurnitureProvider,
+  SoundProvider,
 } from "shared/hooks";
 import { NesterComponent } from "shared/components";
-import { FurnitureProvider } from "shared/hooks";
 import { InfoProvider } from "shared/hooks/info";
 import { ApplicationProvider } from "@openhotel/pixi-components";
 import { ChangelogProvider } from "shared/hooks/changelog";
@@ -41,6 +42,7 @@ export const ApplicationComponent = () => {
       AccountProvider,
       FurnitureProvider,
       CameraProvider, // Before 'ModalProvider' so 'ModalProvider' can use 'useCamera'
+      SoundProvider,
       ModalProvider,
       RouterProvider,
       InfoProvider,
