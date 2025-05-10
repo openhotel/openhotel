@@ -9,5 +9,5 @@ export const getPathRequestList = ({
 }): RequestType<unknown>[] =>
   requestList.map((request) => ({
     ...request,
-    pathname: `${pathname}${request.pathname}`,
+    pathname: request.pathname ? `${pathname}${request.pathname}` : pathname,
   }));
