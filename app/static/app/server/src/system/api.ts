@@ -57,6 +57,7 @@ export const api = () => {
                     fileData.mimeType || "application/octet-stream",
                   "Content-Disposition": "inline",
                   "Cache-Control": `max-age=${60 * 60}`,
+                  ...getCORSHeaders(),
                 },
               });
             }
