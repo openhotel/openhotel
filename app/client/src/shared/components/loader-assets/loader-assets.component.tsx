@@ -32,7 +32,7 @@ export const LoaderAssetsComponent: React.FC<Props> = ({
     `${t("system.loading")}...	`,
   );
   useEffect(() => {
-    if (!loaderItems) return;
+    if (loaderItems.length === 0) return;
     (async () => {
       const totalItems = loaderItems.reduce(
         (total, { items }) => total + items.length,
