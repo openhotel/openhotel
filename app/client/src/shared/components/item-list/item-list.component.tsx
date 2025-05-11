@@ -126,7 +126,9 @@ export const ItemListComponent: React.FC<Props> = ({
         ));
       }
     }
-    return $items.map((Comp, index) => <Comp key={`item_${index}`} />);
+    return $items.map((Comp, index) => (
+      <Comp key={`item_${items[index].key}`} />
+    ));
   }, [rows, cols, items]);
 
   useEffect(() => {

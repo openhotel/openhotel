@@ -1,4 +1,4 @@
-import React, { ReactNode, useCallback } from "react";
+import React, { ReactNode, useCallback, useRef } from "react";
 import { FurnitureContext } from "./furniture.context";
 import { useFurnitureStore } from "./furniture.store";
 import { useTextures } from "@openhotel/pixi-components";
@@ -17,6 +17,8 @@ export const FurnitureProvider: React.FunctionComponent<FurnitureProps> = ({
   const { getPath } = useApiPath();
   const { add, get: $get, furniture } = useFurnitureStore();
 
+  const loadingFurnitureId = useRef<string[]>([]);
+
   const load = useCallback(
     async (...furniture: string[]) => {
       const uniqueFurniture = [...new Set(furniture)].filter(
@@ -26,6 +28,10 @@ export const FurnitureProvider: React.FunctionComponent<FurnitureProps> = ({
       if (!uniqueFurniture.length) return;
 
       for (const furnitureId of uniqueFurniture) {
+        //prevents loading again furniture when is loading
+        if (loadingFurnitureId.current.includes(furnitureId)) continue;
+
+        loadingFurnitureId.current.push(furnitureId);
         const spriteSheetPath = getPath(
           `/furniture/sheet.json?furnitureId=${furnitureId}`,
         );

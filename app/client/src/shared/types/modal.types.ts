@@ -1,5 +1,9 @@
 import { Size } from "@openhotel/pixi-components";
 
-export type ModalNavigatorTabProps = {
+export type ModalNavigatorCategoryProps = {
+  size: Size;
+};
+
+export type ModalInventoryCategoryProps = {
   size: Size;
 };

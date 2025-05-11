@@ -7,6 +7,7 @@ import {
   CatalogCategory,
   CatalogFurniture,
 } from "shared/types/catalog.types.ts";
+import { ulid } from "@std/ulid";
 
 export const catalogBuyRequest: ProxyRequestType = {
   pathname: "/buy",
@@ -39,6 +40,8 @@ export const catalogBuyRequest: ProxyRequestType = {
       };
     }
 
+    const id = ulid();
+
     const transaction = await System.game.economy.executeTransaction({
       type: TransactionType.PURCHASE,
       description: `Buy ${furniture.id}`, // TODO: add furniture name
@@ -47,6 +50,7 @@ export const catalogBuyRequest: ProxyRequestType = {
       toAccount: "hotel",
       meta: {
         furnitureId,
+        id,
       },
     });
 
@@ -67,6 +71,8 @@ export const catalogBuyRequest: ProxyRequestType = {
         },
       };
     }
+
+    await user.addFurniture(furniture.id, id);
 
     return {
       status: 200,

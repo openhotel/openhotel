@@ -11,3 +11,4 @@ export * from "./furniture.consts";
 export * from "./text.consts";
 export * from "./scroll.consts";
 export * from "./window.consts";
+export * from "./inventory.consts";

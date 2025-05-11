@@ -13,3 +13,10 @@ export enum ModalNavigatorTab {
   ME,
   SEARCH,
 }
+
+export enum ModalInventoryTab {
+  FURNITURE,
+  FRAMES,
+  PETS,
+  RARES,
+}

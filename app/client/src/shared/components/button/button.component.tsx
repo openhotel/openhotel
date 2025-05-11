@@ -22,7 +22,7 @@ type BaseProps = ContainerProps & {
 type Props =
   | (BaseProps & {
       autoWidth: true;
-      size?: Omit<Size, "width"> & { height: number };
+      size: Omit<Size, "width">;
     })
   | (BaseProps & {
       autoWidth?: false;

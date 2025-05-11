@@ -150,11 +150,17 @@ export const furniture = () => {
     const catalogCategory = catalog.categories.find(
       ($category) => $category.id === category && $category.enabled,
     );
-    if (!catalogCategory) {
-      return [];
-    }
+    if (!catalogCategory) return [];
 
-    return catalogCategory.furniture;
+    return await Promise.all(
+      catalogCategory.furniture.map(async (furniture) => {
+        const data = await get(furniture.id);
+        return {
+          ...furniture,
+          type: data.type,
+        };
+      }),
+    );
   };
 
   const $mapFurnitureData = (furnitureData: any): FurnitureData => ({

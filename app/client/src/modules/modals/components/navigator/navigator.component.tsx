@@ -22,7 +22,7 @@ import {
 } from "./components";
 import { useModal } from "shared/hooks";
 import { MODAL_SIZE_MAP } from "shared/consts";
-import { ModalNavigatorTabProps } from "shared/types";
+import { ModalNavigatorCategoryProps } from "shared/types";
 import { useTranslation } from "react-i18next";
 
 const HORIZONTAL_MARGIN = 12 * 2;
@@ -42,7 +42,7 @@ export const NavigatorComponent: React.FC<Props> = ({}) => {
   );
 
   const navigatorTabMap = useMemo(
-    (): Record<ModalNavigatorTab, React.FC<ModalNavigatorTabProps>> => ({
+    (): Record<ModalNavigatorTab, React.FC<ModalNavigatorCategoryProps>> => ({
       [ModalNavigatorTab.HOTEL]: CategoryHotelComponent,
       [ModalNavigatorTab.ROOMS]: CategoryRoomsComponent,
       [ModalNavigatorTab.ME]: CategoryMeComponent,

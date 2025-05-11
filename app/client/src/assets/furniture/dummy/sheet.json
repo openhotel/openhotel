@@ -14,6 +14,16 @@
       "frame": { "x": 48, "y": 38, "w": 24, "h": 38 },
       "sourceSize": { "w": 24, "h": 38 },
       "anchor": { "x": 0, "y": 0 }
+    },
+    "box-icon": {
+      "frame": { "x": 0, "y": 54, "w": 20, "h": 22 },
+      "sourceSize": { "w": 20, "h": 22 },
+      "anchor": { "x": 0, "y": 0 }
+    },
+    "frame-icon": {
+      "frame": { "x": 20, "y": 54, "w": 16, "h": 22 },
+      "sourceSize": { "w": 16, "h": 22 },
+      "anchor": { "x": 0, "y": 0 }
     }
   },
   "animations": {},
