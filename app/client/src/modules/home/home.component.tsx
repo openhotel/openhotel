@@ -28,8 +28,6 @@ export const HomeComponent: React.FC = () => {
     useState<number>(getSafeXPosition());
 
   const onDone = useCallback(() => {
-    openModal(Modal.INVENTORY);
-
     if (isModalOpen(Modal.NAVIGATOR)) return;
     openModal(Modal.NAVIGATOR);
   }, [openModal]);
