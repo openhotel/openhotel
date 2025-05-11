@@ -13,3 +13,4 @@ export * from "./character.enums";
 export * from "./assets.enums";
 export * from "./router.enums";
 export * from "./economy.enum";
+export * from "./application.enums";
