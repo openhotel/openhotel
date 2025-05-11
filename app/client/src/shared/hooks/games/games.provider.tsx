@@ -33,11 +33,11 @@ export const GamesProvider = ({ children }) => {
           return null;
         }
 
-        manifest.clientUrl = "http://localhost:8000/bundle.js";
-
         const { game } = (await import(
           /* @vite-ignore */ manifest.clientUrl
         )) as { game: GameModule };
+
+        console.log(game);
 
         // TODO: cause render loop
         // setLoadedModules((prev) => ({ ...prev, [gameId]: game }));
