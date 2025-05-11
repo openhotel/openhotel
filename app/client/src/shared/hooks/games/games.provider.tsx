@@ -33,7 +33,7 @@ export const GamesProvider = ({ children }) => {
           return null;
         }
 
-        // manifest.clientUrl = "../../../bundle.js";
+        manifest.clientUrl = "http://localhost:8000/bundle.js";
 
         const { game } = (await import(
           /* @vite-ignore */ manifest.clientUrl
