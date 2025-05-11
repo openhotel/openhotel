@@ -36,5 +36,15 @@
   },
   "catalog": {
     "title": "Catalogo"
+  },
+  "inventory": {
+    "title": "Inventario",
+    "tabs": {
+      "furniture": "Muebles",
+      "frames": "Cuadros",
+      "pets": "Mascotas",
+      "rares": "Rares"
+    },
+    "place": "Colocar"
   }
 }

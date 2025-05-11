@@ -199,6 +199,46 @@
       "frame": { "x": 132, "y": 48, "w": 22, "h": 12 },
       "sourceSize": { "w": 22, "h": 12 },
       "anchor": { "x": 0, "y": 0 }
+    },
+    "ui-inventory-tab-modal": {
+      "frame": { "x": 123, "y": 110, "w": 37, "h": 50 },
+      "sourceSize": { "w": 37, "h": 50 },
+      "anchor": { "x": 0, "y": 0 }
+    },
+    "ui-inventory-modal-bar-tile": {
+      "frame": { "x": 130, "y": 114, "w": 6, "h": 9 },
+      "sourceSize": { "w": 6, "h": 9 },
+      "anchor": { "x": 0, "y": 0 }
+    },
+    "ui-inventory-tab-button-left-unselected": {
+      "frame": { "x": 135, "y": 60, "w": 9, "h": 23 },
+      "sourceSize": { "w": 9, "h": 23 },
+      "anchor": { "x": 0, "y": 0 }
+    },
+    "ui-inventory-tab-button-mid-unselected": {
+      "frame": { "x": 144, "y": 60, "w": 7, "h": 18 },
+      "sourceSize": { "w": 7, "h": 18 },
+      "anchor": { "x": 0, "y": 0 }
+    },
+    "ui-inventory-tab-button-right-unselected": {
+      "frame": { "x": 151, "y": 60, "w": 9, "h": 18 },
+      "sourceSize": { "w": 9, "h": 18 },
+      "anchor": { "x": 0, "y": 0 }
+    },
+    "ui-inventory-tab-button-left-selected": {
+      "frame": { "x": 135, "y": 83, "w": 9, "h": 23 },
+      "sourceSize": { "w": 9, "h": 23 },
+      "anchor": { "x": 0, "y": 0 }
+    },
+    "ui-inventory-tab-button-mid-selected": {
+      "frame": { "x": 144, "y": 83, "w": 7, "h": 18 },
+      "sourceSize": { "w": 7, "h": 18 },
+      "anchor": { "x": 0, "y": 0 }
+    },
+    "ui-inventory-tab-button-right-selected": {
+      "frame": { "x": 151, "y": 83, "w": 9, "h": 18 },
+      "sourceSize": { "w": 9, "h": 18 },
+      "anchor": { "x": 0, "y": 0 }
     }
   },
   "animations": {},
