@@ -90,6 +90,7 @@ export const RoomCharacterComponent: React.FC<Props> = ({
         if (repeatIndex === TILE_WIDTH / 2)
           targetY = user.position.y - user.targetPosition.y;
 
+        //TODO <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
         if (repeatIndex % 2)
           setBodyAction((action) => {
             action++;
@@ -100,6 +101,7 @@ export const RoomCharacterComponent: React.FC<Props> = ({
               action = CharacterBodyAction.WALK_0;
             return action;
           });
+        //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
         $setPosition((pos) => {
           const { x, y } = getPosFunc({
             x: pos?.x ?? $currentPosition?.x,
