@@ -1,2 +1,1 @@
-
-export * from './category-frames.component'
+export * from "./category-frames.component";

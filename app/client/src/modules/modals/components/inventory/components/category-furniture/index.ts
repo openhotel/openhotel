@@ -1,2 +1,1 @@
-
-export * from './category-furniture.component'
+export * from "./category-furniture.component";
