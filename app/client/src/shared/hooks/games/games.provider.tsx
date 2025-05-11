@@ -6,39 +6,42 @@ import { GamesContext } from "./games.context";
 export const GamesProvider = ({ children }) => {
   const { fetch } = useApi();
 
-  const [loadedModules, setLoadedModules] = useState<
-    Record<string, GameModule>
-  >({});
+  // const [loadedModules, setLoadedModules] = useState<
+  //   Record<string, GameModule>
+  // >({});
   const [activeGames, setActiveGames] = useState<Record<string, GameModule>>(
     {},
   );
 
   const loadGame = useCallback(
     async (gameId: string): Promise<GameModule | null> => {
-      if (loadedModules[gameId]) {
-        setActiveGames((prev) => ({
-          ...prev,
-          [gameId]: loadedModules[gameId],
-        }));
-        return loadedModules[gameId];
-      }
+      // TODO: cause render loop
+      // if (loadedModules[gameId]) {
+      //   setActiveGames((prev) => ({
+      //     ...prev,
+      //     [gameId]: loadedModules[gameId],
+      //   }));
+      //   return loadedModules[gameId];
+      // }
 
       try {
-        const data = (await fetch(`/games/${gameId}`)) as {
+        const { manifest } = (await fetch(`/games/${gameId}`)) as {
           manifest: GameManifest;
         };
-        const { manifest } = data;
         if (!manifest) {
           console.warn(`Game manifest not found for ${gameId}`);
           return null;
         }
 
+        // manifest.clientUrl = "../../../bundle.js";
+
         const { game } = (await import(
           /* @vite-ignore */ manifest.clientUrl
         )) as { game: GameModule };
 
-        setLoadedModules((prev) => ({ ...prev, [gameId]: game }));
-        setActiveGames((prev) => ({ ...prev, [gameId]: game }));
+        // TODO: cause render loop
+        // setLoadedModules((prev) => ({ ...prev, [gameId]: game }));
+        // setActiveGames((prev) => ({ ...prev, [gameId]: game }));
 
         return game;
       } catch (error) {
@@ -46,7 +49,7 @@ export const GamesProvider = ({ children }) => {
         return null;
       }
     },
-    [loadedModules, fetch, setActiveGames, setLoadedModules],
+    [fetch],
   );
 
   const unloadGame = useCallback(

@@ -16,7 +16,7 @@ export const games = () => {
         type: "window",
         version: "0.0.1",
         author: "OpenHotel",
-        clientUrl: "https://static.openhotel.club/01JTVTVRG1NKRH8KVKFPTBZ27K",
+        clientUrl: "https://static.openhotel.club/01JTXYREWKYVXDH5ZDMVE15CKX",
       },
     ];
 

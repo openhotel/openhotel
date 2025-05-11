@@ -1,5 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { ContainerComponent } from "@openhotel/pixi-components";
+import React, { Suspense, useEffect, useState } from "react";
+import {
+  ContainerComponent,
+  GraphicsComponent,
+  GraphicType,
+} from "@openhotel/pixi-components";
 import { useGames } from "shared/hooks/games";
 
 interface Props {
@@ -14,28 +18,47 @@ export const GameContainer: React.FC<Props> = ({ gameId, onClose }) => {
   );
 
   useEffect(() => {
+    let isMounted = true;
+
     const initGame = async () => {
       const gameModule = await loadGame(gameId);
-      console.log(gameModule);
+      if (!gameModule) return;
 
-      if (gameModule) {
-        const gameElement = gameModule.start({
-          data: {},
-          onEnd: () => {
-            console.debug(`${gameModule.name} finished`);
-          },
-        }) as React.JSX.Element;
+      requestAnimationFrame(() => {
+        if (isMounted) {
+          const gameElement = gameModule.start({
+            data: {},
+            onEnd: () => {
+              console.debug(`${gameModule.name} finished`);
+            },
+          }) as React.JSX.Element;
 
-        setGameComponent(gameElement);
-      }
+          setGameComponent(gameElement);
+        }
+      });
     };
 
     initGame();
 
     return () => {
+      isMounted = false;
       unloadGame(gameId);
     };
   }, [gameId, loadGame, unloadGame]);
 
-  return <ContainerComponent>{gameComponent}</ContainerComponent>;
+  return (
+    <ContainerComponent>
+      <Suspense
+        fallback={
+          <GraphicsComponent
+            type={GraphicType.CIRCLE}
+            radius={5}
+            tint={0x00ff00}
+          />
+        }
+      >
+        {gameComponent}
+      </Suspense>
+    </ContainerComponent>
+  );
 };
