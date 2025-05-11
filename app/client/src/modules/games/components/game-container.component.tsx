@@ -1,64 +1,35 @@
-import React, { Suspense, useEffect, useState } from "react";
-import {
-  ContainerComponent,
-  GraphicsComponent,
-  GraphicType,
-} from "@openhotel/pixi-components";
+import React, { useEffect, useState } from "react";
+import { ContainerComponent } from "@openhotel/pixi-components";
 import { useGames } from "shared/hooks/games";
 
 interface Props {
   gameId: string;
-  onClose?: () => void;
 }
 
-export const GameContainer: React.FC<Props> = ({ gameId, onClose }) => {
+export const GameContainer: React.FC<Props> = ({ gameId }) => {
   const { loadGame, unloadGame } = useGames();
-  const [gameComponent, setGameComponent] = useState<React.JSX.Element | null>(
-    null,
-  );
+
+  const [game, setGame] = useState<React.ReactNode | null>(null);
 
   useEffect(() => {
-    let isMounted = true;
-
     const initGame = async () => {
       const gameModule = await loadGame(gameId);
       if (!gameModule) return;
 
-      requestAnimationFrame(() => {
-        if (isMounted) {
-          const gameElement = gameModule.start({
-            data: {},
-            onEnd: () => {
-              console.debug(`${gameModule.name} finished`);
-            },
-          }) as React.JSX.Element;
+      const gameNode = gameModule.start({
+        data: {},
+        onEnd: () => {
+          console.debug(`> ${gameModule.name} finished`);
+        },
+      }) as React.ReactNode;
 
-          setGameComponent(gameElement);
-        }
-      });
+      setGame(gameNode);
     };
 
     initGame();
 
-    return () => {
-      isMounted = false;
-      unloadGame(gameId);
-    };
-  }, [gameId, loadGame, unloadGame]);
+    return () => unloadGame(gameId);
+  }, [gameId, loadGame, unloadGame, setGame]);
 
-  return (
-    <ContainerComponent>
-      <Suspense
-        fallback={
-          <GraphicsComponent
-            type={GraphicType.CIRCLE}
-            radius={5}
-            tint={0x00ff00}
-          />
-        }
-      >
-        {gameComponent}
-      </Suspense>
-    </ContainerComponent>
-  );
+  return <ContainerComponent>{game}</ContainerComponent>;
 };

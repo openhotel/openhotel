@@ -75,7 +75,7 @@ export const HomeComponent: React.FC = () => {
           </FlexContainerComponent>
         </ContainerComponent>
         <ContainerComponent position={{ x: 100, y: 120 }}>
-          <GameContainer gameId={"sample-game"} />
+          <GameContainer gameId={"template"} />
         </ContainerComponent>
       </ContainerComponent>
     ),
