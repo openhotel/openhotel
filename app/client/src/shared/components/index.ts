@@ -18,3 +18,4 @@ export * from "./scroll";
 export * from "./item-list";
 export * from "./soft-badge";
 export * from "./furniture-item";
+export * from "./furniture-preview-action";

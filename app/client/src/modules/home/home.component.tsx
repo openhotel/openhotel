@@ -28,12 +28,10 @@ export const HomeComponent: React.FC = () => {
     useState<number>(getSafeXPosition());
 
   const onDone = useCallback(() => {
-    // DO NOT MERGE
     openModal(Modal.INVENTORY);
 
-    // DO NOT MERGE
-    // if (isModalOpen(Modal.NAVIGATOR)) return;
-    // openModal(Modal.NAVIGATOR);
+    if (isModalOpen(Modal.NAVIGATOR)) return;
+    openModal(Modal.NAVIGATOR);
   }, [openModal]);
 
   useEffect(() => {

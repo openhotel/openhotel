@@ -43,8 +43,8 @@ export const ApplicationComponent = () => {
       FurnitureProvider,
       CameraProvider, // Before 'ModalProvider' so 'ModalProvider' can use 'useCamera'
       SoundProvider,
-      ModalProvider,
       RouterProvider,
+      ModalProvider,
       InfoProvider,
       //|\\|//|\\|//|\\|//|\\|//|\\|//|\\|//|\\|
       //|\\|//|\\|//|\\|//|\\|//|\\|//|\\|//|\\|

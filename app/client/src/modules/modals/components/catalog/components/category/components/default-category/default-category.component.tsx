@@ -13,9 +13,8 @@ import {
 import {
   ButtonComponent,
   FurnitureItemComponent,
-  FurniturePreviewComponent,
+  FurniturePreviewActionComponent,
   ItemListComponent,
-  SoftBadgeComponent,
   TextComponent,
 } from "shared/components";
 import { CatalogCategoryData } from "shared/types";
@@ -30,8 +29,6 @@ type Props = {
   size: Size;
 } & ContainerProps;
 
-const bottomHeight = 20;
-
 export const DefaultCategoryComponent: React.FC<Props> = ({
   categoryId,
   size,
@@ -42,13 +39,13 @@ export const DefaultCategoryComponent: React.FC<Props> = ({
   const { play } = useSound();
 
   const { t } = useTranslation();
-  const [selectedFurniture, setSelectedFurniture] = useState<string>(null);
+  const [selectedFurnitureId, setSelectedFurnitureId] = useState<string>(null);
 
   const [categoryData, setCategoryData] = useState<CatalogCategoryData>(null);
 
   useEffect(() => {
     setCategoryData(null);
-    setSelectedFurniture(null);
+    setSelectedFurnitureId(null);
     fetch(`/catalog?category=${categoryId}`).then(
       (category: CatalogCategoryData) => {
         setCategoryData(category);
@@ -74,33 +71,32 @@ export const DefaultCategoryComponent: React.FC<Props> = ({
 
   const onSelectFurniture = useCallback(
     (furnitureId: string) => {
-      setSelectedFurniture(furnitureId);
+      setSelectedFurnitureId(furnitureId);
     },
-    [setSelectedFurniture],
+    [setSelectedFurnitureId],
   );
 
   const selectedFurnitureData = useMemo(() => {
     const furniture = categoryData?.furniture.find(
-      (f) => f.id === selectedFurniture,
+      (f) => f.id === selectedFurnitureId,
     );
 
-    return selectedFurniture
+    return selectedFurnitureId
       ? {
-          ...get(selectedFurniture),
+          ...get(selectedFurnitureId),
           price: furniture?.price ?? 0,
         }
       : null;
-  }, [get, categoryData, selectedFurniture]);
+  }, [get, categoryData, selectedFurnitureId]);
 
   const previewPositionX = useMemo(
     () =>
       CATALOG_DEFAULT_CATEGORY_ITEM_LIST_SIZE.cols *
-        (FURNITURE_ICON_BOX_SIZE + 2) +
+        (FURNITURE_ICON_BOX_SIZE + 3) +
       SCROLL_BAR_WIDTH +
       3,
     [],
   );
-
   const previewWidth = useMemo(
     () => size.width - previewPositionX - 3,
     [previewPositionX],
@@ -129,85 +125,49 @@ export const DefaultCategoryComponent: React.FC<Props> = ({
         />
       );
 
-    const height = size.height - bottomHeight;
     return (
-      <>
-        <ContainerComponent position={{ x: 5 }}>
-          <FurniturePreviewComponent
-            furnitureData={selectedFurnitureData}
-            size={{
-              width: previewWidth - 10,
-              height: height - 3 - 9 * 3 - 3,
-            }}
-          />
-          <TextComponent
-            position={{
-              y: height - 9 * 3 - 3,
-            }}
-            bold
-            color={0}
-            text={
-              selectedFurnitureData.label ?? selectedFurnitureData.furnitureId
-            }
-          />
-          <TextComponent
-            position={{
-              y: height - 8 * 2 - 3,
-            }}
-            color={0}
-            maxWidth={previewWidth - 10}
-            text={
-              selectedFurnitureData.description ??
-              "This is a test for a description an"
-            }
-          />
-        </ContainerComponent>
-        <ContainerComponent position={{ y: height }}>
-          <SoftBadgeComponent
-            size={{
-              width: previewWidth,
-              height: bottomHeight,
-            }}
-          />
+      <FurniturePreviewActionComponent
+        furniture={selectedFurnitureData}
+        size={{ width: previewWidth, height: size.height }}
+      >
+        <FlexContainerComponent
+          justify={FLEX_JUSTIFY.END}
+          align={FLEX_ALIGN.CENTER}
+          gap={6}
+          size={{
+            width: previewWidth - 3,
+            height: 20,
+          }}
+        >
           <FlexContainerComponent
-            justify={FLEX_JUSTIFY.END}
             align={FLEX_ALIGN.CENTER}
-            gap={6}
+            gap={2}
             size={{
-              width: previewWidth - 3,
-              height: bottomHeight,
+              width: 20,
+              height: 20 / 2,
             }}
           >
-            <FlexContainerComponent
-              align={FLEX_ALIGN.CENTER}
-              gap={2}
-              size={{
-                width: 20,
-                height: bottomHeight / 2,
-              }}
-            >
-              <TextComponent
-                text={selectedFurnitureData.price.toString()}
-                color={0x000}
-              />
-              <SpriteComponent
-                texture={"coin"}
-                spriteSheet={SpriteSheetEnum.UI}
-              />
-            </FlexContainerComponent>
-            <ButtonComponent
-              size={{
-                height: 14,
-              }}
-              autoWidth={true}
-              text={t("economy.buy")}
-              onPointerUp={onBuyFurniture}
+            <TextComponent
+              text={selectedFurnitureData.price.toString()}
+              color={0x000}
+            />
+            <SpriteComponent
+              texture={"coin"}
+              spriteSheet={SpriteSheetEnum.UI}
             />
           </FlexContainerComponent>
-        </ContainerComponent>
-      </>
+          <ButtonComponent
+            size={{
+              height: 14,
+            }}
+            autoWidth={true}
+            text={t("economy.buy")}
+            onPointerUp={onBuyFurniture}
+          />
+        </FlexContainerComponent>
+      </FurniturePreviewActionComponent>
     );
-  }, [selectedFurnitureData, previewWidth, bottomHeight, size, onBuyFurniture]);
+  }, [selectedFurnitureData, previewWidth, size, onBuyFurniture]);
 
   const rows = useMemo(
     () =>
@@ -229,7 +189,7 @@ export const DefaultCategoryComponent: React.FC<Props> = ({
           items={items}
           onSelect={onSelectFurniture}
         />
-        <ContainerComponent position={{ x: previewPositionX + 3 }}>
+        <ContainerComponent position={{ x: previewPositionX }}>
           {renderPreview}
         </ContainerComponent>
       </ContainerComponent>
