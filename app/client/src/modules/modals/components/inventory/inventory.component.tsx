@@ -12,16 +12,18 @@ import {
   useDragContainer,
 } from "@openhotel/pixi-components";
 import { Modal, ModalInventoryTab, SpriteSheetEnum } from "shared/enums";
-import { useApi, useModal } from "shared/hooks";
-import { InventoryFurniture } from "shared/types";
-import {
-  FurnitureItemComponent,
-  ItemListComponent,
-  TextComponent,
-} from "shared/components";
+import { useModal } from "shared/hooks";
+import { ModalInventoryCategoryProps } from "shared/types";
+import { TextComponent } from "shared/components";
 import { MODAL_SIZE_MAP } from "shared/consts";
 import { useTranslation } from "react-i18next";
-import { InventoryBarComponent } from ".";
+import {
+  CategoryFramesComponent,
+  CategoryFurnitureComponent,
+  CategoryPetsComponent,
+  CategoryRaresComponent,
+  InventoryBarComponent,
+} from ".";
 
 const HORIZONTAL_MARGIN = 12 * 2;
 const TOP_MARGIN = 38;
@@ -29,40 +31,26 @@ const BOTTOM_MARGIN = 12;
 const MODAL_SIZE = MODAL_SIZE_MAP[Modal.INVENTORY];
 
 export const InventoryComponent: React.FC = () => {
-  const { fetch } = useApi();
   const { t } = useTranslation();
   const { closeModal } = useModal();
   const { setDragPolygon } = useDragContainer();
-
-  const [furniture, setFurniture] = useState<InventoryFurniture[]>([]);
 
   const [selectedCategory, setSelectedCategory] = useState<ModalInventoryTab>(
     ModalInventoryTab.FURNITURE,
   );
 
-  const $reload = useCallback(
-    () =>
-      fetch("/inventory").then(({ furniture }) => {
-        const uniqueFurnitureIds = [
-          ...new Set(furniture.map((furniture) => furniture.furnitureId)),
-        ] as string[];
-        setFurniture(
-          uniqueFurnitureIds.map((furnitureId) => ({
-            type: furniture.find(
-              (furniture) => furniture.furnitureId === furnitureId,
-            ).type,
-            furnitureId,
-            ids: furniture
-              .filter((furniture) => furniture.furnitureId === furnitureId)
-              .map((furniture) => furniture.id),
-          })),
-        );
-      }),
-    [fetch],
+  const inventoryCategoryMap = useMemo(
+    (): Record<ModalInventoryTab, React.FC<ModalInventoryCategoryProps>> => ({
+      [ModalInventoryTab.FURNITURE]: CategoryFurnitureComponent,
+      [ModalInventoryTab.FRAMES]: CategoryFramesComponent,
+      [ModalInventoryTab.PETS]: CategoryPetsComponent,
+      [ModalInventoryTab.RARES]: CategoryRaresComponent,
+    }),
+    [],
   );
 
   const onCloseModal = useCallback(
-    () => closeModal(Modal.NAVIGATOR),
+    () => closeModal(Modal.INVENTORY),
     [closeModal],
   );
 
@@ -70,55 +58,17 @@ export const InventoryComponent: React.FC = () => {
     setDragPolygon?.([0, 0, MODAL_SIZE.width, 0, MODAL_SIZE.width, 15, 0, 15]);
   }, [setDragPolygon]);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      $reload();
-    }, 30_000);
-    $reload();
+  const SelectedCategoryContent = useMemo(
+    () => inventoryCategoryMap[selectedCategory],
+    [inventoryCategoryMap, selectedCategory],
+  );
 
-    return () => {
-      clearInterval(interval);
-    };
-  }, [$reload]);
-  // return (
-  //   <ContainerComponent>
-  //     <SpriteComponent
-  //       spriteSheet={SpriteSheetEnum.HOT_BAR_ICONS}
-  //       texture="box"
-  //     />
-  //     <GraphicsComponent
-  //       type={GraphicType.RECTANGLE}
-  //       width={100}
-  //       height={100}
-  //     />
-  //     <FlexContainerComponent direction="y">
-  //       {furniture.map((furniture) => (
-  //         <React.Fragment key={furniture.furnitureId}>
-  //           <TextComponent
-  //             text={furniture.furnitureId + ` x${furniture.ids.length}`}
-  //             tint={0}
-  //           />
-  //         </React.Fragment>
-  //       ))}
-  //     </FlexContainerComponent>
-  //   </ContainerComponent>
-  // );
-
-  const items = useMemo(
-    () =>
-      furniture?.map(($furniture) => {
-        return {
-          key: $furniture.furnitureId,
-          render: () => (
-            <FurnitureItemComponent
-              furnitureId={$furniture.furnitureId}
-              type={$furniture.type}
-              amount={$furniture.ids.length}
-            />
-          ),
-        };
-      }),
-    [furniture],
+  const contentSize = useMemo(
+    () => ({
+      width: MODAL_SIZE.width - HORIZONTAL_MARGIN,
+      height: MODAL_SIZE.height - TOP_MARGIN - BOTTOM_MARGIN,
+    }),
+    [],
   );
 
   return useMemo(
@@ -196,17 +146,18 @@ export const InventoryComponent: React.FC = () => {
               y: 38,
             }}
           >
-            <ItemListComponent
-              rows={10}
-              cols={6}
-              height={MODAL_SIZE.height - TOP_MARGIN - BOTTOM_MARGIN}
-              items={items}
-              onSelect={null}
-            />
+            <SelectedCategoryContent size={contentSize} />
           </ContainerComponent>
         </ContainerComponent>
       </>
     ),
-    [t, onCloseModal, setSelectedCategory, selectedCategory, items],
+    [
+      t,
+      onCloseModal,
+      setSelectedCategory,
+      selectedCategory,
+      SelectedCategoryContent,
+      contentSize,
+    ],
   );
 };
