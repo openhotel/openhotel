@@ -83,7 +83,7 @@ export const PrivateRoomProvider: React.FunctionComponent<PrivateRoomProps> = ({
   const $setUserTargetPosition = useCallback(
     (accountId: string, position: Point3d, bodyDirection?: Direction) =>
       room && setUserTargetPosition(accountId, position, bodyDirection),
-    [setUserPosition, room],
+    [setUserTargetPosition, room],
   );
   const $addFurniture = useCallback(
     (furniture: RoomFurniture) => room && addFurniture(furniture),

@@ -92,6 +92,7 @@ export const usePrivateRoomStore = create<{
                 ...user,
                 position,
                 bodyDirection: bodyDirection ?? user.bodyDirection,
+                targetPosition: null,
                 positionUpdatedAt: Date.now(),
               }
             : user,
