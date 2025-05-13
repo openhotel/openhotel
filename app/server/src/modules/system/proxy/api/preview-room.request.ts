@@ -92,8 +92,16 @@ export const previewRoomRequest: ProxyRequestType = {
     // drawStair({ x: 2, y: -1, z: 0 });
     // drawTile({ x: 3, y: -2, z: 0 });
 
-    const render = new Image(-minX + maxX, -minY + maxY);
+    const scale = 5;
+    const finalSize = {
+      width: -minX + maxX,
+      height: -minY + maxY,
+    };
+
+    const render = new Image(finalSize.width, finalSize.height);
     render.composite(image, -MARGIN - minX, -MARGIN - minY);
+
+    render.resize(finalSize.width * scale, finalSize.height * scale);
     return {
       status: 200,
       data: await render.encode(),
