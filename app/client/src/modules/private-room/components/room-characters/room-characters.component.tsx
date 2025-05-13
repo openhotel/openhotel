@@ -38,7 +38,9 @@ export const RoomCharactersComponent: React.FC = () => {
 
     const removeOnSetPositionHuman = on(
       ProxyEvent.SET_POSITION_HUMAN,
-      ({ accountId, position }) => {
+      ({ accountId, position, bodyDirection }) => {
+        // Works as a teleport. 'setUserTargetPosition' needs to be called or the 'room-character' will trigger the walk animation
+        setUserTargetPosition(accountId, null, bodyDirection);
         setUserPosition(accountId, position);
       },
     );
