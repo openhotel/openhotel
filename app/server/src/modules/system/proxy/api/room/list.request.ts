@@ -4,8 +4,8 @@ import { RequestMethod } from "@oh/utils";
 import { PrivateRoomMutable } from "shared/types/rooms/private.types.ts";
 import { PublicRoomMutable } from "shared/types/rooms/public.types.ts";
 
-export const roomListRequest: ProxyRequestType = {
-  pathname: "/room-list",
+export const listRequest: ProxyRequestType = {
+  pathname: "/list",
   method: RequestMethod.GET,
   func: async ({ data: { type }, user }) => {
     if (type !== "public" && type !== "private")
@@ -48,6 +48,7 @@ export const roomListRequest: ProxyRequestType = {
               description: room.getDescription(),
               userCount: room.getUsers().length,
               maxUsers: room.getObject().maxUsers,
+              layoutIndex: room.getObject().layoutIndex,
             })),
           )
         ).sort((roomA, roomB) => (roomA.title > roomB.title ? 1 : -1));

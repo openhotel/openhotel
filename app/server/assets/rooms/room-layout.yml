@@ -1,0 +1,55 @@
+north-wall-top:
+  x: 0
+  y: 0
+  w: 5
+  h: 10
+north-wall-bottom:
+  x: 0
+  y: 10
+  w: 5
+  h: 7
+north-door:
+  x: 5
+  y: 0
+  w: 5
+  h: 14
+north-stairs:
+  x: 0
+  y: 17
+  w: 9
+  h: 7
+east-wall-top:
+  x: 15
+  y: 0
+  w: 5
+  h: 10
+east-wall-bottom:
+  x: 15
+  y: 10
+  w: 5
+  h: 7
+east-door:
+  x: 10
+  y: 0
+  w: 5
+  h: 14
+east-stairs:
+  x: 9
+  y: 17
+  w: 9
+  h: 7
+tile:
+  x: 0
+  y: 24
+  w: 8
+  h: 6
+wall-middle:
+  x: 9
+  y: 1
+  w: 2
+  h: 1
+wall-middle-reversed:
+  x: 20
+  y: 0
+  w: 2
+  h: 1
