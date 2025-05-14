@@ -42,7 +42,7 @@ export const CategoryRoomsComponent: React.FC<Props> = ({ size }) => {
   }, [rooms, search]);
 
   const $reload = useCallback(() => {
-    fetch("/room-list", {
+    fetch("/room/list", {
       type: "private",
     }).then(({ rooms }: { rooms: any[] }) => {
       setRooms(
@@ -54,6 +54,7 @@ export const CategoryRoomsComponent: React.FC<Props> = ({ size }) => {
           users: room.userCount,
           maxUsers: room.maxUsers,
           favorite: false,
+          layoutIndex: room.layoutIndex,
         })),
       );
     });
