@@ -70,7 +70,8 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
   const { getSize, getScale } = useWindow();
   const { getSafeSize } = useSafeWindow();
 
-  const { renderPreviewItem, setCanPlace } = useItemPlacePreview();
+  const { renderPreviewItem, setCanPlace, getPreviewItemId } =
+    useItemPlacePreview();
 
   const [isShiftDown, setIsShiftDown] = useState<boolean>(false);
   const [windowSize, setWindowSize] = useState<Size>(getSize());
@@ -109,12 +110,12 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
   );
 
   useEffect(() => {
-    setCanPlace(room.ownerId === currentAccountId);
+    setCanPlace(room?.ownerId === currentAccountId);
 
     return () => {
       setCanPlace(false);
     };
-  }, [setCanPlace, currentAccountId]);
+  }, [setCanPlace, currentAccountId, room]);
 
   useEffect(() => {
     if (!room) return;
@@ -229,7 +230,13 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
         return;
       }
 
-      if (renderPreviewItem) return;
+      if (renderPreviewItem) {
+        emit(ProxyEvent.PLACE_ITEM, {
+          position,
+          id: getPreviewItemId(),
+        });
+        return;
+      }
 
       emit(ProxyEvent.POINTER_TILE, {
         position,
@@ -243,6 +250,7 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
       isShiftDown,
       setLastPositionData,
       renderPreviewItem,
+      getPreviewItemId,
     ],
   );
 

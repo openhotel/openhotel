@@ -122,6 +122,7 @@ export const InventoryContentComponent: React.FC<Props> = ({
 
     const canPlaceItem = getRoute() === Route.PRIVATE_ROOM && canPlace();
 
+    console.log(getRoute(), canPlace());
     return (
       <FurniturePreviewActionComponent
         furniture={selectedFurnitureData}
