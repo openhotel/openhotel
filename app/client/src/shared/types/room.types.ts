@@ -55,4 +55,5 @@ export type NavigatorRoom = {
   users: number;
   maxUsers: number;
   favorite: boolean;
+  layoutIndex: number;
 };

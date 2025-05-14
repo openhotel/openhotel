@@ -9,6 +9,7 @@ export * from "./catalog.types.ts";
 export * from "./api.types.ts";
 export * from "./request.types.ts";
 export * from "./changelog.types.ts";
+export * from "./room.types.ts";
 
 export * from "./rooms/main.ts";
 
