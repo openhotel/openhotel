@@ -9,6 +9,7 @@ export type TemplateState = {
   clearItemPreviewData: () => void;
 
   renderPreviewItem: React.ReactNode;
+  getPreviewItemId: () => string;
 
   canPlace: () => boolean;
   setCanPlace: (canPlace: boolean) => void;

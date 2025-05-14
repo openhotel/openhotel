@@ -6,18 +6,13 @@ import React, {
   useState,
 } from "react";
 import { ItemPlacePreviewContext } from "./item-place-preview.context";
-import {
-  FurnitureData,
-  Point2d,
-  Point3d,
-  RoomFurnitureFrame,
-} from "shared/types";
+import { FurnitureData, Point3d } from "shared/types";
 import {
   FurnitureComponent,
   FurnitureFrameComponent,
   PreviewTileData,
 } from "shared/components";
-import { useEvents } from "@openhotel/pixi-components";
+import { Event, useEvents } from "@openhotel/pixi-components";
 import { CrossDirection, FurnitureType, InternalEvent } from "shared/enums";
 
 type Props = {
@@ -38,8 +33,6 @@ export const ItemPlacePreviewProvider: React.FunctionComponent<Props> = ({
   const [$canPlace, setCanPlace] = useState<boolean>(false);
 
   useEffect(() => {
-    if (!itemPreviewData) return;
-
     const removeOnHoverTile = on(
       InternalEvent.HOVER_TILE,
       (data: PreviewTileData) => {
@@ -49,14 +42,28 @@ export const ItemPlacePreviewProvider: React.FunctionComponent<Props> = ({
       },
     );
 
+    if (!itemPreviewData) return;
+
+    const removeOnKeyDown = on(Event.KEY_DOWN, ({ code }: KeyboardEvent) => {
+      if (code === "Escape") {
+        setItemPreviewData(null);
+      }
+    });
+
     return () => {
       removeOnHoverTile?.();
+      removeOnKeyDown?.();
     };
-  }, [itemPreviewData, on, setPosition]);
+  }, [itemPreviewData, on, setPosition, setItemPreviewData]);
 
   const clearItemPreviewData = useCallback(
     () => setItemPreviewData(null),
     [setItemPreviewData],
+  );
+
+  const getPreviewItemId = useCallback(
+    () => itemPreviewData.id,
+    [itemPreviewData],
   );
 
   const renderPreviewItem = useMemo(() => {
@@ -93,6 +100,8 @@ export const ItemPlacePreviewProvider: React.FunctionComponent<Props> = ({
         setItemPreviewData,
         clearItemPreviewData,
         renderPreviewItem,
+
+        getPreviewItemId,
 
         setCanPlace,
         canPlace,
