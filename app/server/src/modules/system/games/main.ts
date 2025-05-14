@@ -1,6 +1,5 @@
 import { WorkerParent, getParentWorker } from "worker_ionic";
 import { GameManifest } from "@oh/utils";
-import { System } from "../main.ts";
 
 export const games = () => {
   const $gameWorkers: Record<string, WorkerParent> = {};
@@ -71,16 +70,20 @@ export const games = () => {
     if (!worker) return;
 
     worker.on("game:request", (data) => {
-      // TODO: Process game to system
+      // TODO:!
+      // worker -> oh server
+      // Calls from minigame worker to oh server, example: to get user data
     });
 
     worker.on("game:user-event", ({ userId, event, data }) => {
-      System.proxy.emit({
-        users: userId,
-        event: `game:${gameId}:${event}`, // TODO: events types
-        data,
-      });
+      // TODO:!
+      // worker -> minijuego client
+      // Calls from minigame worker to minigame client
     });
+  };
+
+  const getWorker = (gameId: string) => {
+    return $gameWorkers[gameId];
   };
 
   const getManifests = () => Object.values($gameManifests);
@@ -88,6 +91,8 @@ export const games = () => {
 
   return {
     load,
+
+    getWorker,
 
     startGameServer,
     stopGameServer,
