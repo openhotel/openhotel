@@ -46,7 +46,7 @@ export const RoomPreviewComponent: React.FC<Props> = ({
   useEffect(() => {
     $setTexture(TextureEnum.ROOM_PREVIEW);
     loadTexture(previewUrl).then(() => $setTexture(previewUrl));
-  }, [loadTexture, getTexture, $setTexture, previewUrl, room.layoutIndex]);
+  }, [loadTexture, getTexture, $setTexture, previewUrl]);
 
   console.log(room);
 
