@@ -24,6 +24,7 @@ import { eventList } from "./events/main.ts";
 import { auth } from "../shared/auth.ts";
 import { coordinates } from "../shared/coordinates.ts";
 import { icon } from "modules/shared/icon.ts";
+import { image } from "modules/shared/image.ts";
 
 export const Proxy = (() => {
   const serverWorker = getChildWorker();
@@ -37,7 +38,8 @@ export const Proxy = (() => {
 
   const state = getRandomString(64);
 
-  const $icon = icon();
+  const $image = image();
+  const $icon = icon($image);
   const $auth = auth();
   const $coordinates = coordinates();
   let server;
@@ -49,6 +51,7 @@ export const Proxy = (() => {
     $config = config;
     $envs = envs;
 
+    await $image.load();
     await $icon.load();
 
     $coordinates.load(config);
@@ -304,6 +307,7 @@ export const Proxy = (() => {
 
     getChangelog,
 
+    image: $image,
     icon: $icon,
     auth: $auth,
     coordinates: $coordinates,

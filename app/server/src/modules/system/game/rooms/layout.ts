@@ -91,7 +91,7 @@ export const layout = () => {
 
     if (!layoutData) return null;
 
-    const { Image } = await import("imagescript");
+    const Image = System.image.getImage();
 
     const sprite = await Image.decode(
       await Deno.readFile("./assets/rooms/room-layout.png"),
