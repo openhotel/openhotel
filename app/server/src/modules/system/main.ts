@@ -9,6 +9,7 @@ import { onet } from "./onet/main.ts";
 import { auth } from "modules/shared/auth.ts";
 import { config } from "./config.ts";
 import { Migrations } from "../migrations/main.ts";
+import { image } from "modules/shared/image.ts";
 
 export const System = (() => {
   let $envs: Envs;
@@ -21,6 +22,7 @@ export const System = (() => {
   const $onet = onet();
   const $auth = auth();
   const $config = config();
+  const $image = image();
 
   const load = async (envs: Envs) => {
     console.clear();
@@ -57,6 +59,7 @@ export const System = (() => {
 
     const config = $config.get();
 
+    await $image.load();
     await $auth.load(config, true);
     $proxy.load();
     await $db.load();
@@ -83,5 +86,6 @@ export const System = (() => {
     onet: $onet,
     auth: $auth,
     config: $config,
+    image: $image,
   };
 })();

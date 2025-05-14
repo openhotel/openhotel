@@ -28,11 +28,8 @@ export const getRoom =
 
     if (!roomUserMap[room.id]) roomUserMap[room.id] = [];
 
-    const { layout, spawnPoint, spawnDirection } = await System.db.get([
-      "rooms",
-      "layouts",
-      $room.layoutIndex,
-    ]);
+    const { layout, spawnPoint, spawnDirection } =
+      await System.game.rooms.layout.get($room.layoutIndex);
 
     const $baseRoomGrid: RoomPoint[][] = getBaseRoomGrid(layout);
 

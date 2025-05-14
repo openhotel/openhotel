@@ -2,10 +2,13 @@ import { $public } from "./public/main.ts";
 import { $private } from "./private/main.ts";
 import { Room, RoomMutable } from "shared/types/rooms/main.ts";
 import { pathfinding } from "./pathfinding.ts";
+import { layout } from "./layout.ts";
 
 export const rooms = () => {
   const $$private = $private();
   const $$public = $public();
+
+  const $layout = layout();
 
   const $pathfinding = pathfinding();
 
@@ -55,6 +58,8 @@ export const rooms = () => {
     getList,
 
     add,
+
+    layout: $layout,
 
     pathfinding: $pathfinding,
   };

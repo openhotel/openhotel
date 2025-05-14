@@ -1,10 +1,7 @@
 import { BACKGROUND_SIZE, ICON_SIZE } from "shared/consts/icon.consts.ts";
 
-export const icon = () => {
-  let $Image;
+export const icon = ($image) => {
   const load = async () => {
-    const { Image } = await import("imagescript");
-    $Image = Image;
     await getIcon();
     await getBackground();
   };
@@ -13,7 +10,7 @@ export const icon = () => {
     let iconFile = await Deno.readFile("./assets/icon/icon.png");
     try {
       iconFile = await Deno.readFile("./icon.png");
-      const iconImage = await $Image.decode(iconFile);
+      const iconImage = await $image.decode(iconFile);
       if (
         iconImage.width !== ICON_SIZE.width ||
         iconImage.height !== ICON_SIZE.height
@@ -29,7 +26,7 @@ export const icon = () => {
     let backgroundFile = await Deno.readFile("./assets/icon/background.png");
     try {
       backgroundFile = await Deno.readFile("./background.png");
-      const backgroundImage = await $Image.decode(backgroundFile);
+      const backgroundImage = await $image.decode(backgroundFile);
       if (
         backgroundImage.width !== BACKGROUND_SIZE.width ||
         backgroundImage.height !== BACKGROUND_SIZE.height

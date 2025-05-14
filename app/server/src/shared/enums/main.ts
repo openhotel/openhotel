@@ -6,3 +6,4 @@ export * from "./hemisphere.enums.ts";
 export * from "./meta.enum.ts";
 export * from "./user.enums.ts";
 export * from "./economy.enum.ts";
+export * from "./direction.enums.ts";
