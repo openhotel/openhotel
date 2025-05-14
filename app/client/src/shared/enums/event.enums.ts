@@ -41,4 +41,6 @@ export enum Event {
 export enum InternalEvent {
   SAFE_RESIZE = "safe_resize",
   SAFE_POSITION_X = "safe_position_x",
+
+  HOVER_TILE = "hover_tile",
 }

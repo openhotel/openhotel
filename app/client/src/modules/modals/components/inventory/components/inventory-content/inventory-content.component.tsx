@@ -14,14 +14,19 @@ import {
   GraphicsComponent,
   GraphicType,
 } from "@openhotel/pixi-components";
-import { useFurniture, useRouter } from "shared/hooks";
+import {
+  useFurniture,
+  useItemPlacePreview,
+  useModal,
+  useRouter,
+} from "shared/hooks";
 import {
   FURNITURE_ICON_BOX_SIZE,
   INVENTORY_DEFAULT_CATEGORY_ITEM_LIST_SIZE,
   SCROLL_BAR_WIDTH,
 } from "shared/consts";
 import { useTranslation } from "react-i18next";
-import { Route } from "shared/enums";
+import { Modal, Route } from "shared/enums";
 
 type Props = {
   size: Size2d;
@@ -32,9 +37,11 @@ export const InventoryContentComponent: React.FC<Props> = ({
   size,
   furniture,
 }) => {
+  const { closeAll } = useModal();
   const { t } = useTranslation();
   const { get } = useFurniture();
   const { getRoute } = useRouter();
+  const { setItemPreviewData, canPlace } = useItemPlacePreview();
 
   const [selectedFurnitureId, setSelectedFurnitureId] = useState<string>(null);
 
@@ -70,6 +77,23 @@ export const InventoryContentComponent: React.FC<Props> = ({
     return get(selectedFurnitureId);
   }, [furniture, selectedFurnitureId, get]);
 
+  const onPlaceFurniture = useCallback(() => {
+    const targetFurnitureId = furniture.find(
+      (furniture) => furniture.furnitureId === selectedFurnitureId,
+    ).ids[0];
+    setItemPreviewData({
+      id: targetFurnitureId,
+      furnitureData: selectedFurnitureData,
+    });
+    closeAll();
+  }, [
+    selectedFurnitureId,
+    selectedFurnitureData,
+    furniture,
+    setItemPreviewData,
+    closeAll,
+  ]);
+
   const previewPositionX = useMemo(
     () =>
       INVENTORY_DEFAULT_CATEGORY_ITEM_LIST_SIZE.cols *
@@ -96,7 +120,7 @@ export const InventoryContentComponent: React.FC<Props> = ({
         />
       );
 
-    const canPlaceItem = getRoute() === Route.PRIVATE_ROOM;
+    const canPlaceItem = getRoute() === Route.PRIVATE_ROOM && canPlace();
 
     return (
       <FurniturePreviewActionComponent
@@ -119,13 +143,21 @@ export const InventoryContentComponent: React.FC<Props> = ({
               }}
               autoWidth={true}
               text={t("inventory.place")}
-              onPointerUp={null}
+              onPointerUp={onPlaceFurniture}
             />
           ) : null}
         </FlexContainerComponent>
       </FurniturePreviewActionComponent>
     );
-  }, [selectedFurnitureData, previewWidth, size, t, getRoute]);
+  }, [
+    selectedFurnitureData,
+    previewWidth,
+    size,
+    t,
+    getRoute,
+    onPlaceFurniture,
+    canPlace,
+  ]);
 
   return (
     <>
