@@ -245,6 +245,11 @@
       "sourceSize": { "w": 6, "h": 6 },
       "anchor": { "x": 0, "y": 0 }
     },
+    "selector-item": {
+      "frame": { "x": 107, "y": 139, "w": 4, "h": 4 },
+      "sourceSize": { "w": 4, "h": 4 },
+      "anchor": { "x": 0, "y": 0 }
+    },
     "arrow-x2": {
       "frame": { "x": 25, "y": 153, "w": 4, "h": 7 },
       "sourceSize": { "w": 4, "h": 7 },
@@ -252,7 +257,7 @@
     },
     "input-dots": {
       "frame": { "x": 29, "y": 149, "w": 1, "h": 11 },
-      "sourceSize": { "w": 4, "h": 7 },
+      "sourceSize": { "w": 1, "h": 11 },
       "anchor": { "x": 0, "y": 0 }
     }
   },
