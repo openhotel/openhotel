@@ -5,7 +5,7 @@ import { FurniturePreviewActionComponent } from "./furniture-preview-action.comp
 import { useSBFurniture } from ".storybook";
 import { FurnitureData } from "shared/types";
 import { GraphicsComponent, GraphicType } from "@openhotel/pixi-components";
-import { ButtonComponent } from "shared/components/button";
+import { ButtonComponent } from "shared/components";
 
 export default {
   title: "Shared/Furniture Preview Action",

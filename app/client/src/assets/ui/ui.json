@@ -239,6 +239,21 @@
       "frame": { "x": 151, "y": 83, "w": 9, "h": 18 },
       "sourceSize": { "w": 9, "h": 18 },
       "anchor": { "x": 0, "y": 0 }
+    },
+    "input": {
+      "frame": { "x": 106, "y": 138, "w": 6, "h": 6 },
+      "sourceSize": { "w": 6, "h": 6 },
+      "anchor": { "x": 0, "y": 0 }
+    },
+    "arrow-x2": {
+      "frame": { "x": 25, "y": 153, "w": 4, "h": 7 },
+      "sourceSize": { "w": 4, "h": 7 },
+      "anchor": { "x": 0, "y": 0 }
+    },
+    "input-dots": {
+      "frame": { "x": 29, "y": 149, "w": 1, "h": 11 },
+      "sourceSize": { "w": 4, "h": 7 },
+      "anchor": { "x": 0, "y": 0 }
     }
   },
   "animations": {},

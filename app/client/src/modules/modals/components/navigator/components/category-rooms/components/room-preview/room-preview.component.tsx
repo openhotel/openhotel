@@ -48,8 +48,6 @@ export const RoomPreviewComponent: React.FC<Props> = ({
     loadTexture(previewUrl).then(() => $setTexture(previewUrl));
   }, [loadTexture, getTexture, $setTexture, previewUrl]);
 
-  console.log(room);
-
   return (
     <ContainerComponent {...containerProps}>
       <SpriteComponent
