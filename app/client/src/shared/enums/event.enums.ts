@@ -36,6 +36,8 @@ export enum Event {
   DISCONNECTED = "disconnected",
 
   DISABLE_CAMERA_MOVEMENT = "disable-camera-movement",
+
+  GAME_EVENT = "game-event",
 }
 
 export enum InternalEvent {

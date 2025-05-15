@@ -50,6 +50,8 @@ export enum ProxyEvent {
 
   REDIRECT = "redirect",
   DISABLE_CAMERA_MOVEMENT = "disable-camera-movement",
+
+  GAME_EVENT = "game-event",
 }
 
 export enum OnetEvent {
