@@ -63,10 +63,6 @@ export const NavigatorButtonComponent: React.FC<Props> = ({
     [type, selected],
   );
 
-  // console.log(width, "<<<<<<<<<<<<<", text);
-
-  // const width = (textRef?.current?.getSize?.()?.width ?? 0) + padding;
-
   return (
     <>
       <NineSliceSpriteComponent

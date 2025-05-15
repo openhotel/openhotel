@@ -2,7 +2,7 @@ import { Meta, StoryObj } from "@storybook/react";
 import { ButtonComponent } from "./button.component";
 
 export default {
-  title: "Shared/Button",
+  title: "Shared/Form/Button",
   component: ButtonComponent,
   parameters: {
     layout: "fullscreen",
