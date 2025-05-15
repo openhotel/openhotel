@@ -4,16 +4,15 @@ import {
   GraphicsComponent,
   GraphicType,
   KeyboardEventExtended,
-  NineSliceSpriteComponent,
   Size,
   SpriteComponent,
-  SpriteTextInputComponent,
 } from "@openhotel/pixi-components";
 import { useApi, useModal, useProxy } from "shared/hooks";
 import { Event, Modal, SpriteSheetEnum } from "shared/enums";
 import { RoomPreviewComponent, RoomsListComponentWrapper } from "./components";
 import { NavigatorRoom } from "shared/types";
 import { useTranslation } from "react-i18next";
+import { InputComponent } from "shared/components";
 
 type Props = {
   size: Size;
@@ -129,18 +128,18 @@ export const CategoryRoomsComponent: React.FC<Props> = ({ size }) => {
 
   return (
     <>
-      <ContainerComponent>
-        <NineSliceSpriteComponent
-          texture="bubble-message-ring"
-          spriteSheet={SpriteSheetEnum.UI}
-          leftWidth={7}
-          rightWidth={7}
-          topHeight={7}
-          bottomHeight={7}
-          width={size.width - 133}
-          tint={0x3b3b3b}
-          alpha={1}
-        />
+      <InputComponent
+        size={{
+          width: size.width - 133,
+          height: 10,
+        }}
+        padding={{
+          left: 22,
+        }}
+        placeholder={t("navigator.search")}
+        value={search}
+        onChange={searchFunction}
+      >
         <SpriteComponent
           spriteSheet={SpriteSheetEnum.UI}
           texture="search-bubble-icon"
@@ -149,30 +148,7 @@ export const CategoryRoomsComponent: React.FC<Props> = ({ size }) => {
             y: 1,
           }}
         />
-
-        <SpriteTextInputComponent
-          width={size.width - 133}
-          height={10}
-          spriteSheet={SpriteSheetEnum.DEFAULT_FONT}
-          padding={{
-            left: 30,
-            right: 10,
-            top: 4,
-            bottom: 0,
-          }}
-          placeholder={t("navigator.search")}
-          placeholderProps={{
-            color: 0x1,
-            alpha: 0.5,
-          }}
-          maxLength={100}
-          backgroundColor={0x88}
-          backgroundAlpha={0}
-          value={search}
-          focusNow={0}
-          onChange={searchFunction}
-        />
-      </ContainerComponent>
+      </InputComponent>
 
       <ContainerComponent
         position={{
