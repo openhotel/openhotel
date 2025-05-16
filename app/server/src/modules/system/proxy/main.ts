@@ -87,7 +87,15 @@ export const proxy = () => {
           if (!foundMethodRequest)
             return $worker.emit(eventName, { status: 404 });
 
-          if (!foundMethodRequest.public && !user)
+          if (
+            foundMethodRequest.token &&
+            !System.isTokenValid(parsedUrl.searchParams.get("token"))
+          )
+            return $worker.emit(eventName, {
+              status: 403,
+            });
+
+          if (!foundMethodRequest.token && !foundMethodRequest.public && !user)
             return $worker.emit(eventName, {
               status: 403,
             });

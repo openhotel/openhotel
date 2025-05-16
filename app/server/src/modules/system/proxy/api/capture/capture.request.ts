@@ -3,7 +3,7 @@ import { System } from "modules/system/main.ts";
 import { RequestMethod, getContentType } from "@oh/utils";
 
 export const captureRequest: ProxyRequestType = {
-  pathname: "/capture",
+  pathname: "",
   method: RequestMethod.GET,
   public: true,
   func: async ({}, url) => {

@@ -2,15 +2,16 @@ import { ProxyRequestType } from "shared/types/api.types.ts";
 import { System } from "modules/system/main.ts";
 import { RequestMethod } from "@oh/utils";
 
-export const phantomRequest: ProxyRequestType = {
-  pathname: "/phantom",
+export const listRequest: ProxyRequestType = {
+  pathname: "/list",
   method: RequestMethod.GET,
-  public: true,
+  token: true,
   func: async ({}, url) => {
-    const token = url.searchParams.get("token");
-
     return {
-      status: System.phantom.isTokenValid(token) ? 200 : 403,
+      status: 200,
+      data: {
+        list: await System.phantom.getCaptureList(),
+      },
     };
   },
 };

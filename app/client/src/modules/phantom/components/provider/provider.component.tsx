@@ -13,7 +13,7 @@ export const PhantomProvider: React.FC<Props> = ({ children }) => {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
 
-    fetch(getPath(`/phantom?token=${params.get("token")}`)).then((res) => {
+    fetch(getPath(`/token?token=${params.get("token")}`)).then((res) => {
       setIsLogged(res.status === 200);
     });
   }, [isLogged]);

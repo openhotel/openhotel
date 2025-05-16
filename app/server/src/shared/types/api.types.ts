@@ -17,5 +17,6 @@ export type ProxyRequestType = {
   pathname?: string;
   method: RequestMethod;
   public?: boolean;
+  token?: boolean;
   func: (data: FuncProps, url: URL) => Promise<Response> | Response;
 };

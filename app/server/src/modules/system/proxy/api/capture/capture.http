@@ -1,0 +1,7 @@
+#
+GET http://localhost:1994/proxy/api/capture/list
+
+###
+
+#
+GET http://localhost:1994/proxy/api/capture?id=01JVC7Y8NAYAP2XJHBYS51YAFS
