@@ -137,11 +137,6 @@ export const RoomCharacterComponent: React.FC<Props> = ({
   }, [
     user.position,
     user.targetPosition,
-    $setPosition,
-    $setZIndex,
-    addTask,
-    setUserPosition,
-    setBodyAction,
   ]);
 
   const position = useMemo(
