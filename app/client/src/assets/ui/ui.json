@@ -76,18 +76,28 @@
       "anchor": { "x": 0, "y": 0 }
     },
     "ui-button": {
-      "frame": { "x": 106, "y": 96, "w": 11, "h": 11 },
-      "sourceSize": { "w": 11, "h": 11 },
+      "frame": { "x": 106, "y": 96, "w": 7, "h": 7 },
+      "sourceSize": { "w": 7, "h": 7 },
+      "anchor": { "x": 0, "y": 0 }
+    },
+    "ui-button-blue": {
+      "frame": { "x": 113, "y": 96, "w": 7, "h": 7 },
+      "sourceSize": { "w": 7, "h": 7 },
+      "anchor": { "x": 0, "y": 0 }
+    },
+    "ui-button-gray": {
+      "frame": { "x": 120, "y": 104, "w": 7, "h": 7 },
+      "sourceSize": { "w": 7, "h": 7 },
       "anchor": { "x": 0, "y": 0 }
     },
     "ui-button-left-slice": {
-      "frame": { "x": 106, "y": 96, "w": 9, "h": 11 },
-      "sourceSize": { "w": 9, "h": 11 },
+      "frame": { "x": 106, "y": 96, "w": 2, "h": 7 },
+      "sourceSize": { "w": 2, "h": 7 },
       "anchor": { "x": 0, "y": 0 }
     },
     "ui-button-right-slice": {
-      "frame": { "x": 108, "y": 96, "w": 9, "h": 11 },
-      "sourceSize": { "w": 9, "h": 11 },
+      "frame": { "x": 111, "y": 96, "w": 2, "h": 7 },
+      "sourceSize": { "w": 2, "h": 7 },
       "anchor": { "x": 0, "y": 0 }
     },
     "arrow": {
@@ -242,6 +252,16 @@
     },
     "input": {
       "frame": { "x": 106, "y": 138, "w": 6, "h": 6 },
+      "sourceSize": { "w": 6, "h": 6 },
+      "anchor": { "x": 0, "y": 0 }
+    },
+    "input-blue": {
+      "frame": { "x": 112, "y": 138, "w": 6, "h": 6 },
+      "sourceSize": { "w": 6, "h": 6 },
+      "anchor": { "x": 0, "y": 0 }
+    },
+    "input-gray": {
+      "frame": { "x": 106, "y": 144, "w": 6, "h": 6 },
       "sourceSize": { "w": 6, "h": 6 },
       "anchor": { "x": 0, "y": 0 }
     },

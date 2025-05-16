@@ -26,7 +26,8 @@ export const languageProvider: React.FunctionComponent<ConfigProps> = ({
       .use(HttpBackend)
       .use(initReactI18next)
       .init({
-        debug: isDevelopment(),
+        // DO NOT MERGE
+        // debug: isDevelopment(),
         fallbackLng: config.languages[0],
         supportedLngs: config.languages,
         detection: {

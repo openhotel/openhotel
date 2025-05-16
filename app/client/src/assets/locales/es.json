@@ -47,5 +47,14 @@
       "rares": "Rares"
     },
     "place": "Colocar"
+  },
+  "room_creator": {
+    "title": "Creador de salas",
+    "form": {
+      "layout": "Distribución",
+      "title": "Título",
+      "description": "Descripción",
+      "create_room": "Crear sala"
+    }
   }
 }
