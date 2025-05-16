@@ -68,6 +68,8 @@ type WrapperProps = {
   catalog: Catalog;
 };
 
+const MODAL_SIZE = MODAL_SIZE_MAP[Modal.CATALOG];
+
 export const CatalogComponentWrapper: React.FC<WrapperProps> = ({
   onPointerDown,
   catalog,
@@ -75,24 +77,22 @@ export const CatalogComponentWrapper: React.FC<WrapperProps> = ({
   const { t } = useTranslation();
   const { setDragPolygon } = useDragContainer();
 
-  const { width, height } = useMemo(() => MODAL_SIZE_MAP[Modal.CATALOG], []);
-
   const [selectedCategoryId, setSelectedCategoryId] = useState<string>("home");
 
   const categorySize = useMemo(
     () => ({
       width: 75,
-      height: height - 28 - 5,
+      height: MODAL_SIZE.height - 28 - 5,
     }),
-    [height],
+    [],
   );
 
   const overModalSize = useMemo(
     () => ({
-      width: width - (categorySize.width + 25),
-      height: height + OVER_MODAL_PADDING * 2,
+      width: MODAL_SIZE.width - (categorySize.width + 25),
+      height: MODAL_SIZE.height + OVER_MODAL_PADDING * 2,
     }),
-    [width, height, categorySize],
+    [categorySize],
   );
 
   useEffect(() => {
@@ -112,10 +112,10 @@ export const CatalogComponentWrapper: React.FC<WrapperProps> = ({
       overModalSize.width + OVER_MODAL_POSITION.x,
       5,
       //
-      width,
+      MODAL_SIZE.width,
       5,
       //
-      width,
+      MODAL_SIZE.width,
       20,
       //
       overModalSize.width + OVER_MODAL_POSITION.x - 6,
@@ -133,7 +133,7 @@ export const CatalogComponentWrapper: React.FC<WrapperProps> = ({
       0,
       20,
     ]);
-  }, [setDragPolygon, overModalSize, width, height]);
+  }, [setDragPolygon, overModalSize]);
 
   const category = useMemo(
     () =>
@@ -161,7 +161,7 @@ export const CatalogComponentWrapper: React.FC<WrapperProps> = ({
           cursor={Cursor.POINTER}
           eventMode={EventMode.STATIC}
           position={{
-            x: width - 23,
+            x: MODAL_SIZE.width - 23,
             y: 1.5,
           }}
           onPointerDown={onPointerDown}
@@ -177,8 +177,8 @@ export const CatalogComponentWrapper: React.FC<WrapperProps> = ({
               rightWidth={21}
               topHeight={22}
               bottomHeight={11}
-              height={height}
-              width={width}
+              height={MODAL_SIZE.height}
+              width={MODAL_SIZE.width}
             />
             <TilingSpriteComponent
               texture="ui-base-modal-bar-tile"
@@ -187,7 +187,7 @@ export const CatalogComponentWrapper: React.FC<WrapperProps> = ({
                 x: 11,
                 y: 4,
               }}
-              width={width - 35}
+              width={MODAL_SIZE.width - 35}
             />
             <ContainerComponent
               position={{
@@ -238,7 +238,7 @@ export const CatalogComponentWrapper: React.FC<WrapperProps> = ({
               tint={0}
               alpha={0.125}
               width={overModalSize.width + 2}
-              height={height}
+              height={MODAL_SIZE.height}
               pivot={{
                 x: 1,
               }}
@@ -278,8 +278,6 @@ export const CatalogComponentWrapper: React.FC<WrapperProps> = ({
       </>
     ),
     [
-      width,
-      height,
       onPointerDown,
       categorySize,
       catalog,

@@ -5,6 +5,8 @@ export enum Modal {
   INVENTORY,
   PURSE,
   CLUB,
+
+  ROOM_CREATOR,
 }
 
 export enum ModalNavigatorTab {

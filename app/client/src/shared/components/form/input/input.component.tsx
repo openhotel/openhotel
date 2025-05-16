@@ -14,8 +14,7 @@ import {
 import { SpriteSheetEnum } from "shared/enums";
 
 type Props = {
-  autoWidth?: false;
-  size: Size;
+  size: Partial<Size>;
   padding?: Partial<Sides>;
   children?: React.ReactNode;
   placeholder?: string;
@@ -25,7 +24,6 @@ type Props = {
 
 export const InputComponent: React.FC<Props> = ({
   size,
-  autoWidth,
   children,
   padding,
   placeholder,
@@ -58,7 +56,7 @@ export const InputComponent: React.FC<Props> = ({
         topHeight={2}
         bottomHeight={2}
         width={size.width}
-        height={14}
+        height={size?.height ?? 14}
       />
       <SpriteTextInputComponent
         width={size.width - $padding.left - $padding.right}

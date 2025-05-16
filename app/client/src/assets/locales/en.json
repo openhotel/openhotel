@@ -28,7 +28,8 @@
       "me": "Me",
       "search": "Search"
     },
-    "no_results": "No results... :("
+    "no_results": "No results... :(",
+    "create_room": "Create room"
   },
   "economy": {
     "purse_title": "Purse",
@@ -47,5 +48,14 @@
       "rares": "Rares"
     },
     "place": "Place"
+  },
+  "room_creator": {
+    "title": "Room Creator",
+    "form": {
+      "layout": "Layout",
+      "title": "Title",
+      "description": "Description",
+      "create_room": "Create room"
+    }
   }
 }

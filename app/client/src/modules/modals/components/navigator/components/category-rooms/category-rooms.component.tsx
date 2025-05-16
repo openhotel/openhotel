@@ -131,7 +131,7 @@ export const CategoryRoomsComponent: React.FC<Props> = ({ size }) => {
       <InputComponent
         size={{
           width: size.width - 133,
-          height: 10,
+          height: 14,
         }}
         padding={{
           left: 22,
