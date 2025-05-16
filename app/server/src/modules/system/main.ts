@@ -4,7 +4,7 @@ import { phantom } from "./phantom/main.ts";
 import { game } from "./game/main.ts";
 import { debug, initLog, log } from "shared/utils/main.ts";
 import { tasks } from "./tasks.ts";
-import { update, getDb, DbMutable } from "@oh/utils";
+import { update, getDb, DbMutable, getRandomString } from "@oh/utils";
 import { onet } from "./onet/main.ts";
 import { auth } from "modules/shared/auth.ts";
 import { config } from "./config.ts";
@@ -13,6 +13,8 @@ import { image } from "modules/shared/image.ts";
 
 export const System = (() => {
   let $envs: Envs;
+
+  const $token = getRandomString(16);
 
   const $proxy = proxy();
   const $phantom = phantom();
@@ -73,10 +75,17 @@ export const System = (() => {
 
   const getEnvs = () => $envs;
 
+  const getToken = () => $token;
+  const isTokenValid = (token: string) => $token === token;
+  // || $config.isDevelopment();
+
   return {
     load,
 
     getEnvs,
+
+    getToken,
+    isTokenValid,
 
     game: $game,
     proxy: $proxy,

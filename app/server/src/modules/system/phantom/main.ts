@@ -1,11 +1,9 @@
 import { WorkerParent, getParentWorker } from "worker_ionic";
 import { System } from "modules/system/main.ts";
-import { getRandomString } from "@oh/utils";
 import { ulid } from "@std/ulid";
 
 export const phantom = () => {
   let $worker: WorkerParent;
-  const $token = getRandomString(16);
 
   const load = () => {
     const config = System.config.get();
@@ -19,7 +17,7 @@ export const phantom = () => {
     $worker.emit("start", {
       config,
       envs,
-      token: $token,
+      token: System.getToken(),
     });
     $worker.on("save-capture", ({ id, imageData }) => {
       System.db.set(["captures", id], imageData);
@@ -46,13 +44,18 @@ export const phantom = () => {
     return capture ?? null;
   };
 
-  const isTokenValid = (token: string) =>
-    $token === token || System.config.isDevelopment();
+  const getCaptureList = async () => {
+    const { items } = await System.db.list({
+      prefix: ["captures"],
+    });
+
+    return items.map((item) => item.key[1]);
+  };
 
   return {
     load,
     capture,
     getCapture,
-    isTokenValid,
+    getCaptureList,
   };
 };
