@@ -34,7 +34,7 @@ export const RoomPreviewComponent: React.FC<Props> = ({
 }) => {
   const { t } = useTranslation();
   const { getPath } = useApiPath();
-  const { loadTexture, getTexture } = useTextures();
+  const { loadTexture } = useTextures();
 
   const [$texture, $setTexture] = useState<string>(TextureEnum.ROOM_PREVIEW);
 
@@ -46,7 +46,7 @@ export const RoomPreviewComponent: React.FC<Props> = ({
   useEffect(() => {
     $setTexture(TextureEnum.ROOM_PREVIEW);
     loadTexture(previewUrl).then(() => $setTexture(previewUrl));
-  }, [loadTexture, getTexture, $setTexture, previewUrl]);
+  }, [loadTexture, $setTexture, previewUrl]);
 
   return (
     <ContainerComponent {...containerProps}>

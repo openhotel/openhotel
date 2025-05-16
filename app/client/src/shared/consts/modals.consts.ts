@@ -61,4 +61,8 @@ export const MODAL_SIZE_MAP: Record<Modal, Size> = {
     width: 0,
     height: 0,
   },
+  [Modal.ROOM_CREATOR]: {
+    width: 281,
+    height: 228,
+  },
 };

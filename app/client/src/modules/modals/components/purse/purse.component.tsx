@@ -77,6 +77,8 @@ type Props = {
   setDragPolygon: (polygon: number[]) => void;
 };
 
+const MODAL_SIZE = MODAL_SIZE_MAP[Modal.PURSE];
+
 export const PurseComponentWrapper: React.FC<Props> = ({
   credits,
   transactions,
@@ -84,18 +86,17 @@ export const PurseComponentWrapper: React.FC<Props> = ({
   setDragPolygon,
 }) => {
   const { t } = useTranslation();
-  const { width, height } = MODAL_SIZE_MAP[Modal.PURSE];
 
   useEffect(() => {
-    setDragPolygon?.([0, 0, width, 0, width, 15, 0, 15]);
+    setDragPolygon?.([0, 0, MODAL_SIZE.width, 0, MODAL_SIZE.width, 15, 0, 15]);
   }, [setDragPolygon]);
 
   const scrollSize = useMemo(
     () => ({
-      width: width - 28 * 2 - 1,
-      height: height - 23 - 50 + 1,
+      width: MODAL_SIZE.width - 28 * 2 - 1,
+      height: MODAL_SIZE.height - 23 - 50 + 1,
     }),
-    [width, height],
+    [],
   );
 
   const renderTransactions = useMemo(
@@ -120,7 +121,7 @@ export const PurseComponentWrapper: React.FC<Props> = ({
           cursor={Cursor.POINTER}
           eventMode={EventMode.STATIC}
           position={{
-            x: width - 35,
+            x: MODAL_SIZE.width - 35,
             y: 1.5,
           }}
           onPointerDown={onPointerDown}
@@ -134,8 +135,8 @@ export const PurseComponentWrapper: React.FC<Props> = ({
             rightWidth={33}
             topHeight={50}
             bottomHeight={21}
-            height={height}
-            width={width}
+            height={MODAL_SIZE.height}
+            width={MODAL_SIZE.width}
           />
           <TilingSpriteComponent
             texture="ui-purse-modal-bar-tile"
@@ -144,14 +145,14 @@ export const PurseComponentWrapper: React.FC<Props> = ({
               x: 27,
               y: 4,
             }}
-            width={width - 63}
+            width={MODAL_SIZE.width - 63}
           />
 
           <SpriteComponent
             spriteSheet={SpriteSheetEnum.UI}
             texture="ui-purse-top"
             position={{
-              x: width / 2,
+              x: MODAL_SIZE.width / 2,
               y: 0,
             }}
             pivot={{
@@ -163,7 +164,7 @@ export const PurseComponentWrapper: React.FC<Props> = ({
           <FlexContainerComponent
             justify={FLEX_JUSTIFY.CENTER}
             size={{
-              width,
+              width: MODAL_SIZE.width,
             }}
             position={{
               y: 4,
@@ -186,7 +187,7 @@ export const PurseComponentWrapper: React.FC<Props> = ({
           <FlexContainerComponent
             justify={FLEX_JUSTIFY.CENTER}
             size={{
-              width,
+              width: MODAL_SIZE.width,
             }}
             position={{
               y: 28,
@@ -205,6 +206,6 @@ export const PurseComponentWrapper: React.FC<Props> = ({
         </ContainerComponent>
       </>
     ),
-    [width, height, credits, onPointerDown, scrollSize, renderTransactions],
+    [credits, onPointerDown, scrollSize, renderTransactions],
   );
 };
