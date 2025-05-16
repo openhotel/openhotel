@@ -28,7 +28,8 @@
       "me": "Me",
       "search": "Search"
     },
-    "no_results": "No results... :("
+    "no_results": "No results... :(",
+    "create_room": "Create room"
   },
   "economy": {
     "purse_title": "Purse",

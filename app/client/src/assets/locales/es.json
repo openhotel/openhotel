@@ -27,7 +27,8 @@
       "me": "Yo",
       "search": "Buscar"
     },
-    "no_results": "Sin resultados... :("
+    "no_results": "Sin resultados... :(",
+    "create_room": "Crear sala"
   },
   "economy": {
     "purse_title": "Monedero",
