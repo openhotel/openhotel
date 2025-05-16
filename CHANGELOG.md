@@ -1,4 +1,40 @@
 
+<a name="v0.7.0"></a>
+
+## [v0.7.0](https://github.com/openhotel/openhotel/compare/v0.6.11...v0.7.0) (2025-05-16)
+
+### Bug Fixes
+
+- teleport triggering animation - fix [#912](https://github.com/openhotel/openhotel/issues/912) ([#914](https://github.com/openhotel/openhotel/issues/914))
+- Maximum update depth on loader-assets - fix [#905](https://github.com/openhotel/openhotel/issues/905) ([#906](https://github.com/openhotel/openhotel/issues/906))
+- double click from button - fix [#893](https://github.com/openhotel/openhotel/issues/893) ([#897](https://github.com/openhotel/openhotel/issues/897))
+- kill browser after not being in use after x seconds - fix [#889](https://github.com/openhotel/openhotel/issues/889) ([#890](https://github.com/openhotel/openhotel/issues/890))
+- economy transactions lacking some atomization - fix [#882](https://github.com/openhotel/openhotel/issues/882) ([#888](https://github.com/openhotel/openhotel/issues/888))
+- maxUsers on private room migration - fix [#883](https://github.com/openhotel/openhotel/issues/883) ([#886](https://github.com/openhotel/openhotel/issues/886))
+- shadow on character preview is above character - fix [#884](https://github.com/openhotel/openhotel/issues/884) ([#885](https://github.com/openhotel/openhotel/issues/885))
+- input maks being incorrect - fix [#874](https://github.com/openhotel/openhotel/issues/874) ([#879](https://github.com/openhotel/openhotel/issues/879))
+- room camera movement - fix [#875](https://github.com/openhotel/openhotel/issues/875) ([#878](https://github.com/openhotel/openhotel/issues/878))
+- created by text is not positioned correctly the first time - fix [#873](https://github.com/openhotel/openhotel/issues/873) ([#877](https://github.com/openhotel/openhotel/issues/877))
+
+### Features
+
+- added room creator - fix [#763](https://github.com/openhotel/openhotel/issues/763) ([#926](https://github.com/openhotel/openhotel/issues/926))
+- added token command + expose camera photos list - fix [#923](https://github.com/openhotel/openhotel/issues/923) ([#925](https://github.com/openhotel/openhotel/issues/925))
+- added selector component - fix [#920](https://github.com/openhotel/openhotel/issues/920) ([#922](https://github.com/openhotel/openhotel/issues/922))
+- added input component - fix [#919](https://github.com/openhotel/openhotel/issues/919) ([#921](https://github.com/openhotel/openhotel/issues/921))
+- private room mini render layout ([#916](https://github.com/openhotel/openhotel/issues/916))
+- render inventory - fix [#817](https://github.com/openhotel/openhotel/issues/817) ([#876](https://github.com/openhotel/openhotel/issues/876))
+- added "render-preference" as a prop inside localstorage to load with WebGL if necessary - fix [#904](https://github.com/openhotel/openhotel/issues/904) ([#908](https://github.com/openhotel/openhotel/issues/908))
+- add howler.js for sound management - fix [#902](https://github.com/openhotel/openhotel/issues/902) ([#903](https://github.com/openhotel/openhotel/issues/903))
+- add do not merge analyzer - fix [#895](https://github.com/openhotel/openhotel/issues/895) ([#896](https://github.com/openhotel/openhotel/issues/896))
+- make purse bigger - fix [#841](https://github.com/openhotel/openhotel/issues/841) ([#894](https://github.com/openhotel/openhotel/issues/894))
+- add work contracts - fix [#832](https://github.com/openhotel/openhotel/issues/832) ([#858](https://github.com/openhotel/openhotel/issues/858))
+- migrate private rooms layouts to index - fix [#762](https://github.com/openhotel/openhotel/issues/762) ([#865](https://github.com/openhotel/openhotel/issues/865))
+- add autowidth to buttons - fix [#829](https://github.com/openhotel/openhotel/issues/829) ([#880](https://github.com/openhotel/openhotel/issues/880))
+- prevent rendering modals when are not loaded - fix [#856](https://github.com/openhotel/openhotel/issues/856) ([#872](https://github.com/openhotel/openhotel/issues/872))
+- add character shadow - fix [#870](https://github.com/openhotel/openhotel/issues/870) ([#871](https://github.com/openhotel/openhotel/issues/871))
+
+
 <a name="v0.6.11"></a>
 
 ## [v0.6.11](https://github.com/openhotel/openhotel/compare/v0.6.10...v0.6.11) (2025-05-07)
