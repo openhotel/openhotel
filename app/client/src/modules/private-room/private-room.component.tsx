@@ -23,6 +23,7 @@ import {
 import {
   useAccount,
   useCamera,
+  useItemPlacePreview,
   usePrivateRoom,
   useProxy,
   useSafeWindow,
@@ -65,9 +66,12 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
   const { lastUpdate, update } = useUpdate();
   const { isDragging, position: cameraPosition } = useCamera();
 
-  const { on: onEvent } = useEvents();
+  const { on: onEvent, emit: emitEvent } = useEvents();
   const { getSize, getScale } = useWindow();
   const { getSafeSize } = useSafeWindow();
+
+  const { renderPreviewItem, setCanPlace, getPreviewItemId } =
+    useItemPlacePreview();
 
   const [isShiftDown, setIsShiftDown] = useState<boolean>(false);
   const [windowSize, setWindowSize] = useState<Size>(getSize());
@@ -104,6 +108,14 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
     () => room?.users?.find((user) => user.accountId === currentAccountId),
     [room?.users, currentAccountId],
   );
+
+  useEffect(() => {
+    setCanPlace(room?.ownerId === currentAccountId);
+
+    return () => {
+      setCanPlace(false);
+    };
+  }, [setCanPlace, currentAccountId, room]);
 
   useEffect(() => {
     if (!room) return;
@@ -218,19 +230,36 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
         return;
       }
 
+      if (renderPreviewItem) {
+        emit(ProxyEvent.PLACE_ITEM, {
+          position,
+          id: getPreviewItemId(),
+        });
+        return;
+      }
+
       emit(ProxyEvent.POINTER_TILE, {
         position,
       });
       setSelectedPreview(null);
     },
-    [emit, setSelectedPreview, isDragging, isShiftDown, setLastPositionData],
+    [
+      emit,
+      setSelectedPreview,
+      isDragging,
+      isShiftDown,
+      setLastPositionData,
+      renderPreviewItem,
+      getPreviewItemId,
+    ],
   );
 
   const onHoverTile = useCallback(
     (data: PreviewTileData) => {
       setHoverTileData(data);
+      emitEvent(InternalEvent.HOVER_TILE, data);
     },
-    [setHoverTileData],
+    [setHoverTileData, emitEvent],
   );
 
   const onClickWall = useCallback(
@@ -275,6 +304,7 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
                 onHoverTile={onHoverTile}
                 onClickWall={onClickWall}
               >
+                {renderPreviewItem}
                 <RoomCharactersComponent />
                 <RoomFurnitureComponent />
               </PrivateRoomComp>
@@ -316,6 +346,7 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
       onHoverTile,
       onClickWall,
       messagesPivot,
+      renderPreviewItem,
     ],
   );
 };
