@@ -19,6 +19,7 @@ type Props = {
   children?: React.ReactNode;
   placeholder?: string;
   value?: string;
+  maxLength?: number;
   onChange?: (value: KeyboardEventExtended) => void;
 } & ContainerProps;
 
@@ -29,6 +30,7 @@ export const InputComponent: React.FC<Props> = ({
   placeholder,
   value,
   onChange,
+  maxLength,
   ...containerProps
 }) => {
   const { lastUpdate, update } = useUpdate();
@@ -68,7 +70,7 @@ export const InputComponent: React.FC<Props> = ({
           color: 0xe0e0e0,
         }}
         backgroundAlpha={0}
-        maxLength={100}
+        maxLength={maxLength}
         value={value}
         focusNow={lastUpdate}
         onChange={onChange}
