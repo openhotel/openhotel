@@ -183,6 +183,7 @@ export const RoomCreatorComponent: React.FC = () => {
                 }}
                 placeholder={t("room_creator.form.title")}
                 onChange={onChangeTitle}
+                maxLength={32}
               />
             </TitleComponent>
             <TitleComponent
@@ -198,6 +199,7 @@ export const RoomCreatorComponent: React.FC = () => {
                 }}
                 placeholder={t("room_creator.form.description")}
                 onChange={onChangeDescription}
+                maxLength={64}
               />
             </TitleComponent>
             {/*<TitleComponent*/}
