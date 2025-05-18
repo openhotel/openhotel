@@ -73,7 +73,13 @@ export const RoomPreviewComponent: React.FC<Props> = ({
         }}
       >
         <ContainerComponent position={{ x: 5 }}>
-          <TextComponent text={room.title} bold color={0} />
+          <TextComponent
+            text={room.title}
+            maxWidth={size.width - 10}
+            wrap={false}
+            bold
+            color={0}
+          />
           {room?.description ? (
             <TextComponent
               text={room?.description}

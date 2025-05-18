@@ -60,8 +60,10 @@ export const roomPutRequest: ProxyRequestType = {
       version: 1,
       id: ulid(),
       ownerId: user.getAccountId(),
-      title,
-      description,
+      title: title.substring(0, Math.min(title.length, 32)),
+      description: description
+        ? description.substring(0, Math.min(description.length, 64))
+        : null,
       furniture: [],
       layoutIndex: layoutId,
       maxUsers: 10,
