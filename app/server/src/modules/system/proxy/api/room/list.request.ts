@@ -7,7 +7,7 @@ import { PublicRoomMutable } from "shared/types/rooms/public.types.ts";
 export const listRequest: ProxyRequestType = {
   pathname: "/list",
   method: RequestMethod.GET,
-  func: async ({ data: { type }, user }) => {
+  func: async ({ data: { type, ownerId }, user }) => {
     if (type !== "public" && type !== "private")
       return {
         status: 500,
@@ -40,16 +40,18 @@ export const listRequest: ProxyRequestType = {
           await System.game.rooms.getList<PrivateRoomMutable>("private");
         const $privateRooms = (
           await Promise.all(
-            privateRooms.map(async (room) => ({
-              id: room.getId(),
-              ownerId: room.getOwnerId(),
-              ownerUsername: await room.getOwnerUsername(),
-              title: room.getTitle(),
-              description: room.getDescription(),
-              userCount: room.getUsers().length,
-              maxUsers: room.getObject().maxUsers,
-              layoutIndex: room.getObject().layoutIndex,
-            })),
+            privateRooms
+              .filter((room) => !ownerId || room.getOwnerId() === ownerId)
+              .map(async (room) => ({
+                id: room.getId(),
+                ownerId: room.getOwnerId(),
+                ownerUsername: await room.getOwnerUsername(),
+                title: room.getTitle(),
+                description: room.getDescription(),
+                userCount: room.getUsers().length,
+                maxUsers: room.getObject().maxUsers,
+                layoutIndex: room.getObject().layoutIndex,
+              })),
           )
         ).sort((roomA, roomB) => (roomA.title > roomB.title ? 1 : -1));
 
