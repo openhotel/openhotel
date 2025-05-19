@@ -59,10 +59,7 @@ export const PrivateRoomProvider: React.FunctionComponent<PrivateRoomProps> = ({
     };
   }, [on, emit, navigate, setRoom, removeRoom]);
 
-  const $addUser = useCallback(
-    (user: User) => room && addUser(user),
-    [addUser, room],
-  );
+  const $addUser = useCallback((user: User) => addUser(user), [addUser]);
   const getUser = useCallback(
     ({ accountId, username }: { accountId?: string; username?: string }) => {
       return room.users.find(
@@ -72,30 +69,30 @@ export const PrivateRoomProvider: React.FunctionComponent<PrivateRoomProps> = ({
     [room?.users],
   );
   const $removeUser = useCallback(
-    (accountId: string) => room && removeUser(accountId),
-    [removeUser, room],
+    (accountId: string) => removeUser(accountId),
+    [removeUser],
   );
   const $setUserPosition = useCallback(
     (accountId: string, position: Point3d, bodyDirection?: Direction) =>
-      room && setUserPosition(accountId, position, bodyDirection),
-    [setUserPosition, room],
+      setUserPosition(accountId, position, bodyDirection),
+    [setUserPosition],
   );
   const $setUserTargetPosition = useCallback(
     (accountId: string, position: Point3d, bodyDirection?: Direction) =>
-      room && setUserTargetPosition(accountId, position, bodyDirection),
-    [setUserTargetPosition, room],
+      setUserTargetPosition(accountId, position, bodyDirection),
+    [setUserTargetPosition],
   );
   const $addFurniture = useCallback(
-    (furniture: RoomFurniture) => room && addFurniture(furniture),
-    [addFurniture, room],
+    (furniture: RoomFurniture) => addFurniture(furniture),
+    [addFurniture],
   );
   const $removeFurniture = useCallback(
-    (furniture: RoomFurniture) => room && removeFurniture(furniture),
-    [removeFurniture, room],
+    (furniture: RoomFurniture) => removeFurniture(furniture),
+    [removeFurniture],
   );
   const $updateFurniture = useCallback(
-    (furniture: RoomFurniture) => room && updateFurniture(furniture),
-    [updateFurniture, room],
+    (furniture: RoomFurniture) => updateFurniture(furniture),
+    [updateFurniture],
   );
 
   return (
