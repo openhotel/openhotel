@@ -1,4 +1,21 @@
 
+<a name="v0.7.1"></a>
+
+## [v0.7.1](https://github.com/openhotel/openhotel/compare/v0.7.0...v0.7.1) (2025-05-19)
+
+### Bug Fixes
+
+- scroll doesn't render correctly on create room - fix [#935](https://github.com/openhotel/openhotel/issues/935) ([#937](https://github.com/openhotel/openhotel/issues/937))
+- multiple characters on room animations broke - fix [#927](https://github.com/openhotel/openhotel/issues/927) ([#936](https://github.com/openhotel/openhotel/issues/936))
+- reverted rendering tasks because of dependencies ([#932](https://github.com/openhotel/openhotel/issues/932))
+- room title overflows + limit max title and description - fix [#929](https://github.com/openhotel/openhotel/issues/929) ([#931](https://github.com/openhotel/openhotel/issues/931))
+- Fix rerendering tasks because of dependencies - fix [#927](https://github.com/openhotel/openhotel/issues/927) ([#928](https://github.com/openhotel/openhotel/issues/928))
+
+### Features
+
+- add the-people frame - fix [#924](https://github.com/openhotel/openhotel/issues/924) ([#934](https://github.com/openhotel/openhotel/issues/934))
+
+
 <a name="v0.7.0"></a>
 
 ## [v0.7.0](https://github.com/openhotel/openhotel/compare/v0.6.11...v0.7.0) (2025-05-16)
