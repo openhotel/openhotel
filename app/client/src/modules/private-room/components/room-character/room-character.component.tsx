@@ -134,15 +134,7 @@ export const RoomCharacterComponent: React.FC<Props> = ({
       $setZIndex(null);
       removeTask();
     };
-  }, [
-    user.position,
-    user.targetPosition,
-    $setPosition,
-    $setZIndex,
-    addTask,
-    setUserPosition,
-    setBodyAction,
-  ]);
+  }, [user.position, user.targetPosition]);
 
   const position = useMemo(
     () => $position ?? getPositionFromIsometricPosition(user.position),
