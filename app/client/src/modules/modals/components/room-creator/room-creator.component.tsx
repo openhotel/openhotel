@@ -16,7 +16,6 @@ import { Event, Modal, SpriteSheetEnum } from "shared/enums";
 import {
   ButtonComponent,
   InputComponent,
-  ScrollComponent,
   SoftBadgeComponent,
   TextComponent,
   TitleComponent,
@@ -162,14 +161,13 @@ export const RoomCreatorComponent: React.FC = () => {
           }}
         >
           <TitleComponent title={t("room_creator.form.layout")}>
-            <ScrollComponent
+            <LayoutsComponent
               size={{
                 width: 99,
                 height: contentHeight - 8,
               }}
-            >
-              <LayoutsComponent onChange={onChangeLayout} />
-            </ScrollComponent>
+              onChange={onChangeLayout}
+            />
           </TitleComponent>
           <ContainerComponent
             position={{
