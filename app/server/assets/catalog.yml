@@ -12,6 +12,8 @@ categories:
         price: 10
       - id: alpha@a-24
         price: 10
+      - id: alpha@the-people
+        price: 10
   - id: flags
     label: Flags
     description: Put a flag on that wall, show who you are.
