@@ -42,6 +42,9 @@ export const RoomCharacterComponent: React.FC<Props> = ({
   const [$zIndex, $setZIndex] = useState<number>(null);
 
   useEffect(() => {
+    if (user.accountId.endsWith("6M")) {
+      console.log("Retriggering use effect")
+    }
     if (!user?.targetPosition) return;
 
     const direction = getDirection(user.position, user.targetPosition);
@@ -80,11 +83,19 @@ export const RoomCharacterComponent: React.FC<Props> = ({
     const $currentPosition = getPositionFromIsometricPosition(user.position);
     let repeatIndex = 0;
 
+    const randomId = Math.floor(10000 + Math.random() * 90000).toString();
+    if (user.accountId.endsWith("6M")) {
+      console.log("Adding new task", randomId)
+    }
+
     const removeTask = addTask({
       type: TickerQueue.REPEAT,
       repeatEvery: repeatEvery,
       repeats: TILE_WIDTH,
       onFunc: () => {
+        if (user.accountId.endsWith("6M")) {
+          console.log(randomId, repeatIndex)
+        }
         let targetY = 0;
         //Check if it's at the middle of the index to change to the nex Y
         if (repeatIndex === TILE_WIDTH / 2)
@@ -123,6 +134,9 @@ export const RoomCharacterComponent: React.FC<Props> = ({
         repeatIndex++;
       },
       onDone: () => {
+        if (user.accountId.endsWith("6M")) {
+          console.log("Task ", randomId, " is done")
+        }
         $setPosition(null);
         $setZIndex(null);
         setBodyAction(CharacterBodyAction.IDLE);
