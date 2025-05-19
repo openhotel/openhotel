@@ -13,7 +13,14 @@ import {
   PreviewTileData,
 } from "shared/components";
 import { Event, useEvents } from "@openhotel/pixi-components";
-import { CrossDirection, FurnitureType, InternalEvent } from "shared/enums";
+import {
+  CrossDirection,
+  Event as ProxyEvent,
+  FurnitureType,
+  InternalEvent,
+} from "shared/enums";
+import { PositionData } from "shared/hooks/private-room";
+import { useProxy } from "shared/hooks/proxy";
 
 type Props = {
   children: ReactNode;
@@ -23,8 +30,18 @@ export const ItemPlacePreviewProvider: React.FunctionComponent<Props> = ({
   children,
 }) => {
   const { on } = useEvents();
+  const { emit } = useProxy();
 
-  const [position, setPosition] = useState<Point3d>({ x: 0, y: 0, z: 0 });
+  const [tilePosition, setTilePosition] = useState<Point3d>({
+    x: 0,
+    y: 0,
+    z: 0,
+  });
+  const [wallData, setWallData] = useState<PositionData>({
+    position: { x: 0, y: 0, z: 0 },
+    wallPosition: { x: 0, y: 0 },
+    direction: CrossDirection.NORTH,
+  });
   const [itemPreviewData, setItemPreviewData] = useState<{
     ids: string[];
     furnitureData: FurnitureData;
@@ -33,28 +50,66 @@ export const ItemPlacePreviewProvider: React.FunctionComponent<Props> = ({
   const [$canPlace, setCanPlace] = useState<boolean>(false);
 
   useEffect(() => {
+    if (!itemPreviewData) return;
+
+    const removeOnPointerDown = on(Event.POINTER_DOWN, () => {
+      const id = getPreviewItemId();
+      emit(
+        ProxyEvent.PLACE_ITEM,
+        itemPreviewData.furnitureData.type === FurnitureType.FURNITURE
+          ? {
+              position: tilePosition,
+              id,
+            }
+          : {
+              id,
+              position: wallData.position,
+              framePosition: wallData.wallPosition,
+              direction: wallData.direction,
+            },
+      );
+    });
+
+    return () => {
+      removeOnPointerDown();
+    };
+  }, [itemPreviewData, on, tilePosition, wallData]);
+
+  useEffect(() => {
+    if (!itemPreviewData) return;
+
     const removeOnHoverTile = on(
       InternalEvent.HOVER_TILE,
       (data: PreviewTileData) => {
         if (!data) return;
 
-        setPosition(data.point);
+        setTilePosition(data.point);
+      },
+    );
+    const removeOnHoverWall = on(
+      InternalEvent.HOVER_WALL,
+      (data: PositionData) => {
+        if (!data) return;
+
+        setWallData(data);
       },
     );
 
-    if (!itemPreviewData) return;
+    let removeOnKeyDown = null;
 
-    const removeOnKeyDown = on(Event.KEY_DOWN, ({ code }: KeyboardEvent) => {
-      if (code === "Escape") {
-        setItemPreviewData(null);
-      }
-    });
+    if (itemPreviewData)
+      removeOnKeyDown = on(Event.KEY_DOWN, ({ code }: KeyboardEvent) => {
+        if (code === "Escape") {
+          setItemPreviewData(null);
+        }
+      });
 
     return () => {
       removeOnHoverTile?.();
+      removeOnHoverWall?.();
       removeOnKeyDown?.();
     };
-  }, [itemPreviewData, on, setPosition, setItemPreviewData]);
+  }, [itemPreviewData, on, setWallData, setItemPreviewData, setTilePosition]);
 
   const clearItemPreviewData = useCallback(
     () => setItemPreviewData(null),
@@ -79,25 +134,29 @@ export const ItemPlacePreviewProvider: React.FunctionComponent<Props> = ({
 
     const { ids, furnitureData } = itemPreviewData;
 
-    return furnitureData.type === FurnitureType.FURNITURE ? (
-      <FurnitureComponent
-        id={ids[0]}
-        position={position}
-        furnitureId={furnitureData.furnitureId}
-        direction={CrossDirection.NORTH}
-        hitAreaActive={false}
-        heightCorrection={true}
-      />
-    ) : (
+    if (furnitureData.type === FurnitureType.FURNITURE)
+      return (
+        <FurnitureComponent
+          id={ids[0]}
+          position={tilePosition}
+          furnitureId={furnitureData.furnitureId}
+          direction={CrossDirection.NORTH}
+          hitAreaActive={false}
+          heightCorrection={true}
+        />
+      );
+
+    return (
       <FurnitureFrameComponent
         id={ids[0]}
-        position={position}
+        position={wallData.position}
         furnitureId={furnitureData.furnitureId}
-        direction={CrossDirection.NORTH}
-        framePosition={{ x: 0, y: 0 }}
+        direction={wallData.direction}
+        framePosition={wallData.wallPosition}
+        interactive={false}
       />
     );
-  }, [itemPreviewData, position]);
+  }, [itemPreviewData, tilePosition, wallData]);
 
   const canPlace = useCallback(() => $canPlace, [$canPlace]);
 

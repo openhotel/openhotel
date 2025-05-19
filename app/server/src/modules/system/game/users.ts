@@ -13,7 +13,7 @@ import { System } from "modules/system/main.ts";
 import { ProxyEvent } from "shared/enums/event.enum.ts";
 import { RoomPointEnum } from "shared/enums/room.enums.ts";
 import { USERS_CONFIG_DEFAULT } from "shared/consts/users.consts.ts";
-import { Direction, getConfig, Point3d } from "@oh/utils";
+import { Direction, getConfig, Point3d, Point2d } from "@oh/utils";
 import { exists } from "deno/fs/mod.ts";
 import { log as $log } from "shared/utils/log.utils.ts";
 import { UserAction } from "shared/enums/user.enums.ts";
@@ -285,6 +285,8 @@ export const users = () => {
     const moveFurnitureFromInventoryToRoom = async (
       id: string,
       position: Point3d,
+      direction?: CrossDirection,
+      framePosition?: Point2d,
     ) => {
       const roomId = getRoom();
       if (!roomId) return false;
@@ -310,8 +312,9 @@ export const users = () => {
       removeFurniture(id);
       room.addFurniture({
         ...furniture,
-        direction: CrossDirection.NORTH,
+        direction: direction ?? CrossDirection.NORTH,
         position,
+        framePosition,
       });
 
       return true;

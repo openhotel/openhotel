@@ -45,4 +45,5 @@ export enum InternalEvent {
   SAFE_POSITION_X = "safe_position_x",
 
   HOVER_TILE = "hover_tile",
+  HOVER_WALL = "hover_wall",
 }

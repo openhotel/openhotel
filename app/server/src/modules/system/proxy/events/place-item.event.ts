@@ -4,7 +4,7 @@ import { System } from "modules/system/main.ts";
 
 export const placeItemEvent: ProxyEventType<any> = {
   event: ProxyEvent.PLACE_ITEM,
-  func: async ({ data: { position, id }, user }) => {
+  func: async ({ data: { position, id, direction, framePosition }, user }) => {
     const roomId = user.getRoom();
     if (!roomId) return;
 
@@ -17,6 +17,11 @@ export const placeItemEvent: ProxyEventType<any> = {
     const furniture = await user.getFurniture(id);
     if (!furniture) return;
 
-    await user.moveFurnitureFromInventoryToRoom(id, position);
+    await user.moveFurnitureFromInventoryToRoom(
+      id,
+      position,
+      direction,
+      framePosition,
+    );
   },
 };

@@ -21,6 +21,7 @@ import {
   useWindow,
 } from "@openhotel/pixi-components";
 import {
+  PositionData,
   useAccount,
   useCamera,
   useItemPlacePreview,
@@ -239,13 +240,7 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
         return;
       }
 
-      if (renderPreviewItem) {
-        emit(ProxyEvent.PLACE_ITEM, {
-          position,
-          id: getPreviewItemId(),
-        });
-        return;
-      }
+      if (renderPreviewItem) return;
 
       emit(ProxyEvent.POINTER_TILE, {
         position,
@@ -272,14 +267,16 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
     [setHoverTileData, emitEvent],
   );
 
-  const onClickWall = useCallback(
+  const onMoveWall = useCallback(
     (position: Point3d, wallPosition: Point2d, direction: CrossDirection) => {
-      setLastPositionData({
+      const data: PositionData = {
         position,
         wallPosition,
         direction,
-      });
+      };
+      setLastPositionData(data);
       setWallDataPoint([position, wallPosition, direction]);
+      emitEvent(InternalEvent.HOVER_WALL, data);
       setSelectedPreview(null);
     },
     [setWallDataPoint, setSelectedPreview, setLastPositionData],
@@ -324,7 +321,7 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
                 {...room}
                 onPointerTile={onPointerTile}
                 onHoverTile={onHoverTile}
-                onClickWall={onClickWall}
+                onMoveWall={onMoveWall}
               >
                 {renderPreviewItem}
                 <RoomCharactersComponent />
@@ -366,7 +363,7 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
       safeXPosition,
       onPointerTile,
       onHoverTile,
-      onClickWall,
+      onMoveWall,
       messagesPivot,
       renderPreviewItem,
     ],
