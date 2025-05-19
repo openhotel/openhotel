@@ -41,6 +41,8 @@ export enum ProxyEvent {
   POINTER_TILE = "pointer-tile",
   POINTER_INTERACTIVE = "pointer-interactive",
 
+  PLACE_ITEM = "place-item",
+
   MESSAGE = "message",
   WHISPER_MESSAGE = "whisper-messsage",
   TYPING_START = "typing-start",

@@ -26,7 +26,7 @@ import {
   SCROLL_BAR_WIDTH,
 } from "shared/consts";
 import { useTranslation } from "react-i18next";
-import { Modal, Route } from "shared/enums";
+import { Route } from "shared/enums";
 
 type Props = {
   size: Size2d;
@@ -80,9 +80,9 @@ export const InventoryContentComponent: React.FC<Props> = ({
   const onPlaceFurniture = useCallback(() => {
     const targetFurnitureId = furniture.find(
       (furniture) => furniture.furnitureId === selectedFurnitureId,
-    ).ids[0];
+    ).ids;
     setItemPreviewData({
-      id: targetFurnitureId,
+      ids: targetFurnitureId,
       furnitureData: selectedFurnitureData,
     });
     closeAll();
@@ -122,7 +122,6 @@ export const InventoryContentComponent: React.FC<Props> = ({
 
     const canPlaceItem = getRoute() === Route.PRIVATE_ROOM && canPlace();
 
-    console.log(getRoute(), canPlace());
     return (
       <FurniturePreviewActionComponent
         furniture={selectedFurnitureData}

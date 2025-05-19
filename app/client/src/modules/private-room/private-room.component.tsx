@@ -24,6 +24,7 @@ import {
   useAccount,
   useCamera,
   useItemPlacePreview,
+  useModal,
   usePrivateRoom,
   useProxy,
   useSafeWindow,
@@ -34,6 +35,7 @@ import {
   Direction,
   Event as ProxyEvent,
   InternalEvent,
+  Modal,
   PrivateRoomPreviewType,
 } from "shared/enums";
 import {
@@ -69,9 +71,14 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
   const { on: onEvent, emit: emitEvent } = useEvents();
   const { getSize, getScale } = useWindow();
   const { getSafeSize } = useSafeWindow();
+  const { openModal } = useModal();
 
-  const { renderPreviewItem, setCanPlace, getPreviewItemId } =
-    useItemPlacePreview();
+  const {
+    renderPreviewItem,
+    setCanPlace,
+    getPreviewItemId,
+    setItemPreviewData,
+  } = useItemPlacePreview();
 
   const [isShiftDown, setIsShiftDown] = useState<boolean>(false);
   const [windowSize, setWindowSize] = useState<Size>(getSize());
@@ -91,6 +98,8 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
   const [wallDataPoint, setWallDataPoint] = useState<
     [Point3d, Point2d, CrossDirection] | [null, null]
   >([null, null]);
+
+  const renderPreviewVisibleRef = useRef(false);
 
   const roomPosition = useMemo(() => {
     if (!roomSize) return { x: 0, y: 0 };
@@ -251,6 +260,7 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
       setLastPositionData,
       renderPreviewItem,
       getPreviewItemId,
+      setItemPreviewData,
     ],
   );
 
@@ -286,6 +296,18 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
     () => Math.round((windowSize.width - safeWindowSize.width) / 2),
     [windowSize, safeWindowSize],
   );
+
+  //reopen inventory when items are out
+  useEffect(() => {
+    if (renderPreviewItem) {
+      renderPreviewVisibleRef.current = true;
+      return;
+    }
+    if (!renderPreviewVisibleRef.current) return;
+
+    openModal(Modal.INVENTORY);
+    renderPreviewVisibleRef.current = false;
+  }, [renderPreviewItem, openModal]);
 
   return useMemo(
     () =>

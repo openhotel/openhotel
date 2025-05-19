@@ -26,7 +26,7 @@ export const ItemPlacePreviewProvider: React.FunctionComponent<Props> = ({
 
   const [position, setPosition] = useState<Point3d>({ x: 0, y: 0, z: 0 });
   const [itemPreviewData, setItemPreviewData] = useState<{
-    id: string;
+    ids: string[];
     furnitureData: FurnitureData;
   } | null>(null);
 
@@ -61,20 +61,27 @@ export const ItemPlacePreviewProvider: React.FunctionComponent<Props> = ({
     [setItemPreviewData],
   );
 
-  const getPreviewItemId = useCallback(
-    () => itemPreviewData.id,
-    [itemPreviewData],
-  );
+  const getPreviewItemId = useCallback(() => {
+    let targetId = null;
+    setItemPreviewData((data) => {
+      if (!data) return data;
+
+      targetId = data?.ids?.shift();
+      if (!targetId || !data.ids.length) return null;
+
+      return data;
+    });
+    return targetId;
+  }, [setItemPreviewData]);
 
   const renderPreviewItem = useMemo(() => {
     if (!itemPreviewData) return null;
 
-    const { id, furnitureData } = itemPreviewData;
+    const { ids, furnitureData } = itemPreviewData;
 
-    console.log(position);
     return furnitureData.type === FurnitureType.FURNITURE ? (
       <FurnitureComponent
-        id={id}
+        id={ids[0]}
         position={position}
         furnitureId={furnitureData.furnitureId}
         direction={CrossDirection.NORTH}
@@ -83,7 +90,7 @@ export const ItemPlacePreviewProvider: React.FunctionComponent<Props> = ({
       />
     ) : (
       <FurnitureFrameComponent
-        id={id}
+        id={ids[0]}
         position={position}
         furnitureId={furnitureData.furnitureId}
         direction={CrossDirection.NORTH}

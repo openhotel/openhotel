@@ -116,8 +116,5 @@ export const setCommand: Command = {
     }
 
     await room.addFurniture(furniture);
-    room.emit(ProxyEvent.ADD_FURNITURE, {
-      furniture,
-    });
   },
 };

@@ -50,8 +50,5 @@ export const rotateCommand: Command = {
     furniture.direction = directions[targetDirectionIndex];
 
     await room.updateFurniture(furniture);
-    room.emit(ProxyEvent.UPDATE_FURNITURE, {
-      furniture,
-    });
   },
 };

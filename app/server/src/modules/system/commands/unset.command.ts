@@ -30,8 +30,5 @@ export const unsetCommand: Command = {
     }
 
     await room.removeFurniture(furniture);
-    room.emit(ProxyEvent.REMOVE_FURNITURE, {
-      furniture,
-    });
   },
 };

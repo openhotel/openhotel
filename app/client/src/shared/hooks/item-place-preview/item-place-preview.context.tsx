@@ -3,7 +3,7 @@ import { FurnitureData } from "shared/types";
 
 export type TemplateState = {
   setItemPreviewData: (data: {
-    id: string;
+    ids: string[];
     furnitureData: FurnitureData;
   }) => void;
   clearItemPreviewData: () => void;

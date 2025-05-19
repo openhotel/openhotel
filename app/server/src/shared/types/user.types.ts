@@ -106,6 +106,11 @@ export type UserMutable = {
 
   addFurniture: (furnitureId: string, id: string) => Promise<void>;
   removeFurniture: (id: string) => Promise<void>;
-  getFurniture: (id: string) => Promise<Furniture>;
+  getFurniture: (id: string) => Promise<Furniture | null>;
   getInventory: () => Promise<Furniture[]>;
+
+  moveFurnitureFromInventoryToRoom: (
+    id: string,
+    position: Point3d,
+  ) => Promise<boolean>;
 };
