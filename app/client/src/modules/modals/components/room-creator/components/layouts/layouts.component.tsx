@@ -9,7 +9,8 @@ import {
   useTextures,
 } from "@openhotel/pixi-components";
 import { useApi, useApiPath } from "shared/hooks";
-import { ItemComponent } from "shared/components";
+import { ItemComponent, ScrollComponent } from "shared/components";
+import { Size2d } from "shared/types";
 
 const ITEM_SIZE = {
   width: 96,
@@ -17,10 +18,11 @@ const ITEM_SIZE = {
 };
 
 type Props = {
+  size: Size2d;
   onChange?: (layoutId: number) => void;
 };
 
-export const LayoutsComponent: React.FC<Props> = ({ onChange }) => {
+export const LayoutsComponent: React.FC<Props> = ({ size, onChange }) => {
   const { fetch } = useApi();
   const { getPath } = useApiPath();
   const { loadTexture, getTexture } = useTextures();
@@ -57,34 +59,33 @@ export const LayoutsComponent: React.FC<Props> = ({ onChange }) => {
   }, [fetch, getPath, setLayoutList, onSelectLayout]);
 
   const renderList = useMemo(
-    () =>
-      layoutList.map((layoutId) => (
-        <ItemComponent
-          key={layoutId}
-          size={ITEM_SIZE}
-          color={selectedLayout === layoutId ? "blue" : "gray"}
-          eventMode={EventMode.STATIC}
-          cursor={Cursor.POINTER}
-          onPointerDown={onSelectLayout(layoutId)}
-        >
-          <FlexContainerComponent
-            justify={FLEX_JUSTIFY.CENTER}
-            align={FLEX_ALIGN.CENTER}
-            size={{
-              width: ITEM_SIZE.width - 4 - 2,
-              height: ITEM_SIZE.height - 4 - 2,
-            }}
+    () => (
+      <FlexContainerComponent direction="y" gap={3}>
+        {layoutList.map((layoutId) => (
+          <ItemComponent
+            key={layoutId}
+            size={ITEM_SIZE}
+            color={selectedLayout === layoutId ? "blue" : "gray"}
+            eventMode={EventMode.STATIC}
+            cursor={Cursor.POINTER}
+            onPointerDown={onSelectLayout(layoutId)}
           >
-            <SpriteComponent texture={getLayoutTexture(layoutId)} />
-          </FlexContainerComponent>
-        </ItemComponent>
-      )),
+            <FlexContainerComponent
+              justify={FLEX_JUSTIFY.CENTER}
+              align={FLEX_ALIGN.CENTER}
+              size={{
+                width: ITEM_SIZE.width - 4 - 2,
+                height: ITEM_SIZE.height - 4 - 2,
+              }}
+            >
+              <SpriteComponent texture={getLayoutTexture(layoutId)} />
+            </FlexContainerComponent>
+          </ItemComponent>
+        ))}
+      </FlexContainerComponent>
+    ),
     [layoutList, selectedLayout, getLayoutTexture, onSelectLayout],
   );
 
-  return (
-    <FlexContainerComponent direction="y" gap={3}>
-      {renderList}
-    </FlexContainerComponent>
-  );
+  return <ScrollComponent size={size}>{renderList}</ScrollComponent>;
 };
