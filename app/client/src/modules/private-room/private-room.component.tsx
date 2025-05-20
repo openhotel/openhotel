@@ -277,7 +277,6 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
       setLastPositionData(data);
       setWallDataPoint([position, wallPosition, direction]);
       emitEvent(InternalEvent.HOVER_WALL, data);
-      setSelectedPreview(null);
     },
     [setWallDataPoint, setSelectedPreview, setLastPositionData],
   );
