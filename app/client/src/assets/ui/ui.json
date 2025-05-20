@@ -86,7 +86,7 @@
       "anchor": { "x": 0, "y": 0 }
     },
     "ui-button-gray": {
-      "frame": { "x": 120, "y": 104, "w": 7, "h": 7 },
+      "frame": { "x": 128, "y": 96, "w": 7, "h": 7 },
       "sourceSize": { "w": 7, "h": 7 },
       "anchor": { "x": 0, "y": 0 }
     },
