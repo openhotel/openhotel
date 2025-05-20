@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { CrossDirection, SpriteSheetEnum } from "shared/enums";
-import { getPositionFromIsometricPosition } from "shared/utils";
+import { getPositionFromIsometricPosition, getZIndex } from "shared/utils";
 import { EventMode, SpriteComponent } from "@openhotel/pixi-components";
 import { Point3d } from "shared/types";
 
@@ -24,7 +24,7 @@ export const PrivateRoomTilePreview: React.FC<Props> = ({
           x: direction === CrossDirection.NORTH ? 1 : -1,
         }}
         spriteSheet={SpriteSheetEnum.ROOM}
-        zIndex={position.x + position.z}
+        zIndex={getZIndex(position, 0.3)}
         position={getPositionFromIsometricPosition(position)}
         pivot={{
           x: type === "tile" ? -2 : 0,

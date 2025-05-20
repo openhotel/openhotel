@@ -13,7 +13,7 @@ import {
 } from "shared/consts";
 import { CrossDirection } from "shared/enums";
 import { FurnitureData, Point2d, Point3d } from "shared/types";
-import { getPositionFromIsometricPosition } from "shared/utils";
+import { getPositionFromIsometricPosition, getZIndex } from "shared/utils";
 import { useFurniture } from "shared/hooks";
 import { getWallPositionFromIsometricPosition } from "shared/utils/wall.utils";
 import { ulid } from "ulidx";
@@ -97,13 +97,13 @@ export const FurnitureFrameComponentWrapper: React.FC<PropsWrapper> = ({
             framePosition,
             direction,
           );
-          const $position = getPositionFromIsometricPosition({
+          const isoPos = {
             x: position.x,
             y: 0,
             z: position.z,
-          });
-          const $zIndex =
-            position.x + position.z + Math.abs(position.y / 100) + zIndex;
+          };
+          const $position = getPositionFromIsometricPosition(isoPos);
+          const $zIndex = getZIndex(isoPos);
           const $$position = {
             x: $position.x + pos.x,
             y: $position.y + pos.y,

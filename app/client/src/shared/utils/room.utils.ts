@@ -49,9 +49,6 @@ export const isDoorRenderable = ({
   return layout[z][x - 1] === RoomPointEnum.SPAWN;
 };
 
-export const getSafeZIndex = (position: Partial<Point3d>, extra: number = 0) =>
-  position.x + position.z + extra;
-
 export const getRoomPivot = (room: PrivateRoom) => {
   let topZIndex = Number.MAX_SAFE_INTEGER;
   let leftXIndex = Number.MIN_SAFE_INTEGER;

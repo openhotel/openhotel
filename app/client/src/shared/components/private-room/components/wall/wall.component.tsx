@@ -11,7 +11,7 @@ import {
   SpriteComponent,
 } from "@openhotel/pixi-components";
 import { CrossDirection, SpriteSheetEnum } from "shared/enums";
-import { getPositionFromIsometricPosition, getSafeZIndex } from "shared/utils";
+import { getPositionFromIsometricPosition, getZIndex } from "shared/utils";
 import { Point2d, Point3d } from "shared/types";
 import {
   TILE_SIZE,
@@ -44,7 +44,7 @@ export const PrivateRoomWallComponent: React.FC<Props> = ({
   ...props
 }) => {
   const graphicsRef = useRef<GraphicsRef>(null);
-  const zIndex = useMemo(() => getSafeZIndex(position, -0.2), [position]);
+  const zIndex = useMemo(() => getZIndex(position, -0), [position]);
   const $position = useMemo(
     () =>
       getPositionFromIsometricPosition({
