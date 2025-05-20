@@ -11,10 +11,11 @@ import {
   FURNITURE_SAFE_TILE_MARGIN,
   SAFE_Z_INDEX,
   TILE_SIZE,
+  TILE_Y_HEIGHT,
 } from "shared/consts";
 import { CrossDirection } from "shared/enums";
 import { FurnitureData, Point3d } from "shared/types";
-import { getPositionFromIsometricPosition } from "shared/utils";
+import { getPositionFromIsometricPosition, getZIndex } from "shared/utils";
 import { useFurniture } from "shared/hooks";
 import { ulid } from "ulidx";
 import { getCubePolygon } from "shared/utils/polygon.utils";
@@ -100,8 +101,13 @@ export const FurnitureComponentWrapper: React.FC<PropsWrapper> = ({
             y: bounds.height - pivot.y - TILE_SIZE.height / 2,
           };
           const $size = $data.size ?? DUMMY_FURNITURE_DATA.size;
-          const $zIndex =
-            position.x + position.z + position.y / 50 + zIndex + 0.5;
+          const $zIndex = getZIndex(
+            {
+              ...position,
+              y: Math.round(position.y / TILE_Y_HEIGHT),
+            },
+            0.5,
+          );
 
           return (
             <React.Fragment key={id}>

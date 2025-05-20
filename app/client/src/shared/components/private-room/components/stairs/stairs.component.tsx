@@ -10,7 +10,7 @@ import {
   SpriteRef,
 } from "@openhotel/pixi-components";
 import { Point3d } from "shared/types";
-import { getPositionFromIsometricPosition, getSafeZIndex } from "shared/utils";
+import { getPositionFromIsometricPosition, getZIndex } from "shared/utils";
 import { SAFE_Z_INDEX, STEP_TILE_HEIGHT, TILE_Y_HEIGHT } from "shared/consts";
 
 type Props = {
@@ -30,7 +30,7 @@ export const PrivateRoomStairs: React.FC<Props> = ({
   onPointerEnter,
   onPointerLeave,
 }) => {
-  const zIndex = useMemo(() => getSafeZIndex(position, -0.1), [position]);
+  const zIndex = useMemo(() => getZIndex(position, 0.1), [position]);
   const $position = useMemo(
     () => getPositionFromIsometricPosition(position),
     [position],
@@ -71,7 +71,9 @@ export const PrivateRoomStairs: React.FC<Props> = ({
           spriteSheet={SpriteSheetEnum.ROOM}
           position={$position}
           eventMode={EventMode.NONE}
-          tint={Math.round(zIndex) % 2 === 0 ? 0xa49f7e : 0xb2ad8e}
+          tint={
+            Math.round(position.x + position.z) % 2 === 0 ? 0xa49f7e : 0xb2ad8e
+          }
           pivot={{
             y: TILE_Y_HEIGHT - STEP_TILE_HEIGHT,
           }}

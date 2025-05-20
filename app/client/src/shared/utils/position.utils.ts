@@ -1,5 +1,9 @@
 import { Point2d, Point3d } from "shared/types";
-import { TILE_WIDTH, TILE_Y_HEIGHT } from "shared/consts";
+import {
+  SAFE_TILE_ZINDEX_MULTI,
+  TILE_WIDTH,
+  TILE_Y_HEIGHT,
+} from "shared/consts";
 
 export const getPositionFromIsometricPosition = (
   { x, y, z },
@@ -36,5 +40,5 @@ export const isPosition2dEqual = (
   { x: x2, y: y2 }: Point2d,
 ) => x1 === x2 && y1 === y2;
 
-export const getZIndex = (position: Point3d): number =>
-  position.x + position.z + Math.abs(position.y / 100) + 0.5;
+export const getZIndex = (position: Point3d, extra: number = 0): number =>
+  (position.x + position.z) * SAFE_TILE_ZINDEX_MULTI + position.y + extra;

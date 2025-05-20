@@ -98,7 +98,7 @@ export const PrivateRoomRenderComponent = () => {
           rightArmAction={CharacterArmAction.IDLE}
           skinColor={0xefcfb1}
           position={getPositionFromIsometricPosition(user.position)}
-          zIndex={getZIndex(user.position)}
+          zIndex={getZIndex(user.position, 0.5)}
         />
       )),
     [room?.users],
