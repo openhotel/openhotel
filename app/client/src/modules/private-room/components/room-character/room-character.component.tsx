@@ -3,7 +3,6 @@ import { Point2d, User } from "shared/types";
 import { ContainerProps } from "@openhotel/pixi-components";
 import {
   getDirection,
-  getIsometricPositionFromPosition,
   getPositionFromIsometricPosition,
   getZIndex,
   isPosition3dEqual,
@@ -17,6 +16,7 @@ import { CharacterComponent } from "shared/components";
 import { usePrivateRoom, useTasks } from "shared/hooks";
 import {
   MOVEMENT_BETWEEN_TILES_DURATION,
+  SAFE_TILE_ZINDEX_MULTI,
   TILE_WIDTH,
   TILE_Y_HEIGHT,
 } from "shared/consts";
@@ -80,6 +80,12 @@ export const RoomCharacterComponent: React.FC<Props> = ({
     const $currentPosition = getPositionFromIsometricPosition(user.position);
     let repeatIndex = 0;
 
+    const currentZIndex = getZIndex(user.position, 0.5);
+    const targetZIndex = getZIndex(user.targetPosition, 0.5);
+
+    if (targetZIndex === currentZIndex)
+      $setZIndex(currentZIndex + SAFE_TILE_ZINDEX_MULTI);
+
     const removeTask = addTask({
       type: TickerQueue.REPEAT,
       repeatEvery: repeatEvery,
@@ -89,6 +95,12 @@ export const RoomCharacterComponent: React.FC<Props> = ({
         //Check if it's at the middle of the index to change to the nex Y
         if (repeatIndex === TILE_WIDTH / 2)
           targetY = user.position.y - user.targetPosition.y;
+
+        const goBack =
+          targetZIndex < currentZIndex && repeatIndex - 4 === TILE_WIDTH / 2;
+        const goFront =
+          targetZIndex > currentZIndex && repeatIndex + 4 === TILE_WIDTH / 2;
+        if (goBack || goFront) $setZIndex(targetZIndex);
 
         //TODO <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
         if (repeatIndex % 2)
@@ -107,18 +119,10 @@ export const RoomCharacterComponent: React.FC<Props> = ({
             x: pos?.x ?? $currentPosition?.x,
             y: pos?.y ?? $currentPosition?.y,
           });
-          const targetPos = {
+          return {
             x,
             y: y + targetY * TILE_Y_HEIGHT,
           };
-
-          $setZIndex(
-            getZIndex({
-              ...getIsometricPositionFromPosition(targetPos),
-              y: targetY,
-            }),
-          );
-          return targetPos;
         });
         repeatIndex++;
       },
@@ -150,7 +154,7 @@ export const RoomCharacterComponent: React.FC<Props> = ({
   );
 
   const zIndex = useMemo(
-    () => $zIndex ?? getZIndex(user.position),
+    () => $zIndex ?? getZIndex(user.position, 0.5),
     [$zIndex, user.position],
   );
 

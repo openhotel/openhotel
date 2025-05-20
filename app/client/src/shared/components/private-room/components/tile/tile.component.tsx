@@ -12,8 +12,8 @@ import {
 import { Point3d } from "shared/types";
 import {
   getPositionFromIsometricPosition,
-  getSafeZIndex,
   getTilePolygon,
+  getZIndex,
 } from "shared/utils";
 import { SAFE_Z_INDEX } from "shared/consts";
 
@@ -36,7 +36,7 @@ export const PrivateRoomTile: React.FC<Props> = ({
   color,
   ...props
 }) => {
-  const zIndex = useMemo(() => getSafeZIndex(position, -0.1), [position]);
+  const zIndex = useMemo(() => getZIndex(position, 0.1), [position]);
   const $position = useMemo(
     () => getPositionFromIsometricPosition(position),
     [position],
@@ -72,7 +72,7 @@ export const PrivateRoomTile: React.FC<Props> = ({
             color ??
             (spawn
               ? 0x2f2f2f
-              : Math.round(zIndex) % 2 === 0
+              : Math.round(position.x + position.z) % 2 === 0
                 ? 0xa49f7e
                 : 0xb2ad8e)
           }
