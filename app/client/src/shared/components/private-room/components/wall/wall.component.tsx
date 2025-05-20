@@ -28,8 +28,7 @@ type Props = {
   height?: number;
 
   onPointerDown?: (position: Point2d) => void;
-  onPointerEnter?: () => void;
-  onPointerLeave?: () => void;
+  onPointerMove?: (position: Point2d) => void;
 } & Omit<DisplayObjectProps<ContainerRef>, "position">;
 
 const TOP_HEIGHT = 15;
@@ -41,8 +40,7 @@ export const PrivateRoomWallComponent: React.FC<Props> = ({
   height = WALL_HEIGHT,
   pivot,
   onPointerDown,
-  onPointerEnter,
-  onPointerLeave,
+  onPointerMove,
   ...props
 }) => {
   const graphicsRef = useRef<GraphicsRef>(null);
@@ -122,6 +120,13 @@ export const PrivateRoomWallComponent: React.FC<Props> = ({
     [onPointerDown, $getPointFromEvent],
   );
 
+  const $onPointerMove = useCallback(
+    (event) => {
+      onPointerMove?.($getPointFromEvent(event));
+    },
+    [onPointerMove, $getPointFromEvent],
+  );
+
   const renderWall = useMemo(() => {
     if (direction === "corner")
       return (
@@ -160,8 +165,7 @@ export const PrivateRoomWallComponent: React.FC<Props> = ({
           // cursor={Cursor.POINTER}
           eventMode={EventMode.STATIC}
           onPointerDown={$onPointerDown}
-          onPointerEnter={onPointerEnter}
-          onPointerLeave={onPointerLeave}
+          onPointerMove={$onPointerMove}
           alpha={0}
           zIndex={zIndex + 1}
         />
@@ -198,8 +202,7 @@ export const PrivateRoomWallComponent: React.FC<Props> = ({
     directionText,
     middleHeight,
     $onPointerDown,
-    onPointerEnter,
-    onPointerLeave,
+    $onPointerMove,
     zIndex,
   ]);
 

@@ -27,6 +27,8 @@ type Props = {
   framePosition: Point2d;
 
   onPointerDown?: () => void;
+
+  interactive?: boolean;
 };
 
 export const FurnitureFrameComponent: React.FC<Props> = ({
@@ -36,6 +38,7 @@ export const FurnitureFrameComponent: React.FC<Props> = ({
   direction,
   framePosition,
   onPointerDown,
+  interactive = true,
 }) => {
   const { get: getFurniture } = useFurniture();
 
@@ -49,6 +52,7 @@ export const FurnitureFrameComponent: React.FC<Props> = ({
       framePosition={framePosition}
       direction={direction}
       onPointerDown={onPointerDown}
+      interactive={interactive}
     />
   );
 };
@@ -63,6 +67,8 @@ type PropsWrapper = {
 
   direction?: CrossDirection;
   onPointerDown?: () => void;
+
+  interactive?: boolean;
 };
 
 export const FurnitureFrameComponentWrapper: React.FC<PropsWrapper> = ({
@@ -72,6 +78,7 @@ export const FurnitureFrameComponentWrapper: React.FC<PropsWrapper> = ({
   data = DUMMY_FURNITURE_FRAME_DATA,
   direction = CrossDirection.NORTH,
   onPointerDown,
+  interactive = true,
 }) => {
   const $data = useMemo(
     () => (data ? data : DUMMY_FURNITURE_FRAME_DATA),
@@ -183,18 +190,20 @@ export const FurnitureFrameComponentWrapper: React.FC<PropsWrapper> = ({
                 // }
               />
 
-              <GraphicsComponent
-                type={GraphicType.POLYGON}
-                tint={0xff00ff}
-                alpha={0}
-                polygon={$hitArea}
-                pivot={$pivot}
-                zIndex={SAFE_Z_INDEX + $zIndex}
-                position={$$position}
-                eventMode={EventMode.STATIC}
-                cursor={Cursor.CONTEXT_MENU}
-                onPointerDown={onPointerDown}
-              />
+              {interactive ? (
+                <GraphicsComponent
+                  type={GraphicType.POLYGON}
+                  tint={0xff00ff}
+                  alpha={0}
+                  polygon={$hitArea}
+                  pivot={$pivot}
+                  zIndex={SAFE_Z_INDEX + $zIndex}
+                  position={$$position}
+                  eventMode={EventMode.STATIC}
+                  cursor={Cursor.CONTEXT_MENU}
+                  onPointerDown={onPointerDown}
+                />
+              ) : null}
             </React.Fragment>
           );
         },

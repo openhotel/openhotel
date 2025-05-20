@@ -7,7 +7,7 @@ import { getTextFromArgs } from "shared/utils/args.utils.ts";
 export const creditsCommand: Command = {
   command: "credits",
   role: CommandRoles.OP,
-  usages: ["<amount> <username>"],
+  usages: ["<username> <amount>"],
   description: "command.credits.description",
   func: async ({ user, args }) => {
     if (!args.length) return;

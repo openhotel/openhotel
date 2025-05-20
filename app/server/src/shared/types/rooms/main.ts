@@ -45,7 +45,10 @@ export type BaseRoomMutable = {
   getUsers: () => string[];
 
   getPoint: (point: Point3d) => RoomPoint;
-  isPointFree: (point: Point3d, accountId?: string) => boolean;
+  isPointFree: (
+    point: Point3d,
+    props?: { accountId?: string; withoutSpawn?: boolean },
+  ) => boolean;
   findPath: (props: FindPathProps) => Point3d[];
 
   emit: <Data extends any>(event: ProxyEvent, data?: Data) => void;

@@ -13,11 +13,12 @@ import { System } from "modules/system/main.ts";
 import { ProxyEvent } from "shared/enums/event.enum.ts";
 import { RoomPointEnum } from "shared/enums/room.enums.ts";
 import { USERS_CONFIG_DEFAULT } from "shared/consts/users.consts.ts";
-import { Direction, getConfig, Point3d } from "@oh/utils";
+import { Direction, getConfig, Point3d, Point2d } from "@oh/utils";
 import { exists } from "deno/fs/mod.ts";
 import { log as $log } from "shared/utils/log.utils.ts";
 import { UserAction } from "shared/enums/user.enums.ts";
 import { INITIAL_PLAYER_BALANCE } from "shared/consts/economy.consts.ts";
+import { CrossDirection } from "shared/enums/direction.enums.ts";
 
 export const users = () => {
   let $privateUserMap: Record<string, PrivateUser> = {};
@@ -243,9 +244,23 @@ export const users = () => {
       return System.db.delete(["users", accountId, "inventory", id]);
     };
 
-    const getFurniture = async (id: string): Promise<Furniture> => {
-      const accountId = getAccountId();
-      return System.db.get(["users", accountId, "inventory", id]);
+    const getFurniture = async (id: string): Promise<Furniture | null> => {
+      try {
+        const accountId = getAccountId();
+        const furniture = await System.db.get([
+          "users",
+          accountId,
+          "inventory",
+          id,
+        ]);
+        const data = await System.game.furniture.get(furniture.furnitureId);
+        return {
+          ...furniture,
+          type: data.type,
+        };
+      } catch (e) {
+        return null;
+      }
     };
 
     const getInventory = async (): Promise<Furniture[]> => {
@@ -265,6 +280,44 @@ export const users = () => {
             };
           }),
       );
+    };
+
+    const moveFurnitureFromInventoryToRoom = async (
+      id: string,
+      position: Point3d,
+      direction?: CrossDirection,
+      framePosition?: Point2d,
+    ) => {
+      const roomId = getRoom();
+      if (!roomId) return false;
+
+      const room = await System.game.rooms.get<PrivateRoomMutable>(roomId);
+
+      if (room.type !== "private" || room.getOwnerId() !== getAccountId())
+        return false;
+
+      const furniture = await getFurniture(id);
+      if (!furniture) return false;
+
+      try {
+        if (isNaN(room.getPoint(position) as number)) return false;
+      } catch (e) {
+        return false;
+      }
+
+      /*
+        Prevent doing this calls async, because we want to remove the furni from
+        inventory and add the furni to the room at the same tick to prevent duplicated ones
+       */
+      removeFurniture(id);
+      room.addFurniture({
+        ...furniture,
+        direction: direction ?? CrossDirection.NORTH,
+        position,
+        framePosition,
+      });
+
+      return true;
     };
 
     return {
@@ -319,6 +372,8 @@ export const users = () => {
       removeFurniture,
       getFurniture,
       getInventory,
+
+      moveFurnitureFromInventoryToRoom,
     };
   };
 

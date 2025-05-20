@@ -848,9 +848,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openhotel/pixi-components@npm:0.0.19":
-  version: 0.0.19
-  resolution: "@openhotel/pixi-components@npm:0.0.19"
+"@openhotel/pixi-components@npm:0.0.20":
+  version: 0.0.20
+  resolution: "@openhotel/pixi-components@npm:0.0.20"
   dependencies:
     "@pixi/react": "npm:8.0.0"
     dayjs: "npm:1.11.13"
@@ -858,7 +858,7 @@ __metadata:
     react: "npm:19.1.0"
     react-dom: "npm:19.1.0"
     zustand: "npm:^5.0.3"
-  checksum: 10c0/49d92fbf006dcf3c5c178516971d82321f8aa74424754f07bfc7820b21ff00a10551fef53135a0fc46cde4d530061f60bb522253e9322297917f1891e0689802
+  checksum: 10c0/47e036988d79529175816d47342a59bc3230900a5c78b637a60f1dfed9301bc7170134dbb2f5b4d5a6945d0403b75bdfcfae8083b327bcae2495784520b79161
   languageName: node
   linkType: hard
 
@@ -4384,7 +4384,7 @@ __metadata:
   dependencies:
     "@chromatic-com/storybook": "npm:3.2.4"
     "@oh/queue": "npm:@jsr/oh__queue@1.1.1"
-    "@openhotel/pixi-components": "npm:0.0.19"
+    "@openhotel/pixi-components": "npm:0.0.20"
     "@storybook/addon-actions": "npm:8.5.8"
     "@storybook/addon-console": "npm:3.0.0"
     "@storybook/addon-essentials": "npm:8.5.1"

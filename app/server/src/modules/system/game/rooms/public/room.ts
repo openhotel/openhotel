@@ -97,13 +97,20 @@ export const getRoom =
     const getPoint = (position: Point3d) =>
       room.layout?.[position.z]?.[position.x];
 
-    const isPointFree = (position: Point3d, accountId?: string) => {
+    const isPointFree = (
+      position: Point3d,
+      props?: { accountId?: string; withoutSpawn?: boolean },
+    ) => {
       if (getPoint(position) === RoomPointEnum.EMPTY) return false;
-      if (getPoint(position) === RoomPointEnum.SPAWN) return true;
+      if (!props?.withoutSpawn && getPoint(position) === RoomPointEnum.SPAWN)
+        return true;
 
       return Boolean(
         !getUsers()
-          .filter(($accountId) => !accountId || $accountId !== accountId)
+          .filter(
+            ($accountId) =>
+              !props?.accountId || $accountId !== props?.accountId,
+          )
           .find(($accountId) => {
             const user = System.game.users.get({ accountId: $accountId });
             return isPoint3dEqual(user.getPosition(), position, true);

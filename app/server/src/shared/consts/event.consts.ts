@@ -6,6 +6,7 @@ export const PROXY_CLIENT_EVENT_WHITELIST: ProxyEvent[] = [
   ProxyEvent.LEAVE_ROOM,
   ProxyEvent.POINTER_TILE,
   ProxyEvent.POINTER_INTERACTIVE,
+  ProxyEvent.PLACE_ITEM,
   ProxyEvent.MESSAGE,
   ProxyEvent.TYPING_START,
   ProxyEvent.TYPING_END,

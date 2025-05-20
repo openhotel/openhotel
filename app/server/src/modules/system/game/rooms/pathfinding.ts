@@ -38,7 +38,7 @@ export const pathfinding = () => {
     //check if targetPosition exists and if it's not free
     if (
       targetPosition &&
-      !room?.isPointFree(nextPosition, user.getAccountId())
+      !room?.isPointFree(nextPosition, { accountId: user.getAccountId() })
     ) {
       //calc new pathfinding
       const pathfinding = room?.findPath({
@@ -65,7 +65,7 @@ export const pathfinding = () => {
     }
 
     //check if next position is free
-    if (!room.isPointFree(nextPosition, user.getAccountId())) {
+    if (!room.isPointFree(nextPosition, { accountId: user.getAccountId() })) {
       delete $userPathfindingMap[accountId];
       return;
     }

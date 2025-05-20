@@ -16,9 +16,6 @@ export const clearCommand: Command = {
 
     for (const furniture of room.getFurniture()) {
       await room.removeFurniture(furniture);
-      room.emit(ProxyEvent.REMOVE_FURNITURE, {
-        furniture,
-      });
     }
   },
 };

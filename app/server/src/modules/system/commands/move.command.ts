@@ -61,8 +61,5 @@ export const moveCommand: Command = {
     }
 
     await room.updateFurniture(furniture);
-    room.emit(ProxyEvent.UPDATE_FURNITURE, {
-      furniture,
-    });
   },
 };

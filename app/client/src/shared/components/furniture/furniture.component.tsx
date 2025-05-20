@@ -28,6 +28,9 @@ type Props = {
   direction: CrossDirection;
 
   onPointerDown?: () => void;
+
+  hitAreaActive?: boolean;
+  heightCorrection?: boolean;
 };
 
 export const FurnitureComponent: React.FC<Props> = ({
@@ -36,6 +39,8 @@ export const FurnitureComponent: React.FC<Props> = ({
   position,
   direction,
   onPointerDown,
+  hitAreaActive = true,
+  heightCorrection = false,
 }) => {
   const { get: getFurniture } = useFurniture();
 
@@ -48,6 +53,8 @@ export const FurnitureComponent: React.FC<Props> = ({
       data={furnitureData}
       direction={direction}
       onPointerDown={onPointerDown}
+      hitAreaActive={hitAreaActive}
+      heightCorrection={heightCorrection}
     />
   );
 };
@@ -60,6 +67,9 @@ type PropsWrapper = {
   direction?: CrossDirection;
 
   onPointerDown?: () => void;
+
+  hitAreaActive?: boolean;
+  heightCorrection?: boolean;
 };
 
 export const FurnitureComponentWrapper: React.FC<PropsWrapper> = ({
@@ -68,6 +78,8 @@ export const FurnitureComponentWrapper: React.FC<PropsWrapper> = ({
   data = DUMMY_FURNITURE_DATA,
   direction = CrossDirection.NORTH,
   onPointerDown,
+  hitAreaActive = true,
+  heightCorrection = false,
 }) => {
   const $data = useMemo(() => (data ? data : DUMMY_FURNITURE_DATA), [data]);
   const $direction = useMemo(
@@ -79,7 +91,10 @@ export const FurnitureComponentWrapper: React.FC<PropsWrapper> = ({
     () =>
       $data.direction[$direction].textures.map(
         ({ texture, bounds, pivot, zIndex, hitArea }) => {
-          const $position = getPositionFromIsometricPosition(position, false);
+          const $position = getPositionFromIsometricPosition(
+            position,
+            heightCorrection,
+          );
           const $pivot = {
             x: bounds.width / 2 - pivot.x - TILE_SIZE.width / 2 - 1,
             y: bounds.height - pivot.y - TILE_SIZE.height / 2,
@@ -98,31 +113,40 @@ export const FurnitureComponentWrapper: React.FC<PropsWrapper> = ({
                 position={$position}
               />
 
-              <GraphicsComponent
-                type={GraphicType.POLYGON}
-                tint={0xffff00}
-                alpha={0}
-                polygon={
-                  hitArea ??
-                  getCubePolygon({
-                    width: TILE_SIZE.width,
-                    height: $size.height - FURNITURE_SAFE_TILE_MARGIN,
-                  })
-                }
-                pivot={{
-                  x: -1,
-                  y: FURNITURE_SAFE_TILE_MARGIN,
-                }}
-                zIndex={SAFE_Z_INDEX + $zIndex}
-                position={$position}
-                eventMode={EventMode.STATIC}
-                cursor={Cursor.CONTEXT_MENU}
-                onPointerDown={onPointerDown}
-              />
+              {hitAreaActive ? (
+                <GraphicsComponent
+                  type={GraphicType.POLYGON}
+                  tint={0xffff00}
+                  alpha={0}
+                  polygon={
+                    hitArea ??
+                    getCubePolygon({
+                      width: TILE_SIZE.width,
+                      height: $size.height - FURNITURE_SAFE_TILE_MARGIN,
+                    })
+                  }
+                  pivot={{
+                    x: -1,
+                    y: FURNITURE_SAFE_TILE_MARGIN,
+                  }}
+                  zIndex={SAFE_Z_INDEX + $zIndex}
+                  position={$position}
+                  eventMode={EventMode.STATIC}
+                  cursor={Cursor.CONTEXT_MENU}
+                  onPointerDown={onPointerDown}
+                />
+              ) : null}
             </React.Fragment>
           );
         },
       ),
-    [$data.spriteSheet, $data.direction, $direction],
+    [
+      $data.spriteSheet,
+      $data.direction,
+      $direction,
+      position,
+      hitAreaActive,
+      heightCorrection,
+    ],
   );
 };

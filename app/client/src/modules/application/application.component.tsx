@@ -18,11 +18,12 @@ import {
   SafeWindowProvider,
   FurnitureProvider,
   SoundProvider,
+  ItemPlacePreviewProvider,
+  InfoProvider,
+  ChangelogProvider,
+  languageProvider,
 } from "shared/hooks";
 import { NesterComponent } from "shared/components";
-import { InfoProvider } from "shared/hooks/info";
-import { ChangelogProvider } from "shared/hooks/changelog";
-import { languageProvider } from "shared/hooks/language";
 
 export const ApplicationComponent = () => {
   const providers = useMemo(
@@ -43,6 +44,7 @@ export const ApplicationComponent = () => {
       FurnitureProvider,
       CameraProvider, // Before 'ModalProvider' so 'ModalProvider' can use 'useCamera'
       SoundProvider,
+      ItemPlacePreviewProvider,
       RouterProvider,
       ModalProvider,
       InfoProvider,
