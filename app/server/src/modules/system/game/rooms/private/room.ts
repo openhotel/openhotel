@@ -244,6 +244,10 @@ export const getRoom =
       $room.furniture.push(furniture);
 
       await $save();
+
+      emit(ProxyEvent.ADD_FURNITURE, {
+        furniture,
+      });
     };
     const updateFurniture = async (furniture: RoomFurniture) => {
       furniture.position.y = await $getFurnitureYPosition(furniture.position);
@@ -252,6 +256,9 @@ export const getRoom =
       );
 
       await $save();
+      emit(ProxyEvent.UPDATE_FURNITURE, {
+        furniture,
+      });
     };
     const removeFurniture = async (furniture: RoomFurniture) => {
       $room.furniture = $room.furniture.filter((f) => f.id !== furniture.id);
@@ -260,6 +267,9 @@ export const getRoom =
         await System.game.teleports.removeRoom(furniture.id);
 
       await $save();
+      emit(ProxyEvent.REMOVE_FURNITURE, {
+        furniture,
+      });
     };
     const getFurniture = (): RoomFurniture[] => $room.furniture;
 

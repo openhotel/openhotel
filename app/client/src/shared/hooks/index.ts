@@ -10,6 +10,10 @@ export * from "./furniture";
 export * from "./camera";
 export * from "./safe-window";
 export * from "./sound";
+export * from "./item-place-preview";
+export * from "./info";
+export * from "./changelog";
+export * from "./language";
 
 export * from "./use-character";
 export * from "./use-api";

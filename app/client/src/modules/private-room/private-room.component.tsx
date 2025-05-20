@@ -21,8 +21,11 @@ import {
   useWindow,
 } from "@openhotel/pixi-components";
 import {
+  PositionData,
   useAccount,
   useCamera,
+  useItemPlacePreview,
+  useModal,
   usePrivateRoom,
   useProxy,
   useSafeWindow,
@@ -33,6 +36,7 @@ import {
   Direction,
   Event as ProxyEvent,
   InternalEvent,
+  Modal,
   PrivateRoomPreviewType,
 } from "shared/enums";
 import {
@@ -65,9 +69,17 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
   const { lastUpdate, update } = useUpdate();
   const { isDragging, position: cameraPosition } = useCamera();
 
-  const { on: onEvent } = useEvents();
+  const { on: onEvent, emit: emitEvent } = useEvents();
   const { getSize, getScale } = useWindow();
   const { getSafeSize } = useSafeWindow();
+  const { openModal } = useModal();
+
+  const {
+    renderPreviewItem,
+    setCanPlace,
+    getPreviewItemId,
+    setItemPreviewData,
+  } = useItemPlacePreview();
 
   const [isShiftDown, setIsShiftDown] = useState<boolean>(false);
   const [windowSize, setWindowSize] = useState<Size>(getSize());
@@ -88,6 +100,8 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
     [Point3d, Point2d, CrossDirection] | [null, null]
   >([null, null]);
 
+  const renderPreviewVisibleRef = useRef(false);
+
   const roomPosition = useMemo(() => {
     if (!roomSize) return { x: 0, y: 0 };
     return {
@@ -104,6 +118,14 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
     () => room?.users?.find((user) => user.accountId === currentAccountId),
     [room?.users, currentAccountId],
   );
+
+  useEffect(() => {
+    setCanPlace(room?.ownerId === currentAccountId);
+
+    return () => {
+      setCanPlace(false);
+    };
+  }, [setCanPlace, currentAccountId, room]);
 
   useEffect(() => {
     if (!room) return;
@@ -218,30 +240,43 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
         return;
       }
 
+      if (renderPreviewItem) return;
+
       emit(ProxyEvent.POINTER_TILE, {
         position,
       });
       setSelectedPreview(null);
     },
-    [emit, setSelectedPreview, isDragging, isShiftDown, setLastPositionData],
+    [
+      emit,
+      setSelectedPreview,
+      isDragging,
+      isShiftDown,
+      setLastPositionData,
+      renderPreviewItem,
+      getPreviewItemId,
+      setItemPreviewData,
+    ],
   );
 
   const onHoverTile = useCallback(
     (data: PreviewTileData) => {
       setHoverTileData(data);
+      emitEvent(InternalEvent.HOVER_TILE, data);
     },
-    [setHoverTileData],
+    [setHoverTileData, emitEvent],
   );
 
-  const onClickWall = useCallback(
+  const onMoveWall = useCallback(
     (position: Point3d, wallPosition: Point2d, direction: CrossDirection) => {
-      setLastPositionData({
+      const data: PositionData = {
         position,
         wallPosition,
         direction,
-      });
+      };
+      setLastPositionData(data);
       setWallDataPoint([position, wallPosition, direction]);
-      setSelectedPreview(null);
+      emitEvent(InternalEvent.HOVER_WALL, data);
     },
     [setWallDataPoint, setSelectedPreview, setLastPositionData],
   );
@@ -258,6 +293,18 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
     [windowSize, safeWindowSize],
   );
 
+  //reopen inventory when items are out
+  useEffect(() => {
+    if (renderPreviewItem) {
+      renderPreviewVisibleRef.current = true;
+      return;
+    }
+    if (!renderPreviewVisibleRef.current) return;
+
+    openModal(Modal.INVENTORY);
+    renderPreviewVisibleRef.current = false;
+  }, [renderPreviewItem, openModal]);
+
   return useMemo(
     () =>
       room ? (
@@ -273,8 +320,9 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
                 {...room}
                 onPointerTile={onPointerTile}
                 onHoverTile={onHoverTile}
-                onClickWall={onClickWall}
+                onMoveWall={onMoveWall}
               >
+                {renderPreviewItem}
                 <RoomCharactersComponent />
                 <RoomFurnitureComponent />
               </PrivateRoomComp>
@@ -314,8 +362,9 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
       safeXPosition,
       onPointerTile,
       onHoverTile,
-      onClickWall,
+      onMoveWall,
       messagesPivot,
+      renderPreviewItem,
     ],
   );
 };

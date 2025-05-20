@@ -21,6 +21,8 @@ export enum Event {
   POINTER_TILE = "pointer-tile",
   POINTER_INTERACTIVE = "pointer-interactive",
 
+  PLACE_ITEM = "place-item",
+
   MESSAGE = "message",
   WHISPER_MESSAGE = "whisper-messsage",
   TYPING_START = "typing-start",
@@ -41,4 +43,7 @@ export enum Event {
 export enum InternalEvent {
   SAFE_RESIZE = "safe_resize",
   SAFE_POSITION_X = "safe_position_x",
+
+  HOVER_TILE = "hover_tile",
+  HOVER_WALL = "hover_wall",
 }
