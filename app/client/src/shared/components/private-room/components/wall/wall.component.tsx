@@ -178,6 +178,8 @@ export const PrivateRoomWallComponent: React.FC<Props> = ({
           spriteSheet={SpriteSheetEnum.ROOM}
         />
         <NineSliceSpriteComponent
+          /* DO NOT MERGE */
+          alpha={0.5}
           zIndex={zIndex}
           spriteSheet={SpriteSheetEnum.ROOM}
           texture={`wall-${directionText}-mid`}

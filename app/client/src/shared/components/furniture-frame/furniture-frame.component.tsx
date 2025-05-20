@@ -11,6 +11,8 @@ import {
   DUMMY_FURNITURE_FRAME_DATA,
   SAFE_Z_INDEX,
   TILE_SIZE,
+  WALL_HEIGHT,
+  WALL_WIDTH,
 } from "shared/consts";
 import { CrossDirection } from "shared/enums";
 import { Point2d, Point3d } from "shared/types";
@@ -129,39 +131,64 @@ export const FurnitureFrameComponent: React.FC<Props> = ({
                   //
                 ]);
 
+          let renderSprites = [];
+
+          const flagOccupations = Math.trunc(
+            (bounds.width - $pivot.x + $$position.x) / (TILE_SIZE.width / 2),
+          );
+          for (let i = 0; i < flagOccupations; i++) {
+            const currentIsoPos = {
+              x: position.x + i,
+              y: 0,
+              z: position.z,
+            };
+            const $currentPosition =
+              getPositionFromIsometricPosition(currentIsoPos);
+            const $currentZIndex = getZIndex(currentIsoPos);
+
+            const $maskPosition = {
+              x: $currentPosition.x + TILE_SIZE.width / 2 + 1,
+              y: $currentPosition.y,
+            };
+
+            const $maskPolygon = [
+              0,
+              0,
+              TILE_SIZE.width / 2,
+              TILE_SIZE.width / 4,
+              TILE_SIZE.width / 2,
+              -WALL_HEIGHT + TILE_SIZE.width / 4 + WALL_WIDTH,
+              0,
+              -WALL_HEIGHT + WALL_WIDTH,
+            ];
+
+            renderSprites.push(
+              <React.Fragment key={i}>
+                <SpriteComponent
+                  texture={texture}
+                  spriteSheet={$data.spriteSheet}
+                  pivot={$pivot}
+                  zIndex={$currentZIndex}
+                  position={$$position}
+                  eventMode={EventMode.NONE}
+                  maskPolygon={$maskPolygon}
+                  maskPosition={$maskPosition}
+                />
+                {/*<GraphicsComponent*/}
+                {/*  type={GraphicType.POLYGON}*/}
+                {/*  polygon={$maskPolygon}*/}
+                {/*  tint={0xff00ff}*/}
+                {/*  position={$maskPosition}*/}
+                {/*  alpha={0.7}*/}
+                {/*  zIndex={999}*/}
+                {/*/>*/}
+              </React.Fragment>,
+            );
+          }
+
           return (
             <React.Fragment key={id}>
-              <SpriteComponent
-                texture={texture}
-                spriteSheet={$data.spriteSheet}
-                pivot={$pivot}
-                zIndex={$zIndex}
-                position={$$position}
-                eventMode={EventMode.NONE}
-                // mask={
-                //   <GraphicsComponent
-                //     type={GraphicType.POLYGON}
-                //     tint={0xff00ff}
-                //     polygon={[
-                //       0,
-                //       0,
-                //       TILE_SIZE.width / 2,
-                //       0,
-                //       TILE_SIZE.width / 2,
-                //       bounds.height,
-                //       0,
-                //       bounds.height,
-                //     ]}
-                //     zIndex={SAFE_Z_INDEX + $zIndex}
-                //     pivot={{
-                //       x:
-                //         direction === CrossDirection.NORTH
-                //           ? TILE_WIDTH / 2 - 1
-                //           : -TILE_WIDTH - TILE_WIDTH / 2 + 1,
-                //     }}
-                //   />
-                // }
-              />
+              {renderSprites}
 
               {disableHitArea ? null : (
                 <GraphicsComponent
