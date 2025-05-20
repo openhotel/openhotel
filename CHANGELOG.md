@@ -1,4 +1,18 @@
 
+<a name="v0.7.2"></a>
+
+## [v0.7.2](https://github.com/openhotel/openhotel/compare/v0.7.1...v0.7.2) (2025-05-20)
+
+### Bug Fixes
+
+- fixed incorrect zIndex on character, tiles, walls... - fix [#933](https://github.com/openhotel/openhotel/issues/933) & fix [#793](https://github.com/openhotel/openhotel/issues/793) ([#941](https://github.com/openhotel/openhotel/issues/941))
+- pixel on inventory modal - fix [#938](https://github.com/openhotel/openhotel/issues/938) ([#939](https://github.com/openhotel/openhotel/issues/939))
+
+### Features
+
+- place furniture into the room from inventory - fix [#909](https://github.com/openhotel/openhotel/issues/909) ([#918](https://github.com/openhotel/openhotel/issues/918))
+
+
 <a name="v0.7.1"></a>
 
 ## [v0.7.1](https://github.com/openhotel/openhotel/compare/v0.7.0...v0.7.1) (2025-05-19)
