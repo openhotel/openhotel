@@ -218,7 +218,10 @@ export const getRoom =
     const $getFurnitureYPosition = async (
       position: Point3d,
     ): Promise<number> => {
-      const pointFurnitureList = getFurnitureFromPoint(position);
+      const pointFurnitureList = getFurnitureFromPoint(
+        position,
+        FurnitureType.FURNITURE,
+      );
       const pointFurnitureDataList = await Promise.all(
         [
           ...new Set(
@@ -275,10 +278,13 @@ export const getRoom =
 
     const getFurnitureFromPoint = (
       point: Omit<Point3d, "y">,
+      type: FurnitureType = null,
     ): RoomFurniture[] =>
       $room.furniture.filter(
         (furniture) =>
-          furniture.position.x === point.x && furniture.position.z === point.z,
+          furniture.position.x === point.x &&
+          furniture.position.z === point.z &&
+          (type === null || type === furniture.type),
       );
 
     const getYFromPoint = (point: Partial<Point3d>): number | null => {
