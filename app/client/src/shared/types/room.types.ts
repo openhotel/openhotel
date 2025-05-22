@@ -34,6 +34,7 @@ export type RoomMessage = {
   accountId: string | null;
   username: string | null;
   color?: number;
+  usernameColor?: number;
   backgroundColor?: number;
   messageColor?: number;
   position: Point2d;

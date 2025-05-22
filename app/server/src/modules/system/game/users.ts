@@ -320,6 +320,16 @@ export const users = () => {
       return true;
     };
 
+    const setColor = async (hex: number) => {
+      if (hex === null)
+        return await System.db.delete(["users", getAccountId(), "color"]);
+      await System.db.set(["users", getAccountId(), "color"], hex);
+    };
+
+    const getColor = async () => {
+      return (await System.db.get(["users", getAccountId(), "color"])) ?? null;
+    };
+
     return {
       getAccountId,
       getUsername,
@@ -374,6 +384,9 @@ export const users = () => {
       getInventory,
 
       moveFurnitureFromInventoryToRoom,
+
+      setColor,
+      getColor,
     };
   };
 
