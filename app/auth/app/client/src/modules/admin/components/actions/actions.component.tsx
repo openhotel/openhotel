@@ -1,6 +1,6 @@
 import { useAdmin, useApi } from "shared/hooks";
 import React, { useCallback, useEffect, useState } from "react";
-import { ButtonComponent } from "@openhotel/components";
+import { ButtonComponent } from "@openhotel/web-components";
 
 export const AdminActionsComponent = () => {
   const { getVersion } = useApi();

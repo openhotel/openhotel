@@ -13,7 +13,7 @@ import {
 } from "shared/components";
 import { useAccount, useLanguages } from "shared/hooks";
 import { useNavigate } from "react-router-dom";
-import { ButtonComponent, SelectorComponent } from "@openhotel/components";
+import { ButtonComponent, SelectorComponent } from "@openhotel/web-components";
 import { EmailComponent, UsernameComponent } from "./components";
 
 //@ts-ignore

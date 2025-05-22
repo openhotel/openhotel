@@ -1,6 +1,6 @@
 import React from "react";
 import { LinkComponent } from "shared/components";
-import { ButtonComponent } from "@openhotel/components";
+import { ButtonComponent } from "@openhotel/web-components";
 
 export const ActionsComponent = () => {
   return (

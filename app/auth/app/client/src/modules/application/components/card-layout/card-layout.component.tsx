@@ -5,7 +5,7 @@ import {
   CardComponent,
   SocialComponent,
   LicenseComponent,
-} from "@openhotel/components";
+} from "@openhotel/web-components";
 //@ts-ignore
 import styles from "./card-layout.module.scss";
 

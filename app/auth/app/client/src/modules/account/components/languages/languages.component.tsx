@@ -1,10 +1,10 @@
-import React, { FormEvent, useCallback, useEffect, useMemo } from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
 import { useLanguages, useUser } from "shared/hooks";
 import {
   ButtonComponent,
   FormComponent,
   SelectorComponent,
-} from "@openhotel/components";
+} from "@openhotel/web-components";
 
 //@ts-ignore
 import styles from "./languages.module.scss";

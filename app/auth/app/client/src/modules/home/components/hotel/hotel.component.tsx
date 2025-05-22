@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { HotelCardComponent } from "@openhotel/components";
+import { HotelCardComponent } from "@openhotel/web-components";
 import { HotelInfo, PublicHotel } from "shared/types";
 import { useHotel } from "shared/hooks";
 

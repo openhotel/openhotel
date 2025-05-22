@@ -3,7 +3,7 @@ import { Connection } from "shared/types";
 //@ts-ignore
 import styles from "./connections.module.scss";
 import { useConnection } from "shared/hooks";
-import { ButtonComponent } from "@openhotel/components";
+import { ButtonComponent } from "@openhotel/web-components";
 
 type Props = {} & React.HTMLProps<HTMLDivElement>;
 

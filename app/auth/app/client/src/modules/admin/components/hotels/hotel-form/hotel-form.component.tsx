@@ -17,7 +17,7 @@ import {
   SelectorComponent,
   useModal,
   VerifiedIconComponent,
-} from "@openhotel/components";
+} from "@openhotel/web-components";
 //@ts-ignore
 import styles from "./hotel-form.module.scss";
 import { useAdmin, useHotel } from "shared/hooks";

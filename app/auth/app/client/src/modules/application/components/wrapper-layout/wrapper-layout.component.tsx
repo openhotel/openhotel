@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useAccount, useUser } from "shared/hooks";
 import { RedirectComponent } from "shared/components";
-import { MainLayoutComponent } from "@openhotel/components";
+import { MainLayoutComponent } from "@openhotel/web-components";
 import { HomeNavigatorComponent } from "modules/account";
 
 type Props = {

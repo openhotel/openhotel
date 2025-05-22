@@ -2,7 +2,7 @@ import { useAdmin } from "shared/hooks";
 import React, { useEffect, useState } from "react";
 import { cn, getCensoredEmail } from "shared/utils";
 import dayjs from "dayjs";
-import { TableComponent } from "@openhotel/components";
+import { TableComponent } from "@openhotel/web-components";
 import { User } from "shared/types";
 
 //@ts-ignore

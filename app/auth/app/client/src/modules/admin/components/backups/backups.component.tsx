@@ -6,7 +6,7 @@ import {
   ConfirmationModalComponent,
   TableComponent,
   useModal,
-} from "@openhotel/components";
+} from "@openhotel/web-components";
 import { Backup } from "shared/types";
 import { decodeTime } from "ulidx";
 

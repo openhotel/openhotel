@@ -2,7 +2,7 @@ import { useAdmin } from "shared/hooks";
 import React, { FormEvent, useCallback, useEffect, useState } from "react";
 //@ts-ignore
 import styles from "./tokens.module.scss";
-import { ButtonComponent, InputComponent } from "@openhotel/components";
+import { ButtonComponent, InputComponent } from "@openhotel/web-components";
 
 export const AdminTokensComponent = () => {
   const { tokens, addToken, removeToken, fetchTokens } = useAdmin();

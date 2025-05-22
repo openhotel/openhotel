@@ -9,7 +9,7 @@ import {
   FormComponent,
   InputComponent,
   TableComponent,
-} from "@openhotel/components";
+} from "@openhotel/web-components";
 import { AccountSession } from "shared/types";
 
 import dayjs from "dayjs";

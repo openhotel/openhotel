@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { PASSWORD_MIN_LEN } from "shared/consts";
-import { InputComponent } from "@openhotel/components";
+import { InputComponent } from "@openhotel/web-components";
 //@ts-ignore
 import styles from "./password.module.scss";
 
