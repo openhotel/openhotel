@@ -8,3 +8,4 @@ export * from "./changelog.utils.ts";
 export * from "./image.utils.ts";
 export * from "./economy.utils.ts";
 export * from "./args.utils.ts";
+export * from "./hex.utils.ts";

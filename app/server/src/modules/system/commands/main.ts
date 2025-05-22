@@ -23,6 +23,7 @@ import { replyCommand } from "./reply.command.ts";
 import { photoCommand } from "./photo.command.ts";
 import { creditsCommand } from "./credits.command.ts";
 import { tokenCommand } from "./token.command.ts";
+import { colorCommand } from "./color.command.ts";
 
 import { ProxyEvent } from "shared/enums/event.enum.ts";
 import {
@@ -68,6 +69,8 @@ export const commandList = [
   creditsCommand,
 
   tokenCommand,
+
+  colorCommand,
 ];
 
 export const executeCommand = async ({
