@@ -9,6 +9,8 @@
   height: 100%;
 
   overflow: hidden auto;
+
+  image-rendering: pixelated;
   //background: var(--text-3-bg) url(./backgrounds/light-bg.webp) repeat;
   //@media screen and (prefers-color-scheme: dark) {
   //  background: var(--text-3-bg) url(./backgrounds/dark-bg.webp) repeat;
