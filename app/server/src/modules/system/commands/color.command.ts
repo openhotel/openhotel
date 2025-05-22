@@ -5,7 +5,7 @@ import { isHexColor } from "shared/utils/hex.utils.ts";
 export const colorCommand: Command = {
   command: "color",
   role: CommandRoles.USER,
-  usages: ["<hexColor|clear>"],
+  usages: ["<hexColor>", "<clear>"],
   description: "command.color.description",
   func: async ({ user, args }) => {
     if (!args.length) return;
