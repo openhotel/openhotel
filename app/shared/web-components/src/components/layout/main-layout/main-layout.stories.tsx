@@ -16,7 +16,11 @@ export const Primary = {
   args: {
     headerChildren: (
       <>
-        <ButtonComponent variant="3d" color="yellow">
+        <ButtonComponent
+          style={{ marginLeft: "2rem" }}
+          variant="3d"
+          color="yellow"
+        >
           <span>Check In</span>
         </ButtonComponent>
         <AccountItemComponent username="pagoru" />

@@ -46,12 +46,12 @@
     color: var(--#{$btn_name}-hover-c);
   }
 
-  &:active,
-  &:focus {
-    background-color: var(--#{$btn_name}-focus-bg);
-    border-color: var(--#{$btn_name}-focus-bd);
-    color: var(--#{$btn_name}-focus-c);
-  }
+  //&:active,
+  //&:focus {
+  //  background-color: var(--#{$btn_name}-focus-bg);
+  //  border-color: var(--#{$btn_name}-focus-bd);
+  //  color: var(--#{$btn_name}-focus-c);
+  //}
 }
 
 @mixin boxShadow() {
@@ -61,6 +61,10 @@
     rgba(0, 0, 0, 0.04) 0 0.625rem 0.625rem -0.3125rem,
     rgba(14, 30, 37, 0.12) 0 0.2rem 0.4rem 0,
     rgba(14, 30, 37, 0.32) 0 0.2rem 1.6rem 0;
+}
+
+@mixin lightBoxShadow() {
+  box-shadow: rgba(0, 0, 0, 0.35) 0 1px 2px;
 }
 
 @mixin textEllipsis() {
@@ -76,5 +80,13 @@
 
   @media screen and (prefers-color-scheme: dark) {
     background: rgba(55, 55, 55, 0.8);
+  }
+}
+
+@mixin glassBackground() {
+  backdrop-filter: blur(3px);
+  background-color: rgba(255, 255, 255, 0.35);
+  @media screen and (prefers-color-scheme: dark) {
+    background-color: rgba(68, 68, 68, 0.2);
   }
 }

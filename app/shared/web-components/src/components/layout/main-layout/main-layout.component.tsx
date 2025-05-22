@@ -4,7 +4,6 @@ import * as React from "react";
 import styles from "./main-layout.module.scss";
 import {
   FooterComponent,
-  HeaderComponent,
   NavigatorComponent,
   SocialComponent,
   BackgroundComponent,
@@ -32,7 +31,7 @@ export const MainLayoutComponent: React.FC<Props> = ({
         <div className={styles.container}>
           <NavigatorComponent children={navigatorChildren} />
           <div className={styles.bigContainer}>
-            {headerChildren && <HeaderComponent children={headerChildren} />}
+            {/*{headerChildren && <HeaderComponent children={headerChildren} />}*/}
             <MainComponent
               className={cn(styles.main, {
                 [styles.headless]: !headerChildren,

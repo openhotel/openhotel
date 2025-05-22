@@ -123,15 +123,15 @@
         color: var(--select-modal-c);
         background: var(--select-modal-bg);
 
-        &:first-child {
-          border-top-left-radius: var(--border-radius);
-          border-top-right-radius: var(--border-radius);
-        }
-
-        &:last-child {
-          border-bottom-left-radius: var(--border-radius);
-          border-bottom-right-radius: var(--border-radius);
-        }
+        //&:first-child {
+        //  border-top-left-radius: var(--border-radius);
+        //  border-top-right-radius: var(--border-radius);
+        //}
+        //
+        //&:last-child {
+        //  border-bottom-left-radius: var(--border-radius);
+        //  border-bottom-right-radius: var(--border-radius);
+        //}
 
         &.optionSelected,
         &:hover {

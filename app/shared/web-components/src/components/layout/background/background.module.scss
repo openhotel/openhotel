@@ -1,7 +1,6 @@
 @use "../../../styles/colors.module.scss" as *;
 
 .background {
-  background-color: var(--text-3-bg);
   color: var(--text-3-c);
   display: flex;
   flex-direction: column;
@@ -10,4 +9,8 @@
   height: 100%;
 
   overflow: hidden auto;
+  //background: var(--text-3-bg) url(./backgrounds/light-bg.webp) repeat;
+  //@media screen and (prefers-color-scheme: dark) {
+  //  background: var(--text-3-bg) url(./backgrounds/dark-bg.webp) repeat;
+  //}
 }

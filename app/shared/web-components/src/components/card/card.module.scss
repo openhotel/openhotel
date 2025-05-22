@@ -1,16 +1,17 @@
 @use "../../styles/all.module" as *;
 
 .card {
-  --card-border-radius: var(--border-radius-xl);
+  //--card-border-radius: var(--border-radius-xl);
 
   display: flex;
   flex-direction: column;
-  background-color: var(--text-1-bg);
+  //background-color: var(--text-1-bg);
   color: var(--text-1-c);
   border-color: var(--text-1-bd);
-  border-radius: var(--card-border-radius);
+  //border-radius: var(--card-border-radius);
 
   @include boxShadow();
+  @include glassBackground();
 
   .topSection {
     display: flex;
@@ -26,8 +27,6 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    background-color: var(--text-2-bg);
-    color: var(--text-2-c);
   }
 
   .bottomSection {
@@ -38,13 +37,13 @@
     color: var(--text-1-c);
   }
 
-  > *:first-child {
-    border-top-left-radius: var(--card-border-radius);
-    border-top-right-radius: var(--card-border-radius);
-  }
+  //> *:first-child {
+  //  border-top-left-radius: var(--card-border-radius);
+  //  border-top-right-radius: var(--card-border-radius);
+  //}
 
-  > *:last-child {
-    border-bottom-left-radius: var(--card-border-radius);
-    border-bottom-right-radius: var(--card-border-radius);
-  }
+  //> *:last-child {
+  //  border-bottom-left-radius: var(--card-border-radius);
+  //  border-bottom-right-radius: var(--card-border-radius);
+  //}
 }

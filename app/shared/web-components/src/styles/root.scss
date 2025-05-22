@@ -270,7 +270,7 @@
 
   @include defineLightColor(
     "btn-dark",
-    var(--color-light-6),
+    var(--color-light-1),
     var(--color-dark-9),
     var(--color-light-8)
   );
@@ -289,7 +289,7 @@
 
   @include defineDarkColor(
     "btn-dark",
-    var(--color-dark-8),
+    var(--color-dark-9),
     var(--color-light-1),
     var(--color-dark-9)
   );

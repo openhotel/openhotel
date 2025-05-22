@@ -18,5 +18,6 @@ const config = {
     disableTelemetry: true,
     enableCrashReports: false,
   },
+  staticDirs: ["../assets"],
 };
 export default config;
