@@ -1,5 +1,5 @@
 {
-  "name": "@openhotel/components",
+  "name": "@openhotel/web-components",
   "license": "NC BY-NC-SA 4.0",
   "version": "0.0.0",
   "type": "module",
@@ -14,7 +14,7 @@
     "node": "22"
   },
   "repository": {
-    "url": "https://github.com/openhotel/components"
+    "url": "https://github.com/openhotel/web-components"
   },
   "packageManager": "yarn@4.6.0",
   "devDependencies": {
