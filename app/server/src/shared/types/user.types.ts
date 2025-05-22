@@ -120,4 +120,7 @@ export type UserMutable = {
     direction?: CrossDirection,
     wallPosition?: Point2d,
   ) => Promise<boolean>;
+
+  setColor: (color: number) => Promise<void>;
+  getColor: () => Promise<number | null>;
 };

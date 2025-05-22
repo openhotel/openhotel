@@ -94,6 +94,7 @@ export const RoomMessagesComponent: React.FC<Props> = ({
           accountId: null,
           username: "System",
           message,
+          usernameColor: 0xffffff,
           color: 0xffffff,
           backgroundColor: 0xdba935,
           messageColor: 0xffffff,
@@ -198,6 +199,7 @@ export const RoomMessagesComponent: React.FC<Props> = ({
           message,
           backgroundColor,
           color,
+          usernameColor,
           messageColor,
           position,
         } = messageData;
@@ -211,7 +213,7 @@ export const RoomMessagesComponent: React.FC<Props> = ({
               y: (maxMessages - index - 1) * BUBBLE_MESSAGE_HEIGHT,
             }}
             backgroundColor={backgroundColor}
-            usernameColor={color}
+            usernameColor={usernameColor}
             borderColor={color}
             messageColor={messageColor}
             align="center"

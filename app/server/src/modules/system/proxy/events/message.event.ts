@@ -33,7 +33,9 @@ export const messageEvent: ProxyEventType<{ message: string }> = {
       id: ulid(),
       accountId: user.getAccountId(),
       message,
-      color: isOp ? 0 : await getRandomNumberFromSeed(user.getUsername()),
+      color:
+        (await user.getColor()) ??
+        (isOp ? 0 : await getRandomNumberFromSeed(user.getUsername())),
     });
   },
 };
