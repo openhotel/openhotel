@@ -19,7 +19,7 @@ direction:
           height: 43
         pivot:
           x: 0
-          'y': 0
+          "y": 0
         position:
           x: 0
           z: 0
@@ -32,7 +32,7 @@ direction:
           height: 43
         pivot:
           x: 0
-          'y': 0
+          "y": 0
         position:
           x: 0
           z: 0

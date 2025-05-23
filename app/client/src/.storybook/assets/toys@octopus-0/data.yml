@@ -19,7 +19,7 @@ direction:
           height: 24
         pivot:
           x: 0
-          'y': 8
+          "y": 8
         position:
           x: 0
           z: 0
@@ -32,7 +32,7 @@ direction:
           height: 24
         pivot:
           x: 0
-          'y': 8
+          "y": 8
         position:
           x: 0
           z: 0
@@ -45,7 +45,7 @@ direction:
           height: 24
         pivot:
           x: 0
-          'y': 8
+          "y": 8
         position:
           x: 0
           z: 0
@@ -58,7 +58,7 @@ direction:
           height: 24
         pivot:
           x: 0
-          'y': 8
+          "y": 8
         position:
           x: 0
           z: 0
