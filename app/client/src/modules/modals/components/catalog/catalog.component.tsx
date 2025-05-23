@@ -27,7 +27,14 @@ const OVER_MODAL_POSITION = {
 };
 const OVER_MODAL_PADDING = 5;
 
+const MODAL_SIZE = MODAL_SIZE_MAP[Modal.CATALOG];
+
 export const CatalogComponent: React.FC = () => {
+  const { t } = useTranslation();
+  const { setDragPolygon } = useDragContainer();
+
+  const [selectedCategoryId, setSelectedCategoryId] = useState<string>("home");
+
   const { closeModal, isModalOpen } = useModal();
   const { fetch } = useApi();
 
@@ -50,34 +57,6 @@ export const CatalogComponent: React.FC = () => {
       clearInterval(interval);
     };
   }, [$reload]);
-
-  return useMemo(
-    () =>
-      catalog ? (
-        <CatalogComponentWrapper
-          onPointerDown={() => closeModal(Modal.CATALOG)}
-          catalog={catalog}
-        />
-      ) : null,
-    [catalog],
-  );
-};
-
-type WrapperProps = {
-  onPointerDown?: () => void;
-  catalog: Catalog;
-};
-
-const MODAL_SIZE = MODAL_SIZE_MAP[Modal.CATALOG];
-
-export const CatalogComponentWrapper: React.FC<WrapperProps> = ({
-  onPointerDown,
-  catalog,
-}) => {
-  const { t } = useTranslation();
-  const { setDragPolygon } = useDragContainer();
-
-  const [selectedCategoryId, setSelectedCategoryId] = useState<string>("home");
 
   const categorySize = useMemo(
     () => ({
@@ -151,6 +130,11 @@ export const CatalogComponentWrapper: React.FC<WrapperProps> = ({
     [overModalSize],
   );
 
+  const onCloseModal = useCallback(
+    () => closeModal(Modal.CATALOG),
+    [closeModal],
+  );
+
   return useMemo(
     () => (
       <>
@@ -164,7 +148,7 @@ export const CatalogComponentWrapper: React.FC<WrapperProps> = ({
             x: MODAL_SIZE.width - 23,
             y: 1.5,
           }}
-          onPointerDown={onPointerDown}
+          onPointerDown={onCloseModal}
           zIndex={20}
           pivot={{ x: 0, y: -5 }}
         />
@@ -226,7 +210,7 @@ export const CatalogComponentWrapper: React.FC<WrapperProps> = ({
               >
                 <CategoriesComponent
                   width={categorySize.width - 13}
-                  categories={catalog.categories}
+                  categories={catalog?.categories ?? []}
                   selectedCategoryId={selectedCategoryId}
                   onSelectedCategory={setSelectedCategoryId}
                 />
@@ -278,7 +262,7 @@ export const CatalogComponentWrapper: React.FC<WrapperProps> = ({
       </>
     ),
     [
-      onPointerDown,
+      closeModal,
       categorySize,
       catalog,
       selectedCategoryId,

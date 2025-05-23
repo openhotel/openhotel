@@ -1,19 +1,20 @@
 import { Meta, StoryObj } from "@storybook/react";
-import { RoomsListComponentWrapper } from "./rooms-list.component";
+import { RoomsListComponent } from "./rooms-list.component";
+import { ulid } from "ulidx";
 
 export default {
   title: "Modules/Modals/Navigator/Category/Rooms/List",
-  component: RoomsListComponentWrapper,
+  component: RoomsListComponent,
   parameters: {
     layout: "fullscreen",
     backgrounds: { default: "light" },
   },
-} as Meta<typeof RoomsListComponentWrapper>;
+} as Meta<typeof RoomsListComponent>;
 
-type Story = StoryObj<typeof RoomsListComponentWrapper>;
+type Story = StoryObj<typeof RoomsListComponent>;
 
 //@ts-ignore
-export const Primary: Story = {
+export const List: Story = {
   args: {
     size: {
       width: 200,
@@ -21,32 +22,24 @@ export const Primary: Story = {
     },
     rooms: [
       {
-        id: "1",
-        title: "hello there",
-        favorite: false,
-        maxUsers: 10,
+        id: ulid(),
+        title: "Room 1",
+        description: "Room 1 description",
+        ownerUsername: "storybook",
         users: 0,
-      },
-      {
-        id: "2",
-        title: "hello there",
-        favorite: false,
         maxUsers: 10,
+        favorite: true,
+        layoutIndex: 0,
+      },
+      {
+        id: ulid(),
+        title: "Room 2",
+        description: "Room 2 description",
+        ownerUsername: "storybook",
         users: 2,
-      },
-      {
-        id: "3",
-        title: "aha aha",
+        maxUsers: 10,
         favorite: true,
-        maxUsers: 20,
-        users: 15,
-      },
-      {
-        id: "4",
-        title: "aha aha",
-        favorite: true,
-        maxUsers: 20,
-        users: 20,
+        layoutIndex: 0,
       },
     ],
   },

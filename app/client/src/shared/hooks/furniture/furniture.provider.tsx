@@ -5,6 +5,7 @@ import { useTextures } from "@openhotel/pixi-components";
 import { CrossDirectionKeys, FurnitureDirectionDataMap } from "shared/types";
 import { CrossDirection } from "shared/enums";
 import { useApiPath } from "shared/hooks";
+import { waitUntil } from "shared/utils";
 
 type FurnitureProps = {
   children: ReactNode;
@@ -18,6 +19,11 @@ export const FurnitureProvider: React.FunctionComponent<FurnitureProps> = ({
   const { add, get: $get, furniture } = useFurnitureStore();
 
   const loadingFurnitureId = useRef<string[]>([]);
+
+  const get = useCallback(
+    (furnitureId: string) => furniture[furnitureId],
+    [furniture],
+  );
 
   const load = useCallback(
     async (...furniture: string[]) => {
@@ -73,12 +79,7 @@ export const FurnitureProvider: React.FunctionComponent<FurnitureProps> = ({
         });
       }
     },
-    [add, $get, getPath, loadSpriteSheet, getSpriteSheet],
-  );
-
-  const get = useCallback(
-    (furnitureId: string) => furniture[furnitureId],
-    [furniture],
+    [add, $get, getPath, loadSpriteSheet, getSpriteSheet, get],
   );
 
   return (

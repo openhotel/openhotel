@@ -11,7 +11,7 @@ import { FurnitureFrameComponent } from "shared/components/furniture-frame";
 
 export const RoomFurnitureComponent: React.FC = () => {
   const { on, emit } = useProxy();
-  const { load: loadFurniture, get: getFurniture } = useFurniture();
+  const { get: getFurniture } = useFurniture();
   const {
     room,
     addFurniture,
@@ -50,11 +50,6 @@ export const RoomFurnitureComponent: React.FC = () => {
       removeOnRemoveFurniture();
     };
   }, [room, on, emit, addFurniture, updateFurniture, removeFurniture]);
-
-  useEffect(() => {
-    if (!room) return;
-    loadFurniture(...room.furniture.map((furniture) => furniture.furnitureId));
-  }, [room, loadFurniture]);
 
   const onPointerDown = useCallback(
     (furniture: RoomFurniture) => () => {
@@ -101,6 +96,6 @@ export const RoomFurnitureComponent: React.FC = () => {
           />
         ),
       ),
-    [room, getFurniture],
+    [room?.furniture],
   );
 };

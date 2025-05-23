@@ -10,7 +10,7 @@ type ConfigProps = {
   children: ReactNode;
 };
 
-export const languageProvider: React.FunctionComponent<ConfigProps> = ({
+export const LanguageProvider: React.FunctionComponent<ConfigProps> = ({
   children,
 }) => {
   const { isDevelopment, getConfig } = useConfig();

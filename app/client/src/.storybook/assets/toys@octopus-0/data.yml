@@ -1,11 +1,11 @@
 id: toys@octopus-0
 type: furniture
-version: 2
+revision: 01JSKJ8HJ9XVWDS6F6Z77M8XQQ
 icon:
   texture: icon
   bounds:
-    width: 25
-    height: 17
+    width: 22
+    height: 16
 size:
   width: 1
   height: 12
