@@ -1,3 +1,4 @@
-export * from "shared/hooks/furniture/furniture.context";
-export * from "shared/hooks/furniture/furniture.provider";
-export * from "shared/hooks/furniture/use-furniture";
+export * from "./furniture.context";
+export * from "./furniture.provider";
+export * from "./use-furniture";
+export * from "./furniture.store";

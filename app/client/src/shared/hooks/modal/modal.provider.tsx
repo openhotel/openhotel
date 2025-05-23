@@ -151,7 +151,7 @@ export const ModalProvider: React.FunctionComponent<ModalProps> = ({
     const targetModals = Object.keys(modals).map(
       (modalId) => parseInt(modalId) as Modal,
     );
-    const visibleModals = targetModals.filter((modal) => get(modal).visible);
+    const visibleModals = targetModals.filter((modal) => get(modal)?.visible);
     const newModals = visibleModals.filter(
       (modal) => !lastModalList.current.includes(modal),
     );

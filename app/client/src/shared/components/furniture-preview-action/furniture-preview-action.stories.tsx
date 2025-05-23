@@ -1,11 +1,10 @@
 import { Meta, StoryObj } from "@storybook/react";
 import React, { useEffect, useState } from "react";
-
 import { FurniturePreviewActionComponent } from "./furniture-preview-action.component";
-import { useSBFurniture } from ".storybook";
 import { FurnitureData } from "shared/types";
 import { GraphicsComponent, GraphicType } from "@openhotel/pixi-components";
 import { ButtonComponent } from "shared/components";
+import { useFurniture } from "shared/hooks";
 
 export default {
   title: "Shared/Furniture Preview Action",
@@ -18,12 +17,10 @@ export default {
 type Story = StoryObj<typeof FurniturePreviewActionComponent>;
 
 const LoadComponent = () => {
-  const { load, get } = useSBFurniture();
-
+  const { load, get } = useFurniture();
   const [furnitureData, setFurnitureData] = useState<FurnitureData>(null);
 
   useEffect(() => {
-    // const name = "./toys@octopus-0";
     const name = "teleports@telephone";
     load(name).then(() => setFurnitureData(get(name)));
   }, [load, get]);

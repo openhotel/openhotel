@@ -1,10 +1,11 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import {
   Cursor,
   EventMode,
   GraphicsComponent,
   GraphicType,
   SpriteComponent,
+  useUpdate,
 } from "@openhotel/pixi-components";
 import {
   DUMMY_FURNITURE_DATA,
@@ -14,57 +15,18 @@ import {
   TILE_Y_HEIGHT,
 } from "shared/consts";
 import { CrossDirection } from "shared/enums";
-import { FurnitureData, Point3d } from "shared/types";
+import { Point3d } from "shared/types";
 import { getPositionFromIsometricPosition, getZIndex } from "shared/utils";
 import { useFurniture } from "shared/hooks";
 import { ulid } from "ulidx";
 import { getCubePolygon } from "shared/utils/polygon.utils";
 
 type Props = {
-  id: string;
+  id?: string;
 
   furnitureId?: string;
   position: Point3d;
 
-  direction: CrossDirection;
-
-  onPointerDown?: () => void;
-
-  hitAreaActive?: boolean;
-  heightCorrection?: boolean;
-};
-
-export const FurnitureComponent: React.FC<Props> = ({
-  id,
-  furnitureId,
-  position,
-  direction,
-  onPointerDown,
-  hitAreaActive = true,
-  heightCorrection = false,
-}) => {
-  const { get: getFurniture } = useFurniture();
-
-  const furnitureData = getFurniture(furnitureId);
-
-  return (
-    <FurnitureComponentWrapper
-      id={id}
-      position={position}
-      data={furnitureData}
-      direction={direction}
-      onPointerDown={onPointerDown}
-      hitAreaActive={hitAreaActive}
-      heightCorrection={heightCorrection}
-    />
-  );
-};
-
-type PropsWrapper = {
-  id?: string;
-  position: Point3d;
-
-  data?: FurnitureData;
   direction?: CrossDirection;
 
   onPointerDown?: () => void;
@@ -73,19 +35,29 @@ type PropsWrapper = {
   heightCorrection?: boolean;
 };
 
-export const FurnitureComponentWrapper: React.FC<PropsWrapper> = ({
+export const FurnitureComponent: React.FC<Props> = ({
   id = ulid(),
   position,
-  data = DUMMY_FURNITURE_DATA,
+  furnitureId,
   direction = CrossDirection.NORTH,
   onPointerDown,
   hitAreaActive = true,
   heightCorrection = false,
 }) => {
-  const $data = useMemo(() => (data ? data : DUMMY_FURNITURE_DATA), [data]);
+  const { load: loadFurniture, get: getFurniture } = useFurniture();
+  const { update, lastUpdate } = useUpdate();
+
+  useEffect(() => {
+    loadFurniture(furnitureId).then(update);
+  }, [furnitureId, loadFurniture, update]);
+
+  const $data = useMemo(
+    () => getFurniture(furnitureId) ?? DUMMY_FURNITURE_DATA,
+    [getFurniture, furnitureId, lastUpdate],
+  );
   const $direction = useMemo(
-    () => (data && direction ? direction : CrossDirection.NORTH),
-    [data, direction],
+    () => (furnitureId && direction ? direction : CrossDirection.NORTH),
+    [furnitureId, direction],
   );
 
   return useMemo(

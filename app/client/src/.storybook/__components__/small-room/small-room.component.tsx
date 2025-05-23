@@ -1,11 +1,11 @@
 import React, { useMemo } from "react";
-import { CrossDirection } from "../shared/enums";
+import { CrossDirection } from "../../../shared/enums";
 import { ContainerComponent, ContainerProps } from "@openhotel/pixi-components";
 import {
   PrivateRoomTile,
   PrivateRoomWallComponent,
-} from "../shared/components/private-room/components";
-import { Point2d, Point3d } from "shared/types";
+} from "../../../shared/components/private-room/components";
+import { Point2d, Point3d } from "../../../shared/types";
 
 type Props = {
   children: React.ReactNode;
@@ -16,7 +16,7 @@ type Props = {
   ) => void;
 } & ContainerProps;
 
-export const SBSmallRoomComponent: React.FC<Props> = ({
+export const SmallRoomComponent: React.FC<Props> = ({
   children,
   onClickWall,
   ...props

@@ -14,6 +14,7 @@ export default {
 
 type Story = StoryObj<typeof PurseComponentWrapper>;
 
+//@ts-ignore
 export const Primary: Story = () => {
   return (
     <DragContainerProvider>

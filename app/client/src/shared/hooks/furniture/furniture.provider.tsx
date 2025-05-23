@@ -5,6 +5,7 @@ import { useTextures } from "@openhotel/pixi-components";
 import { CrossDirectionKeys, FurnitureDirectionDataMap } from "shared/types";
 import { CrossDirection } from "shared/enums";
 import { useApiPath } from "shared/hooks";
+import { waitUntil } from "shared/utils";
 
 type FurnitureProps = {
   children: ReactNode;
@@ -19,6 +20,11 @@ export const FurnitureProvider: React.FunctionComponent<FurnitureProps> = ({
 
   const loadingFurnitureId = useRef<string[]>([]);
 
+  const get = useCallback(
+    (furnitureId: string) => furniture[furnitureId],
+    [furniture],
+  );
+
   const load = useCallback(
     async (...furniture: string[]) => {
       const uniqueFurniture = [...new Set(furniture)].filter(
@@ -29,7 +35,10 @@ export const FurnitureProvider: React.FunctionComponent<FurnitureProps> = ({
 
       for (const furnitureId of uniqueFurniture) {
         //prevents loading again furniture when is loading
-        if (loadingFurnitureId.current.includes(furnitureId)) continue;
+        if (loadingFurnitureId.current.includes(furnitureId)) {
+          await waitUntil(() => Boolean(get(furnitureId)), 100, 100);
+          continue;
+        }
 
         loadingFurnitureId.current.push(furnitureId);
         const spriteSheetPath = getPath(
@@ -73,12 +82,7 @@ export const FurnitureProvider: React.FunctionComponent<FurnitureProps> = ({
         });
       }
     },
-    [add, $get, getPath, loadSpriteSheet, getSpriteSheet],
-  );
-
-  const get = useCallback(
-    (furnitureId: string) => furniture[furnitureId],
-    [furniture],
+    [add, $get, getPath, loadSpriteSheet, getSpriteSheet, get],
   );
 
   return (

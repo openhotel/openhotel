@@ -1,6 +1,6 @@
 id: flags@pirate
 type: frame
-version: 3
+revision: 01JSKJ9PZ44VWN6W9R4BJVC6CM
 icon:
   texture: icon
   bounds:
@@ -8,7 +8,7 @@ icon:
     height: 22
 size:
   width: 17
-  height: 26
+  height: 27
   depth: 0
 direction:
   north:
@@ -19,7 +19,7 @@ direction:
           height: 43
         pivot:
           x: 0
-          y: 0
+          'y': 0
         position:
           x: 0
           z: 0
@@ -32,7 +32,7 @@ direction:
           height: 43
         pivot:
           x: 0
-          y: 0
+          'y': 0
         position:
           x: 0
           z: 0

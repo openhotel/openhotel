@@ -1,29 +1,19 @@
 import { Meta, StoryObj } from "@storybook/react";
 import React from "react";
-import { CameraProvider, ModalProvider } from "shared/hooks";
-import { CatalogComponentWrapper } from "./catalog.component";
-import { DragContainerProvider } from "@openhotel/pixi-components";
+import { CatalogComponent } from "./catalog.component";
 
 export default {
   title: "Modules/Modals/Catalog",
-  component: CatalogComponentWrapper,
+  component: CatalogComponent,
   parameters: {
     layout: "fullscreen",
     backgrounds: { default: "light" },
   },
-} as Meta<typeof CatalogComponentWrapper>;
+} as Meta<typeof CatalogComponent>;
 
-type Story = StoryObj<typeof CatalogComponentWrapper>;
+type Story = StoryObj<typeof CatalogComponent>;
 
 //@ts-ignore
 export const Primary: Story = () => {
-  return (
-    <DragContainerProvider>
-      <CameraProvider>
-        <ModalProvider>
-          <CatalogComponentWrapper catalog={{ categories: [] }} />
-        </ModalProvider>
-      </CameraProvider>
-    </DragContainerProvider>
-  );
+  return <CatalogComponent />;
 };
