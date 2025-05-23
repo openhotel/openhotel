@@ -35,10 +35,7 @@ export const FurnitureProvider: React.FunctionComponent<FurnitureProps> = ({
 
       for (const furnitureId of uniqueFurniture) {
         //prevents loading again furniture when is loading
-        if (loadingFurnitureId.current.includes(furnitureId)) {
-          await waitUntil(() => Boolean(get(furnitureId)), 100, 100);
-          continue;
-        }
+        if (loadingFurnitureId.current.includes(furnitureId)) continue;
 
         loadingFurnitureId.current.push(furnitureId);
         const spriteSheetPath = getPath(
