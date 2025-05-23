@@ -1,6 +1,6 @@
-import { Catalog, CatalogCategoryData } from "../../../shared/types";
+import { Catalog, CatalogCategoryData, Economy } from "../../../shared/types";
 import { ulid } from "ulidx";
-import { FurnitureType } from "../../../shared/enums";
+import { FurnitureType, TransactionType } from "../../../shared/enums";
 import { FAKE_ACCOUNT_ID_1 } from "../account";
 
 type Call = {
@@ -157,6 +157,124 @@ export const FAKE_API_CALLS_DATA: Call[] = [
           },
         ],
       };
+    },
+  },
+  {
+    pathname: "/economy",
+    method: "GET",
+    response: ({}): Economy => ({
+      credits: 234,
+      transactions: [
+        {
+          type: TransactionType.PURCHASE,
+          amount: -10,
+          id: ulid(),
+          timestamp: Date.now(),
+          description: "Bought x furni",
+        },
+        {
+          type: TransactionType.PURCHASE,
+          amount: -15,
+          id: ulid(),
+          timestamp: Date.now(),
+          description: "Bought y furni",
+        },
+        {
+          type: TransactionType.REWARD,
+          amount: 15,
+          id: ulid(),
+          timestamp: Date.now(),
+          description: "Game z win!",
+        },
+      ],
+    }),
+  },
+  {
+    pathname: "/inventory",
+    method: "GET",
+    response: ({ searchParams }) => {
+      const type = parseInt(searchParams.get("type"));
+      if (type === FurnitureType.FRAME)
+        return {
+          furniture: [
+            {
+              id: ulid(),
+              type: FurnitureType.FRAME,
+              furnitureId: "flags@pirate",
+            },
+            {
+              id: ulid(),
+              type: FurnitureType.FRAME,
+              furnitureId: "flags@pirate",
+            },
+            {
+              id: ulid(),
+              type: FurnitureType.FRAME,
+              furnitureId: "flags@pirate",
+            },
+            {
+              id: ulid(),
+              type: FurnitureType.FRAME,
+              furnitureId: "flags@pirate",
+            },
+            {
+              id: ulid(),
+              type: FurnitureType.FRAME,
+              furnitureId: "flags@pirate",
+            },
+            {
+              id: ulid(),
+              type: FurnitureType.FRAME,
+              furnitureId: "flags@pirate",
+            },
+            {
+              id: ulid(),
+              type: FurnitureType.FRAME,
+              furnitureId: "flags@pirate",
+            },
+            {
+              id: ulid(),
+              type: FurnitureType.FRAME,
+              furnitureId: "flags@pirate",
+            },
+            {
+              id: ulid(),
+              type: FurnitureType.FRAME,
+              furnitureId: "flags@pirate",
+            },
+            {
+              id: ulid(),
+              type: FurnitureType.FRAME,
+              furnitureId: "flags@pirate",
+            },
+            {
+              id: ulid(),
+              type: FurnitureType.FRAME,
+              furnitureId: "flags@pirate",
+            },
+          ],
+        };
+      if (type === FurnitureType.FURNITURE)
+        return {
+          furniture: [
+            {
+              id: ulid(),
+              type: FurnitureType.FURNITURE,
+              furnitureId: "teleports@telephone",
+            },
+            {
+              id: ulid(),
+              type: FurnitureType.FURNITURE,
+              furnitureId: "teleports@telephone",
+            },
+
+            {
+              id: ulid(),
+              type: FurnitureType.FURNITURE,
+              furnitureId: "toys@octopus-0",
+            },
+          ],
+        };
     },
   },
 ];

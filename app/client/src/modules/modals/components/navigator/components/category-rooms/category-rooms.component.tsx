@@ -9,7 +9,7 @@ import {
 } from "@openhotel/pixi-components";
 import { useApi, useModal, useProxy } from "shared/hooks";
 import { Event, Modal, SpriteSheetEnum } from "shared/enums";
-import { RoomPreviewComponent, RoomsListComponentWrapper } from "./components";
+import { RoomPreviewComponent, RoomsListComponent } from "./components";
 import { NavigatorRoom } from "shared/types";
 import { useTranslation } from "react-i18next";
 import { InputComponent } from "shared/components";
@@ -156,7 +156,7 @@ export const CategoryRoomsComponent: React.FC<Props> = ({ size }) => {
           y: 19,
         }}
       >
-        <RoomsListComponentWrapper
+        <RoomsListComponent
           size={{
             ...size,
             width: size.width - 130,

@@ -1,33 +1,18 @@
 import { Meta, StoryObj } from "@storybook/react";
 import React from "react";
-import { CameraProvider, ModalProvider } from "shared/hooks";
-import { PurseComponentWrapper } from "./purse.component";
-import { DragContainerProvider } from "@openhotel/pixi-components";
+import { PurseComponent } from "./purse.component";
 
 export default {
   title: "Modules/Modals/Purse",
-  component: PurseComponentWrapper,
+  component: PurseComponent,
   parameters: {
     layout: "fullscreen",
   },
-} as Meta<typeof PurseComponentWrapper>;
+} as Meta<typeof PurseComponent>;
 
-type Story = StoryObj<typeof PurseComponentWrapper>;
+type Story = StoryObj<typeof PurseComponent>;
 
 //@ts-ignore
-export const Primary: Story = () => {
-  return (
-    <DragContainerProvider>
-      <CameraProvider>
-        <ModalProvider>
-          <PurseComponentWrapper
-            credits={0}
-            setDragPolygon={() => {}}
-            onPointerDown={() => {}}
-            transactions={[]}
-          />
-        </ModalProvider>
-      </CameraProvider>
-    </DragContainerProvider>
-  );
+export const Purse: Story = () => {
+  return <PurseComponent />;
 };

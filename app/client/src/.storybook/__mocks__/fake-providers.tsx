@@ -6,6 +6,8 @@ import {
   FakeConfigProvider,
   FakeProxyProvider,
   FakeAccountProvider,
+  FakeRouterProvider,
+  FakeItemPlacePreviewProvider,
 } from ".";
 import {
   AssetsProvider,
@@ -42,10 +44,10 @@ export const FakeProviders: React.FC<Props> = ({ children }) => {
       FakeAccountProvider,
       FakeApiProvider,
       FakeFurnitureProvider,
-      CameraProvider, // Before 'ModalProvider' so 'ModalProvider' can use 'useCamera'
+      CameraProvider,
       SoundProvider,
-      // ItemPlacePreviewProvider,
-      // RouterProvider,
+      FakeItemPlacePreviewProvider,
+      FakeRouterProvider,
       DragContainerProvider,
       ModalProvider,
       // InfoProvider,
