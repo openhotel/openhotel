@@ -31,7 +31,7 @@ export const FakeConfigProvider: React.FunctionComponent<ConfigProps> = ({
 
   const getVersion = useCallback(() => `storybook`, []);
 
-  const isDevelopment = useCallback(() => false, []);
+  const isDevelopment = useCallback(() => true, []);
 
   return (
     <ConfigContext.Provider

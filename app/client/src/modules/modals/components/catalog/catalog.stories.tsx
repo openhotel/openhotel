@@ -14,6 +14,6 @@ export default {
 type Story = StoryObj<typeof CatalogComponent>;
 
 //@ts-ignore
-export const Primary: Story = () => {
+export const Catalog: Story = () => {
   return <CatalogComponent />;
 };
