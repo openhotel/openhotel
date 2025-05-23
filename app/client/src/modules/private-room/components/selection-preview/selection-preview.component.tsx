@@ -16,7 +16,7 @@ import {
 import { FurnitureData, Point2d, Size2d, User } from "shared/types";
 import {
   CharacterComponent,
-  FurnitureComponentWrapper,
+  FurnitureComponent,
   TextComponent,
 } from "shared/components";
 import {
@@ -26,7 +26,7 @@ import {
   PrivateRoomPreviewType,
   SpriteSheetEnum,
 } from "shared/enums";
-import { FurnitureFrameComponentWrapper } from "shared/components/furniture-frame";
+import { FurnitureFrameComponent } from "shared/components";
 import { usePrivateRoom } from "shared/hooks";
 
 const TileComponent: React.FC<{ position: Point2d }> = ({ position }) =>
@@ -87,17 +87,17 @@ export const SelectionPreviewComponent: React.FC = () => {
         );
       case PrivateRoomPreviewType.FRAME:
         return (
-          <FurnitureFrameComponentWrapper
+          <FurnitureFrameComponent
             position={{ x: 0, y: 0, z: 0 }}
             framePosition={{ x: 0, y: 0 }}
-            data={selectedPreview.data as FurnitureData}
+            furnitureId={(selectedPreview.data as FurnitureData).furnitureId}
           />
         );
       case PrivateRoomPreviewType.FURNITURE:
         return (
-          <FurnitureComponentWrapper
+          <FurnitureComponent
             position={{ x: 0, y: 0, z: 0 }}
-            data={selectedPreview.data as FurnitureData}
+            furnitureId={(selectedPreview.data as FurnitureData).furnitureId}
           />
         );
     }

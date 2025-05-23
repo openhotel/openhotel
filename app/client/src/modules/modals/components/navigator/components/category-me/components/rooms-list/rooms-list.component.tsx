@@ -22,7 +22,7 @@ type Props = {
   onClick: (roomId: string) => void;
 };
 
-export const RoomsListComponentWrapper: React.FC<Props> = ({
+export const RoomsListComponent: React.FC<Props> = ({
   size,
   rooms,
   onClickGo,

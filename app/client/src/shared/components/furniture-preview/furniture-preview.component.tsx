@@ -6,10 +6,7 @@ import {
   GraphicType,
   Size,
 } from "@openhotel/pixi-components";
-import {
-  FurnitureComponentWrapper,
-  FurnitureFrameComponentWrapper,
-} from "shared/components";
+import { FurnitureComponent, FurnitureFrameComponent } from "shared/components";
 import { CrossDirection, FurnitureType } from "shared/enums";
 import { FurnitureData } from "shared/types";
 import { TILE_SIZE } from "shared/consts";
@@ -50,20 +47,20 @@ export const FurniturePreviewComponent: React.FC<Props> = ({
         >
           {isFurniture ? (
             <>
-              <FurnitureComponentWrapper
+              <FurnitureComponent
                 position={{ x: -1, y: 0, z: 0 }}
-                data={furnitureData}
+                furnitureId={furnitureData.furnitureId}
               />
             </>
           ) : (
             <>
-              <FurnitureFrameComponentWrapper
+              <FurnitureFrameComponent
                 position={{ x: -1, y: 0, z: 0 }}
                 framePosition={{
                   x: 0,
                   y: furnitureData.size.height - TILE_SIZE.height,
                 }}
-                data={furnitureData}
+                furnitureId={furnitureData.furnitureId}
                 direction={CrossDirection.EAST}
               />
             </>

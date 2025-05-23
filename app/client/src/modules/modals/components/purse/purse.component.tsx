@@ -16,32 +16,27 @@ import { Modal, SpriteSheetEnum } from "shared/enums";
 import { MODAL_SIZE_MAP } from "shared/consts";
 import { ScrollComponent, TextComponent } from "shared/components";
 import { useApi, useModal } from "shared/hooks";
-import { Transaction } from "shared/types";
+import { Economy, Transaction } from "shared/types";
 import { TransactionComponent } from "./components";
 import { useTranslation } from "react-i18next";
 
+const MODAL_SIZE = MODAL_SIZE_MAP[Modal.PURSE];
+
 export const PurseComponent: React.FC = () => {
+  const { t } = useTranslation();
   const { fetch } = useApi();
   const { closeModal, isModalOpen } = useModal();
   const { setDragPolygon } = useDragContainer();
 
   const [credits, setCredits] = useState(0);
-  const [transactions, setTransactions] = useState([]);
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
 
   const $reload = useCallback(
     () =>
-      fetch("/economy").then(
-        ({
-          credits,
-          transactions,
-        }: {
-          credits: number;
-          transactions: Transaction[];
-        }) => {
-          setCredits(credits);
-          setTransactions(transactions);
-        },
-      ),
+      fetch("/economy").then(({ credits, transactions }: Economy) => {
+        setCredits(credits);
+        setTransactions(transactions);
+      }),
     [fetch, setCredits, setTransactions],
   );
 
@@ -56,36 +51,6 @@ export const PurseComponent: React.FC = () => {
   }, [$reload]);
 
   const onCloseModal = useCallback(() => closeModal(Modal.PURSE), [closeModal]);
-
-  return useMemo(
-    () => (
-      <PurseComponentWrapper
-        credits={credits}
-        transactions={transactions}
-        onPointerDown={onCloseModal}
-        setDragPolygon={setDragPolygon}
-      />
-    ),
-    [credits, transactions, setDragPolygon, onCloseModal],
-  );
-};
-
-type Props = {
-  credits: number;
-  transactions: Transaction[];
-  onPointerDown: () => void;
-  setDragPolygon: (polygon: number[]) => void;
-};
-
-const MODAL_SIZE = MODAL_SIZE_MAP[Modal.PURSE];
-
-export const PurseComponentWrapper: React.FC<Props> = ({
-  credits,
-  transactions,
-  onPointerDown,
-  setDragPolygon,
-}) => {
-  const { t } = useTranslation();
 
   useEffect(() => {
     setDragPolygon?.([0, 0, MODAL_SIZE.width, 0, MODAL_SIZE.width, 15, 0, 15]);
@@ -124,7 +89,7 @@ export const PurseComponentWrapper: React.FC<Props> = ({
             x: MODAL_SIZE.width - 35,
             y: 1.5,
           }}
-          onPointerDown={onPointerDown}
+          onPointerDown={onCloseModal}
           zIndex={20}
         />
         <ContainerComponent>
@@ -206,6 +171,6 @@ export const PurseComponentWrapper: React.FC<Props> = ({
         </ContainerComponent>
       </>
     ),
-    [credits, onPointerDown, scrollSize, renderTransactions],
+    [credits, onCloseModal, scrollSize, renderTransactions],
   );
 };

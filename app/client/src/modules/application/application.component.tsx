@@ -21,7 +21,8 @@ import {
   ItemPlacePreviewProvider,
   InfoProvider,
   ChangelogProvider,
-  languageProvider,
+  LanguageProvider,
+  ApiProvider,
 } from "shared/hooks";
 import { NesterComponent } from "shared/components";
 
@@ -34,13 +35,14 @@ export const ApplicationComponent = () => {
       TasksProvider,
       InitialLoaderComponent,
       ConfigProvider,
-      languageProvider,
+      LanguageProvider,
       ChangelogProvider,
       ProxyProvider,
       AssetsProvider,
       CoreLoaderComponent,
       SafeWindowProvider,
       AccountProvider,
+      ApiProvider,
       FurnitureProvider,
       CameraProvider, // Before 'ModalProvider' so 'ModalProvider' can use 'useCamera'
       SoundProvider,

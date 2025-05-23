@@ -21,7 +21,7 @@ import {
 } from "@openhotel/pixi-components";
 
 export const PrivateRoomRenderComponent = () => {
-  const { load: loadFurniture, get: getFurniture } = useFurniture();
+  const { load: loadFurniture } = useFurniture();
   const { getSize } = useWindow();
 
   const [room, setRoom] = useState(null);
@@ -42,7 +42,7 @@ export const PrivateRoomRenderComponent = () => {
 
   useEffect(() => {
     if (!room) return;
-
+    ``;
     setPosition({
       x: parseInt(params.get("posX") ?? "0"),
       y: parseInt(params.get("posY") ?? "0"),
@@ -83,7 +83,7 @@ export const PrivateRoomRenderComponent = () => {
           />
         ),
       ),
-    [room?.furniture, getFurniture],
+    [room?.furniture],
   );
 
   const renderCharacters = useMemo(

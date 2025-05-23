@@ -57,9 +57,9 @@ export const LoaderAssetsComponent: React.FC<Props> = ({
     })();
   }, [loaderItems, setCurrentText, onDone, t]);
 
-  if (currentText)
-    return useMemo(
-      () => (
+  return useMemo(
+    () =>
+      currentText ? (
         <ContainerComponent>
           <FlexContainerComponent
             align={FLEX_ALIGN.CENTER}
@@ -74,9 +74,9 @@ export const LoaderAssetsComponent: React.FC<Props> = ({
             />
           </FlexContainerComponent>
         </ContainerComponent>
+      ) : (
+        children
       ),
-      [currentText],
-    );
-
-  return useMemo(() => children, [children]);
+    [currentText, children],
+  );
 };

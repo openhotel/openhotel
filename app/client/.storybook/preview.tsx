@@ -2,12 +2,7 @@ import React, { StrictMode, useMemo } from "react";
 import "./style.css";
 import { ApplicationProvider } from "@openhotel/pixi-components";
 import { withConsole } from "@storybook/addon-console";
-import {
-  CoreLoaderComponent,
-  InitialLoaderComponent,
-} from "../src/modules/application";
-import { AssetsProvider } from "../src/shared/hooks";
-import { SBFurnitureProvider } from "../src/.storybook";
+import { FakeProviders } from "../src/.storybook/__mocks__";
 
 /** @type { import('@storybook/react').Preview } */
 const preview = {
@@ -76,15 +71,7 @@ export const decorators = [
     return (
       <StrictMode>
         <ApplicationProvider scale={scale} backgroundColor={backgroundColor}>
-          <InitialLoaderComponent>
-            <AssetsProvider>
-              <CoreLoaderComponent>
-                <SBFurnitureProvider>
-                  {withConsole()(renderStory)(props)}
-                </SBFurnitureProvider>
-              </CoreLoaderComponent>
-            </AssetsProvider>
-          </InitialLoaderComponent>
+          <FakeProviders>{withConsole()(renderStory)(props)}</FakeProviders>
         </ApplicationProvider>
       </StrictMode>
     );

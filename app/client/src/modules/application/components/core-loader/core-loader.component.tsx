@@ -14,6 +14,7 @@ export const CoreLoaderComponent: React.FC<Props> = ({ children }) => {
     useTextures();
   const { setAsset, getAsset } = useAssets();
   const { t } = useTranslation();
+
   const loaderItems = useMemo(() => {
     const assets = Object.values(AssetEnum).filter((asset) => !getAsset(asset));
     const spriteSheets = Object.values(SpriteSheetEnum).filter(

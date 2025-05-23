@@ -1,17 +1,15 @@
-version: 1.1
 id: teleports@telephone
-label: telephone teleport
-description:
-type: teleport
-size:
-  width: 1
-  depth: 1
-  height: 74
+type: furniture
+revision: 01JSKJ8RPEYS1K8A0JTVVRTBYF
 icon:
   texture: icon
   bounds:
-    width: 24
-    height: 50
+    width: 12
+    height: 22
+size:
+  width: 1
+  height: 74
+  depth: 1
 direction:
   north:
     textures:
@@ -21,7 +19,7 @@ direction:
           height: 98
         pivot:
           x: 0
-          y: 12
+          "y": 12
         position:
           x: 0
           z: 0
@@ -34,8 +32,13 @@ direction:
           height: 98
         pivot:
           x: 0
-          y: 12
+          "y": 12
         position:
           x: 0
           z: 0
         zIndex: 0
+  south:
+    textures: []
+  west:
+    textures: []
+actions: []

@@ -1,12 +1,9 @@
 import { Meta, StoryObj } from "@storybook/react";
-import React, { useCallback, useEffect, useState } from "react";
-import {
-  FurnitureFrameComponent,
-  FurnitureFrameComponentWrapper,
-} from "./furniture-frame.component";
-import { SBSmallRoomComponent, useSBFurniture } from ".storybook";
+import React, { useCallback, useState } from "react";
+import { FurnitureFrameComponent } from "./furniture-frame.component";
+import { SmallRoomComponent } from ".storybook/__components__";
 import { CrossDirection } from "shared/enums";
-import { FurnitureData, Point2d, Point3d } from "shared/types";
+import { Point2d, Point3d } from "shared/types";
 
 export default {
   title: "Shared/Furniture/Frame",
@@ -19,37 +16,30 @@ export default {
 type Story = StoryObj<typeof FurnitureFrameComponent>;
 
 //@ts-ignore
-export const LoadingNorth: Story = () => {
-  return (
-    <SBSmallRoomComponent>
-      <FurnitureFrameComponentWrapper
-        position={{ x: -1, y: 0, z: -1 }}
-        framePosition={{ x: 0, y: 0 }}
-        onPointerDown={console.log}
-      />
-    </SBSmallRoomComponent>
-  );
-};
+export const LoadingNorth: Story = () => (
+  <SmallRoomComponent>
+    <FurnitureFrameComponent
+      position={{ x: -1, y: 0, z: -1 }}
+      framePosition={{ x: 0, y: 0 }}
+      onPointerDown={console.log}
+    />
+  </SmallRoomComponent>
+);
 
 //@ts-ignore
-export const LoadingEast: Story = () => {
-  return (
-    <SBSmallRoomComponent>
-      <FurnitureFrameComponentWrapper
-        position={{ x: -1, y: 0, z: -1 }}
-        framePosition={{ x: 0, y: 0 }}
-        direction={CrossDirection.EAST}
-        onPointerDown={console.log}
-      />
-    </SBSmallRoomComponent>
-  );
-};
+export const LoadingEast: Story = () => (
+  <SmallRoomComponent>
+    <FurnitureFrameComponent
+      position={{ x: -1, y: 0, z: -1 }}
+      framePosition={{ x: 0, y: 0 }}
+      direction={CrossDirection.EAST}
+      onPointerDown={console.log}
+    />
+  </SmallRoomComponent>
+);
 
-const LoadNorthComponent = () => {
-  const { load, get } = useSBFurniture();
-
-  const [furnitureData, setFurnitureData] = useState<FurnitureData>(null);
-
+//@ts-ignore
+export const LoadedNorth: Story = () => {
   const [tilePosition, setTilePosition] = useState<Point3d>({
     x: -1,
     y: 0,
@@ -59,11 +49,6 @@ const LoadNorthComponent = () => {
   const [direction, setDirection] = useState<CrossDirection>(
     CrossDirection.NORTH,
   );
-
-  useEffect(() => {
-    const name = "./flags@pirate";
-    load(name).then(() => setFurnitureData(get(name)));
-  }, [load, get]);
 
   const onClickWall = useCallback(
     (tilePosition: Point3d, wallPoint: Point2d, direction: CrossDirection) => {
@@ -75,43 +60,27 @@ const LoadNorthComponent = () => {
   );
 
   return (
-    <SBSmallRoomComponent onClickWall={onClickWall}>
-      <FurnitureFrameComponentWrapper
+    <SmallRoomComponent onClickWall={onClickWall}>
+      <FurnitureFrameComponent
         position={tilePosition}
         framePosition={framePosition}
-        data={furnitureData}
+        furnitureId="flags@pirate"
         direction={direction as any}
         onPointerDown={console.log}
       />
-    </SBSmallRoomComponent>
+    </SmallRoomComponent>
   );
 };
 
 //@ts-ignore
-export const LoadedNorth: Story = () => <LoadNorthComponent />;
-
-const LoadEastComponent = () => {
-  const { load, get } = useSBFurniture();
-
-  const [furnitureData, setFurnitureData] = useState<FurnitureData>(null);
-
-  useEffect(() => {
-    const name = "./flags@pirate";
-    load(name).then(() => setFurnitureData(get(name)));
-  }, [load, get]);
-
-  return (
-    <SBSmallRoomComponent>
-      <FurnitureFrameComponentWrapper
-        position={{ x: -1, y: 0, z: -1 }}
-        framePosition={{ x: 0, y: 0 }}
-        data={furnitureData}
-        direction={CrossDirection.EAST}
-        onPointerDown={console.log}
-      />
-    </SBSmallRoomComponent>
-  );
-};
-
-//@ts-ignore
-export const LoadedEast: Story = () => <LoadEastComponent />;
+export const LoadedEast: Story = () => (
+  <SmallRoomComponent>
+    <FurnitureFrameComponent
+      position={{ x: -1, y: 0, z: -1 }}
+      framePosition={{ x: 0, y: 0 }}
+      furnitureId="flags@pirate"
+      direction={CrossDirection.EAST}
+      onPointerDown={console.log}
+    />
+  </SmallRoomComponent>
+);

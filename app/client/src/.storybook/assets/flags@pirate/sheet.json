@@ -3,17 +3,20 @@
     "north": {
       "frame": { "x": 0, "y": 0, "w": 34, "h": 43 },
       "anchor": { "x": 0, "y": 0 },
-      "sourceSize": { "w": 34, "h": 43 }
+      "sourceSize": { "w": 34, "h": 43 },
+      "__key": 7
     },
     "east": {
       "frame": { "x": 34, "y": 0, "w": 34, "h": 43 },
       "anchor": { "x": 0, "y": 0 },
-      "sourceSize": { "w": 34, "h": 43 }
+      "sourceSize": { "w": 34, "h": 43 },
+      "__key": 55
     },
     "icon": {
       "frame": { "x": 0, "y": 43, "w": 18, "h": 22 },
       "anchor": { "x": 0, "y": 0 },
-      "sourceSize": { "w": 18, "h": 22 }
+      "sourceSize": { "w": 18, "h": 22 },
+      "__key": "iaO9"
     }
   },
   "animations": {},

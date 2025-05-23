@@ -2,9 +2,9 @@ import { Meta, StoryObj } from "@storybook/react";
 import React, { useEffect, useState } from "react";
 
 import { FurniturePreviewComponent } from "./furniture-preview.component";
-import { useSBFurniture } from ".storybook";
 import { FurnitureData } from "shared/types";
 import { GraphicsComponent, GraphicType } from "@openhotel/pixi-components";
+import { useFurniture } from "shared/hooks";
 
 export default {
   title: "Shared/Furniture Preview",
@@ -17,8 +17,7 @@ export default {
 type Story = StoryObj<typeof FurniturePreviewComponent>;
 
 const LoadComponent = () => {
-  const { load, get } = useSBFurniture();
-
+  const { load, get } = useFurniture();
   const [furnitureData, setFurnitureData] = useState<FurnitureData>(null);
 
   useEffect(() => {

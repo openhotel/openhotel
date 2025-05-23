@@ -1,7 +1,15 @@
-import { useCallback } from "react";
-import { useAccount, useApiPath } from "shared/hooks";
+import React, { ReactNode, useCallback } from "react";
+import { ApiContext } from "shared/hooks/api/api.context";
+import { useAccount } from "shared/hooks/account";
+import { useApiPath } from "shared/hooks/use-api-path";
 
-export const useApi = () => {
+type ApiProps = {
+  children: ReactNode;
+};
+
+export const ApiProvider: React.FunctionComponent<ApiProps> = ({
+  children,
+}) => {
   const { getAccount } = useAccount();
   const { getPath } = useApiPath();
 
@@ -41,5 +49,12 @@ export const useApi = () => {
     [getAccount, getPath],
   );
 
-  return { fetch: $fetch };
+  return (
+    <ApiContext.Provider
+      value={{
+        fetch: $fetch,
+      }}
+      children={children}
+    />
+  );
 };

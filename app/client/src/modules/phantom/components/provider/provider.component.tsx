@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useApiPath } from "shared/hooks";
+import { useApiPath, useConfig } from "shared/hooks";
 
 type Props = {
   children: React.ReactNode;
@@ -7,10 +7,13 @@ type Props = {
 
 export const PhantomProvider: React.FC<Props> = ({ children }) => {
   const { getPath } = useApiPath();
+  const { isDevelopment } = useConfig();
 
-  const [isLogged, setIsLogged] = useState<boolean>(false);
+  const [isLogged, setIsLogged] = useState<boolean>(isDevelopment());
 
   useEffect(() => {
+    if (isLogged) return;
+
     const params = new URLSearchParams(window.location.search);
 
     fetch(getPath(`/token?token=${params.get("token")}`)).then((res) => {

@@ -1,10 +1,11 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import {
   Cursor,
   EventMode,
   GraphicsComponent,
   GraphicType,
   SpriteComponent,
+  useUpdate,
 } from "@openhotel/pixi-components";
 import {
   DUMMY_FURNITURE_FRAME_DATA,
@@ -12,18 +13,18 @@ import {
   TILE_SIZE,
 } from "shared/consts";
 import { CrossDirection } from "shared/enums";
-import { FurnitureData, Point2d, Point3d } from "shared/types";
+import { Point2d, Point3d } from "shared/types";
 import { getPositionFromIsometricPosition, getZIndex } from "shared/utils";
 import { useFurniture } from "shared/hooks";
 import { getWallPositionFromIsometricPosition } from "shared/utils/wall.utils";
 import { ulid } from "ulidx";
 
 type Props = {
-  id: string;
+  id?: string;
   furnitureId?: string;
   position: Point3d;
 
-  direction: CrossDirection;
+  direction?: CrossDirection;
   framePosition: Point2d;
 
   onPointerDown?: () => void;
@@ -32,54 +33,26 @@ type Props = {
 };
 
 export const FurnitureFrameComponent: React.FC<Props> = ({
-  id,
-  furnitureId,
-  position,
-  direction,
-  framePosition,
-  onPointerDown,
-  interactive = true,
-}) => {
-  const { get: getFurniture } = useFurniture();
-
-  const furnitureData = getFurniture(furnitureId);
-
-  return (
-    <FurnitureFrameComponentWrapper
-      id={id}
-      position={position}
-      data={furnitureData}
-      framePosition={framePosition}
-      direction={direction}
-      onPointerDown={onPointerDown}
-      interactive={interactive}
-    />
-  );
-};
-
-type PropsWrapper = {
-  id?: string;
-
-  position: Point3d;
-  framePosition: Point2d;
-
-  data?: FurnitureData;
-
-  direction?: CrossDirection;
-  onPointerDown?: () => void;
-
-  interactive?: boolean;
-};
-
-export const FurnitureFrameComponentWrapper: React.FC<PropsWrapper> = ({
   id = ulid(),
   position,
   framePosition,
-  data = DUMMY_FURNITURE_FRAME_DATA,
+  furnitureId,
   direction = CrossDirection.NORTH,
   onPointerDown,
   interactive = true,
 }) => {
+  const { load: loadFurniture, get: getFurniture } = useFurniture();
+  const { update, lastUpdate } = useUpdate();
+
+  useEffect(() => {
+    loadFurniture(furnitureId).then(update);
+  }, [furnitureId, loadFurniture, update]);
+
+  const data = useMemo(
+    () => getFurniture(furnitureId) ?? DUMMY_FURNITURE_FRAME_DATA,
+    [getFurniture, furnitureId, lastUpdate],
+  );
+
   const $data = useMemo(
     () => (data ? data : DUMMY_FURNITURE_FRAME_DATA),
     [data],
