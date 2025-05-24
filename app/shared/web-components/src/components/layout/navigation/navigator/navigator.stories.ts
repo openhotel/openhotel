@@ -1,10 +1,10 @@
 import { NavigatorComponent } from "./navigator.component";
 
 export default {
-  title: "Components/Layout/Navigation/Navigator",
+  title: "Components/Layout/Navigator",
   component: NavigatorComponent,
 };
 
-export const Primary = {
+export const Navigator = {
   args: {},
 };

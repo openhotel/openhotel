@@ -27,6 +27,9 @@ import { NetworkIconComponent } from "./network-icon.component";
 import { ForbiddenIconComponent } from "./forbidden-icon.component";
 import { AnalyticsIconComponent } from "./analytics-icon.component";
 import { KeysIconComponent } from "./keys-icon.component";
+import { BurgerIconComponent } from "./burger-icon.component";
+import { BurgerCrossIconComponent } from "./burger-cross-icon.component";
+import { BurgerArrowIconComponent } from "./burger-arrow-icon.component";
 
 export default {
   title: "Components/Icons",
@@ -55,6 +58,9 @@ export const Download = () => <DownloadIconComponent />;
 export const Forbidden = () => <ForbiddenIconComponent />;
 export const Analytics = () => <AnalyticsIconComponent />;
 export const Keys = () => <KeysIconComponent />;
+export const Burger = () => <BurgerIconComponent />;
+export const BurgerCross = () => <BurgerCrossIconComponent />;
+export const BurgerArrow = () => <BurgerArrowIconComponent />;
 
 export const CC = () => <CCIconComponent />;
 export const BY = () => <BYIconComponent />;

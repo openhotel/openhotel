@@ -18,6 +18,9 @@ export * from "./download-icon.component";
 export * from "./forbidden-icon.component";
 export * from "./analytics-icon.component";
 export * from "./keys-icon.component";
+export * from "./burger-icon.component";
+export * from "./burger-cross-icon.component";
+export * from "./burger-arrow-icon.component";
 
 export * from "./cc";
 export * from "./signal";

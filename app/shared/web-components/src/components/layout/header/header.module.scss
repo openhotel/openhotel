@@ -1,3 +1,5 @@
+@use "../../../styles/all.module.scss" as *;
+
 .header {
   display: flex;
 
@@ -5,4 +7,14 @@
   align-items: center;
 
   padding: 1rem 1rem 1rem 0;
+
+  .burger {
+    display: none;
+    cursor: pointer;
+    margin-left: 2rem;
+
+    @include phone-only() {
+      display: inherit;
+    }
+  }
 }

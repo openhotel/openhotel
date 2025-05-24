@@ -10,8 +10,10 @@ import {
   CardComponent,
   MainComponent,
   LicenseComponent,
+  HeaderComponent,
 } from "../../../components";
 import { cn } from "../../../utils";
+import { LayoutProvider } from "../../../hooks";
 
 type Props = {
   navigatorChildren?: React.ReactNode;
@@ -26,26 +28,28 @@ export const MainLayoutComponent: React.FC<Props> = ({
   footerChildren,
 }) => {
   return (
-    <BackgroundComponent>
-      <CardComponent className={styles.bigCard}>
-        <div className={styles.container}>
-          <NavigatorComponent children={navigatorChildren} />
-          <div className={styles.bigContainer}>
-            {/*{headerChildren && <HeaderComponent children={headerChildren} />}*/}
-            <MainComponent
-              className={cn(styles.main, {
-                [styles.headless]: !headerChildren,
-              })}
-              children={children}
-            />
+    <LayoutProvider>
+      <BackgroundComponent>
+        <CardComponent className={styles.bigCard}>
+          <div className={styles.container}>
+            <NavigatorComponent children={navigatorChildren} />
+            <div className={styles.bigContainer}>
+              <HeaderComponent children={headerChildren} />
+              <MainComponent
+                className={cn(styles.main, {
+                  [styles.headless]: !headerChildren,
+                })}
+                children={children}
+              />
+            </div>
           </div>
-        </div>
-        <FooterComponent>
-          <SocialComponent />
-          {footerChildren}
-          <LicenseComponent />
-        </FooterComponent>
-      </CardComponent>
-    </BackgroundComponent>
+          <FooterComponent>
+            <SocialComponent />
+            {footerChildren}
+            <LicenseComponent />
+          </FooterComponent>
+        </CardComponent>
+      </BackgroundComponent>
+    </LayoutProvider>
   );
 };
