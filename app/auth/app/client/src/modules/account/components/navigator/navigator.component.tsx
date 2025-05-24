@@ -85,8 +85,8 @@ export const HomeNavigatorComponent: React.FC = () => {
           </LinkComponent>
         </>
       ) : null}
-      <LinkComponent to="/logout">
-        <ButtonComponent fullWidth>Logout</ButtonComponent>
+      <LinkComponent to="/logout" className={styles.logout}>
+        Logout
       </LinkComponent>
     </div>
   );

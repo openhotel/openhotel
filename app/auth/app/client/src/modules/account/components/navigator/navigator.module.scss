@@ -4,8 +4,12 @@
   flex-direction: column;
   height: 100%;
 
-  :last-child {
-    margin-top: auto;
+  .logout {
+    text-align: center;
+    width: fit-content;
+    margin: auto auto 1rem auto;
+    text-decoration: none;
+    font-weight: bold;
   }
 }
 hr {
