@@ -30,7 +30,7 @@ jobs:
             "asset-editor"
             "pixi-components"
             "auth"
-            "components"
+            "web-components"
             "static"
             "pathfinding"
             "utils"
