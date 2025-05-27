@@ -14,7 +14,12 @@ import {
   isWallRenderable,
 } from "shared/utils";
 import { Point2d, Point3d, PrivateRoom, Size2d } from "shared/types";
-import { WALL_DOOR_HEIGHT, WALL_HEIGHT, WALL_WIDTH } from "shared/consts";
+import {
+  TILE_SIZE,
+  WALL_DOOR_HEIGHT,
+  WALL_HEIGHT,
+  WALL_WIDTH,
+} from "shared/consts";
 import {
   PrivateRoomStairs,
   PrivateRoomTile,
@@ -37,6 +42,7 @@ type Props = {
     direction: CrossDirection,
   ) => void;
   children?: React.ReactNode;
+  pivotFix?: boolean;
 } & PrivateRoom;
 
 export type PreviewTileData = {
@@ -53,6 +59,7 @@ export const PrivateRoomComponent: React.FC<Props> = ({
   onClickWall,
   onMoveWall,
   children,
+  pivotFix = true,
 }) => {
   const $ref = useRef<ContainerRef>(null);
   const $sizeRef = useRef<ContainerRef>(null);
@@ -269,7 +276,18 @@ export const PrivateRoomComponent: React.FC<Props> = ({
   return useMemo(
     () => (
       <>
-        <ContainerComponent ref={$ref} sortableChildren pivot={pivot}>
+        <ContainerComponent
+          ref={$ref}
+          sortableChildren
+          pivot={
+            pivotFix
+              ? pivot
+              : {
+                  x: TILE_SIZE.width / 2 + 1,
+                  y: TILE_SIZE.height / 2,
+                }
+          }
+        >
           {tilesAndWalls}
           {renderPreviewTile}
           {children}
@@ -284,6 +302,7 @@ export const PrivateRoomComponent: React.FC<Props> = ({
       renderPreviewTile,
       children,
       renderRoomSize,
+      pivotFix,
     ],
   );
 };

@@ -33,9 +33,13 @@ export const FurnitureProvider: React.FunctionComponent<FurnitureProps> = ({
 
       if (!uniqueFurniture.length) return;
 
+      const waitForLoad = [];
       for (const furnitureId of uniqueFurniture) {
         //prevents loading again furniture when is loading
-        if (loadingFurnitureId.current.includes(furnitureId)) continue;
+        if (loadingFurnitureId.current.includes(furnitureId)) {
+          waitForLoad.push(furnitureId);
+          continue;
+        }
 
         loadingFurnitureId.current.push(furnitureId);
         const spriteSheetPath = getPath(
@@ -78,8 +82,17 @@ export const FurnitureProvider: React.FunctionComponent<FurnitureProps> = ({
           ),
         });
       }
+
+      for (const furnitureId of waitForLoad) {
+        await waitUntil(
+          () => Boolean($get(furnitureId)),
+          100,
+          10,
+          `${furnitureId} rejected!`,
+        );
+      }
     },
-    [add, $get, getPath, loadSpriteSheet, getSpriteSheet, get],
+    [add, $get, getPath, loadSpriteSheet, getSpriteSheet],
   );
 
   return (

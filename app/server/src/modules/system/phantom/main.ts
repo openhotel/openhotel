@@ -24,7 +24,7 @@ export const phantom = () => {
     });
   };
 
-  const capture = ({ id, room, position, size, palette }: any) => {
+  const capture = ({ id, room, position, size, palette, pivotFix }: any) => {
     const config = System.config.get();
     if (!config.phantom.enabled) return;
 
@@ -35,6 +35,7 @@ export const phantom = () => {
       position,
       size,
       palette,
+      pivotFix,
     });
     return $id;
   };
