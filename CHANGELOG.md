@@ -1,4 +1,21 @@
 
+<a name="v0.7.5"></a>
+
+## [v0.7.5](https://github.com/openhotel/openhotel/compare/v0.7.4...v0.7.5) (2025-05-27)
+
+### Bug Fixes
+
+- room preview not centered - fix [#943](https://github.com/openhotel/openhotel/issues/943) ([#963](https://github.com/openhotel/openhotel/issues/963))
+- isPointFree on private room has incorrect props - fix [#960](https://github.com/openhotel/openhotel/issues/960) ([#962](https://github.com/openhotel/openhotel/issues/962))
+- contributions github action "web-components"repo - fix [#958](https://github.com/openhotel/openhotel/issues/958) ([#959](https://github.com/openhotel/openhotel/issues/959))
+- storybook not loading correctly between stories - fix [#911](https://github.com/openhotel/openhotel/issues/911) ([#955](https://github.com/openhotel/openhotel/issues/955))
+
+### Features
+
+- add createdAt + updatedAt on private rooms - fix [#944](https://github.com/openhotel/openhotel/issues/944) ([#961](https://github.com/openhotel/openhotel/issues/961))
+- remove wrapped components + mocked storybook providers - fix [#953](https://github.com/openhotel/openhotel/issues/953) ([#956](https://github.com/openhotel/openhotel/issues/956))
+
+
 <a name="v0.7.4"></a>
 
 ## [v0.7.4](https://github.com/openhotel/openhotel/compare/v0.7.3...v0.7.4) (2025-05-23)
