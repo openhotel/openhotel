@@ -14,6 +14,9 @@ export type PrivateRoom = BaseRoom & {
   layoutIndex: number;
   furniture: RoomFurniture[];
   maxUsers: number;
+
+  createdAt: number;
+  updatedAt: number;
 };
 
 export type PrivateRoomMutable = BaseRoomMutable & {
