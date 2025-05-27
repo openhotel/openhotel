@@ -82,7 +82,7 @@ import { quantizeToPalette } from "shared/utils/image.utils.ts";
   let isRunning = false;
 
   const processCapture = async () => {
-    const { id, size, position, room, palette } = captures.shift();
+    const { id, size, position, room, palette, pivotFix } = captures.shift();
 
     await launchBrowser();
 
@@ -102,6 +102,7 @@ import { quantizeToPalette } from "shared/utils/image.utils.ts";
       url.searchParams.append("token", $token);
       url.searchParams.append("posX", position.x);
       url.searchParams.append("posY", position.y);
+      url.searchParams.append("pivotFix", pivotFix);
 
       await page.goto(url.href, {});
 
@@ -151,8 +152,15 @@ import { quantizeToPalette } from "shared/utils/image.utils.ts";
     isRunning = false;
   };
 
-  const capturePrivateRoom = ({ id, room, position, size, palette }) => {
-    captures.push({ id, room, position, size, palette });
+  const capturePrivateRoom = ({
+    id,
+    room,
+    position,
+    size,
+    palette,
+    pivotFix,
+  }) => {
+    captures.push({ id, room, position, size, palette, pivotFix });
     processCaptures();
   };
 

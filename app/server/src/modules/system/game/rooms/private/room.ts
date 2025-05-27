@@ -85,8 +85,11 @@ export const getRoom =
         roomId: getId(),
       });
 
+      const randomPoint =
+        getFurniture().sort(() => 0.5 + Math.random())[0]?.position ??
+        getRandomPoint();
       // Make capture
-      const pos = getPositionFromIsometricPosition(getRandomPoint());
+      const pos = getPositionFromIsometricPosition(randomPoint);
 
       System.phantom.capture({
         id: room.id,
@@ -96,9 +99,10 @@ export const getRoom =
           height: 128,
         },
         position: {
-          x: -pos.x,
-          y: -pos.y,
+          x: -pos.x + 64,
+          y: -pos.y + 64,
         },
+        pivotFix: false,
       });
     };
     const removeUser = (user: User, moveToAnotherRoom: boolean = false) => {
