@@ -19,7 +19,10 @@ export type PublicRoomMutable = BaseRoomMutable & {
   type: "public";
 
   getPoint: (point: Point3d) => RoomPoint;
-  isPointFree: (point: Point3d, accountId?: string) => boolean;
+  isPointFree: (
+    point: Point3d,
+    props?: { accountId?: string; withoutSpawn?: boolean },
+  ) => boolean;
   findPath: (props: FindPathProps) => Point3d[];
 
   getLayers: () => string[];
