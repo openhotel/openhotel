@@ -67,6 +67,8 @@ export const roomPutRequest: ProxyRequestType = {
       furniture: [],
       layoutIndex: layoutId,
       maxUsers: 10,
+      createdAt: Date.now(),
+      updatedAt: Date.now(),
     };
 
     await System.game.rooms.add(roomData);
