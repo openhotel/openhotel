@@ -26,6 +26,7 @@ export const PrivateRoomRenderComponent = () => {
 
   const [room, setRoom] = useState(null);
   const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [pivotFix, setPivotFix] = useState<boolean>(true);
 
   const params = useMemo(() => new URLSearchParams(window.location.search), []);
 
@@ -42,12 +43,13 @@ export const PrivateRoomRenderComponent = () => {
 
   useEffect(() => {
     if (!room) return;
-    ``;
+
     setPosition({
       x: parseInt(params.get("posX") ?? "0"),
       y: parseInt(params.get("posY") ?? "0"),
     });
-  }, [room, setPosition, params]);
+    setPivotFix(params.get("pivotFix") !== "false");
+  }, [room, setPosition, setPivotFix, params]);
 
   useEffect(() => {
     if (!room) return;
@@ -107,7 +109,6 @@ export const PrivateRoomRenderComponent = () => {
   const size = useMemo(() => getSize(), [getSize]);
 
   if (!room) return;
-
   return (
     <ContainerComponent position={position}>
       <GraphicsComponent
@@ -116,7 +117,7 @@ export const PrivateRoomRenderComponent = () => {
         height={size.height}
         tint={0}
       />
-      <PrivateRoomComponent {...room}>
+      <PrivateRoomComponent {...room} pivotFix={pivotFix}>
         {renderFurniture}
         {renderCharacters}
       </PrivateRoomComponent>

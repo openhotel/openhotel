@@ -5,6 +5,7 @@ export const waitUntil = async (
   callback: () => boolean,
   intervalTime = 100,
   retires = 10,
+  rejectMessage: string = "waitUnitl rejected!",
 ): Promise<void> =>
   new Promise((resolve, reject) => {
     let iteration = 0;
@@ -15,7 +16,7 @@ export const waitUntil = async (
       }
       if (iteration > retires) {
         clearInterval(interval);
-        reject();
+        reject(rejectMessage);
       }
       iteration++;
     }, intervalTime);
