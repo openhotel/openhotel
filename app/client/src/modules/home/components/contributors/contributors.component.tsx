@@ -20,9 +20,7 @@ export const ContributorsComponent: React.FC = () => {
   const creatorIndexRef = useRef<number>(0);
   const contributorIndexRef = useRef<number>(0);
 
-  const [text, setText] = useState<string>(
-    `${t("system.created_by")} ${getCreators()[0][creatorIndexRef.current].login}`,
-  );
+  const [text, setText] = useState<string>(`${t("system.created_by")} ...`);
 
   const onOpenGithub = useCallback(() => {
     window.open("https://github.com/openhotel", "_blank");
@@ -31,6 +29,8 @@ export const ContributorsComponent: React.FC = () => {
   const doLoop = useCallback(() => {
     const creators = getCreators();
     const contributors = getContributors();
+
+    if (!creators.length || !contributors.length) return;
 
     if (creators.length > creatorIndexRef.current) {
       setText(
@@ -50,6 +50,7 @@ export const ContributorsComponent: React.FC = () => {
   }, [getCreators, getContributors, t]);
 
   useEffect(() => {
+    doLoop();
     return addTask({
       type: TickerQueue.REPEAT,
       repeatEvery: CONTRIBUTOR_LOOP_TIME,
