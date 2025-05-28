@@ -1,0 +1,60 @@
+{
+  "system": {
+    "connecting": "Connectant...",
+    "asset_label": "recursos",
+    "sprite_sheet_label": "fulla de sprites",
+    "texture_label": "textures",
+    "loading": "Cargant",
+    "progress_may_be_wiped": "El progrés podria ser borrat",
+    "loading_config": "Cargant configuració...",
+    "redirecting": "Redirigint...",
+    "proxy_disconnected": "¡Proxy desconnectat! :(",
+    "proxy_not_reachable": "¡Proxy no accessible! :(",
+    "something_went_wrong": "¡Alguna cosa ha sortit malament! :(",
+    "created_by": "Creat per",
+    "developed_by": "Desenvolupat per"
+  },
+  "chat": {
+    "hot_bar_placeholder": "Click aqui o prem 'c' per escriure"
+  },
+  "navigator": {
+    "title": "Navegador",
+    "join": "Unir-se",
+    "search": "Cercar...",
+    "tabs": {
+      "hotel": "Hotel",
+      "rooms": "Sales",
+      "me": "Jo",
+      "search": "Cercar"
+    },
+    "no_results": "Sense resultats... :(",
+    "create_room": "Crear sala"
+  },
+  "economy": {
+    "purse_title": "Moneder",
+    "credits": "credits",
+    "buy": "Comprar"
+  },
+  "catalog": {
+    "title": "Cataleg"
+  },
+  "inventory": {
+    "title": "Inventari",
+    "tabs": {
+      "furniture": "Mobles",
+      "frames": "Quadres",
+      "pets": "Mascotes",
+      "rares": "Rares"
+    },
+    "place": "Col·locar"
+  },
+  "room_creator": {
+    "title": "Creador de sales",
+    "form": {
+      "layout": "Distribució",
+      "title": "Títol",
+      "description": "Descripció",
+      "create_room": "Crear sala"
+    }
+  }
+}
