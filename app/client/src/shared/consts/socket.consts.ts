@@ -1,0 +1,1 @@
+export const SOCKET_RECONNECT_SECONDS = 30;

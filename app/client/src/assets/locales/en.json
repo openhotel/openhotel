@@ -13,7 +13,9 @@
     "proxy_not_reachable": "Proxy not reachable! :(",
     "something_went_wrong": "Something went wrong! :(",
     "created_by": "Created by",
-    "developed_by": "Developed by"
+    "developed_by": "Developed by",
+    "reconnecting_in": "Reconnecting in",
+    "seconds": "seconds..."
   },
   "chat": {
     "hot_bar_placeholder": "Click here or press 'c' to write"
