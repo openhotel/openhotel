@@ -41,6 +41,7 @@ type Props = {
     point: Point2d,
     direction: CrossDirection,
   ) => void;
+  onLeaveWall?: (direction: CrossDirection) => void;
   children?: React.ReactNode;
   pivotFix?: boolean;
 } & PrivateRoom;
@@ -58,6 +59,7 @@ export const PrivateRoomComponent: React.FC<Props> = ({
   onHoverTile,
   onClickWall,
   onMoveWall,
+  onLeaveWall,
   children,
   pivotFix = true,
 }) => {
@@ -189,6 +191,9 @@ export const PrivateRoomComponent: React.FC<Props> = ({
           const $onMoveWall = (direction: CrossDirection) => (point: Point2d) =>
             onMoveWall?.(position, point, direction);
 
+          const $onLeaveWall = (direction: CrossDirection) => () =>
+            onLeaveWall?.(direction);
+
           if (renderNorthWall)
             list.push(
               <PrivateRoomWallComponent
@@ -197,6 +202,7 @@ export const PrivateRoomComponent: React.FC<Props> = ({
                 position={position}
                 onPointerMove={$onMoveWall(CrossDirection.NORTH)}
                 onPointerDown={$onClickWall(CrossDirection.NORTH)}
+                onPointerLeave={$onLeaveWall(CrossDirection.NORTH)}
               />,
             );
           if (renderEastWall)
@@ -207,6 +213,7 @@ export const PrivateRoomComponent: React.FC<Props> = ({
                 position={position}
                 onPointerMove={$onMoveWall(CrossDirection.EAST)}
                 onPointerDown={$onClickWall(CrossDirection.EAST)}
+                onPointerLeave={$onLeaveWall(CrossDirection.EAST)}
               />,
             );
           if (renderEastWall && renderNorthWall)
@@ -238,6 +245,7 @@ export const PrivateRoomComponent: React.FC<Props> = ({
                 height={WALL_DOOR_HEIGHT}
                 onPointerMove={$onMoveWall(wallDoorDirection)}
                 onPointerDown={$onClickWall(wallDoorDirection)}
+                onPointerLeave={$onLeaveWall(wallDoorDirection)}
               />,
             );
         }
@@ -245,7 +253,14 @@ export const PrivateRoomComponent: React.FC<Props> = ({
     }
 
     return [list, accumulatedPivot];
-  }, [layout, onPointerTile, $onHoverTile, onClickWall, onMoveWall]);
+  }, [
+    layout,
+    onPointerTile,
+    $onHoverTile,
+    onClickWall,
+    onMoveWall,
+    onLeaveWall,
+  ]);
 
   useEffect(() => {
     setRawRoomSize((size) => $sizeRef?.current?.getSize?.() ?? size);
