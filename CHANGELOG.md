@@ -1,4 +1,18 @@
 
+<a name="v0.7.9"></a>
+
+## [v0.7.9](https://github.com/openhotel/openhotel/compare/v0.7.8...v0.7.9) (2025-05-29)
+
+### Bug Fixes
+
+- dont consume preview ids when placing outside room - fix [#974](https://github.com/openhotel/openhotel/issues/974) ([#975](https://github.com/openhotel/openhotel/issues/975))
+
+### Features
+
+- reload in 30 seconds when proxy is disconnected + show countdown - fix [#968](https://github.com/openhotel/openhotel/issues/968) ([#976](https://github.com/openhotel/openhotel/issues/976))
+- cancel action when clicking outside room placing a furniture - fix [#957](https://github.com/openhotel/openhotel/issues/957) ([#973](https://github.com/openhotel/openhotel/issues/973))
+
+
 <a name="v0.7.8"></a>
 
 ## [v0.7.8](https://github.com/openhotel/openhotel/compare/v0.7.7...v0.7.8) (2025-05-28)
@@ -1058,17 +1072,17 @@
 
 <a name="v0.2.20-rc.2"></a>
 
-## [v0.2.20-rc.2](https://github.com/openhotel/openhotel/compare/v0.2.20-rc.1...v0.2.20-rc.2) (2024-09-29)
-
-
-<a name="v0.2.20-rc.1"></a>
-
-## [v0.2.20-rc.1](https://github.com/openhotel/openhotel/compare/v0.2.19...v0.2.20-rc.1) (2024-09-29)
+## [v0.2.20-rc.2](https://github.com/openhotel/openhotel/compare/v0.2.19...v0.2.20-rc.2) (2024-09-29)
 
 
 <a name="v0.2.19"></a>
 
-## [v0.2.19](https://github.com/openhotel/openhotel/compare/v0.2.18...v0.2.19) (2024-09-29)
+## [v0.2.19](https://github.com/openhotel/openhotel/compare/v0.2.20-rc.1...v0.2.19) (2024-09-29)
+
+
+<a name="v0.2.20-rc.1"></a>
+
+## [v0.2.20-rc.1](https://github.com/openhotel/openhotel/compare/v0.2.18...v0.2.20-rc.1) (2024-09-29)
 
 
 <a name="v0.2.18"></a>
