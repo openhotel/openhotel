@@ -1,10 +1,11 @@
 
-<a name="v0.7.8-rc.1"></a>
+<a name="v0.7.8-rc.2"></a>
 
-## [v0.7.8-rc.1](https://github.com/openhotel/openhotel/compare/v0.7.7...v0.7.8-rc.1) (2025-05-28)
+## [v0.7.8-rc.2](https://github.com/openhotel/openhotel/compare/v0.7.7...v0.7.8-rc.2) (2025-05-28)
 
 ### Bug Fixes
 
+- contributors jumps out first creator - fix [#971](https://github.com/openhotel/openhotel/issues/971)
 - contributors jumps out first creator - fix [#971](https://github.com/openhotel/openhotel/issues/971)
 
 
