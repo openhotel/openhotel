@@ -1,4 +1,4 @@
-import React, { ReactNode, useCallback, useState } from "react";
+import React, { ReactNode, useCallback, useMemo, useState } from "react";
 import { ProxyContext } from "./proxy.context";
 import { useConfig } from "shared/hooks";
 import {
@@ -7,9 +7,20 @@ import {
   getWebSocketUrl,
 } from "shared/utils";
 import { ulid } from "ulidx";
-import { Event } from "shared/enums";
-import { LoaderComponent } from "shared/components";
+import { Event, SpriteSheetEnum } from "shared/enums";
+import {
+  CountdownComponent,
+  LoaderComponent,
+  TextComponent,
+} from "shared/components";
 import { useTranslation } from "react-i18next";
+import {
+  ContainerComponent,
+  FLEX_ALIGN,
+  FLEX_JUSTIFY,
+  FlexContainerComponent,
+} from "@openhotel/pixi-components";
+import { SOCKET_RECONNECT_SECONDS } from "shared/consts/socket.consts";
 
 type ProxyProps = {
   children: ReactNode;
@@ -19,11 +30,12 @@ export const ProxyProvider: React.FunctionComponent<ProxyProps> = ({
   children,
 }) => {
   const { t } = useTranslation();
-  const { getConfig } = useConfig();
+  const { getConfig, isDevelopment } = useConfig();
 
   const [loadingMessage, setLoadingMessage] = useState<string>(
     t("system.connecting"),
   );
+  const [reloadProxy, setReloadProxy] = useState<boolean>(false);
 
   const params = new URLSearchParams(location.search);
   const state = params.get("state");
@@ -73,14 +85,15 @@ export const ProxyProvider: React.FunctionComponent<ProxyProps> = ({
     });
     $socket.on("connected", () => {
       setLoadingMessage(null);
-
       $ping();
     });
     $socket.on("disconnected", () => {
       setLoadingMessage(t("system.proxy_disconnected"));
+      setReloadProxy(true);
     });
     $socket.connect().catch(() => {
       setLoadingMessage(t("proxy_not_reachable"));
+      setReloadProxy(true);
     });
 
     return $socket;
@@ -117,6 +130,38 @@ export const ProxyProvider: React.FunctionComponent<ProxyProps> = ({
     [socket],
   );
 
+  const onReload = useCallback(() => {
+    window.location.reload();
+  }, []);
+
+  const renderReloadProxy = useMemo(
+    () =>
+      loadingMessage && reloadProxy ? (
+        <ContainerComponent>
+          <FlexContainerComponent
+            justify={FLEX_JUSTIFY.CENTER}
+            align={FLEX_ALIGN.CENTER}
+          >
+            <FlexContainerComponent
+              pivot={{
+                y: -14,
+              }}
+              gap={5}
+            >
+              <TextComponent text={t("system.reconnecting_in")} />
+              <CountdownComponent
+                count={isDevelopment() ? 3 : SOCKET_RECONNECT_SECONDS}
+                spriteSheet={SpriteSheetEnum.DEFAULT_FONT}
+                onDone={onReload}
+              />
+              <TextComponent text={t("system.seconds")} />
+            </FlexContainerComponent>
+          </FlexContainerComponent>
+        </ContainerComponent>
+      ) : null,
+    [isDevelopment, loadingMessage, reloadProxy],
+  );
+
   return (
     <ProxyContext.Provider
       value={{
@@ -125,7 +170,10 @@ export const ProxyProvider: React.FunctionComponent<ProxyProps> = ({
         load,
       }}
       children={
-        <LoaderComponent message={loadingMessage} children={children} />
+        <>
+          <LoaderComponent message={loadingMessage} children={children} />
+          {renderReloadProxy}
+        </>
       }
     />
   );

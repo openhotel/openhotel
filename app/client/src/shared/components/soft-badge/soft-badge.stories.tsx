@@ -13,7 +13,7 @@ export default {
 type Story = StoryObj<typeof SoftBadgeComponent>;
 
 //@ts-ignore
-export const Primary: Story = {
+export const SoftBadge: Story = {
   args: {
     size: {
       width: 100,

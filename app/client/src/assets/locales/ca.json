@@ -12,7 +12,9 @@
     "proxy_not_reachable": "¡Proxy no accessible! :(",
     "something_went_wrong": "¡Alguna cosa ha sortit malament! :(",
     "created_by": "Creat per",
-    "developed_by": "Desenvolupat per"
+    "developed_by": "Desenvolupat per",
+    "reconnecting_in": "Reconnectant en",
+    "seconds": "segons..."
   },
   "chat": {
     "hot_bar_placeholder": "Click aqui o prem 'c' per escriure"
