@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { RedirectComponent } from "shared/components";
-import { useAccount, useConnection, useHotel, useRedirect } from "shared/hooks";
+import { useAccount, useConnection, useHotel } from "shared/hooks";
 import { PartialConnection } from "shared/types";
-import { arraysMatch } from "shared/utils";
+import { arraysMatch, getLoginRedirect } from "shared/utils";
 import { ButtonComponent } from "@openhotel/web-components";
 
 export const ConnectionComponent: React.FC = () => {
@@ -14,7 +14,6 @@ export const ConnectionComponent: React.FC = () => {
 
   const { add, get } = useConnection();
   const { get: getHotel } = useHotel();
-  const { set: setRedirect } = useRedirect();
 
   const [connection, setConnection] = useState<PartialConnection | null>(
     undefined,
@@ -30,8 +29,6 @@ export const ConnectionComponent: React.FC = () => {
     const composedRedirectUrl = new URL(redirectUrl);
     if (meta) composedRedirectUrl.searchParams.append("meta", meta);
     window.location.replace(composedRedirectUrl);
-
-    setRedirect(redirectUrl);
   };
 
   const onAddHost = useCallback(() => {
@@ -55,14 +52,18 @@ export const ConnectionComponent: React.FC = () => {
     get(hotelId, integrationId)
       .then((connection) => {
         if (arraysMatch(connection.scopes, scopes)) return onAddHost();
-        setRedirect(connection.redirectUrl);
       })
       .catch(({ status }) => {
         if (status === 403) navigate("/");
       });
   }, [setConnection, getHotel, get, hotelId, integrationId, isLogged]);
 
-  if (isLogged === false) return <RedirectComponent to="/login" />;
+  if (isLogged === false)
+    return (
+      <RedirectComponent
+        to={getLoginRedirect({ type: "integration", hotelId, integrationId })}
+      />
+    );
   if (isLogged === null || connection === undefined)
     return <div>loading...</div>;
   if (connection === null) return <RedirectComponent to="/" />;

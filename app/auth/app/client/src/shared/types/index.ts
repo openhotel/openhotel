@@ -6,3 +6,4 @@ export * from "./tokens.types";
 export * from "./hotels.types";
 export * from "./backup.types";
 export * from "./apps.types";
+export * from "./login.types";
