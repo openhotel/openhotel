@@ -1,4 +1,14 @@
 
+<a name="v0.7.6"></a>
+
+## [v0.7.6](https://github.com/openhotel/openhotel/compare/v0.7.5...v0.7.6) (2025-05-28)
+
+### Bug Fixes
+
+- loading furniture icons on catalog - fix [#964](https://github.com/openhotel/openhotel/issues/964) ([#967](https://github.com/openhotel/openhotel/issues/967))
+- created by jumps + catalan locale - fix [#965](https://github.com/openhotel/openhotel/issues/965) ([#966](https://github.com/openhotel/openhotel/issues/966))
+
+
 <a name="v0.7.5"></a>
 
 ## [v0.7.5](https://github.com/openhotel/openhotel/compare/v0.7.4...v0.7.5) (2025-05-27)
