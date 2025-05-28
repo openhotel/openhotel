@@ -1,4 +1,13 @@
 
+<a name="v0.7.7"></a>
+
+## [v0.7.7](https://github.com/openhotel/openhotel/compare/v0.7.6...v0.7.7) (2025-05-28)
+
+### Bug Fixes
+
+- contributors undefined first time - fix [#969](https://github.com/openhotel/openhotel/issues/969) ([#970](https://github.com/openhotel/openhotel/issues/970))
+
+
 <a name="v0.7.6"></a>
 
 ## [v0.7.6](https://github.com/openhotel/openhotel/compare/v0.7.5...v0.7.6) (2025-05-28)
@@ -1040,17 +1049,17 @@
 
 <a name="v0.2.20-rc.2"></a>
 
-## [v0.2.20-rc.2](https://github.com/openhotel/openhotel/compare/v0.2.20-rc.1...v0.2.20-rc.2) (2024-09-29)
-
-
-<a name="v0.2.20-rc.1"></a>
-
-## [v0.2.20-rc.1](https://github.com/openhotel/openhotel/compare/v0.2.19...v0.2.20-rc.1) (2024-09-29)
+## [v0.2.20-rc.2](https://github.com/openhotel/openhotel/compare/v0.2.19...v0.2.20-rc.2) (2024-09-29)
 
 
 <a name="v0.2.19"></a>
 
-## [v0.2.19](https://github.com/openhotel/openhotel/compare/v0.2.18...v0.2.19) (2024-09-29)
+## [v0.2.19](https://github.com/openhotel/openhotel/compare/v0.2.20-rc.1...v0.2.19) (2024-09-29)
+
+
+<a name="v0.2.20-rc.1"></a>
+
+## [v0.2.20-rc.1](https://github.com/openhotel/openhotel/compare/v0.2.18...v0.2.20-rc.1) (2024-09-29)
 
 
 <a name="v0.2.18"></a>
@@ -1832,5 +1841,5 @@
 
 <a name="v0.0.1"></a>
 
-## [v0.0.1](https://github.com/openhotel/openhotel/compare/v0.0.1-alpha.22...v0.0.1) (2024-06-29)
+## [v0.0.1](https://github.com/openhotel/openhotel/compare/v0.0.1-alpha.23...v0.0.1) (2024-06-29)
 
