@@ -59,7 +59,7 @@ export const ItemPlacePreviewProvider: React.FunctionComponent<Props> = ({
           ? !tilePosition
           : !wallData
       )
-        return;
+        return setItemPreviewData(null);
 
       const id = getPreviewItemId();
 
@@ -82,7 +82,7 @@ export const ItemPlacePreviewProvider: React.FunctionComponent<Props> = ({
     return () => {
       removeOnPointerDown();
     };
-  }, [itemPreviewData, on, tilePosition, wallData]);
+  }, [itemPreviewData, on, tilePosition, wallData, setItemPreviewData]);
 
   useEffect(() => {
     if (!itemPreviewData) return;
