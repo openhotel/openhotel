@@ -29,6 +29,7 @@ type Props = {
 
   onPointerDown?: (position: Point2d) => void;
   onPointerMove?: (position: Point2d) => void;
+  onPointerLeave?: () => void;
 } & Omit<DisplayObjectProps<ContainerRef>, "position">;
 
 const TOP_HEIGHT = 15;
@@ -41,6 +42,7 @@ export const PrivateRoomWallComponent: React.FC<Props> = ({
   pivot,
   onPointerDown,
   onPointerMove,
+  onPointerLeave,
   ...props
 }) => {
   const graphicsRef = useRef<GraphicsRef>(null);
@@ -166,6 +168,7 @@ export const PrivateRoomWallComponent: React.FC<Props> = ({
           eventMode={EventMode.STATIC}
           onPointerDown={$onPointerDown}
           onPointerMove={$onPointerMove}
+          onPointerLeave={onPointerLeave}
           alpha={0}
           zIndex={zIndex + 1}
         />
