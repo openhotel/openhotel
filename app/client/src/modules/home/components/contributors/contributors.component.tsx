@@ -19,6 +19,7 @@ export const ContributorsComponent: React.FC = () => {
 
   const creatorIndexRef = useRef<number>(0);
   const contributorIndexRef = useRef<number>(0);
+  const currentTextRef = useRef<string>("system.created_by");
 
   const [text, setText] = useState<string>(`${t("system.created_by")} ...`);
 
@@ -34,21 +35,19 @@ export const ContributorsComponent: React.FC = () => {
 
     if (creators.length > creatorIndexRef.current) {
       console.log(creatorIndexRef.current, creators);
-      setText(
-        `${t("system.created_by")} ${creators[creatorIndexRef.current].login}`,
-      );
+      currentTextRef.current = "system.created_by";
+      setText(` ${creators[creatorIndexRef.current].login}`);
       creatorIndexRef.current++;
     } else if (contributors.length > contributorIndexRef.current) {
-      setText(
-        `${t("system.developed_by")} ${contributors[contributorIndexRef.current].login}`,
-      );
+      currentTextRef.current = "system.developed_by";
+      setText(` ${contributors[contributorIndexRef.current].login}`);
       contributorIndexRef.current++;
     }
     if (contributorIndexRef.current >= contributors.length) {
       creatorIndexRef.current = 0;
       contributorIndexRef.current = 0;
     }
-  }, [getCreators, getContributors, t]);
+  }, [getCreators, getContributors]);
 
   useEffect(() => {
     doLoop();
@@ -63,13 +62,13 @@ export const ContributorsComponent: React.FC = () => {
   return useMemo(
     () => (
       <TextComponent
-        text={text}
+        text={t(currentTextRef.current) + text}
         eventMode={EventMode.STATIC}
         cursor={Cursor.POINTER}
         onPointerDown={onOpenGithub}
         {...TEXT_BACKGROUND_BASE}
       />
     ),
-    [text, onOpenGithub],
+    [text, onOpenGithub, t],
   );
 };
