@@ -1,4 +1,13 @@
 
+<a name="v0.7.10"></a>
+
+## [v0.7.10](https://github.com/openhotel/openhotel/compare/v0.7.9...v0.7.10) (2025-05-29)
+
+### Bug Fixes
+
+- when click outside with an item selected cancel action - fix [#977](https://github.com/openhotel/openhotel/issues/977) ([#978](https://github.com/openhotel/openhotel/issues/978))
+
+
 <a name="v0.7.9"></a>
 
 ## [v0.7.9](https://github.com/openhotel/openhotel/compare/v0.7.8...v0.7.9) (2025-05-29)
@@ -1072,17 +1081,17 @@
 
 <a name="v0.2.20-rc.2"></a>
 
-## [v0.2.20-rc.2](https://github.com/openhotel/openhotel/compare/v0.2.19...v0.2.20-rc.2) (2024-09-29)
-
-
-<a name="v0.2.19"></a>
-
-## [v0.2.19](https://github.com/openhotel/openhotel/compare/v0.2.20-rc.1...v0.2.19) (2024-09-29)
+## [v0.2.20-rc.2](https://github.com/openhotel/openhotel/compare/v0.2.20-rc.1...v0.2.20-rc.2) (2024-09-29)
 
 
 <a name="v0.2.20-rc.1"></a>
 
-## [v0.2.20-rc.1](https://github.com/openhotel/openhotel/compare/v0.2.18...v0.2.20-rc.1) (2024-09-29)
+## [v0.2.20-rc.1](https://github.com/openhotel/openhotel/compare/v0.2.19...v0.2.20-rc.1) (2024-09-29)
+
+
+<a name="v0.2.19"></a>
+
+## [v0.2.19](https://github.com/openhotel/openhotel/compare/v0.2.18...v0.2.19) (2024-09-29)
 
 
 <a name="v0.2.18"></a>
