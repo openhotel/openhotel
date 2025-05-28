@@ -54,14 +54,14 @@ export const ItemPlacePreviewProvider: React.FunctionComponent<Props> = ({
     if (!itemPreviewData) return;
 
     const removeOnPointerDown = on(Event.POINTER_DOWN, () => {
-      const id = getPreviewItemId();
-
       if (
         itemPreviewData.furnitureData.type === FurnitureType.FURNITURE
           ? !tilePosition
           : !wallData
       )
         return;
+
+      const id = getPreviewItemId();
 
       emit(
         ProxyEvent.PLACE_ITEM,
