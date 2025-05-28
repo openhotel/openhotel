@@ -79,6 +79,7 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
     setCanPlace,
     getPreviewItemId,
     setItemPreviewData,
+    itemPreviewData,
   } = useItemPlacePreview();
 
   const [isShiftDown, setIsShiftDown] = useState<boolean>(false);
@@ -157,9 +158,9 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
       ].join(" "),
 
       [
-        `x:${wallDataPoint[0]?.x ?? 0} y:${wallDataPoint[0]?.y ?? 0} z:${wallDataPoint[0]?.z ?? 0}`,
-        `// ${CrossDirection[wallDataPoint[2]] ?? "NONE"}[${wallDataPoint[2] ?? -1}]`,
-        `// wallX:${wallDataPoint[1]?.x ?? 0} wallY:${wallDataPoint[1]?.y ?? 0}`,
+        `x:${wallDataPoint?.[0]?.x ?? 0} y:${wallDataPoint?.[0]?.y ?? 0} z:${wallDataPoint?.[0]?.z ?? 0}`,
+        `// ${CrossDirection[wallDataPoint?.[2]] ?? "NONE"}[${wallDataPoint?.[2] ?? -1}]`,
+        `// wallX:${wallDataPoint?.[1]?.x ?? 0} wallY:${wallDataPoint?.[1]?.y ?? 0}`,
         `<<  WALL`,
       ].join(" "),
       null,
@@ -281,6 +282,12 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
     [setWallDataPoint, setSelectedPreview, setLastPositionData],
   );
 
+  const onLeaveWall = useCallback(() => {
+    setLastPositionData(null);
+    setWallDataPoint(null);
+    emitEvent(InternalEvent.HOVER_WALL, null);
+  }, [setWallDataPoint, setSelectedPreview, setLastPositionData]);
+
   const messagesPivot = useMemo(() => {
     return {
       x: roomPivot.x,
@@ -295,7 +302,7 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
 
   //reopen inventory when items are out
   useEffect(() => {
-    if (renderPreviewItem) {
+    if (itemPreviewData) {
       renderPreviewVisibleRef.current = true;
       return;
     }
@@ -303,7 +310,7 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
 
     openModal(Modal.INVENTORY);
     renderPreviewVisibleRef.current = false;
-  }, [renderPreviewItem, openModal]);
+  }, [itemPreviewData, openModal]);
 
   return useMemo(
     () =>
@@ -321,6 +328,7 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
                 onPointerTile={onPointerTile}
                 onHoverTile={onHoverTile}
                 onMoveWall={onMoveWall}
+                onLeaveWall={onLeaveWall}
               >
                 {renderPreviewItem}
                 <RoomCharactersComponent />
@@ -363,6 +371,7 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
       onPointerTile,
       onHoverTile,
       onMoveWall,
+      onLeaveWall,
       messagesPivot,
       renderPreviewItem,
     ],

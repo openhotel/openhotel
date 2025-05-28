@@ -5,8 +5,11 @@ import React, {
   useMemo,
   useState,
 } from "react";
-import { ItemPlacePreviewContext } from "./item-place-preview.context";
-import { FurnitureData, Point3d } from "shared/types";
+import {
+  ItemPlacePreviewContext,
+  ItemPreviewData,
+} from "./item-place-preview.context";
+import { Point3d } from "shared/types";
 import {
   FurnitureComponent,
   FurnitureFrameComponent,
@@ -42,10 +45,8 @@ export const ItemPlacePreviewProvider: React.FunctionComponent<Props> = ({
     wallPosition: { x: 0, y: 0 },
     direction: CrossDirection.NORTH,
   });
-  const [itemPreviewData, setItemPreviewData] = useState<{
-    ids: string[];
-    furnitureData: FurnitureData;
-  } | null>(null);
+  const [itemPreviewData, setItemPreviewData] =
+    useState<ItemPreviewData | null>(null);
 
   const [$canPlace, setCanPlace] = useState<boolean>(false);
 
@@ -54,6 +55,14 @@ export const ItemPlacePreviewProvider: React.FunctionComponent<Props> = ({
 
     const removeOnPointerDown = on(Event.POINTER_DOWN, () => {
       const id = getPreviewItemId();
+
+      if (
+        itemPreviewData.furnitureData.type === FurnitureType.FURNITURE
+          ? !tilePosition
+          : !wallData
+      )
+        return;
+
       emit(
         ProxyEvent.PLACE_ITEM,
         itemPreviewData.furnitureData.type === FurnitureType.FURNITURE
@@ -81,17 +90,13 @@ export const ItemPlacePreviewProvider: React.FunctionComponent<Props> = ({
     const removeOnHoverTile = on(
       InternalEvent.HOVER_TILE,
       (data: PreviewTileData) => {
-        if (!data) return;
-
-        setTilePosition(data.point);
+        setTilePosition(data?.point ?? null);
       },
     );
     const removeOnHoverWall = on(
       InternalEvent.HOVER_WALL,
       (data: PositionData) => {
-        if (!data) return;
-
-        setWallData(data);
+        setWallData(data ?? null);
       },
     );
 
@@ -135,7 +140,7 @@ export const ItemPlacePreviewProvider: React.FunctionComponent<Props> = ({
     const { ids, furnitureData } = itemPreviewData;
 
     if (furnitureData.type === FurnitureType.FURNITURE)
-      return (
+      return tilePosition ? (
         <FurnitureComponent
           id={ids[0]}
           position={tilePosition}
@@ -144,9 +149,9 @@ export const ItemPlacePreviewProvider: React.FunctionComponent<Props> = ({
           hitAreaActive={false}
           heightCorrection={true}
         />
-      );
+      ) : null;
 
-    return (
+    return wallData ? (
       <FurnitureFrameComponent
         id={ids[0]}
         position={wallData.position}
@@ -155,7 +160,7 @@ export const ItemPlacePreviewProvider: React.FunctionComponent<Props> = ({
         framePosition={wallData.wallPosition}
         interactive={false}
       />
-    );
+    ) : null;
   }, [itemPreviewData, tilePosition, wallData]);
 
   const canPlace = useCallback(() => $canPlace, [$canPlace]);
@@ -166,6 +171,7 @@ export const ItemPlacePreviewProvider: React.FunctionComponent<Props> = ({
         setItemPreviewData,
         clearItemPreviewData,
         renderPreviewItem,
+        itemPreviewData,
 
         getPreviewItemId,
 

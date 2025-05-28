@@ -1,11 +1,14 @@
 import React from "react";
 import { FurnitureData } from "shared/types";
 
+export type ItemPreviewData = {
+  ids: string[];
+  furnitureData: FurnitureData;
+};
+
 export type TemplateState = {
-  setItemPreviewData: (data: {
-    ids: string[];
-    furnitureData: FurnitureData;
-  }) => void;
+  setItemPreviewData: (data: ItemPreviewData) => void;
+  itemPreviewData: ItemPreviewData | null;
   clearItemPreviewData: () => void;
 
   renderPreviewItem: React.ReactNode;
