@@ -16,14 +16,9 @@ export const FurnitureProvider: React.FunctionComponent<FurnitureProps> = ({
 }) => {
   const { loadSpriteSheet, getSpriteSheet } = useTextures();
   const { getPath } = useApiPath();
-  const { add, get: $get, furniture } = useFurnitureStore();
+  const { add, get: $get } = useFurnitureStore();
 
   const loadingFurnitureId = useRef<string[]>([]);
-
-  const get = useCallback(
-    (furnitureId: string) => furniture[furnitureId],
-    [furniture],
-  );
 
   const load = useCallback(
     async (...furniture: string[]) => {
@@ -99,7 +94,7 @@ export const FurnitureProvider: React.FunctionComponent<FurnitureProps> = ({
     <FurnitureContext.Provider
       value={{
         load,
-        get,
+        get: $get,
       }}
       children={children}
     />
