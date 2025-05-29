@@ -23,6 +23,7 @@ export enum Event {
 
   PLACE_ITEM = "place-item",
   ROTATE_FURNITURE = "rotate-furniture",
+  PICK_UP_FURNITURE = "pick-up-furniture",
 
   MESSAGE = "message",
   WHISPER_MESSAGE = "whisper-messsage",

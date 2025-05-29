@@ -320,6 +320,28 @@ export const users = () => {
       return true;
     };
 
+    const moveFurnitureFromRoomToInventory = async (id: string) => {
+      const roomId = getRoom();
+      if (!roomId) return false;
+
+      const room = await System.game.rooms.get<PrivateRoomMutable>(roomId);
+
+      if (room.type !== "private" || room.getOwnerId() !== getAccountId())
+        return false;
+
+      const furniture = room
+        .getFurniture()
+        .find((furniture) => furniture.id === id);
+      if (!furniture) return false;
+
+      /*
+        Prevent doing this calls async, because we want to remove the furni from
+        room and add the furni to the inventory at the same tick to prevent duplicated ones
+       */
+      room.removeFurniture(furniture);
+      addFurniture(furniture.furnitureId, furniture.id);
+    };
+
     const setColor = async (hex: number) => {
       if (hex === null)
         return await System.db.delete(["users", getAccountId(), "color"]);
@@ -384,6 +406,7 @@ export const users = () => {
       getInventory,
 
       moveFurnitureFromInventoryToRoom,
+      moveFurnitureFromRoomToInventory,
 
       setColor,
       getColor,
