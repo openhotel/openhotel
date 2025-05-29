@@ -9,7 +9,13 @@ import {
 import { RoomFurniture, RoomFurnitureFrame } from "shared/types";
 import { FurnitureFrameComponent } from "shared/components/furniture-frame";
 
-export const RoomFurnitureComponent: React.FC = () => {
+type Props = {
+  disableHitAreas?: boolean;
+};
+
+export const RoomFurnitureComponent: React.FC<Props> = ({
+  disableHitAreas = false,
+}) => {
   const { on, emit } = useProxy();
   const { get: getFurniture } = useFurniture();
   const {
@@ -83,6 +89,7 @@ export const RoomFurnitureComponent: React.FC = () => {
             furnitureId={furniture.furnitureId}
             direction={furniture?.direction}
             onPointerDown={onPointerDown(furniture)}
+            disableHitArea={disableHitAreas}
           />
         ) : (
           <FurnitureFrameComponent
@@ -93,9 +100,10 @@ export const RoomFurnitureComponent: React.FC = () => {
             direction={furniture?.direction}
             framePosition={(furniture as RoomFurnitureFrame)?.framePosition}
             onPointerDown={onPointerDown(furniture)}
+            disableHitArea={disableHitAreas}
           />
         ),
       ),
-    [room?.furniture],
+    [room?.furniture, disableHitAreas],
   );
 };

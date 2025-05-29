@@ -24,10 +24,12 @@ import { TickerQueue } from "@oh/queue";
 
 type Props = {
   user: User;
+  disableHitArea?: boolean;
 } & ContainerProps;
 
 export const RoomCharacterComponent: React.FC<Props> = ({
   user,
+  disableHitArea = false,
   ...containerProps
 }) => {
   const { setUserPosition } = usePrivateRoom();
@@ -169,9 +171,10 @@ export const RoomCharacterComponent: React.FC<Props> = ({
         skinColor={user.skinColor ?? 0xefcfb1}
         position={position}
         zIndex={zIndex}
+        disableHitArea={disableHitArea}
         {...containerProps}
       />
     ),
-    [bodyAction, user, position, zIndex, containerProps],
+    [bodyAction, user, position, zIndex, containerProps, disableHitArea],
   );
 };

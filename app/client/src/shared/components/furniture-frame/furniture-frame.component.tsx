@@ -29,7 +29,7 @@ type Props = {
 
   onPointerDown?: () => void;
 
-  interactive?: boolean;
+  disableHitArea?: boolean;
 };
 
 export const FurnitureFrameComponent: React.FC<Props> = ({
@@ -39,7 +39,7 @@ export const FurnitureFrameComponent: React.FC<Props> = ({
   furnitureId,
   direction = CrossDirection.NORTH,
   onPointerDown,
-  interactive = true,
+  disableHitArea = false,
 }) => {
   const { load: loadFurniture, get: getFurniture } = useFurniture();
   const { update, lastUpdate } = useUpdate();
@@ -163,7 +163,7 @@ export const FurnitureFrameComponent: React.FC<Props> = ({
                 // }
               />
 
-              {interactive ? (
+              {disableHitArea ? null : (
                 <GraphicsComponent
                   type={GraphicType.POLYGON}
                   tint={0xff00ff}
@@ -176,11 +176,11 @@ export const FurnitureFrameComponent: React.FC<Props> = ({
                   cursor={Cursor.CONTEXT_MENU}
                   onPointerDown={onPointerDown}
                 />
-              ) : null}
+              )}
             </React.Fragment>
           );
         },
       ),
-    [$data, $direction, position, id],
+    [$data, $direction, position, id, disableHitArea],
   );
 };

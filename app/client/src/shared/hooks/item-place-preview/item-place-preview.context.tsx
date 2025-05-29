@@ -1,5 +1,5 @@
 import React from "react";
-import { FurnitureData } from "shared/types";
+import { FurnitureData, PrivateRoom } from "shared/types";
 
 export type ItemPreviewData = {
   ids: string[];
@@ -16,6 +16,8 @@ export type TemplateState = {
 
   canPlace: () => boolean;
   setCanPlace: (canPlace: boolean) => void;
+
+  setPrivateRoom: (room?: PrivateRoom) => void;
 };
 
 export const ItemPlacePreviewContext =
