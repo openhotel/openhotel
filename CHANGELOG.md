@@ -1,4 +1,25 @@
 
+<a name="v0.7.11"></a>
+
+## [v0.7.11](https://github.com/openhotel/openhotel/compare/v0.7.10...v0.7.11) (2025-05-30)
+
+### Bug Fixes
+
+- frame preview is not centered - fix [#989](https://github.com/openhotel/openhotel/issues/989) ([#999](https://github.com/openhotel/openhotel/issues/999))
+- prevent creating more than one room with button - fix [#994](https://github.com/openhotel/openhotel/issues/994) ([#998](https://github.com/openhotel/openhotel/issues/998))
+
+### Features
+
+- rotate with shortcut when placing furniture - fix [#993](https://github.com/openhotel/openhotel/issues/993) ([#997](https://github.com/openhotel/openhotel/issues/997))
+- move furniture when already placed - fix [#988](https://github.com/openhotel/openhotel/issues/988) ([#996](https://github.com/openhotel/openhotel/issues/996))
+- pick up furniture from private room - fix [#985](https://github.com/openhotel/openhotel/issues/985) ([#995](https://github.com/openhotel/openhotel/issues/995))
+- rotate furniture inside private room - fix [#986](https://github.com/openhotel/openhotel/issues/986) ([#991](https://github.com/openhotel/openhotel/issues/991))
+- add autoupdate check with a cron - fix [#952](https://github.com/openhotel/openhotel/issues/952) ([#984](https://github.com/openhotel/openhotel/issues/984))
+- show y calculation when placing furniture - fix [#946](https://github.com/openhotel/openhotel/issues/946) ([#983](https://github.com/openhotel/openhotel/issues/983))
+- remove old teleport system - fix [#980](https://github.com/openhotel/openhotel/issues/980) ([#982](https://github.com/openhotel/openhotel/issues/982))
+- filter out frames from random position room preview - fix [#979](https://github.com/openhotel/openhotel/issues/979) ([#981](https://github.com/openhotel/openhotel/issues/981))
+
+
 <a name="v0.7.10"></a>
 
 ## [v0.7.10](https://github.com/openhotel/openhotel/compare/v0.7.9...v0.7.10) (2025-05-29)
@@ -1081,17 +1102,17 @@
 
 <a name="v0.2.20-rc.2"></a>
 
-## [v0.2.20-rc.2](https://github.com/openhotel/openhotel/compare/v0.2.20-rc.1...v0.2.20-rc.2) (2024-09-29)
-
-
-<a name="v0.2.20-rc.1"></a>
-
-## [v0.2.20-rc.1](https://github.com/openhotel/openhotel/compare/v0.2.19...v0.2.20-rc.1) (2024-09-29)
+## [v0.2.20-rc.2](https://github.com/openhotel/openhotel/compare/v0.2.19...v0.2.20-rc.2) (2024-09-29)
 
 
 <a name="v0.2.19"></a>
 
-## [v0.2.19](https://github.com/openhotel/openhotel/compare/v0.2.18...v0.2.19) (2024-09-29)
+## [v0.2.19](https://github.com/openhotel/openhotel/compare/v0.2.20-rc.1...v0.2.19) (2024-09-29)
+
+
+<a name="v0.2.20-rc.1"></a>
+
+## [v0.2.20-rc.1](https://github.com/openhotel/openhotel/compare/v0.2.18...v0.2.20-rc.1) (2024-09-29)
 
 
 <a name="v0.2.18"></a>
