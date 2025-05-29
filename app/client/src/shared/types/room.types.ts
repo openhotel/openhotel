@@ -1,6 +1,6 @@
 import { PrivateRoomPreviewType, RoomPointEnum } from "shared/enums";
 import { Point2d, Point3d } from "./point.types";
-import { RoomFurniture } from "shared/types/furniture.types";
+import { FurnitureData, RoomFurniture } from "shared/types/furniture.types";
 import { User } from "shared/types/user.types";
 
 export type RoomPoint = string | RoomPointEnum;
@@ -44,7 +44,7 @@ export type RoomMessage = {
 export type PrivateRoomPreview = {
   id: string;
   type: PrivateRoomPreviewType;
-  data: unknown;
+  data: any | FurnitureData;
   title: string;
 };
 
