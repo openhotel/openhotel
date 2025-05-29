@@ -67,20 +67,40 @@ export const ItemPlacePreviewProvider: React.FunctionComponent<Props> = ({
 
       const id = getPreviewItemId();
 
-      emit(
-        ProxyEvent.PLACE_ITEM,
-        itemPreviewData.furnitureData.type === FurnitureType.FURNITURE
-          ? {
-              position: tilePosition,
-              id,
-            }
-          : {
-              id,
-              position: wallData.position,
-              framePosition: wallData.wallPosition,
-              direction: wallData.direction,
-            },
-      );
+      switch (itemPreviewData.type) {
+        case "place":
+          emit(
+            ProxyEvent.PLACE_ITEM,
+            itemPreviewData.furnitureData.type === FurnitureType.FURNITURE
+              ? {
+                  position: tilePosition,
+                  id,
+                }
+              : {
+                  id,
+                  position: wallData.position,
+                  framePosition: wallData.wallPosition,
+                  direction: wallData.direction,
+                },
+          );
+          break;
+        case "move":
+          emit(
+            ProxyEvent.MOVE_FURNITURE,
+            itemPreviewData.furnitureData.type === FurnitureType.FURNITURE
+              ? {
+                  position: tilePosition,
+                  id,
+                }
+              : {
+                  id,
+                  position: wallData.position,
+                  framePosition: wallData.wallPosition,
+                  direction: wallData.direction,
+                },
+          );
+          break;
+      }
     });
 
     return () => {

@@ -299,7 +299,7 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
 
   //reopen inventory when items are out
   useEffect(() => {
-    if (itemPreviewData) {
+    if (itemPreviewData?.type === "place") {
       renderPreviewVisibleRef.current = true;
       return;
     }

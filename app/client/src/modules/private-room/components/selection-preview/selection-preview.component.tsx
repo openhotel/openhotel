@@ -37,7 +37,12 @@ import {
   PrivateRoomPreviewType,
   SpriteSheetEnum,
 } from "shared/enums";
-import { useAccount, usePrivateRoom, useProxy } from "shared/hooks";
+import {
+  useAccount,
+  useItemPlacePreview,
+  usePrivateRoom,
+  useProxy,
+} from "shared/hooks";
 
 const TileComponent: React.FC<{ position: Point2d }> = ({ position }) =>
   useMemo(
@@ -53,21 +58,30 @@ const TileComponent: React.FC<{ position: Point2d }> = ({ position }) =>
     [position],
   );
 
-const MARGIN = 22;
+const MARGIN = 10;
 
 export const SelectionPreviewComponent: React.FC = () => {
   const textContainerRef = useRef<ContainerRef>(null);
 
+  const { setItemPreviewData } = useItemPlacePreview();
   const { getAccount } = useAccount();
   const { selectedPreview, room, setSelectedPreview } = usePrivateRoom();
   const { emit } = useProxy();
 
   const [textSize, setTextSize] = useState<Size2d>({ width: 0, height: 0 });
 
-  const tilesSize = {
-    width: TILE_SIZE.width + 2 + TILE_WIDTH,
-    height: TILE_SIZE.height + STEP_TILE_HEIGHT + TILE_WIDTH,
-  };
+  const tilesSize = useMemo(
+    () => ({
+      width: TILE_SIZE.width + 2 + TILE_WIDTH,
+      height: TILE_SIZE.height + STEP_TILE_HEIGHT + TILE_WIDTH,
+    }),
+    [],
+  );
+
+  const fullTileSizeWidth = useMemo(
+    () => TILE_SIZE.width + 2 + TILE_WIDTH * 2,
+    [],
+  );
 
   useEffect(() => {
     const size = textContainerRef.current?.getSize?.();
@@ -79,7 +93,7 @@ export const SelectionPreviewComponent: React.FC = () => {
   const pivot = useMemo(
     () => ({
       x: tilesSize.width + MARGIN,
-      y: HOT_BAR_HEIGHT_FULL + tilesSize.height + MARGIN + 20,
+      y: HOT_BAR_HEIGHT_FULL + tilesSize.height + MARGIN * 2 + 20,
     }),
     [tilesSize],
   );
@@ -131,6 +145,15 @@ export const SelectionPreviewComponent: React.FC = () => {
     setSelectedPreview(null);
   }, [selectedPreview, emit, setSelectedPreview]);
 
+  const onMoveFurniture = useCallback(() => {
+    setSelectedPreview(null);
+    setItemPreviewData({
+      type: "move",
+      ids: [selectedPreview.id],
+      furnitureData: selectedPreview.data as FurnitureData,
+    });
+  }, [selectedPreview, emit, setSelectedPreview, setItemPreviewData]);
+
   const renderActions = useMemo(() => {
     const account = getAccount();
     const isRoomOwner = account.accountId === room?.ownerId;
@@ -143,7 +166,11 @@ export const SelectionPreviewComponent: React.FC = () => {
       case PrivateRoomPreviewType.FURNITURE:
         return isRoomOwner ? (
           <>
-            <ButtonComponent text="move" autoWidth />
+            <ButtonComponent
+              text="move"
+              autoWidth
+              onPointerDown={onMoveFurniture}
+            />
             <ButtonComponent
               text="rotate"
               autoWidth
@@ -174,39 +201,45 @@ export const SelectionPreviewComponent: React.FC = () => {
         <ContainerComponent pivot={{ x: 0, y: -TILE_WIDTH / 2 }}>
           {renderType}
         </ContainerComponent>
+      </ContainerComponent>
+      <ContainerComponent
+        pivot={{
+          x: MARGIN,
+          y: HOT_BAR_HEIGHT_FULL,
+        }}
+      >
         <ContainerComponent
           pivot={{
-            x: -TILE_WIDTH * 2,
-            y: -tilesSize.height - 5,
+            y: 37,
           }}
         >
-          <ContainerComponent
+          <TextComponent
             pivot={{
-              x: textSize.width / 2,
+              x:
+                textSize.width > fullTileSizeWidth
+                  ? textSize.width
+                  : textSize.width / 2 + fullTileSizeWidth / 2,
             }}
-          >
-            <TextComponent
-              ref={textContainerRef}
-              text={selectedPreview.title}
-              horizontalAlign={HorizontalAlign.CENTER}
-              {...TEXT_BACKGROUND_BASE}
-            />
-          </ContainerComponent>
+            ref={textContainerRef}
+            text={selectedPreview.title}
+            horizontalAlign={HorizontalAlign.RIGHT}
+            {...TEXT_BACKGROUND_BASE}
+          />
         </ContainerComponent>
+        <FlexContainerComponent
+          pivot={{
+            x: 200,
+            y: MARGIN * 2,
+          }}
+          size={{
+            width: 200,
+          }}
+          gap={4}
+          justify={FLEX_JUSTIFY.END}
+        >
+          {renderActions}
+        </FlexContainerComponent>
       </ContainerComponent>
-      <FlexContainerComponent
-        pivot={{
-          x: MARGIN + 200,
-          y: HOT_BAR_HEIGHT_FULL + 10 + 10,
-        }}
-        size={{
-          width: 200,
-        }}
-        gap={4}
-        justify={FLEX_JUSTIFY.END}
-      >
-        {renderActions}
-      </FlexContainerComponent>
     </>
   );
 };
