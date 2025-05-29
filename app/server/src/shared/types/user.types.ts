@@ -121,6 +121,8 @@ export type UserMutable = {
     wallPosition?: Point2d,
   ) => Promise<boolean>;
 
+  moveFurnitureFromRoomToInventory: (id: string) => Promise<boolean>;
+
   setColor: (color: number) => Promise<void>;
   getColor: () => Promise<number | null>;
 };

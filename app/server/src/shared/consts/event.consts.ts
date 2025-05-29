@@ -11,4 +11,5 @@ export const PROXY_CLIENT_EVENT_WHITELIST: ProxyEvent[] = [
   ProxyEvent.TYPING_START,
   ProxyEvent.TYPING_END,
   ProxyEvent.ROTATE_FURNITURE,
+  ProxyEvent.PICK_UP_FURNITURE,
 ];

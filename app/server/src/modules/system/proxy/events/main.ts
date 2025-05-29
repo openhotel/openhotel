@@ -7,6 +7,7 @@ import { typingEndEvent } from "./typing-end.event.ts";
 import { preJoinRoomEvent } from "./pre-join-room.event.ts";
 import { placeItemEvent } from "./place-item.event.ts";
 import { rotateFurnitureEvent } from "./rotate-furniture.event.ts";
+import { pickUpFurnitureEvent } from "./pick-up-furniture.event.ts";
 export * from "./internal/main.ts";
 
 export const eventList: ProxyEventType[] = [
@@ -23,4 +24,5 @@ export const eventList: ProxyEventType[] = [
   typingEndEvent,
 
   rotateFurnitureEvent,
+  pickUpFurnitureEvent,
 ];
