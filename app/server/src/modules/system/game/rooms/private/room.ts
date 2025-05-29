@@ -276,8 +276,8 @@ export const getRoom =
     const removeFurniture = async (furniture: RoomFurniture) => {
       $room.furniture = $room.furniture.filter((f) => f.id !== furniture.id);
 
-      if (furniture.type === FurnitureType.TELEPORT)
-        await System.game.teleports.removeRoom(furniture.id);
+      //TODO Add teleport logic here!
+      // await System.game.teleports.removeRoom(furniture.id);
 
       await $save();
       emit(ProxyEvent.REMOVE_FURNITURE, {

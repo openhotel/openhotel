@@ -76,7 +76,7 @@ export const setCommand: Command = {
     }
 
     if (furniture.type === FurnitureType.FRAME) {
-      const layout = room.getObject().layout;
+      const layout = room.getLayout();
       const isWallOrDoorX =
         isWallRenderable(layout, furniture.position, true) ||
         isDoorRenderable(layout, furniture.position, true);
@@ -103,16 +103,12 @@ export const setCommand: Command = {
     }
 
     furniture.size = $furniture.size;
-    switch ($furniture.type) {
-      case FurnitureType.TELEPORT:
-        await System.game.teleports.setRoom(furniture.id, roomId);
-        break;
-      case FurnitureType.FRAME:
-        furniture.framePosition = {
-          x: wallX,
-          y: wallY,
-        };
-        break;
+
+    if ($furniture.type === FurnitureType.FRAME) {
+      furniture.framePosition = {
+        x: wallX,
+        y: wallY,
+      };
     }
 
     await room.addFurniture(furniture);
