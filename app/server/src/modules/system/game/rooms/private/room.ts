@@ -1,21 +1,21 @@
 import {
   FindPathProps,
   PrivateRoom,
-  RoomFurniture,
   PrivateRoomMutable,
+  RoomFurniture,
   RoomPoint,
   User,
 } from "shared/types/main.ts";
 import { FurnitureType, ProxyEvent, RoomPointEnum } from "shared/enums/main.ts";
 import { System } from "modules/system/main.ts";
 import { getInterpolatedPath } from "shared/utils/pathfinding.utils.ts";
-import { WALKABLE_FURNITURE_TYPE, TILE_Y_HEIGHT } from "shared/consts/main.ts";
+import { TILE_Y_HEIGHT, WALKABLE_FURNITURE_TYPE } from "shared/consts/main.ts";
 import {
   Direction,
-  isPoint3dEqual,
-  Point3d,
   getRandomNumber,
+  isPoint3dEqual,
   Point2d,
+  Point3d,
 } from "@oh/utils";
 import { Grid } from "@oh/pathfinding";
 import { getBaseRoomGrid } from "shared/utils/rooms.utils.ts";
@@ -86,8 +86,9 @@ export const getRoom =
       });
 
       const randomPoint =
-        getFurniture().sort(() => 0.5 + Math.random())[0]?.position ??
-        getRandomPoint();
+        getFurniture()
+          .filter((furniture) => furniture.type === FurnitureType.FURNITURE)
+          .sort(() => 0.5 + Math.random())[0]?.position ?? getRandomPoint();
       // Make capture
       const pos = getPositionFromIsometricPosition(randomPoint);
 
