@@ -119,7 +119,7 @@ export const ChatHotBarComponent: React.FC<Props> = ({
             x: Math.round(absoluteRoomPosition.x - cursor.x),
             y: Math.round(absoluteRoomPosition.y - cursor.y),
           };
-          message += ` ${position.x} ${position.y} 256`;
+          message += ` ${position.x} ${position.y}`;
         }
 
         emit(Event.MESSAGE, { message });

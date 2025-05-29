@@ -138,9 +138,6 @@ export const InventoryContentComponent: React.FC<Props> = ({
         >
           {canPlaceItem ? (
             <ButtonComponent
-              size={{
-                height: 14,
-              }}
               autoWidth={true}
               text={t("inventory.place")}
               onPointerUp={onPlaceFurniture}

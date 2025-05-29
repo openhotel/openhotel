@@ -212,7 +212,6 @@ export const CategoryMeComponent: React.FC<Props> = ({ size }) => {
         <ButtonComponent
           text={t("navigator.create_room")}
           autoWidth
-          size={{ height: 14 }}
           position={{
             x: 3,
             y: 3,

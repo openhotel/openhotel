@@ -227,11 +227,12 @@ export const getRoom =
 
     const $getFurnitureYPosition = async (
       position: Point3d,
+      currentId?: string,
     ): Promise<number> => {
       const pointFurnitureList = getFurnitureFromPoint(
         position,
         FurnitureType.FURNITURE,
-      );
+      ).filter((furniture) => !currentId || furniture.id !== currentId);
       const pointFurnitureDataList = await Promise.all(
         [
           ...new Set(
@@ -263,7 +264,10 @@ export const getRoom =
       });
     };
     const updateFurniture = async (furniture: RoomFurniture) => {
-      furniture.position.y = await $getFurnitureYPosition(furniture.position);
+      furniture.position.y = await $getFurnitureYPosition(
+        furniture.position,
+        furniture.id,
+      );
       $room.furniture = $room.furniture.map(($furniture) =>
         furniture.id === $furniture.id ? furniture : $furniture,
       );

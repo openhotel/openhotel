@@ -9,3 +9,4 @@ export * from "./image.utils.ts";
 export * from "./economy.utils.ts";
 export * from "./args.utils.ts";
 export * from "./hex.utils.ts";
+export * from "./direction.utils.ts";

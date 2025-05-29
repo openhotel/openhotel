@@ -22,16 +22,16 @@ type BaseProps = ContainerProps & {
 type Props =
   | (BaseProps & {
       autoWidth: true;
-      size: Omit<Size, "width">;
+      size?: Omit<Size, "width">;
     })
   | (BaseProps & {
       autoWidth?: false;
-      size: Size;
+      size?: Size;
     });
 
 export const ButtonComponent: React.FC<Props> = ({
   text,
-  size,
+  size = { height: 14 },
   color,
   autoWidth,
   ...containerProps
