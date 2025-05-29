@@ -230,9 +230,6 @@ export const RoomCreatorComponent: React.FC = () => {
                 <ButtonComponent
                   text={t("room_creator.form.create_room")}
                   autoWidth
-                  size={{
-                    height: 14,
-                  }}
                   onPointerDown={onCreateRoom}
                 />
               </FlexContainerComponent>

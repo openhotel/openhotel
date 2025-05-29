@@ -110,9 +110,6 @@ export const RoomPreviewComponent: React.FC<Props> = ({
         >
           <TextComponent text={`${room.users}/${room.maxUsers}`} color={0} />
           <ButtonComponent
-            size={{
-              height: 14,
-            }}
             autoWidth={true}
             text={t("navigator.join")}
             onPointerDown={onJoin}

@@ -1,8 +1,16 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import {
   ContainerComponent,
   ContainerRef,
   EventMode,
+  FLEX_JUSTIFY,
+  FlexContainerComponent,
   HorizontalAlign,
   SpriteComponent,
 } from "@openhotel/pixi-components";
@@ -15,19 +23,21 @@ import {
 } from "shared/consts";
 import { FurnitureData, Point2d, Size2d, User } from "shared/types";
 import {
+  ButtonComponent,
   CharacterComponent,
   FurnitureComponent,
+  FurnitureFrameComponent,
   TextComponent,
 } from "shared/components";
 import {
   CharacterArmAction,
   CharacterBodyAction,
   Direction,
+  Event,
   PrivateRoomPreviewType,
   SpriteSheetEnum,
 } from "shared/enums";
-import { FurnitureFrameComponent } from "shared/components";
-import { usePrivateRoom } from "shared/hooks";
+import { useAccount, usePrivateRoom, useProxy } from "shared/hooks";
 
 const TileComponent: React.FC<{ position: Point2d }> = ({ position }) =>
   useMemo(
@@ -43,10 +53,14 @@ const TileComponent: React.FC<{ position: Point2d }> = ({ position }) =>
     [position],
   );
 
+const MARGIN = 22;
+
 export const SelectionPreviewComponent: React.FC = () => {
   const textContainerRef = useRef<ContainerRef>(null);
 
-  const { selectedPreview } = usePrivateRoom();
+  const { getAccount } = useAccount();
+  const { selectedPreview, room } = usePrivateRoom();
+  const { emit } = useProxy();
 
   const [textSize, setTextSize] = useState<Size2d>({ width: 0, height: 0 });
 
@@ -64,8 +78,8 @@ export const SelectionPreviewComponent: React.FC = () => {
 
   const pivot = useMemo(
     () => ({
-      x: tilesSize.width + 22,
-      y: HOT_BAR_HEIGHT_FULL + tilesSize.height + 22,
+      x: tilesSize.width + MARGIN,
+      y: HOT_BAR_HEIGHT_FULL + tilesSize.height + MARGIN + 20,
     }),
     [tilesSize],
   );
@@ -104,32 +118,84 @@ export const SelectionPreviewComponent: React.FC = () => {
     return null;
   }, [selectedPreview]);
 
+  const onRotateFurniture = useCallback(() => {
+    emit(Event.ROTATE_FURNITURE, {
+      id: selectedPreview.id,
+    });
+  }, [selectedPreview, emit]);
+
+  const renderActions = useMemo(() => {
+    const account = getAccount();
+    const isRoomOwner = account.accountId === room?.ownerId;
+
+    switch (selectedPreview?.type) {
+      case PrivateRoomPreviewType.CHARACTER:
+        return null;
+      case PrivateRoomPreviewType.FRAME:
+        return null;
+      case PrivateRoomPreviewType.FURNITURE:
+        return isRoomOwner ? (
+          <>
+            <ButtonComponent text="move" autoWidth />
+            <ButtonComponent
+              text="rotate"
+              autoWidth
+              onPointerDown={onRotateFurniture}
+            />
+            <ButtonComponent text="pick up" autoWidth />
+          </>
+        ) : null;
+    }
+    return null;
+  }, [selectedPreview, room, getAccount, onRotateFurniture]);
+
   if (!selectedPreview) return null;
 
   return (
-    <ContainerComponent pivot={pivot}>
-      <ContainerComponent>
-        <TileComponent position={{ x: 0, y: 0 }} />
-        <TileComponent position={{ x: TILE_WIDTH, y: TILE_WIDTH / 2 }} />
-        <TileComponent position={{ x: -TILE_WIDTH, y: TILE_WIDTH / 2 }} />
-        <TileComponent position={{ x: 0, y: TILE_WIDTH }} />
+    <>
+      <ContainerComponent pivot={pivot}>
+        <ContainerComponent>
+          <TileComponent position={{ x: 0, y: 0 }} />
+          <TileComponent position={{ x: TILE_WIDTH, y: TILE_WIDTH / 2 }} />
+          <TileComponent position={{ x: -TILE_WIDTH, y: TILE_WIDTH / 2 }} />
+          <TileComponent position={{ x: 0, y: TILE_WIDTH }} />
+        </ContainerComponent>
+        <ContainerComponent pivot={{ x: 0, y: -TILE_WIDTH / 2 }}>
+          {renderType}
+        </ContainerComponent>
+        <ContainerComponent
+          pivot={{
+            x: -TILE_WIDTH * 2,
+            y: -tilesSize.height - 5,
+          }}
+        >
+          <ContainerComponent
+            pivot={{
+              x: textSize.width / 2,
+            }}
+          >
+            <TextComponent
+              ref={textContainerRef}
+              text={selectedPreview.title}
+              horizontalAlign={HorizontalAlign.CENTER}
+              {...TEXT_BACKGROUND_BASE}
+            />
+          </ContainerComponent>
+        </ContainerComponent>
       </ContainerComponent>
-      <ContainerComponent pivot={{ x: 0, y: -TILE_WIDTH / 2 }}>
-        {renderType}
-      </ContainerComponent>
-      <ContainerComponent
+      <FlexContainerComponent
         pivot={{
-          x: -TILE_WIDTH * 2 + textSize.width / 2,
-          y: -tilesSize.height - 5,
+          x: MARGIN + 200,
+          y: HOT_BAR_HEIGHT_FULL + 10 + 10,
         }}
+        size={{
+          width: 200,
+        }}
+        gap={4}
+        justify={FLEX_JUSTIFY.END}
       >
-        <TextComponent
-          ref={textContainerRef}
-          text={selectedPreview.title}
-          horizontalAlign={HorizontalAlign.CENTER}
-          {...TEXT_BACKGROUND_BASE}
-        />
-      </ContainerComponent>
-    </ContainerComponent>
+        {renderActions}
+      </FlexContainerComponent>
+    </>
   );
 };

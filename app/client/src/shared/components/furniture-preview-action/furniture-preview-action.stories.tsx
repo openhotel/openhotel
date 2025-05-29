@@ -41,12 +41,7 @@ const LoadComponent = () => {
         tint={0xff00ff}
       />
       <FurniturePreviewActionComponent furniture={furnitureData} size={size}>
-        <ButtonComponent
-          text={"test"}
-          autoWidth
-          size={{ height: 16 }}
-          position={{ x: 2, y: 2 }}
-        />
+        <ButtonComponent text={"test"} autoWidth position={{ x: 2, y: 2 }} />
       </FurniturePreviewActionComponent>
     </>
   );
