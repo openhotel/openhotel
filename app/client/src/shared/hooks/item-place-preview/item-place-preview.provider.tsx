@@ -24,7 +24,7 @@ import {
 } from "shared/enums";
 import { PositionData } from "shared/hooks/private-room";
 import { useProxy } from "shared/hooks/proxy";
-import { isPosition3dEqual } from "shared/utils";
+import { getNextCrossDirection, isPosition3dEqual } from "shared/utils";
 import { useFurniture } from "shared/hooks/furniture";
 
 type Props = {
@@ -38,6 +38,7 @@ export const ItemPlacePreviewProvider: React.FunctionComponent<Props> = ({
   const { emit } = useProxy();
   const { get } = useFurniture();
 
+  const [direction, setDirection] = useState<CrossDirection | null>(null);
   const [tilePosition, setTilePosition] = useState<Point3d>({
     x: 0,
     y: 0,
@@ -53,6 +54,14 @@ export const ItemPlacePreviewProvider: React.FunctionComponent<Props> = ({
   const [privateRoom, setPrivateRoom] = useState<PrivateRoom | null>(null);
 
   const [$canPlace, setCanPlace] = useState<boolean>(false);
+
+  useEffect(() => {
+    setDirection(
+      itemPreviewData
+        ? (itemPreviewData.direction ?? CrossDirection.NORTH)
+        : null,
+    );
+  }, [itemPreviewData, setDirection]);
 
   useEffect(() => {
     if (!itemPreviewData) return;
@@ -74,6 +83,7 @@ export const ItemPlacePreviewProvider: React.FunctionComponent<Props> = ({
             itemPreviewData.furnitureData.type === FurnitureType.FURNITURE
               ? {
                   position: tilePosition,
+                  direction,
                   id,
                 }
               : {
@@ -90,6 +100,7 @@ export const ItemPlacePreviewProvider: React.FunctionComponent<Props> = ({
             itemPreviewData.furnitureData.type === FurnitureType.FURNITURE
               ? {
                   position: tilePosition,
+                  direction,
                   id,
                 }
               : {
@@ -103,10 +114,51 @@ export const ItemPlacePreviewProvider: React.FunctionComponent<Props> = ({
       }
     });
 
+    const removeOnKeyDown =
+      itemPreviewData.furnitureData.type === FurnitureType.FURNITURE
+        ? on(Event.KEY_DOWN, ({ code }: KeyboardEvent) => {
+            switch (code) {
+              case "KeyR":
+                if (
+                  Object.values(itemPreviewData.furnitureData.direction).filter(
+                    ({ textures }) => textures.length,
+                  ).length === 1
+                )
+                  return;
+
+                setDirection((direction) => {
+                  let nextTargetDirection = direction;
+                  for (let i = direction; i < direction + 3; i++) {
+                    nextTargetDirection =
+                      getNextCrossDirection(nextTargetDirection);
+
+                    if (
+                      itemPreviewData.furnitureData.direction[
+                        nextTargetDirection
+                      ]?.textures?.length
+                    )
+                      return nextTargetDirection;
+                  }
+                  return nextTargetDirection;
+                });
+                break;
+            }
+          })
+        : null;
+
     return () => {
       removeOnPointerDown();
+      removeOnKeyDown?.();
     };
-  }, [itemPreviewData, on, tilePosition, wallData, setItemPreviewData]);
+  }, [
+    itemPreviewData,
+    on,
+    tilePosition,
+    wallData,
+    setDirection,
+    setItemPreviewData,
+    direction,
+  ]);
 
   useEffect(() => {
     if (!itemPreviewData) return;
@@ -187,7 +239,7 @@ export const ItemPlacePreviewProvider: React.FunctionComponent<Props> = ({
           id={ids[0]}
           position={tilePosition}
           furnitureId={furnitureData.furnitureId}
-          direction={CrossDirection.NORTH}
+          direction={direction}
           disableHitArea={true}
           heightCorrection={false}
         />
@@ -204,7 +256,7 @@ export const ItemPlacePreviewProvider: React.FunctionComponent<Props> = ({
         disableHitArea={true}
       />
     ) : null;
-  }, [itemPreviewData, tilePosition, wallData, privateRoom, get]);
+  }, [itemPreviewData, tilePosition, wallData, privateRoom, get, direction]);
 
   const canPlace = useCallback(() => $canPlace, [$canPlace]);
 

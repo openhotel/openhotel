@@ -59,5 +59,10 @@
       "description": "Description",
       "create_room": "Create room"
     }
+  },
+  "furniture": {
+    "move": "move",
+    "rotate": "rotate",
+    "pick_up": "pick up"
   }
 }
