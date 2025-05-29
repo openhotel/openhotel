@@ -1,10 +1,12 @@
 import React from "react";
 import { FurnitureData, PrivateRoom } from "shared/types";
+import { CrossDirection } from "shared/enums";
 
 export type ItemPreviewData = {
   ids: string[];
   furnitureData: FurnitureData;
   type: "place" | "move";
+  direction?: CrossDirection;
 };
 
 export type TemplateState = {

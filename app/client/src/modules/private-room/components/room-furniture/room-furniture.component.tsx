@@ -69,6 +69,7 @@ export const RoomFurnitureComponent: React.FC<Props> = ({
             ? PrivateRoomPreviewType.FURNITURE
             : PrivateRoomPreviewType.FRAME,
         data,
+        direction: furniture.direction,
         title:
           getFurniture(furniture.furnitureId)?.label ?? furniture.furnitureId,
       });

@@ -285,7 +285,7 @@ export const users = () => {
     const moveFurnitureFromInventoryToRoom = async (
       id: string,
       position: Point3d,
-      direction?: CrossDirection,
+      direction: CrossDirection,
       framePosition?: Point2d,
     ) => {
       const roomId = getRoom();
@@ -312,7 +312,7 @@ export const users = () => {
       removeFurniture(id);
       room.addFurniture({
         ...furniture,
-        direction: direction ?? CrossDirection.NORTH,
+        direction,
         position,
         framePosition,
       });

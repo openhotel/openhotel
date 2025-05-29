@@ -1,4 +1,8 @@
-import { PrivateRoomPreviewType, RoomPointEnum } from "shared/enums";
+import {
+  CrossDirection,
+  PrivateRoomPreviewType,
+  RoomPointEnum,
+} from "shared/enums";
 import { Point2d, Point3d } from "./point.types";
 import { FurnitureData, RoomFurniture } from "shared/types/furniture.types";
 import { User } from "shared/types/user.types";
@@ -46,6 +50,7 @@ export type PrivateRoomPreview = {
   type: PrivateRoomPreviewType;
   data: any | FurnitureData;
   title: string;
+  direction: CrossDirection;
 };
 
 export type NavigatorRoom = {
