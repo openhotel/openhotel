@@ -59,7 +59,7 @@ export const SelectionPreviewComponent: React.FC = () => {
   const textContainerRef = useRef<ContainerRef>(null);
 
   const { getAccount } = useAccount();
-  const { selectedPreview, room } = usePrivateRoom();
+  const { selectedPreview, room, setSelectedPreview } = usePrivateRoom();
   const { emit } = useProxy();
 
   const [textSize, setTextSize] = useState<Size2d>({ width: 0, height: 0 });
@@ -124,6 +124,13 @@ export const SelectionPreviewComponent: React.FC = () => {
     });
   }, [selectedPreview, emit]);
 
+  const onPickUpFurniture = useCallback(() => {
+    emit(Event.PICK_UP_FURNITURE, {
+      id: selectedPreview.id,
+    });
+    setSelectedPreview(null);
+  }, [selectedPreview, emit, setSelectedPreview]);
+
   const renderActions = useMemo(() => {
     const account = getAccount();
     const isRoomOwner = account.accountId === room?.ownerId;
@@ -142,12 +149,16 @@ export const SelectionPreviewComponent: React.FC = () => {
               autoWidth
               onPointerDown={onRotateFurniture}
             />
-            <ButtonComponent text="pick up" autoWidth />
+            <ButtonComponent
+              text="pick up"
+              autoWidth
+              onPointerDown={onPickUpFurniture}
+            />
           </>
         ) : null;
     }
     return null;
-  }, [selectedPreview, room, getAccount, onRotateFurniture]);
+  }, [selectedPreview, room, getAccount, onRotateFurniture, onPickUpFurniture]);
 
   if (!selectedPreview) return null;
 
