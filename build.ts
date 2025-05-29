@@ -156,6 +156,7 @@ if (compileAll || server) {
         "compile",
         "-A",
         "--unstable-kv",
+        "--unstable-cron",
         "--no-check",
         "--include=./src/shared/workers.ts",
         `--target=${$target}`,
