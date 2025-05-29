@@ -24,4 +24,8 @@ export type ConfigTypes = {
     };
     sleep: number;
   };
+  autoupdate: {
+    enabled: boolean;
+    cron: string;
+  };
 };
