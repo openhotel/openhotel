@@ -43,6 +43,7 @@ import {
   usePrivateRoom,
   useProxy,
 } from "shared/hooks";
+import { useTranslation } from "react-i18next";
 
 const TileComponent: React.FC<{ position: Point2d }> = ({ position }) =>
   useMemo(
@@ -63,6 +64,7 @@ const MARGIN = 10;
 export const SelectionPreviewComponent: React.FC = () => {
   const textContainerRef = useRef<ContainerRef>(null);
 
+  const { t } = useTranslation();
   const { setItemPreviewData } = useItemPlacePreview();
   const { getAccount } = useAccount();
   const { selectedPreview, room, setSelectedPreview } = usePrivateRoom();
@@ -150,6 +152,7 @@ export const SelectionPreviewComponent: React.FC = () => {
     setItemPreviewData({
       type: "move",
       ids: [selectedPreview.id],
+      direction: selectedPreview.direction,
       furnitureData: selectedPreview.data as FurnitureData,
     });
   }, [selectedPreview, emit, setSelectedPreview, setItemPreviewData]);
@@ -162,22 +165,35 @@ export const SelectionPreviewComponent: React.FC = () => {
       case PrivateRoomPreviewType.CHARACTER:
         return null;
       case PrivateRoomPreviewType.FRAME:
-        return null;
-      case PrivateRoomPreviewType.FURNITURE:
         return isRoomOwner ? (
           <>
             <ButtonComponent
-              text="move"
+              text={t("furniture.move")}
               autoWidth
               onPointerDown={onMoveFurniture}
             />
             <ButtonComponent
-              text="rotate"
+              text={t("furniture.pick_up")}
+              autoWidth
+              onPointerDown={onPickUpFurniture}
+            />
+          </>
+        ) : null;
+      case PrivateRoomPreviewType.FURNITURE:
+        return isRoomOwner ? (
+          <>
+            <ButtonComponent
+              text={t("furniture.move")}
+              autoWidth
+              onPointerDown={onMoveFurniture}
+            />
+            <ButtonComponent
+              text={t("furniture.rotate")}
               autoWidth
               onPointerDown={onRotateFurniture}
             />
             <ButtonComponent
-              text="pick up"
+              text={t("furniture.pick_up")}
               autoWidth
               onPointerDown={onPickUpFurniture}
             />
@@ -185,7 +201,14 @@ export const SelectionPreviewComponent: React.FC = () => {
         ) : null;
     }
     return null;
-  }, [selectedPreview, room, getAccount, onRotateFurniture, onPickUpFurniture]);
+  }, [
+    selectedPreview,
+    room,
+    getAccount,
+    onRotateFurniture,
+    onPickUpFurniture,
+    t,
+  ]);
 
   if (!selectedPreview) return null;
 

@@ -26,11 +26,11 @@ export const moveFurnitureEvent: ProxyEventType<any> = {
     }
 
     furniture.position = position;
+    furniture.direction = direction;
 
-    if (furniture.type === FurnitureType.FRAME) {
+    if (furniture.type === FurnitureType.FRAME)
       furniture.framePosition = framePosition;
-      furniture.direction = direction;
-    }
+
     await room.updateFurniture(furniture);
   },
 };

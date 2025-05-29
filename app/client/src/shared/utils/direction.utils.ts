@@ -61,6 +61,18 @@ export const getNextDirection = (
       ? Direction.NORTH_WEST
       : direction - 1;
 
+export const getNextCrossDirection = (
+  direction: CrossDirection,
+  clockwise = true,
+): CrossDirection =>
+  clockwise
+    ? direction === CrossDirection.WEST
+      ? CrossDirection.NORTH
+      : direction + 1
+    : direction === CrossDirection.NORTH
+      ? CrossDirection.WEST
+      : direction - 1;
+
 export const getCrossDirectionFromDirection = (
   direction: Direction,
 ): CrossDirection | null => {

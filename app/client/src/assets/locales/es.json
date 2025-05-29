@@ -58,5 +58,10 @@
       "description": "Descripción",
       "create_room": "Crear sala"
     }
+  },
+  "furniture": {
+    "move": "mover",
+    "rotate": "girar",
+    "pick_up": "recoger"
   }
 }
