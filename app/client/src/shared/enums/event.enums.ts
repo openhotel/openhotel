@@ -22,6 +22,7 @@ export enum Event {
   POINTER_INTERACTIVE = "pointer-interactive",
 
   PLACE_ITEM = "place-item",
+  ROTATE_FURNITURE = "rotate-furniture",
 
   MESSAGE = "message",
   WHISPER_MESSAGE = "whisper-messsage",

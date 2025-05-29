@@ -9,7 +9,7 @@ import { ProxyEvent } from "shared/enums/event.enum.ts";
 
 export const photoCommand: Command = {
   command: "photo",
-  usages: ["<x> <y> <size>"],
+  usages: ["<x> <y>"],
   // usages: [],
   role: CommandRoles.OP,
   description: "command.photo.description",
@@ -18,11 +18,9 @@ export const photoCommand: Command = {
       user.getRoom(),
     )) as PrivateRoomMutable;
 
-    const $size = parseInt(<string>args[2]);
-
     const size = {
-      width: $size,
-      height: $size,
+      width: 128,
+      height: 96,
     };
 
     const position = {
