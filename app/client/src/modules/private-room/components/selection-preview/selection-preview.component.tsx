@@ -116,10 +116,14 @@ export const SelectionPreviewComponent: React.FC = () => {
           />
         );
       case PrivateRoomPreviewType.FRAME:
+        console.log(selectedPreview.data.size.height);
         return (
           <FurnitureFrameComponent
             position={{ x: 0, y: 0, z: 0 }}
-            framePosition={{ x: 0, y: 0 }}
+            framePosition={{
+              x: 0,
+              y: selectedPreview.data.size.height - TILE_WIDTH * 2,
+            }}
             furnitureId={(selectedPreview.data as FurnitureData).furnitureId}
           />
         );
