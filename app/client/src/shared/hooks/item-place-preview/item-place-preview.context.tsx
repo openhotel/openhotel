@@ -4,6 +4,7 @@ import { FurnitureData, PrivateRoom } from "shared/types";
 export type ItemPreviewData = {
   ids: string[];
   furnitureData: FurnitureData;
+  type: "place" | "move";
 };
 
 export type TemplateState = {

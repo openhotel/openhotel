@@ -82,6 +82,7 @@ export const InventoryContentComponent: React.FC<Props> = ({
       (furniture) => furniture.furnitureId === selectedFurnitureId,
     ).ids;
     setItemPreviewData({
+      type: "place",
       ids: targetFurnitureId,
       furnitureData: selectedFurnitureData,
     });
