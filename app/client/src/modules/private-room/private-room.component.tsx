@@ -74,13 +74,8 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
   const { getSafeSize } = useSafeWindow();
   const { openModal } = useModal();
 
-  const {
-    renderPreviewItem,
-    setCanPlace,
-    getPreviewItemId,
-    setItemPreviewData,
-    itemPreviewData,
-  } = useItemPlacePreview();
+  const { renderPreviewItem, setCanPlace, itemPreviewData, setPrivateRoom } =
+    useItemPlacePreview();
 
   const [isShiftDown, setIsShiftDown] = useState<boolean>(false);
   const [windowSize, setWindowSize] = useState<Size>(getSize());
@@ -119,6 +114,10 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
     () => room?.users?.find((user) => user.accountId === currentAccountId),
     [room?.users, currentAccountId],
   );
+
+  useEffect(() => {
+    setPrivateRoom(room);
+  }, [setPrivateRoom, room]);
 
   useEffect(() => {
     setCanPlace(room?.ownerId === currentAccountId);
@@ -255,8 +254,6 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
       isShiftDown,
       setLastPositionData,
       renderPreviewItem,
-      getPreviewItemId,
-      setItemPreviewData,
     ],
   );
 
@@ -331,8 +328,12 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
                 onLeaveWall={onLeaveWall}
               >
                 {renderPreviewItem}
-                <RoomCharactersComponent />
-                <RoomFurnitureComponent />
+                <RoomCharactersComponent
+                  disableHitAreas={Boolean(renderPreviewItem)}
+                />
+                <RoomFurnitureComponent
+                  disableHitAreas={Boolean(renderPreviewItem)}
+                />
               </PrivateRoomComp>
               <RoomMessagesComponent pivot={messagesPivot} />
             </ContainerComponent>

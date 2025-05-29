@@ -9,7 +9,7 @@ import {
   ItemPlacePreviewContext,
   ItemPreviewData,
 } from "./item-place-preview.context";
-import { Point3d } from "shared/types";
+import { Point3d, PrivateRoom } from "shared/types";
 import {
   FurnitureComponent,
   FurnitureFrameComponent,
@@ -24,6 +24,8 @@ import {
 } from "shared/enums";
 import { PositionData } from "shared/hooks/private-room";
 import { useProxy } from "shared/hooks/proxy";
+import { isPosition3dEqual } from "shared/utils";
+import { useFurniture } from "shared/hooks/furniture";
 
 type Props = {
   children: ReactNode;
@@ -34,6 +36,7 @@ export const ItemPlacePreviewProvider: React.FunctionComponent<Props> = ({
 }) => {
   const { on } = useEvents();
   const { emit } = useProxy();
+  const { get } = useFurniture();
 
   const [tilePosition, setTilePosition] = useState<Point3d>({
     x: 0,
@@ -47,6 +50,7 @@ export const ItemPlacePreviewProvider: React.FunctionComponent<Props> = ({
   });
   const [itemPreviewData, setItemPreviewData] =
     useState<ItemPreviewData | null>(null);
+  const [privateRoom, setPrivateRoom] = useState<PrivateRoom | null>(null);
 
   const [$canPlace, setCanPlace] = useState<boolean>(false);
 
@@ -139,17 +143,36 @@ export const ItemPlacePreviewProvider: React.FunctionComponent<Props> = ({
 
     const { ids, furnitureData } = itemPreviewData;
 
-    if (furnitureData.type === FurnitureType.FURNITURE)
-      return tilePosition ? (
+    if (furnitureData.type === FurnitureType.FURNITURE) {
+      if (!tilePosition) return null;
+
+      const positionY = privateRoom?.furniture
+        ?.filter(
+          (furniture) =>
+            furniture.type === FurnitureType.FURNITURE &&
+            isPosition3dEqual(furniture.position, tilePosition),
+        )
+        .reduce(
+          (y, furniture) =>
+            Math.max(
+              y,
+              furniture.position.y +
+                (get(furniture.furnitureId)?.size?.height ?? 0),
+            ),
+          0,
+        );
+      tilePosition.y = positionY;
+      return (
         <FurnitureComponent
           id={ids[0]}
           position={tilePosition}
           furnitureId={furnitureData.furnitureId}
           direction={CrossDirection.NORTH}
-          hitAreaActive={false}
-          heightCorrection={true}
+          disableHitArea={true}
+          heightCorrection={false}
         />
-      ) : null;
+      );
+    }
 
     return wallData ? (
       <FurnitureFrameComponent
@@ -158,10 +181,10 @@ export const ItemPlacePreviewProvider: React.FunctionComponent<Props> = ({
         furnitureId={furnitureData.furnitureId}
         direction={wallData.direction}
         framePosition={wallData.wallPosition}
-        interactive={false}
+        disableHitArea={true}
       />
     ) : null;
-  }, [itemPreviewData, tilePosition, wallData]);
+  }, [itemPreviewData, tilePosition, wallData, privateRoom, get]);
 
   const canPlace = useCallback(() => $canPlace, [$canPlace]);
 
@@ -177,6 +200,8 @@ export const ItemPlacePreviewProvider: React.FunctionComponent<Props> = ({
 
         setCanPlace,
         canPlace,
+
+        setPrivateRoom,
       }}
       children={children}
     />
