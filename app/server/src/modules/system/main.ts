@@ -2,14 +2,15 @@ import { Envs } from "shared/types/main.ts";
 import { proxy } from "./proxy/main.ts";
 import { phantom } from "./phantom/main.ts";
 import { game } from "./game/main.ts";
-import { debug, initLog, log } from "shared/utils/main.ts";
+import { initLog, log } from "shared/utils/main.ts";
 import { tasks } from "./tasks.ts";
-import { update, getDb, DbMutable, getRandomString } from "@oh/utils";
+import { getDb, DbMutable, getRandomString } from "@oh/utils";
 import { onet } from "./onet/main.ts";
 import { auth } from "modules/shared/auth.ts";
 import { config } from "./config.ts";
 import { Migrations } from "../migrations/main.ts";
 import { image } from "modules/shared/image.ts";
+import { updater } from "modules/system/updater.ts";
 
 export const System = (() => {
   let $envs: Envs;
@@ -25,6 +26,7 @@ export const System = (() => {
   const $auth = auth();
   const $config = config();
   const $image = image();
+  const $updater = updater();
 
   const load = async (envs: Envs) => {
     console.clear();
@@ -34,20 +36,7 @@ export const System = (() => {
     await $config.load(envs);
     const isDevelopment = $envs.version === "development";
 
-    // Check for an update if true, close the server
-    console.info($config.getVersion(), envs.version);
-    if (
-      !isDevelopment &&
-      envs.upgrade &&
-      (await update({
-        targetVersion: $config.getVersion(),
-        version: envs.version,
-        repository: "openhotel/openhotel",
-        log,
-        debug,
-      }))
-    )
-      return;
+    await $updater.load();
 
     if (isDevelopment)
       console.log(

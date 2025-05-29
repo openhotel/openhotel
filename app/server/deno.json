@@ -1,6 +1,6 @@
 {
   "tasks": {
-    "start": "deno run -A --watch=./src --unstable-kv mod.ts"
+    "start": "deno run -A --unstable-cron --watch=./src --unstable-kv mod.ts"
   },
   "imports": {
     "@oh/pathfinding": "jsr:@oh/pathfinding@2.0.3",

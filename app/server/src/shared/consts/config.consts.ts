@@ -26,4 +26,8 @@ export const CONFIG_DEFAULT: ConfigTypes = {
     },
     sleep: 60,
   },
+  autoupdate: {
+    enabled: true,
+    cron: "0 4 * * *",
+  },
 };
