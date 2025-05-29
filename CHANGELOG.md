@@ -1,4 +1,13 @@
 
+<a name="v0.7.12"></a>
+
+## [v0.7.12](https://github.com/openhotel/openhotel/compare/v0.7.11...v0.7.12) (2025-05-30)
+
+### Bug Fixes
+
+- deno cron is not a function - fix [#1001](https://github.com/openhotel/openhotel/issues/1001) ([#1002](https://github.com/openhotel/openhotel/issues/1002))
+
+
 <a name="v0.7.11"></a>
 
 ## [v0.7.11](https://github.com/openhotel/openhotel/compare/v0.7.10...v0.7.11) (2025-05-30)
@@ -1013,22 +1022,22 @@
 
 <a name="v0.2.26"></a>
 
-## [v0.2.26](https://github.com/openhotel/openhotel/compare/v0.2.24...v0.2.26) (2024-10-02)
-
-
-<a name="v0.2.24"></a>
-
-## [v0.2.24](https://github.com/openhotel/openhotel/compare/v0.2.24.b...v0.2.24) (2024-10-02)
-
-
-<a name="v0.2.24.b"></a>
-
-## [v0.2.24.b](https://github.com/openhotel/openhotel/compare/v0.2.25...v0.2.24.b) (2024-10-02)
+## [v0.2.26](https://github.com/openhotel/openhotel/compare/v0.2.25...v0.2.26) (2024-10-02)
 
 
 <a name="v0.2.25"></a>
 
-## [v0.2.25](https://github.com/openhotel/openhotel/compare/v0.2.23...v0.2.25) (2024-10-02)
+## [v0.2.25](https://github.com/openhotel/openhotel/compare/v0.2.24.b...v0.2.25) (2024-10-02)
+
+
+<a name="v0.2.24.b"></a>
+
+## [v0.2.24.b](https://github.com/openhotel/openhotel/compare/v0.2.24...v0.2.24.b) (2024-10-02)
+
+
+<a name="v0.2.24"></a>
+
+## [v0.2.24](https://github.com/openhotel/openhotel/compare/v0.2.23...v0.2.24) (2024-10-02)
 
 ### Features
 
