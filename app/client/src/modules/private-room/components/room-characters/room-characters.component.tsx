@@ -4,7 +4,13 @@ import { Event as ProxyEvent, PrivateRoomPreviewType } from "shared/enums";
 import { usePrivateRoom, useProxy } from "shared/hooks";
 import { User } from "shared/types";
 
-export const RoomCharactersComponent: React.FC = () => {
+type Props = {
+  disableHitAreas?: boolean;
+};
+
+export const RoomCharactersComponent: React.FC<Props> = ({
+  disableHitAreas = false,
+}) => {
   const { on } = useProxy();
   const {
     room,
@@ -70,8 +76,9 @@ export const RoomCharactersComponent: React.FC = () => {
           key={user.accountId}
           user={user}
           onPointerDown={onPointerDown(user)}
+          disableHitArea={disableHitAreas}
         />
       )),
-    [room.users],
+    [room.users, disableHitAreas],
   );
 };

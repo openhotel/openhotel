@@ -28,6 +28,8 @@ type Props = {
   skinColor: number;
 
   speaking?: boolean;
+
+  disableHitArea?: boolean;
 } & ContainerProps;
 
 export const CharacterComponent: React.FC<Props> = ({
@@ -44,6 +46,8 @@ export const CharacterComponent: React.FC<Props> = ({
   zIndex = 0,
 
   onPointerDown,
+
+  disableHitArea = false,
   ...containerProps
 }) => {
   const $pivot = useMemo(
@@ -55,24 +59,25 @@ export const CharacterComponent: React.FC<Props> = ({
   );
 
   const renderHitbox = useMemo(
-    () => (
-      <GraphicsComponent
-        type={GraphicType.POLYGON}
-        tint={0x00ffff}
-        alpha={0}
-        polygon={getCubePolygon({ width: 26, height: 65 })}
-        eventMode={EventMode.STATIC}
-        cursor={Cursor.CROSSHAIR}
-        zIndex={zIndex + SAFE_Z_INDEX}
-        position={position}
-        pivot={{
-          x: -11,
-          y: -6,
-        }}
-        onPointerDown={onPointerDown}
-      />
-    ),
-    [onPointerDown, zIndex, position],
+    () =>
+      disableHitArea ? null : (
+        <GraphicsComponent
+          type={GraphicType.POLYGON}
+          tint={0x00ffff}
+          alpha={0}
+          polygon={getCubePolygon({ width: 26, height: 65 })}
+          eventMode={EventMode.STATIC}
+          cursor={Cursor.CROSSHAIR}
+          zIndex={zIndex + SAFE_Z_INDEX}
+          position={position}
+          pivot={{
+            x: -11,
+            y: -6,
+          }}
+          onPointerDown={onPointerDown}
+        />
+      ),
+    [onPointerDown, zIndex, position, disableHitArea],
   );
 
   const renderLeftArm = useMemo(
