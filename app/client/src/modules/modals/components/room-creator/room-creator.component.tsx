@@ -34,6 +34,7 @@ export const RoomCreatorComponent: React.FC = () => {
   const { fetch } = useApi();
   const { emit } = useProxy();
 
+  const alreadyCalledRef = useRef(false);
   const formRef = useRef<{
     id: number;
     title: string;
@@ -70,6 +71,8 @@ export const RoomCreatorComponent: React.FC = () => {
   const onCreateRoom = useCallback(() => {
     if (isNaN(formRef.current.id) || !formRef.current.title?.length) return;
 
+    if (alreadyCalledRef.current) return;
+    alreadyCalledRef.current = true;
     fetch(
       "/room",
       {
