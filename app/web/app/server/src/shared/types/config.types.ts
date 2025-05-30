@@ -1,14 +1,22 @@
 export type ConfigTypes = {
   port: number;
+  url: string;
   version: string;
-  development: boolean;
+  backups: {
+    cron: string;
+    pathname: string;
+    max: number;
+    password: string;
+    s3: {
+      enabled: boolean;
+      accessKey: string;
+      secretKey: string;
+      endpoint: string;
+      region: string;
+      bucket: string;
+    };
+  };
   database: {
     filename: string;
-  };
-  auth: {
-    url: string;
-  };
-  client: {
-    url: string;
   };
 };

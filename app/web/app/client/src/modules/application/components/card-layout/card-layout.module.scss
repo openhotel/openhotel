@@ -1,0 +1,19 @@
+.card {
+  min-width: 35rem;
+  min-height: 40rem;
+
+  margin: auto;
+
+  > main {
+    padding: 2.5rem;
+  }
+}
+
+.footer {
+  position: absolute;
+  justify-content: space-between;
+  bottom: 0;
+  display: flex;
+  width: 100%;
+  padding: 2rem 4rem;
+}

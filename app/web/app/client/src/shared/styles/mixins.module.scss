@@ -1,0 +1,34 @@
+@import "./consts.module";
+
+@mixin web-only {
+  @media only screen and (min-width: $WEB_MIN_WIDTH) {
+    @content;
+  }
+}
+@mixin tablet-only {
+  @media only screen and (min-width: $TABLET_MIN_WIDTH) and (max-width: calc($WEB_MIN_WIDTH - 1px)) {
+    @content;
+  }
+}
+@mixin phone-only {
+  @media only screen and (max-width: calc($TABLET_MIN_WIDTH - 1px)) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media only screen and (max-width: calc($WEB_MIN_WIDTH - 1px)) {
+    @content;
+  }
+}
+
+@mixin responsive-width {
+  max-width: $WEB_MIN_WIDTH !important;
+  margin: auto;
+  @include tablet-only() {
+    width: $TABLET_MIN_WIDTH !important;
+  }
+  @include phone-only() {
+    width: 100% !important;
+  }
+}

@@ -2,17 +2,18 @@ import React from "react";
 import { createRoot } from "react-dom/client";
 
 // @ts-ignore
-import "./main.module.scss";
-import "@oh/styles/style.css";
+import "./main.scss";
+import "@openhotel/styles/dist/style.css";
+import "@openhotel/styles/styles.scss";
 
-import { Application } from "@oh/components";
-import { TestComponent } from "modules";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+
+import { ApplicationComponent } from "modules/application";
 
 const domNode = document.getElementById("root");
 const root = createRoot(domNode);
 
-root.render(
-  <Application>
-    <TestComponent />
-  </Application>,
-);
+dayjs.extend(relativeTime);
+
+root.render(<ApplicationComponent />);

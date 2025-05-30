@@ -3,9 +3,11 @@ on:
   push:
     branches: [master]
     paths:
+      - .github/**
       - app/server/**
   pull_request:
     paths:
+      - .github/**
       - app/server/**
 
 jobs:
@@ -23,6 +25,10 @@ jobs:
       - uses: denoland/setup-deno@v1
         with:
           deno-version: vx.x.x
+
+      #      - name: Tests
+      #        working-directory: ./app/server
+      #        run: deno task test
 
       - name: Build
         working-directory: ./app/server

@@ -1,9 +1,9 @@
 {
   "tasks": {
-    "start": "deno run -A --watch=./src --unstable-kv mod.ts",
-    "start:nowatch": "deno run -A --unstable-kv mod.ts",
+    "start": "deno run -A --watch=./src,./deleteme-database --unstable-kv --unstable-cron mod.ts",
+    "start:nowatch": "deno run -A --unstable-kv --unstable-cron mod.ts",
 
-    "compile": "deno compile -A --unstable-kv --no-check",
+    "compile": "deno compile -A --unstable-kv --unstable-cron --no-check",
 
     "compile:windows": "deno task compile --target=x86_64-pc-windows-msvc --output ./build/web_windows ./mod.ts",
     "compile:linux": "deno task compile --target=x86_64-unknown-linux-gnu --output ./build/web_linux ./mod.ts",
@@ -11,16 +11,23 @@
     "compile:darwin": "deno task compile --target=x86_64-apple-darwin --output ./build/web_darwin ./mod.ts",
     "compile:current": "deno task compile --output ./server ./mod.ts",
 
-    "build": "(deno task compile:linux) & (deno task compile:linux_aarch64) & (deno task compile:darwin) & (deno task compile:windows)"
+    "build": "(deno task compile:linux) & (deno task compile:linux_aarch64) & (deno task compile:darwin) & (deno task compile:windows)",
+
+    "test": "cd ./__tests__ && deno task test",
+    "test:watch": "(cd ./__tests__ && deno task test:watch) & deno task start --testMode"
   },
   "imports": {
-    "@oh/utils": "jsr:@oh/utils@1.3.0",
+    "@oh/queue": "jsr:@oh/queue@1.1.1",
+    "@oh/utils": "jsr:@oh/utils@1.5.2",
 
     "shared/": "./src/shared/",
     "modules/": "./src/modules/",
 
     "deno/": "https://deno.land/std@0.221.0/",
-    "loadenv": "https://deno.land/x/loadenv@v1.0.1/mod.ts"
+    "@std/ulid": "jsr:@std/ulid@1",
+
+    "nodemailer": "npm:nodemailer@6.9.15",
+    "otp": "https://deno.land/x/otpauth@v9.3.3/dist/otpauth.esm.js"
   },
   "nodeModulesDir": "auto"
 }
