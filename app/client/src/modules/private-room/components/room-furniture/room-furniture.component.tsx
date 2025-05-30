@@ -102,9 +102,10 @@ export const RoomFurnitureComponent: React.FC<Props> = ({
             framePosition={(furniture as RoomFurnitureFrame)?.framePosition}
             onPointerDown={onPointerDown(furniture)}
             disableHitArea={disableHitAreas}
+            roomLayout={room?.layout}
           />
         ),
       ),
-    [room?.furniture, disableHitAreas],
+    [room?.furniture, disableHitAreas, room?.layout],
   );
 };

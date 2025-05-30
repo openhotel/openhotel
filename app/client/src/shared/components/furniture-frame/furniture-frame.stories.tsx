@@ -4,6 +4,7 @@ import { FurnitureFrameComponent } from "./furniture-frame.component";
 import { SmallRoomComponent } from ".storybook/__components__";
 import { CrossDirection } from "shared/enums";
 import { Point2d, Point3d } from "shared/types";
+import { FurnitureComponent } from "shared/components/furniture";
 
 export default {
   title: "Shared/Furniture/Frame",
@@ -41,13 +42,13 @@ export const LoadingEast: Story = () => (
 //@ts-ignore
 export const LoadedNorth: Story = () => {
   const [tilePosition, setTilePosition] = useState<Point3d>({
-    x: -1,
+    x: 0,
     y: 0,
     z: -1,
   });
-  const [framePosition, setFramePosition] = useState<Point2d>({ x: 0, y: 0 });
+  const [framePosition, setFramePosition] = useState<Point2d>({ x: 0, y: 38 });
   const [direction, setDirection] = useState<CrossDirection>(
-    CrossDirection.NORTH,
+    CrossDirection.EAST,
   );
 
   const onClickWall = useCallback(
@@ -84,3 +85,61 @@ export const LoadedEast: Story = () => (
     />
   </SmallRoomComponent>
 );
+
+//@ts-ignore
+export const Test: Story = () => {
+  return (
+    <SmallRoomComponent>
+      {/*<FurnitureFrameComponent*/}
+      {/*  position={{ x: 0, y: 0, z: -1 }}*/}
+      {/*  framePosition={{ x: 0, y: 38 }}*/}
+      {/*  furnitureId="flags@pirate"*/}
+      {/*  direction={CrossDirection.EAST}*/}
+      {/*  onPointerDown={console.log}*/}
+      {/*/>*/}
+      <FurnitureFrameComponent
+        position={{ x: -1, y: 0, z: 0 }}
+        framePosition={{ x: 0, y: 20 }}
+        furnitureId="flags@pride-lgtb"
+        direction={CrossDirection.NORTH}
+        onPointerDown={console.log}
+      />
+      <FurnitureFrameComponent
+        position={{ x: -1, y: 0, z: 0 }}
+        framePosition={{ x: 10, y: 20 }}
+        furnitureId="flags@pirate"
+        direction={CrossDirection.NORTH}
+        onPointerDown={console.log}
+      />
+      <FurnitureFrameComponent
+        position={{ x: 0, y: 0, z: -1 }}
+        framePosition={{ x: 0, y: 20 }}
+        furnitureId="flags@pride-lgtb"
+        direction={CrossDirection.EAST}
+        onPointerDown={console.log}
+      />
+      <FurnitureFrameComponent
+        position={{ x: 0, y: 0, z: -1 }}
+        framePosition={{ x: 10, y: 20 }}
+        furnitureId="flags@pirate"
+        direction={CrossDirection.EAST}
+        onPointerDown={console.log}
+      />
+      <FurnitureComponent
+        position={{ x: -1, y: 20, z: -1 }}
+        furnitureId="toys@octopus-0"
+        direction={CrossDirection.NORTH}
+      />
+      <FurnitureComponent
+        position={{ x: 0, y: 10, z: -1 }}
+        furnitureId="toys@octopus-0"
+        direction={CrossDirection.NORTH}
+      />
+      <FurnitureComponent
+        position={{ x: -1, y: 10, z: 0 }}
+        furnitureId="toys@octopus-0"
+        direction={CrossDirection.NORTH}
+      />
+    </SmallRoomComponent>
+  );
+};

@@ -82,10 +82,11 @@ export const PrivateRoomRenderComponent = () => {
             furnitureId={furniture.furnitureId}
             direction={furniture?.direction}
             framePosition={(furniture as RoomFurnitureFrame)?.framePosition}
+            roomLayout={room?.layout}
           />
         ),
       ),
-    [room?.furniture],
+    [room?.furniture, room?.layout],
   );
 
   const renderCharacters = useMemo(

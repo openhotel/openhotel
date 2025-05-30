@@ -163,7 +163,7 @@ export const PrivateRoomWallComponent: React.FC<Props> = ({
           scale={{
             x: direction === CrossDirection.NORTH ? -1 : 1,
           }}
-          tint={0xff00ff}
+          // tint={0xff00ff * Math.random()}
           // cursor={Cursor.POINTER}
           eventMode={EventMode.STATIC}
           onPointerDown={$onPointerDown}
@@ -178,6 +178,7 @@ export const PrivateRoomWallComponent: React.FC<Props> = ({
           spriteSheet={SpriteSheetEnum.ROOM}
         />
         <NineSliceSpriteComponent
+          alpha={1}
           zIndex={zIndex}
           spriteSheet={SpriteSheetEnum.ROOM}
           texture={`wall-${directionText}-mid`}
