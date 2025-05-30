@@ -1,4 +1,14 @@
 
+<a name="v0.7.13"></a>
+
+## [v0.7.13](https://github.com/openhotel/openhotel/compare/v0.7.12...v0.7.13) (2025-05-30)
+
+### Bug Fixes
+
+- place item preview incorrect on stairs + below normal floor - fix [#1003](https://github.com/openhotel/openhotel/issues/1003) ([#1007](https://github.com/openhotel/openhotel/issues/1007))
+- overlapping frames - fix [#553](https://github.com/openhotel/openhotel/issues/553) ([#954](https://github.com/openhotel/openhotel/issues/954))
+
+
 <a name="v0.7.12"></a>
 
 ## [v0.7.12](https://github.com/openhotel/openhotel/compare/v0.7.11...v0.7.12) (2025-05-30)
@@ -1022,22 +1032,22 @@
 
 <a name="v0.2.26"></a>
 
-## [v0.2.26](https://github.com/openhotel/openhotel/compare/v0.2.25...v0.2.26) (2024-10-02)
-
-
-<a name="v0.2.25"></a>
-
-## [v0.2.25](https://github.com/openhotel/openhotel/compare/v0.2.24.b...v0.2.25) (2024-10-02)
-
-
-<a name="v0.2.24.b"></a>
-
-## [v0.2.24.b](https://github.com/openhotel/openhotel/compare/v0.2.24...v0.2.24.b) (2024-10-02)
+## [v0.2.26](https://github.com/openhotel/openhotel/compare/v0.2.24...v0.2.26) (2024-10-02)
 
 
 <a name="v0.2.24"></a>
 
-## [v0.2.24](https://github.com/openhotel/openhotel/compare/v0.2.23...v0.2.24) (2024-10-02)
+## [v0.2.24](https://github.com/openhotel/openhotel/compare/v0.2.24.b...v0.2.24) (2024-10-02)
+
+
+<a name="v0.2.24.b"></a>
+
+## [v0.2.24.b](https://github.com/openhotel/openhotel/compare/v0.2.25...v0.2.24.b) (2024-10-02)
+
+
+<a name="v0.2.25"></a>
+
+## [v0.2.25](https://github.com/openhotel/openhotel/compare/v0.2.23...v0.2.25) (2024-10-02)
 
 ### Features
 
