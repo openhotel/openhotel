@@ -250,7 +250,6 @@ export const ItemPlacePreviewProvider: React.FunctionComponent<Props> = ({
           (stairsDirection !== null ? 0.5 : 0)
         ) * TILE_Y_HEIGHT;
 
-      console.log(positionY);
       return (
         <FurnitureComponent
           id={ids[0]}
