@@ -233,7 +233,8 @@ export const ItemPlacePreviewProvider: React.FunctionComponent<Props> = ({
           ?.filter(
             (furniture) =>
               furniture.type === FurnitureType.FURNITURE &&
-              isPosition3dEqual(furniture.position, tilePosition),
+              isPosition3dEqual(furniture.position, tilePosition) &&
+                !ids.includes(furniture.id),
           )
           .reduce(
             (y, furniture) =>
@@ -261,6 +262,7 @@ export const ItemPlacePreviewProvider: React.FunctionComponent<Props> = ({
           direction={direction}
           disableHitArea={true}
           heightCorrection={false}
+          beingPlaced={true}
         />
       );
     }
@@ -274,6 +276,7 @@ export const ItemPlacePreviewProvider: React.FunctionComponent<Props> = ({
         framePosition={wallData.wallPosition}
         disableHitArea={true}
         roomLayout={privateRoom?.layout}
+        beingPlaced={true}
       />
     ) : null;
   }, [itemPreviewData, tilePosition, wallData, privateRoom, get, direction]);
