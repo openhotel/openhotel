@@ -71,3 +71,15 @@ export const getRoomPivot = (room: PrivateRoom) => {
     y: topZIndex * (TILE_SIZE.height / 2) - WALL_HEIGHT,
   };
 };
+
+export const isCurrentPointStairs = (
+  layout: RoomPoint[][],
+  point: Partial<Point3d>,
+): CrossDirection.NORTH | CrossDirection.EAST | null => {
+  if (layout[point.z][point.x] > layout[point.z][point.x - 1])
+    return CrossDirection.NORTH;
+  if (layout[point.z][point.x] > layout[point.z - 1]?.[point.x])
+    return CrossDirection.EAST;
+
+  return null;
+};
