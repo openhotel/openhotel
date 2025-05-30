@@ -24,8 +24,13 @@ import {
 } from "shared/enums";
 import { PositionData } from "shared/hooks/private-room";
 import { useProxy } from "shared/hooks/proxy";
-import { getNextCrossDirection, isPosition3dEqual } from "shared/utils";
+import {
+  getNextCrossDirection,
+  isCurrentPointStairs,
+  isPosition3dEqual,
+} from "shared/utils";
 import { useFurniture } from "shared/hooks/furniture";
+import { TILE_Y_HEIGHT } from "shared/consts";
 
 type Props = {
   children: ReactNode;
@@ -218,26 +223,41 @@ export const ItemPlacePreviewProvider: React.FunctionComponent<Props> = ({
     if (furnitureData.type === FurnitureType.FURNITURE) {
       if (!tilePosition) return null;
 
-      const positionY = privateRoom?.furniture
-        ?.filter(
-          (furniture) =>
-            furniture.type === FurnitureType.FURNITURE &&
-            isPosition3dEqual(furniture.position, tilePosition),
-        )
-        .reduce(
-          (y, furniture) =>
-            Math.max(
-              y,
-              furniture.position.y +
-                (get(furniture.furnitureId)?.size?.height ?? 0),
-            ),
-          0,
-        );
-      tilePosition.y = positionY;
+      const stairsDirection = isCurrentPointStairs(
+        privateRoom?.layout,
+        tilePosition,
+      );
+
+      const positionY =
+        privateRoom?.furniture
+          ?.filter(
+            (furniture) =>
+              furniture.type === FurnitureType.FURNITURE &&
+              isPosition3dEqual(furniture.position, tilePosition),
+          )
+          .reduce(
+            (y, furniture) =>
+              Math.max(
+                y,
+                furniture.position.y +
+                  (get(furniture.furnitureId)?.size?.height ?? 0),
+              ),
+            0,
+          ) ||
+        -(
+          (privateRoom?.layout?.[tilePosition.z]?.[tilePosition.x] as any) -
+          1 -
+          (stairsDirection !== null ? 0.5 : 0)
+        ) * TILE_Y_HEIGHT;
+
+      console.log(positionY);
       return (
         <FurnitureComponent
           id={ids[0]}
-          position={tilePosition}
+          position={{
+            ...tilePosition,
+            y: positionY,
+          }}
           furnitureId={furnitureData.furnitureId}
           direction={direction}
           disableHitArea={true}

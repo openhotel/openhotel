@@ -10,6 +10,7 @@ import { ContainerComponent, ContainerRef } from "@openhotel/pixi-components";
 import { CrossDirection, RoomPointEnum } from "shared/enums";
 import {
   getPositionFromIsometricPosition,
+  isCurrentPointStairs,
   isDoorRenderable,
   isWallRenderable,
 } from "shared/utils";
@@ -111,12 +112,7 @@ export const PrivateRoomComponent: React.FC<Props> = ({
         const spawn = roomLine[x] === RoomPointEnum.SPAWN;
         const previewY = -((spawn ? 1 : (parseInt(roomLine[x] + "") ?? 1)) - 1);
         const y = Math.floor(previewY);
-        const renderNorthStairs = roomLine[x] > roomLine[x - 1];
-        const renderEastStairs = roomLine[x] > layout[z - 1]?.[x];
-
-        const stairsDirection = renderNorthStairs
-          ? CrossDirection.NORTH
-          : CrossDirection.EAST;
+        const stairsDirection = isCurrentPointStairs(layout, { x, z });
 
         const position = {
           x,
@@ -133,7 +129,7 @@ export const PrivateRoomComponent: React.FC<Props> = ({
           accumulatedPivot.x = currentPosition.x - WALL_WIDTH + 1;
 
         list.push(
-          renderNorthStairs || renderEastStairs ? (
+          stairsDirection !== null ? (
             <PrivateRoomStairs
               key={`stairs${x}.${z}`}
               position={position}
