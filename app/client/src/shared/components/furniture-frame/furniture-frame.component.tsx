@@ -11,9 +11,11 @@ import {
   DUMMY_FURNITURE_FRAME_DATA,
   SAFE_Z_INDEX,
   TILE_SIZE,
+  WALL_HEIGHT,
+  WALL_WIDTH,
 } from "shared/consts";
 import { CrossDirection } from "shared/enums";
-import { Point2d, Point3d } from "shared/types";
+import { Point2d, Point3d, RoomPoint } from "shared/types";
 import { getPositionFromIsometricPosition, getZIndex } from "shared/utils";
 import { useFurniture } from "shared/hooks";
 import { getWallPositionFromIsometricPosition } from "shared/utils/wall.utils";
@@ -30,6 +32,7 @@ type Props = {
   onPointerDown?: () => void;
 
   disableHitArea?: boolean;
+  roomLayout?: RoomPoint[][];
 };
 
 export const FurnitureFrameComponent: React.FC<Props> = ({
@@ -40,6 +43,7 @@ export const FurnitureFrameComponent: React.FC<Props> = ({
   direction = CrossDirection.NORTH,
   onPointerDown,
   disableHitArea = false,
+  roomLayout,
 }) => {
   const { load: loadFurniture, get: getFurniture } = useFurniture();
   const { update, lastUpdate } = useUpdate();
@@ -61,6 +65,7 @@ export const FurnitureFrameComponent: React.FC<Props> = ({
     () => (data && direction ? direction : CrossDirection.NORTH),
     [data, direction],
   );
+  const $zIndex = useMemo(() => getZIndex(position), [position]);
 
   return useMemo(
     () =>
@@ -76,7 +81,6 @@ export const FurnitureFrameComponent: React.FC<Props> = ({
             z: position.z,
           };
           const $position = getPositionFromIsometricPosition(isoPos);
-          const $zIndex = getZIndex(isoPos);
           const $$position = {
             x: $position.x + pos.x,
             y: $position.y + pos.y,
@@ -94,6 +98,86 @@ export const FurnitureFrameComponent: React.FC<Props> = ({
               TILE_SIZE.height / 2 +
               pivot.y,
           };
+
+          let renderSprites = [];
+
+          for (let i = -1; i < 2; i++) {
+            const $isoMaskPosition = {
+              x: isoPos.x + (direction === CrossDirection.NORTH ? 0 : i),
+              y: 0,
+              z: isoPos.z + (direction === CrossDirection.EAST ? 0 : i),
+            };
+            const targetTile =
+              roomLayout?.[$isoMaskPosition.z]?.[$isoMaskPosition.x];
+
+            // if (roomLayout && (!targetTile || targetTile === "x")) continue;
+
+            const $targetMaskPosition =
+              getPositionFromIsometricPosition($isoMaskPosition);
+            const $maskPosition = {
+              x:
+                $targetMaskPosition.x +
+                1 +
+                (direction === CrossDirection.EAST ? TILE_SIZE.width / 2 : 0),
+              y: $targetMaskPosition.y + 2,
+            };
+            const $zIndex = getZIndex(
+              {
+                x: $isoMaskPosition.x,
+                z: $isoMaskPosition.z,
+                y: -(isNaN(targetTile as any) ? 0 : targetTile) + 1,
+              },
+              0.05,
+            );
+
+            const margin = 50;
+
+            const $maskPolygon =
+              direction === CrossDirection.NORTH
+                ? [
+                    0,
+                    -WALL_HEIGHT + 9 + WALL_WIDTH - margin,
+                    TILE_SIZE.width / 2,
+                    -WALL_HEIGHT + WALL_WIDTH - 3 - margin,
+                    TILE_SIZE.width / 2,
+                    -2 - position.y + 50,
+                    0,
+                    10 - position.y + 50,
+                  ]
+                : [
+                    0,
+                    -WALL_HEIGHT + WALL_WIDTH - 3 - margin,
+                    TILE_SIZE.width / 2,
+                    -WALL_HEIGHT + 9 + WALL_WIDTH - margin,
+                    TILE_SIZE.width / 2,
+                    10 - position.y + margin,
+                    0,
+                    -2 - position.y + margin,
+                  ];
+
+            renderSprites.push(
+              <React.Fragment>
+                <SpriteComponent
+                  texture={texture}
+                  spriteSheet={$data.spriteSheet}
+                  pivot={$pivot}
+                  zIndex={$zIndex}
+                  position={$$position}
+                  eventMode={EventMode.NONE}
+                  maskPolygon={$maskPolygon}
+                  maskPosition={$maskPosition}
+                />
+                {/*<GraphicsComponent*/}
+                {/*  type={GraphicType.POLYGON}*/}
+                {/*  polygon={$maskPolygon}*/}
+                {/*  tint={0xff00ff - Math.random()}*/}
+                {/*  position={$maskPosition}*/}
+                {/*  alpha={0.5}*/}
+                {/*  zIndex={99999999999}*/}
+                {/*/>*/}
+              </React.Fragment>,
+            );
+          }
 
           const $hitArea =
             hitArea ??
@@ -131,37 +215,7 @@ export const FurnitureFrameComponent: React.FC<Props> = ({
 
           return (
             <React.Fragment key={id}>
-              <SpriteComponent
-                texture={texture}
-                spriteSheet={$data.spriteSheet}
-                pivot={$pivot}
-                zIndex={$zIndex}
-                position={$$position}
-                eventMode={EventMode.NONE}
-                // mask={
-                //   <GraphicsComponent
-                //     type={GraphicType.POLYGON}
-                //     tint={0xff00ff}
-                //     polygon={[
-                //       0,
-                //       0,
-                //       TILE_SIZE.width / 2,
-                //       0,
-                //       TILE_SIZE.width / 2,
-                //       bounds.height,
-                //       0,
-                //       bounds.height,
-                //     ]}
-                //     zIndex={SAFE_Z_INDEX + $zIndex}
-                //     pivot={{
-                //       x:
-                //         direction === CrossDirection.NORTH
-                //           ? TILE_WIDTH / 2 - 1
-                //           : -TILE_WIDTH - TILE_WIDTH / 2 + 1,
-                //     }}
-                //   />
-                // }
-              />
+              {renderSprites}
 
               {disableHitArea ? null : (
                 <GraphicsComponent
@@ -181,6 +235,6 @@ export const FurnitureFrameComponent: React.FC<Props> = ({
           );
         },
       ),
-    [$data, $direction, position, id, disableHitArea],
+    [$data, $direction, position, id, disableHitArea, roomLayout],
   );
 };

@@ -254,6 +254,7 @@ export const ItemPlacePreviewProvider: React.FunctionComponent<Props> = ({
         direction={wallData.direction}
         framePosition={wallData.wallPosition}
         disableHitArea={true}
+        roomLayout={privateRoom?.layout}
       />
     ) : null;
   }, [itemPreviewData, tilePosition, wallData, privateRoom, get, direction]);
