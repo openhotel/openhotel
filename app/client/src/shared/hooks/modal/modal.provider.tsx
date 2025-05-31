@@ -64,8 +64,11 @@ export const ModalProvider: React.FunctionComponent<ModalProps> = ({
         x: windowSize.width / 2 - modalSize.width / 2,
         y: windowSize.height / 2 - modalSize.height / 2,
       });
+
+      focusedModalRef.current = modal;
+      update();
     },
-    [getSize, open, modals],
+    [getSize, open, modals, update],
   );
 
   const closeModal = useCallback(
@@ -116,6 +119,24 @@ export const ModalProvider: React.FunctionComponent<ModalProps> = ({
       removeOnPointerUp();
     };
   }, [modals, on, update, enableCameraMovement]);
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        if (event.shiftKey) {
+          closeAll();
+        } else if (focusedModalRef.current !== null) {
+          closeModal(focusedModalRef.current);
+        }
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [closeAll, closeModal]);
 
   const onPointerEnter = useCallback(
     (modal: Modal) => () => {
