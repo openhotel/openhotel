@@ -17,7 +17,7 @@ import {
 import { CrossDirection } from "shared/enums";
 import { Point3d } from "shared/types";
 import { getPositionFromIsometricPosition, getZIndex } from "shared/utils";
-import {useFurniture, useItemPlacePreview} from "shared/hooks";
+import { useFurniture, useItemPlacePreview } from "shared/hooks";
 import { ulid } from "ulidx";
 import { getCubePolygon } from "shared/utils/polygon.utils";
 
@@ -33,7 +33,7 @@ type Props = {
 
   disableHitArea?: boolean;
   heightCorrection?: boolean;
-    beingPlaced?: boolean;
+  isBeingPlaced?: boolean;
 };
 
 export const FurnitureComponent: React.FC<Props> = ({
@@ -44,11 +44,11 @@ export const FurnitureComponent: React.FC<Props> = ({
   onPointerDown,
   disableHitArea = false,
   heightCorrection = false,
-    beingPlaced = false,
+  isBeingPlaced = false,
 }) => {
   const { load: loadFurniture, get: getFurniture } = useFurniture();
   const { update, lastUpdate } = useUpdate();
-  const { itemPreviewData } = useItemPlacePreview()
+  const { itemPreviewData } = useItemPlacePreview();
 
   useEffect(() => {
     loadFurniture(furnitureId).then(update);
@@ -92,7 +92,9 @@ export const FurnitureComponent: React.FC<Props> = ({
                 pivot={$pivot}
                 zIndex={$zIndex}
                 position={$position}
-                alpha={ itemPreviewData?.ids?.includes(id) && !beingPlaced ? 0.5 : 1 }
+                alpha={
+                  itemPreviewData?.ids?.includes(id) && !isBeingPlaced ? 0.5 : 1
+                }
               />
 
               {disableHitArea ? null : (
