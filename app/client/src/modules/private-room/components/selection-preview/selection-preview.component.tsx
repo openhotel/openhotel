@@ -8,11 +8,13 @@ import React, {
 import {
   ContainerComponent,
   ContainerRef,
+  Event as OhEvent,
   EventMode,
   FLEX_JUSTIFY,
   FlexContainerComponent,
   HorizontalAlign,
   SpriteComponent,
+  useEvents,
 } from "@openhotel/pixi-components";
 import {
   HOT_BAR_HEIGHT_FULL,
@@ -65,6 +67,7 @@ export const SelectionPreviewComponent: React.FC = () => {
   const textContainerRef = useRef<ContainerRef>(null);
 
   const { t } = useTranslation();
+  const { on } = useEvents();
   const { setItemPreviewData } = useItemPlacePreview();
   const { getAccount } = useAccount();
   const { selectedPreview, room, setSelectedPreview } = usePrivateRoom();
@@ -212,6 +215,43 @@ export const SelectionPreviewComponent: React.FC = () => {
     onPickUpFurniture,
     t,
   ]);
+
+
+  const onKeyDown = useCallback(
+      ({ code }: KeyboardEvent) => {
+        if (!selectedPreview) return;
+
+        const account = getAccount();
+        const isRoomOwner = account.accountId === room?.ownerId;
+        if (!isRoomOwner) return;
+
+        if (selectedPreview.type === PrivateRoomPreviewType.FURNITURE) {
+          if (code === "KeyR") {
+            onRotateFurniture();
+          } else if (code === "KeyM") {
+            onMoveFurniture();
+          } else if (code === "KeyP") {
+            onPickUpFurniture();
+          }
+        } else if (selectedPreview.type === PrivateRoomPreviewType.FRAME) {
+          if (code === "KeyM") {
+            onMoveFurniture();
+          } else if (code === "KeyP") {
+            onPickUpFurniture();
+          }
+        }
+      },
+      [selectedPreview, room, getAccount, onRotateFurniture, onMoveFurniture, onPickUpFurniture]
+  );
+
+  useEffect(() => {
+    const removeOnKeyDown = on(OhEvent.KEY_DOWN, onKeyDown);
+
+    return () => {
+      removeOnKeyDown();
+    };
+  }, [onKeyDown, on]);
+
 
   if (!selectedPreview) return null;
 
