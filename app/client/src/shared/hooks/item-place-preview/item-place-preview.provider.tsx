@@ -262,7 +262,7 @@ export const ItemPlacePreviewProvider: React.FunctionComponent<Props> = ({
           direction={direction}
           disableHitArea={true}
           heightCorrection={false}
-          beingPlaced={true}
+          isBeingPlaced={true}
         />
       );
     }
@@ -276,7 +276,7 @@ export const ItemPlacePreviewProvider: React.FunctionComponent<Props> = ({
         framePosition={wallData.wallPosition}
         disableHitArea={true}
         roomLayout={privateRoom?.layout}
-        beingPlaced={true}
+        isBeingPlaced={true}
       />
     ) : null;
   }, [itemPreviewData, tilePosition, wallData, privateRoom, get, direction]);

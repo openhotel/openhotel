@@ -33,7 +33,7 @@ type Props = {
 
   disableHitArea?: boolean;
   roomLayout?: RoomPoint[][];
-  beingPlaced?: boolean;
+  isBeingPlaced?: boolean;
 };
 
 export const FurnitureFrameComponent: React.FC<Props> = ({
@@ -45,7 +45,7 @@ export const FurnitureFrameComponent: React.FC<Props> = ({
   onPointerDown,
   disableHitArea = false,
   roomLayout,
-  beingPlaced = false,
+  isBeingPlaced = false,
 }) => {
   const { load: loadFurniture, get: getFurniture } = useFurniture();
   const { update, lastUpdate } = useUpdate();
@@ -170,7 +170,7 @@ export const FurnitureFrameComponent: React.FC<Props> = ({
                   maskPolygon={$maskPolygon}
                   maskPosition={$maskPosition}
                   alpha={
-                    itemPreviewData?.ids?.includes(id) && !beingPlaced ? 0.5 : 1
+                    itemPreviewData?.ids?.includes(id) && !isBeingPlaced ? 0.5 : 1
                   }
                 />
                 {/*<GraphicsComponent*/}
