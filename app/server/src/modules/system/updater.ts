@@ -14,13 +14,17 @@ export const updater = () => {
     console.info(
       `Trying to update from ${envs.version} to ${config.version}...`,
     );
-    return await update({
-      targetVersion: config.version,
-      version: envs.version,
-      repository: "openhotel/openhotel",
-      log,
-      debug,
-    });
+    if (
+      await update({
+        targetVersion: config.version,
+        version: envs.version,
+        repository: "openhotel/openhotel",
+        log,
+        debug,
+      })
+    )
+      //@ts-ignore
+      Deno.exit();
   };
 
   const load = async () => {
