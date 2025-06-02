@@ -94,8 +94,12 @@ export const getRoom =
           .filter((furniture) => furniture.type === FurnitureType.FURNITURE)
           .sort(() => 0.5 + Math.random())[0]?.position ?? getRandomPoint();
       // Make capture
-      const pos = getPositionFromIsometricPosition(randomPoint);
+      const pos = getPositionFromIsometricPosition({
+        ...randomPoint,
+        y: getYFromPoint(randomPoint),
+      });
 
+      console.log(randomPoint, pos);
       System.phantom.capture({
         id: room.id,
         room: getObject(),
