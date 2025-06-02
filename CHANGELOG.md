@@ -1,4 +1,13 @@
 
+<a name="v0.7.14"></a>
+
+## [v0.7.14](https://github.com/openhotel/openhotel/compare/v0.7.13...v0.7.14) (2025-05-31)
+
+### Bug Fixes
+
+- autoupdate does not restart after update - fix [#1015](https://github.com/openhotel/openhotel/issues/1015) ([#1016](https://github.com/openhotel/openhotel/issues/1016))
+
+
 <a name="v0.7.13"></a>
 
 ## [v0.7.13](https://github.com/openhotel/openhotel/compare/v0.7.12...v0.7.13) (2025-05-30)
@@ -1032,17 +1041,17 @@
 
 <a name="v0.2.26"></a>
 
-## [v0.2.26](https://github.com/openhotel/openhotel/compare/v0.2.24...v0.2.26) (2024-10-02)
-
-
-<a name="v0.2.24"></a>
-
-## [v0.2.24](https://github.com/openhotel/openhotel/compare/v0.2.24.b...v0.2.24) (2024-10-02)
+## [v0.2.26](https://github.com/openhotel/openhotel/compare/v0.2.24.b...v0.2.26) (2024-10-02)
 
 
 <a name="v0.2.24.b"></a>
 
-## [v0.2.24.b](https://github.com/openhotel/openhotel/compare/v0.2.25...v0.2.24.b) (2024-10-02)
+## [v0.2.24.b](https://github.com/openhotel/openhotel/compare/v0.2.24...v0.2.24.b) (2024-10-02)
+
+
+<a name="v0.2.24"></a>
+
+## [v0.2.24](https://github.com/openhotel/openhotel/compare/v0.2.25...v0.2.24) (2024-10-02)
 
 
 <a name="v0.2.25"></a>
