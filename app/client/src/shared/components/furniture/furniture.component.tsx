@@ -33,6 +33,7 @@ type Props = {
 
   disableHitArea?: boolean;
   heightCorrection?: boolean;
+  isBeingPlaced?: boolean;
 };
 
 export const FurnitureComponent: React.FC<Props> = ({
@@ -43,6 +44,7 @@ export const FurnitureComponent: React.FC<Props> = ({
   onPointerDown,
   disableHitArea = false,
   heightCorrection = false,
+  isBeingPlaced = false,
 }) => {
   const { load: loadFurniture, get: getFurniture } = useFurniture();
   const { update, lastUpdate } = useUpdate();
@@ -89,6 +91,7 @@ export const FurnitureComponent: React.FC<Props> = ({
                 pivot={$pivot}
                 zIndex={$zIndex}
                 position={$position}
+                alpha={isBeingPlaced ? 0.5 : 1}
               />
 
               {disableHitArea ? null : (
@@ -125,6 +128,7 @@ export const FurnitureComponent: React.FC<Props> = ({
       position,
       disableHitArea,
       heightCorrection,
+      isBeingPlaced,
     ],
   );
 };

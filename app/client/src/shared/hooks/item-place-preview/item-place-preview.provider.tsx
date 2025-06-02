@@ -233,7 +233,8 @@ export const ItemPlacePreviewProvider: React.FunctionComponent<Props> = ({
           ?.filter(
             (furniture) =>
               furniture.type === FurnitureType.FURNITURE &&
-              isPosition3dEqual(furniture.position, tilePosition),
+              isPosition3dEqual(furniture.position, tilePosition) &&
+              !ids.includes(furniture.id),
           )
           .reduce(
             (y, furniture) =>
