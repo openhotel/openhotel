@@ -78,7 +78,7 @@ export const ModalProvider: React.FunctionComponent<ModalProps> = ({
       );
       close(modal);
     },
-    [close],
+    [close, update],
   );
 
   const closeAll = useCallback(() => {
@@ -188,11 +188,7 @@ export const ModalProvider: React.FunctionComponent<ModalProps> = ({
       .map((modal: Modal) => {
         const { position } = get(modal);
         const ModalComp = MODAL_COMPONENT_MAP[modal];
-        const zIndex = newModals.includes(modal)
-          ? 150
-          : focusedModalRef.current[0] === modal
-            ? 100
-            : 50;
+        const zIndex = focusedModalRef.current.toReversed().indexOf(modal);
         return ModalComp ? (
           <DragContainerComponent
             key={modal}
