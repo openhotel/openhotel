@@ -51,7 +51,7 @@ export const ModalProvider: React.FunctionComponent<ModalProps> = ({
 
   const lastModalList = useRef<Modal[]>([]);
   const cursorOverModalRef = useRef<Modal | null>(null);
-  const focusedModalRef = useRef<Modal | null>(null);
+  const focusedModalRef = useRef<Modal[]>([]);
 
   const openModal = useCallback(
     (modal: Modal) => {
@@ -64,19 +64,26 @@ export const ModalProvider: React.FunctionComponent<ModalProps> = ({
         x: windowSize.width / 2 - modalSize.width / 2,
         y: windowSize.height / 2 - modalSize.height / 2,
       });
+
+      focusedModalRef.current = [modal, ...focusedModalRef.current];
+      update();
     },
-    [getSize, open, modals],
+    [getSize, open, modals, update],
   );
 
   const closeModal = useCallback(
     (modal: Modal) => {
+      focusedModalRef.current = focusedModalRef.current.filter(
+        ($modal) => $modal !== modal,
+      );
       close(modal);
     },
-    [close],
+    [close, update],
   );
 
   const closeAll = useCallback(() => {
     $closeAll();
+    focusedModalRef.current = [];
   }, [$closeAll]);
   const isModalOpen = useCallback((modal: Modal) => isOpen(modal), [isOpen]);
 
@@ -101,19 +108,38 @@ export const ModalProvider: React.FunctionComponent<ModalProps> = ({
     const removeOnPointerDown = on(Event.POINTER_DOWN, () => {
       if (
         cursorOverModalRef.current === null ||
-        focusedModalRef.current === cursorOverModalRef.current
+        focusedModalRef.current[0] === cursorOverModalRef.current
       )
         return;
-      focusedModalRef.current = cursorOverModalRef.current;
+      focusedModalRef.current = [
+        cursorOverModalRef.current,
+        ...focusedModalRef.current.filter(
+          (modal) => modal !== cursorOverModalRef.current,
+        ),
+      ];
       update();
     });
     const removeOnPointerUp = on(Event.POINTER_UP, () => {
       enableCameraMovement();
     });
+    const removeOnKeyDown = on<KeyboardEvent>(
+      Event.KEY_DOWN,
+      ({ key, ctrlKey }) => {
+        if (key !== "Escape") return;
+
+        if (ctrlKey) {
+          closeAll();
+          return;
+        }
+
+        closeModal(focusedModalRef.current[0]);
+      },
+    );
 
     return () => {
       removeOnPointerDown();
       removeOnPointerUp();
+      removeOnKeyDown();
     };
   }, [modals, on, update, enableCameraMovement]);
 
@@ -162,11 +188,7 @@ export const ModalProvider: React.FunctionComponent<ModalProps> = ({
       .map((modal: Modal) => {
         const { position } = get(modal);
         const ModalComp = MODAL_COMPONENT_MAP[modal];
-        const zIndex = newModals.includes(modal)
-          ? 150
-          : focusedModalRef.current === modal
-            ? 100
-            : 50;
+        const zIndex = focusedModalRef.current.toReversed().indexOf(modal);
         return ModalComp ? (
           <DragContainerComponent
             key={modal}
