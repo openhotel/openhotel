@@ -1,6 +1,11 @@
 import React, { useCallback, useEffect, useMemo } from "react";
 import { FurnitureComponent } from "shared/components";
-import { useFurniture, usePrivateRoom, useProxy } from "shared/hooks";
+import {
+  useFurniture,
+  useItemPlacePreview,
+  usePrivateRoom,
+  useProxy,
+} from "shared/hooks";
 import {
   Event as ProxyEvent,
   FurnitureType,
@@ -25,6 +30,7 @@ export const RoomFurnitureComponent: React.FC<Props> = ({
     updateFurniture,
     setSelectedPreview,
   } = usePrivateRoom();
+  const { itemPreviewData } = useItemPlacePreview();
 
   useEffect(() => {
     if (!room) return;
@@ -91,6 +97,7 @@ export const RoomFurnitureComponent: React.FC<Props> = ({
             direction={furniture?.direction}
             onPointerDown={onPointerDown(furniture)}
             disableHitArea={disableHitAreas}
+            isBeingPlaced={itemPreviewData?.ids?.includes(furniture.id)}
           />
         ) : (
           <FurnitureFrameComponent
@@ -103,9 +110,10 @@ export const RoomFurnitureComponent: React.FC<Props> = ({
             onPointerDown={onPointerDown(furniture)}
             disableHitArea={disableHitAreas}
             roomLayout={room?.layout}
+            isBeingPlaced={itemPreviewData?.ids?.includes(furniture.id)}
           />
         ),
       ),
-    [room?.furniture, disableHitAreas, room?.layout],
+    [room?.furniture, disableHitAreas, room?.layout, itemPreviewData],
   );
 };

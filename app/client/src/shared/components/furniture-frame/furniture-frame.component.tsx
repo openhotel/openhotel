@@ -33,6 +33,7 @@ type Props = {
 
   disableHitArea?: boolean;
   roomLayout?: RoomPoint[][];
+  isBeingPlaced?: boolean;
 };
 
 export const FurnitureFrameComponent: React.FC<Props> = ({
@@ -44,6 +45,7 @@ export const FurnitureFrameComponent: React.FC<Props> = ({
   onPointerDown,
   disableHitArea = false,
   roomLayout,
+  isBeingPlaced = false,
 }) => {
   const { load: loadFurniture, get: getFurniture } = useFurniture();
   const { update, lastUpdate } = useUpdate();
@@ -168,6 +170,7 @@ export const FurnitureFrameComponent: React.FC<Props> = ({
                   eventMode={EventMode.NONE}
                   maskPolygon={$maskPolygon}
                   maskPosition={$maskPosition}
+                  alpha={isBeingPlaced ? 0.5 : 1}
                 />
                 {/*<GraphicsComponent*/}
                 {/*  type={GraphicType.POLYGON}*/}
@@ -237,6 +240,14 @@ export const FurnitureFrameComponent: React.FC<Props> = ({
           );
         },
       ),
-    [$data, $direction, position, id, disableHitArea, roomLayout],
+    [
+      $data,
+      $direction,
+      position,
+      id,
+      disableHitArea,
+      roomLayout,
+      isBeingPlaced,
+    ],
   );
 };
