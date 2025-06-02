@@ -17,7 +17,7 @@ import {
 import { CrossDirection } from "shared/enums";
 import { Point2d, Point3d, RoomPoint } from "shared/types";
 import { getPositionFromIsometricPosition, getZIndex } from "shared/utils";
-import { useFurniture, useItemPlacePreview } from "shared/hooks";
+import { useFurniture } from "shared/hooks";
 import { getWallPositionFromIsometricPosition } from "shared/utils/wall.utils";
 import { ulid } from "ulidx";
 
@@ -49,7 +49,6 @@ export const FurnitureFrameComponent: React.FC<Props> = ({
 }) => {
   const { load: loadFurniture, get: getFurniture } = useFurniture();
   const { update, lastUpdate } = useUpdate();
-  const { itemPreviewData } = useItemPlacePreview();
 
   useEffect(() => {
     loadFurniture(furnitureId).then(update);
@@ -169,9 +168,7 @@ export const FurnitureFrameComponent: React.FC<Props> = ({
                   eventMode={EventMode.NONE}
                   maskPolygon={$maskPolygon}
                   maskPosition={$maskPosition}
-                  alpha={
-                    itemPreviewData?.ids?.includes(id) && !isBeingPlaced ? 0.5 : 1
-                  }
+                  alpha={isBeingPlaced ? 0.5 : 1}
                 />
                 {/*<GraphicsComponent*/}
                 {/*  type={GraphicType.POLYGON}*/}
@@ -241,6 +238,14 @@ export const FurnitureFrameComponent: React.FC<Props> = ({
           );
         },
       ),
-    [$data, $direction, position, id, disableHitArea, roomLayout],
+    [
+      $data,
+      $direction,
+      position,
+      id,
+      disableHitArea,
+      roomLayout,
+      isBeingPlaced,
+    ],
   );
 };
