@@ -114,11 +114,11 @@ export const getRoom =
 
       System.game.rooms.pathfinding.remove(user.accountId);
 
-      $user.removeRoom();
-
       roomUserMap[room.id] = roomUserMap[room.id].filter(
         (accountId) => accountId !== $accountId,
       );
+
+      $user.removeRoom();
 
       //Remove user from internal "room"
       System.proxy.$emit(ProxyEvent.$REMOVE_ROOM, {
@@ -327,7 +327,8 @@ export const getRoom =
     const getObjectWithUsers = async () => ({
       ...getObject(),
       users: getUsers()
-        .map((accountId) => System.game.users.get({ accountId }).getObject())
+        .map((accountId) => System.game.users.get({ accountId })?.getObject?.())
+        .filter(Boolean)
         .map(mapUser),
       ownerUsername: await getOwnerUsername(),
     });
