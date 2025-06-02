@@ -1,4 +1,31 @@
 
+<a name="v0.7.15"></a>
+
+## [v0.7.15](https://github.com/openhotel/openhotel/compare/v0.7.14...v0.7.15) (2025-06-02)
+
+### Bug Fixes
+
+- pride-bi flag visual error - fix [#1024](https://github.com/openhotel/openhotel/issues/1024) ([#1038](https://github.com/openhotel/openhotel/issues/1038))
+- teleport visual errors - fix [#990](https://github.com/openhotel/openhotel/issues/990) ([#1037](https://github.com/openhotel/openhotel/issues/1037))
+- when no furniture is present inside room preview is black - fix [#1035](https://github.com/openhotel/openhotel/issues/1035) ([#1036](https://github.com/openhotel/openhotel/issues/1036))
+- undefined user inside a room - fix [#951](https://github.com/openhotel/openhotel/issues/951) ([#1033](https://github.com/openhotel/openhotel/issues/1033))
+- when traveling between rooms reset message bubbles - fix [#1004](https://github.com/openhotel/openhotel/issues/1004) ([#1032](https://github.com/openhotel/openhotel/issues/1032))
+- when traveling between rooms title/description are not correctly aligned - fix [#1010](https://github.com/openhotel/openhotel/issues/1010) ([#1031](https://github.com/openhotel/openhotel/issues/1031))
+- trim room titles and assign 3 char length min - fix [#1021](https://github.com/openhotel/openhotel/issues/1021) ([#1030](https://github.com/openhotel/openhotel/issues/1030))
+- zIndex on furniture y position - fix [#1005](https://github.com/openhotel/openhotel/issues/1005) ([#1028](https://github.com/openhotel/openhotel/issues/1028))
+- input jumping incorrectly + ability to paste - fix [#1026](https://github.com/openhotel/openhotel/issues/1026) ([#1027](https://github.com/openhotel/openhotel/issues/1027))
+- scopes cannot be destructured from undefined - fix [#1019](https://github.com/openhotel/openhotel/issues/1019) ([#1025](https://github.com/openhotel/openhotel/issues/1025))
+- furniture frame with childs without unique key - fix [#1022](https://github.com/openhotel/openhotel/issues/1022) ([#1023](https://github.com/openhotel/openhotel/issues/1023))
+
+### Features
+
+- set height limit to place furniture on rooms - fix [#987](https://github.com/openhotel/openhotel/issues/987) ([#1034](https://github.com/openhotel/openhotel/issues/1034))
+- add dynamic number of splices for frames - fix [#1009](https://github.com/openhotel/openhotel/issues/1009) ([#1011](https://github.com/openhotel/openhotel/issues/1011))
+- add opacity + remove y calc on moving furni - fix [#1012](https://github.com/openhotel/openhotel/issues/1012) ([#1013](https://github.com/openhotel/openhotel/issues/1013))
+- add keyboard shortcuts for furniture - fix [#992](https://github.com/openhotel/openhotel/issues/992) ([#1017](https://github.com/openhotel/openhotel/issues/1017))
+- add Escape key functionality to close modals - fix [#1020](https://github.com/openhotel/openhotel/issues/1020) ([#1018](https://github.com/openhotel/openhotel/issues/1018))
+
+
 <a name="v0.7.14"></a>
 
 ## [v0.7.14](https://github.com/openhotel/openhotel/compare/v0.7.13...v0.7.14) (2025-05-31)
@@ -1041,7 +1068,12 @@
 
 <a name="v0.2.26"></a>
 
-## [v0.2.26](https://github.com/openhotel/openhotel/compare/v0.2.24.b...v0.2.26) (2024-10-02)
+## [v0.2.26](https://github.com/openhotel/openhotel/compare/v0.2.25...v0.2.26) (2024-10-02)
+
+
+<a name="v0.2.25"></a>
+
+## [v0.2.25](https://github.com/openhotel/openhotel/compare/v0.2.24.b...v0.2.25) (2024-10-02)
 
 
 <a name="v0.2.24.b"></a>
@@ -1051,12 +1083,7 @@
 
 <a name="v0.2.24"></a>
 
-## [v0.2.24](https://github.com/openhotel/openhotel/compare/v0.2.25...v0.2.24) (2024-10-02)
-
-
-<a name="v0.2.25"></a>
-
-## [v0.2.25](https://github.com/openhotel/openhotel/compare/v0.2.23...v0.2.25) (2024-10-02)
+## [v0.2.24](https://github.com/openhotel/openhotel/compare/v0.2.23...v0.2.24) (2024-10-02)
 
 ### Features
 
@@ -1130,17 +1157,17 @@
 
 <a name="v0.2.20-rc.2"></a>
 
-## [v0.2.20-rc.2](https://github.com/openhotel/openhotel/compare/v0.2.19...v0.2.20-rc.2) (2024-09-29)
-
-
-<a name="v0.2.19"></a>
-
-## [v0.2.19](https://github.com/openhotel/openhotel/compare/v0.2.20-rc.1...v0.2.19) (2024-09-29)
+## [v0.2.20-rc.2](https://github.com/openhotel/openhotel/compare/v0.2.20-rc.1...v0.2.20-rc.2) (2024-09-29)
 
 
 <a name="v0.2.20-rc.1"></a>
 
-## [v0.2.20-rc.1](https://github.com/openhotel/openhotel/compare/v0.2.18...v0.2.20-rc.1) (2024-09-29)
+## [v0.2.20-rc.1](https://github.com/openhotel/openhotel/compare/v0.2.19...v0.2.20-rc.1) (2024-09-29)
+
+
+<a name="v0.2.19"></a>
+
+## [v0.2.19](https://github.com/openhotel/openhotel/compare/v0.2.18...v0.2.19) (2024-09-29)
 
 
 <a name="v0.2.18"></a>
@@ -1357,21 +1384,21 @@
 
 <a name="v0.1.4"></a>
 
-## [v0.1.4](https://github.com/openhotel/openhotel/compare/v0.1.2...v0.1.4) (2024-08-16)
+## [v0.1.4](https://github.com/openhotel/openhotel/compare/v0.1.3...v0.1.4) (2024-08-16)
 
 ### Features
 
 - Changed default config auth urls to openhotel ones - fix [#269](https://github.com/openhotel/openhotel/issues/269) ([#270](https://github.com/openhotel/openhotel/issues/270))
 
 
-<a name="v0.1.2"></a>
-
-## [v0.1.2](https://github.com/openhotel/openhotel/compare/v0.1.3...v0.1.2) (2024-08-16)
-
-
 <a name="v0.1.3"></a>
 
-## [v0.1.3](https://github.com/openhotel/openhotel/compare/v0.1.1...v0.1.3) (2024-08-16)
+## [v0.1.3](https://github.com/openhotel/openhotel/compare/v0.1.2...v0.1.3) (2024-08-16)
+
+
+<a name="v0.1.2"></a>
+
+## [v0.1.2](https://github.com/openhotel/openhotel/compare/v0.1.1...v0.1.2) (2024-08-16)
 
 ### Bug Fixes
 
@@ -1837,17 +1864,17 @@
 
 <a name="v0.0.7-alpha.11"></a>
 
-## [v0.0.7-alpha.11](https://github.com/openhotel/openhotel/compare/v0.0.7-alpha.10...v0.0.7-alpha.11) (2024-07-01)
-
-
-<a name="v0.0.7-alpha.10"></a>
-
-## [v0.0.7-alpha.10](https://github.com/openhotel/openhotel/compare/v0.0.7-alpha.9...v0.0.7-alpha.10) (2024-07-01)
+## [v0.0.7-alpha.11](https://github.com/openhotel/openhotel/compare/v0.0.7-alpha.9...v0.0.7-alpha.11) (2024-07-01)
 
 
 <a name="v0.0.7-alpha.9"></a>
 
-## [v0.0.7-alpha.9](https://github.com/openhotel/openhotel/compare/v0.0.7-alpha.8...v0.0.7-alpha.9) (2024-07-01)
+## [v0.0.7-alpha.9](https://github.com/openhotel/openhotel/compare/v0.0.7-alpha.10...v0.0.7-alpha.9) (2024-07-01)
+
+
+<a name="v0.0.7-alpha.10"></a>
+
+## [v0.0.7-alpha.10](https://github.com/openhotel/openhotel/compare/v0.0.7-alpha.8...v0.0.7-alpha.10) (2024-07-01)
 
 
 <a name="v0.0.7-alpha.8"></a>
@@ -1887,17 +1914,17 @@
 
 <a name="v0.0.7.alpha.1"></a>
 
-## [v0.0.7.alpha.1](https://github.com/openhotel/openhotel/compare/v0.0.6...v0.0.7.alpha.1) (2024-07-01)
-
-
-<a name="v0.0.6"></a>
-
-## [v0.0.6](https://github.com/openhotel/openhotel/compare/v0.0.7-alpha.21...v0.0.6) (2024-06-30)
+## [v0.0.7.alpha.1](https://github.com/openhotel/openhotel/compare/v0.0.7-alpha.21...v0.0.7.alpha.1) (2024-07-01)
 
 
 <a name="v0.0.7-alpha.21"></a>
 
-## [v0.0.7-alpha.21](https://github.com/openhotel/openhotel/compare/v0.0.5...v0.0.7-alpha.21) (2024-06-30)
+## [v0.0.7-alpha.21](https://github.com/openhotel/openhotel/compare/v0.0.6...v0.0.7-alpha.21) (2024-06-30)
+
+
+<a name="v0.0.6"></a>
+
+## [v0.0.6](https://github.com/openhotel/openhotel/compare/v0.0.5...v0.0.6) (2024-06-30)
 
 
 <a name="v0.0.5"></a>
