@@ -78,7 +78,7 @@ export const FurnitureComponent: React.FC<Props> = ({
           const $zIndex = getZIndex(
             {
               ...position,
-              y: Math.round(position.y / TILE_Y_HEIGHT),
+              y: position.y / TILE_Y_HEIGHT,
             },
             0.5,
           );
