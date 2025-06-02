@@ -133,11 +133,15 @@ export const Proxy = (() => {
         if (state !== getState() && userList.length >= config.limits.players)
           return false;
 
-        const { scopes: targetScopes } = await $auth.fetch({
+        const scopesResponse = await $auth.fetch({
           url: "/user/@me/scopes",
           connectionToken,
         });
-        if (!getScopes().every((scope) => targetScopes.includes(scope)))
+        if (!scopesResponse) return false;
+
+        if (
+          !getScopes().every((scope) => scopesResponse.scopes.includes(scope))
+        )
           return false;
 
         const { accountId, username, admin, languages } = await $auth.fetch({
