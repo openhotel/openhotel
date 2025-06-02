@@ -34,6 +34,8 @@ export const RoomMessagesComponent: React.FC<Props> = ({
   const [maxMessages, setMaxMessages] = useState<number>(MIN_SAFE_MESSAGES);
   const [messages, setMessages] = useState<RoomMessage[]>([]);
 
+  const [yPivot, setYPivot] = useState<number>(0);
+
   const currentAccount = useMemo(() => getAccount(), [getAccount]);
 
   const addMessage = useCallback(
@@ -61,6 +63,10 @@ export const RoomMessagesComponent: React.FC<Props> = ({
 
   useEffect(() => {
     if (!room) return;
+
+    //resets messages on room change
+    setMessages([]);
+    setYPivot(0);
 
     const removeOnMessage = onProxy(
       Event.MESSAGE,
@@ -108,7 +114,7 @@ export const RoomMessagesComponent: React.FC<Props> = ({
       removeOnWhisperMessage();
       removeOnSystemMessage();
     };
-  }, [room, addMessage, getUser, onProxy]);
+  }, [room?.id, addMessage, getUser, onProxy, setMessages, setYPivot]);
 
   const onResize = useCallback(
     (size: Size2d) => {
@@ -131,8 +137,6 @@ export const RoomMessagesComponent: React.FC<Props> = ({
       removeOnResize();
     };
   }, [on, getSize]);
-
-  const [yPivot, setYPivot] = useState<number>(0);
 
   useEffect(() => {
     if (!messages.filter(Boolean).length) return;
