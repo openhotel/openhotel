@@ -103,9 +103,11 @@ export const FurnitureFrameComponent: React.FC<Props> = ({
 
           let renderSprites = [];
 
-          const splices = Math.ceil(bounds.width / (TILE_SIZE.width / 2));
+          const splices = Math.ceil(
+            Math.ceil(bounds.width / (TILE_SIZE.width / 2)) / 2,
+          );
 
-          for (let i = -1; i < splices; i++) {
+          for (let i = -splices; i < splices + 1; i++) {
             const $isoMaskPosition = {
               x: isoPos.x + (direction === CrossDirection.NORTH ? 0 : i),
               y: 0,
