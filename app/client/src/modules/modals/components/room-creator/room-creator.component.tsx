@@ -69,7 +69,8 @@ export const RoomCreatorComponent: React.FC = () => {
   const formWidth = useMemo(() => MODAL_SIZE.width - (99 + 11 + 3 + 24), []);
 
   const onCreateRoom = useCallback(() => {
-    if (isNaN(formRef.current.id) || !formRef.current.title?.length) return;
+    if (isNaN(formRef.current.id) || 3 > formRef.current.title?.trim()?.length)
+      return;
 
     if (alreadyCalledRef.current) return;
     alreadyCalledRef.current = true;
@@ -82,11 +83,15 @@ export const RoomCreatorComponent: React.FC = () => {
       },
       false,
       "PUT",
-    ).then(({ room }) => {
-      emit(Event.PRE_JOIN_ROOM, {
-        roomId: room.id,
+    )
+      .then(({ room }) => {
+        emit(Event.PRE_JOIN_ROOM, {
+          roomId: room.id,
+        });
+      })
+      .finally(() => {
+        alreadyCalledRef.current = false;
       });
-    });
   }, [fetch, emit]);
 
   const onChangeLayout = useCallback((layoutId: number) => {
