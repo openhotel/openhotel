@@ -99,7 +99,6 @@ export const getRoom =
         y: getYFromPoint(randomPoint),
       });
 
-      console.log(randomPoint, pos);
       System.phantom.capture({
         id: room.id,
         room: getObject(),
