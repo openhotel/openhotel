@@ -162,7 +162,7 @@ export const FurnitureFrameComponent: React.FC<Props> = ({
                   ];
 
             renderSprites.push(
-              <React.Fragment>
+              <React.Fragment key={id + texture + i}>
                 <SpriteComponent
                   texture={texture}
                   spriteSheet={$data.spriteSheet}
