@@ -51,7 +51,8 @@ export const roomPutRequest: ProxyRequestType = {
       title: string;
       description: string | null;
     };
-    if (!title || isNaN(layoutId)) return { status: 400 };
+    if (!title || 3 > title.trim().length || isNaN(layoutId))
+      return { status: 400 };
 
     if (!(await System.game.rooms.layout.get(layoutId))) return { status: 400 };
 
@@ -60,7 +61,7 @@ export const roomPutRequest: ProxyRequestType = {
       version: 1,
       id: ulid(),
       ownerId: user.getAccountId(),
-      title: title.substring(0, Math.min(title.length, 32)),
+      title: title.trim().substring(0, Math.min(title.length, 32)),
       description: description
         ? description.substring(0, Math.min(description.length, 64))
         : null,
