@@ -34,6 +34,11 @@ export type PrivateRoomMutable = BaseRoomMutable & {
 
   getFurnitureFromPoint: (point: Omit<Point3d, "y">) => RoomFurniture[];
 
+  getFurnitureYPosition: (
+    position: Point3d,
+    currentId?: string,
+  ) => Promise<number | null>;
+
   getObject: () => PrivateRoom;
   getObjectWithUsers: () => Promise<
     PrivateRoom & {

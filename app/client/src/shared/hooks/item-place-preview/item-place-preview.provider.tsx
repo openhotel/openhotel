@@ -30,7 +30,7 @@ import {
   isPosition3dEqual,
 } from "shared/utils";
 import { useFurniture } from "shared/hooks/furniture";
-import { TILE_Y_HEIGHT } from "shared/consts";
+import { TILE_Y_HEIGHT, WALL_HEIGHT } from "shared/consts";
 
 type Props = {
   children: ReactNode;
@@ -228,28 +228,28 @@ export const ItemPlacePreviewProvider: React.FunctionComponent<Props> = ({
         tilePosition,
       );
 
-      const positionY =
-        privateRoom?.furniture
-          ?.filter(
-            (furniture) =>
-              furniture.type === FurnitureType.FURNITURE &&
-              isPosition3dEqual(furniture.position, tilePosition) &&
-              !ids.includes(furniture.id),
-          )
-          .reduce(
-            (y, furniture) =>
-              Math.max(
-                y,
-                furniture.position.y +
-                  (get(furniture.furnitureId)?.size?.height ?? 0),
-              ),
-            0,
-          ) ||
-        -(
-          (privateRoom?.layout?.[tilePosition.z]?.[tilePosition.x] as any) -
-          1 -
-          (stairsDirection !== null ? 0.5 : 0)
-        ) * TILE_Y_HEIGHT;
+      const positionY = privateRoom?.furniture
+        ?.filter(
+          (furniture) =>
+            furniture.type === FurnitureType.FURNITURE &&
+            isPosition3dEqual(furniture.position, tilePosition) &&
+            ids[0] !== furniture.id,
+        )
+        .reduce(
+          (y, furniture) =>
+            Math.max(
+              y,
+              furniture.position.y +
+                (get(furniture.furnitureId)?.size?.height ?? 0),
+            ),
+          -(
+            (privateRoom?.layout?.[tilePosition.z]?.[tilePosition.x] as any) -
+            1 -
+            (stairsDirection !== null ? 0.5 : 0)
+          ) * TILE_Y_HEIGHT,
+        );
+
+      if (positionY > WALL_HEIGHT) return null;
 
       return (
         <FurnitureComponent

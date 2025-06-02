@@ -9,7 +9,11 @@ import {
 import { FurnitureType, ProxyEvent, RoomPointEnum } from "shared/enums/main.ts";
 import { System } from "modules/system/main.ts";
 import { getInterpolatedPath } from "shared/utils/pathfinding.utils.ts";
-import { TILE_Y_HEIGHT, WALKABLE_FURNITURE_TYPE } from "shared/consts/main.ts";
+import {
+  TILE_Y_HEIGHT,
+  WALKABLE_FURNITURE_TYPE,
+  WALL_HEIGHT,
+} from "shared/consts/main.ts";
 import {
   Direction,
   getRandomNumber,
@@ -225,10 +229,10 @@ export const getRoom =
       return pathfinding;
     };
 
-    const $getFurnitureYPosition = async (
+    const getFurnitureYPosition = async (
       position: Point3d,
       currentId?: string,
-    ): Promise<number> => {
+    ): Promise<number | null> => {
       const pointFurnitureList = getFurnitureFromPoint(
         position,
         FurnitureType.FURNITURE,
@@ -240,7 +244,7 @@ export const getRoom =
           ),
         ].map(System.game.furniture.get),
       );
-      return pointFurnitureList.reduce(
+      const targetY = pointFurnitureList.reduce(
         (y, furniture) =>
           Math.max(
             y,
@@ -251,10 +255,15 @@ export const getRoom =
           ),
         getYFromPoint(position) * TILE_Y_HEIGHT,
       );
+      if (targetY > WALL_HEIGHT) return null;
+
+      return targetY;
     };
 
     const addFurniture = async (furniture: RoomFurniture) => {
-      furniture.position.y = await $getFurnitureYPosition(furniture.position);
+      furniture.position.y = await getFurnitureYPosition(furniture.position);
+      if (furniture.position.y === null) return;
+
       $room.furniture.push(furniture);
 
       await $save();
@@ -264,10 +273,13 @@ export const getRoom =
       });
     };
     const updateFurniture = async (furniture: RoomFurniture) => {
-      furniture.position.y = await $getFurnitureYPosition(
+      furniture.position.y = await getFurnitureYPosition(
         furniture.position,
         furniture.id,
       );
+
+      if (furniture.position.y === null) return;
+
       $room.furniture = $room.furniture.map(($furniture) =>
         furniture.id === $furniture.id ? furniture : $furniture,
       );
@@ -375,6 +387,7 @@ export const getRoom =
       removeFurniture,
       getFurniture,
       getFurnitureFromPoint,
+      getFurnitureYPosition,
 
       getObject,
       getObjectWithUsers,
