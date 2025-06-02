@@ -15,9 +15,14 @@ export const RoomInfoComponent: React.FC = () => {
 
   const [height, setHeight] = useState<number>(0);
 
+  const roomDeps = useMemo(
+    () => [room?.title, room?.description, room?.ownerUsername],
+    [room?.title, room?.description, room?.ownerUsername],
+  );
+
   useEffect(() => {
     setHeight(containerRef.current.getSize().height);
-  }, [setHeight]);
+  }, [setHeight, roomDeps]);
 
   return useMemo(
     () => (
@@ -44,6 +49,6 @@ export const RoomInfoComponent: React.FC = () => {
         ) : null}
       </FlexContainerComponent>
     ),
-    [room, height],
+    [roomDeps, height],
   );
 };
