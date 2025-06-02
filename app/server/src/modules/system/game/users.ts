@@ -304,6 +304,13 @@ export const users = () => {
       } catch (e) {
         return false;
       }
+      /*
+      This is a double check /!\ DO NOT REMOVE /!\
+      this check is already made inside room.addFurniture BUT, because this
+      async is made without waiting, we need to make sure the target y position
+      is valid, if not, furni can go to void
+       */
+      if ((await room.getFurnitureYPosition(position)) === null) return;
 
       /*
         Prevent doing this calls async, because we want to remove the furni from
