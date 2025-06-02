@@ -188,10 +188,12 @@ export const ModalProvider: React.FunctionComponent<ModalProps> = ({
       .map((modal: Modal) => {
         const { position } = get(modal);
         const ModalComp = MODAL_COMPONENT_MAP[modal];
-        const zIndex = focusedModalRef.current.toReversed().indexOf(modal);
+        const zIndex = newModals.includes(modal)
+          ? 150
+          : focusedModalRef.current.toReversed().indexOf(modal) * 10;
         return ModalComp ? (
           <DragContainerComponent
-            key={modal}
+            key={`modal_${modal}`}
             zIndex={zIndex}
             maxZIndex={zIndex}
             minZIndex={zIndex}

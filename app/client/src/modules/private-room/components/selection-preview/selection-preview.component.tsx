@@ -216,42 +216,46 @@ export const SelectionPreviewComponent: React.FC = () => {
     t,
   ]);
 
-
   const onKeyDown = useCallback(
-      ({ code }: KeyboardEvent) => {
-        if (!selectedPreview) return;
+    ({ code }: KeyboardEvent) => {
+      if (!selectedPreview) return;
 
-        const account = getAccount();
-        const isRoomOwner = account.accountId === room?.ownerId;
-        if (!isRoomOwner) return;
+      const account = getAccount();
+      const isRoomOwner = account.accountId === room?.ownerId;
+      if (!isRoomOwner) return;
 
-        if (selectedPreview.type === PrivateRoomPreviewType.FURNITURE) {
-          if (code === "KeyR") {
-            onRotateFurniture();
-          } else if (code === "KeyM") {
-            onMoveFurniture();
-          } else if (code === "KeyP") {
-            onPickUpFurniture();
-          }
-        } else if (selectedPreview.type === PrivateRoomPreviewType.FRAME) {
-          if (code === "KeyM") {
-            onMoveFurniture();
-          } else if (code === "KeyP") {
-            onPickUpFurniture();
-          }
-        }
-      },
-      [selectedPreview, room, getAccount, onRotateFurniture, onMoveFurniture, onPickUpFurniture]
+      const isFurniture =
+        selectedPreview.type === PrivateRoomPreviewType.FURNITURE;
+
+      switch (code) {
+        case "KeyR":
+          if (isFurniture) onRotateFurniture();
+          break;
+        case "KeyM":
+          onMoveFurniture();
+          break;
+        case "KeyP":
+          onPickUpFurniture();
+          break;
+      }
+    },
+    [
+      selectedPreview,
+      room,
+      getAccount,
+      onRotateFurniture,
+      onMoveFurniture,
+      onPickUpFurniture,
+    ],
   );
 
   useEffect(() => {
-    const removeOnKeyDown = on(OhEvent.KEY_DOWN, onKeyDown);
+    const removeOnKeyDown = on<KeyboardEvent>(OhEvent.KEY_DOWN, onKeyDown);
 
     return () => {
       removeOnKeyDown();
     };
   }, [onKeyDown, on]);
-
 
   if (!selectedPreview) return null;
 
