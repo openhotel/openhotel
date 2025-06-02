@@ -444,6 +444,8 @@ export const users = () => {
 
     delete $userMap[user.accountId];
     delete $privateUserMap[user.accountId];
+    delete $userLastMessageMap[user.accountId];
+    delete $userLastWhisperMap[user.accountId];
 
     await $user.log("left");
   };
