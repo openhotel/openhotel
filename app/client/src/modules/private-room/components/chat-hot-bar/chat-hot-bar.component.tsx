@@ -22,7 +22,7 @@ import {
 } from "@openhotel/pixi-components";
 import { HotBarItemsComponent } from "shared/components";
 import { Event, SpriteSheetEnum } from "shared/enums";
-import { usePrivateRoom, useProxy } from "shared/hooks";
+import { useGame, usePrivateRoom, useProxy } from "shared/hooks";
 import {
   CHAT_RIGHT_MARGIN,
   HOT_BAR_HEIGHT,
@@ -47,6 +47,7 @@ export const ChatHotBarComponent: React.FC<Props> = ({
   const { scale } = useApplication();
   const { lastPositionData, absoluteRoomPosition } = usePrivateRoom();
   const { getPosition: getCursorPosition } = useCursor();
+  const { startGame } = useGame();
 
   const [focusInputNow, setFocusInputNow] = useState<number>(null);
 
@@ -101,6 +102,11 @@ export const ChatHotBarComponent: React.FC<Props> = ({
           historyRef.current.pop();
 
         localStorage.setItem(STORAGE_KEY, JSON.stringify(historyRef.current));
+        //---- /game ------------------------------------------------------------
+        if (message.startsWith("/game")) {
+          startGame();
+          return;
+        }
 
         //---- /set ------------------------------------------------------------
         if (
@@ -150,6 +156,7 @@ export const ChatHotBarComponent: React.FC<Props> = ({
       absoluteRoomPosition,
       scale,
       getCursorPosition,
+      startGame,
     ],
   );
 
