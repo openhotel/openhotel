@@ -234,12 +234,17 @@ export const getRoom =
 
     const getFurnitureYPosition = async (
       position: Point3d,
+      furnitureType: FurnitureType,
       currentId?: string,
     ): Promise<number | null> => {
+      const baseY = getYFromPoint(position) * TILE_Y_HEIGHT;
+      if (furnitureType === FurnitureType.FRAME) return baseY;
+
       const pointFurnitureList = getFurnitureFromPoint(
         position,
         FurnitureType.FURNITURE,
       ).filter((furniture) => !currentId || furniture.id !== currentId);
+
       const pointFurnitureDataList = await Promise.all(
         [
           ...new Set(
@@ -256,7 +261,7 @@ export const getRoom =
                 ($furniture) => $furniture.id === furniture.furnitureId,
               )?.size?.height ?? 0),
           ),
-        getYFromPoint(position) * TILE_Y_HEIGHT,
+        baseY,
       );
       if (targetY > WALL_HEIGHT) return null;
 
@@ -264,7 +269,10 @@ export const getRoom =
     };
 
     const addFurniture = async (furniture: RoomFurniture) => {
-      furniture.position.y = await getFurnitureYPosition(furniture.position);
+      furniture.position.y = await getFurnitureYPosition(
+        furniture.position,
+        furniture.type,
+      );
       if (furniture.position.y === null) return;
 
       $room.furniture.push(furniture);
@@ -278,6 +286,7 @@ export const getRoom =
     const updateFurniture = async (furniture: RoomFurniture) => {
       furniture.position.y = await getFurnitureYPosition(
         furniture.position,
+        furniture.type,
         furniture.id,
       );
 

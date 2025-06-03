@@ -81,7 +81,7 @@ export const ProxyProvider: React.FunctionComponent<ProxyProps> = ({
             localStorage.getItem("username") || `player_${getRandomString(4)}`,
           ],
       reconnect: false,
-      silent: true,
+      silent: !isDevelopment(),
     });
     $socket.on("connected", () => {
       setLoadingMessage(null);
