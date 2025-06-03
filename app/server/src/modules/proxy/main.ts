@@ -39,7 +39,7 @@ export const Proxy = (() => {
   const state = getRandomString(64);
 
   const $image = image();
-  const $icon = icon($image);
+  const $icon = icon();
   const $auth = auth();
   const $coordinates = coordinates();
   let server;
