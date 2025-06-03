@@ -17,7 +17,7 @@ import {
   SoftBadgeComponent,
   TextComponent,
 } from "shared/components";
-import { useApiPath } from "shared/hooks";
+import { useApi } from "shared/hooks";
 import { useTranslation } from "react-i18next";
 
 type Props = {
@@ -33,7 +33,7 @@ export const RoomPreviewComponent: React.FC<Props> = ({
   ...containerProps
 }) => {
   const { t } = useTranslation();
-  const { getPath } = useApiPath();
+  const { getPath } = useApi();
   const { loadTexture, getTexture } = useTextures();
 
   const [$texture, $setTexture] = useState<string>(TextureEnum.ROOM_PREVIEW);

@@ -4,7 +4,7 @@ import { useFurnitureStore } from "./furniture.store";
 import { useTextures } from "@openhotel/pixi-components";
 import { CrossDirectionKeys, FurnitureDirectionDataMap } from "shared/types";
 import { CrossDirection } from "shared/enums";
-import { useApiPath } from "shared/hooks";
+import { useApi } from "shared/hooks";
 import { waitUntil } from "shared/utils";
 
 type FurnitureProps = {
@@ -15,7 +15,7 @@ export const FurnitureProvider: React.FunctionComponent<FurnitureProps> = ({
   children,
 }) => {
   const { loadSpriteSheet, getSpriteSheet } = useTextures();
-  const { getPath } = useApiPath();
+  const { getPath } = useApi();
   const { add, get: $get } = useFurnitureStore();
 
   const loadingFurnitureId = useRef<string[]>([]);
