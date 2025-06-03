@@ -23,6 +23,7 @@ import {
   ChangelogProvider,
   LanguageProvider,
   ApiProvider,
+  GameProvider,
 } from "shared/hooks";
 import { NesterComponent } from "shared/components";
 
@@ -47,6 +48,7 @@ export const ApplicationComponent = () => {
       CameraProvider, // Before 'ModalProvider' so 'ModalProvider' can use 'useCamera'
       SoundProvider,
       ItemPlacePreviewProvider,
+      GameProvider,
       RouterProvider,
       ModalProvider,
       InfoProvider,
