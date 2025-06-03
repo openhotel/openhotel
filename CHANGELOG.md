@@ -1,4 +1,21 @@
 
+<a name="v0.7.16"></a>
+
+## [v0.7.16](https://github.com/openhotel/openhotel/compare/v0.7.15...v0.7.16) (2025-06-03)
+
+### Bug Fixes
+
+- removed furniture sprite 64kb size limit - fix [#1008](https://github.com/openhotel/openhotel/issues/1008) ([#1050](https://github.com/openhotel/openhotel/issues/1050))
+- frames cannot be place on a full tile - fix [#1046](https://github.com/openhotel/openhotel/issues/1046) ([#1047](https://github.com/openhotel/openhotel/issues/1047))
+- background and icon being replaced every start - fix [#1041](https://github.com/openhotel/openhotel/issues/1041) ([#1043](https://github.com/openhotel/openhotel/issues/1043))
+- door wall incorrect frame positions - fix [#1040](https://github.com/openhotel/openhotel/issues/1040) ([#1042](https://github.com/openhotel/openhotel/issues/1042))
+
+### Features
+
+- add tulip furniture + empty pot - fix [#1048](https://github.com/openhotel/openhotel/issues/1048) ([#1049](https://github.com/openhotel/openhotel/issues/1049))
+- add remove room + clear command to everyone - fix [#1039](https://github.com/openhotel/openhotel/issues/1039) ([#1044](https://github.com/openhotel/openhotel/issues/1044))
+
+
 <a name="v0.7.15"></a>
 
 ## [v0.7.15](https://github.com/openhotel/openhotel/compare/v0.7.14...v0.7.15) (2025-06-02)
