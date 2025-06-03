@@ -349,6 +349,22 @@ export const users = () => {
       addFurniture(furniture.furnitureId, furniture.id);
     };
 
+    const moveAllFurnitureFromRoomToInventory = async ($roomId?: string) => {
+      const roomId = $roomId ?? getRoom();
+      if (!roomId) return false;
+
+      const room = await System.game.rooms.get<PrivateRoomMutable>(roomId);
+
+      if (room.type !== "private" || room.getOwnerId() !== getAccountId())
+        return false;
+
+      const roomFurniture = [...room.getFurniture()];
+      await room.removeAllFurniture();
+      for (const furniture of roomFurniture) {
+        await addFurniture(furniture.furnitureId, furniture.id);
+      }
+    };
+
     const setColor = async (hex: number) => {
       if (hex === null)
         return await System.db.delete(["users", getAccountId(), "color"]);
@@ -414,6 +430,7 @@ export const users = () => {
 
       moveFurnitureFromInventoryToRoom,
       moveFurnitureFromRoomToInventory,
+      moveAllFurnitureFromRoomToInventory,
 
       setColor,
       getColor,

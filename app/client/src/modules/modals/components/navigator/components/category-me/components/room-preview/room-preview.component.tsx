@@ -2,6 +2,8 @@ import React, { useEffect, useMemo, useState } from "react";
 import {
   ContainerComponent,
   ContainerProps,
+  Cursor,
+  EventMode,
   FLEX_ALIGN,
   FLEX_JUSTIFY,
   FlexContainerComponent,
@@ -24,12 +26,14 @@ type Props = {
   size: Size;
   room: NavigatorRoom;
   onJoin: () => void;
+  onDelete: () => void;
 } & ContainerProps;
 
 export const RoomPreviewComponent: React.FC<Props> = ({
   size,
   room,
   onJoin,
+  onDelete,
   ...containerProps
 }) => {
   const { t } = useTranslation();
@@ -97,6 +101,15 @@ export const RoomPreviewComponent: React.FC<Props> = ({
           size={{
             width: size.width,
             height: 20,
+          }}
+        />
+        <ButtonComponent
+          autoWidth={true}
+          text={t("navigator.delete")}
+          onPointerDown={onDelete}
+          position={{
+            x: 3,
+            y: 3,
           }}
         />
         <FlexContainerComponent

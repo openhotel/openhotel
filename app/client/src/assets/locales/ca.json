@@ -30,7 +30,8 @@
       "search": "Cercar"
     },
     "no_results": "Sense resultats... :(",
-    "create_room": "Crear sala"
+    "create_room": "Crear sala",
+    "delete": "eliminar"
   },
   "economy": {
     "purse_title": "Moneder",

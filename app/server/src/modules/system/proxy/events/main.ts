@@ -9,11 +9,13 @@ import { placeItemEvent } from "./place-item.event.ts";
 import { rotateFurnitureEvent } from "./rotate-furniture.event.ts";
 import { pickUpFurnitureEvent } from "./pick-up-furniture.event.ts";
 import { moveFurnitureEvent } from "./move-furniture.event.ts";
+import { deleteRoomEvent } from "./delete-room.event.ts";
 export * from "./internal/main.ts";
 
 export const eventList: ProxyEventType[] = [
   preJoinRoomEvent,
   joinRoomEvent,
+  deleteRoomEvent,
 
   pointerTileEvent,
 

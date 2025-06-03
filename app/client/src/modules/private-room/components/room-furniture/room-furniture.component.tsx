@@ -51,7 +51,7 @@ export const RoomFurnitureComponent: React.FC<Props> = ({
 
     const removeOnRemoveFurniture = on(
       ProxyEvent.REMOVE_FURNITURE,
-      ({ furniture }: { furniture: RoomFurniture }) => {
+      ({ furniture }: { furniture: RoomFurniture | RoomFurniture[] }) => {
         removeFurniture(furniture);
       },
     );

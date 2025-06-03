@@ -28,6 +28,7 @@ export type PrivateRoomMutable = BaseRoomMutable & {
   addFurniture: (furniture: RoomFurniture) => Promise<void>;
   updateFurniture: (furniture: RoomFurniture) => Promise<void>;
   removeFurniture: (furniture: RoomFurniture) => Promise<void>;
+  removeAllFurniture: () => Promise<void>;
   getFurniture: () => RoomFurniture[];
 
   getLayout: () => RoomPoint[][];
@@ -46,4 +47,6 @@ export type PrivateRoomMutable = BaseRoomMutable & {
       ownerUsername: string;
     }
   >;
+
+  remove: () => Promise<void>;
 };

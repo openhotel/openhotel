@@ -30,7 +30,8 @@
       "search": "Buscar"
     },
     "no_results": "Sin resultados... :(",
-    "create_room": "Crear sala"
+    "create_room": "Crear sala",
+    "delete": "eliminar"
   },
   "economy": {
     "purse_title": "Monedero",
