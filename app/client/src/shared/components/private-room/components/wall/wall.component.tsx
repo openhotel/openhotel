@@ -107,9 +107,10 @@ export const PrivateRoomWallComponent: React.FC<Props> = ({
         },
         direction,
       );
+
       return {
         x: (isometricPosition.x - 1) % TILE_WIDTH,
-        y: height - isometricPosition.y,
+        y: height - isometricPosition.y - (height - WALL_HEIGHT),
       };
     },
     [onPointerDown, height, direction],
