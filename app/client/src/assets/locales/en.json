@@ -31,7 +31,8 @@
       "search": "Search"
     },
     "no_results": "No results... :(",
-    "create_room": "Create room"
+    "create_room": "Create room",
+    "delete": "delete"
   },
   "economy": {
     "purse_title": "Purse",

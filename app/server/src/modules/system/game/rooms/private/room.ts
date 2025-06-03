@@ -303,6 +303,13 @@ export const getRoom =
         furniture,
       });
     };
+    const removeAllFurniture = async () => {
+      emit(ProxyEvent.REMOVE_FURNITURE, {
+        furniture: $room.furniture,
+      });
+      $room.furniture = [];
+      await $save();
+    };
     const getFurniture = (): RoomFurniture[] => $room.furniture;
 
     const getFurnitureFromPoint = (
@@ -348,6 +355,11 @@ export const getRoom =
       ownerUsername: await getOwnerUsername(),
     });
 
+    const remove = async () => {
+      await System.db.delete(["rooms", "private", $room.id]);
+      roomUserMap[room.id] = [];
+    };
+
     const emit = <Data extends any>(
       event: ProxyEvent,
       data: Data = {} as Data,
@@ -388,12 +400,16 @@ export const getRoom =
       addFurniture,
       updateFurniture,
       removeFurniture,
+      removeAllFurniture,
+
       getFurniture,
       getFurnitureFromPoint,
       getFurnitureYPosition,
 
       getObject,
       getObjectWithUsers,
+
+      remove,
 
       emit,
     };

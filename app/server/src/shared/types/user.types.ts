@@ -122,6 +122,7 @@ export type UserMutable = {
   ) => Promise<boolean>;
 
   moveFurnitureFromRoomToInventory: (id: string) => Promise<boolean>;
+  moveAllFurnitureFromRoomToInventory: (roomId?: string) => Promise<boolean>;
 
   setColor: (color: number) => Promise<void>;
   getColor: () => Promise<number | null>;

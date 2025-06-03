@@ -117,6 +117,13 @@ export const CategoryMeComponent: React.FC<Props> = ({ size }) => {
     });
   }, [emit, selectedRoomId]);
 
+  const onDeleteRoom = useCallback(() => {
+    emit(Event.DELETE_ROOM, {
+      roomId: selectedRoomId,
+    });
+    $reload();
+  }, [emit, selectedRoomId, $reload]);
+
   const searchFunction = useCallback(
     (event: KeyboardEventExtended) => {
       setSearch(event.target.value);
@@ -188,6 +195,7 @@ export const CategoryMeComponent: React.FC<Props> = ({ size }) => {
             size={previewSize}
             room={$selectedRoom}
             onJoin={onJoinRoom}
+            onDelete={onDeleteRoom}
           />
         ) : (
           <GraphicsComponent
