@@ -1,7 +1,7 @@
 categories:
   - id: alpha
     label: Alpha
-    description: The alpha collection, only available now!
+    description: Raw, rare, and ready!
     enabled: true
     furniture:
       - id: alpha@small-lamp
@@ -45,20 +45,21 @@ categories:
         price: 5
   - id: teleports
     label: Teleports
-    description: Travel between rooms or between servers. Buy two and link them.
+    description: Doors to the unknown await!
     enabled: true
     furniture:
       - id: teleports@telephone
         price: 30
   - id: toys
     label: Toys
+    description: The limit is your imagination!
     enabled: true
     furniture:
       - id: toys@octopus-0
         price: 15
   - id: xmas
     label: Xmas
-    description: Xmas time is here!
+    description: Unwrap the magic!
     enabled: true
     furniture:
       - id: xmas@tree-0
@@ -67,7 +68,7 @@ categories:
         price: 69
   - id: b-day
     label: B-Day
-    description: Delicious cake por a birthday...
+    description: Frosted fun for everyone!
     enabled: true
     range:
       from: "2025-05-08 00:00:00"
@@ -75,3 +76,12 @@ categories:
     furniture:
       - id: cakes@chocolate-small
         price: 1
+  - id: plants
+    label: Plants
+    description: Leaf it to nature — your room deserves it!
+    enabled: true
+    furniture:
+      - id: plants@tulip
+        price: 6
+      - id: plants@empty-pot
+        price: 3
