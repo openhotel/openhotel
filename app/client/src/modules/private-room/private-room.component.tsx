@@ -228,6 +228,11 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
     };
   }, [onEvent, update, room?.id, setRoomSize, onKeyDown, onKeyUp]);
 
+  const isItemPreviewing = useMemo(
+    () => Boolean(itemPreviewData?.furnitureData?.furnitureId),
+    [itemPreviewData?.furnitureData?.furnitureId],
+  );
+
   const onPointerTile = useCallback(
     (position: Point3d) => {
       if (isDragging()) return;
@@ -328,12 +333,8 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
                 onLeaveWall={onLeaveWall}
               >
                 {renderPreviewItem}
-                <RoomCharactersComponent
-                  disableHitAreas={Boolean(renderPreviewItem)}
-                />
-                <RoomFurnitureComponent
-                  disableHitAreas={Boolean(renderPreviewItem)}
-                />
+                <RoomCharactersComponent disableHitAreas={isItemPreviewing} />
+                <RoomFurnitureComponent disableHitAreas={isItemPreviewing} />
               </PrivateRoomComp>
               <RoomMessagesComponent pivot={messagesPivot} />
             </ContainerComponent>
@@ -375,6 +376,7 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
       onLeaveWall,
       messagesPivot,
       renderPreviewItem,
+      isItemPreviewing,
     ],
   );
 };
