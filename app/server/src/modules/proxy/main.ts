@@ -25,6 +25,7 @@ import { auth } from "../shared/auth.ts";
 import { coordinates } from "../shared/coordinates.ts";
 import { icon } from "modules/shared/icon.ts";
 import { image } from "modules/shared/image.ts";
+import { requestGame } from "./router/game.request.ts";
 
 export const Proxy = (() => {
   const serverWorker = getChildWorker();
@@ -73,8 +74,11 @@ export const Proxy = (() => {
         if (isDevelopment) url = url.replace("/proxy", "");
         const { pathname } = getURL(url);
 
-        const clientResponse = await requestClient(request, config);
+        const clientResponse = await requestClient(request);
         if (clientResponse) return clientResponse;
+
+        const gameResponse = await requestGame(request);
+        if (gameResponse) return gameResponse;
 
         const foundRoute = routesList.find(
           (route) =>

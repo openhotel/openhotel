@@ -2,7 +2,7 @@ import React, { ReactNode, useCallback, useRef } from "react";
 import { GameContext } from "./game.context";
 import { useEvents, useWindow, Event } from "@openhotel/pixi-components";
 import { Size2d } from "shared/types";
-import { useApi } from "shared/hooks";
+import { useApi, useConfig } from "shared/hooks";
 
 type GameProps = {
   children: ReactNode;
@@ -11,8 +11,8 @@ type GameProps = {
 export const GameProvider: React.FunctionComponent<GameProps> = ({
   children,
 }) => {
+  const { isDevelopment } = useConfig();
   const { on } = useEvents();
-  const { getPath } = useApi();
   const { getSize, getScale } = useWindow();
 
   const iframeRef = useRef<HTMLIFrameElement>(null);
@@ -26,10 +26,12 @@ export const GameProvider: React.FunctionComponent<GameProps> = ({
     [getScale],
   );
 
-  console.log(getPath(""));
   const startGame = useCallback(() => {
     iframeRef.current = document.createElement("iframe");
-    iframeRef.current.setAttribute("src", "/phantom");
+    iframeRef.current.setAttribute(
+      "src",
+      (isDevelopment() ? "/proxy/" : "/") + "game/test/client/",
+    );
     iframeRef.current.style.position = "absolute";
     iframeRef.current.style.left = "0";
     iframeRef.current.style.top = "0";
@@ -48,7 +50,7 @@ export const GameProvider: React.FunctionComponent<GameProps> = ({
       removeOnResize();
       document.body.removeChild(iframeRef.current);
     };
-  }, [on, $onResize, getSize]);
+  }, [on, $onResize, getSize, isDevelopment]);
 
   return (
     <GameContext.Provider
