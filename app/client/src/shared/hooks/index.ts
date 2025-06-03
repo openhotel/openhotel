@@ -18,5 +18,4 @@ export * from "./api";
 export * from "./game";
 
 export * from "./use-character";
-export * from "./use-api-path";
 export * from "./use-contributors";
