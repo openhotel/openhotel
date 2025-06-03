@@ -1,12 +1,14 @@
 import { BACKGROUND_SIZE, ICON_SIZE } from "shared/consts/icon.consts.ts";
+import { Proxy } from "modules/proxy/main.ts";
 
-export const icon = ($image) => {
+export const icon = () => {
   const load = async () => {
     await getIcon();
     await getBackground();
   };
 
   const getIcon = async () => {
+    const $image = Proxy.image.getImage();
     let iconFile = await Deno.readFile("./assets/icon/icon.png");
     try {
       iconFile = await Deno.readFile("./icon.png");
@@ -17,12 +19,14 @@ export const icon = ($image) => {
       )
         throw "Wrong icon size";
     } catch (e) {
+      console.error(e);
       await Deno.copyFile("./assets/icon/icon.png", "./icon.png");
     }
     return iconFile;
   };
 
   const getBackground = async () => {
+    const $image = Proxy.image.getImage();
     let backgroundFile = await Deno.readFile("./assets/icon/background.png");
     try {
       backgroundFile = await Deno.readFile("./background.png");
@@ -33,6 +37,7 @@ export const icon = ($image) => {
       )
         throw "Wrong background size";
     } catch (e) {
+      console.error(e);
       await Deno.copyFile("./assets/icon/background.png", "./background.png");
     }
     return backgroundFile;
