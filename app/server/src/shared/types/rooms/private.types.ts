@@ -6,6 +6,7 @@ import {
   User,
 } from "shared/types/main.ts";
 import { Point3d } from "@oh/utils";
+import { FurnitureType } from "shared/enums/furniture.enum.ts";
 
 export type PrivateRoom = BaseRoom & {
   type: "private";
@@ -37,6 +38,7 @@ export type PrivateRoomMutable = BaseRoomMutable & {
 
   getFurnitureYPosition: (
     position: Point3d,
+    furnitureType: FurnitureType,
     currentId?: string,
   ) => Promise<number | null>;
 

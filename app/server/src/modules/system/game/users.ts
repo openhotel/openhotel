@@ -310,7 +310,8 @@ export const users = () => {
       async is made without waiting, we need to make sure the target y position
       is valid, if not, furni can go to void
        */
-      if ((await room.getFurnitureYPosition(position)) === null) return;
+      if ((await room.getFurnitureYPosition(position, furniture.type)) === null)
+        return;
 
       /*
         Prevent doing this calls async, because we want to remove the furni from
