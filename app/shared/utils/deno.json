@@ -18,7 +18,9 @@
 
     "@random-seed": "npm:random-seed@0.3.0",
 
-    "dayjs": "npm:dayjs@1.11.13"
+    "dayjs": "npm:dayjs@1.11.13",
+    "@deno/kv-utils": "jsr:@deno/kv-utils@0.1.3",
+    "cborx": "npm:cbor-x@1.6.0"
   },
   "tasks": {
     "test:watch": "deno test --watch=./src"

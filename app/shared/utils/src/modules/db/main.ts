@@ -20,6 +20,7 @@ import { compressFiles } from "../../utils/zip.utils.ts";
 import { getS3 } from "../s3.ts";
 import { walk } from "@std/fs";
 import { ulid } from "jsr:@std/ulid@1";
+import { chunks } from "./chunks.ts";
 
 export const getDb = (props: DbProps = {}): DbMutable => {
   const {
@@ -68,6 +69,16 @@ export const getDb = (props: DbProps = {}): DbMutable => {
     if (!$checkDbNull()) return;
 
     const { value } = await db.get(key, { consistency });
+
+    //@ts-ignore
+    if (value?.__INTERNAL__chunks) {
+      const chunks: Uint8Array[] = [];
+      //@ts-ignore
+      for (const chunkId of value?.__INTERNAL__chunks)
+        chunks.push((await get<Uint8Array>([...key, chunkId])) as Uint8Array);
+      return $chunks.getValueFromChunks(chunks) as Value;
+    }
+
     return value as Value | undefined;
   };
 
@@ -86,6 +97,28 @@ export const getDb = (props: DbProps = {}): DbMutable => {
     { expireIn }: { expireIn?: number } = {},
   ): Promise<unknown> => {
     if (!$checkDbNull()) return;
+
+    if ($chunks.isValueOverLimit(value)) {
+      //delete first
+      await $delete(key);
+
+      const chunks = $chunks.getChunksFromValue(value) as Uint8Array[];
+
+      const chunksIdList = [];
+      for (const chunk of chunks) {
+        const id = ulid();
+        await db.set([...key, id], chunk, { expireIn });
+        chunksIdList.push(id);
+      }
+
+      return db.set(
+        key,
+        {
+          __INTERNAL__chunks: chunksIdList,
+        },
+        { expireIn },
+      );
+    }
 
     return db.set(key, value, { expireIn });
   };
@@ -119,9 +152,18 @@ export const getDb = (props: DbProps = {}): DbMutable => {
     return db.getMany(keys, { consistency });
   };
 
-  const $delete = (key: DbKey): Promise<void> => {
+  const $delete = async (key: DbKey): Promise<void> => {
     //@ts-ignore
     if (!$checkDbNull()) return;
+
+    const data = await get(key);
+    //@ts-ignore
+    if (data?.__INTERNAL__chunks) {
+      //@ts-ignore
+      for (const chunkId of __INTERNAL__chunks)
+        await db.delete([...key, chunkId]);
+    }
+
     return db.delete(key);
   };
 
@@ -285,6 +327,7 @@ export const getDb = (props: DbProps = {}): DbMutable => {
 
   const $migrations = migrations(parsedProps, dbMutable);
   const $crypto = crypto(parsedProps);
+  const $chunks = chunks();
 
   return dbMutable;
 };
