@@ -24,6 +24,7 @@ export enum ProxyEvent {
   PRE_JOIN_ROOM = "pre-join-room",
   JOIN_ROOM = "join-room",
   LEAVE_ROOM = "leave-room",
+  DELETE_ROOM = "delete-room",
 
   LOAD_ROOM = "load-room",
   REMOVE_ROOM = "remove-room",

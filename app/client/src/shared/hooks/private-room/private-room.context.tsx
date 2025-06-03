@@ -34,7 +34,7 @@ export type PrivateRoomState = {
 
   addFurniture: (furniture: RoomFurniture) => void;
   updateFurniture: (furniture: RoomFurniture) => void;
-  removeFurniture: (furniture: RoomFurniture) => void;
+  removeFurniture: (furniture: RoomFurniture | RoomFurniture[]) => void;
 
   selectedPreview: PrivateRoomPreview | null;
   setSelectedPreview: (data: PrivateRoomPreview | null) => void;

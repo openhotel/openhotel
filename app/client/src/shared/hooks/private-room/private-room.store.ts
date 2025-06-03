@@ -35,7 +35,7 @@ export const usePrivateRoomStore = create<{
   //
   addFurniture: (furniture: RoomFurniture) => void;
   updateFurniture: (furniture: RoomFurniture) => void;
-  removeFurniture: (furniture: RoomFurniture) => void;
+  removeFurniture: (furniture: RoomFurniture | RoomFurniture[]) => void;
 
   //
   selectedPreview: PrivateRoomPreview | null;
@@ -130,14 +130,19 @@ export const usePrivateRoomStore = create<{
         furniture: [...store.room.furniture, furniture],
       },
     })),
-  removeFurniture: (furniture: RoomFurniture) =>
+  removeFurniture: (furniture: RoomFurniture | RoomFurniture[]) =>
     set((store) => ({
       ...store,
       room: {
         ...store.room,
-        furniture: store.room.furniture.filter(
-          ($furniture) => $furniture.id !== furniture.id,
-        ),
+        furniture: Array.isArray(furniture)
+          ? store.room.furniture.filter(
+              ($furniture) =>
+                !furniture.map((furni) => furni.id).includes($furniture.id),
+            )
+          : store.room.furniture.filter(
+              ($furniture) => $furniture.id !== furniture.id,
+            ),
       },
     })),
   updateFurniture: (furniture: RoomFurniture) =>
