@@ -8,17 +8,14 @@ import {
   WorkerProps,
 } from "shared/types/main.ts";
 import { getServerSocket, ServerClient } from "@da/socket";
-import { PROXY_CLIENT_EVENT_WHITELIST } from "shared/consts/main.ts";
-import { ProxyEvent, Scope } from "shared/enums/main.ts";
+import { Scope } from "shared/enums/main.ts";
 import { routesList } from "./router/main.ts";
 import { requestClient } from "./router/client.request.ts";
-import * as bcrypt from "@da/bcrypt";
 import {
   getRandomString,
   getURL,
   appendCORSHeaders,
   getIpFromRequest,
-  decodeBase64,
 } from "@oh/utils";
 import { eventList } from "./events/main.ts";
 import { auth } from "../shared/auth.ts";
@@ -26,16 +23,14 @@ import { coordinates } from "../shared/coordinates.ts";
 import { icon } from "modules/shared/icon.ts";
 import { image } from "modules/shared/image.ts";
 import { requestGame } from "./router/game.request.ts";
+import { user } from "./core/user.ts";
+import { game } from "./core/game.ts";
 
 export const Proxy = (() => {
   const serverWorker = getChildWorker();
 
-  // This maps client id to user id (1:1), to prevent the connection of the user multiple times
-  // The accountId cannot be duplicated as value, if so, it would be the same user connected twice
-  let clientIdAccountIdMap: Record<string, string> = {};
-  let userList: PrivateUser[] = [];
-  let userTokenMap: Record<string, string> = {};
   let userClientMap: Record<string, ServerClient> = {};
+  let clientTypeMap: Record<string, string> = {};
 
   const state = getRandomString(64);
 
@@ -47,6 +42,9 @@ export const Proxy = (() => {
   let $config: ConfigTypes;
   let $envs: Envs;
   let $changelog: VersionContent[] = [];
+
+  const $coreUser = user();
+  const $coreGame = game();
 
   const load = async ({ envs, config }: WorkerProps) => {
     $config = config;
@@ -97,156 +95,57 @@ export const Proxy = (() => {
 
     server.on(
       "guest",
-      async ({ clientId, protocols: [state, connectionToken], headers }) => {
-        const apiToken = getRandomString(32);
-        const apiTokenHash = bcrypt.hashSync(apiToken, bcrypt.genSaltSync(8));
-
+      async ({
+        clientId,
+        protocols: [connectionType, state, connectionToken],
+        headers,
+      }) => {
+        let response = false;
         const ip = getIpFromRequest({ headers } as Request);
-
-        const hemisphere = await $coordinates.get(ip);
-
-        userTokenMap[clientId] = apiToken;
-        if (!config.auth.enabled) {
-          const username = connectionToken;
-          const accountId = state;
-
-          const foundUser = userList.find(
-            (user) => user.accountId === accountId,
-          );
-          if (foundUser) {
-            userClientMap[foundUser.clientId]?.close();
-            userList = userList.filter((user) => user.accountId !== accountId);
-          }
-
-          userList.push({
-            clientId,
-            accountId,
-            username,
-            apiToken: apiTokenHash,
-            auth: {
-              connectionToken: "AUTH_TOKEN",
-            },
-            ip,
-            languages: ["en", "es"],
-            hemisphere,
-            admin: true,
-          });
-          return true;
+        switch (connectionType) {
+          case "client":
+            response = await $coreUser.guest(
+              clientId,
+              state,
+              connectionToken,
+              ip,
+            );
+            break;
+          case "game":
+            response = await $coreGame.guest(
+              clientId,
+              state,
+              connectionToken,
+              ip,
+            );
+            break;
         }
+        if (response) clientTypeMap[clientId] = connectionType;
 
-        if (state !== getState() && userList.length >= config.limits.players)
-          return false;
-
-        const scopesResponse = await $auth.fetch({
-          url: "/user/@me/scopes",
-          connectionToken,
-        });
-        if (!scopesResponse) return false;
-
-        if (
-          !getScopes().every((scope) => scopesResponse.scopes.includes(scope))
-        )
-          return false;
-
-        const { accountId, username, admin, languages } = await $auth.fetch({
-          url: "/user/@me",
-          connectionToken,
-        });
-
-        const foundUser = userList.find((user) => user.accountId === accountId);
-        if (foundUser) {
-          userClientMap[foundUser.clientId]?.close();
-          userList = userList.filter((user) => user.accountId !== accountId);
-        }
-
-        userList.push({
-          clientId,
-          accountId,
-          username,
-          apiToken: apiTokenHash,
-          auth: {
-            connectionToken,
-          },
-          ip,
-          hemisphere,
-          admin,
-          languages,
-        });
-        return true;
+        return response;
       },
     );
     server.on("connected", async (client: ServerClient) => {
-      try {
-        const foundUser: PrivateUser | undefined = userList.find(
-          (user) => user.clientId === client.id,
-        );
-
-        if (!foundUser) return client?.close();
-
-        let hasLoad = false;
-        client.on(ProxyEvent.$LOAD, ({ meta }) => {
-          if (hasLoad) return;
-          hasLoad = true;
-
-          client.emit(ProxyEvent.WELCOME, {
-            datetime: Date.now(),
-            account: {
-              ...foundUser,
-              apiToken: userTokenMap[foundUser.clientId],
-            },
-          });
-          delete userTokenMap[foundUser.clientId];
-
-          serverWorker.emit(ProxyEvent.$USER_JOINED, {
-            data: { user: foundUser, meta: meta ? decodeBase64(meta) : null },
-          });
-        });
-        // Assign the accountId to the clientId. accountId can only be once as value.
-        clientIdAccountIdMap[client?.id] = foundUser.accountId;
-
-        userClientMap[foundUser.clientId] = client;
-
-        client.on(ProxyEvent.$USER_DATA, ({ event, message }) => {
-          if (!foundUser) return client.close();
-          try {
-            // Disconnect client if tries to send events outside the whitelist
-            if (!PROXY_CLIENT_EVENT_WHITELIST.includes(event))
-              return client?.close?.();
-            serverWorker.emit(ProxyEvent.$USER_DATA, {
-              user: foundUser,
-              event,
-              message,
-            });
-          } catch (e) {
-            console.error("proxy-6");
-            console.error(e);
-          }
-        });
-      } catch (e) {
-        console.error("proxy-7");
-        console.error(e);
+      userClientMap[client.id] = client;
+      switch (clientTypeMap[client.id]) {
+        case "client":
+          return $coreUser.connected(client);
+        case "game":
+          return $coreGame.connected(client);
       }
+      client.close();
     });
     server.on("disconnected", (client: ServerClient) => {
-      try {
-        if (!client?.id) return;
-
-        const accountId = clientIdAccountIdMap[client.id];
-        if (!accountId) return;
-
-        delete userClientMap[client.id];
-        delete clientIdAccountIdMap[client.id];
-
-        const foundUser = userList.find((user) => user.accountId === accountId);
-        if (!foundUser) return;
-
-        userList = userList.filter((user) => user.clientId !== client.id);
-
-        serverWorker.emit(ProxyEvent.$USER_LEFT, { data: { user: foundUser } });
-      } catch (e) {
-        console.error("proxy-8");
-        console.error(e);
+      switch (clientTypeMap[client.id]) {
+        case "client":
+          $coreUser.disconnected(client);
+          break;
+        case "game":
+          $coreGame.disconnected(client);
+          break;
       }
+      delete userClientMap[client.id];
+      delete clientTypeMap[client.id];
     });
     log(`Started on http://localhost:${config.port}`);
   };
@@ -259,8 +158,8 @@ export const Proxy = (() => {
   const getEnvs = (): Envs => $envs;
 
   const getUser = (accountId: string): PrivateUser =>
-    userList.find((user) => user.accountId === accountId);
-  const getUserList = (): PrivateUser[] => userList;
+    $coreUser.getUserList().find((user) => user.accountId === accountId);
+  const getUserList = (): PrivateUser[] => $coreUser.getUserList();
 
   const getClient = (clientId: string) => userClientMap[clientId];
   const getRoom = (roomId: string) => server?.getRoom(roomId);
