@@ -1,17 +1,29 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { ContainerComponent, ContainerProps, Event as OhEvent, useEvents, useWindow } from "@openhotel/pixi-components";
+import {
+  ContainerComponent,
+  ContainerProps,
+  Event as OhEvent,
+  useEvents,
+  useWindow,
+} from "@openhotel/pixi-components";
 import { useAccount, usePrivateRoom, useProxy, useTasks } from "shared/hooks";
 import { Event } from "shared/enums";
 import { RoomMessage, Size2d } from "shared/types";
 import { getPositionFromIsometricPosition } from "shared/utils";
 import { BubbleMessageComponent } from "shared/components";
-import { BUBBLE_MESSAGE_HEIGHT, CHAT_BUBBLE_MESSAGE_INTERVAL, MIN_SAFE_MESSAGES } from "shared/consts";
+import {
+  BUBBLE_MESSAGE_HEIGHT,
+  CHAT_BUBBLE_MESSAGE_INTERVAL,
+  MIN_SAFE_MESSAGES,
+} from "shared/consts";
 import { ulid } from "ulidx";
 import { TickerQueue } from "@oh/queue";
 
 type Props = {} & ContainerProps;
 
-export const RoomMessagesComponent: React.FC<Props> = ({ ...containerProps }) => {
+export const RoomMessagesComponent: React.FC<Props> = ({
+  ...containerProps
+}) => {
   const { on } = useEvents();
   const { getSize } = useWindow();
   const { on: onProxy } = useProxy();
@@ -46,7 +58,7 @@ export const RoomMessagesComponent: React.FC<Props> = ({ ...containerProps }) =>
 
       setMessages(($messages) => [message, ...$messages]);
     },
-    [setMessages, getUser, currentAccount, maxMessages]
+    [setMessages, getUser, currentAccount, maxMessages],
   );
 
   useEffect(() => {
@@ -56,38 +68,46 @@ export const RoomMessagesComponent: React.FC<Props> = ({ ...containerProps }) =>
     setMessages([]);
     setYPivot(0);
 
-    const removeOnMessage = onProxy(Event.MESSAGE, ({ id, accountId, message, color }) => {
-      addMessage({
-        id,
-        accountId,
-        message,
-        color,
-      });
-    });
-
-    const removeOnWhisperMessage = onProxy(Event.WHISPER_MESSAGE, ({ id, accountId, message, color }) =>
-      addMessage({
-        id,
-        accountId,
-        message,
-        color,
-        backgroundColor: 0xc1bfbf,
-      })
+    const removeOnMessage = onProxy(
+      Event.MESSAGE,
+      ({ id, accountId, message, color }) => {
+        addMessage({
+          id,
+          accountId,
+          message,
+          color,
+        });
+      },
     );
 
-    const removeOnSystemMessage = onProxy(Event.SYSTEM_MESSAGE, ({ message }) => {
-      addMessage({
-        id: ulid(),
-        accountId: null,
-        username: "System",
-        message,
-        usernameColor: 0xffffff,
-        color: 0xffffff,
-        backgroundColor: 0xdba935,
-        messageColor: 0xffffff,
-      });
-      console.log(`System: ${message}`);
-    });
+    const removeOnWhisperMessage = onProxy(
+      Event.WHISPER_MESSAGE,
+      ({ id, accountId, message, color }) =>
+        addMessage({
+          id,
+          accountId,
+          message,
+          color,
+          backgroundColor: 0xc1bfbf,
+        }),
+    );
+
+    const removeOnSystemMessage = onProxy(
+      Event.SYSTEM_MESSAGE,
+      ({ message }) => {
+        addMessage({
+          id: ulid(),
+          accountId: null,
+          username: "System",
+          message,
+          usernameColor: 0xffffff,
+          color: 0xffffff,
+          backgroundColor: 0xdba935,
+          messageColor: 0xffffff,
+        });
+        console.log(`System: ${message}`);
+      },
+    );
 
     return () => {
       removeOnMessage();
@@ -98,9 +118,14 @@ export const RoomMessagesComponent: React.FC<Props> = ({ ...containerProps }) =>
 
   const onResize = useCallback(
     (size: Size2d) => {
-      setMaxMessages(Math.max(MIN_SAFE_MESSAGES, Math.round(Math.round(size.height / 4) / BUBBLE_MESSAGE_HEIGHT)));
+      setMaxMessages(
+        Math.max(
+          MIN_SAFE_MESSAGES,
+          Math.round(Math.round(size.height / 4) / BUBBLE_MESSAGE_HEIGHT),
+        ),
+      );
     },
-    [setMaxMessages]
+    [setMaxMessages],
   );
 
   useEffect(() => {
@@ -125,7 +150,11 @@ export const RoomMessagesComponent: React.FC<Props> = ({ ...containerProps }) =>
           type: TickerQueue.DURATION,
           duration: 500,
           onFunc: (delta) => {
-            setYPivot((y) => (y >= BUBBLE_MESSAGE_HEIGHT ? BUBBLE_MESSAGE_HEIGHT : y + delta / 10));
+            setYPivot((y) =>
+              y >= BUBBLE_MESSAGE_HEIGHT
+                ? BUBBLE_MESSAGE_HEIGHT
+                : y + delta / 10,
+            );
           },
           onDone: () => {
             setYPivot(0);
@@ -148,7 +177,11 @@ export const RoomMessagesComponent: React.FC<Props> = ({ ...containerProps }) =>
         },
         onDone: () => {
           setYPivot(0);
-          setMessages(($messages) => $messages.map((message) => (message ? { ...message, visible: true } : message)));
+          setMessages(($messages) =>
+            $messages.map((message) =>
+              message ? { ...message, visible: true } : message,
+            ),
+          );
         },
       });
     }
@@ -164,7 +197,16 @@ export const RoomMessagesComponent: React.FC<Props> = ({ ...containerProps }) =>
     () =>
       messages.map((messageData, index) => {
         if (!messageData) return null;
-        const { id, username, message, backgroundColor, color, usernameColor, messageColor, position } = messageData;
+        const {
+          id,
+          username,
+          message,
+          backgroundColor,
+          color,
+          usernameColor,
+          messageColor,
+          position,
+        } = messageData;
         return (
           <BubbleMessageComponent
             key={id}
@@ -182,7 +224,7 @@ export const RoomMessagesComponent: React.FC<Props> = ({ ...containerProps }) =>
           />
         );
       }),
-    [messages]
+    [messages],
   );
 
   return useMemo(
@@ -197,6 +239,6 @@ export const RoomMessagesComponent: React.FC<Props> = ({ ...containerProps }) =>
         {renderMessages}
       </ContainerComponent>
     ),
-    [renderMessages, containerProps]
+    [renderMessages, containerProps],
   );
 };
