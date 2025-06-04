@@ -97,27 +97,18 @@ export const Proxy = (() => {
       "guest",
       async ({
         clientId,
-        protocols: [connectionType, state, connectionToken],
+        protocols: [connectionType, ...protocols],
         headers,
       }) => {
         let response = false;
         const ip = getIpFromRequest({ headers } as Request);
+
         switch (connectionType) {
           case "client":
-            response = await $coreUser.guest(
-              clientId,
-              state,
-              connectionToken,
-              ip,
-            );
+            response = await $coreUser.guest(clientId, protocols, ip);
             break;
           case "game":
-            response = await $coreGame.guest(
-              clientId,
-              state,
-              connectionToken,
-              ip,
-            );
+            response = await $coreGame.guest(clientId, protocols, ip);
             break;
         }
         if (response) clientTypeMap[clientId] = connectionType;

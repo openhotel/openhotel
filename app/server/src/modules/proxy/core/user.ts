@@ -15,8 +15,7 @@ export const user = () => {
 
   const guest = async (
     clientId: string,
-    state: string,
-    connectionToken: string,
+    [state, connectionToken]: string[],
     ip: string,
   ) => {
     const apiToken = getRandomString(32);
