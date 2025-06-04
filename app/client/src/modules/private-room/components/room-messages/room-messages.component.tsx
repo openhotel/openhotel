@@ -114,7 +114,7 @@ export const RoomMessagesComponent: React.FC<Props> = ({
       removeOnWhisperMessage();
       removeOnSystemMessage();
     };
-  }, [room?.id, addMessage, getUser, onProxy, setMessages, setYPivot]);
+  }, [room?.id, addMessage, onProxy, setMessages, setYPivot]);
 
   const onResize = useCallback(
     (size: Size2d) => {
