@@ -61,12 +61,16 @@ export const RoomMessagesComponent: React.FC<Props> = ({
     [setMessages, getUser, currentAccount, maxMessages],
   );
 
+  // Reset messages when room changes
   useEffect(() => {
     if (!room) return;
-
-    //resets messages on room change
     setMessages([]);
     setYPivot(0);
+  }, [room?.id, setMessages, setYPivot]);
+
+  // Set up message event listeners
+  useEffect(() => {
+    if (!room) return;
 
     const removeOnMessage = onProxy(
       Event.MESSAGE,
@@ -114,7 +118,7 @@ export const RoomMessagesComponent: React.FC<Props> = ({
       removeOnWhisperMessage();
       removeOnSystemMessage();
     };
-  }, [room?.id, addMessage, getUser, onProxy, setMessages, setYPivot]);
+  }, [room?.id, onProxy, addMessage]);
 
   const onResize = useCallback(
     (size: Size2d) => {
