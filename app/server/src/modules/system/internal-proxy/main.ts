@@ -42,6 +42,7 @@ export const internalProxy = () => {
   };
 
   const getPort = () => $port;
+  const getToken = () => $token;
 
-  return { load, getPort };
+  return { load, getPort, getToken };
 };

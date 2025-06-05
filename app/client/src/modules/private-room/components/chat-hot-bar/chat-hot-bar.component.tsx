@@ -102,11 +102,6 @@ export const ChatHotBarComponent: React.FC<Props> = ({
           historyRef.current.pop();
 
         localStorage.setItem(STORAGE_KEY, JSON.stringify(historyRef.current));
-        //---- /game ------------------------------------------------------------
-        if (message.startsWith("/game")) {
-          startGame();
-          return;
-        }
 
         //---- /set ------------------------------------------------------------
         if (

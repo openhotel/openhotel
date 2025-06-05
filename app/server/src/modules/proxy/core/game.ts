@@ -2,12 +2,11 @@ import { ServerClient } from "@da/socket";
 import { Proxy } from "modules/proxy/main.ts";
 
 export const game = () => {
-  let gameMapClient: Record<string, ServerClient> = {};
   let userMapClient: Record<string, ServerClient> = {};
 
   const guest = async (
     clientId: string,
-    [state, token, gameId]: string[],
+    [gameId, accountId, token]: string[],
     ip: string,
   ) => {
     const config = Proxy.getConfig();
@@ -15,7 +14,7 @@ export const game = () => {
     if (config.version !== "development" && state !== Proxy.getState())
       return false;
 
-    console.log(clientId, state, token, gameId);
+    console.log(clientId, gameId, accountId, token, "<<<<");
     return true;
   };
 
