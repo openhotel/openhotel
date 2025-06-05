@@ -7,7 +7,7 @@ export const game = () => {
 
   const guest = async (
     clientId: string,
-    [type, state, gameId]: string[],
+    [state, token, gameId]: string[],
     ip: string,
   ) => {
     const config = Proxy.getConfig();
@@ -15,7 +15,7 @@ export const game = () => {
     if (config.version !== "development" && state !== Proxy.getState())
       return false;
 
-    console.log(type, clientId, state, gameId);
+    console.log(clientId, state, token, gameId);
     return true;
   };
 
