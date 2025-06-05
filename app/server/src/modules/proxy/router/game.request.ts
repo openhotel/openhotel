@@ -1,5 +1,5 @@
+import { parse } from "@std/yaml";
 import { getContentType, getURL } from "@oh/utils";
-import { Proxy } from "modules/proxy/main.ts";
 
 export const requestGame = async (request: Request) => {
   const ROOT_DIR_PATH = "/game/";
@@ -11,20 +11,18 @@ export const requestGame = async (request: Request) => {
 
     if (!$pathname.startsWith(ROOT_DIR_PATH)) return null;
 
-    if (Proxy.getEnvs().version === "development")
+    const gameId = $pathname.replace("/game/", "").split("/")[0];
+    const actualPathName = $pathname.replace(`/game/${gameId}/`, "");
+
+    const games = parse(await Deno.readTextFile("./assets/games/games.yml"));
+
+    const gamePath = games[gameId];
+    if (!gamePath)
       return new Response(null, {
-        status: 302,
-        headers: {
-          Location: "http://localhost:2994",
-        },
+        status: 404,
       });
 
-    const filePath = $pathname.replace(ROOT_DIR_PATH, "");
-    const targetFile =
-      "./assets/games/" +
-      filePath +
-      (filePath.endsWith("/") ? "index.html" : "");
-    console.log(targetFile);
+    const targetFile = gamePath + "/" + (actualPathName || "index.html");
 
     let fileData = await Deno.readFile(targetFile);
     if (targetFile.endsWith("index.html"))

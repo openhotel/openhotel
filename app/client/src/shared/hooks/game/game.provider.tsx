@@ -1,8 +1,9 @@
-import React, { ReactNode, useCallback, useRef } from "react";
+import React, { ReactNode, useCallback, useEffect, useRef } from "react";
 import { GameContext } from "./game.context";
 import { useEvents, useWindow, Event } from "@openhotel/pixi-components";
 import { Size2d } from "shared/types";
-import { useApi, useConfig } from "shared/hooks";
+import { useAccount, useApi, useConfig, useProxy } from "shared/hooks";
+import { Event as ProxyEvent } from "shared/enums";
 
 type GameProps = {
   children: ReactNode;
@@ -11,6 +12,9 @@ type GameProps = {
 export const GameProvider: React.FunctionComponent<GameProps> = ({
   children,
 }) => {
+  const { fetch } = useApi();
+  const { on: onProxy } = useProxy();
+  const { getAccount } = useAccount();
   const { isDevelopment } = useConfig();
   const { on } = useEvents();
   const { getSize, getScale } = useWindow();
@@ -26,31 +30,44 @@ export const GameProvider: React.FunctionComponent<GameProps> = ({
     [getScale],
   );
 
-  const startGame = useCallback(() => {
-    iframeRef.current = document.createElement("iframe");
-    iframeRef.current.setAttribute(
-      "src",
-      (isDevelopment() ? "/proxy/" : "/") + "game/test/client/",
-    );
-    iframeRef.current.style.position = "absolute";
-    iframeRef.current.style.left = "0";
-    iframeRef.current.style.top = "0";
-    iframeRef.current.style.border = "0";
-    // iframeRef.current.style.opacity = ".5";
-    document.body.appendChild(iframeRef.current);
+  const startGame = useCallback(() => {}, [fetch]);
 
+  useEffect(() => {
     const removeOnResize = on(Event.RESIZE, $onResize);
-    $onResize(getSize());
 
-    setTimeout(() => {
+    const removeOnLoadGame = onProxy(
+      ProxyEvent.LOAD_GAME,
+      ({ gameId, token }) => {
+        // return;
+        iframeRef.current = document.createElement("iframe");
+        iframeRef.current.setAttribute(
+          "src",
+          (isDevelopment() ? "/proxy/" : "/") +
+            `game/${gameId}/?token=${token}&accountId=${getAccount().accountId}`,
+        );
+        iframeRef.current.style.position = "absolute";
+        iframeRef.current.style.left = "0";
+        iframeRef.current.style.top = "0";
+        iframeRef.current.style.border = "0";
+        // iframeRef.current.style.opacity = ".5";
+        document.body.appendChild(iframeRef.current);
+
+        $onResize(getSize());
+      },
+    );
+    const removeOnRemoveGame = onProxy(ProxyEvent.REMOVE_GAME, () => {
+      if (!iframeRef.current) return;
+
       document.body.removeChild(iframeRef.current);
-    }, 10_000);
+      delete iframeRef.current;
+    });
 
     return () => {
       removeOnResize();
-      document.body.removeChild(iframeRef.current);
+      removeOnLoadGame();
+      removeOnRemoveGame();
     };
-  }, [on, $onResize, getSize, isDevelopment]);
+  }, [on, onProxy, getAccount, $onResize, getSize, isDevelopment]);
 
   return (
     <GameContext.Provider

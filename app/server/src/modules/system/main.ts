@@ -54,7 +54,7 @@ export const System = (() => {
 
     await $image.load();
     await $auth.load(config, true);
-    $internalProxy.load();
+    await $internalProxy.load();
     $proxy.load();
     await $db.load();
     await Migrations.load($db);
@@ -81,6 +81,7 @@ export const System = (() => {
 
     game: $game,
     proxy: $proxy,
+    internalProxy: $internalProxy,
     phantom: $phantom,
     tasks: $tasks,
     db: $db,

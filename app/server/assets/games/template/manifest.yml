@@ -1,0 +1,5 @@
+id: 01JX0DRTDAGR4ZPFC4KT9TX6D7
+name: game-template
+repository: openhotel/game-template
+client:
+  path: /client
