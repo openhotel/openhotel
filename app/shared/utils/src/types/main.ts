@@ -10,3 +10,4 @@ export * from "./version.types.ts";
 export * from "./s3.types.ts";
 export * from "./company.types.ts";
 export * from "./game.types.ts";
+export * from "./worker.types.ts";
