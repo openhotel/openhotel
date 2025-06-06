@@ -17,6 +17,8 @@ export enum ProxyEvent {
   $UPDATE = "$$update",
   $STOP = "$$stop",
 
+  $GAME_GUEST_CHECK = "$$GAME_GUEST_CHECK",
+
   //### CLIENT #######################################################################################################//
 
   WELCOME = "welcome",

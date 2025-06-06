@@ -13,7 +13,7 @@ export const getInfoRequest = {
       languages,
     } = Proxy.getConfig();
     const { version } = Proxy.getEnvs();
-    const userList = Proxy.getUserList();
+    const userList = Proxy.core.user.getUserList();
 
     return Response.json(
       {
