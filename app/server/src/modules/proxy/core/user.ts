@@ -169,11 +169,15 @@ export const user = () => {
 
   const getUserList = (): PrivateUser[] => userList;
 
+  const getUser = (accountId: string): PrivateUser =>
+    getUserList().find((user) => user.accountId === accountId);
+
   return {
     guest,
     connected,
     disconnected,
 
     getUserList,
+    getUser,
   };
 };

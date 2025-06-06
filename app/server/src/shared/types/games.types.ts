@@ -12,3 +12,12 @@ export type GameType = {
   executable: string;
   manifest: GameManifest;
 };
+
+export type GameMutable = {
+  getPath: () => string;
+  getExecutable: () => string;
+  getManifest: () => GameManifest;
+
+  //returns a token to check if the account is valid when connecting
+  getToken: (accountId: string) => string;
+};
