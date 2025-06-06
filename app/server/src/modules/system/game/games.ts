@@ -1,15 +1,59 @@
 import { parse, stringify } from "@std/yaml";
 import { getRandomString } from "@oh/utils";
 import { System } from "modules/system/main.ts";
-import { GameType } from "shared/types/games.types.ts";
+import { GameMutable, GameType } from "shared/types/games.types.ts";
 import { log } from "shared/utils/log.utils.ts";
 
 const PATH = "./assets/games";
 
 export const games = () => {
-  let $games: GameType[] = [];
+  const $gameMap: Record<string, GameMutable> = {};
 
-  const token = getRandomString(16);
+  const $getGame = (game: GameType): GameMutable => {
+    let tokenMap: Record<string, string> = {};
+
+    const getPath = () => game.path;
+    const getExecutable = () => game.executable;
+    const getManifest = () => game.manifest;
+
+    const getToken = (accountId: string) => {
+      if (tokenMap[accountId]) return tokenMap[accountId];
+
+      const token = getRandomString(16);
+      tokenMap[accountId] = token;
+      //remove the token passed 30 seconds1
+      setTimeout(() => {
+        delete tokenMap[accountId];
+      }, 30_000);
+      return token;
+    };
+
+    return {
+      getPath,
+      getExecutable,
+      getManifest,
+
+      getToken,
+    };
+  };
+
+  const add = (game: GameType) => {
+    $gameMap[game.manifest.id] = $getGame(game);
+
+    log(`Game '${game.manifest.name}' [${game.manifest.id}] starting...`);
+
+    const args = [
+      `--internalProxyPort=${System.internalProxy.getPort()}`,
+      `--token=${System.internalProxy.getToken()}`,
+      "--preventUpdate",
+      "--debug",
+    ];
+
+    const cmd = new Deno.Command(`${game.path}/${game.executable}`, {
+      args,
+    });
+    cmd.spawn();
+  };
 
   const load = async () => {
     for await (const game of await Deno.readDir(PATH)) {
@@ -28,7 +72,7 @@ export const games = () => {
         const manifest = parse(
           await Deno.readTextFile(`${gamePath}/manifest.yml`),
         );
-        $games.push({
+        add({
           path: gamePath,
           executable,
           manifest,
@@ -39,45 +83,25 @@ export const games = () => {
     await Deno.writeTextFile(
       PATH + "/games.yml",
       stringify(
-        $games.reduce(
+        getGames().reduce(
           (games, game) => ({
             ...games,
-            [game.manifest.id]: `${game.path}${game.manifest.client.path}`,
+            [game.getManifest().id]:
+              `${game.getPath()}${game.getManifest().client.path}`,
           }),
           {},
         ),
       ),
     );
-
-    for (const game of $games) {
-      log(`Game '${game.manifest.name}' [${game.manifest.id}] starting...`);
-
-      const args = [
-        `--internalProxyPort=${System.internalProxy.getPort()}`,
-        `--token=${System.internalProxy.getToken()}`,
-        "--preventUpdate",
-        "--debug",
-      ];
-
-      const cmd = new Deno.Command(`${game.path}/${game.executable}`, {
-        args,
-      });
-      cmd.spawn();
-    }
   };
 
-  const getToken = () => token;
-
-  const getGames = (): GameType[] => $games;
-  const getGame = (gameId: string): GameType | null =>
-    $games.find((game) => game.manifest.id === gameId);
+  const getGames = (): GameMutable[] => Object.values($gameMap);
+  const getGame = (gameId: string): GameMutable | null => $gameMap[gameId];
 
   return {
     load,
 
     getGames,
     getGame,
-
-    getToken,
   };
 };

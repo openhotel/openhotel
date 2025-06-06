@@ -3,7 +3,6 @@ import { getChildWorker } from "worker_ionic";
 import {
   ConfigTypes,
   Envs,
-  PrivateUser,
   VersionContent,
   WorkerProps,
 } from "shared/types/main.ts";
@@ -23,8 +22,7 @@ import { coordinates } from "../shared/coordinates.ts";
 import { icon } from "modules/shared/icon.ts";
 import { image } from "modules/shared/image.ts";
 import { requestGame } from "./router/game.request.ts";
-import { user } from "./core/user.ts";
-import { game } from "./core/game.ts";
+import { core } from "./core/main.ts";
 
 export const Proxy = (() => {
   const serverWorker = getChildWorker();
@@ -43,8 +41,7 @@ export const Proxy = (() => {
   let $envs: Envs;
   let $changelog: VersionContent[] = [];
 
-  const $coreUser = user();
-  const $coreGame = game();
+  const $core = core();
 
   const load = async ({ envs, config }: WorkerProps) => {
     $config = config;
@@ -105,10 +102,10 @@ export const Proxy = (() => {
 
         switch (connectionType) {
           case "client":
-            response = await $coreUser.guest(clientId, protocols, ip);
+            response = await $core.user.guest(clientId, protocols, ip);
             break;
           case "game":
-            response = await $coreGame.guest(clientId, protocols, ip);
+            response = await $core.game.guest(clientId, protocols, ip);
             break;
         }
         if (response) clientTypeMap[clientId] = connectionType;
@@ -120,19 +117,19 @@ export const Proxy = (() => {
       userClientMap[client.id] = client;
       switch (clientTypeMap[client.id]) {
         case "client":
-          return $coreUser.connected(client);
+          return $core.user.connected(client);
         case "game":
-          return $coreGame.connected(client);
+          return $core.game.connected(client);
       }
       client.close();
     });
     server.on("disconnected", (client: ServerClient) => {
       switch (clientTypeMap[client.id]) {
         case "client":
-          $coreUser.disconnected(client);
+          $core.user.disconnected(client);
           break;
         case "game":
-          $coreGame.disconnected(client);
+          $core.game.disconnected(client);
           break;
       }
       delete userClientMap[client.id];
@@ -147,10 +144,6 @@ export const Proxy = (() => {
 
   const getConfig = (): ConfigTypes => $config;
   const getEnvs = (): Envs => $envs;
-
-  const getUser = (accountId: string): PrivateUser =>
-    $coreUser.getUserList().find((user) => user.accountId === accountId);
-  const getUserList = (): PrivateUser[] => $coreUser.getUserList();
 
   const getClient = (clientId: string) => userClientMap[clientId];
   const getRoom = (roomId: string) => server?.getRoom(roomId);
@@ -192,11 +185,6 @@ export const Proxy = (() => {
     getConfig,
     getEnvs,
 
-    ///
-
-    getUser,
-    getUserList,
-
     getClient,
     getRoom,
 
@@ -209,5 +197,6 @@ export const Proxy = (() => {
     icon: $icon,
     auth: $auth,
     coordinates: $coordinates,
+    core: $core,
   };
 })();
