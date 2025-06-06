@@ -67,6 +67,7 @@ export type UserMutable = {
   getUsername: () => string;
 
   getClientId: () => string;
+  getIp: () => string;
 
   setPosition: (position: Pick<Point3d, "x" | "z">) => void;
   getPosition: () => Point3d | null;

@@ -1,77 +1,67 @@
 import { ServerClient } from "@da/socket";
-import { Proxy } from "modules/proxy/main.ts";
-import { ProxyEvent } from "shared/enums/event.enum.ts";
-import { waitUntil } from "@oh/utils";
+
+type UserRequestType = {
+  accountId: string;
+  gameId: string;
+  token: string;
+  ip: string;
+};
 
 export const game = () => {
-  let userMapClient: Record<string, ServerClient> = {};
+  let userRequestMap: Record<string, UserRequestType> = {};
+  let clientUserRequestMap: Record<string, UserRequestType> = {};
 
-  let guestMapValidity: Record<string, Record<string, boolean>> = {};
+  let userMapClient: Record<string, ServerClient> = {};
 
   const guest = async (
     clientId: string,
     [gameId, accountId, token]: string[],
     ip: string,
   ) => {
-    const config = Proxy.getConfig();
+    const accountToken = userRequestMap[accountId];
+    if (!accountToken) return false;
 
-    if (config.version !== "development") return false;
+    const valid =
+      accountToken.gameId === gameId &&
+      accountToken.token === token &&
+      accountToken.ip === ip;
 
-    if (!guestMapValidity[gameId]) guestMapValidity[gameId] = {};
-    guestMapValidity[gameId][accountId] = null;
+    if (!valid) return false;
 
-    Proxy.getServerWorker().emit(ProxyEvent.$GAME_GUEST_CHECK, {
-      data: {
-        gameId,
-        accountId,
-        token,
-      },
-    });
+    clientUserRequestMap[clientId] = userRequestMap[accountId];
+    delete userRequestMap[accountId];
 
-    try {
-      await waitUntil(() => guestMapValidity[gameId][accountId] !== null);
-
-      console.log(
-        clientId,
-        gameId,
-        accountId,
-        token,
-        "<<<<",
-        guestMapValidity[gameId][accountId],
-      );
-      return guestMapValidity[gameId][accountId];
-    } catch (e) {
-      return false;
-    }
+    return true;
   };
 
   const connected = (client: ServerClient) => {
     try {
+      userMapClient[client.id] = client;
+      console.log(clientUserRequestMap[client.id]);
     } catch (e) {
-      console.error("proxy-7");
+      console.error("proxy-game-1");
       console.error(e);
     }
   };
 
   const disconnected = (client: ServerClient) => {
     try {
+      delete userMapClient[client.id];
+      delete clientUserRequestMap[client.id];
     } catch (e) {
-      console.error("proxy-8");
+      console.error("proxy-game-2");
       console.error(e);
     }
   };
 
-  const setGameCheckValidity = (
-    gameId: string,
-    accountId: string,
-    valid: boolean,
-  ) => (guestMapValidity[gameId][accountId] = valid);
+  const setUserRequest = (userRequest: UserRequestType) =>
+    (userRequestMap[userRequest.accountId] = userRequest);
 
   return {
     guest,
     connected,
     disconnected,
 
-    setGameCheckValidity,
+    setUserRequest,
   };
 };
