@@ -134,12 +134,12 @@ export const user = () => {
             message,
           });
         } catch (e) {
-          console.error("proxy-6");
+          console.error("proxy-user-1");
           console.error(e);
         }
       });
     } catch (e) {
-      console.error("proxy-7");
+      console.error("proxy-user-2");
       console.error(e);
     }
   };
@@ -162,7 +162,7 @@ export const user = () => {
         data: { user: foundUser },
       });
     } catch (e) {
-      console.error("proxy-8");
+      console.error("proxy-user-3");
       console.error(e);
     }
   };

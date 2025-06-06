@@ -58,6 +58,7 @@ export const users = () => {
     const getUsername = () => user.username;
 
     const getClientId = () => $privateUserMap[user.accountId].clientId;
+    const getIp = () => $privateUserMap[user.accountId].ip;
 
     const setPosition = (position: Point3d) => {
       $user.position = position;
@@ -383,6 +384,7 @@ export const users = () => {
       getUsername,
 
       getClientId,
+      getIp,
 
       setPosition,
       getPosition,

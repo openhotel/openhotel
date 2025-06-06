@@ -1,3 +1,5 @@
+import { UserMutable } from "shared/types/user.types.ts";
+
 export type GameManifest = {
   id: string;
   name: string;
@@ -18,6 +20,5 @@ export type GameMutable = {
   getExecutable: () => string;
   getManifest: () => GameManifest;
 
-  //returns a token to check if the account is valid when connecting
-  getToken: (accountId: string) => string;
+  addUserRequest: (user: UserMutable, token: string) => void;
 };

@@ -1,8 +1,9 @@
 import { parse, stringify } from "@std/yaml";
-import { getRandomString } from "@oh/utils";
 import { System } from "modules/system/main.ts";
 import { GameMutable, GameType } from "shared/types/games.types.ts";
 import { log } from "shared/utils/log.utils.ts";
+import { ProxyEvent } from "shared/enums/event.enum.ts";
+import { UserMutable } from "shared/types/user.types.ts";
 
 const PATH = "./assets/games";
 
@@ -10,22 +11,17 @@ export const games = () => {
   const $gameMap: Record<string, GameMutable> = {};
 
   const $getGame = (game: GameType): GameMutable => {
-    let tokenMap: Record<string, string> = {};
-
     const getPath = () => game.path;
     const getExecutable = () => game.executable;
     const getManifest = () => game.manifest;
 
-    const getToken = (accountId: string) => {
-      if (tokenMap[accountId]) return tokenMap[accountId];
-
-      const token = getRandomString(16);
-      tokenMap[accountId] = token;
-      //remove the token passed 30 seconds1
-      setTimeout(() => {
-        delete tokenMap[accountId];
-      }, 30_000);
-      return token;
+    const addUserRequest = (user: UserMutable, token: string) => {
+      System.proxy.$emit(ProxyEvent.$GAME_USER_REQUEST, {
+        gameId: getManifest().id,
+        accountId: user.getAccountId(),
+        ip: user.getIp(),
+        token,
+      });
     };
 
     return {
@@ -33,7 +29,7 @@ export const games = () => {
       getExecutable,
       getManifest,
 
-      getToken,
+      addUserRequest,
     };
   };
 
