@@ -16,6 +16,7 @@
     "jsr:@std/yaml@1.0.5": "1.0.5",
     "jsr:@sugar/minio-js-with-startpath@8.0.13": "8.0.13",
     "jsr:@zip-js/zip-js@2.7.53": "2.7.53",
+    "npm:@openhotel/game-template@0.0.3": "0.0.3",
     "npm:@puppeteer/browsers@2.10.2": "2.10.2",
     "npm:async@^3.2.4": "3.2.6",
     "npm:block-stream2@^2.1.0": "2.1.0",
@@ -125,6 +126,9 @@
     },
     "@babel/helper-validator-identifier@7.25.9": {
       "integrity": "sha512-Ed61U6XJc3CVRfkERJWDz4dJwKe7iLmmJsbOGu9wSloNSFttHV0I8g6UAgb7qnK5ly5bGLPd4oXZlxCdANBOWQ=="
+    },
+    "@openhotel/game-template@0.0.3": {
+      "integrity": "sha512-suhpCmJMhrjxW1RAdJ0PCBbWIksoDU+Y0fpqztI+ZuwigtQ5TJHITY7Hh6sTxjQjGQ+hbNAa00qHikHD3FAzMw=="
     },
     "@puppeteer/browsers@2.10.2": {
       "integrity": "sha512-i4Ez+s9oRWQbNjtI/3+jxr7OH508mjAKvza0ekPJem0ZtmsYHP3B5dq62+IaBHKaGCOuqJxXzvFLUhJvQ6jtsQ==",
@@ -1302,6 +1306,7 @@
       "jsr:@std/ulid@1",
       "jsr:@std/yaml@1.0.5",
       "jsr:@zip-js/zip-js@2.7.53",
+      "npm:@openhotel/game-template@0.0.3",
       "npm:@puppeteer/browsers@2.10.2",
       "npm:puppeteer@22.8.2"
     ]

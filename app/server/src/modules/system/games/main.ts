@@ -1,11 +1,19 @@
 import { WorkerParent, getParentWorker } from "worker_ionic";
 import { GameManifest } from "@oh/utils";
 
+const gamesLoaders: Record<string, () => any> = {
+  template: () => import("@openhotel/game-template/server"),
+};
+
 export const games = () => {
   const $gameWorkers: Record<string, WorkerParent> = {};
   const $gameManifests: Record<string, GameManifest> = {};
 
   const load = async () => {
+    const loader = gamesLoaders["template"];
+    const { GameServer } = await loader();
+    console.log(">>>", GameServer);
+
     // TODO: request onet
     const manifests: GameManifest[] = [
       {

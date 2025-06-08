@@ -13,6 +13,8 @@
     "@std/yaml": "jsr:@std/yaml@1.0.5",
     "@std/ulid": "jsr:@std/ulid@1",
 
+    "@openhotel/game-template": "npm:@openhotel/game-template@0.0.3",
+
     "dayjs": "https://deno.land/x/deno_dayjs@v0.5.0/mod.ts",
     "deno/": "https://deno.land/std@0.221.0/",
     "input": "https://deno.land/x/input@2.0.4/index.ts",

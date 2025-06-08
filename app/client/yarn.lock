@@ -933,25 +933,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@oh/utils@npm:@jsr/oh__utils@1.5.8":
-  version: 1.5.8
-  resolution: "@jsr/oh__utils@npm:1.5.8::__archiveUrl=https%3A%2F%2Fnpm.jsr.io%2F~%2F11%2F%40jsr%2Foh__utils%2F1.5.8.tgz"
-  dependencies:
-    "@jsr/da__bcrypt": "npm:1.0.1"
-    "@jsr/oh__yaml": "npm:1.1.0"
-    "@jsr/std__encoding": "npm:1.0.5"
-    "@jsr/std__fs": "npm:1.0.4"
-    "@jsr/std__path": "npm:1.0.6"
-    "@jsr/std__ulid": "npm:1"
-    "@jsr/std__yaml": "npm:1.0.5"
-    "@jsr/sugar__minio-js-with-startpath": "npm:8.0.13"
-    "@jsr/zip-js__zip-js": "npm:2.7.53"
-    dayjs: "npm:1.11.13"
-    random-seed: "npm:0.3.0"
-  checksum: 10c0/b90ffbbe6fd3c439d0ea41d38c8c2319b99a67f1ee2769119536e16447924af43b4798a5486c1d43b7cbe66b1aca9cc91493ef3cec4164087e7c9a4e8d8da24c
-  languageName: node
-  linkType: hard
-
 "@open-draft/deferred-promise@npm:^2.2.0":
   version: 2.2.0
   resolution: "@open-draft/deferred-promise@npm:2.2.0"
@@ -976,15 +957,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openhotel/game-template@npm:0.0.1":
-  version: 0.0.1
-  resolution: "@openhotel/game-template@npm:0.0.1"
-  dependencies:
-    "@oh/utils": "npm:@jsr/oh__utils@1.5.8"
-    "@openhotel/pixi-components": "npm:0.0.17"
-    react: "npm:19.0.0"
-    react-dom: "npm:19.0.0"
-  checksum: 10c0/f5b8aef22a4517d5a35fee1bfa3ef683575ce9a67545a076f1adac4705fd1077d3d29096abdfbda166e44d8c02d867f5fa1f383d654eab8f1c2f8e94dc56ce06
+"@openhotel/game-template@npm:0.0.3":
+  version: 0.0.3
+  resolution: "@openhotel/game-template@npm:0.0.3"
+  checksum: 10c0/4d51023f22e19460f1861bed5453eea14d88fd4a83312f9a961e6d86c5c6182138a9c5215b796ecec892361fd3e0dde788b17f153887bc19dca377f847217845
   languageName: node
   linkType: hard
 
@@ -4642,7 +4618,7 @@ __metadata:
     "@chromatic-com/storybook": "npm:3.2.4"
     "@oh/queue": "npm:@jsr/oh__queue@1.1.1"
     "@oh/utils": "npm:@jsr/oh__utils@1.5.7"
-    "@openhotel/game-template": "npm:0.0.1"
+    "@openhotel/game-template": "npm:0.0.3"
     "@openhotel/pixi-components": "npm:0.0.17"
     "@storybook/addon-actions": "npm:8.5.8"
     "@storybook/addon-console": "npm:3.0.0"
