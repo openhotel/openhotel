@@ -90,7 +90,8 @@ export const ChatHotBarComponent: React.FC<Props> = ({
         );
         return;
       }
-      if (code === "Enter") {
+
+      if (code === "Enter" || code === "NumpadEnter") {
         let message = $message.trim();
         if (!message.length) return;
         historyIndexRef.current = -1;
