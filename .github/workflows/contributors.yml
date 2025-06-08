@@ -36,6 +36,7 @@ jobs:
             "utils"
             "onet"
             "web"
+            "game-template"
           )
             
           declare -A contributors
