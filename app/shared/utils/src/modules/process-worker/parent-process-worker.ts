@@ -22,7 +22,7 @@ export const getParentProcessWorker = (
     for await (const line of reader) {
       try {
         if (!line.startsWith("§")) {
-          console.log(line);
+          await Deno.stdout.write(encoder.encode(line));
           continue;
         }
         const { event, message } = JSON.parse(line.substring(1));
