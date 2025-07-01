@@ -1,4 +1,4 @@
-import { WorkerParent, WorkerParentProps } from "../../types/worker.types.ts";
+import type { WorkerParent } from "../../types/worker.types.ts";
 
 export const getParentProcessWorker = (
   command: string,
@@ -20,16 +20,15 @@ export const getParentProcessWorker = (
 
   (async () => {
     for await (const line of reader) {
-      try {
-        if (!line.startsWith("§")) {
-          await Deno.stdout.write(encoder.encode(line));
-          continue;
-        }
-        const { event, message } = JSON.parse(line.substring(1));
+      const match = new RegExp(/§(\{.*?\})§/).exec(line);
+      if (!match) {
+        Deno.stdout.write(encoder.encode(line));
+        continue;
+      }
+      const { event, message } = JSON.parse(match?.[1]);
 
-        const eventList = (events[event] || []).filter(Boolean);
-        for (const event of eventList) event(message);
-      } catch {}
+      const eventList = (events[event] || []).filter(Boolean);
+      for (const event of eventList) event(message);
     }
     await child.status;
 
@@ -46,7 +45,7 @@ export const getParentProcessWorker = (
   };
 
   const emit = (event: string, message: any) => {
-    const data = JSON.stringify({ event, message }) + "\n";
+    const data = JSON.stringify({ event, message }) + "\n\r";
     writer.write(encoder.encode(data));
   };
 

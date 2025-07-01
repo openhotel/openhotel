@@ -1,4 +1,4 @@
-import { WorkerChild } from "../../types/worker.types.ts";
+import type { WorkerChild } from "../../types/worker.types.ts";
 
 export const getChildProcessWorker = (): WorkerChild => {
   const events: Record<string, any[]> = {};
@@ -28,7 +28,7 @@ export const getChildProcessWorker = (): WorkerChild => {
   };
 
   const emit = (event: string, message: any) => {
-    const data = "§" + JSON.stringify({ event, message }) + "\n";
+    const data = "§" + JSON.stringify({ event, message }) + "§\n";
     Deno.stdout.write(encoder.encode(data));
   };
 
