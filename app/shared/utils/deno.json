@@ -7,6 +7,7 @@
     "@std/fs": "jsr:@std/fs@1.0.4",
     "@std/yaml": "jsr:@std/yaml@1.0.5",
     "@std/encoding": "jsr:@std/encoding@1.0.5",
+    "@std/streams": "jsr:@std/streams@1.0.10",
 
     "@std/ulid": "jsr:@std/ulid@1",
     "@s3": "jsr:@sugar/minio-js-with-startpath@8.0.13",

@@ -1,4 +1,5 @@
 import type { WorkerParent } from "../../types/worker.types.ts";
+import { TextLineStream } from "@std/streams";
 
 export const getParentProcessWorker = (
   command: string,
@@ -16,13 +17,15 @@ export const getParentProcessWorker = (
   const encoder = new TextEncoder();
   const writer = child.stdin.getWriter();
 
-  const reader = child.stdout.pipeThrough(new TextDecoderStream());
+  const reader = child.stdout
+    .pipeThrough(new TextDecoderStream())
+    .pipeThrough(new TextLineStream());
 
   (async () => {
     for await (const line of reader) {
       const match = new RegExp(/§(\{.*?\})§/).exec(line);
       if (!match) {
-        Deno.stdout.write(encoder.encode(line));
+        Deno.stdout.write(encoder.encode(line + "\n"));
         continue;
       }
       const { event, message } = JSON.parse(match?.[1]);
