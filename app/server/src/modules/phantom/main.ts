@@ -21,9 +21,15 @@ import { quantizeToPalette } from "shared/utils/image.utils.ts";
 
   let $Image;
 
-  const killBrowser = () => {
+  let captures = [];
+  let isRunning = false;
+
+  const killBrowser = async () => {
     //if negative, don't kill the browser
     if (0 > $config.phantom.sleep) return;
+
+    const pages = await $browser.pages();
+    if (pages.length > 0) return;
 
     clearTimeout($killTimeout);
     $killTimeout = setTimeout(() => {
@@ -77,9 +83,6 @@ import { quantizeToPalette } from "shared/utils/image.utils.ts";
     $executablePath = executablePath;
     log(`${browserName} installed!`);
   };
-
-  let captures = [];
-  let isRunning = false;
 
   const processCapture = async () => {
     const { id, size, position, room, palette, pivotFix } = captures.shift();
@@ -139,7 +142,7 @@ import { quantizeToPalette } from "shared/utils/image.utils.ts";
       console.error(e);
       log(`Phantom capture (${id}) error!!!`);
     }
-    killBrowser();
+    await killBrowser();
   };
   const processCaptures = async () => {
     if (isRunning) return;
