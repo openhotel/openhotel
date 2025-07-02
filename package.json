@@ -4,7 +4,7 @@
     "prettier:write": "prettier --write ."
   },
   "devDependencies": {
-    "prettier": "3.5.2",
+    "prettier": "3.6.0",
     "vite": "6.3.5"
   },
   "packageManager": "yarn@4.6.0"
