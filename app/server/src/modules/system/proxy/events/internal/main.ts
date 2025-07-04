@@ -13,6 +13,12 @@ const eventList: ProxyEventType[] = [
   disconnectUserEvent,
 ];
 
-export const loadInternalEvents = ($worker: WorkerParent) => {
-  for (const { event, func } of eventList) $worker.on(event, func);
+export const internal = () => {
+  const load = ($worker: WorkerParent) => {
+    for (const { event, func } of eventList) $worker.on(event, func);
+  };
+
+  return {
+    load,
+  };
 };

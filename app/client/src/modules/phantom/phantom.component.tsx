@@ -1,6 +1,7 @@
 import React, { useMemo } from "react";
 import { CoreLoaderComponent } from "modules/application";
 import {
+  ApiPhantomProvider,
   AssetsProvider,
   ConfigProvider,
   FurnitureProvider,
@@ -17,6 +18,7 @@ export const PhantomComponent = () => {
       ),
       // TasksProvider,
       ConfigProvider,
+      ApiPhantomProvider,
       PhantomProvider,
       AssetsProvider,
       CoreLoaderComponent,
