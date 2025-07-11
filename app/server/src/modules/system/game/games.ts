@@ -4,13 +4,19 @@ import { GameMutable, GameType } from "shared/types/games.types.ts";
 import { log } from "shared/utils/log.utils.ts";
 import { ProxyEvent } from "shared/enums/event.enum.ts";
 import { UserMutable } from "shared/types/user.types.ts";
+import { getParentProcessWorker } from "@oh/utils";
 
 const PATH = "./assets/games";
 
 export const games = () => {
   const $gameMap: Record<string, GameMutable> = {};
+  const $gameWorkerMap: Record<string, any> = {};
+
+  let $worker;
 
   const $getGame = (game: GameType): GameMutable => {
+    let $users: string[] = [];
+
     const getPath = () => game.path;
     const getExecutable = () => game.executable;
     const getManifest = () => game.manifest;
@@ -24,12 +30,42 @@ export const games = () => {
       });
     };
 
+    const addUser = (user: UserMutable, clientId: string) => {
+      if ($users.includes(user.getAccountId())) return;
+
+      $users.push(user.getAccountId());
+      console.log(`${user.getUsername()} joined game '${game.manifest.name}'`);
+
+      $worker.emit("USER_READY", {
+        clientId,
+        accountId: user.getAccountId(),
+      });
+    };
+
+    const removeUser = (user: UserMutable, clientId: string) => {
+      $users = $users.filter((userId) => userId !== user.getAccountId());
+      console.log(`${user.getUsername()} left game '${game.manifest.name}'`);
+
+      $worker.emit("USER_LEAVE", {
+        clientId,
+        accountId: user.getAccountId(),
+      });
+    };
+
+    const emit = (event: string, message: any) => {
+      $worker.emit(event, message);
+    };
+
     return {
       getPath,
       getExecutable,
       getManifest,
 
       addUserRequest,
+      addUser,
+      removeUser,
+
+      emit,
     };
   };
 
@@ -38,17 +74,17 @@ export const games = () => {
 
     log(`Game '${game.manifest.name}' [${game.manifest.id}] starting...`);
 
-    const args = [
-      `--internalProxyPort=${System.internalProxy.getPort()}`,
-      `--token=${System.internalProxy.getToken()}`,
-      "--preventUpdate",
-      "--debug",
-    ];
+    $worker = getParentProcessWorker(`${game.path}/${game.executable}`, []);
+    $gameWorkerMap[game.manifest.id] = $worker;
 
-    const cmd = new Deno.Command(`${game.path}/${game.executable}`, {
-      args,
+    $worker.on("USER_DATA", ({ clientId, event, message }) => {
+      console.log("USER_DATA", clientId, event, message);
+      // Development.proxy.getClient(clientId).emit(event, message);
     });
-    cmd.spawn();
+    $worker.on("DISCONNECT_USER", ({ clientId }) => {
+      console.log("DISCONNECT_USER", clientId);
+      // Development.proxy.getClient(clientId)?.close();
+    });
   };
 
   const load = async () => {

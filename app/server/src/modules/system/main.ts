@@ -11,14 +11,12 @@ import { config } from "./config.ts";
 import { Migrations } from "../migrations/main.ts";
 import { image } from "modules/shared/image.ts";
 import { updater } from "modules/system/updater.ts";
-import { internalProxy } from "modules/system/internal-proxy/main.ts";
 
 export const System = (() => {
   let $envs: Envs;
 
   const $token = getRandomString(16);
 
-  const $internalProxy = internalProxy();
   const $proxy = proxy();
   const $phantom = phantom();
   const $tasks = tasks();
@@ -54,7 +52,6 @@ export const System = (() => {
 
     await $image.load();
     await $auth.load(config, true);
-    await $internalProxy.load();
     $proxy.load();
     await $db.load();
     await Migrations.load($db);
@@ -81,7 +78,6 @@ export const System = (() => {
 
     game: $game,
     proxy: $proxy,
-    internalProxy: $internalProxy,
     phantom: $phantom,
     tasks: $tasks,
     db: $db,
