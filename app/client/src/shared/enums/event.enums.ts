@@ -9,6 +9,9 @@ export enum Event {
   LOAD_ROOM = "load-room",
   REMOVE_ROOM = "remove-room",
 
+  LOAD_GAME = "load-game",
+  REMOVE_GAME = "remove-game",
+
   ADD_HUMAN = "add-human",
   REMOVE_HUMAN = "remove-human",
   MOVE_HUMAN = "move-human",
@@ -40,8 +43,6 @@ export enum Event {
 
   CONNECTED = "connected",
   DISCONNECTED = "disconnected",
-
-  DISABLE_CAMERA_MOVEMENT = "disable-camera-movement",
 }
 
 export enum InternalEvent {

@@ -5,6 +5,7 @@ import { removeRoomEvent } from "./remove-room.event.ts";
 import { roomDataEvent } from "./room-data.event.ts";
 import { updateEvent } from "./update.event.ts";
 import { userDataEvent } from "./user-data.event.ts";
+import { gameUserRequestEvent } from "modules/proxy/events/game-user-request.event.ts";
 
 export const eventList: ProxyEventType[] = [
   addRoomEvent,
@@ -13,4 +14,5 @@ export const eventList: ProxyEventType[] = [
   roomDataEvent,
   updateEvent,
   userDataEvent,
+  gameUserRequestEvent,
 ];

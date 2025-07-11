@@ -75,8 +75,9 @@ export const ProxyProvider: React.FunctionComponent<ProxyProps> = ({
     const $socket = getClientSocket({
       url: getWebSocketUrl(`${window.location.origin}/proxy`),
       protocols: config.auth.enabled
-        ? [state, token]
+        ? ["client", state, token]
         : [
+            "client",
             localStorage.getItem("accountId") || ulid(),
             localStorage.getItem("username") || `player_${getRandomString(4)}`,
           ],
