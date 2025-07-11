@@ -1,5 +1,5 @@
 export enum ProxyEvent {
-  //### INTERNAL #####################################################################################################//
+  //### INTERNAL USER #####################################################################################################//
 
   $LOAD = "$$load",
 
@@ -17,7 +17,12 @@ export enum ProxyEvent {
   $UPDATE = "$$update",
   $STOP = "$$stop",
 
-  $GAME_USER_REQUEST = "$$GAME_USER_REQUEST",
+  //### INTERNAL GAME #####################################################################################################//
+
+  $GAME_USER_REQUEST = "$$game-user-request",
+  $GAME_USER_READY = "$$game-user-ready",
+  $GAME_USER_DATA = "$$game-user-data",
+  $GAME_USER_LEFT = "$$game-user-left",
 
   //### CLIENT #######################################################################################################//
 

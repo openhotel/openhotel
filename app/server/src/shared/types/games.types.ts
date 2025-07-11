@@ -21,4 +21,8 @@ export type GameMutable = {
   getManifest: () => GameManifest;
 
   addUserRequest: (user: UserMutable, token: string) => void;
+  addUser: (user: UserMutable, clientId: string) => void;
+  removeUser: (user: UserMutable, clientId: string) => void;
+
+  emit: (event: string, message: any) => void;
 };

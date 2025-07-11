@@ -1,4 +1,6 @@
 import { ServerClient } from "@da/socket";
+import { Proxy } from "modules/proxy/main.ts";
+import { ProxyEvent } from "shared/enums/event.enum.ts";
 
 type UserRequestType = {
   accountId: string;
@@ -37,7 +39,32 @@ export const game = () => {
   const connected = (client: ServerClient) => {
     try {
       userMapClient[client.id] = client;
-      console.log(clientUserRequestMap[client.id]);
+      const { accountId, gameId } = clientUserRequestMap[client.id];
+
+      client.on("$$user-ready", () => {
+        console.log("ready");
+        Proxy.getServerWorker().emit(ProxyEvent.$GAME_USER_READY, {
+          data: {
+            user: Proxy.core.user.getUser(accountId),
+            clientId: client.id,
+            gameId,
+          },
+        });
+      });
+      client.on("$$user-data", ({ event, message }) => {
+        Proxy.getServerWorker().emit(ProxyEvent.$GAME_USER_DATA, {
+          data: {
+            user: Proxy.core.user.getUser(accountId),
+            clientId: client.id,
+            gameId,
+            event,
+            message,
+          },
+        });
+      });
+      client.on("$$user-exit", () => {
+        disconnected(client);
+      });
     } catch (e) {
       console.error("proxy-game-1");
       console.error(e);
@@ -46,6 +73,18 @@ export const game = () => {
 
   const disconnected = (client: ServerClient) => {
     try {
+      const { gameId, accountId } = clientUserRequestMap[client.id];
+
+      userMapClient[client.id].close();
+
+      Proxy.getServerWorker().emit(ProxyEvent.$GAME_USER_LEFT, {
+        data: {
+          user: Proxy.core.user.getUser(accountId),
+          clientId: client.id,
+          gameId,
+        },
+      });
+
       delete userMapClient[client.id];
       delete clientUserRequestMap[client.id];
     } catch (e) {
