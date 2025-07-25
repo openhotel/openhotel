@@ -4,7 +4,8 @@ import { GameMutable, GameType } from "shared/types/games.types.ts";
 import { log } from "shared/utils/log.utils.ts";
 import { ProxyEvent } from "shared/enums/event.enum.ts";
 import { UserMutable } from "shared/types/user.types.ts";
-import { getParentProcessWorker } from "@oh/utils";
+import { getParentProcessWorker } from "./parent-process-worker.ts";
+// import { getParentProcessWorker } from "@oh/utils";
 
 const PATH = "./assets/games";
 
@@ -53,6 +54,7 @@ export const games = () => {
     };
 
     const emit = (event: string, message: any) => {
+      console.log("game", event, message);
       $worker.emit(event, message);
     };
 
@@ -77,6 +79,10 @@ export const games = () => {
     $worker = getParentProcessWorker(`${game.path}/${game.executable}`, []);
     $gameWorkerMap[game.manifest.id] = $worker;
 
+    $worker.on("test", (data) => {
+      console.log("test", data);
+      // Development.proxy.getClient(clientId).emit(event, message);
+    });
     $worker.on("USER_DATA", ({ clientId, event, message }) => {
       console.log("USER_DATA", clientId, event, message);
       // Development.proxy.getClient(clientId).emit(event, message);

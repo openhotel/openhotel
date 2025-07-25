@@ -1,6 +1,7 @@
 import { ProxyEventType, PrivateUser } from "shared/types/main.ts";
 import { ProxyEvent } from "shared/enums/main.ts";
 import { System } from "modules/system/main.ts";
+import { getRandomString } from "@oh/utils";
 
 export const userJoinedEvent: ProxyEventType<{
   user: PrivateUser;
@@ -16,6 +17,18 @@ export const userJoinedEvent: ProxyEventType<{
       },
       privateUser,
     );
+
+    // DO NOT MERGE
+    const user = System.game.users.get({ accountId: privateUser.accountId });
+    const game = System.game.games.getGames()[0];
+
+    const token = getRandomString(16);
+    game.addUserRequest(user, token);
+
+    user.emit(ProxyEvent.LOAD_GAME, {
+      gameId: game.getManifest().id,
+      token,
+    });
 
     // const currentUser = System.game.users.get({
     //   accountId: privateUser.accountId,

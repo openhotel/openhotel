@@ -1369,6 +1369,7 @@
       "jsr:@oh/pathfinding@2.0.3",
       "jsr:@oh/queue@1.1.1",
       "jsr:@oh/utils@1.5.13",
+      "jsr:@std/streams@1.0.10",
       "jsr:@std/ulid@1",
       "jsr:@std/yaml@1.0.5",
       "jsr:@zip-js/zip-js@2.7.53",

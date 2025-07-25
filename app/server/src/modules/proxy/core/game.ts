@@ -30,7 +30,7 @@ export const game = () => {
 
     if (!valid) return false;
 
-    clientUserRequestMap[clientId] = userRequestMap[accountId];
+    clientUserRequestMap[clientId] = { ...userRequestMap[accountId] };
     delete userRequestMap[accountId];
 
     return true;
@@ -42,7 +42,6 @@ export const game = () => {
       const { accountId, gameId } = clientUserRequestMap[client.id];
 
       client.on("$$user-ready", () => {
-        console.log("ready");
         Proxy.getServerWorker().emit(ProxyEvent.$GAME_USER_READY, {
           data: {
             user: Proxy.core.user.getUser(accountId),
@@ -63,7 +62,7 @@ export const game = () => {
         });
       });
       client.on("$$user-exit", () => {
-        disconnected(client);
+        userMapClient[client.id].close();
       });
     } catch (e) {
       console.error("proxy-game-1");
@@ -84,7 +83,6 @@ export const game = () => {
           gameId,
         },
       });
-
       delete userMapClient[client.id];
       delete clientUserRequestMap[client.id];
     } catch (e) {
