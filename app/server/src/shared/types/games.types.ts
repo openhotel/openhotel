@@ -7,6 +7,9 @@ export type GameManifest = {
   client: {
     path: string;
   };
+  properties: {
+    kickFromCurrentRoom: boolean;
+  };
 };
 
 export type GameType = {

@@ -7,6 +7,7 @@ import { stopEvent } from "./stop.event.ts";
 import { disconnectUserEvent } from "./disconnect-user.event.ts";
 import { gameUserReadyEvent } from "./game-user-ready.event.ts";
 import { gameUserLeftEvent } from "./game-user-left.event.ts";
+import { gameUserDataEvent } from "./game-user-data.event.ts";
 
 const eventList: ProxyEventType[] = [
   userJoinedEvent,
@@ -16,6 +17,7 @@ const eventList: ProxyEventType[] = [
   // game
   gameUserReadyEvent,
   gameUserLeftEvent,
+  gameUserDataEvent,
 ];
 
 export const internal = () => {

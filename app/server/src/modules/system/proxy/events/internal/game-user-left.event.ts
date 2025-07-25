@@ -12,6 +12,11 @@ export const gameUserLeftEvent: ProxyEventType<{
     const game = System.game.games.getGame(gameId);
     const $user = System.game.users.get({ accountId: user.accountId });
 
-    game.removeUser($user);
+    console.log("?");
+    game.removeUser($user, clientId);
+
+    $user.emit(ProxyEvent.REMOVE_GAME, {
+      gameId: game.getManifest().id,
+    });
   },
 };
