@@ -15,7 +15,7 @@ export const gameCommand: Command = {
     game.addUserRequest(user, token);
 
     user.emit(ProxyEvent.LOAD_GAME, {
-      gameId: game.getManifest().id,
+      gameId: game.getGameId(),
       token,
     });
   },

@@ -1,7 +1,0 @@
-id: 01K18HBFTKY5JDYZVB4N4G3ACC
-name: game-template
-repository: openhotel/game-template
-client:
-  path: /client
-properties:
-  kickFromCurrentRoom: true
