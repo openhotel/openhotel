@@ -12,16 +12,6 @@ export const gameUserReadyEvent: ProxyEventType<{
     const game = System.game.games.getGame(gameId);
     const $user = System.game.users.get({ accountId: user.accountId });
 
-    console.log(game.getManifest());
-    if (game.getManifest().properties.kickFromCurrentRoom) {
-      const $roomId = $user.getRoom();
-
-      if ($roomId) {
-        const room = await System.game.rooms.get($roomId);
-        room.removeUser($user.getObject());
-      }
-    }
-
-    game.addUser($user, clientId);
+    game.setUserReady($user, clientId);
   },
 };

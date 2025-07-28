@@ -23,6 +23,7 @@ export const GameProvider: React.FunctionComponent<GameProps> = ({
 
   const $onResize = useCallback(
     (size: Size2d) => {
+      if (!iframeRef.current) return;
       const scale = getScale();
       iframeRef.current.width = `${size.width * scale}px`;
       iframeRef.current.height = `${size.height * scale}px`;
@@ -49,14 +50,13 @@ export const GameProvider: React.FunctionComponent<GameProps> = ({
         iframeRef.current.style.left = "0";
         iframeRef.current.style.top = "0";
         iframeRef.current.style.border = "0";
-        iframeRef.current.style.opacity = ".5";
+        // iframeRef.current.style.opacity = ".5";
         document.body.appendChild(iframeRef.current);
 
         $onResize(getSize());
       },
     );
     const removeOnRemoveGame = onProxy(ProxyEvent.REMOVE_GAME, () => {
-      console.log("<<<<<<<<<<");
       if (!iframeRef.current) return;
 
       document.body.removeChild(iframeRef.current);

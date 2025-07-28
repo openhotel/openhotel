@@ -41,6 +41,14 @@ export const game = () => {
       userMapClient[client.id] = client;
       const { accountId, gameId } = clientUserRequestMap[client.id];
 
+      Proxy.getServerWorker().emit(ProxyEvent.$GAME_USER_JOIN, {
+        data: {
+          user: Proxy.core.user.getUser(accountId),
+          clientId: client.id,
+          gameId,
+        },
+      });
+
       client.on("$$user-ready", () => {
         Proxy.getServerWorker().emit(ProxyEvent.$GAME_USER_READY, {
           data: {
@@ -91,8 +99,27 @@ export const game = () => {
     }
   };
 
-  const setUserRequest = (userRequest: UserRequestType) =>
-    (userRequestMap[userRequest.accountId] = userRequest);
+  const setUserRequest = (userRequest: UserRequestType) => {
+    userRequestMap[userRequest.accountId] = userRequest;
+  };
+
+  const emitUser = (
+    gameId: string,
+    clientId: string,
+    event: string,
+    message: any,
+  ) => {
+    const clientData = clientUserRequestMap[clientId];
+    if (!clientData || clientData.gameId !== gameId) return;
+
+    userMapClient[clientId].emit(event, message);
+  };
+  const disconnectUser = (gameId: string, clientId: string) => {
+    const clientData = clientUserRequestMap[clientId];
+    if (!clientData || clientData.gameId !== gameId) return;
+
+    userMapClient[clientId].close();
+  };
 
   return {
     guest,
@@ -100,5 +127,7 @@ export const game = () => {
     disconnected,
 
     setUserRequest,
+    emitUser,
+    disconnectUser,
   };
 };
