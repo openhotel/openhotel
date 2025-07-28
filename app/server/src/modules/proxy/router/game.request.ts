@@ -16,7 +16,7 @@ export const requestGame = async (request: Request) => {
 
     const games = parse(await Deno.readTextFile(".games/games.yml"));
 
-    const gamePath = games[gameId];
+    const gamePath = games[gameId].name;
     if (!gamePath)
       return new Response(null, {
         status: 404,
