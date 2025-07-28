@@ -23,20 +23,21 @@ export const getParentProcessWorker = (
 
   (async () => {
     for await (const line of reader) {
-      const match = new RegExp(/§(\{.*?\})§/).exec(line);
-      if (!match) {
-        Deno.stdout.write(encoder.encode(line + "\n"));
-        continue;
-      }
-      const { event, message } = JSON.parse(match?.[1]);
+      try {
+        const match = new RegExp(/§(\{.*?\})§/).exec(line);
+        if (!match) {
+          Deno.stdout.writeSync(encoder.encode(line + "\n"));
+          continue;
+        }
+        const { event, message } = JSON.parse(match?.[1]);
 
-      const eventList = (events[event] || []).filter(Boolean);
-      for (const event of eventList) event(message);
+        const eventList = (events[event] || []).filter(
+          (event) => event !== null,
+        );
+        for (const event of eventList) event(message);
+      } catch (e) {}
     }
     await child.status;
-
-    const eventList = (events.disconnected || []).filter(Boolean);
-    for (const event of eventList) event();
   })();
 
   const on = (
@@ -48,13 +49,13 @@ export const getParentProcessWorker = (
   };
 
   const emit = (event: string, message: any) => {
-    const data = JSON.stringify({ event, message }) + "\n\r";
+    const data = JSON.stringify({ event, message }) + "\n";
     writer.write(encoder.encode(data));
   };
 
   const remove = (event: string, id: number) =>
     (events[event] = events[event].filter((event, index) =>
-      index === id ? undefined : event,
+      index === id ? null : event,
     ));
 
   const close = () => child.kill();

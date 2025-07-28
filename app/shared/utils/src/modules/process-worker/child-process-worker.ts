@@ -4,14 +4,15 @@ export const getChildProcessWorker = (): WorkerChild => {
   const events: Record<string, any[]> = {};
 
   const reader = Deno.stdin.readable.pipeThrough(new TextDecoderStream());
-  const encoder = new TextEncoder();
 
   (async () => {
     for await (const line of reader) {
       try {
         const { event, message } = JSON.parse(line);
 
-        const eventList = (events[event] || []).filter(Boolean);
+        const eventList = (events[event] || []).filter(
+          (event) => event !== null,
+        );
         for (const event of eventList) {
           event(message);
         }
@@ -28,13 +29,12 @@ export const getChildProcessWorker = (): WorkerChild => {
   };
 
   const emit = (event: string, message: any) => {
-    const data = "§" + JSON.stringify({ event, message }) + "§\n";
-    Deno.stdout.write(encoder.encode(data));
+    console.log(`§${JSON.stringify({ event, message })}§`);
   };
 
   const remove = (event: string, id: number) =>
     (events[event] = events[event].filter((event, index) =>
-      index === id ? undefined : event,
+      index === id ? null : event,
     ));
 
   const close = () => self.close();
