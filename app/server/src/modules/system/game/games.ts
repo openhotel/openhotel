@@ -171,8 +171,6 @@ export const games = () => {
     let arch: "x86_64" | "aarch64" | null = Deno.build.arch;
     if (arch !== "aarch64") arch = null;
 
-    await System.db.set(["gamesByName", name], gameId);
-
     const $headers = new Headers();
 
     $headers.append("X-GitHub-Api-Version", `2022-11-28`);
@@ -256,10 +254,18 @@ export const games = () => {
     const { games } = parse(await Deno.readTextFile(GAMES_PATH_FILE));
     const osName = getOSName();
 
-    let gameIdMap = {};
+    let gameDataMap = {};
+
+    try {
+      gameDataMap = parse(
+        await Deno.readTextFile(path.join(PATH, "games.yml")),
+      );
+    } catch (e) {}
 
     for (const { name } of games) {
-      let gameId = await System.db.get(["gamesByName", name]);
+      let gameId = Object.values(gameDataMap).find(
+        (data: any) => data.name === name,
+      )?.gameId;
 
       // download first time
       if (!gameId) {
@@ -267,11 +273,11 @@ export const games = () => {
         await $downloadGame(name, gameId);
       }
 
-      gameIdMap[gameId] = name;
-
-      await System.db.set(["games", gameId], {
+      gameDataMap[gameId] = {
+        gameId,
         name,
-      });
+      };
+      console.log(gameId);
 
       add({
         path: `${PATH}/${name}`,
@@ -281,7 +287,10 @@ export const games = () => {
       });
     }
 
-    Deno.writeTextFileSync(path.join(PATH, "games.yml"), stringify(gameIdMap));
+    Deno.writeTextFileSync(
+      path.join(PATH, "games.yml"),
+      stringify(gameDataMap),
+    );
 
     // await System.db.set(["games", ulid()], roomId);
 
