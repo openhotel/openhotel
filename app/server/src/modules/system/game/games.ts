@@ -5,6 +5,7 @@ import { log } from "shared/utils/log.utils.ts";
 import { ProxyEvent } from "shared/enums/event.enum.ts";
 import { UserMutable } from "shared/types/user.types.ts";
 import { getParentProcessWorker } from "@oh/utils";
+import { TransactionType } from "shared/enums/economy.enum.ts";
 
 const PATH = "./assets/games";
 
@@ -121,7 +122,7 @@ export const games = () => {
   };
 
   const add = (game: GameType) => {
-    $gameMap[game.manifest.id] = $getGame(game);
+    let $game = ($gameMap[game.manifest.id] = $getGame(game));
 
     log(`Game '${game.manifest.name}' [${game.manifest.id}] starting...`);
 
@@ -140,6 +141,14 @@ export const games = () => {
       System.proxy.$emit(ProxyEvent.$GAME_USER_DISCONNECT, {
         gameId: game.manifest.id,
         clientId,
+      });
+    });
+    $worker.on("USER_REWARD", ({ clientId, amount }) => {
+      System.game.economy.executeTransaction({
+        type: TransactionType.REWARD,
+        description: `Game '${game.manifest.name}' reward`,
+        amount,
+        toAccount: $game.getUser({ clientId }).getAccountId(),
       });
     });
 
