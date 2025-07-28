@@ -44,7 +44,7 @@ export const GameProvider: React.FunctionComponent<GameProps> = ({
         iframeRef.current.setAttribute(
           "src",
           (isDevelopment() ? "/proxy/" : "/") +
-            `game/${gameId}/?token=${token}&accountId=${getAccount().accountId}`,
+            `game/${gameId}/?gameId=${gameId}&token=${token}&accountId=${getAccount().accountId}`,
         );
         iframeRef.current.style.position = "absolute";
         iframeRef.current.style.left = "0";

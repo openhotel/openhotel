@@ -1,27 +1,19 @@
 import { UserMutable } from "shared/types/user.types.ts";
 
-export type GameManifest = {
-  id: string;
-  name: string;
-  repository: string;
-  client: {
-    path: string;
-  };
-  properties: {
-    kickFromCurrentRoom: boolean;
-  };
-};
+export type GameManifest = {};
 
 export type GameType = {
   path: string;
   executable: string;
-  manifest: GameManifest;
+
+  gameId: string;
+  name: string;
 };
 
 export type GameMutable = {
   getPath: () => string;
   getExecutable: () => string;
-  getManifest: () => GameManifest;
+  getGameId: () => string;
 
   addUserRequest: (user: UserMutable, token: string) => void;
   addUser: (user: UserMutable, clientId: string) => void;

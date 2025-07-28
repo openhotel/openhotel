@@ -5,7 +5,7 @@
   "imports": {
     "@oh/pathfinding": "jsr:@oh/pathfinding@2.0.3",
     "@oh/queue": "jsr:@oh/queue@1.1.1",
-    "@oh/utils": "jsr:@oh/utils@1.5.14",
+    "@oh/utils": "jsr:@oh/utils@1.5.15",
 
     "@da/socket": "jsr:@da/socket@2.3.0",
     "@da/bcrypt": "jsr:@da/bcrypt@1.0.0",
@@ -13,6 +13,7 @@
     "@std/yaml": "jsr:@std/yaml@1.0.5",
     "@std/ulid": "jsr:@std/ulid@1",
     "@std/streams": "jsr:@std/streams@1.0.10",
+    "@std/path": "jsr:@std/path@1.0.6",
 
     "dayjs": "https://deno.land/x/deno_dayjs@v0.5.0/mod.ts",
     "deno/": "https://deno.land/std@0.221.0/",

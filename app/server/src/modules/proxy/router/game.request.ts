@@ -14,7 +14,7 @@ export const requestGame = async (request: Request) => {
     const gameId = $pathname.replace("/game/", "").split("/")[0];
     const actualPathName = $pathname.replace(`/game/${gameId}/`, "");
 
-    const games = parse(await Deno.readTextFile("./assets/games/games.yml"));
+    const games = parse(await Deno.readTextFile(".games/games.yml"));
 
     const gamePath = games[gameId];
     if (!gamePath)
@@ -22,8 +22,10 @@ export const requestGame = async (request: Request) => {
         status: 404,
       });
 
-    const targetFile = gamePath + "/" + (actualPathName || "index.html");
+    const targetFile =
+      ".games/" + gamePath + "/client/" + (actualPathName || "index.html");
 
+    console.log(targetFile);
     let fileData = await Deno.readFile(targetFile);
     if (targetFile.endsWith("index.html"))
       fileData = await Deno.readTextFile(targetFile);
