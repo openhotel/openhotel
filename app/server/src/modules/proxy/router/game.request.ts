@@ -25,7 +25,6 @@ export const requestGame = async (request: Request) => {
     const targetFile =
       ".games/" + gamePath + "/client/" + (actualPathName || "index.html");
 
-    console.log(targetFile);
     let fileData = await Deno.readFile(targetFile);
     if (targetFile.endsWith("index.html"))
       fileData = await Deno.readTextFile(targetFile);
