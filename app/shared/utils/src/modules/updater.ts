@@ -22,7 +22,6 @@ export const update = async ({
   headers = {},
   log = () => {},
   debug = () => {},
-  basePath = "",
   label = "-",
 }: UpdateProps): Promise<boolean> => {
   if (isUpdating || version === "development") return false;
@@ -105,8 +104,8 @@ export const update = async ({
     });
 
     log(`[${label}] Update files downloaded!`);
-    const dirPath = path.join(getPath(), basePath);
-    const updateFilePath = getTemporalUpdateFilePathname(basePath);
+    const dirPath = getPath();
+    const updateFilePath = getTemporalUpdateFilePathname();
     const updateFile = path.join(dirPath, `update_${osAsset.name}`);
     const updatedFile = path.join(dirPath, osAsset.name);
 
