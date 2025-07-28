@@ -22,6 +22,8 @@ export const update = async ({
   headers = {},
   log = () => {},
   debug = () => {},
+  basePath = "",
+  label = "-",
 }: UpdateProps): Promise<boolean> => {
   if (isUpdating || version === "development") return false;
   isUpdating = true;
@@ -30,18 +32,18 @@ export const update = async ({
   const osName = getOSName();
   let arch: "x86_64" | "aarch64" | null = Deno.build.arch;
 
-  log(`Version ${version}`);
-  log(`OS ${osName}`);
-  log(`Arch ${arch}`);
+  log(`[${label}] Version ${version}`);
+  log(`[${label}] OS ${osName}`);
+  log(`[${label}] Arch ${arch}`);
 
   if (os === OS.UNKNOWN || !osName) {
-    log(`Unknown OS (${Deno.build.os}) cannot be updated!`);
+    log(`[${label}] Unknown OS (${Deno.build.os}) cannot be updated!`);
     isUpdating = false;
     return false;
   }
 
   if (targetVersion === version) {
-    log("Everything is up to date!");
+    log(`[${label}] Everything is up to date! (${label})`);
     isUpdating = false;
     return false;
   }
@@ -49,8 +51,8 @@ export const update = async ({
 
   log(
     isLatest
-      ? `Checking for updates...`
-      : `Checking version (${targetVersion})...`,
+      ? `[${label}] Checking for updates...`
+      : `[${label}] Checking version (${targetVersion})...`,
   );
 
   try {
@@ -74,13 +76,13 @@ export const update = async ({
 
     if (isLatest) {
       if (!isNewVersionGreater(version, latestVersion)) {
-        log("Everything is up to date!");
+        log(`[${label}] Everything is up to date!`);
         isUpdating = false;
         return false;
       }
-      log(`New version (${latestVersion}) available!`);
+      log(`[${label}] New version (${latestVersion}) available!`);
     } else {
-      log(`Version (${latestVersion}) available!`);
+      log(`[${label}] Version (${latestVersion}) available!`);
     }
 
     if (arch !== "aarch64") arch = null;
@@ -91,24 +93,24 @@ export const update = async ({
     );
 
     if (!osAsset) {
-      log(`No file found to update on (${osName})!`);
+      log(`[${label}] No file found to update on (${osName})!`);
       isUpdating = false;
       return false;
     }
     $headers.set("Accept", "application/octet-stream");
 
-    log("Downloading update files...");
+    log(`[${label}] Downloading update files...`);
     const buildAsset = await fetch(osAsset.url, {
       headers: $headers,
     });
 
-    log("Update files downloaded!");
-    const dirPath = getPath();
-    const updateFilePath = getTemporalUpdateFilePathname();
+    log(`[${label}] Update files downloaded!`);
+    const dirPath = path.join(getPath(), basePath);
+    const updateFilePath = getTemporalUpdateFilePathname(basePath);
     const updateFile = path.join(dirPath, `update_${osAsset.name}`);
     const updatedFile = path.join(dirPath, osAsset.name);
 
-    log("Saving update files!");
+    log(`[${label}] Saving update files!`);
     await Deno.writeFile(
       updateFile,
       new Uint8Array(await buildAsset.arrayBuffer()),
@@ -133,7 +135,7 @@ export const update = async ({
     	chmod -R 777 ${updatedFile}
     `;
 
-    log("Updating...");
+    log(`[${label}] Updating...`);
     await Deno.writeTextFile(updateFilePath, bash, {
       mode: 0o0777,
       create: true,
@@ -149,12 +151,12 @@ export const update = async ({
     const process = command.spawn();
     await process.status;
 
-    log("Restart to apply the update!");
+    log(`[${label}] Restart to apply the update!`);
     isUpdating = false;
     return true;
   } catch (e) {
     debug(e);
-    log("Something went wrong checking for update.");
+    log(`[${label}] Something went wrong checking for update.`);
   }
   isUpdating = false;
   return false;

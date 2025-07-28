@@ -5,6 +5,8 @@ export type UpdateProps = {
   headers?: Record<string, string>;
   log?: (text: string) => void;
   debug?: (text: string) => void;
+  basePath?: string;
+  label?: string;
 };
 
 export type GithubAsset = {
