@@ -4,8 +4,7 @@ import { GameMutable, GameType } from "shared/types/games.types.ts";
 import { log } from "shared/utils/log.utils.ts";
 import { ProxyEvent } from "shared/enums/event.enum.ts";
 import { UserMutable } from "shared/types/user.types.ts";
-import { getParentProcessWorker } from "./parent-process-worker.ts";
-// import { getParentProcessWorker } from "@oh/utils";
+import { getParentProcessWorker } from "@oh/utils";
 
 const PATH = "./assets/games";
 
