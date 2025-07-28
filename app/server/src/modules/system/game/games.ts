@@ -16,7 +16,10 @@ export const games = () => {
   let $worker;
 
   const $getGame = (game: GameType): GameMutable => {
-    let $users: string[] = [];
+    let $usersJoined: string[] = [];
+    let $usersReady: string[] = [];
+
+    let $clientIdUserMap: Record<string, string> = {};
 
     const getPath = () => game.path;
     const getExecutable = () => game.executable;
@@ -32,10 +35,41 @@ export const games = () => {
     };
 
     const addUser = (user: UserMutable, clientId: string) => {
-      if ($users.includes(user.getAccountId())) return;
+      if (
+        $usersJoined.includes(user.getAccountId()) ||
+        $usersReady.includes(user.getAccountId())
+      )
+        return;
 
-      $users.push(user.getAccountId());
-      console.log(`${user.getUsername()} joined game '${game.manifest.name}'`);
+      $usersJoined.push(user.getAccountId());
+      console.log(
+        `${user.getUsername()} joined game '${game.manifest.name}...'`,
+      );
+
+      $clientIdUserMap[clientId] = user.getAccountId();
+
+      $worker.emit("USER_JOIN", {
+        clientId,
+        accountId: user.getAccountId(),
+        username: user.getUsername(),
+      });
+    };
+
+    const setUserReady = (user: UserMutable, clientId: string) => {
+      //if user is already ready or user has not joined
+      if (
+        $usersReady.includes(user.getAccountId()) ||
+        !$usersJoined.includes(user.getAccountId())
+      )
+        return;
+
+      $usersJoined = $usersJoined.filter(
+        (userId) => userId !== user.getAccountId(),
+      );
+      $usersReady.push(user.getAccountId());
+      console.log(
+        `${user.getUsername()} ready for game '${game.manifest.name}!'`,
+      );
 
       $worker.emit("USER_READY", {
         clientId,
@@ -44,7 +78,14 @@ export const games = () => {
     };
 
     const removeUser = (user: UserMutable, clientId: string) => {
-      $users = $users.filter((userId) => userId !== user.getAccountId());
+      $usersReady = $usersReady.filter(
+        (userId) => userId !== user.getAccountId(),
+      );
+      $usersJoined = $usersJoined.filter(
+        (userId) => userId !== user.getAccountId(),
+      );
+      delete $clientIdUserMap[clientId];
+
       console.log(`${user.getUsername()} left game '${game.manifest.name}'`);
 
       $worker.emit("USER_LEAVE", {
@@ -53,8 +94,14 @@ export const games = () => {
       });
     };
 
+    const getUser = ({ clientId }: { clientId: string }) => {
+      if (clientId)
+        return System.game.users.get({ accountId: $clientIdUserMap[clientId] });
+
+      return null;
+    };
+
     const emit = (event: string, message: any) => {
-      console.log("game", event, message);
       $worker.emit(event, message);
     };
 
@@ -65,7 +112,10 @@ export const games = () => {
 
       addUserRequest,
       addUser,
+      setUserReady,
       removeUser,
+
+      getUser,
 
       emit,
     };
@@ -79,18 +129,28 @@ export const games = () => {
     $worker = getParentProcessWorker(`${game.path}/${game.executable}`, []);
     $gameWorkerMap[game.manifest.id] = $worker;
 
-    $worker.on("test", (data) => {
-      console.log("test", data);
-      // Development.proxy.getClient(clientId).emit(event, message);
-    });
     $worker.on("USER_DATA", ({ clientId, event, message }) => {
-      console.log("USER_DATA", clientId, event, message);
-      // Development.proxy.getClient(clientId).emit(event, message);
+      System.proxy.$emit(ProxyEvent.$GAME_USER_DATA, {
+        gameId: game.manifest.id,
+        clientId,
+        event,
+        message,
+      });
     });
     $worker.on("DISCONNECT_USER", ({ clientId }) => {
-      console.log("DISCONNECT_USER", clientId);
-      // Development.proxy.getClient(clientId)?.close();
+      System.proxy.$emit(ProxyEvent.$GAME_USER_DISCONNECT, {
+        gameId: game.manifest.id,
+        clientId,
+      });
     });
+
+    $worker.on("PONG", () => {
+      setTimeout(() => {
+        $worker.emit("PING", { d: performance.now() });
+      }, 1000);
+    });
+
+    $worker.emit("PING", { d: performance.now() });
   };
 
   const load = async () => {

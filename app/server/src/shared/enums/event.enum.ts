@@ -20,9 +20,11 @@ export enum ProxyEvent {
   //### INTERNAL GAME #####################################################################################################//
 
   $GAME_USER_REQUEST = "$$game-user-request",
+  $GAME_USER_JOIN = "$$game-user-join",
   $GAME_USER_READY = "$$game-user-ready",
   $GAME_USER_DATA = "$$game-user-data",
   $GAME_USER_LEFT = "$$game-user-left",
+  $GAME_USER_DISCONNECT = "$$game-user-disconnect",
 
   //### CLIENT #######################################################################################################//
 

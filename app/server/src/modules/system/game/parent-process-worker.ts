@@ -24,7 +24,6 @@ export const getParentProcessWorker = (
   (async () => {
     for await (const line of reader) {
       try {
-        console.log("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<", line);
         const match = new RegExp(/§(\{.*?\})§/).exec(line);
         if (!match) {
           Deno.stdout.writeSync(encoder.encode(line + "\n"));
