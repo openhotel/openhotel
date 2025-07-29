@@ -13,7 +13,7 @@ export const userDataEvent: ProxyEventType<{
       // broadcast
       if (users.includes("*")) return Proxy.getServer().emit(event, message);
       //
-      for (const user of users.map(Proxy.getUser))
+      for (const user of users.map(Proxy.core.user.getUser))
         Proxy.getClient(user?.clientId)?.emit?.(event, message);
     } catch (e) {
       console.error("Error $USER_DATA");
