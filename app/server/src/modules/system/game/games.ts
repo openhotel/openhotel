@@ -169,7 +169,7 @@ export const games = () => {
   const $downloadGame = async (name: string, gameId: string) => {
     const osName = getOSName();
     let arch: "x86_64" | "aarch64" | null = Deno.build.arch;
-    if (arch !== "aarch64") arch = null;
+    if (arch !== "aarch64" || osName !== "linux") arch = null;
 
     const $headers = new Headers();
 
