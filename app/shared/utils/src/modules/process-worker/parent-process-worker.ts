@@ -1,9 +1,14 @@
 import type { WorkerParent } from "../../types/worker.types.ts";
 import { TextLineStream } from "@std/streams";
 
+type Props = {
+  prefixLog?: string;
+};
+
 export const getParentProcessWorker = (
   command: string,
   args: string[],
+  { prefixLog }: Props = {},
 ): WorkerParent => {
   const events: Record<string, any[]> = {};
 
@@ -26,7 +31,9 @@ export const getParentProcessWorker = (
       try {
         const match = new RegExp(/§(\{.*?\})§/).exec(line);
         if (!match) {
-          Deno.stdout.writeSync(encoder.encode(line + "\n"));
+          Deno.stdout.writeSync(
+            encoder.encode((prefixLog ?? "") + line + "\n"),
+          );
           continue;
         }
         const { event, message } = JSON.parse(match?.[1]);
