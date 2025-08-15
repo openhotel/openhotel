@@ -57,6 +57,9 @@ export const users = () => {
     const getAccountId = () => user.accountId;
     const getUsername = () => user.username;
 
+    const getClientId = () => $privateUserMap[user.accountId].clientId;
+    const getIp = () => $privateUserMap[user.accountId].ip;
+
     const setPosition = (position: Point3d) => {
       $user.position = position;
       $user.positionUpdatedAt = performance.now();
@@ -175,7 +178,7 @@ export const users = () => {
 
     const disconnect = () =>
       System.proxy.$emit(ProxyEvent.$DISCONNECT_USER, {
-        clientId: $privateUserMap[user.accountId].clientId,
+        clientId: getClientId(),
       });
 
     const emit = <Data extends any>(
@@ -379,6 +382,9 @@ export const users = () => {
     return {
       getAccountId,
       getUsername,
+
+      getClientId,
+      getIp,
 
       setPosition,
       getPosition,
