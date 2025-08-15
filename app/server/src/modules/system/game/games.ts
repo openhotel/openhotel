@@ -6,7 +6,6 @@ import { ProxyEvent } from "shared/enums/event.enum.ts";
 import { UserMutable } from "shared/types/user.types.ts";
 import {
   getParentProcessWorker,
-  getOS,
   getOSName,
   getPath,
   getTemporalUpdateFilePathname,
@@ -131,7 +130,9 @@ export const games = () => {
 
     log(`Game '${game.name}' [${game.gameId}] starting...`);
 
-    $worker = getParentProcessWorker(`${game.path}/${game.executable}`, []);
+    $worker = getParentProcessWorker(`${game.path}/${game.executable}`, [], {
+      prefixLog: `[${game.name}]: `,
+    });
     $gameWorkerMap[game.gameId] = $worker;
 
     $worker.on("USER_DATA", ({ clientId, event, message }) => {
@@ -277,14 +278,21 @@ export const games = () => {
         gameId,
         name,
       };
-      console.log(gameId);
 
-      add({
-        path: `${PATH}/${name}`,
-        executable: `game_${osName}`,
-        gameId,
-        name,
-      });
+      let isDone = false;
+      do {
+        try {
+          add({
+            path: `${PATH}/${name}`,
+            executable: `game_${osName}`,
+            gameId,
+            name,
+          });
+          isDone = true;
+        } catch (e) {
+          await $downloadGame(name, gameId);
+        }
+      } while (!isDone);
     }
 
     Deno.writeTextFileSync(
