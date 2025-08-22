@@ -3,6 +3,8 @@ import {
   ContainerComponent,
   FLEX_JUSTIFY,
   FlexContainerComponent,
+  GraphicsComponent,
+  GraphicType,
   NineSliceSpriteComponent,
   TilingSpriteComponent,
 } from "@openhotel/pixi-components";
@@ -16,10 +18,11 @@ const TOP_MARGIN = 38;
 const BOTTOM_MARGIN = 12;
 
 type Props = {
+  gameName: string;
   size: Size2d;
 };
 
-export const WindowedGameComponent: React.FC<Props> = ({ size }) => {
+export const WindowedGameComponent: React.FC<Props> = ({ gameName, size }) => {
   const { t } = useTranslation();
 
   const [selectedCategory, setSelectedCategory] = useState<ModalNavigatorTab>(
@@ -39,18 +42,28 @@ export const WindowedGameComponent: React.FC<Props> = ({ size }) => {
   return useMemo(
     () => (
       <ContainerComponent>
+        <GraphicsComponent
+          type={GraphicType.RECTANGLE}
+          width={size.width - 22}
+          height={size.height - 32}
+          tint={0}
+          position={{
+            x: 11,
+            y: 21,
+          }}
+        />
         <NineSliceSpriteComponent
           spriteSheet={SpriteSheetEnum.UI}
-          texture="ui-tab-modal"
-          leftWidth={14}
-          rightWidth={21}
-          topHeight={38}
-          bottomHeight={11}
+          texture="dark-game-window"
+          leftWidth={17}
+          rightWidth={26}
+          topHeight={27}
+          bottomHeight={16}
           height={size.height}
           width={size.width}
         />
         <TilingSpriteComponent
-          texture="ui-tab-modal-bar-tile"
+          texture="dark-game-window-bar-title"
           spriteSheet={SpriteSheetEnum.UI}
           position={{
             x: 11,
@@ -68,8 +81,8 @@ export const WindowedGameComponent: React.FC<Props> = ({ size }) => {
           }}
         >
           <TextComponent
-            text={t("navigator.title")}
-            backgroundColor={0xacc1ed}
+            text={gameName}
+            backgroundColor={0x393939}
             backgroundAlpha={1}
             padding={{
               left: 4,
@@ -77,24 +90,9 @@ export const WindowedGameComponent: React.FC<Props> = ({ size }) => {
               bottom: 0,
               top: 2,
             }}
+            color={0x4a4a4a}
           />
         </FlexContainerComponent>
-        <ContainerComponent
-          position={{
-            x: 5,
-            y: 15,
-          }}
-        >
-          <TextComponent text="test 1" />
-        </ContainerComponent>
-        <ContainerComponent
-          position={{
-            x: 12,
-            y: 38,
-          }}
-        >
-          <TextComponent text="test 2" />
-        </ContainerComponent>
       </ContainerComponent>
     ),
     [t, onCloseModal, setSelectedCategory, selectedCategory, contentSize],

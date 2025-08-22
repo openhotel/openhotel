@@ -32,6 +32,11 @@ type GameProps = {
   children: ReactNode;
 };
 
+const WINDOW_MARGIN = {
+  lateral: 16,
+  vertical: 26,
+};
+
 export const GameProvider: React.FunctionComponent<GameProps> = ({
   children,
 }) => {
@@ -40,6 +45,7 @@ export const GameProvider: React.FunctionComponent<GameProps> = ({
     clear: clearGame,
     getProps: getGameProps,
     props,
+    id,
   } = useGameStore();
 
   const { on: onProxy } = useProxy();
@@ -151,7 +157,14 @@ export const GameProvider: React.FunctionComponent<GameProps> = ({
                 justify={FLEX_JUSTIFY.CENTER}
                 zIndex={Number.MAX_SAFE_INTEGER}
               >
-                <WindowedGameComponent size={props.windowSize} />
+                <WindowedGameComponent
+                  gameName={id}
+                  size={{
+                    width: props.windowSize.width + WINDOW_MARGIN.lateral * 2,
+                    height:
+                      props.windowSize.height + WINDOW_MARGIN.vertical * 2,
+                  }}
+                />
               </FlexContainerComponent>
             </>
           ) : null}
