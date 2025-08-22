@@ -1,4 +1,4 @@
-import { readYaml, writeYaml } from "@oh/yaml";
+import { readYaml, writeYaml } from "./yaml.ts";
 import type { ConfigProps } from "../types/config.types.ts";
 
 export const getConfig = async <ConfigTypes extends {}>({
@@ -8,6 +8,7 @@ export const getConfig = async <ConfigTypes extends {}>({
 }: ConfigProps<ConfigTypes>): Promise<ConfigTypes> => {
   let config: ConfigTypes = {} as ConfigTypes;
   try {
+    //@ts-ignore
     config = await readYaml<ConfigTypes>(`./${fileName}`);
   } catch (e) {}
 
