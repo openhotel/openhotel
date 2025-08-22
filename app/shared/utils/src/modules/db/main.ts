@@ -38,27 +38,27 @@ export const getDb = (props: DbProps = {}): DbMutable => {
     },
   } = props;
   const parsedProps = {
-    pathname: getModulePath(pathname),
+    pathname,
     backups: {
       onMigration,
-      pathname: getModulePath(backupsPathname),
+      pathname: backupsPathname,
     },
   };
   let db: Deno.Kv;
 
   const load = async () => {
     try {
-      await Deno.stat(parsedProps.backups.pathname!);
+      await Deno.stat(getModulePath(backupsPathname)!);
     } catch (e) {
-      await Deno.mkdir(parsedProps.backups.pathname!);
+      await Deno.mkdir(getModulePath(backupsPathname)!);
     }
 
     await $crypto.load();
-    db = await Deno.openKv(parsedProps.pathname);
+    db = await Deno.openKv(getModulePath(pathname));
   };
 
   const $checkDbNull = () => {
-    if (!db) console.error(`Db '${parsedProps.pathname}' is closed!`);
+    if (!db) console.error(`Db '${pathname}' is closed!`);
 
     return Boolean(db);
   };
@@ -176,23 +176,20 @@ export const getDb = (props: DbProps = {}): DbMutable => {
   };
 
   const backup = async (name?: string) => {
-    const backupPathname = join(
-      parsedProps.backups.pathname!,
-      parsedProps.pathname,
-    );
+    const backupPathname = join(backupsPathname!, pathname);
 
     const files = ["", "-shm", "-wal", DATABASE_PEPPER_FILE, DATABASE_KEY_FILE];
 
     for (const file of files)
       try {
         await Deno.copyFile(
-          parsedProps.pathname + file,
-          parsedProps.backups.pathname + file,
+          getModulePath(pathname + file),
+          getModulePath(backupPathname + file),
         );
         // deno-lint-ignore no-empty
       } catch (_) {}
 
-    const backupDb = await Deno.openKv(parsedProps.backups.pathname);
+    const backupDb = await Deno.openKv(getModulePath(backupPathname));
     //this removes 'shm' and 'wal' files and closes correctly the db
     backupDb.close();
 
@@ -202,14 +199,14 @@ export const getDb = (props: DbProps = {}): DbMutable => {
       : null;
 
     await compressFiles(
-      files.map((file) => parsedProps.backups.pathname + file),
-      join(parsedProps.backups.pathname!, backupFilename + ".zip"),
+      files.map((file) => getModulePath(backupPathname) + file),
+      join(getModulePath(backupsPathname)!, backupFilename + ".zip"),
       filePassword,
     );
 
     for (const file of files)
       try {
-        await Deno.remove(parsedProps.backups.pathname + file);
+        await Deno.remove(getModulePath(backupPathname) + file);
         // deno-lint-ignore no-empty
       } catch (_) {}
 
@@ -218,7 +215,7 @@ export const getDb = (props: DbProps = {}): DbMutable => {
 
       const files = [];
 
-      for await (const entry of walk(parsedProps.backups.pathname!, {
+      for await (const entry of walk(getModulePath(backupsPathname)!, {
         includeDirs: false,
       }))
         files.push(entry);
@@ -232,7 +229,7 @@ export const getDb = (props: DbProps = {}): DbMutable => {
     }
 
     const s3Client = getS3(s3);
-    await s3Client.syncPath(backupsPathname, true);
+    await s3Client.syncPath(getModulePath(backupsPathname), true);
 
     const s3Files = await s3Client.getFiles();
     s3Files.sort((fileA, fileB) => (fileA.name > fileB.name ? -1 : 1));
@@ -251,7 +248,7 @@ export const getDb = (props: DbProps = {}): DbMutable => {
 
     const files: BackupFile[] = [];
 
-    for await (const { name, path } of walk(parsedProps.backups.pathname!, {
+    for await (const { name, path } of walk(getModulePath(backupsPathname)!, {
       includeDirs: false,
     })) {
       const { size } = await Deno.stat(path);
@@ -269,7 +266,7 @@ export const getDb = (props: DbProps = {}): DbMutable => {
       const s3Client = getS3(s3);
       return await s3Client.getObject(name);
     }
-    return await Deno.readFile(join(parsedProps.backups.pathname!, name));
+    return await Deno.readFile(join(getModulePath(backupsPathname)!, name));
   };
 
   const removeBackup = async (name: string): Promise<void> => {
@@ -277,7 +274,7 @@ export const getDb = (props: DbProps = {}): DbMutable => {
       const s3Client = getS3(s3);
       return await s3Client.removeFiles(name);
     }
-    return await Deno.remove(join(parsedProps.backups.pathname!, name));
+    return await Deno.remove(join(getModulePath(backupsPathname)!, name));
   };
 
   const visualize = async () => {

@@ -10,21 +10,28 @@ import {
   encryptSHA256,
   encryptToken,
 } from "../../utils/encryption.utils.ts";
+import { getModulePath } from "../../utils/path.utils.ts";
 
 export const crypto = ({ pathname }: DbProps): DbCryptoMutable => {
   const load = async () => {
     //generate pep (pepper)
     try {
-      await Deno.stat(pathname + DATABASE_PEPPER_FILE);
+      await Deno.stat(getModulePath(pathname) + DATABASE_PEPPER_FILE);
     } catch (e) {
-      await Deno.writeTextFile(pathname + DATABASE_PEPPER_FILE, ulid());
+      await Deno.writeTextFile(
+        getModulePath(pathname) + DATABASE_PEPPER_FILE,
+        ulid(),
+      );
     }
 
     //generate key (hash)
     try {
-      await Deno.stat(pathname + DATABASE_KEY_FILE);
+      await Deno.stat(getModulePath(pathname) + DATABASE_KEY_FILE);
     } catch (e) {
-      await Deno.writeTextFile(pathname + DATABASE_KEY_FILE, ulid());
+      await Deno.writeTextFile(
+        getModulePath(pathname) + DATABASE_KEY_FILE,
+        ulid(),
+      );
     }
   };
 
@@ -32,7 +39,7 @@ export const crypto = ({ pathname }: DbProps): DbCryptoMutable => {
   ///////ENCRYPT/DECRYPT///////////////////////////////////////////////
   /////////////////////////////////////////////////////////////////////
   const getSecretKey = (): Promise<string> =>
-    Deno.readTextFile(pathname + DATABASE_KEY_FILE);
+    Deno.readTextFile(getModulePath(pathname) + DATABASE_KEY_FILE);
 
   const $encryptSHA256 = async (text: string): Promise<string> => {
     return await encryptSHA256(text, await getSecretKey());
@@ -46,7 +53,7 @@ export const crypto = ({ pathname }: DbProps): DbCryptoMutable => {
   ///////BCRYPT/WITH/PEPPER////////////////////////////////////////////
   /////////////////////////////////////////////////////////////////////
   const getPepper = (): Promise<string> =>
-    Deno.readTextFile(pathname + DATABASE_PEPPER_FILE);
+    Deno.readTextFile(getModulePath(pathname) + DATABASE_PEPPER_FILE);
 
   const pepperPassword = async (password: string): Promise<string> =>
     (await getPepper()) + ":" + password;
