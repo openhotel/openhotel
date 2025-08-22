@@ -2,7 +2,6 @@ import {
   getModulePath,
   getOS,
   getOSName,
-  getPath,
   getTemporalUpdateFilePathname,
 } from "../utils/main.ts";
 import { OS } from "../enums/main.ts";
@@ -106,7 +105,7 @@ export const update = async ({
 
     log(`[${label}] Update files downloaded!`);
     const dirPath = getModulePath("");
-    const updateFilePath = getModulePath(getTemporalUpdateFilePathname());
+    const updateFilePath = getTemporalUpdateFilePathname();
     const updateFile = path.join(dirPath, `update_${osAsset.name}`);
     const updatedFile = path.join(dirPath, osAsset.name);
 
