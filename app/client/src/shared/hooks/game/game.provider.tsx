@@ -1,9 +1,32 @@
-import React, { ReactNode, useCallback, useEffect, useRef } from "react";
+import React, {
+  ReactNode,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { GameContext } from "./game.context";
-import { useEvents, useWindow, Event } from "@openhotel/pixi-components";
+import {
+  Event,
+  EventMode,
+  FLEX_ALIGN,
+  FLEX_JUSTIFY,
+  FlexContainerComponent,
+  GraphicsComponent,
+  GraphicType,
+  useEvents,
+  useWindow,
+} from "@openhotel/pixi-components";
 import { Size2d } from "shared/types";
-import { useAccount, useApi, useConfig, useProxy } from "shared/hooks";
+import {
+  useAccount,
+  useCamera,
+  useConfig,
+  useGameStore,
+  useProxy,
+} from "shared/hooks";
 import { Event as ProxyEvent } from "shared/enums";
+import { WindowedGameComponent } from "modules/modals";
 
 type GameProps = {
   children: ReactNode;
@@ -12,34 +35,55 @@ type GameProps = {
 export const GameProvider: React.FunctionComponent<GameProps> = ({
   children,
 }) => {
-  const { fetch } = useApi();
+  const {
+    set: setGame,
+    clear: clearGame,
+    getProps: getGameProps,
+    props,
+  } = useGameStore();
+
   const { on: onProxy } = useProxy();
   const { getAccount } = useAccount();
   const { isDevelopment } = useConfig();
   const { on } = useEvents();
   const { getSize, getScale } = useWindow();
+  const { setCanDrag } = useCamera();
+
+  const [windowSize, setWindowSize] = useState<Size2d>(getSize());
 
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
   const $onResize = useCallback(
     (size: Size2d) => {
+      setWindowSize(size);
       if (!iframeRef.current) return;
       const scale = getScale();
-      iframeRef.current.width = `${size.width * scale}px`;
-      iframeRef.current.height = `${size.height * scale}px`;
-    },
-    [getScale],
-  );
 
-  const startGame = useCallback(() => {}, [fetch]);
+      const gameProps = getGameProps();
+      const isFullscreen = gameProps.screen === "fullscreen";
+
+      const $size = isFullscreen ? size : gameProps.windowSize;
+      iframeRef.current.width = `${$size.width * scale}px`;
+      iframeRef.current.height = `${$size.height * scale}px`;
+
+      if (gameProps.screen === "windowed") {
+        iframeRef.current.style.left = `${(size.width / 2 - $size.width / 2) * scale}px`;
+        iframeRef.current.style.top = `${(size.height / 2 - $size.height / 2) * scale}px`;
+      }
+    },
+    [getScale, getGameProps, setWindowSize],
+  );
 
   useEffect(() => {
     const removeOnResize = on(Event.RESIZE, $onResize);
 
     const removeOnLoadGame = onProxy(
       ProxyEvent.LOAD_GAME,
-      ({ gameId, token }) => {
-        // return;
+      ({ gameId, token, properties }) => {
+        setGame(gameId, token, properties);
+
+        setCanDrag(false);
+
         iframeRef.current = document.createElement("iframe");
         iframeRef.current.setAttribute(
           "src",
@@ -50,6 +94,7 @@ export const GameProvider: React.FunctionComponent<GameProps> = ({
         iframeRef.current.style.left = "0";
         iframeRef.current.style.top = "0";
         iframeRef.current.style.border = "0";
+        // iframeRef.current.style.backgroundColor = "#000";
         // iframeRef.current.style.opacity = ".5";
         document.body.appendChild(iframeRef.current);
 
@@ -57,6 +102,9 @@ export const GameProvider: React.FunctionComponent<GameProps> = ({
       },
     );
     const removeOnRemoveGame = onProxy(ProxyEvent.REMOVE_GAME, () => {
+      clearGame();
+      setCanDrag(true);
+
       if (!iframeRef.current) return;
 
       document.body.removeChild(iframeRef.current);
@@ -68,14 +116,47 @@ export const GameProvider: React.FunctionComponent<GameProps> = ({
       removeOnLoadGame();
       removeOnRemoveGame();
     };
-  }, [on, onProxy, getAccount, $onResize, getSize, isDevelopment]);
+  }, [
+    setGame,
+    clearGame,
+    on,
+    onProxy,
+    getAccount,
+    $onResize,
+    getSize,
+    isDevelopment,
+    setCanDrag,
+  ]);
 
   return (
     <GameContext.Provider
-      value={{
-        startGame,
-      }}
-      children={children}
+      value={{}}
+      children={
+        <>
+          {children}
+          {props ? (
+            <GraphicsComponent
+              type={GraphicType.RECTANGLE}
+              width={windowSize.width}
+              height={windowSize.height}
+              alpha={props?.screen === "windowed" ? 0.5 : 1}
+              tint={0}
+              eventMode={EventMode.STATIC}
+            />
+          ) : null}
+          {props?.screen === "windowed" ? (
+            <>
+              <FlexContainerComponent
+                align={FLEX_ALIGN.CENTER}
+                justify={FLEX_JUSTIFY.CENTER}
+                zIndex={Number.MAX_SAFE_INTEGER}
+              >
+                <WindowedGameComponent size={props.windowSize} />
+              </FlexContainerComponent>
+            </>
+          ) : null}
+        </>
+      }
     />
   );
 };

@@ -12,11 +12,17 @@ export const gameCommand: Command = {
     const game = System.game.games.getGames()[0];
 
     const token = getRandomString(16);
-    game.addUserRequest(user, token);
+    if (!game.addUserRequest(user, token)) return;
+
+    const config = await game.getConfig();
 
     user.emit(ProxyEvent.LOAD_GAME, {
       gameId: game.getGameId(),
       token,
+      properties: {
+        screen: config.screen,
+        windowSize: config.windowSize,
+      },
     });
   },
 };

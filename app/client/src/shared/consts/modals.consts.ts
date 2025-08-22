@@ -65,4 +65,8 @@ export const MODAL_SIZE_MAP: Record<Modal, Size> = {
     width: 281,
     height: 228,
   },
+  [Modal.WINDOWED_GAME]: {
+    width: 200,
+    height: 200,
+  },
 };

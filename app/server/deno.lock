@@ -7,8 +7,7 @@
     "jsr:@deno/kv-utils@0.1.3": "0.1.3",
     "jsr:@oh/pathfinding@2.0.3": "2.0.3",
     "jsr:@oh/queue@1.1.1": "1.1.1",
-    "jsr:@oh/utils@1.5.16": "1.5.16",
-    "jsr:@oh/yaml@1.1.0": "1.1.0",
+    "jsr:@oh/utils@1.5.19": "1.5.19",
     "jsr:@std/bytes@^1.0.3": "1.0.6",
     "jsr:@std/bytes@^1.0.6": "1.0.6",
     "jsr:@std/encoding@1.0.5": "1.0.5",
@@ -63,12 +62,11 @@
     "@oh/queue@1.1.1": {
       "integrity": "8e8ec809202c48beaf436b3ea01b4c3a17f8c015ca686d906822482c9c881390"
     },
-    "@oh/utils@1.5.16": {
-      "integrity": "040c5e7fcebeb0d22c3a46d8ca3e8049b4536391a6466aeb364bd7b22e37f3f3",
+    "@oh/utils@1.5.19": {
+      "integrity": "b96f6a26b5a586677877bffeae48319f7fcc38d22d7fd017d9d6c7bcc3128d62",
       "dependencies": [
         "jsr:@da/bcrypt@1.0.1",
         "jsr:@deno/kv-utils",
-        "jsr:@oh/yaml",
         "jsr:@std/encoding@1.0.5",
         "jsr:@std/fs",
         "jsr:@std/path@1.0.6",
@@ -80,14 +78,6 @@
         "npm:cbor-x",
         "npm:dayjs",
         "npm:random-seed"
-      ]
-    },
-    "@oh/yaml@1.1.0": {
-      "integrity": "57f2f01bf259dff8896fb9d8f4f49e477e6533ccc5cbc4559ebd8410142aeff5",
-      "dependencies": [
-        "jsr:@std/fs",
-        "jsr:@std/path@1.0.6",
-        "jsr:@std/yaml"
       ]
     },
     "@std/bytes@1.0.6": {
@@ -1368,7 +1358,7 @@
       "jsr:@da/socket@2.3.0",
       "jsr:@oh/pathfinding@2.0.3",
       "jsr:@oh/queue@1.1.1",
-      "jsr:@oh/utils@1.5.16",
+      "jsr:@oh/utils@1.5.19",
       "jsr:@std/path@1.0.6",
       "jsr:@std/streams@1.0.10",
       "jsr:@std/ulid@1",
