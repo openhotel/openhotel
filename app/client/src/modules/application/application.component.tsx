@@ -13,7 +13,7 @@ import {
   AccountProvider,
   TasksProvider,
   PrivateRoomProvider,
-  RouterProviderWrapper,
+  RouterProviderRenderer,
   CameraProvider,
   SafeWindowProvider,
   FurnitureProvider,
@@ -47,8 +47,8 @@ export const ApplicationComponent = () => {
       FurnitureProvider,
       CameraProvider, // Before 'ModalProvider' so 'ModalProvider' can use 'useCamera'
       SoundProvider,
-      ItemPlacePreviewProvider,
       GameProvider,
+      ItemPlacePreviewProvider,
       RouterProvider,
       ModalProvider,
       InfoProvider,
@@ -57,7 +57,7 @@ export const ApplicationComponent = () => {
       PrivateRoomProvider,
       //|\\|//|\\|//|\\|//|\\|//|\\|//|\\|//|\\|
       //|\\|//|\\|//|\\|//|\\|//|\\|//|\\|//|\\|,
-      RouterProviderWrapper,
+      RouterProviderRenderer,
     ],
     [],
   );

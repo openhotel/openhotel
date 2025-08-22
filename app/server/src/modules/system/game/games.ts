@@ -33,13 +33,20 @@ export const games = () => {
     const getExecutable = () => game.executable;
     const getGameId = () => game.gameId;
 
-    const addUserRequest = (user: UserMutable, token: string) => {
+    const addUserRequest = (user: UserMutable, token: string): boolean => {
+      if (
+        $usersJoined.includes(user.getAccountId()) ||
+        $usersReady.includes(user.getAccountId())
+      )
+        return false;
+
       System.proxy.$emit(ProxyEvent.$GAME_USER_REQUEST, {
         gameId: getGameId(),
         accountId: user.getAccountId(),
         ip: user.getIp(),
         token,
       });
+      return true;
     };
 
     const addUser = (user: UserMutable, clientId: string) => {
@@ -105,6 +112,9 @@ export const games = () => {
       return null;
     };
 
+    const getConfig = async () =>
+      parse(await Deno.readTextFile(`${game.path}/config.yml`));
+
     const emit = (event: string, message: any) => {
       $worker.emit(event, message);
     };
@@ -121,6 +131,8 @@ export const games = () => {
 
       getUser,
 
+      getConfig,
+
       emit,
     };
   };
@@ -128,7 +140,7 @@ export const games = () => {
   const add = (game: GameType) => {
     let $game = ($gameMap[game.gameId] = $getGame(game));
 
-    log(`Game '${game.name}' [${game.gameId}] starting...`);
+    log(`Game '${game.name}' starting...`);
 
     $worker = getParentProcessWorker(`${game.path}/${game.executable}`, [], {
       prefixLog: `[${game.name}]: `,

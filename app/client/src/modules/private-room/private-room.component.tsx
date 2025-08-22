@@ -310,7 +310,7 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
     }
     if (!renderPreviewVisibleRef.current) return;
 
-    openModal(Modal.INVENTORY);
+    openModal(Modal.WINDOWED_GAME);
     renderPreviewVisibleRef.current = false;
   }, [itemPreviewData, openModal]);
 
