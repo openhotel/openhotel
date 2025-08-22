@@ -279,6 +279,16 @@
       "frame": { "x": 29, "y": 149, "w": 1, "h": 11 },
       "sourceSize": { "w": 1, "h": 11 },
       "anchor": { "x": 0, "y": 0 }
+    },
+    "dark-game-window": {
+      "frame": { "x": 160, "y": 0, "w": 43, "h": 43 },
+      "sourceSize": { "w": 43, "h": 43 },
+      "anchor": { "x": 0, "y": 0 }
+    },
+    "dark-game-window-bar-title": {
+      "frame": { "x": 167, "y": 4, "w": 12, "h": 9 },
+      "sourceSize": { "w": 12, "h": 9 },
+      "anchor": { "x": 0, "y": 0 }
     }
   },
   "animations": {},
@@ -286,8 +296,8 @@
     "format": "RGBA8888",
     "image": "ui.png",
     "size": {
-      "w": 160,
-      "h": 160
+      "w": 256,
+      "h": 256
     },
     "scale": 1
   }
