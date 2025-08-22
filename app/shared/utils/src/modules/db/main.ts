@@ -21,6 +21,7 @@ import { getS3 } from "../s3.ts";
 import { walk } from "@std/fs";
 import { ulid } from "jsr:@std/ulid@1";
 import { chunks } from "./chunks.ts";
+import { getModulePath } from "../../utils/path.utils.ts";
 
 export const getDb = (props: DbProps = {}): DbMutable => {
   const {
@@ -37,27 +38,27 @@ export const getDb = (props: DbProps = {}): DbMutable => {
     },
   } = props;
   const parsedProps = {
-    pathname,
+    pathname: getModulePath(pathname),
     backups: {
       onMigration,
-      pathname: backupsPathname,
+      pathname: getModulePath(backupsPathname),
     },
   };
   let db: Deno.Kv;
 
   const load = async () => {
     try {
-      await Deno.stat(backupsPathname!);
+      await Deno.stat(parsedProps.backups.pathname!);
     } catch (e) {
-      await Deno.mkdir(backupsPathname!);
+      await Deno.mkdir(parsedProps.backups.pathname!);
     }
 
     await $crypto.load();
-    db = await Deno.openKv(pathname);
+    db = await Deno.openKv(parsedProps.pathname);
   };
 
   const $checkDbNull = () => {
-    if (!db) console.error(`Db '${pathname}' is closed!`);
+    if (!db) console.error(`Db '${parsedProps.pathname}' is closed!`);
 
     return Boolean(db);
   };
@@ -175,17 +176,23 @@ export const getDb = (props: DbProps = {}): DbMutable => {
   };
 
   const backup = async (name?: string) => {
-    const backupPathname = join(backupsPathname!, pathname);
+    const backupPathname = join(
+      parsedProps.backups.pathname!,
+      parsedProps.pathname,
+    );
 
     const files = ["", "-shm", "-wal", DATABASE_PEPPER_FILE, DATABASE_KEY_FILE];
 
     for (const file of files)
       try {
-        await Deno.copyFile(pathname + file, backupPathname + file);
+        await Deno.copyFile(
+          parsedProps.pathname + file,
+          parsedProps.backups.pathname + file,
+        );
         // deno-lint-ignore no-empty
       } catch (_) {}
 
-    const backupDb = await Deno.openKv(backupPathname);
+    const backupDb = await Deno.openKv(parsedProps.backups.pathname);
     //this removes 'shm' and 'wal' files and closes correctly the db
     backupDb.close();
 
@@ -195,14 +202,14 @@ export const getDb = (props: DbProps = {}): DbMutable => {
       : null;
 
     await compressFiles(
-      files.map((file) => backupPathname + file),
-      join(backupsPathname!, backupFilename + ".zip"),
+      files.map((file) => parsedProps.backups.pathname + file),
+      join(parsedProps.backups.pathname!, backupFilename + ".zip"),
       filePassword,
     );
 
     for (const file of files)
       try {
-        await Deno.remove(backupPathname + file);
+        await Deno.remove(parsedProps.backups.pathname + file);
         // deno-lint-ignore no-empty
       } catch (_) {}
 
@@ -211,7 +218,7 @@ export const getDb = (props: DbProps = {}): DbMutable => {
 
       const files = [];
 
-      for await (const entry of walk(backupsPathname!, {
+      for await (const entry of walk(parsedProps.backups.pathname!, {
         includeDirs: false,
       }))
         files.push(entry);
@@ -244,7 +251,7 @@ export const getDb = (props: DbProps = {}): DbMutable => {
 
     const files: BackupFile[] = [];
 
-    for await (const { name, path } of walk(backupsPathname!, {
+    for await (const { name, path } of walk(parsedProps.backups.pathname!, {
       includeDirs: false,
     })) {
       const { size } = await Deno.stat(path);
@@ -262,7 +269,7 @@ export const getDb = (props: DbProps = {}): DbMutable => {
       const s3Client = getS3(s3);
       return await s3Client.getObject(name);
     }
-    return await Deno.readFile(join(backupsPathname!, name));
+    return await Deno.readFile(join(parsedProps.backups.pathname!, name));
   };
 
   const removeBackup = async (name: string): Promise<void> => {
@@ -270,7 +277,7 @@ export const getDb = (props: DbProps = {}): DbMutable => {
       const s3Client = getS3(s3);
       return await s3Client.removeFiles(name);
     }
-    return await Deno.remove(join(backupsPathname!, name));
+    return await Deno.remove(join(parsedProps.backups.pathname!, name));
   };
 
   const visualize = async () => {

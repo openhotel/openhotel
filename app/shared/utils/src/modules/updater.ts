@@ -1,4 +1,5 @@
 import {
+  getModulePath,
   getOS,
   getOSName,
   getPath,
@@ -104,8 +105,8 @@ export const update = async ({
     });
 
     log(`[${label}] Update files downloaded!`);
-    const dirPath = getPath();
-    const updateFilePath = getTemporalUpdateFilePathname();
+    const dirPath = getModulePath("");
+    const updateFilePath = getModulePath(getTemporalUpdateFilePathname());
     const updateFile = path.join(dirPath, `update_${osAsset.name}`);
     const updatedFile = path.join(dirPath, osAsset.name);
 
