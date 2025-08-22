@@ -36,6 +36,5 @@ export const writeYaml = async <T extends any>(
   //@ts-ignore
   if (encode) content = encoder.encode(content);
 
-  console.log(getModulePath(filePath), content);
   await Deno.writeTextFile(getModulePath(filePath), content);
 };
