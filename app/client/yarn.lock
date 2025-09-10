@@ -2559,7 +2559,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"esbuild@npm:^0.18.0 || ^0.19.0 || ^0.20.0 || ^0.21.0 || ^0.22.0 || ^0.23.0 || ^0.24.0, esbuild@npm:^0.24.2":
+"esbuild@npm:^0.18.0 || ^0.19.0 || ^0.20.0 || ^0.21.0 || ^0.22.0 || ^0.23.0 || ^0.24.0":
   version: 0.24.2
   resolution: "esbuild@npm:0.24.2"
   dependencies:
@@ -3969,7 +3969,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:^8.5.2, postcss@npm:^8.5.3":
+"postcss@npm:^8.5.3":
   version: 8.5.3
   resolution: "postcss@npm:8.5.3"
   dependencies:
@@ -4303,7 +4303,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rollup@npm:^4.30.1, rollup@npm:^4.34.9":
+"rollup@npm:^4.34.9":
   version: 4.40.2
   resolution: "rollup@npm:4.40.2"
   dependencies:
@@ -4418,7 +4418,7 @@ __metadata:
     storybook: "npm:8.5.1"
     storybook-dark-mode: "npm:4.0.2"
     ulidx: "npm:2.4.1"
-    vite: "npm:6.1.6"
+    vite: "npm:6.3.6"
     vite-tsconfig-paths: "npm:5.1.4"
     vitest: "npm:3.0.7"
     yaml: "npm:2.5.0"
@@ -5067,14 +5067,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:6.1.6":
-  version: 6.1.6
-  resolution: "vite@npm:6.1.6"
+"vite@npm:6.3.6":
+  version: 6.3.6
+  resolution: "vite@npm:6.3.6"
   dependencies:
-    esbuild: "npm:^0.24.2"
+    esbuild: "npm:^0.25.0"
+    fdir: "npm:^6.4.4"
     fsevents: "npm:~2.3.3"
-    postcss: "npm:^8.5.2"
-    rollup: "npm:^4.30.1"
+    picomatch: "npm:^4.0.2"
+    postcss: "npm:^8.5.3"
+    rollup: "npm:^4.34.9"
+    tinyglobby: "npm:^0.2.13"
   peerDependencies:
     "@types/node": ^18.0.0 || ^20.0.0 || >=22.0.0
     jiti: ">=1.21.0"
@@ -5115,7 +5118,7 @@ __metadata:
       optional: true
   bin:
     vite: bin/vite.js
-  checksum: 10c0/4e63ba225b6c5d57e67193d8ac02fcf2a49ce010ddc8b4a37421056acf27988d78b376dae3b74ffccd01598e8bf11570b299c6aec80a1b49324228add085138f
+  checksum: 10c0/add701f1e72596c002275782e38d0389ab400c1be330c93a3009804d62db68097a936ca1c53c3301df3aaacfe5e328eab547060f31ef9c49a277ae50df6ad4fb
   languageName: node
   linkType: hard
 
