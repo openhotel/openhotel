@@ -5,7 +5,11 @@ export const HomeComponent: React.FC = () => {
   return (
     <div>
       <h2>Home</h2>
-      <label>Welcome to OpenHotel!</label>
+      <label>
+        {/*{account*/}
+        {/*  ? `Welcome back ${account.username}!`*/}
+        {/*  : "Welcome to OpenHotel!"}*/}
+      </label>
       <p />
       <ButtonComponent
         color="yellow"
@@ -16,6 +20,7 @@ export const HomeComponent: React.FC = () => {
       >
         Play!
       </ButtonComponent>
+      <p />
     </div>
   );
 };

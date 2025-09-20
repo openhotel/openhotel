@@ -21,4 +21,9 @@ export const CONFIG_DEFAULT: ConfigTypes = {
   database: {
     filename: "database",
   },
+  auth: {
+    enabled: false,
+    appToken: "",
+    url: "http://localhost:2024",
+  },
 };

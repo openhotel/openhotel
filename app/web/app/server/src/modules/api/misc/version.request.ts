@@ -5,7 +5,7 @@ import {
   HttpStatusCode,
   RequestKind,
 } from "@oh/utils";
-import { System } from "modules/system/main.ts";
+import { System } from "system/main.ts";
 
 export const versionRequest: RequestType = {
   method: RequestMethod.GET,

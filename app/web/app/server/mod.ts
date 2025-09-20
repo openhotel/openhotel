@@ -1,4 +1,4 @@
-import { System } from "modules/system/main.ts";
+import { System } from "system/main.ts";
 import { getProcessedEnvs } from "shared/utils/main.ts";
 
 const envs = getProcessedEnvs({

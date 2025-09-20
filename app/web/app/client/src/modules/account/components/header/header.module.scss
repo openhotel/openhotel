@@ -1,0 +1,11 @@
+.header {
+  display: flex;
+  gap: 1rem;
+
+  .username {
+  }
+  .logout {
+    cursor: pointer;
+    opacity: 0.35;
+  }
+}

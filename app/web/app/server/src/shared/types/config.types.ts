@@ -19,4 +19,9 @@ export type ConfigTypes = {
   database: {
     filename: string;
   };
+  auth: {
+    enabled: boolean;
+    appToken: string;
+    url: string;
+  };
 };

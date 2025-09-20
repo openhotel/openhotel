@@ -1,4 +1,4 @@
-import { System } from "modules/system/main.ts";
+import { System } from "./main.ts";
 
 export const backups = () => {
   let abortCronController: AbortController = new AbortController();
