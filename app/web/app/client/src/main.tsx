@@ -1,7 +1,5 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
-
-// @ts-ignore
 import "./main.scss";
 import "@openhotel/styles/dist/style.css";
 import "@openhotel/styles/styles.scss";

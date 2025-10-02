@@ -1,7 +1,5 @@
 import React from "react";
 import { cn } from "shared/utils";
-
-//@ts-ignore
 import styles from "./container.module.scss";
 
 type Props = {
