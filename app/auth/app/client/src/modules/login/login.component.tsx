@@ -4,7 +4,6 @@ import { useAccount, useHotel } from "shared/hooks";
 import { useNavigate } from "react-router-dom";
 import { ButtonComponent, InputComponent } from "@openhotel/web-components";
 
-//@ts-ignore
 import styles from "./login.module.scss";
 
 export const LoginComponent: React.FC = () => {

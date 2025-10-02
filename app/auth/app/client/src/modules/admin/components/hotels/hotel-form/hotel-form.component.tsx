@@ -18,7 +18,6 @@ import {
   useModal,
   VerifiedIconComponent,
 } from "@openhotel/web-components";
-//@ts-ignore
 import styles from "./hotel-form.module.scss";
 import { useAdmin, useHotel } from "shared/hooks";
 import { cn } from "shared/utils";

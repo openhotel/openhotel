@@ -6,7 +6,7 @@ import {
   LanguagesComponent,
   OtpComponent,
 } from "./components";
-//@ts-ignore
+
 import styles from "./account.module.scss";
 import { ButtonComponent } from "@openhotel/web-components";
 import { LinkComponent } from "shared/components";

@@ -7,8 +7,6 @@ import {
 } from "shared/components";
 import { useAccount } from "shared/hooks";
 import { useNavigate } from "react-router-dom";
-
-//@ts-ignore
 import styles from "./change-password.module.scss";
 
 export const ChangePasswordComponent: React.FC = () => {

@@ -1,6 +1,5 @@
 import { useHotels } from "shared/hooks";
 import React, { useCallback, useEffect, useState } from "react";
-//@ts-ignore
 import styles from "./hotels.module.scss";
 import { PublicHotel } from "shared/types";
 import { HotelComponent } from "modules/home/components/hotel/hotel.component";

@@ -15,8 +15,6 @@ import {
 } from "@openhotel/web-components";
 import { IntegrationComponent } from "../integration/integration.component";
 import { cn } from "shared/utils";
-
-//@ts-ignore
 import styles from "./hotel.module.scss";
 import { useMyHotels } from "shared/hooks";
 

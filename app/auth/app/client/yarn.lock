@@ -481,14 +481,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openhotel/web-components@npm:0.3.2":
-  version: 0.3.2
-  resolution: "@openhotel/web-components@npm:0.3.2"
+"@openhotel/web-components@npm:0.3.3":
+  version: 0.3.3
+  resolution: "@openhotel/web-components@npm:0.3.3"
   dependencies:
     dayjs: "npm:^1.11.13"
     react: "npm:18.3.1"
     react-dom: "npm:18.3.1"
-  checksum: 10c0/06719a61004f6e9c72f4e9e3da30e0b22ef561d4a7acded27b477fd6063fc1505372cf6d47e4d087e1c32fc0149ed40392b54ad878f3ce36efa26c79c72f23ad
+  checksum: 10c0/7b470014ef2b5ec2bb4f9add9ad5073812826580a7169dec20df4905d2e34ab82e0defd3356e13732b6166425a96103dbceae7b100ed067e1390b9080ff00cf7
   languageName: node
   linkType: hard
 
@@ -2261,7 +2261,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "root-workspace-0b6124@workspace:."
   dependencies:
-    "@openhotel/web-components": "npm:0.3.2"
+    "@openhotel/web-components": "npm:0.3.3"
     "@rollup/plugin-alias": "npm:5.1.0"
     "@thumbmarkjs/thumbmarkjs": "npm:^0.19.1"
     "@types/js-cookie": "npm:3.0.6"

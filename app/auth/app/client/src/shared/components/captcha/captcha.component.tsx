@@ -1,6 +1,4 @@
 import React, { useCallback, useEffect, useState } from "react";
-
-//@ts-ignore
 import styles from "./captcha.module.scss";
 import { useCaptcha } from "shared/hooks/useCaptcha";
 

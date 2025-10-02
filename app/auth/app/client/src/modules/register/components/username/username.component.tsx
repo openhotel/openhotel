@@ -5,8 +5,6 @@ import {
   USERNAME_REGEX,
 } from "shared/consts";
 import { InputComponent } from "@openhotel/web-components";
-
-//@ts-ignore
 import styles from "./username.module.scss";
 
 export const UsernameComponent: React.FC = () => {

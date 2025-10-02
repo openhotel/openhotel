@@ -6,7 +6,6 @@ import {
   SocialComponent,
   LicenseComponent,
 } from "@openhotel/web-components";
-//@ts-ignore
 import styles from "./card-layout.module.scss";
 
 type Props = {

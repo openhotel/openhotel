@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-//@ts-ignore
 import styles from "./sessions.module.scss";
 import { useAccount } from "shared/hooks";
 import { cn } from "shared/utils";

@@ -5,8 +5,6 @@ import {
   FormComponent,
   SelectorComponent,
 } from "@openhotel/web-components";
-
-//@ts-ignore
 import styles from "./languages.module.scss";
 import { cn } from "shared/utils";
 

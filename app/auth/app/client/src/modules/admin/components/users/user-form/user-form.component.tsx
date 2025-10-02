@@ -12,7 +12,6 @@ import { EMAIL_REGEX, USERNAME_REGEX } from "shared/consts";
 import { User } from "shared/types";
 import dayjs from "dayjs";
 import { useAdmin } from "shared/hooks";
-//@ts-ignore
 import styles from "./user-form.module.scss";
 
 type Props = {

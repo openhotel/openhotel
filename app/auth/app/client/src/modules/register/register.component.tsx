@@ -15,8 +15,6 @@ import { useAccount, useLanguages } from "shared/hooks";
 import { useNavigate } from "react-router-dom";
 import { ButtonComponent, SelectorComponent } from "@openhotel/web-components";
 import { EmailComponent, UsernameComponent } from "./components";
-
-//@ts-ignore
 import styles from "./register.module.scss";
 
 export const RegisterComponent: React.FC = () => {

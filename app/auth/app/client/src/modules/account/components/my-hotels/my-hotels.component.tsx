@@ -3,8 +3,6 @@ import { Hotel } from "shared/types";
 import { useMyHotels } from "shared/hooks";
 import { ButtonComponent, InputComponent } from "@openhotel/web-components";
 import { HotelComponent } from "./components";
-
-//@ts-ignore
 import styles from "./my-hotels.module.scss";
 
 type Props = {} & React.HTMLProps<HTMLDivElement>;

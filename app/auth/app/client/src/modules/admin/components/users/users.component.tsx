@@ -4,8 +4,6 @@ import { cn, getCensoredEmail } from "shared/utils";
 import dayjs from "dayjs";
 import { TableComponent } from "@openhotel/web-components";
 import { User } from "shared/types";
-
-//@ts-ignore
 import styles from "./users.module.scss";
 import { UserFormComponent } from "modules/admin/components/users/user-form";
 

@@ -3,8 +3,6 @@ import { Hotel, HotelIntegration } from "shared/types";
 import { useMyHotels } from "shared/hooks";
 import { ButtonComponent } from "@openhotel/web-components";
 import { cn } from "shared/utils";
-
-//@ts-ignore
 import styles from "./integration.module.scss";
 
 type Props = {

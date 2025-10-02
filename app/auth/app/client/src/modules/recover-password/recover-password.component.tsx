@@ -2,8 +2,6 @@ import React, { FormEvent, useCallback, useState } from "react";
 import { ButtonComponent, InputComponent } from "@openhotel/web-components";
 import { LinkComponent } from "shared/components";
 import { useAccount } from "shared/hooks";
-
-//@ts-ignore
 import styles from "../login/login.module.scss";
 
 export const RecoverPasswordComponent: React.FC = () => {

@@ -1,6 +1,5 @@
 import { useAdmin } from "shared/hooks";
 import React, { useEffect, useState } from "react";
-//@ts-ignore
 import styles from "./hotels.module.scss";
 import dayjs from "dayjs";
 import {

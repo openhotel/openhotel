@@ -9,8 +9,6 @@ import {
 } from "@openhotel/web-components";
 import { Backup } from "shared/types";
 import { decodeTime } from "ulidx";
-
-//@ts-ignore
 import styles from "./backups.module.scss";
 
 export const AdminBackupsComponent = () => {

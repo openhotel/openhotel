@@ -1,6 +1,5 @@
 import React, { FormEvent, useCallback, useEffect, useState } from "react";
 import { useOTP, useQR } from "shared/hooks";
-//@ts-ignore
 import styles from "./otp.module.scss";
 import { ButtonComponent, InputComponent } from "@openhotel/web-components";
 
