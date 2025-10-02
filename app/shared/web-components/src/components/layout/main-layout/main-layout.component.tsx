@@ -34,7 +34,9 @@ export const MainLayoutComponent: React.FC<Props> = ({
           <div className={styles.container}>
             <NavigatorComponent children={navigatorChildren} />
             <div className={styles.bigContainer}>
-              <HeaderComponent children={headerChildren} />
+              {headerChildren ? (
+                <HeaderComponent children={headerChildren} />
+              ) : null}
               <MainComponent
                 className={cn(styles.main, {
                   [styles.headless]: !headerChildren,

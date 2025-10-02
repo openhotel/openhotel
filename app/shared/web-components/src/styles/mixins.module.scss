@@ -75,8 +75,8 @@
 
 @mixin glassBackground() {
   background: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(3px);
-  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(1px);
+  -webkit-backdrop-filter: blur(1px);
 
   @media screen and (prefers-color-scheme: dark) {
     background: rgba(55, 55, 55, 0.8);
@@ -84,7 +84,7 @@
 }
 
 @mixin glassBackground() {
-  backdrop-filter: blur(3px);
+  backdrop-filter: blur(1px);
   background-color: rgba(255, 255, 255, 0.35);
   @media screen and (prefers-color-scheme: dark) {
     background-color: rgba(68, 68, 68, 0.2);
