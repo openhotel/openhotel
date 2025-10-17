@@ -274,10 +274,11 @@ export const games = () => {
         await Deno.readTextFile(path.join(PATH, "games.yml")),
       );
     } catch (e) {}
+    if (!gameDataMap) gameDataMap = {};
 
     for (const { name } of games) {
       let gameId = Object.values(gameDataMap).find(
-        (data: any) => data.name === name,
+        (data: any) => data?.name === name,
       )?.gameId;
 
       // download first time
