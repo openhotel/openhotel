@@ -31,6 +31,7 @@ export const user = () => {
       const accountId = state;
 
       const foundUser = userList.find((user) => user.accountId === accountId);
+
       if (foundUser) {
         Proxy.getClient(foundUser.clientId)?.close();
         userList = userList.filter((user) => user.accountId !== accountId);
