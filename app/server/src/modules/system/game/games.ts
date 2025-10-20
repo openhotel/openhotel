@@ -140,7 +140,7 @@ export const games = () => {
   const add = (game: GameType) => {
     let $game = ($gameMap[game.gameId] = $getGame(game));
 
-    log(`Game '${game.name}' starting...`);
+    log(`>> Game '${game.name}' starting...`);
 
     $worker = getParentProcessWorker(`${game.path}/${game.executable}`, [], {
       prefixLog: `[${game.name}]: `,
@@ -264,6 +264,8 @@ export const games = () => {
   };
 
   const load = async () => {
+    log("> Loading games...");
+
     const { games } = parse(await Deno.readTextFile(GAMES_PATH_FILE));
     const osName = getOSName();
 
@@ -313,45 +315,7 @@ export const games = () => {
       stringify(gameDataMap),
     );
 
-    // await System.db.set(["games", ulid()], roomId);
-
-    // for await (const game of await Deno.readDir(PATH)) {
-    //   if (game.isFile) continue;
-    //
-    //   let gamePath = `${PATH}/${game.name}`;
-    //   let hasManifest = false;
-    //   let executable = null;
-    //
-    //   for await (const gameFile of await Deno.readDir(gamePath)) {
-    //     if (gameFile.name === "manifest.yml") hasManifest = true;
-    //     if (gameFile.name.startsWith("server_")) executable = gameFile.name;
-    //   }
-    //
-    //   if (hasManifest && executable) {
-    //     const manifest = parse(
-    //       await Deno.readTextFile(`${gamePath}/manifest.yml`),
-    //     );
-    //     add({
-    //       path: gamePath,
-    //       executable,
-    //       manifest,
-    //     });
-    //   }
-    // }
-    //
-    // await Deno.writeTextFile(
-    //   PATH + "/games.yml",
-    //   stringify(
-    //     getGames().reduce(
-    //       (games, game) => ({
-    //         ...games,
-    //         [game.getManifest().id]:
-    //           `${game.getPath()}${game.getManifest().client.path}`,
-    //       }),
-    //       {},
-    //     ),
-    //   ),
-    // );
+    log("> Games loaded!");
   };
 
   const getGames = (): GameMutable[] => Object.values($gameMap);
