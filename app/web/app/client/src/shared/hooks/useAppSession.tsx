@@ -100,7 +100,6 @@ export const AppSessionProvider: React.FunctionComponent<ProviderProps> = ({
   }, []);
 
   const logout = useCallback(() => {
-    console.log(account);
     if (!account) return;
 
     remove("account-id");

@@ -1,10 +1,9 @@
 import { RequestType, getPathRequestList } from "@oh/utils";
 
-import { redirectRequest } from "./redirect.request.ts";
-import { userRequest } from "./user.request.ts";
-import { getRequest } from "./main.request.ts";
+import { requestRequest } from "modules/api/auth/request.request.ts";
+import { userRequest } from "modules/api/auth/user.request.ts";
 
 export const authList: RequestType[] = getPathRequestList({
-  requestList: [getRequest, redirectRequest, userRequest],
+  requestList: [requestRequest, userRequest],
   pathname: "/auth",
 });

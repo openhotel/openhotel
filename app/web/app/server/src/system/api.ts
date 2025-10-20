@@ -82,8 +82,7 @@ export const api = () => {
     kind: RequestKind | RequestKind[];
   }): Promise<boolean> => {
     const check = async (kind: RequestKind) => {
-      const accountId = request.headers.get("account-id");
-      const accountToken = request.headers.get("account-token");
+      const connectionToken = request.headers.get("token");
 
       if (!System.getConfig().auth.enabled) return true;
 
@@ -91,7 +90,18 @@ export const api = () => {
         case RequestKind.PUBLIC:
           return true;
         case RequestKind.ACCOUNT:
-          if (!accountId || !accountToken) return false;
+          if (!connectionToken) return false;
+
+          try {
+            const { accountId } = await System.auth.fetch({
+              url: "/user/@me",
+              connectionToken,
+            });
+            return Boolean(accountId);
+          } catch (e) {
+            return false;
+          }
+
           return true;
         default:
           return false;

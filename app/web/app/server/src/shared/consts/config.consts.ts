@@ -23,7 +23,7 @@ export const CONFIG_DEFAULT: ConfigTypes = {
   },
   auth: {
     enabled: false,
-    appToken: "",
-    url: "http://localhost:2024",
+    licenseToken: "",
+    api: "http://localhost:2024",
   },
 };

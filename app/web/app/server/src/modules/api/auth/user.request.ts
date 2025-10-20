@@ -6,22 +6,26 @@ export const userRequest: RequestType = {
   pathname: "/user",
   kind: RequestKind.ACCOUNT,
   func: async (request: Request) => {
-    const accountId = request.headers.get("account-id");
-    const accountToken = request.headers.get("account-token");
-    const {
-      auth: { url: authUrl, appToken },
-    } = System.getConfig();
+    const connectionToken = request.headers.get("token");
 
-    const data = await fetch(`${authUrl}/api/v3/user/@me`, {
-      headers: {
-        "app-token": appToken,
-        "account-id": accountId,
-        "account-token": accountToken,
-      },
-    }).then((response) => response.json());
-
-    return Response.json(data, {
-      status: data.status,
+    const { accountId, username, admin, languages } = await System.auth.fetch({
+      url: "/user/@me",
+      connectionToken,
     });
+
+    return Response.json(
+      {
+        status: 200,
+        data: {
+          accountId,
+          username,
+          admin,
+          languages,
+        },
+      },
+      {
+        status: 200,
+      },
+    );
   },
 };

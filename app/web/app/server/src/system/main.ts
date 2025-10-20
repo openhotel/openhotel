@@ -5,6 +5,7 @@ import { CONFIG_DEFAULT } from "shared/consts/config.consts.ts";
 import { Migrations } from "./migrations/main.ts";
 import { backups } from "./backups.ts";
 import { accounts } from "./accounts.ts";
+import { auth } from "system/auth.ts";
 
 export const System = (() => {
   let $config: ConfigTypes;
@@ -15,6 +16,7 @@ export const System = (() => {
   const $api = api();
   const $backups = backups();
   const $accounts = accounts();
+  const $auth = auth();
   let $db: DbMutable;
 
   const load = async (envs: Envs, testMode: boolean = false) => {
@@ -27,6 +29,8 @@ export const System = (() => {
     $envs = envs;
 
     $isTestMode = testMode;
+
+    await $auth.load($config);
 
     const isProduction = !testMode && $config.version !== "development";
 
@@ -90,5 +94,6 @@ export const System = (() => {
     api: $api,
     backups: $backups,
     accounts: $accounts,
+    auth: $auth,
   };
 })();

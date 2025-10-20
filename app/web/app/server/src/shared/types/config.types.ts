@@ -21,7 +21,7 @@ export type ConfigTypes = {
   };
   auth: {
     enabled: boolean;
-    appToken: string;
-    url: string;
+    licenseToken: string;
+    api: string;
   };
 };
