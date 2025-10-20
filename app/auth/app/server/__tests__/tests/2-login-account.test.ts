@@ -11,7 +11,7 @@ import {
 
 import { STATE } from "../state.ts";
 
-describe("3. login an account", () => {
+describe("2. login an account", () => {
   describe("invalid login", () => {
     it("check invalid email", async () => {
       const { status, data, message } = await fetcher("/account/login", {

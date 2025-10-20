@@ -4,6 +4,7 @@ import {
   HotelMutableGet,
 } from "shared/types/hotel.types.ts";
 import { Scope } from "shared/enums/scopes.enums.ts";
+import { DbHotelIntegrationType } from "shared/enums/hotel.enums.ts";
 
 export type DbAccount = {
   accountId: string;
@@ -158,6 +159,7 @@ export type DbAccountActiveIntegrationConnection = {
 
   hotelId: string;
   integrationId: string;
+  type: DbHotelIntegrationType;
 
   accountId: string;
   userAgent: string;
@@ -185,10 +187,17 @@ export type AccountConnections = {
 
 export type AccountActiveConnection = {
   create: (data: AccountConnection) => Promise<string | null>;
-  get: () => Promise<DbAccountActiveIntegrationConnection | null>;
-  remove: () => Promise<void>;
+  get: (
+    type: DbHotelIntegrationType,
+  ) => Promise<DbAccountActiveIntegrationConnection | null>;
+  getList: () => Promise<DbAccountActiveIntegrationConnection[]>;
+  remove: (type: DbHotelIntegrationType) => Promise<void>;
 
-  check: (hotelId: string, integrationId: string) => Promise<boolean>;
+  check: (
+    hotelId: string,
+    integrationId: string,
+    type: DbHotelIntegrationType,
+  ) => Promise<boolean>;
   checkScopes: (scopes: Scope[]) => Promise<boolean>;
 
   ping: (

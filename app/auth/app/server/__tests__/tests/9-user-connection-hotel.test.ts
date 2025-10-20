@@ -7,7 +7,7 @@ import { HOTEL_1, USER_1 } from "../consts.ts";
 import { STATE } from "../state.ts";
 import { wait } from "../../src/shared/utils/wait.utils.ts";
 
-describe("11. user connection hotel", () => {
+describe("9. user connection hotel", () => {
   describe("user connection", () => {
     it("cannot retrieve user connection", async () => {
       const hotel = STATE.getHotel(HOTEL_1.name);

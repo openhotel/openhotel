@@ -4,7 +4,7 @@ import { assertEquals } from "jsr:@std/assert";
 import { fetcher } from "../utils.ts";
 import { LANGUAGE_LIST } from "../../src/shared/consts/language.consts.ts";
 
-describe("1. public calls", () => {
+describe("0. public calls", () => {
   it("retrieves the version", async () => {
     const { status, data } = await fetcher("/_/version");
     assertEquals(status, 200);

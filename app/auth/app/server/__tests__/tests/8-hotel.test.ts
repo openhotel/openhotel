@@ -10,7 +10,7 @@ import { HOTEL_1, HOTEL_2, USER_1, USER_2 } from "../consts.ts";
 
 import { STATE } from "../state.ts";
 
-describe("10. hotel", () => {
+describe("8. hotel", () => {
   describe("hotel creation", () => {
     describe("hotel", () => {
       it("gets empty hotel list", async () => {

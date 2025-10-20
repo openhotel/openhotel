@@ -6,7 +6,7 @@ import { USER_1 } from "../consts.ts";
 
 import { STATE } from "../state.ts";
 
-describe("6. otp account", () => {
+describe("5. otp account", () => {
   describe("set to account", () => {
     it("retrieve the otp verifier", async () => {
       const { status, data } = await fetcher("/account/otp", {

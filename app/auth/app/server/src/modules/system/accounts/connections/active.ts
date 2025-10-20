@@ -8,6 +8,7 @@ import { System } from "modules/system/main.ts";
 import { Scope } from "shared/enums/scopes.enums.ts";
 import { Connection } from "shared/types/connection.types.ts";
 import { generateToken, getIpFromRequest } from "@oh/utils";
+import { DbHotelIntegrationType } from "shared/enums/hotel.enums.ts";
 
 export const active = (account: DbAccount): AccountActiveConnection => {
   const create = async ({
@@ -23,8 +24,10 @@ export const active = (account: DbAccount): AccountActiveConnection => {
     const integration = hotel.getIntegration({ integrationId });
     if (!integration) return null;
 
+    const { type } = integration.getObject();
+
     //remove previous connection
-    await remove();
+    await remove(type);
 
     const { token, id: connectionId, tokenHash } = generateToken("con", 24, 32);
 
@@ -39,18 +42,22 @@ export const active = (account: DbAccount): AccountActiveConnection => {
 
     await System.db.set(
       ["accountByActiveIntegrationConnectionId", connectionId],
-      account.accountId,
+      {
+        accountId: account.accountId,
+        type,
+      },
       {
         expireIn,
       },
     );
     await System.db.set(
-      ["activeIntegrationConnectionByAccountId", account.accountId],
+      ["activeIntegrationConnectionByAccountId", account.accountId, type],
       {
         connectionId,
 
         hotelId,
         integrationId,
+        type,
 
         accountId: account.accountId,
         userAgent,
@@ -116,16 +123,27 @@ export const active = (account: DbAccount): AccountActiveConnection => {
     return url.href;
   };
 
-  const get =
-    async (): Promise<DbAccountActiveIntegrationConnection | null> => {
-      return await System.db.get([
-        "activeIntegrationConnectionByAccountId",
-        account.accountId,
-      ]);
-    };
+  const get = async (
+    type?: DbHotelIntegrationType,
+  ): Promise<DbAccountActiveIntegrationConnection | null> => {
+    if (!type) return null;
 
-  const remove = async () => {
-    const connection = await get();
+    return await System.db.get([
+      "activeIntegrationConnectionByAccountId",
+      account.accountId,
+      type,
+    ]);
+  };
+
+  const getList = async (): Promise<DbAccountActiveIntegrationConnection[]> => {
+    const { items } = await System.db.list({
+      prefix: ["activeIntegrationConnectionByAccountId", account.accountId],
+    });
+    return items.map(({ value }) => value);
+  };
+
+  const remove = async (type: DbHotelIntegrationType) => {
+    const connection = await get(type);
     if (!connection) return;
 
     await System.db.delete([
@@ -135,35 +153,46 @@ export const active = (account: DbAccount): AccountActiveConnection => {
     await System.db.delete([
       "activeIntegrationConnectionByAccountId",
       account.accountId,
+      type,
     ]);
   };
 
   const ping = async (connectionId: string, request: Request) => {
-    const connection = await get();
+    const connections = await getList();
 
     const userAgent = request.headers.get("user-agent");
     const ip = getIpFromRequest(request);
 
+    const connectionFound = connections.find(
+      (connection) => connection.connectionId === connectionId,
+    );
     if (
-      !connection ||
-      connection.connectionId !== connectionId ||
-      connection.userAgent !== userAgent ||
-      connection.ip !== ip
+      !connectionFound ||
+      connectionFound.connectionId !== connectionId ||
+      connectionFound.userAgent !== userAgent ||
+      connectionFound.ip !== ip
     )
       return null;
 
     const expireIn = await $getExpirationTime();
 
     await System.db.set(
-      ["activeIntegrationConnectionByAccountId", account.accountId],
-      connection,
+      [
+        "activeIntegrationConnectionByAccountId",
+        account.accountId,
+        connectionFound.type,
+      ],
+      connectionFound,
       {
         expireIn,
       },
     );
     await System.db.set(
-      ["accountByActiveIntegrationConnectionId", connection.connectionId],
-      connection.accountId,
+      ["accountByActiveIntegrationConnectionId", connectionFound.connectionId],
+      {
+        accountId: connectionFound.accountId,
+        type: connectionFound.type,
+      },
       {
         expireIn,
       },
@@ -175,16 +204,20 @@ export const active = (account: DbAccount): AccountActiveConnection => {
   };
 
   const check = async (hotelId: string, integrationId: string) => {
-    const connection = await get();
-    return (
-      connection &&
-      connection.hotelId === hotelId &&
-      connection.integrationId === integrationId
+    const connections = await getList();
+
+    return connections.some(
+      (connection) =>
+        connection.hotelId === hotelId &&
+        connection.integrationId === integrationId,
     );
   };
 
-  const checkScopes = async (scopes: Scope[]): Promise<boolean> => {
-    const connection = await get();
+  const checkScopes = async (
+    scopes: Scope[],
+    type: DbHotelIntegrationType,
+  ): Promise<boolean> => {
+    const connection = await get(type);
     if (!connection) return false;
 
     return scopes.every((scope) => connection.scopes.includes(scope));
@@ -200,6 +233,7 @@ export const active = (account: DbAccount): AccountActiveConnection => {
   return {
     create,
     get,
+    getList,
     remove,
 
     check,

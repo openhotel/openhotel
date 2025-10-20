@@ -6,7 +6,7 @@ import { HOTEL_1, USER_1 } from "../consts.ts";
 
 import { STATE } from "../state.ts";
 
-describe("13. tokens", () => {
+describe("11. tokens", () => {
   it("create token", async () => {
     const { status, data } = await fetcher(`/admin/tokens`, {
       method: "POST",
@@ -135,11 +135,13 @@ describe("13. tokens", () => {
     );
     assertEquals(status, 200);
     assertEquals(data, {
-      connection: {
-        connectionId: user.connectionId,
-        hotelId: hotel.hotelId,
-        scopes: USER_1.connectionScopes,
-      },
+      connections: [
+        {
+          connectionId: user.connectionId,
+          hotelId: hotel.hotelId,
+          scopes: USER_1.connectionScopes,
+        },
+      ],
     });
   });
   it("delete token", async () => {

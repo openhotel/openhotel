@@ -10,7 +10,7 @@ import {
   USER_1,
 } from "../consts.ts";
 
-describe("2. register an account", () => {
+describe("1. register an account", () => {
   describe("invalid register", () => {
     it("try to register with no body", async () => {
       const { status } = await fetcher("/account/register", {

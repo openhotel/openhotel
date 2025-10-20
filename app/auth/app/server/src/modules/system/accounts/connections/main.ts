@@ -5,6 +5,7 @@ import {
 } from "shared/types/account.types.ts";
 import { System } from "modules/system/main.ts";
 import { active } from "modules/system/accounts/connections/active.ts";
+import { DbHotelIntegrationType } from "shared/enums/hotel.enums.ts";
 
 export const connections = (account: DbAccount): AccountConnections => {
   const $active = active(account);
@@ -35,12 +36,17 @@ export const connections = (account: DbAccount): AccountConnections => {
       integrationId,
     ]);
 
-    if (!(await $active.check(hotelId, integrationId))) return;
-    await $active.remove();
+    const hotel = await System.hotels.getHotel({ hotelId });
+    const integration = hotel.getIntegration({ integrationId });
+    const { type } = integration.getObject();
+
+    if (!(await $active.check(hotelId, integrationId, type))) return;
+    await $active.remove(type);
   };
 
   const removeAll = async () => {
-    await $active.remove();
+    await $active.remove(DbHotelIntegrationType.CLIENT);
+    await $active.remove(DbHotelIntegrationType.WEB);
 
     for (const connection of await getConnections())
       await System.db.delete([

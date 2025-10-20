@@ -1,9 +1,9 @@
 import {
-  RequestType,
-  RequestMethod,
   getResponse,
   HttpStatusCode,
   RequestKind,
+  RequestMethod,
+  RequestType,
 } from "@oh/utils";
 import { Scope } from "shared/enums/scopes.enums.ts";
 import { System } from "modules/system/main.ts";
@@ -76,7 +76,7 @@ export const mainGetRequest: RequestType = {
       ...new Set($connections.map((connection) => connection.hotelId)),
     ];
 
-    const activeConnection = await account.connections.active.get();
+    const activeConnections = await account.connections.active.getList();
 
     const connections = (
       await Promise.all(
@@ -99,11 +99,13 @@ export const mainGetRequest: RequestType = {
                 });
                 const integrationData = integration.getObject();
 
+                const active = activeConnections.some(
+                  ($connection) =>
+                    connection.hotelId === $connection.hotelId &&
+                    connection.integrationId === $connection.integrationId,
+                );
                 return {
-                  active:
-                    activeConnection?.hotelId === hotelId &&
-                    activeConnection?.integrationId ===
-                      connection.integrationId,
+                  active,
                   integrationId: connection.integrationId,
                   scopes: connection.scopes,
                   name: integrationData.name,
@@ -115,7 +117,6 @@ export const mainGetRequest: RequestType = {
         }),
       )
     ).filter(Boolean);
-
     //
 
     try {
@@ -152,6 +153,7 @@ export const mainDeleteRequest: RequestType = {
 
     const hotelId = url.searchParams.get("hotelId");
     const integrationId = url.searchParams.get("integrationId");
+
     if (!hotelId || !integrationId)
       return getResponse(HttpStatusCode.BAD_REQUEST);
 

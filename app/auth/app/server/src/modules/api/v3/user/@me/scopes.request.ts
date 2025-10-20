@@ -15,7 +15,15 @@ export const scopesGetRequest: RequestType = {
     const account = await System.accounts.getAccount({ request });
     if (!account) return getResponse(HttpStatusCode.FORBIDDEN);
 
-    const connection = await account.connections.active.get();
+    const licenseToken = request.headers.get("license-token");
+    const hotel = await System.hotels.getHotel({ licenseToken });
+    const licenseData = await hotel.getLicenseData();
+    const currentIntegration = hotel.getIntegration({
+      integrationId: licenseData.integrationId,
+    });
+    const { type } = currentIntegration.getObject();
+
+    const connection = await account.connections.active.get(type);
     if (!connection) return getResponse(HttpStatusCode.FORBIDDEN);
 
     return getResponse(HttpStatusCode.OK, {

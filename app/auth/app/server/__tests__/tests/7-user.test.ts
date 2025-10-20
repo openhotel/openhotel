@@ -7,7 +7,7 @@ import { INVALID_LANGUAGE, USER_1 } from "../consts.ts";
 import { STATE } from "../state.ts";
 import { LANGUAGE_LIST } from "../../src/shared/consts/language.consts.ts";
 
-describe("8. user", () => {
+describe("7. user", () => {
   describe("get and update user", () => {
     it("Get data from @me", async () => {
       const { status, data } = await fetcher("/user/@me", {

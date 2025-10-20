@@ -6,7 +6,7 @@ import { USER_1 } from "../consts.ts";
 
 import { STATE } from "../state.ts";
 
-describe("4. refresh account tokens", () => {
+describe("3. refresh account tokens", () => {
   it("refreshes without token account session", async () => {
     const { status, data } = await fetcher("/account/refresh", {
       method: "GET",

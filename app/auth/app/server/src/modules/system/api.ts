@@ -119,15 +119,25 @@ export const api = () => {
           account = await System.accounts.getAccount({ request });
           if (!account) return false;
 
-          const connection = await account.connections.active.get();
-          if (!connection) return false;
+          const connections = await account.connections.active.getList();
+          if (!connections?.length) return false;
 
           const hotelData = hotel.getObject();
-          if (hotelData.hotelId !== connection.hotelId) return false;
+
+          const licenseData = await hotel.getLicenseData();
+
+          const foundConnection = connections.find(
+            (connection) =>
+              connection.hotelId === hotelData.hotelId &&
+              connection.integrationId === licenseData.integrationId,
+          );
+
+          if (!foundConnection) return false;
 
           const hotelIntegration = hotel.integrations.getIntegration(
-            connection.integrationId,
+            foundConnection?.integrationId,
           );
+
           return Boolean(hotelIntegration);
         }
         case RequestKind.ADMIN: {

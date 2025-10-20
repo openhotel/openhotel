@@ -6,7 +6,7 @@ import { HOTEL_1, USER_1, USER_2 } from "../consts.ts";
 
 import { STATE } from "../state.ts";
 
-describe("14. delete account", () => {
+describe("12. delete account", () => {
   it("register a new user", async () => {
     const { status, data, message } = await fetcher("/account/register", {
       method: "POST",

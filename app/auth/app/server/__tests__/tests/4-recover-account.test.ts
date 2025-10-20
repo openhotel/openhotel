@@ -6,7 +6,7 @@ import { INVALID_EMAILS, INVALID_PASSWORD, USER_1 } from "../consts.ts";
 
 import { STATE } from "../state.ts";
 
-describe("5. recover account", () => {
+describe("4. recover account", () => {
   describe("recovery", () => {
     it("recovers with empty email", async () => {
       const { status, data, message } = await fetcher(

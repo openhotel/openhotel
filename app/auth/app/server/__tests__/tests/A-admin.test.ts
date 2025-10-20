@@ -6,7 +6,7 @@ import { USER_1, USER_2 } from "../consts.ts";
 
 import { STATE } from "../state.ts";
 
-describe("12. admin", () => {
+describe("10. admin", () => {
   it("claim admin first time", async () => {
     const { status } = await fetcher(`/admin`, {
       method: "POST",

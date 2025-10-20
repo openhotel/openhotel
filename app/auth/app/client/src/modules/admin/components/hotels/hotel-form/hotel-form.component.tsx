@@ -156,7 +156,8 @@ export const HotelFormComponent: React.FC<Props> = ({
                   className={cn(styles.formColumn, styles.integration)}
                   key={integration.integrationId}
                 >
-                  {integration.type === "client" && hotelInfo ? (
+                  {integration.type === DbHotelIntegrationType.CLIENT &&
+                  hotelInfo ? (
                     <div className={styles.live}>
                       <div className={styles.formRow}>
                         <span>{hotelInfo.version}</span>

@@ -18,17 +18,17 @@ export const connectionGetRequest: RequestType = {
     const account = await System.accounts.getAccount({ accountId });
     if (!account) return getResponse(HttpStatusCode.FORBIDDEN);
 
-    const connection = await account.connections.active.get();
-    if (!connection) return getResponse(HttpStatusCode.FORBIDDEN);
+    const connections = await account.connections.active.getList();
+    if (!connections?.length) return getResponse(HttpStatusCode.FORBIDDEN);
 
     return getResponse(HttpStatusCode.OK, {
       data: {
-        connection: {
+        connections: connections.map((connection) => ({
           connectionId: connection.connectionId,
 
           hotelId: connection.hotelId,
           scopes: connection.scopes,
-        },
+        })),
       },
     });
   },

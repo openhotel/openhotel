@@ -6,7 +6,7 @@ import { USER_2 } from "../consts.ts";
 
 import { STATE } from "../state.ts";
 
-describe("7. register new account", () => {
+describe("6. register new account", () => {
   describe("valid register", () => {
     it("register", async () => {
       const { status, data, message } = await fetcher("/account/register", {
