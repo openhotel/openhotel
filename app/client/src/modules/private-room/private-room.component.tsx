@@ -36,7 +36,6 @@ import {
   Direction,
   Event as ProxyEvent,
   InternalEvent,
-  Modal,
   PrivateRoomPreviewType,
 } from "shared/enums";
 import {
@@ -310,7 +309,6 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
     }
     if (!renderPreviewVisibleRef.current) return;
 
-    openModal(Modal.WINDOWED_GAME);
     renderPreviewVisibleRef.current = false;
   }, [itemPreviewData, openModal]);
 

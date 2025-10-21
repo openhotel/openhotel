@@ -20,7 +20,7 @@ export const gameCommand: Command = {
       gameId: game.getGameId(),
       token,
       properties: {
-        screen: config.screen,
+        screen: "windowed",
         windowSize: config.windowSize,
       },
     });

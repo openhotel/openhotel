@@ -23,9 +23,10 @@ import {
   useCamera,
   useConfig,
   useGameStore,
+  useModal,
   useProxy,
 } from "shared/hooks";
-import { Event as ProxyEvent } from "shared/enums";
+import { Event as ProxyEvent, Modal } from "shared/enums";
 import { WindowedGameComponent } from "modules/modals";
 
 type GameProps = {
@@ -34,7 +35,7 @@ type GameProps = {
 
 const WINDOW_MARGIN = {
   lateral: 16,
-  vertical: 26,
+  vertical: 21,
 };
 
 export const GameProvider: React.FunctionComponent<GameProps> = ({
@@ -48,12 +49,13 @@ export const GameProvider: React.FunctionComponent<GameProps> = ({
     id,
   } = useGameStore();
 
-  const { on: onProxy } = useProxy();
+  const { on: onProxy, emit } = useProxy();
   const { getAccount } = useAccount();
   const { isDevelopment } = useConfig();
   const { on } = useEvents();
   const { getSize, getScale } = useWindow();
   const { setCanDrag } = useCamera();
+  const { openModal, closeModal } = useModal();
 
   const [windowSize, setWindowSize] = useState<Size2d>(getSize());
 
@@ -74,7 +76,7 @@ export const GameProvider: React.FunctionComponent<GameProps> = ({
 
       if (gameProps.screen === "windowed") {
         iframeRef.current.style.left = `${(size.width / 2 - $size.width / 2) * scale}px`;
-        iframeRef.current.style.top = `${(size.height / 2 - $size.height / 2) * scale}px`;
+        iframeRef.current.style.top = `${(size.height / 2 - $size.height / 2 + 6) * scale}px`;
       }
     },
     [getScale, getGameProps, setWindowSize],
@@ -87,6 +89,7 @@ export const GameProvider: React.FunctionComponent<GameProps> = ({
       ProxyEvent.LOAD_GAME,
       ({ gameId, token, properties }) => {
         setGame(gameId, token, properties);
+        openModal(Modal.GAME);
 
         setCanDrag(false);
 
@@ -115,6 +118,8 @@ export const GameProvider: React.FunctionComponent<GameProps> = ({
 
       document.body.removeChild(iframeRef.current);
       delete iframeRef.current;
+
+      closeModal(Modal.GAME);
     });
 
     return () => {
@@ -132,7 +137,13 @@ export const GameProvider: React.FunctionComponent<GameProps> = ({
     getSize,
     isDevelopment,
     setCanDrag,
+    openModal,
+    closeModal,
   ]);
+
+  const closeGame = useCallback(() => {
+    emit(ProxyEvent.CLOSE_GAME, {});
+  }, [emit]);
 
   return (
     <GameContext.Provider
@@ -164,6 +175,7 @@ export const GameProvider: React.FunctionComponent<GameProps> = ({
                     height:
                       props.windowSize.height + WINDOW_MARGIN.vertical * 2,
                   }}
+                  onCloseModal={closeGame}
                 />
               </FlexContainerComponent>
             </>

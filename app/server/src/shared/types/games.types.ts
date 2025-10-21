@@ -24,9 +24,9 @@ export type GameMutable = {
   getGameId: () => string;
 
   addUserRequest: (user: UserMutable, token: string) => boolean;
-  addUser: (user: UserMutable, clientId: string) => void;
-  setUserReady: (user: UserMutable, clientId: string) => void;
-  removeUser: (user: UserMutable, clientId: string) => void;
+  addUser: (user: UserMutable) => void;
+  setUserReady: (user: UserMutable) => void;
+  removeUser: (user: UserMutable) => void;
 
   getUser: (data: { clientId: string }) => UserMutable | null;
 

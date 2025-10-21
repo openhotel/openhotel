@@ -15,14 +15,15 @@ export const gameUserJoinEvent: ProxyEventType<{
     const config = await game.getConfig();
 
     if (config.kickFromCurrentRoom) {
-      const $roomId = $user.getRoom();
-
-      if ($roomId) {
-        const room = await System.game.rooms.get($roomId);
-        room.removeUser($user.getObject());
-      }
+      // const $roomId = $user.getRoom();
+      //
+      // if ($roomId) {
+      //   const room = await System.game.rooms.get($roomId);
+      //   room.removeUser($user.getObject());
+      // }
     }
 
-    game.addUser($user, clientId);
+    $user.setGame(gameId, clientId);
+    game.addUser($user);
   },
 };
