@@ -379,6 +379,25 @@ export const users = () => {
       return (await System.db.get(["users", getAccountId(), "color"])) ?? null;
     };
 
+    const setGame = (gameId: string, clientId: string) => {
+      $user.gameId = gameId;
+      $user.gameClientId = clientId;
+    };
+    const getGame = () => $user.gameId;
+
+    const removeGame = () => {
+      if (!$user.gameId) return;
+
+      emit(ProxyEvent.REMOVE_GAME, {
+        gameId: $user.gameId,
+      });
+
+      $user.gameId = null;
+      $user.gameClientId = null;
+    };
+
+    const getGameClientId = () => user.gameClientId;
+
     return {
       getAccountId,
       getUsername,
@@ -441,6 +460,11 @@ export const users = () => {
 
       setColor,
       getColor,
+
+      setGame,
+      getGame,
+      removeGame,
+      getGameClientId,
     };
   };
 

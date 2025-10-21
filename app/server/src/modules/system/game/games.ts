@@ -49,7 +49,7 @@ export const games = () => {
       return true;
     };
 
-    const addUser = (user: UserMutable, clientId: string) => {
+    const addUser = (user: UserMutable) => {
       if (
         $usersJoined.includes(user.getAccountId()) ||
         $usersReady.includes(user.getAccountId())
@@ -59,16 +59,16 @@ export const games = () => {
       $usersJoined.push(user.getAccountId());
       console.log(`${user.getUsername()} joined game '${game.name}...'`);
 
-      $clientIdUserMap[clientId] = user.getAccountId();
+      $clientIdUserMap[user.getGameClientId()] = user.getAccountId();
 
       $worker.emit("USER_JOIN", {
-        clientId,
+        clientId: user.getGameClientId(),
         accountId: user.getAccountId(),
         username: user.getUsername(),
       });
     };
 
-    const setUserReady = (user: UserMutable, clientId: string) => {
+    const setUserReady = (user: UserMutable) => {
       //if user is already ready or user has not joined
       if (
         $usersReady.includes(user.getAccountId()) ||
@@ -83,24 +83,24 @@ export const games = () => {
       console.log(`${user.getUsername()} ready for game '${game.name}!'`);
 
       $worker.emit("USER_READY", {
-        clientId,
+        clientId: user.getGameClientId(),
         accountId: user.getAccountId(),
       });
     };
 
-    const removeUser = (user: UserMutable, clientId: string) => {
+    const removeUser = (user: UserMutable) => {
       $usersReady = $usersReady.filter(
         (userId) => userId !== user.getAccountId(),
       );
       $usersJoined = $usersJoined.filter(
         (userId) => userId !== user.getAccountId(),
       );
-      delete $clientIdUserMap[clientId];
+      delete $clientIdUserMap[user.getGameClientId()];
 
       console.log(`${user.getUsername()} left game '${game.name}'`);
 
       $worker.emit("USER_LEAVE", {
-        clientId,
+        clientId: user.getGameClientId(),
         accountId: user.getAccountId(),
       });
     };

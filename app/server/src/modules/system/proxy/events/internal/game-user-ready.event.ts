@@ -8,10 +8,10 @@ export const gameUserReadyEvent: ProxyEventType<{
   clientId: string;
 }> = {
   event: ProxyEvent.$GAME_USER_READY,
-  func: async ({ data: { user, gameId, clientId } }) => {
+  func: async ({ data: { user, gameId } }) => {
     const game = System.game.games.getGame(gameId);
     const $user = System.game.users.get({ accountId: user.accountId });
 
-    game.setUserReady($user, clientId);
+    game.setUserReady($user);
   },
 };

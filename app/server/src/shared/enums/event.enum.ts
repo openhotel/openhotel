@@ -40,6 +40,7 @@ export enum ProxyEvent {
 
   LOAD_GAME = "load-game",
   REMOVE_GAME = "remove-game",
+  CLOSE_GAME = "close-game",
 
   ADD_HUMAN = "add-human",
   REMOVE_HUMAN = "remove-human",

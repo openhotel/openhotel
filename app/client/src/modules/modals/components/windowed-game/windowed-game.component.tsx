@@ -1,6 +1,8 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import {
   ContainerComponent,
+  Cursor,
+  EventMode,
   FLEX_JUSTIFY,
   FlexContainerComponent,
   GraphicsComponent,
@@ -20,16 +22,19 @@ const BOTTOM_MARGIN = 12;
 type Props = {
   gameName: string;
   size: Size2d;
+  onCloseModal?: () => void;
 };
 
-export const WindowedGameComponent: React.FC<Props> = ({ gameName, size }) => {
+export const WindowedGameComponent: React.FC<Props> = ({
+  gameName,
+  size,
+  onCloseModal,
+}) => {
   const { t } = useTranslation();
 
   const [selectedCategory, setSelectedCategory] = useState<ModalNavigatorTab>(
     ModalNavigatorTab.ROOMS,
   );
-
-  const onCloseModal = useCallback(() => {}, []);
 
   const contentSize = useMemo(
     () => ({
@@ -51,6 +56,19 @@ export const WindowedGameComponent: React.FC<Props> = ({ gameName, size }) => {
             x: 11,
             y: 21,
           }}
+        />
+        <GraphicsComponent
+          type={GraphicType.CIRCLE}
+          radius={6.5}
+          alpha={0}
+          cursor={Cursor.POINTER}
+          eventMode={EventMode.STATIC}
+          position={{
+            x: size.width - 23,
+            y: 2,
+          }}
+          onPointerDown={onCloseModal}
+          zIndex={20}
         />
         <NineSliceSpriteComponent
           spriteSheet={SpriteSheetEnum.UI}

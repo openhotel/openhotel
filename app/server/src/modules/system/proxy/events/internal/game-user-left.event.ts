@@ -8,11 +8,12 @@ export const gameUserLeftEvent: ProxyEventType<{
   clientId: string;
 }> = {
   event: ProxyEvent.$GAME_USER_LEFT,
-  func: async ({ data: { user, gameId, clientId } }) => {
+  func: async ({ data: { user, gameId } }) => {
     const game = System.game.games.getGame(gameId);
     const $user = System.game.users.get({ accountId: user.accountId });
 
-    game.removeUser($user, clientId);
+    $user.removeGame();
+    game.removeUser($user);
 
     $user.emit(ProxyEvent.REMOVE_GAME, {
       gameId: game.getGameId(),
