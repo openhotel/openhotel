@@ -84,7 +84,7 @@ export const getRoom =
 
       //Remove user from internal "room"
       System.proxy.$emit(ProxyEvent.$REMOVE_ROOM, {
-        accountId: $accountId,
+        clientId: $user.getClientId(),
         roomId: room.id,
       });
       //Disconnect user from current room
