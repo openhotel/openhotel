@@ -4,6 +4,7 @@ import { Size2d } from "@oh/utils";
 export type GameConfig = {
   version: string;
   name: string;
+  repo: string;
   //
   kickFromCurrentRoom: boolean;
   screen: "fullscreen" | "windowed";
@@ -15,7 +16,7 @@ export type GameType = {
   executable: string;
 
   gameId: string;
-  name: string;
+  repo: string;
 };
 
 export type GameMutable = {

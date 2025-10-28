@@ -396,7 +396,7 @@ export const users = () => {
       $user.gameClientId = null;
     };
 
-    const getGameClientId = () => user.gameClientId;
+    const getGameClientId = () => $user.gameClientId;
 
     return {
       getAccountId,

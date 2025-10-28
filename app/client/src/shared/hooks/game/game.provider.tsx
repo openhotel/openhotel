@@ -46,7 +46,7 @@ export const GameProvider: React.FunctionComponent<GameProps> = ({
     clear: clearGame,
     getProps: getGameProps,
     props,
-    id,
+    name,
   } = useGameStore();
 
   const { on: onProxy, emit } = useProxy();
@@ -87,8 +87,8 @@ export const GameProvider: React.FunctionComponent<GameProps> = ({
 
     const removeOnLoadGame = onProxy(
       ProxyEvent.LOAD_GAME,
-      ({ gameId, token, properties }) => {
-        setGame(gameId, token, properties);
+      ({ gameId, name, token, properties }) => {
+        setGame(gameId, name, token, properties);
         openModal(Modal.GAME);
 
         setCanDrag(false);
@@ -169,7 +169,7 @@ export const GameProvider: React.FunctionComponent<GameProps> = ({
                 zIndex={Number.MAX_SAFE_INTEGER}
               >
                 <WindowedGameComponent
-                  gameName={id}
+                  gameName={name}
                   size={{
                     width: props.windowSize.width + WINDOW_MARGIN.lateral * 2,
                     height:
