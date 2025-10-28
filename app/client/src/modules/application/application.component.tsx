@@ -13,7 +13,7 @@ import {
   AccountProvider,
   TasksProvider,
   PrivateRoomProvider,
-  RouterProviderWrapper,
+  RouterProviderRenderer,
   CameraProvider,
   SafeWindowProvider,
   FurnitureProvider,
@@ -23,6 +23,7 @@ import {
   ChangelogProvider,
   LanguageProvider,
   ApiProvider,
+  GameProvider,
 } from "shared/hooks";
 import { NesterComponent } from "shared/components";
 
@@ -49,13 +50,14 @@ export const ApplicationComponent = () => {
       ItemPlacePreviewProvider,
       RouterProvider,
       ModalProvider,
+      GameProvider,
       InfoProvider,
       //|\\|//|\\|//|\\|//|\\|//|\\|//|\\|//|\\|
       //|\\|//|\\|//|\\|//|\\|//|\\|//|\\|//|\\|
       PrivateRoomProvider,
       //|\\|//|\\|//|\\|//|\\|//|\\|//|\\|//|\\|
       //|\\|//|\\|//|\\|//|\\|//|\\|//|\\|//|\\|,
-      RouterProviderWrapper,
+      RouterProviderRenderer,
     ],
     [],
   );

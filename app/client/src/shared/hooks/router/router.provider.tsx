@@ -34,7 +34,7 @@ export const RouterProvider: React.FunctionComponent<RouterProps> = ({
   );
 };
 
-export const RouterProviderWrapper: React.FunctionComponent<
+export const RouterProviderRenderer: React.FunctionComponent<
   RouterProps
 > = () => {
   const { route, data, navigate } = useRouterStore();

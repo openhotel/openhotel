@@ -8,7 +8,7 @@ import {
   SpriteComponent,
   useTextures,
 } from "@openhotel/pixi-components";
-import { useApi, useApiPath } from "shared/hooks";
+import { useApi } from "shared/hooks";
 import { ItemComponent, ScrollComponent } from "shared/components";
 import { Size2d } from "shared/types";
 
@@ -23,8 +23,7 @@ type Props = {
 };
 
 export const LayoutsComponent: React.FC<Props> = ({ size, onChange }) => {
-  const { fetch } = useApi();
-  const { getPath } = useApiPath();
+  const { fetch, getPath } = useApi();
   const { loadTexture, getTexture } = useTextures();
 
   const [selectedLayout, setSelectedLayout] = useState<number>(null);

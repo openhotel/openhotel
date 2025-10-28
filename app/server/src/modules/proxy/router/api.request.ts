@@ -12,11 +12,13 @@ export const getApiRequest = {
     const token: string = headers.get("token");
 
     // envs.isDevelopment ? userList[0] :
-    const user = Proxy.getUserList().find(
-      (user) =>
-        user.accountId === accountId &&
-        bcrypt.compareSync(token, user.apiToken),
-    );
+    const user = Proxy.core.user
+      .getUserList()
+      .find(
+        (user) =>
+          user.accountId === accountId &&
+          bcrypt.compareSync(token, user.apiToken),
+      );
 
     let data = {};
     const { searchParams } = getURL(request.url);
