@@ -156,7 +156,7 @@ export const GameProvider: React.FunctionComponent<GameProps> = ({
               type={GraphicType.RECTANGLE}
               width={windowSize.width}
               height={windowSize.height}
-              alpha={props?.screen === "windowed" ? 0.5 : 1}
+              alpha={props?.screen === "windowed" ? 0.8 : 1}
               tint={0}
               eventMode={EventMode.STATIC}
             />
