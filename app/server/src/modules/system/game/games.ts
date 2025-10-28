@@ -57,7 +57,7 @@ export const games = () => {
         return;
 
       $usersJoined.push(user.getAccountId());
-      console.log(`${user.getUsername()} joined game '${game.name}...'`);
+      console.log(`${user.getUsername()} joined game '${game.repo}...'`);
 
       $clientIdUserMap[user.getGameClientId()] = user.getAccountId();
 
@@ -80,7 +80,7 @@ export const games = () => {
         (userId) => userId !== user.getAccountId(),
       );
       $usersReady.push(user.getAccountId());
-      console.log(`${user.getUsername()} ready for game '${game.name}!'`);
+      console.log(`${user.getUsername()} ready for game '${game.repo}!'`);
 
       $worker.emit("USER_READY", {
         clientId: user.getGameClientId(),
@@ -97,7 +97,7 @@ export const games = () => {
       );
       delete $clientIdUserMap[user.getGameClientId()];
 
-      console.log(`${user.getUsername()} left game '${game.name}'`);
+      console.log(`${user.getUsername()} left game '${game.repo}'`);
 
       $worker.emit("USER_LEAVE", {
         clientId: user.getGameClientId(),
@@ -140,10 +140,10 @@ export const games = () => {
   const add = (game: GameType) => {
     let $game = ($gameMap[game.gameId] = $getGame(game));
 
-    log(`>> Game '${game.name}' starting...`);
+    log(`>> Game '${game.repo}' starting...`);
 
     $worker = getParentProcessWorker(`${game.path}/${game.executable}`, [], {
-      prefixLog: `[${game.name}]: `,
+      prefixLog: `[${game.repo}]: `,
     });
     $gameWorkerMap[game.gameId] = $worker;
 
@@ -161,10 +161,10 @@ export const games = () => {
         clientId,
       });
     });
-    $worker.on("USER_REWARD", ({ clientId, amount }) => {
+    $worker.on("USER_REWARD", ({ clientId, amount, ...props }) => {
       System.game.economy.executeTransaction({
         type: TransactionType.REWARD,
-        description: `Game '${game.name}' reward`,
+        description: `Game '${game.repo}' reward`,
         amount,
         toAccount: $game.getUser({ clientId }).getAccountId(),
       });
@@ -179,7 +179,7 @@ export const games = () => {
     $worker.emit("PING", { d: performance.now() });
   };
 
-  const $downloadGame = async (name: string, gameId: string) => {
+  const $downloadGame = async (repo: string, gameId: string) => {
     const osName = getOSName();
     let arch: "x86_64" | "aarch64" | null = Deno.build.arch;
     if (arch !== "aarch64" || osName !== "linux") arch = null;
@@ -195,7 +195,7 @@ export const games = () => {
     $headers.append("Accept-Encoding", `br, deflate, gzip, x-gzip`);
 
     const { assets } = await fetch(
-      `https://api.github.com/repos/${name}/releases/latest`,
+      `https://api.github.com/repos/${repo}/releases/latest`,
       {
         headers: $headers,
       },
@@ -215,7 +215,7 @@ export const games = () => {
 
     const dirPath = path.join(
       isDevelopment ? Deno.cwd() : getPath(),
-      `${PATH}/${name}`,
+      `${PATH}/${repo}`,
     );
     const updateFilePath = getTemporalUpdateFilePathname(dirPath);
     const updateFile = path.join(dirPath, `update_${osAsset.name}`);
@@ -278,34 +278,34 @@ export const games = () => {
     } catch (e) {}
     if (!gameDataMap) gameDataMap = {};
 
-    for (const { name } of games) {
+    for (const { repo } of games) {
       let gameId = Object.values(gameDataMap).find(
-        (data: any) => data?.name === name,
+        (data: any) => data?.repo === repo,
       )?.gameId;
 
       // download first time
       if (!gameId) {
         gameId = ulid();
-        await $downloadGame(name, gameId);
+        await $downloadGame(repo, gameId);
       }
 
       gameDataMap[gameId] = {
         gameId,
-        name,
+        repo,
       };
 
       let isDone = false;
       do {
         try {
           add({
-            path: `${PATH}/${name}`,
+            path: `${PATH}/${repo}`,
             executable: `game_${osName}`,
             gameId,
-            name,
+            repo,
           });
           isDone = true;
         } catch (e) {
-          await $downloadGame(name, gameId);
+          await $downloadGame(repo, gameId);
         }
       } while (!isDone);
     }

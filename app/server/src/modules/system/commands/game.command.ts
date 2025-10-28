@@ -18,6 +18,7 @@ export const gameCommand: Command = {
 
     user.emit(ProxyEvent.LOAD_GAME, {
       gameId: game.getGameId(),
+      name: config.name,
       token,
       properties: {
         screen: "windowed",

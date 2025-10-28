@@ -1,2 +1,2 @@
 games:
-  - name: openhotel/game-template
+  - repo: openhotel/game-template

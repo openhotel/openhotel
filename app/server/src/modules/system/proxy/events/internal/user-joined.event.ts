@@ -18,22 +18,6 @@ export const userJoinedEvent: ProxyEventType<{
       privateUser,
     );
 
-    // DO NOT MERGE
-    // const user = System.game.users.get({ accountId: privateUser.accountId });
-    // const game = System.game.games.getGames()[0];
-    //
-    // const token = getRandomString(16);
-    // game.addUserRequest(user, token);
-    //
-    // user.emit(ProxyEvent.LOAD_GAME, {
-    //   gameId: game.getManifest().id,
-    //   token,
-    // });
-
-    // const currentUser = System.game.users.get({
-    //   accountId: privateUser.accountId,
-    // });
-
     //TODO Teleport
     // if (meta?.[0] === Meta.TELEPORT) {
     //   const teleport = await System.game.teleports.get(meta[1] as string);
