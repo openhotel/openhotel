@@ -15,7 +15,7 @@ export * from "./info";
 export * from "./changelog";
 export * from "./language";
 export * from "./api";
+export * from "./game";
 
 export * from "./use-character";
-export * from "./use-api-path";
 export * from "./use-contributors";

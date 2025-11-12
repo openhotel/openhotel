@@ -1,6 +1,13 @@
 import { UserMutable } from "shared/types/user.types.ts";
 import { log } from "shared/utils/log.utils.ts";
 
+import { ProxyEvent } from "shared/enums/event.enum.ts";
+import {
+  parseCommandArgs,
+  validateCommandUsages,
+} from "shared/utils/commands.utils.ts";
+import { CommandRoles } from "shared/types/commands.types.ts";
+
 import { stopCommand } from "./stop.command.ts";
 import { opCommand } from "./op.command.ts";
 import { deopCommand } from "./deop.command.ts";
@@ -24,13 +31,7 @@ import { photoCommand } from "./photo.command.ts";
 import { creditsCommand } from "./credits.command.ts";
 import { tokenCommand } from "./token.command.ts";
 import { colorCommand } from "./color.command.ts";
-
-import { ProxyEvent } from "shared/enums/event.enum.ts";
-import {
-  parseCommandArgs,
-  validateCommandUsages,
-} from "shared/utils/commands.utils.ts";
-import { CommandRoles } from "shared/types/commands.types.ts";
+import { gameCommand } from "./game.command.ts";
 
 export const commandList = [
   stopCommand,
@@ -71,6 +72,8 @@ export const commandList = [
   tokenCommand,
 
   colorCommand,
+
+  gameCommand,
 ];
 
 export const executeCommand = async ({

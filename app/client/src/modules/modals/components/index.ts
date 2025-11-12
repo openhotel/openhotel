@@ -5,3 +5,4 @@ export * from "./inventory";
 export * from "./navigator";
 export * from "./purse";
 export * from "./room-creator";
+export * from "./windowed-game";

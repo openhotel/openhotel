@@ -57,6 +57,9 @@ export const users = () => {
     const getAccountId = () => user.accountId;
     const getUsername = () => user.username;
 
+    const getClientId = () => $privateUserMap[user.accountId].clientId;
+    const getIp = () => $privateUserMap[user.accountId].ip;
+
     const setPosition = (position: Point3d) => {
       $user.position = position;
       $user.positionUpdatedAt = performance.now();
@@ -175,7 +178,7 @@ export const users = () => {
 
     const disconnect = () =>
       System.proxy.$emit(ProxyEvent.$DISCONNECT_USER, {
-        clientId: $privateUserMap[user.accountId].clientId,
+        clientId: getClientId(),
       });
 
     const emit = <Data extends any>(
@@ -376,9 +379,31 @@ export const users = () => {
       return (await System.db.get(["users", getAccountId(), "color"])) ?? null;
     };
 
+    const setGame = (gameId: string, clientId: string) => {
+      $user.gameId = gameId;
+      $user.gameClientId = clientId;
+    };
+    const getGame = () => $user.gameId;
+
+    const removeGame = () => {
+      if (!$user.gameId) return;
+
+      emit(ProxyEvent.REMOVE_GAME, {
+        gameId: $user.gameId,
+      });
+
+      $user.gameId = null;
+      $user.gameClientId = null;
+    };
+
+    const getGameClientId = () => $user.gameClientId;
+
     return {
       getAccountId,
       getUsername,
+
+      getClientId,
+      getIp,
 
       setPosition,
       getPosition,
@@ -435,6 +460,11 @@ export const users = () => {
 
       setColor,
       getColor,
+
+      setGame,
+      getGame,
+      removeGame,
+      getGameClientId,
     };
   };
 
