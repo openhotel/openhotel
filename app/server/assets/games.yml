@@ -1,2 +1,3 @@
 games:
   - repo: openhotel/game-template
+  - path: local/test

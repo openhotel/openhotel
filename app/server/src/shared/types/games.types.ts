@@ -14,6 +14,7 @@ export type GameConfig = {
 export type GameType = {
   path: string;
   executable: string;
+  isLocal: boolean;
 
   gameId: string;
   repo: string;

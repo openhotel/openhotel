@@ -278,10 +278,13 @@ export const games = () => {
     } catch (e) {}
     if (!gameDataMap) gameDataMap = {};
 
-    for (const { repo } of games) {
-      let gameId = Object.values(gameDataMap).find(
-        (data: any) => data?.repo === repo,
-      )?.gameId;
+    for (const { repo, path } of games) {
+      let gameId = path
+        ? ulid()
+        : Object.values(gameDataMap).find((data: any) => data?.repo === repo)
+            ?.gameId;
+
+      const isLocal = Boolean(path);
 
       // download first time
       if (!gameId) {
@@ -298,13 +301,18 @@ export const games = () => {
       do {
         try {
           add({
-            path: `${PATH}/${repo}`,
+            path: `${PATH}/${repo ?? path}`,
             executable: `game_${osName}`,
             gameId,
-            repo,
+            repo: repo ?? path,
+            isLocal,
           });
           isDone = true;
         } catch (e) {
+          if (isLocal) {
+            console.error(`>> Game '${path}' doesn't exist!`);
+            return;
+          }
           await $downloadGame(repo, gameId);
         }
       } while (!isDone);
