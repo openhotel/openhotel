@@ -70,7 +70,6 @@ export const ModalProvider: React.FunctionComponent<ModalProps> = ({
           : null,
       );
 
-      console.log(modal);
       focusedModalRef.current = [modal, ...focusedModalRef.current];
       update();
     },

@@ -21,6 +21,7 @@ import { Size2d } from "shared/types";
 import {
   useAccount,
   useCamera,
+  useChat,
   useConfig,
   useGameStore,
   useModal,
@@ -56,6 +57,7 @@ export const GameProvider: React.FunctionComponent<GameProps> = ({
   const { getSize, getScale } = useWindow();
   const { setCanDrag } = useCamera();
   const { openModal, closeModal } = useModal();
+  const { setEnabled } = useChat();
 
   const [windowSize, setWindowSize] = useState<Size2d>(getSize());
 
@@ -91,6 +93,7 @@ export const GameProvider: React.FunctionComponent<GameProps> = ({
         setGame(gameId, name, token, properties);
         openModal(Modal.GAME);
 
+        setEnabled(false);
         setCanDrag(false);
 
         iframeRef.current = document.createElement("iframe");
@@ -113,6 +116,7 @@ export const GameProvider: React.FunctionComponent<GameProps> = ({
     const removeOnRemoveGame = onProxy(ProxyEvent.REMOVE_GAME, () => {
       clearGame();
       setCanDrag(true);
+      setEnabled(true);
 
       if (!iframeRef.current) return;
 

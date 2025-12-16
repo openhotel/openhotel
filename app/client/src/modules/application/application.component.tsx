@@ -24,6 +24,7 @@ import {
   LanguageProvider,
   ApiProvider,
   GameProvider,
+  ChatProvider,
 } from "shared/hooks";
 import { NesterComponent } from "shared/components";
 
@@ -49,6 +50,7 @@ export const ApplicationComponent = () => {
       SoundProvider,
       ItemPlacePreviewProvider,
       RouterProvider,
+      ChatProvider,
       ModalProvider,
       GameProvider,
       InfoProvider,

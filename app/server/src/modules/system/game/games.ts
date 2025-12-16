@@ -27,7 +27,7 @@ export const games = () => {
     let $usersJoined: string[] = [];
     let $usersReady: string[] = [];
 
-    let $clientIdUserMap: Record<string, string> = {};
+    const $clientIdUserMap: Record<string, string> = {};
 
     const getPath = () => game.path;
     const getExecutable = () => game.executable;
@@ -138,7 +138,7 @@ export const games = () => {
   };
 
   const add = (game: GameType) => {
-    let $game = ($gameMap[game.gameId] = $getGame(game));
+    const $game = ($gameMap[game.gameId] = $getGame(game));
 
     log(`>> Game '${game.repo}' starting...`);
 
@@ -278,7 +278,9 @@ export const games = () => {
     } catch (e) {}
     if (!gameDataMap) gameDataMap = {};
 
-    for (const { repo, path } of games) {
+    for (const { repo, path, enabled } of games) {
+      if (!enabled) continue;
+
       let gameId = path
         ? ulid()
         : Object.values(gameDataMap).find((data: any) => data?.repo === repo)

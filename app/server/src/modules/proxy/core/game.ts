@@ -9,6 +9,8 @@ type UserRequestType = {
   ip: string;
 };
 
+type ExtendedRequestType = UserRequestType & { clientId: string };
+
 export const game = () => {
   let userRequestMap: Record<string, UserRequestType> = {};
   let clientUserRequestMap: Record<string, UserRequestType> = {};
@@ -121,6 +123,22 @@ export const game = () => {
     userMapClient[clientId].close();
   };
 
+  const getUser = ({
+    accountId,
+  }: {
+    accountId: string;
+  }): ExtendedRequestType | null =>
+    Object.keys(clientUserRequestMap)
+      .map((clientId) =>
+        clientUserRequestMap[clientId].accountId === accountId
+          ? {
+              ...clientUserRequestMap[clientId],
+              clientId,
+            }
+          : null,
+      )
+      .find(Boolean) ?? null;
+
   return {
     guest,
     connected,
@@ -129,5 +147,7 @@ export const game = () => {
     setUserRequest,
     emitUser,
     disconnectUser,
+
+    getUser,
   };
 };

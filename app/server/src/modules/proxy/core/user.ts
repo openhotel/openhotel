@@ -125,6 +125,21 @@ export const user = () => {
 
       client.on(ProxyEvent.$USER_DATA, ({ event, message }) => {
         if (!foundUser) return client.close();
+
+        // prevent sending events from users inside games >> disconnect from both clients
+        const foundUserInsideGame = Proxy.core.game.getUser({
+          accountId: foundUser.accountId,
+        });
+        //only close game event is permitted
+        if (foundUserInsideGame && event !== ProxyEvent.CLOSE_GAME) {
+          client.close();
+          Proxy.core.game.disconnectUser(
+            foundUserInsideGame.gameId,
+            foundUserInsideGame.clientId,
+          );
+          return;
+        }
+
         try {
           // Disconnect client if tries to send events outside the whitelist
           if (!PROXY_CLIENT_EVENT_WHITELIST.includes(event))

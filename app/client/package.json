@@ -41,7 +41,8 @@
   },
   "dependencies": {
     "@oh/queue": "npm:@jsr/oh__queue@1.1.1",
-    "@openhotel/pixi-components": "0.0.21",
+    "@openhotel/pixi-components": "0.0.29",
+    "dayjs": "1.11.19",
     "howler": "2.2.4",
     "i18next": "25.0.2",
     "i18next-http-backend": "3.0.2",
