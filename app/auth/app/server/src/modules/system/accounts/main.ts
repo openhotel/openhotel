@@ -500,12 +500,16 @@ export const accounts = () => {
     };
 
     const getEmail = async (): Promise<string> => {
-      const encryptedEmail = (await System.db.get([
-        "emailsByHash",
-        account.emailHash,
-      ])) as string;
+      try {
+        const encryptedEmail = (await System.db.get([
+          "emailsByHash",
+          account.emailHash,
+        ])) as string;
 
-      return await System.db.crypto.decryptSHA256(encryptedEmail);
+        return await System.db.crypto.decryptSHA256(encryptedEmail);
+      } catch (e) {
+        return "invalid";
+      }
     };
 
     const isAdmin = async () => Boolean(await $admins.get(account.accountId));

@@ -21,15 +21,18 @@ export const usersGetRequest: RequestType = {
         },
       });
 
+    const accounts = await System.accounts.getAccountList();
+
     const users = (
-      await Promise.all(
-        (await System.accounts.getAccountList()).map(($account) =>
-          $account.getPublicObject(),
-        ),
+      await Promise.allSettled(
+        accounts.map((account) => account.getPublicObject()),
       )
-    ).sort((userA: any, userB: any) =>
-      userA.createdAt > userB.createdAt ? -1 : 1,
-    );
+    )
+      .filter((result) => result.status === "fulfilled")
+      .map((result) => result.value)
+      .sort((userA: any, userB: any) =>
+        userA.createdAt > userB.createdAt ? -1 : 1,
+      );
 
     return getResponse(HttpStatusCode.OK, {
       data: { users },
