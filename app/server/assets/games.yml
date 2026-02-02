@@ -2,4 +2,4 @@ games:
   - repo: openhotel/game-template
     enabled: true
   - path: local/test
-    enabled: false
+    enabled: true

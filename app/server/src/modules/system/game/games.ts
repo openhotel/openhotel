@@ -15,7 +15,8 @@ import * as path from "@std/path";
 import { ulid } from "@std/ulid";
 
 const GAMES_PATH_FILE = "./assets/games.yml";
-const PATH = ".games";
+const LOCAL_GAMES_PATH = "./assets/games";
+const OPERATIVE_PATH = ".games";
 
 export const games = () => {
   const $gameMap: Record<string, GameMutable> = {};
@@ -137,12 +138,39 @@ export const games = () => {
     };
   };
 
-  const add = (game: GameType) => {
+  const add = async (game: GameType) => {
     const $game = ($gameMap[game.gameId] = $getGame(game));
 
     log(`>> Game '${game.repo}' starting...`);
 
-    $worker = getParentProcessWorker(`${game.path}/${game.executable}`, [], {
+    const executablePath = `${OPERATIVE_PATH}/${game.path}/${game.executable}`;
+    //create folder and move local executable + config
+    if (game.isLocal) {
+      try {
+        await Deno.stat(executablePath);
+      } catch (e) {
+        try {
+          await Deno.mkdir(`${OPERATIVE_PATH}/${game.path}`, {
+            recursive: true,
+          });
+          console.log(`${OPERATIVE_PATH}/${game.path}`);
+          await Deno.copyFile(
+            `${LOCAL_GAMES_PATH}/${game.path}/${game.executable}`,
+            executablePath,
+          );
+          await Deno.copyFile(
+            `${LOCAL_GAMES_PATH}/${game.path}/config.yml`,
+            `${OPERATIVE_PATH}/${game.path}/config.yml`,
+          );
+        } catch (e) {
+          log(
+            `>> Game '${game.repo}' ERROR!! Missing executable or/and config.yml files!!`,
+          );
+          return;
+        }
+      }
+    }
+    $worker = getParentProcessWorker(executablePath, [], {
       prefixLog: `[${game.repo}]: `,
     });
     $gameWorkerMap[game.gameId] = $worker;
@@ -215,7 +243,7 @@ export const games = () => {
 
     const dirPath = path.join(
       isDevelopment ? Deno.cwd() : getPath(),
-      `${PATH}/${repo}`,
+      `${OPERATIVE_PATH}/${repo}`,
     );
     const updateFilePath = getTemporalUpdateFilePathname(dirPath);
     const updateFile = path.join(dirPath, `update_${osAsset.name}`);
@@ -273,7 +301,7 @@ export const games = () => {
 
     try {
       gameDataMap = parse(
-        await Deno.readTextFile(path.join(PATH, "games.yml")),
+        await Deno.readTextFile(path.join(OPERATIVE_PATH, "games.yml")),
       );
     } catch (e) {}
     if (!gameDataMap) gameDataMap = {};
@@ -281,10 +309,10 @@ export const games = () => {
     for (const { repo, path, enabled } of games) {
       if (!enabled) continue;
 
-      let gameId = path
-        ? ulid()
-        : Object.values(gameDataMap).find((data: any) => data?.repo === repo)
-            ?.gameId;
+      let gameId =
+        Object.values(gameDataMap).find(
+          (data: any) => data?.repo === repo || data?.repo === path,
+        )?.gameId ?? ulid();
 
       const isLocal = Boolean(path);
 
@@ -296,14 +324,14 @@ export const games = () => {
 
       gameDataMap[gameId] = {
         gameId,
-        repo,
+        repo: repo ?? path,
       };
 
       let isDone = false;
       do {
         try {
-          add({
-            path: `${PATH}/${repo ?? path}`,
+          await add({
+            path: repo ?? path,
             executable: `game_${osName}`,
             gameId,
             repo: repo ?? path,
@@ -321,7 +349,7 @@ export const games = () => {
     }
 
     Deno.writeTextFileSync(
-      path.join(PATH, "games.yml"),
+      path.join(OPERATIVE_PATH, "games.yml"),
       stringify(gameDataMap),
     );
 
