@@ -7,7 +7,7 @@ const list = async (_: string[], user: UserMutable) => {
   const gameDataList = await Promise.all(
     System.game.games.getGames().map(async (game) => ({
       gameId: game.getGameId(),
-      ...(await game.getConfig()),
+      ...(await game.getSettings()),
     })),
   );
   user.emit(ProxyEvent.SYSTEM_MESSAGE, {
@@ -18,23 +18,23 @@ const list = async (_: string[], user: UserMutable) => {
 
 const join = async ([_, ...nameArray]: string[], user: UserMutable) => {
   const gameName = nameArray.join(" ");
-  const foundGameConfig = (
+  const foundGameSettings = (
     await Promise.all(
       System.game.games.getGames().map(async (game) => ({
-        ...(await game.getConfig()),
+        ...(await game.getSettings()),
         gameId: game.getGameId(),
       })),
     )
   ).find((game) => game.name === gameName);
 
-  if (!foundGameConfig) {
+  if (!foundGameSettings) {
     user.emit(ProxyEvent.SYSTEM_MESSAGE, {
       message: `Game ${gameName} now found!`,
     });
     return;
   }
 
-  const foundGame = System.game.games.getGame(foundGameConfig.gameId);
+  const foundGame = System.game.games.getGame(foundGameSettings.gameId);
 
   if (!foundGame) {
     user.emit(ProxyEvent.SYSTEM_MESSAGE, {
@@ -45,15 +45,15 @@ const join = async ([_, ...nameArray]: string[], user: UserMutable) => {
   const token = getRandomString(16);
   if (!foundGame.addUserRequest(user, token)) return;
 
-  const config = await foundGame.getConfig();
+  const settings = await foundGame.getSettings();
 
   user.emit(ProxyEvent.LOAD_GAME, {
     gameId: foundGame.getGameId(),
-    name: config.name,
+    name: settings.name,
     token,
     properties: {
-      screen: "windowed",
-      windowSize: config.windowSize,
+      screen: settings.screen,
+      windowSize: settings.windowSize,
     },
   });
 };

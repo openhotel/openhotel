@@ -12,9 +12,9 @@ export const gameUserJoinEvent: ProxyEventType<{
     const game = System.game.games.getGame(gameId);
     const $user = System.game.users.get({ accountId: user.accountId });
 
-    const config = await game.getConfig();
+    const settings = await game.getSettings();
 
-    if (config.kickFromCurrentRoom) {
+    if (settings.kickFromCurrentRoom) {
       // const $roomId = $user.getRoom();
       //
       // if ($roomId) {

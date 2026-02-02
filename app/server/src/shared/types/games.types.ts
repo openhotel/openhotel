@@ -1,7 +1,7 @@
 import { UserMutable } from "shared/types/user.types.ts";
 import { Size2d } from "@oh/utils";
 
-export type GameConfig = {
+export type GameSettings = {
   version: string;
   name: string;
   repo: string;
@@ -32,7 +32,7 @@ export type GameMutable = {
 
   getUser: (data: { clientId: string }) => UserMutable | null;
 
-  getConfig: () => Promise<GameConfig>;
+  getSettings: () => Promise<GameSettings>;
 
   emit: (event: string, message: any) => void;
 };

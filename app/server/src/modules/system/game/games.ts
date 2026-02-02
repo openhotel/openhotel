@@ -9,6 +9,7 @@ import {
   getOSName,
   getPath,
   getTemporalUpdateFilePathname,
+  copyDirectory,
 } from "@oh/utils";
 import { TransactionType } from "shared/enums/economy.enum.ts";
 import * as path from "@std/path";
@@ -113,8 +114,10 @@ export const games = () => {
       return null;
     };
 
-    const getConfig = async () =>
-      parse(await Deno.readTextFile(`${game.path}/config.yml`));
+    const getSettings = async () =>
+      parse(
+        await Deno.readTextFile(`${OPERATIVE_PATH}/${game.path}/settings.yml`),
+      );
 
     const emit = (event: string, message: any) => {
       $worker.emit(event, message);
@@ -132,7 +135,7 @@ export const games = () => {
 
       getUser,
 
-      getConfig,
+      getSettings,
 
       emit,
     };
@@ -150,22 +153,12 @@ export const games = () => {
         await Deno.stat(executablePath);
       } catch (e) {
         try {
-          await Deno.mkdir(`${OPERATIVE_PATH}/${game.path}`, {
-            recursive: true,
-          });
-          console.log(`${OPERATIVE_PATH}/${game.path}`);
-          await Deno.copyFile(
-            `${LOCAL_GAMES_PATH}/${game.path}/${game.executable}`,
-            executablePath,
-          );
-          await Deno.copyFile(
-            `${LOCAL_GAMES_PATH}/${game.path}/config.yml`,
-            `${OPERATIVE_PATH}/${game.path}/config.yml`,
+          await copyDirectory(
+            `${LOCAL_GAMES_PATH}/${game.path}`,
+            `${OPERATIVE_PATH}/${game.path}`,
           );
         } catch (e) {
-          log(
-            `>> Game '${game.repo}' ERROR!! Missing executable or/and config.yml files!!`,
-          );
+          log(`>> Game '${game.repo}' ERROR!!`);
           return;
         }
       }
