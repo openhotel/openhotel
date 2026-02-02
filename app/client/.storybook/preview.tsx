@@ -70,7 +70,11 @@ export const decorators = [
 
     return (
       <StrictMode>
-        <ApplicationProvider scale={scale} backgroundColor={backgroundColor}>
+        <ApplicationProvider
+          scale={scale}
+          backgroundColor={backgroundColor}
+          backgroundAlpha={1}
+        >
           <FakeProviders>{withConsole()(renderStory)(props)}</FakeProviders>
         </ApplicationProvider>
       </StrictMode>

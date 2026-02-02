@@ -40,6 +40,9 @@ export type User = {
 
   roomId?: string;
 
+  gameClientId?: string;
+  gameId?: string | null;
+
   position?: Point3d;
   positionUpdatedAt?: number;
 
@@ -65,6 +68,9 @@ export type UsersConfig = {
 export type UserMutable = {
   getAccountId: () => string;
   getUsername: () => string;
+
+  getClientId: () => string;
+  getIp: () => string;
 
   setPosition: (position: Pick<Point3d, "x" | "z">) => void;
   getPosition: () => Point3d | null;
@@ -126,4 +132,9 @@ export type UserMutable = {
 
   setColor: (color: number) => Promise<void>;
   getColor: () => Promise<number | null>;
+
+  setGame: (gameId: string, clientId: string) => void;
+  getGame: () => string | null;
+  removeGame: () => void;
+  getGameClientId: () => string | null;
 };

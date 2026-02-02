@@ -3,3 +3,4 @@ node_modules
 .vite
 build
 .yarn
+.run
