@@ -1,6 +1,6 @@
 import { WorkerParent } from "worker_ionic";
 import { PrivateUser, WorkerProps } from "shared/types/main.ts";
-import { loadInternalEvents, eventList } from "./events/main.ts";
+import { internal, eventList } from "./events/main.ts";
 import { ProxyEvent } from "shared/enums/main.ts";
 import { log } from "shared/utils/main.ts";
 import { System } from "modules/system/main.ts";
@@ -37,6 +37,8 @@ type EmitRoomProps<Data> = {
 export const proxy = () => {
   let $worker: WorkerParent;
 
+  const $internal = internal();
+
   const load = () => {
     const config = System.config.get();
     const envs = System.getEnvs();
@@ -49,7 +51,7 @@ export const proxy = () => {
       envs,
     } as WorkerProps);
 
-    loadInternalEvents($worker);
+    $internal.load($worker);
 
     $worker.on(
       ProxyEvent.$USER_DATA,

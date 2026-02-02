@@ -1,7 +1,7 @@
 import React, { ReactNode, useCallback } from "react";
 import { ApiContext } from "shared/hooks/api/api.context";
 import { useAccount } from "shared/hooks/account";
-import { useApiPath } from "shared/hooks/use-api-path";
+import { useConfig } from "shared/hooks/config";
 
 type ApiProps = {
   children: ReactNode;
@@ -10,8 +10,15 @@ type ApiProps = {
 export const ApiProvider: React.FunctionComponent<ApiProps> = ({
   children,
 }) => {
+  const { isDevelopment } = useConfig();
   const { getAccount } = useAccount();
-  const { getPath } = useApiPath();
+
+  const getPath = useCallback(
+    (pathname: string) => {
+      return `${isDevelopment() ? "proxy" : ""}/api${pathname}`;
+    },
+    [isDevelopment],
+  );
 
   const $fetch = useCallback(
     async (
@@ -53,6 +60,7 @@ export const ApiProvider: React.FunctionComponent<ApiProps> = ({
     <ApiContext.Provider
       value={{
         fetch: $fetch,
+        getPath,
       }}
       children={children}
     />

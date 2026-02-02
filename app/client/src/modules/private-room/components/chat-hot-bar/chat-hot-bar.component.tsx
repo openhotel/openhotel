@@ -22,7 +22,7 @@ import {
 } from "@openhotel/pixi-components";
 import { HotBarItemsComponent } from "shared/components";
 import { Event, SpriteSheetEnum } from "shared/enums";
-import { usePrivateRoom, useProxy } from "shared/hooks";
+import { useChat, usePrivateRoom, useProxy } from "shared/hooks";
 import {
   CHAT_RIGHT_MARGIN,
   HOT_BAR_HEIGHT,
@@ -47,8 +47,10 @@ export const ChatHotBarComponent: React.FC<Props> = ({
   const { scale } = useApplication();
   const { lastPositionData, absoluteRoomPosition } = usePrivateRoom();
   const { getPosition: getCursorPosition } = useCursor();
+  const { enabled } = useChat();
 
   const [focusInputNow, setFocusInputNow] = useState<number>(null);
+  const [blurInputNow, setBlurInputNow] = useState<number>(null);
 
   const [value, setValue] = useState<string>(null);
 
@@ -61,15 +63,21 @@ export const ChatHotBarComponent: React.FC<Props> = ({
   );
   const historyIndexRef = useRef<number>(-1);
 
+  useEffect(() => {
+    if (!enabled) setBlurInputNow(performance.now());
+  }, [enabled]);
+
   const onKeyDown = useCallback(
     ({ code }: KeyboardEvent) => {
+      if (!enabled) return;
       if (code === "KeyC") return setFocusInputNow(performance.now());
     },
-    [setFocusInputNow, setValue],
+    [setFocusInputNow, setValue, enabled],
   );
 
   const onChangeMessage = useCallback(
     ({ code, target }: KeyboardEventExtended) => {
+      if (!enabled) return;
       const $message = target.value;
 
       if (code === "ArrowUp") {
@@ -150,6 +158,7 @@ export const ChatHotBarComponent: React.FC<Props> = ({
       absoluteRoomPosition,
       scale,
       getCursorPosition,
+      enabled,
     ],
   );
 
@@ -255,8 +264,10 @@ export const ChatHotBarComponent: React.FC<Props> = ({
             onChange={onChangeMessage}
             clearOnEnter={true}
             focusNow={focusInputNow}
+            blurNow={blurInputNow}
             onFocus={onFocus}
             onBlur={onBlur}
+            enabled={enabled}
           />
         </ContainerComponent>
 

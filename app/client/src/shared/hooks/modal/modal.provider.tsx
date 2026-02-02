@@ -60,10 +60,15 @@ export const ModalProvider: React.FunctionComponent<ModalProps> = ({
       const modalSize = MODAL_SIZE_MAP[modal];
       const windowSize = getSize();
 
-      open(modal, {
-        x: windowSize.width / 2 - modalSize.width / 2,
-        y: windowSize.height / 2 - modalSize.height / 2,
-      });
+      open(
+        modal,
+        modalSize
+          ? {
+              x: windowSize.width / 2 - modalSize.width / 2,
+              y: windowSize.height / 2 - modalSize.height / 2,
+            }
+          : null,
+      );
 
       focusedModalRef.current = [modal, ...focusedModalRef.current];
       update();
@@ -101,8 +106,10 @@ export const ModalProvider: React.FunctionComponent<ModalProps> = ({
   }, [setCanDrag]);
 
   const enableCameraMovement = useCallback(() => {
+    if (modals[Modal.GAME]?.visible) return;
+
     setCanDrag(true);
-  }, [setCanDrag]);
+  }, [setCanDrag, modals]);
 
   useEffect(() => {
     const removeOnPointerDown = on(Event.POINTER_DOWN, () => {
@@ -169,6 +176,7 @@ export const ModalProvider: React.FunctionComponent<ModalProps> = ({
       [Modal.PURSE]: PurseComponent,
       [Modal.CLUB]: ClubComponent,
       [Modal.ROOM_CREATOR]: RoomCreatorComponent,
+      [Modal.GAME]: null,
     }),
     [],
   );
@@ -186,6 +194,8 @@ export const ModalProvider: React.FunctionComponent<ModalProps> = ({
     lastModalList.current = visibleModals;
     return visibleModals
       .map((modal: Modal) => {
+        if (modal === Modal.GAME) return null;
+
         const { position } = get(modal);
         const ModalComp = MODAL_COMPONENT_MAP[modal];
         const zIndex = newModals.includes(modal)

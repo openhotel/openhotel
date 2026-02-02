@@ -9,7 +9,7 @@ export const removeRoomEvent: ProxyEventType<{
   event: ProxyEvent.$REMOVE_ROOM,
   func: ({ data: { roomId, accountId } }) => {
     try {
-      const user = Proxy.getUser(accountId);
+      const user = Proxy.core.user.getUser(accountId);
       if (!user) return;
 
       Proxy.getRoom?.(roomId)?.removeClient?.(user?.clientId);

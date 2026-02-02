@@ -4,6 +4,7 @@ import { furniture } from "./furniture.ts";
 import { teleports } from "./teleports.ts";
 import { economy } from "./economy.ts";
 import { companies } from "./companies.ts";
+import { games } from "./games.ts";
 
 export const game = () => {
   const $furniture = furniture();
@@ -12,12 +13,14 @@ export const game = () => {
   const $teleports = teleports();
   const $economy = economy();
   const $companies = companies();
+  const $games = games();
 
   const load = async () => {
     await $furniture.load();
     await $users.load();
     await $rooms.load();
     await $economy.load();
+    await $games.load();
   };
 
   return {
@@ -29,5 +32,6 @@ export const game = () => {
     teleports: $teleports,
     economy: $economy,
     companies: $companies,
+    games: $games,
   };
 };

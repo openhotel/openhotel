@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { useApiPath, useConfig } from "shared/hooks";
+import { useApi, useConfig } from "shared/hooks";
 
 type Props = {
   children: React.ReactNode;
 };
 
 export const PhantomProvider: React.FC<Props> = ({ children }) => {
-  const { getPath } = useApiPath();
+  const { getPath } = useApi();
   const { isDevelopment } = useConfig();
 
   const [isLogged, setIsLogged] = useState<boolean>(isDevelopment());

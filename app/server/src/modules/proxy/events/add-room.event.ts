@@ -9,7 +9,7 @@ export const addRoomEvent: ProxyEventType<{
   event: ProxyEvent.$ADD_ROOM,
   func: ({ data: { roomId, accountId } }) => {
     try {
-      const user = Proxy.getUser(accountId);
+      const user = Proxy.core.user.getUser(accountId);
       if (!user) return;
 
       Proxy.getRoom?.(roomId)?.addClient?.(user.clientId);
