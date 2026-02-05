@@ -7,6 +7,8 @@ export type ApiState = {
     ignoreStatus?: boolean,
     method?: string,
   ) => Promise<unknown>;
+
+  getPath: (pathname: string) => string;
 };
 
 export const ApiContext = React.createContext<ApiState>(undefined);
