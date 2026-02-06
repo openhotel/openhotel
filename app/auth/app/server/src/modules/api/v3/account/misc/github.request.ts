@@ -24,6 +24,9 @@ export const githubGetRequest: RequestType = {
 
     const account = await System.accounts.getAccount({ request });
 
+    if (account.getObject().restrictions)
+      return getResponse(HttpStatusCode.LOCKED);
+
     return getResponse(HttpStatusCode.OK, {
       url: await account.github.generateUri(),
     });

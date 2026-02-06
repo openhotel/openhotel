@@ -6,7 +6,32 @@ import { HOTEL_1, USER_1, USER_2 } from "../consts.ts";
 
 import { STATE } from "../state.ts";
 
-describe("12. delete account", () => {
+describe("14. delete account", () => {
+  it("delete user", async () => {
+    const { accountId } = STATE.getUser(USER_2.email);
+    const { status } = await fetcher(`/admin/user`, {
+      method: "DELETE",
+      headers: STATE.getSessionHeaders(USER_1.email),
+      body: JSON.stringify({
+        accountId,
+      }),
+    });
+    assertEquals(status, 200);
+
+    const response = await fetcher(`/admin/users`, {
+      method: "GET",
+      headers: STATE.getSessionHeaders(USER_1.email),
+    });
+    assertEquals(response.status, 200);
+    assertEquals(response.data.users.length, 1);
+
+    const user = response.data.users.find(
+      (user: any) => user.accountId === accountId,
+    );
+
+    assertEquals(user, undefined);
+  });
+
   it("register a new user", async () => {
     const { status, data, message } = await fetcher("/account/register", {
       method: "POST",

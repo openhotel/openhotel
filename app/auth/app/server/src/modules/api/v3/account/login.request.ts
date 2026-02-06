@@ -27,7 +27,7 @@ export const loginPostRequest: RequestType = {
 
     const account = await System.accounts.getAccount({ email });
 
-    if (!account)
+    if (!account || account.getObject().blocked)
       return getResponse(HttpStatusCode.BAD_REQUEST, {
         message: "Email or password not valid!",
       });

@@ -1,3 +1,5 @@
+import { RestrictionCode } from "shared/enums";
+
 export type User = {
   createdAt: number;
   accountId: string;
@@ -9,4 +11,8 @@ export type User = {
   otp?: boolean;
   verified?: boolean;
   githubLogin?: string;
+
+  // [from, kind]
+  restrictions?: [number, RestrictionCode];
+  blocked?: boolean;
 };

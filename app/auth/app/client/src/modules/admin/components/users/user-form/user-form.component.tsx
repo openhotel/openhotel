@@ -13,6 +13,7 @@ import { User } from "shared/types";
 import dayjs from "dayjs";
 import { useAdmin } from "shared/hooks";
 import styles from "./user-form.module.scss";
+import { RestrictionCode } from "shared/enums";
 
 type Props = {
   user: User;
@@ -41,6 +42,8 @@ export const UserFormComponent: React.FC<Props> = ({ user, setUser }) => {
         createdAt: dayjs(createdAt).valueOf(),
         admin: user.admin,
         languages: user.languages,
+        restrictions: user.restrictions,
+        blocked: user.blocked,
       };
 
       await updateUser($user);
@@ -66,6 +69,25 @@ export const UserFormComponent: React.FC<Props> = ({ user, setUser }) => {
       adminOptions.find(({ key }) => (user?.admin ? "true" : "false" === key)),
     [user, adminOptions],
   );
+  const restrictionOptions = useMemo(
+    () =>
+      Object.keys(RestrictionCode).map((value) => ({
+        value,
+        key: RestrictionCode[value],
+      })),
+    [],
+  );
+
+  const selectedRestrictionOption = useMemo(
+    () =>
+      restrictionOptions.find(({ key }) =>
+        user?.restrictions?.[0] ? user.restrictions[0][1] === key : null,
+      ),
+    [user, restrictionOptions],
+  );
+
+  const isBlocked = useMemo(() => user?.blocked, [user]);
+
   const $onRemoveAccount = useCallback(async () => {
     await deleteUser(user);
     fetchUsers();
@@ -130,6 +152,34 @@ export const UserFormComponent: React.FC<Props> = ({ user, setUser }) => {
               })
             }
           />
+        </div>
+        <hr />
+        <div className={styles.formRow}>
+          <SelectorComponent
+            name="restrictions"
+            placeholder="restrictions"
+            options={restrictionOptions}
+            defaultOption={selectedRestrictionOption}
+            onChange={(option) =>
+              setUser({
+                ...user,
+                restrictions: option
+                  ? [Date.now(), option.key as RestrictionCode]
+                  : undefined,
+              })
+            }
+          />
+          <ButtonComponent
+            color={isBlocked ? "yellow" : "grey"}
+            onClick={() =>
+              setUser({
+                ...user,
+                blocked: !user.blocked,
+              })
+            }
+          >
+            {isBlocked ? "UnBlock" : "Block"}
+          </ButtonComponent>
         </div>
         <div className={styles.actions}>
           {user.admin ? null : (

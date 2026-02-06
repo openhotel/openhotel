@@ -14,6 +14,9 @@ export const getRequest: RequestType = {
   func: async (request: Request) => {
     const account = await System.accounts.getAccount({ request });
 
+    if (account.getObject().restrictions)
+      return getResponse(HttpStatusCode.LOCKED);
+
     if (await account.otp.isVerified())
       return getResponse(HttpStatusCode.CONFLICT);
 

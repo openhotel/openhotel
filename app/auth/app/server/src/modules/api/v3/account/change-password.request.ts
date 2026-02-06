@@ -45,6 +45,9 @@ export const changePasswordPostRequest: RequestType = {
       });
     }
 
+    if (account.getObject().restrictions)
+      return getResponse(HttpStatusCode.LOCKED);
+
     await account.update({
       password,
     });

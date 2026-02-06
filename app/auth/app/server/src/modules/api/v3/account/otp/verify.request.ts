@@ -17,6 +17,9 @@ export const verifyGetRequest: RequestType = {
 
     const account = await System.accounts.getAccount({ request });
 
+    if (account.getObject().restrictions)
+      return getResponse(HttpStatusCode.LOCKED);
+
     if (await account.otp.isVerified())
       return getResponse(HttpStatusCode.CONFLICT);
     if (!(await account.otp.check(token, true)))

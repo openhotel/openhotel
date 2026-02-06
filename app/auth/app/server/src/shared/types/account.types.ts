@@ -5,6 +5,7 @@ import {
 } from "shared/types/hotel.types.ts";
 import { Scope } from "shared/enums/scopes.enums.ts";
 import { DbHotelIntegrationType } from "shared/enums/hotel.enums.ts";
+import { RestrictionCode } from "shared/enums/restrictions.enums.ts";
 
 export type DbAccount = {
   accountId: string;
@@ -21,6 +22,9 @@ export type DbAccount = {
   updatedAt: number;
 
   githubLogin?: string;
+
+  restrictions?: [number, RestrictionCode];
+  blocked?: boolean;
 };
 
 export type DbAccountIntegrationConnection = {
@@ -55,6 +59,8 @@ export type PublicAccount = {
   verified: boolean;
   languages: string[];
   githubLogin?: string;
+  restrictions?: [number, RestrictionCode];
+  blocked?: boolean;
 };
 
 export type AccountCreation = {

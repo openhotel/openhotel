@@ -15,6 +15,11 @@ export const mainPostRequest: RequestType = {
   func: async (request: Request) => {
     const { state, scopes, hotelId, integrationId } = await request.json();
 
+    const account = await System.accounts.getAccount({ request });
+
+    if (account.getObject().restrictions)
+      return getResponse(HttpStatusCode.LOCKED);
+
     if (!hotelId || !integrationId)
       return getResponse(HttpStatusCode.BAD_REQUEST, {
         message: `Missing inputs!`,
@@ -35,8 +40,6 @@ export const mainPostRequest: RequestType = {
 
     const integration = hotel.getIntegration({ integrationId });
     if (!integration) return getResponse(HttpStatusCode.BAD_REQUEST);
-
-    const account = await System.accounts.getAccount({ request });
 
     const redirectUrl = await account.connections.active.create({
       request,
@@ -67,6 +70,9 @@ export const mainGetRequest: RequestType = {
     const integrationId = url.searchParams.get("integrationId");
 
     const account = await System.accounts.getAccount({ request });
+
+    if (account.getObject().restrictions)
+      return getResponse(HttpStatusCode.LOCKED);
 
     const $connections = await account.connections.getConnections();
 

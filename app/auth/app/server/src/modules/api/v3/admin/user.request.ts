@@ -28,8 +28,15 @@ export const userPatchRequest: RequestType = {
   kind: RequestKind.ADMIN,
   func: async (request: Request) => {
     try {
-      let { accountId, username, email, createdAt, admin } =
-        await request.json();
+      let {
+        accountId,
+        username,
+        email,
+        createdAt,
+        admin,
+        restrictions,
+        blocked,
+      } = await request.json();
 
       if (!accountId || !username || !email || !createdAt)
         return getResponse(HttpStatusCode.FORBIDDEN, {
@@ -67,6 +74,8 @@ export const userPatchRequest: RequestType = {
         email: accountByEmail ? null : email,
         username: accountByUsername ? null : username,
         createdAt,
+        restrictions,
+        blocked,
       });
 
       if ((await account.isAdmin()) !== admin) await account.setAdmin(admin);

@@ -41,6 +41,8 @@ export const AdminUsersComponent = () => {
                   const title = $row[$column.key];
                   let value = title;
 
+                  if ($column.key === "restrictions")
+                    value = title[1] ? "🚫" : title[0] ? "⚠️" : null;
                   if ($column.key === "email") value = getCensoredEmail(title);
                   if ($column.key === "accountId")
                     value = value.substring(0, 12) + "...";
@@ -62,6 +64,7 @@ export const AdminUsersComponent = () => {
 
             return {
               ...user,
+              restrictions: [user.restrictions, user.blocked],
               otp: user.otp ? "✅" : "❌",
               verified: user.verified
                 ? "✅"
@@ -71,6 +74,10 @@ export const AdminUsersComponent = () => {
             };
           })}
           columns={[
+            {
+              key: "restrictions",
+              label: "-",
+            },
             {
               key: "accountId",
               label: "Account Id",

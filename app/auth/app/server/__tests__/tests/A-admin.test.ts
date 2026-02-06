@@ -103,6 +103,8 @@ describe("10. admin", () => {
     assertEquals(user1.otp, false);
     assertEquals(user1.username, USER_2.username);
     assertEquals(user1.verified, true);
+    assertEquals(user1.restrictions, undefined);
+    assertEquals(user1.blocked, undefined);
     assertExists(user1.createdAt);
     assertExists(user1.updatedAt);
 
@@ -114,6 +116,8 @@ describe("10. admin", () => {
     assertEquals(user2.otp, false);
     assertEquals(user2.username, USER_1.username);
     assertEquals(user2.verified, true);
+    assertEquals(user1.restrictions, undefined);
+    assertEquals(user2.blocked, undefined);
     assertExists(user2.createdAt);
     assertExists(user2.updatedAt);
   });
@@ -152,29 +156,17 @@ describe("10. admin", () => {
     assertEquals(user.verified, true);
     assertEquals(user.createdAt, new Date(1994, 3, 19).getTime());
     assertExists(user.updatedAt);
-  });
-  it("delete user", async () => {
-    const { accountId } = STATE.getUser(USER_2.email);
-    const { status } = await fetcher(`/admin/user`, {
-      method: "DELETE",
+
+    const { status: status2 } = await fetcher(`/admin/user`, {
+      method: "PATCH",
       headers: STATE.getSessionHeaders(USER_1.email),
       body: JSON.stringify({
         accountId,
+        username: "test",
+        email: USER_2.email,
+        createdAt: new Date(1994, 3, 19).getTime(),
       }),
     });
-    assertEquals(status, 200);
-
-    const response = await fetcher(`/admin/users`, {
-      method: "GET",
-      headers: STATE.getSessionHeaders(USER_1.email),
-    });
-    assertEquals(response.status, 200);
-    assertEquals(response.data.users.length, 1);
-
-    const user = response.data.users.find(
-      (user: any) => user.accountId === accountId,
-    );
-
-    assertEquals(user, undefined);
+    assertEquals(status2, 200);
   });
 });

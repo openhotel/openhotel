@@ -15,6 +15,9 @@ export const deleteRequest: RequestType = {
     const account = await System.accounts.getAccount({ request });
     await account.otp.remove();
 
+    if (account.getObject().restrictions)
+      return getResponse(HttpStatusCode.LOCKED);
+
     return getResponse(HttpStatusCode.OK);
   },
 };

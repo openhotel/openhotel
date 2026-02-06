@@ -20,6 +20,9 @@ export const pingGetRequest: RequestType = {
     });
     if (!account) return getResponse(HttpStatusCode.FORBIDDEN);
 
+    if (account.getObject().restrictions)
+      return getResponse(HttpStatusCode.LOCKED);
+
     const pingResult = await account.connections.active.ping(
       connectionId,
       request,

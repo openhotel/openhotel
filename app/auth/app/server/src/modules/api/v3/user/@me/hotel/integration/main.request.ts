@@ -17,6 +17,9 @@ export const mainPostRequest: RequestType = {
     const account = await System.accounts.getAccount({ request });
     const hotel = await account.getHotel({ hotelId });
 
+    if (account.getObject().restrictions)
+      return getResponse(HttpStatusCode.LOCKED);
+
     if (!hotel || hotel.getObject().blocked)
       return getResponse(HttpStatusCode.BAD_REQUEST);
 
@@ -44,6 +47,10 @@ export const mainGetRequest: RequestType = {
       return getResponse(HttpStatusCode.BAD_REQUEST);
 
     const account = await System.accounts.getAccount({ request });
+
+    if (account.getObject().restrictions)
+      return getResponse(HttpStatusCode.LOCKED);
+
     const hotel = await account.getHotel({ hotelId });
     if (!hotel || hotel.getObject().blocked)
       return getResponse(HttpStatusCode.BAD_REQUEST);
@@ -69,6 +76,9 @@ export const mainDeleteRequest: RequestType = {
       return getResponse(HttpStatusCode.BAD_REQUEST);
 
     const account = await System.accounts.getAccount({ request });
+
+    if (account.getObject().restrictions)
+      return getResponse(HttpStatusCode.LOCKED);
 
     const hotel = await account.getHotel({ hotelId });
 

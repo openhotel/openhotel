@@ -554,6 +554,8 @@ export const accounts = () => {
       verified: account.verified,
       languages: account.languages,
       githubLogin: account.githubLogin,
+      restrictions: account.restrictions,
+      blocked: account.blocked,
     });
 
     const update = async ($account: AccountUpdate) => {
@@ -692,6 +694,9 @@ export const accounts = () => {
     if (!account) return null;
 
     const accountData = account.getObject();
+
+    if (accountData.blocked || accountData.restrictions)
+      return HttpStatusCode.TOO_MANY_REQUESTS;
 
     const verifyToken = getRandomString(16);
     const { url: rootUrl, version } = System.getConfig();
