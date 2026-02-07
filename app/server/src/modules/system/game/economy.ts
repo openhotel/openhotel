@@ -133,6 +133,44 @@ export const economy = () => {
           break;
         }
 
+        case TransactionType.MARKETPLACE_SALE: {
+          // Flow: Buyer -> Seller (with hotel commission)
+          // amount = full price paid by buyer
+          // meta.hotelCommission = commission taken by hotel
+          // meta.sellerEarnings = amount - hotelCommission
+          if (!fromAccount || !toAccount)
+            throw new Error(
+              "fromAccount and toAccount are required for marketplace transactions.",
+            );
+
+          const hotelCommission = meta?.hotelCommission ?? 0;
+          const sellerEarnings = amount - hotelCommission;
+
+          const [buyerEntry, sellerEntry, hotelEntry] = await Promise.all([
+            getBalanceEntry("users", fromAccount),
+            getBalanceEntry("users", toAccount),
+            getBalanceEntry("hotel"),
+          ]);
+
+          validateBalance(buyerEntry, amount);
+          validateBalance(sellerEntry, 0);
+          validateBalance(hotelEntry, 0);
+
+          atomic
+            .check(buyerEntry)
+            .set(buyerEntry.key, Number(buyerEntry.value) - amount);
+
+          atomic
+            .check(sellerEntry)
+            .set(sellerEntry.key, Number(sellerEntry.value) + sellerEarnings);
+
+          atomic
+            .check(hotelEntry)
+            .set(hotelEntry.key, Number(hotelEntry.value) + hotelCommission);
+
+          break;
+        }
+
         default:
           throw new Error("Unsupported transaction type");
       }

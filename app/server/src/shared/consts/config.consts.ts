@@ -30,4 +30,10 @@ export const CONFIG_DEFAULT: ConfigTypes = {
     enabled: true,
     cron: "0 4 * * *",
   },
+  marketplace: {
+    commissionRate: 0.1,
+    retiredCommissionRate: 0.05,
+    minPricePercent: 0.3,
+    maxPricePercent: 1.0,
+  },
 };

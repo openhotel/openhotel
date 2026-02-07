@@ -298,6 +298,7 @@ export const users = () => {
 
       const furniture = await getFurniture(id);
       if (!furniture) return false;
+      if (furniture.marketplaceListingId) return false;
 
       try {
         if (isNaN(room.getPoint(position) as number)) return false;
