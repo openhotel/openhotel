@@ -1,6 +1,7 @@
 import { ProxyEventType, PrivateUser } from "shared/types/main.ts";
 import { ProxyEvent } from "shared/enums/main.ts";
 import { System } from "modules/system/main.ts";
+import { getRandomString } from "@oh/utils";
 
 export const userJoinedEvent: ProxyEventType<{
   user: PrivateUser;
@@ -16,10 +17,6 @@ export const userJoinedEvent: ProxyEventType<{
       },
       privateUser,
     );
-
-    // const currentUser = System.game.users.get({
-    //   accountId: privateUser.accountId,
-    // });
 
     //TODO Teleport
     // if (meta?.[0] === Meta.TELEPORT) {

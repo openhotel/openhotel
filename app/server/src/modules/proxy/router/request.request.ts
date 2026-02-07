@@ -32,7 +32,7 @@ export const getRequestRequest = {
         { status: 406 },
       );
 
-    if (Proxy.getUserList().length >= config.limits.players)
+    if (Proxy.core.user.getUserList().length >= config.limits.players)
       return Response.json(
         {
           error: 406,

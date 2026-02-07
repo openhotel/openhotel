@@ -4,6 +4,7 @@ import { furniture } from "./furniture.ts";
 import { teleports } from "./teleports.ts";
 import { economy } from "./economy.ts";
 import { companies } from "./companies.ts";
+import { games } from "./games.ts";
 import { marketplace } from "./marketplace.ts";
 
 export const game = () => {
@@ -13,6 +14,7 @@ export const game = () => {
   const $teleports = teleports();
   const $economy = economy();
   const $companies = companies();
+  const $games = games();
   const $marketplace = marketplace();
 
   const load = async () => {
@@ -20,6 +22,7 @@ export const game = () => {
     await $users.load();
     await $rooms.load();
     await $economy.load();
+    await $games.load();
     $marketplace.load();
   };
 
@@ -32,6 +35,7 @@ export const game = () => {
     teleports: $teleports,
     economy: $economy,
     companies: $companies,
+    games: $games,
     marketplace: $marketplace,
   };
 };

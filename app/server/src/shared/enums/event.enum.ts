@@ -1,5 +1,5 @@
 export enum ProxyEvent {
-  //### INTERNAL #####################################################################################################//
+  //### INTERNAL USER #####################################################################################################//
 
   $LOAD = "$$load",
 
@@ -17,6 +17,15 @@ export enum ProxyEvent {
   $UPDATE = "$$update",
   $STOP = "$$stop",
 
+  //### INTERNAL GAME #####################################################################################################//
+
+  $GAME_USER_REQUEST = "$$game-user-request",
+  $GAME_USER_JOIN = "$$game-user-join",
+  $GAME_USER_READY = "$$game-user-ready",
+  $GAME_USER_DATA = "$$game-user-data",
+  $GAME_USER_LEFT = "$$game-user-left",
+  $GAME_USER_DISCONNECT = "$$game-user-disconnect",
+
   //### CLIENT #######################################################################################################//
 
   WELCOME = "welcome",
@@ -28,6 +37,10 @@ export enum ProxyEvent {
 
   LOAD_ROOM = "load-room",
   REMOVE_ROOM = "remove-room",
+
+  LOAD_GAME = "load-game",
+  REMOVE_GAME = "remove-game",
+  CLOSE_GAME = "close-game",
 
   ADD_HUMAN = "add-human",
   REMOVE_HUMAN = "remove-human",
@@ -55,7 +68,6 @@ export enum ProxyEvent {
   SYSTEM_MESSAGE = "system-message",
 
   REDIRECT = "redirect",
-  DISABLE_CAMERA_MOVEMENT = "disable-camera-movement",
 }
 
 export enum OnetEvent {
