@@ -322,28 +322,6 @@ export const marketplace = () => {
       .sort((a, b) => a.listPrice - b.listPrice);
   };
 
-  const getListingsBySeller = async (
-    sellerId: string,
-  ): Promise<MarketplaceListing[]> => {
-    const { items } = await System.db.list({
-      prefix: ["marketplace", "bySeller", sellerId],
-    });
-
-    const listings = await Promise.all(
-      items.map(async (item) => {
-        return (await System.db.get([
-          "marketplace",
-          "listings",
-          item.value,
-        ])) as MarketplaceListing;
-      }),
-    );
-
-    return listings.filter(
-      (l) => l && l.status === MarketplaceListingStatus.ACTIVE,
-    );
-  };
-
   const buyFromMarketplace = async (
     buyerId: string,
     listingId: string,
@@ -456,7 +434,6 @@ export const marketplace = () => {
     getCheapestListing,
     getListingsByFurnitureId,
     getRetiredListings,
-    getListingsBySeller,
     buyFromMarketplace,
   };
 };

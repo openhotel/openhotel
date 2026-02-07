@@ -11,6 +11,7 @@ import { requestList as companiesRequestList } from "./company/main.ts";
 import { roomRequestList } from "./room/main.ts";
 import { captureRequestList } from "./capture/main.ts";
 import { gameRequestList } from "./game/main.ts";
+import { marketplaceRequestList } from "./marketplace/main.ts";
 
 export const requestList: RequestType[] = getPathRequestList({
   requestList: [
@@ -28,6 +29,7 @@ export const requestList: RequestType[] = getPathRequestList({
     ...roomRequestList,
     ...captureRequestList,
     ...gameRequestList,
+    ...marketplaceRequestList,
   ],
   pathname: "",
 });
