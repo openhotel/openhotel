@@ -4,6 +4,13 @@ import { InventoryContentComponent } from "../inventory-content";
 import { useApi } from "shared/hooks";
 import { FurnitureType } from "shared/enums";
 
+type RawFurniture = {
+  id: string;
+  furnitureId: string;
+  type: FurnitureType;
+  marketplaceListingId?: string;
+};
+
 export const CategoryFurnitureComponent: React.FC<
   ModalInventoryCategoryProps
 > = ({ size }) => {
@@ -13,20 +20,33 @@ export const CategoryFurnitureComponent: React.FC<
   const $reload = useCallback(
     () =>
       fetch(`/inventory?type=${FurnitureType.FURNITURE}`).then(
-        ({ furniture }) => {
+        ({ furniture }: { furniture: RawFurniture[] }) => {
           const uniqueFurnitureIds = [
             ...new Set(furniture.map((furniture) => furniture.furnitureId)),
           ] as string[];
+
           setFurniture(
-            uniqueFurnitureIds.map((furnitureId) => ({
-              type: furniture.find(
-                (furniture) => furniture.furnitureId === furnitureId,
-              ).type,
-              furnitureId,
-              ids: furniture
-                .filter((furniture) => furniture.furnitureId === furnitureId)
-                .map((furniture) => furniture.id),
-            })),
+            uniqueFurnitureIds.map((furnitureId) => {
+              const items = furniture.filter(
+                (f) => f.furnitureId === furnitureId,
+              );
+              const marketplaceListingIds: Record<string, string> = {};
+              items.forEach((item) => {
+                if (item.marketplaceListingId) {
+                  marketplaceListingIds[item.id] = item.marketplaceListingId;
+                }
+              });
+
+              return {
+                type: items[0].type,
+                furnitureId,
+                ids: items.map((f) => f.id),
+                marketplaceListingIds:
+                  Object.keys(marketplaceListingIds).length > 0
+                    ? marketplaceListingIds
+                    : undefined,
+              };
+            }),
           );
         },
       ),
@@ -44,5 +64,11 @@ export const CategoryFurnitureComponent: React.FC<
     };
   }, [$reload]);
 
-  return <InventoryContentComponent size={size} furniture={furniture} />;
+  return (
+    <InventoryContentComponent
+      size={size}
+      furniture={furniture}
+      onRefresh={$reload}
+    />
+  );
 };

@@ -4,7 +4,7 @@ import { System } from "modules/system/main.ts";
 
 export const marketplaceCancelRequest: ProxyRequestType = {
   pathname: "/cancel",
-  method: RequestMethod.DELETE,
+  method: RequestMethod.POST,
   func: async ({ user, data }) => {
     const { listingId } = data;
 
