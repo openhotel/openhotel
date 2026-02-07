@@ -164,16 +164,13 @@ export const getRoom =
             const user = System.game.users.get({ accountId: $accountId });
             return isPoint3dEqual(user.getPosition(), position, true);
           }) &&
-          Boolean(
-            !getFurniture()
-              .filter(
-                (furniture) =>
-                  !WALKABLE_FURNITURE_TYPE.includes(furniture.type),
-              )
-              .find((furniture) =>
-                isPoint3dEqual(furniture.position, position),
-              ),
-          ),
+        Boolean(
+          !getFurniture()
+            .filter(
+              (furniture) => !WALKABLE_FURNITURE_TYPE.includes(furniture.type),
+            )
+            .find((furniture) => isPoint3dEqual(furniture.position, position)),
+        ),
       );
     };
 

@@ -7,6 +7,7 @@ import React, {
 } from "react";
 import { GameContext } from "./game.context";
 import {
+  ContainerComponent,
   Event,
   EventMode,
   FLEX_ALIGN,
@@ -76,7 +77,6 @@ export const GameProvider: React.FunctionComponent<GameProps> = ({
       iframeRef.current.width = `${$size.width * scale}px`;
       iframeRef.current.height = `${$size.height * scale}px`;
 
-      console.log(gameProps);
       if (gameProps.screen === "windowed") {
         iframeRef.current.style.left = `${(size.width / 2 - $size.width / 2) * scale}px`;
         iframeRef.current.style.top = `${(size.height / 2 - $size.height / 2 + 6) * scale}px`;
@@ -157,33 +157,35 @@ export const GameProvider: React.FunctionComponent<GameProps> = ({
         <>
           {children}
           {props ? (
-            <GraphicsComponent
-              type={GraphicType.RECTANGLE}
-              width={windowSize.width}
-              height={windowSize.height}
-              alpha={props?.screen === "windowed" ? 0.8 : 1}
-              tint={0}
-              eventMode={EventMode.STATIC}
-            />
-          ) : null}
-          {props?.screen === "windowed" ? (
-            <>
-              <FlexContainerComponent
-                align={FLEX_ALIGN.CENTER}
-                justify={FLEX_JUSTIFY.CENTER}
-                zIndex={Number.MAX_SAFE_INTEGER}
-              >
-                <WindowedGameComponent
-                  gameName={name}
-                  size={{
-                    width: props.windowSize.width + WINDOW_MARGIN.lateral * 2,
-                    height:
-                      props.windowSize.height + WINDOW_MARGIN.vertical * 2,
-                  }}
-                  onCloseModal={closeGame}
-                />
-              </FlexContainerComponent>
-            </>
+            <ContainerComponent zIndex={Number.MAX_SAFE_INTEGER}>
+              <GraphicsComponent
+                type={GraphicType.RECTANGLE}
+                width={windowSize.width}
+                height={windowSize.height}
+                alpha={props?.screen === "windowed" ? 0.8 : 1}
+                tint={0}
+                eventMode={EventMode.STATIC}
+              />
+              {props?.screen === "windowed" ? (
+                <>
+                  <FlexContainerComponent
+                    align={FLEX_ALIGN.CENTER}
+                    justify={FLEX_JUSTIFY.CENTER}
+                  >
+                    <WindowedGameComponent
+                      gameName={name}
+                      size={{
+                        width:
+                          props.windowSize.width + WINDOW_MARGIN.lateral * 2,
+                        height:
+                          props.windowSize.height + WINDOW_MARGIN.vertical * 2,
+                      }}
+                      onCloseModal={closeGame}
+                    />
+                  </FlexContainerComponent>
+                </>
+              ) : null}
+            </ContainerComponent>
           ) : null}
         </>
       }

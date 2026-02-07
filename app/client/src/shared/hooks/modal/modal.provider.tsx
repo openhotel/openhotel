@@ -237,7 +237,10 @@ export const ModalProvider: React.FunctionComponent<ModalProps> = ({
       children={
         <>
           {children}
-          <ContainerComponent sortableChildren={true}>
+          <ContainerComponent
+            sortableChildren={true}
+            zIndex={Number.MAX_SAFE_INTEGER - 100}
+          >
             {renderModals}
           </ContainerComponent>
         </>
