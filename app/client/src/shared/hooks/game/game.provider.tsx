@@ -76,7 +76,6 @@ export const GameProvider: React.FunctionComponent<GameProps> = ({
       iframeRef.current.width = `${$size.width * scale}px`;
       iframeRef.current.height = `${$size.height * scale}px`;
 
-      console.log(gameProps);
       if (gameProps.screen === "windowed") {
         iframeRef.current.style.left = `${(size.width / 2 - $size.width / 2) * scale}px`;
         iframeRef.current.style.top = `${(size.height / 2 - $size.height / 2 + 6) * scale}px`;
