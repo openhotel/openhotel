@@ -12,7 +12,7 @@
     "jsr:@std/yaml@1.0.5": "1.0.5",
     "jsr:@zip-js/zip-js@2.7.53": "2.7.53",
     "npm:dayjs@1.11.13": "1.11.13",
-    "npm:prettier@3.6.0": "3.6.0",
+    "npm:prettier@3.8.1": "3.8.1",
     "npm:vite@5.2.14": "5.2.14",
     "npm:vite@6.3.5": "6.3.5_picomatch@4.0.2"
   },
@@ -504,8 +504,8 @@
         "source-map-js"
       ]
     },
-    "prettier@3.6.0": {
-      "integrity": "sha512-ujSB9uXHJKzM/2GBuE0hBOUgC77CN3Bnpqa+g80bkv3T3A93wL/xlzDATHhnhkzifz/UE2SNOvmbTz5hSkDlHw==",
+    "prettier@3.8.1": {
+      "integrity": "sha512-UOnG6LftzbdaHZcKoPFtOcCKztrQ57WkHDeRD9t/PTQtmT0NHSeWWepj6pS0z/N7+08BHFDQVUrfmfMRcZwbMg==",
       "bin": true
     },
     "rollup@4.40.1": {
@@ -584,7 +584,7 @@
     ],
     "packageJson": {
       "dependencies": [
-        "npm:prettier@3.6.0",
+        "npm:prettier@3.8.1",
         "npm:vite@6.3.5"
       ]
     }
