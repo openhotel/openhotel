@@ -1,4 +1,15 @@
 
+<a name="v0.8.1"></a>
+
+## [v0.8.1](https://github.com/openhotel/openhotel/compare/v0.8.0...v0.8.1) (2026-02-07)
+
+### Bug Fixes
+
+- modals on top of background of minigame modal - fix [#1079](https://github.com/openhotel/openhotel/issues/1079) ([#1081](https://github.com/openhotel/openhotel/issues/1081))
+- kickFromCurrentRoom in minigames not working - fix [#1076](https://github.com/openhotel/openhotel/issues/1076) ([#1080](https://github.com/openhotel/openhotel/issues/1080))
+- prettier dependency - fix [#1077](https://github.com/openhotel/openhotel/issues/1077) ([#1078](https://github.com/openhotel/openhotel/issues/1078))
+
+
 <a name="v0.8.0"></a>
 
 ## [v0.8.0](https://github.com/openhotel/openhotel/compare/v0.7.17...v0.8.0) (2026-02-03)
@@ -1194,17 +1205,17 @@
 
 <a name="v0.2.20-rc.2"></a>
 
-## [v0.2.20-rc.2](https://github.com/openhotel/openhotel/compare/v0.2.20-rc.1...v0.2.20-rc.2) (2024-09-29)
-
-
-<a name="v0.2.20-rc.1"></a>
-
-## [v0.2.20-rc.1](https://github.com/openhotel/openhotel/compare/v0.2.19...v0.2.20-rc.1) (2024-09-29)
+## [v0.2.20-rc.2](https://github.com/openhotel/openhotel/compare/v0.2.19...v0.2.20-rc.2) (2024-09-29)
 
 
 <a name="v0.2.19"></a>
 
-## [v0.2.19](https://github.com/openhotel/openhotel/compare/v0.2.18...v0.2.19) (2024-09-29)
+## [v0.2.19](https://github.com/openhotel/openhotel/compare/v0.2.20-rc.1...v0.2.19) (2024-09-29)
+
+
+<a name="v0.2.20-rc.1"></a>
+
+## [v0.2.20-rc.1](https://github.com/openhotel/openhotel/compare/v0.2.18...v0.2.20-rc.1) (2024-09-29)
 
 
 <a name="v0.2.18"></a>
@@ -1836,17 +1847,17 @@
 
 <a name="v0.0.7-alpha.25"></a>
 
-## [v0.0.7-alpha.25](https://github.com/openhotel/openhotel/compare/v0.0.7-alpha.23...v0.0.7-alpha.25) (2024-07-03)
-
-
-<a name="v0.0.7-alpha.23"></a>
-
-## [v0.0.7-alpha.23](https://github.com/openhotel/openhotel/compare/v0.0.7-alpha.24...v0.0.7-alpha.23) (2024-07-03)
+## [v0.0.7-alpha.25](https://github.com/openhotel/openhotel/compare/v0.0.7-alpha.24...v0.0.7-alpha.25) (2024-07-03)
 
 
 <a name="v0.0.7-alpha.24"></a>
 
-## [v0.0.7-alpha.24](https://github.com/openhotel/openhotel/compare/v0.0.7-alpha.22...v0.0.7-alpha.24) (2024-07-03)
+## [v0.0.7-alpha.24](https://github.com/openhotel/openhotel/compare/v0.0.7-alpha.23...v0.0.7-alpha.24) (2024-07-03)
+
+
+<a name="v0.0.7-alpha.23"></a>
+
+## [v0.0.7-alpha.23](https://github.com/openhotel/openhotel/compare/v0.0.7-alpha.22...v0.0.7-alpha.23) (2024-07-03)
 
 
 <a name="v0.0.7-alpha.22"></a>
@@ -1901,17 +1912,17 @@
 
 <a name="v0.0.7-alpha.11"></a>
 
-## [v0.0.7-alpha.11](https://github.com/openhotel/openhotel/compare/v0.0.7-alpha.9...v0.0.7-alpha.11) (2024-07-01)
-
-
-<a name="v0.0.7-alpha.9"></a>
-
-## [v0.0.7-alpha.9](https://github.com/openhotel/openhotel/compare/v0.0.7-alpha.10...v0.0.7-alpha.9) (2024-07-01)
+## [v0.0.7-alpha.11](https://github.com/openhotel/openhotel/compare/v0.0.7-alpha.10...v0.0.7-alpha.11) (2024-07-01)
 
 
 <a name="v0.0.7-alpha.10"></a>
 
-## [v0.0.7-alpha.10](https://github.com/openhotel/openhotel/compare/v0.0.7-alpha.8...v0.0.7-alpha.10) (2024-07-01)
+## [v0.0.7-alpha.10](https://github.com/openhotel/openhotel/compare/v0.0.7-alpha.9...v0.0.7-alpha.10) (2024-07-01)
+
+
+<a name="v0.0.7-alpha.9"></a>
+
+## [v0.0.7-alpha.9](https://github.com/openhotel/openhotel/compare/v0.0.7-alpha.8...v0.0.7-alpha.9) (2024-07-01)
 
 
 <a name="v0.0.7-alpha.8"></a>
@@ -1951,17 +1962,17 @@
 
 <a name="v0.0.7.alpha.1"></a>
 
-## [v0.0.7.alpha.1](https://github.com/openhotel/openhotel/compare/v0.0.7-alpha.21...v0.0.7.alpha.1) (2024-07-01)
-
-
-<a name="v0.0.7-alpha.21"></a>
-
-## [v0.0.7-alpha.21](https://github.com/openhotel/openhotel/compare/v0.0.6...v0.0.7-alpha.21) (2024-06-30)
+## [v0.0.7.alpha.1](https://github.com/openhotel/openhotel/compare/v0.0.6...v0.0.7.alpha.1) (2024-07-01)
 
 
 <a name="v0.0.6"></a>
 
-## [v0.0.6](https://github.com/openhotel/openhotel/compare/v0.0.5...v0.0.6) (2024-06-30)
+## [v0.0.6](https://github.com/openhotel/openhotel/compare/v0.0.7-alpha.21...v0.0.6) (2024-06-30)
+
+
+<a name="v0.0.7-alpha.21"></a>
+
+## [v0.0.7-alpha.21](https://github.com/openhotel/openhotel/compare/v0.0.5...v0.0.7-alpha.21) (2024-06-30)
 
 
 <a name="v0.0.5"></a>
