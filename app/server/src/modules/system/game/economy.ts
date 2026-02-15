@@ -42,24 +42,7 @@ export const economy = () => {
       const atomic = System.db.atomic();
 
       switch (type) {
-        //TODO This is temporary
-        case TransactionType.REWARD: {
-          // Flow: ### -> User
-          if (!toAccount)
-            throw new Error(
-              "toAccount is required for reward/refund transactions.",
-            );
-
-          const toEntry = await getBalanceEntry("users", toAccount);
-
-          validateBalance(toEntry, 0);
-
-          atomic
-            .check(toEntry)
-            .set(toEntry.key, Number(toEntry.value) + amount);
-          break;
-        }
-
+        case TransactionType.REWARD:
         case TransactionType.REFUND: {
           // Flow: Hotel -> User
           if (!toAccount)
