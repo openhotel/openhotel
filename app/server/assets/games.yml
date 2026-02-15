@@ -1,5 +1,7 @@
 games:
   - repo: openhotel/game-template
     enabled: true
+  - repo: alqubo/oh-snake-minigame
+    enabled: true
   - path: local/test
     enabled: false
