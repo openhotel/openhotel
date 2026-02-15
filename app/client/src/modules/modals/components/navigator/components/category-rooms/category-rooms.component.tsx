@@ -12,7 +12,7 @@ import { Event, Modal, SpriteSheetEnum } from "shared/enums";
 import { RoomPreviewComponent, RoomsListComponent } from "./components";
 import { NavigatorRoom } from "shared/types";
 import { useTranslation } from "react-i18next";
-import { InputComponent } from "shared/components";
+import { InputComponent, NoteComponent } from "shared/components";
 
 type Props = {
   size: Size;
@@ -180,12 +180,20 @@ export const CategoryRoomsComponent: React.FC<Props> = ({ size }) => {
             onJoin={onJoinRoom}
           />
         ) : (
-          <GraphicsComponent
-            type={GraphicType.RECTANGLE}
-            width={previewSize.width}
-            height={previewSize.height}
-            tint={0xff00ff}
-          />
+          <NoteComponent
+            type="TODO"
+            issue={1091}
+            title="Rooms banner preview"
+            description="Needs art!"
+          >
+            <GraphicsComponent
+              type={GraphicType.RECTANGLE}
+              width={previewSize.width}
+              height={previewSize.height}
+              tint={0}
+              alpha={0.2}
+            />
+          </NoteComponent>
         )}
       </ContainerComponent>
     </>
