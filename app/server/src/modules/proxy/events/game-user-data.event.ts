@@ -10,7 +10,6 @@ export const gameUserDataEvent: ProxyEventType<{
 }> = {
   event: ProxyEvent.$GAME_USER_DATA,
   func: ({ data: { gameId, clientId, event, message } }) => {
-    console.log(gameId, clientId, event, message);
     Proxy.core.game.emitUser(gameId, clientId, event, message);
   },
 };
