@@ -1,4 +1,13 @@
 
+<a name="v0.8.3"></a>
+
+## [v0.8.3](https://github.com/openhotel/openhotel/compare/v0.8.2...v0.8.3) (2026-02-15)
+
+### Bug Fixes
+
+- no focus when you join a game - fix [#1088](https://github.com/openhotel/openhotel/issues/1088) ([#1089](https://github.com/openhotel/openhotel/issues/1089))
+
+
 <a name="v0.8.2"></a>
 
 ## [v0.8.2](https://github.com/openhotel/openhotel/compare/v0.8.1...v0.8.2) (2026-02-15)
