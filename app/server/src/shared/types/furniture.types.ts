@@ -16,6 +16,13 @@ export type FurnitureDirectionTexture = {
   hitArea: number[];
 };
 
+export type FurnitureAction = {
+  id: string;
+  label: string;
+  states: string[];
+  defaultState: string;
+};
+
 export type FurnitureDirectionData = {
   textures: FurnitureDirectionTexture[];
 };
@@ -38,6 +45,7 @@ export type FurnitureData = {
     texture: string;
     bounds: Size2d;
   };
+  actions?: FurnitureAction[];
 };
 
 export type Furniture = {
@@ -52,4 +60,5 @@ export type RoomFurniture = {
   direction: CrossDirection;
   size?: Size3d;
   framePosition?: Point2d;
+  state?: string;
 } & Furniture;
