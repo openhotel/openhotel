@@ -96,9 +96,9 @@ export const RoomMessagesComponent: React.FC<Props> = ({
         }),
     );
 
-    const removeOnSystemMessage = onProxy(
-      Event.SYSTEM_MESSAGE,
-      ({ message }) => {
+    let removeOnSystemMessage = null;
+    if (!currentAccount.admin)
+      removeOnSystemMessage = onProxy(Event.SYSTEM_MESSAGE, ({ message }) => {
         addMessage({
           id: ulid(),
           accountId: null,
@@ -110,15 +110,14 @@ export const RoomMessagesComponent: React.FC<Props> = ({
           messageColor: 0xffffff,
         });
         console.log(`System: ${message}`);
-      },
-    );
+      });
 
     return () => {
       removeOnMessage();
       removeOnWhisperMessage();
-      removeOnSystemMessage();
+      removeOnSystemMessage?.();
     };
-  }, [room?.id, onProxy, addMessage]);
+  }, [room?.id, onProxy, addMessage, currentAccount]);
 
   const onResize = useCallback(
     (size: Size2d) => {

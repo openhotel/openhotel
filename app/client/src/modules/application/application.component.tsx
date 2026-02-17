@@ -25,6 +25,7 @@ import {
   ApiProvider,
   GameProvider,
   ChatProvider,
+  ModerationProvider,
 } from "shared/hooks";
 import { NesterComponent } from "shared/components";
 
@@ -45,6 +46,7 @@ export const ApplicationComponent = () => {
       SafeWindowProvider,
       AccountProvider,
       ApiProvider,
+      ModerationProvider,
       FurnitureProvider,
       CameraProvider, // Before 'ModalProvider' so 'ModalProvider' can use 'useCamera'
       SoundProvider,
