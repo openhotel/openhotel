@@ -53,9 +53,3 @@ jobs:
             <!-- check-translations -->
             ${{ steps.translation-check.outputs.result }}
           edit-mode: replace
-
-      - name: Delete Resolved Translation Comment
-        if: ${{ github.event_name == 'pull_request' && steps.translation-check.outputs.has_missing == 'false' && steps.find-comment.outputs.comment-id != '' }}
-        uses: peter-evans/delete-comment@v3
-        with:
-          comment-id: ${{ steps.find-comment.outputs.comment-id }}
