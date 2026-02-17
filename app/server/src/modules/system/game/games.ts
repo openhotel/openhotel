@@ -141,7 +141,7 @@ export const games = () => {
     };
   };
 
-  const add = async (game: GameType) => {
+  const $add = async (game: GameType) => {
     const $game = ($gameMap[game.gameId] = $getGame(game));
 
     log(`>> Game '${game.repo}' starting...`);
@@ -323,7 +323,7 @@ export const games = () => {
       let isDone = false;
       do {
         try {
-          await add({
+          await $add({
             path: repo ?? path,
             executable: `game_${osName}`,
             gameId,
@@ -352,10 +352,204 @@ export const games = () => {
   const getGames = (): GameMutable[] => Object.values($gameMap);
   const getGame = (gameId: string): GameMutable | null => $gameMap[gameId];
 
+  const add = async (
+    repo: string,
+    type: "repo" | "path" = "repo",
+  ): Promise<{ success: boolean; message: string }> => {
+    try {
+      const gamesContent = await Deno.readTextFile(GAMES_PATH_FILE);
+      const gamesData = parse(gamesContent) as {
+        games: Array<{ repo?: string; path?: string; enabled: boolean }>;
+      };
+
+      if (!gamesData.games) {
+        gamesData.games = [];
+      }
+
+      const gameExists = gamesData.games.some(
+        (game) => game.repo === repo || game.path === repo,
+      );
+
+      if (gameExists) {
+        return {
+          success: false,
+          message: `Game '${repo}' already exists!`,
+        };
+      }
+
+      const newGame =
+        type === "path"
+          ? { path: repo, enabled: true }
+          : { repo, enabled: true };
+
+      gamesData.games.push(newGame);
+
+      await Deno.writeTextFile(GAMES_PATH_FILE, stringify(gamesData));
+
+      return {
+        success: true,
+        message: `Game '${repo}' added successfully!`,
+      };
+    } catch (error) {
+      return {
+        success: false,
+        message: `Error adding game: ${error.message}`,
+      };
+    }
+  };
+
+  const remove = async (
+    repo: string,
+  ): Promise<{ success: boolean; message: string }> => {
+    try {
+      const gamesContent = await Deno.readTextFile(GAMES_PATH_FILE);
+      const gamesData = parse(gamesContent) as {
+        games: Array<{ repo?: string; path?: string; enabled: boolean }>;
+      };
+
+      if (!gamesData.games) {
+        return {
+          success: false,
+          message: `No games found!`,
+        };
+      }
+
+      const gameIndex = gamesData.games.findIndex(
+        (game) => game.repo === repo || game.path === repo,
+      );
+
+      if (gameIndex === -1) {
+        return {
+          success: false,
+          message: `Game '${repo}' not found!`,
+        };
+      }
+
+      gamesData.games.splice(gameIndex, 1);
+
+      await Deno.writeTextFile(GAMES_PATH_FILE, stringify(gamesData));
+
+      return {
+        success: true,
+        message: `Game '${repo}' removed successfully!`,
+      };
+    } catch (error) {
+      return {
+        success: false,
+        message: `Error removing game: ${error.message}`,
+      };
+    }
+  };
+
+  const disable = async (
+    repo: string,
+  ): Promise<{ success: boolean; message: string }> => {
+    try {
+      const gamesContent = await Deno.readTextFile(GAMES_PATH_FILE);
+      const gamesData = parse(gamesContent) as {
+        games: Array<{ repo?: string; path?: string; enabled: boolean }>;
+      };
+
+      if (!gamesData.games) {
+        return {
+          success: false,
+          message: `No games found!`,
+        };
+      }
+
+      const game = gamesData.games.find(
+        (game) => game.repo === repo || game.path === repo,
+      );
+
+      if (!game) {
+        return {
+          success: false,
+          message: `Game '${repo}' not found!`,
+        };
+      }
+
+      if (!game.enabled) {
+        return {
+          success: false,
+          message: `Game '${repo}' is already disabled!`,
+        };
+      }
+
+      game.enabled = false;
+
+      await Deno.writeTextFile(GAMES_PATH_FILE, stringify(gamesData));
+
+      return {
+        success: true,
+        message: `Game '${repo}' disabled successfully!`,
+      };
+    } catch (error) {
+      return {
+        success: false,
+        message: `Error disabling game: ${error.message}`,
+      };
+    }
+  };
+
+  const enable = async (
+    repo: string,
+  ): Promise<{ success: boolean; message: string }> => {
+    try {
+      const gamesContent = await Deno.readTextFile(GAMES_PATH_FILE);
+      const gamesData = parse(gamesContent) as {
+        games: Array<{ repo?: string; path?: string; enabled: boolean }>;
+      };
+
+      if (!gamesData.games) {
+        return {
+          success: false,
+          message: `No games found!`,
+        };
+      }
+
+      const game = gamesData.games.find(
+        (game) => game.repo === repo || game.path === repo,
+      );
+
+      if (!game) {
+        return {
+          success: false,
+          message: `Game '${repo}' not found!`,
+        };
+      }
+
+      if (game.enabled) {
+        return {
+          success: false,
+          message: `Game '${repo}' is already enabled!`,
+        };
+      }
+
+      game.enabled = true;
+
+      await Deno.writeTextFile(GAMES_PATH_FILE, stringify(gamesData));
+
+      return {
+        success: true,
+        message: `Game '${repo}' enabled successfully!`,
+      };
+    } catch (error) {
+      return {
+        success: false,
+        message: `Error enabling game: ${error.message}`,
+      };
+    }
+  };
+
   return {
     load,
 
     getGames,
     getGame,
+
+    add,
+    remove,
+    disable,
+    enable,
   };
 };
