@@ -55,6 +55,7 @@ export const FurnitureProvider: React.FunctionComponent<FurnitureProps> = ({
           description: furnitureData.description,
           icon: furnitureData.icon,
           size: furnitureData.size,
+          actions: furnitureData.actions ?? [],
           direction: Object.keys(
             furnitureData.direction,
           ).reduce<FurnitureDirectionDataMap>(

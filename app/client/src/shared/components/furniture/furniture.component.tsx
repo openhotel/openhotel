@@ -66,9 +66,19 @@ export const FurnitureComponent: React.FC<Props> = ({
 
   const $textures = useMemo(() => {
     const textures = $data.direction[$direction].textures;
-    if (!state) return textures;
-    return textures.filter((t) => !t.state || t.state === state);
-  }, [$data.direction, $direction, state]);
+    if (!$data.actions?.length) return textures;
+
+    return textures.map((t) => {
+      const action = $data.actions.find((a) => a.stateTextures);
+      if (!action) return t;
+
+      const activeState = state ?? action.defaultState;
+      const activeTexture = action.stateTextures[activeState];
+      if (!activeTexture) return t;
+
+      return { ...t, texture: activeTexture };
+    });
+  }, [$data.direction, $data.actions, $direction, state]);
 
   return useMemo(
     () =>
