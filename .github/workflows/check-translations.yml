@@ -1,0 +1,55 @@
+name: Check Missing Translations
+
+on:
+  pull_request:
+    branches:
+      - "**"
+
+jobs:
+  missing-translations:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: denoland/setup-deno@v1
+        with:
+          deno-version: v2.x.x
+
+      - name: Run Translations Check
+        id: translation-check
+        run: |
+          result="$(deno task check-translations || true)"
+          echo "result<<EOF" >> $GITHUB_OUTPUT
+          printf '%s\n' "$result" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+          if [ -z "$result" ]; then
+            echo "has_missing=false" >> $GITHUB_OUTPUT
+          else
+            echo "has_missing=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Find Existing Translation Comment
+        if: ${{ github.event_name == 'pull_request' }}
+        id: find-comment
+        uses: peter-evans/find-comment@v3
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          comment-author: github-actions[bot]
+          body-includes: <!-- check-translations -->
+
+      - name: Post Missing Keys to PR
+        if: ${{ github.event_name == 'pull_request' && steps.translation-check.outputs.has_missing == 'true' }}
+        uses: peter-evans/create-or-update-comment@v5
+        with:
+          comment-id: ${{ steps.find-comment.outputs.comment-id }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            <!-- check-translations -->
+            ${{ steps.translation-check.outputs.result }}
+          edit-mode: replace
