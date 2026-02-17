@@ -65,5 +65,17 @@
     "move": "move",
     "rotate": "rotate",
     "pick_up": "pick up"
+  },
+  "marketplace": {
+    "title": "Marketplace",
+    "sell": "Sell",
+    "cancel_sale": "Cancel sale",
+    "on_sale": "On sale",
+    "estimated_profit": "You will receive: {{profit}}",
+    "price_limits": "Price: {{min}} - {{max}}",
+    "commission": "Commission: {{rate}}%",
+    "confirm_sell": "Confirm",
+    "confirm_cancel": "Cancel",
+    "error_selling": "Error listing item"
   }
 }

@@ -5,4 +5,5 @@ export * from "./inventory";
 export * from "./navigator";
 export * from "./purse";
 export * from "./room-creator";
+export * from "./marketplace-sell";
 export * from "./windowed-game";

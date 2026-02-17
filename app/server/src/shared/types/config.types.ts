@@ -28,4 +28,10 @@ export type ConfigTypes = {
     enabled: boolean;
     cron: string;
   };
+  marketplace: {
+    commissionRate: number;
+    retiredCommissionRate: number;
+    minPricePercent: number;
+    maxPricePercent: number;
+  };
 };

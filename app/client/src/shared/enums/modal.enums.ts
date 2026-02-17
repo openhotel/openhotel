@@ -9,6 +9,7 @@ export enum Modal {
   ROOM_CREATOR,
 
   GAME,
+  MARKETPLACE_SELL,
 }
 
 export enum ModalNavigatorTab {

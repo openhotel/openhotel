@@ -27,6 +27,7 @@ import {
   NavigatorComponent,
   PurseComponent,
   RoomCreatorComponent,
+  MarketplaceSellComponent,
 } from "modules/modals";
 
 type ModalProps = {
@@ -43,6 +44,7 @@ export const ModalProvider: React.FunctionComponent<ModalProps> = ({
     close,
     closeAll: $closeAll,
     get,
+    getData,
     setPosition,
     isOpen,
   } = useModalStore();
@@ -54,7 +56,7 @@ export const ModalProvider: React.FunctionComponent<ModalProps> = ({
   const focusedModalRef = useRef<Modal[]>([]);
 
   const openModal = useCallback(
-    (modal: Modal) => {
+    <T = unknown,>(modal: Modal, data?: T) => {
       if (modals[modal]?.visible) return;
 
       const modalSize = MODAL_SIZE_MAP[modal];
@@ -68,6 +70,7 @@ export const ModalProvider: React.FunctionComponent<ModalProps> = ({
               y: windowSize.height / 2 - modalSize.height / 2,
             }
           : null,
+        data,
       );
 
       focusedModalRef.current = [modal, ...focusedModalRef.current];
@@ -177,6 +180,7 @@ export const ModalProvider: React.FunctionComponent<ModalProps> = ({
       [Modal.CLUB]: ClubComponent,
       [Modal.ROOM_CREATOR]: RoomCreatorComponent,
       [Modal.GAME]: null,
+      [Modal.MARKETPLACE_SELL]: MarketplaceSellComponent,
     }),
     [],
   );
@@ -228,6 +232,7 @@ export const ModalProvider: React.FunctionComponent<ModalProps> = ({
         isModalOpen,
         setModalPosition,
         closeAll,
+        getModalData: getData,
       }}
       children={
         <>

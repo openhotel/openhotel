@@ -5,4 +5,5 @@ export enum TransactionType {
   DEPOSIT = "deposit", // onet -> User (onet money to hotel money)
   WITHDRAWAL = "withdrawal", // User -> onet (hotel money to onet money)
   TRANSFER = "transfer", // User → User (sending money)
+  MARKETPLACE_SALE = "marketplace_sale", // User -> User (marketplace transaction, hotel takes commission)
 }

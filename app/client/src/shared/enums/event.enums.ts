@@ -40,6 +40,9 @@ export enum Event {
 
   REDIRECT = "redirect",
 
+  UPDATE_INVENTORY = "update-inventory",
+  UPDATE_CATALOG_PRICE = "update-catalog-price",
+
   TEST = "test",
 
   CONNECTED = "connected",

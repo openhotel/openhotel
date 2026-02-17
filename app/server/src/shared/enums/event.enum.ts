@@ -68,6 +68,9 @@ export enum ProxyEvent {
   SYSTEM_MESSAGE = "system-message",
 
   REDIRECT = "redirect",
+
+  UPDATE_INVENTORY = "update-inventory",
+  UPDATE_CATALOG_PRICE = "update-catalog-price",
 }
 
 export enum OnetEvent {

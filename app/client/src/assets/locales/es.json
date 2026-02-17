@@ -7,6 +7,7 @@
     "loading": "Cargando",
     "progress_may_be_wiped": "El progreso podria ser borrado",
     "loading_config": "Cargando configuración...",
+    "loading_changelog": "Cargando changelog...",
     "redirecting": "Redirigiendo...",
     "proxy_disconnected": "¡Proxy desconectado! :(",
     "proxy_not_reachable": "¡Proxy no accesible! :(",
@@ -64,5 +65,17 @@
     "move": "mover",
     "rotate": "girar",
     "pick_up": "recoger"
+  },
+  "marketplace": {
+    "title": "Mercado",
+    "sell": "Vender",
+    "cancel_sale": "Cancelar venta",
+    "on_sale": "En venta",
+    "estimated_profit": "Recibirás: {{profit}}",
+    "price_limits": "Precio: {{min}} - {{max}}",
+    "commission": "Comisión: {{rate}}%",
+    "confirm_sell": "Confirmar",
+    "confirm_cancel": "Cancelar",
+    "error_selling": "Error al poner en venta"
   }
 }

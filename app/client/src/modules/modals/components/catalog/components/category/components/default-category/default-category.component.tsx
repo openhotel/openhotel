@@ -17,17 +17,29 @@ import {
   ItemListComponent,
   TextComponent,
 } from "shared/components";
-import { CatalogCategoryData } from "shared/types";
-import { useApi, useFurniture, SoundsEnum, useSound } from "shared/hooks";
+import { CatalogCategoryData, MarketplaceListing } from "shared/types";
+import {
+  useApi,
+  useFurniture,
+  SoundsEnum,
+  useSound,
+  useProxy,
+} from "shared/hooks";
 import { useTranslation } from "react-i18next";
 import { FURNITURE_ICON_BOX_SIZE, SCROLL_BAR_WIDTH } from "shared/consts";
 import { CATALOG_DEFAULT_CATEGORY_ITEM_LIST_SIZE } from "shared/consts/catalog.consts";
-import { SpriteSheetEnum } from "shared/enums";
+import { Event, SpriteSheetEnum } from "shared/enums";
 
 type Props = {
   categoryId: string;
   size: Size;
 } & ContainerProps;
+
+type MarketplaceData = {
+  cheapestListing: MarketplaceListing | null;
+  catalogPrice: number | null;
+  count: number;
+};
 
 export const DefaultCategoryComponent: React.FC<Props> = ({
   categoryId,
@@ -37,21 +49,64 @@ export const DefaultCategoryComponent: React.FC<Props> = ({
   const { fetch } = useApi();
   const { get } = useFurniture();
   const { play } = useSound();
+  const { on } = useProxy();
 
   const { t } = useTranslation();
   const [selectedFurnitureId, setSelectedFurnitureId] = useState<string>(null);
 
   const [categoryData, setCategoryData] = useState<CatalogCategoryData>(null);
+  const [marketplaceData, setMarketplaceData] =
+    useState<MarketplaceData | null>(null);
 
   useEffect(() => {
     setCategoryData(null);
     setSelectedFurnitureId(null);
+    setMarketplaceData(null);
     fetch(`/catalog?category=${categoryId}`).then(
       (category: CatalogCategoryData) => {
         setCategoryData(category);
       },
     );
   }, [fetch, categoryId, setCategoryData]);
+
+  const onSelectFurniture = useCallback(
+    (furnitureId: string) => {
+      setSelectedFurnitureId(furnitureId);
+      setMarketplaceData(null);
+      if (furnitureId) {
+        fetch(`/marketplace?furnitureId=${furnitureId}`).then(
+          (data: MarketplaceData) => {
+            setMarketplaceData(data);
+          },
+        );
+      }
+    },
+    [setSelectedFurnitureId, fetch],
+  );
+
+  useEffect(() => {
+    const handleCatalogPriceUpdate = (data: {
+      furnitureId: string;
+      newPrice: number | null;
+    }) => {
+      if (data.furnitureId === selectedFurnitureId) {
+        fetch(`/marketplace?furnitureId=${selectedFurnitureId}`).then(
+          (updatedData: MarketplaceData) => {
+            setMarketplaceData(updatedData);
+          },
+        );
+      }
+    };
+
+    const removeOnUpdateCatalogPrice = on(
+      Event.UPDATE_CATALOG_PRICE,
+      handleCatalogPriceUpdate,
+    );
+
+    return () => {
+      removeOnUpdateCatalogPrice?.();
+    };
+  }, [on, selectedFurnitureId, fetch]);
 
   const items = useMemo(
     () =>
@@ -69,25 +124,26 @@ export const DefaultCategoryComponent: React.FC<Props> = ({
     [categoryData],
   );
 
-  const onSelectFurniture = useCallback(
-    (furnitureId: string) => {
-      setSelectedFurnitureId(furnitureId);
-    },
-    [setSelectedFurnitureId],
-  );
-
   const selectedFurnitureData = useMemo(() => {
     const furniture = categoryData?.furniture.find(
       (f) => f.id === selectedFurnitureId,
     );
 
+    const catalogPrice = furniture?.price ?? 0;
+    const marketplacePrice = marketplaceData?.cheapestListing?.listPrice;
+    const hasMarketplaceDeal =
+      marketplacePrice !== undefined && marketplacePrice <= catalogPrice;
+
     return selectedFurnitureId
       ? {
           ...get(selectedFurnitureId),
-          price: furniture?.price ?? 0,
+          price: hasMarketplaceDeal ? marketplacePrice : catalogPrice,
+          catalogPrice,
+          marketplacePrice: hasMarketplaceDeal ? marketplacePrice : null,
+          marketplaceCount: marketplaceData?.count ?? 0,
         }
       : null;
-  }, [get, categoryData, selectedFurnitureId]);
+  }, [get, categoryData, selectedFurnitureId, marketplaceData]);
 
   const previewPositionX = useMemo(
     () =>
@@ -141,6 +197,20 @@ export const DefaultCategoryComponent: React.FC<Props> = ({
         >
           <FlexContainerComponent
             align={FLEX_ALIGN.CENTER}
+            size={{
+              width: 20,
+              height: 18 / 2,
+            }}
+          >
+            {selectedFurnitureData.marketplacePrice !== null && (
+              <TextComponent
+                text={selectedFurnitureData.catalogPrice.toString()}
+                color={0x666666}
+              />
+            )}
+          </FlexContainerComponent>
+          <FlexContainerComponent
+            align={FLEX_ALIGN.CENTER}
             gap={2}
             size={{
               width: 20,
@@ -149,7 +219,11 @@ export const DefaultCategoryComponent: React.FC<Props> = ({
           >
             <TextComponent
               text={selectedFurnitureData.price.toString()}
-              color={0x000}
+              color={
+                selectedFurnitureData.marketplacePrice !== null
+                  ? 0x00aa00
+                  : 0x000000
+              }
             />
             <SpriteComponent
               texture={"coin"}
