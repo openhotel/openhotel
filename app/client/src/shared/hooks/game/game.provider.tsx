@@ -107,9 +107,9 @@ export const GameProvider: React.FunctionComponent<GameProps> = ({
         iframeRef.current.style.left = "0";
         iframeRef.current.style.top = "0";
         iframeRef.current.style.border = "0";
-        // iframeRef.current.style.backgroundColor = "#000";
-        // iframeRef.current.style.opacity = ".5";
         document.body.appendChild(iframeRef.current);
+
+        iframeRef.current.focus();
 
         $onResize(getSize());
       },

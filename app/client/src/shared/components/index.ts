@@ -19,5 +19,6 @@ export * from "./soft-badge";
 export * from "./furniture-item";
 export * from "./furniture-preview-action";
 export * from "./countdown";
+export * from "./note";
 
 export * from "./form";

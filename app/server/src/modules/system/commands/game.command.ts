@@ -13,7 +13,6 @@ const list = async (_: string[], user: UserMutable) => {
   user.emit(ProxyEvent.SYSTEM_MESSAGE, {
     message: `Available games: ${gameDataList.map((game) => game.name)}`,
   });
-  console.log(gameDataList);
 };
 
 const join = async ([_, ...nameArray]: string[], user: UserMutable) => {
@@ -58,6 +57,66 @@ const join = async ([_, ...nameArray]: string[], user: UserMutable) => {
   });
 };
 
+const add = async ([_, repo, type = "repo"]: string[], user: UserMutable) => {
+  if (!repo) {
+    user.emit(ProxyEvent.SYSTEM_MESSAGE, {
+      message: `Usage: /game add <repo/path> [type] (type: "repo" or "path")`,
+    });
+    return;
+  }
+
+  const result = await System.game.games.add(repo, type as "repo" | "path");
+
+  user.emit(ProxyEvent.SYSTEM_MESSAGE, {
+    message: result.message,
+  });
+};
+
+const remove = async ([_, repo]: string[], user: UserMutable) => {
+  if (!repo) {
+    user.emit(ProxyEvent.SYSTEM_MESSAGE, {
+      message: `Usage: /game remove <repo/path>`,
+    });
+    return;
+  }
+
+  const result = await System.game.games.remove(repo);
+
+  user.emit(ProxyEvent.SYSTEM_MESSAGE, {
+    message: result.message,
+  });
+};
+
+const disable = async ([_, repo]: string[], user: UserMutable) => {
+  if (!repo) {
+    user.emit(ProxyEvent.SYSTEM_MESSAGE, {
+      message: `Usage: /game disable <repo/path>`,
+    });
+    return;
+  }
+
+  const result = await System.game.games.disable(repo);
+
+  user.emit(ProxyEvent.SYSTEM_MESSAGE, {
+    message: result.message,
+  });
+};
+
+const enable = async ([_, repo]: string[], user: UserMutable) => {
+  if (!repo) {
+    user.emit(ProxyEvent.SYSTEM_MESSAGE, {
+      message: `Usage: /game enable <repo/path>`,
+    });
+    return;
+  }
+
+  const result = await System.game.games.enable(repo);
+
+  user.emit(ProxyEvent.SYSTEM_MESSAGE, {
+    message: result.message,
+  });
+};
+
 export const gameCommand: Command = {
   command: "game",
   role: CommandRoles.USER,
@@ -66,9 +125,12 @@ export const gameCommand: Command = {
     const action = args[0];
     if (!action) return;
 
+    const isOp = await user.isOp();
+
     const command = {
       list,
       join,
+      ...(isOp ? { add, remove, disable, enable } : {}),
     }[action];
 
     if (!command) return;
