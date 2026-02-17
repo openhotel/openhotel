@@ -18,11 +18,17 @@ import {
   TextComponent,
 } from "shared/components";
 import { CatalogCategoryData, MarketplaceListing } from "shared/types";
-import { useApi, useFurniture, SoundsEnum, useSound } from "shared/hooks";
+import {
+  useApi,
+  useFurniture,
+  SoundsEnum,
+  useSound,
+  useProxy,
+} from "shared/hooks";
 import { useTranslation } from "react-i18next";
 import { FURNITURE_ICON_BOX_SIZE, SCROLL_BAR_WIDTH } from "shared/consts";
 import { CATALOG_DEFAULT_CATEGORY_ITEM_LIST_SIZE } from "shared/consts/catalog.consts";
-import { SpriteSheetEnum } from "shared/enums";
+import { Event, SpriteSheetEnum } from "shared/enums";
 
 type Props = {
   categoryId: string;
@@ -43,6 +49,7 @@ export const DefaultCategoryComponent: React.FC<Props> = ({
   const { fetch } = useApi();
   const { get } = useFurniture();
   const { play } = useSound();
+  const { on } = useProxy();
 
   const { t } = useTranslation();
   const [selectedFurnitureId, setSelectedFurnitureId] = useState<string>(null);
@@ -62,6 +69,45 @@ export const DefaultCategoryComponent: React.FC<Props> = ({
     );
   }, [fetch, categoryId, setCategoryData]);
 
+  const onSelectFurniture = useCallback(
+    (furnitureId: string) => {
+      setSelectedFurnitureId(furnitureId);
+      setMarketplaceData(null);
+      if (furnitureId) {
+        fetch(`/marketplace?furnitureId=${furnitureId}`).then(
+          (data: MarketplaceData) => {
+            setMarketplaceData(data);
+          },
+        );
+      }
+    },
+    [setSelectedFurnitureId, fetch],
+  );
+
+  useEffect(() => {
+    const handleCatalogPriceUpdate = (data: {
+      furnitureId: string;
+      newPrice: number | null;
+    }) => {
+      if (data.furnitureId === selectedFurnitureId) {
+        fetch(`/marketplace?furnitureId=${selectedFurnitureId}`).then(
+          (updatedData: MarketplaceData) => {
+            setMarketplaceData(updatedData);
+          },
+        );
+      }
+    };
+
+    const removeOnUpdateCatalogPrice = on(
+      Event.UPDATE_CATALOG_PRICE,
+      handleCatalogPriceUpdate,
+    );
+
+    return () => {
+      removeOnUpdateCatalogPrice?.();
+    };
+  }, [on, selectedFurnitureId, fetch]);
+
   const items = useMemo(
     () =>
       categoryData?.furniture?.map((furniture) => {
@@ -76,21 +122,6 @@ export const DefaultCategoryComponent: React.FC<Props> = ({
         };
       }),
     [categoryData],
-  );
-
-  const onSelectFurniture = useCallback(
-    (furnitureId: string) => {
-      setSelectedFurnitureId(furnitureId);
-      setMarketplaceData(null);
-      if (furnitureId) {
-        fetch(`/marketplace?furnitureId=${furnitureId}`).then(
-          (data: MarketplaceData) => {
-            setMarketplaceData(data);
-          },
-        );
-      }
-    },
-    [setSelectedFurnitureId, fetch],
   );
 
   const selectedFurnitureData = useMemo(() => {

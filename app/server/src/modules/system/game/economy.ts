@@ -151,7 +151,36 @@ export const economy = () => {
             .check(hotelEntry)
             .set(hotelEntry.key, Number(hotelEntry.value) + hotelCommission);
 
-          break;
+          const transactionId = ulid();
+          const transactionData: Transaction = {
+            id: transactionId,
+            type,
+            description,
+            fromAccount: fromAccount || null,
+            toAccount: toAccount || null,
+            amount,
+            timestamp: Date.now(),
+            meta,
+          };
+
+          atomic.set(["transactions", transactionId], transactionData);
+
+          // Buyer's transaction
+          atomic.set(["transactionsByUser", fromAccount, transactionId], {
+            ...transactionData,
+            amount: -amount,
+          });
+
+          // Seller's transaction
+          atomic.set(["transactionsByUser", toAccount, transactionId], {
+            ...transactionData,
+            amount: sellerEarnings,
+          });
+
+          const result = await atomic.commit();
+          if (!result.ok) throw new Error("Conditions were not met.");
+
+          return { success: true, transactionId };
         }
 
         default:
