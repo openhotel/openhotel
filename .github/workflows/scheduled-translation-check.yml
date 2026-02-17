@@ -1,0 +1,23 @@
+name: Scheduled Translation Check
+
+on:
+  schedule:
+    - cron: "0 0 * * 0"
+
+jobs:
+  scheduled-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Deno
+        uses: denoland/setup-deno@v1
+        with:
+          deno-version: v1.x
+
+      - name: Run Translations Check
+        run: deno task check-translations

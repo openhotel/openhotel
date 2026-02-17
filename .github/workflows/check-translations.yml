@@ -1,0 +1,34 @@
+name: Check Missing Translations
+
+on:
+  pull_request:
+    branches:
+      - "**"
+
+jobs:
+  missing-translations:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Deno
+        uses: denoland/setup-deno@v1
+        with:
+          deno-version: v1.x
+
+      - name: Run Translations Check
+        id: translation-check
+        run: deno task check-translations
+
+      - name: Post Missing Keys to PR
+        if: ${{ github.event_name == 'pull_request' }}
+        uses: peter-evans/create-or-update-comment@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            ${{ steps.translation-check.outputs.result }}
