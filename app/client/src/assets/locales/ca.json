@@ -64,5 +64,8 @@
     "move": "moure",
     "rotate": "girar",
     "pick_up": "recollir"
+  },
+  "marketplace": {
+    "title": "Marketplace"
   }
 }
