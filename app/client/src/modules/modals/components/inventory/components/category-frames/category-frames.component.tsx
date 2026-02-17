@@ -1,13 +1,14 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { InventoryFurniture, ModalInventoryCategoryProps } from "shared/types";
-import { useApi } from "shared/hooks";
-import { FurnitureType } from "shared/enums";
+import { useApi, useProxy } from "shared/hooks";
+import { Event, FurnitureType } from "shared/enums";
 import { InventoryContentComponent } from "../inventory-content";
 
 export const CategoryFramesComponent: React.FC<ModalInventoryCategoryProps> = ({
   size,
 }) => {
   const { fetch } = useApi();
+  const { on } = useProxy();
   const [furniture, setFurniture] = useState<InventoryFurniture[]>([]);
 
   const $reload = useCallback(
@@ -37,10 +38,13 @@ export const CategoryFramesComponent: React.FC<ModalInventoryCategoryProps> = ({
     }, 30_000);
     $reload();
 
+    const removeOnUpdateInventory = on(Event.UPDATE_INVENTORY, $reload);
+
     return () => {
       clearInterval(interval);
+      removeOnUpdateInventory?.();
     };
-  }, [$reload]);
+  }, [$reload, on]);
 
   return <InventoryContentComponent size={size} furniture={furniture} />;
 };

@@ -15,3 +15,4 @@ export * from "./rooms/main.ts";
 
 export * from "./economy.types.ts";
 export * from "./company.types.ts";
+export * from "./marketplace.types.ts";

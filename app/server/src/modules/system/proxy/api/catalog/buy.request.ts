@@ -40,6 +40,36 @@ export const catalogBuyRequest: ProxyRequestType = {
       };
     }
 
+    const cheapestListing =
+      await System.game.marketplace.getCheapestListing(furnitureId);
+
+    if (cheapestListing) {
+      const result = await System.game.marketplace.buyFromMarketplace(
+        user.getAccountId(),
+        cheapestListing.id,
+      );
+
+      if (!result.success) {
+        return {
+          status: 400,
+          data: {
+            error: result.error,
+          },
+        };
+      }
+
+      return {
+        status: 200,
+        data: {
+          transaction: {
+            success: true,
+            fromMarketplace: true,
+            price: cheapestListing.listPrice,
+          },
+        },
+      };
+    }
+
     const id = ulid();
 
     const transaction = await System.game.economy.executeTransaction({

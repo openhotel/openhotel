@@ -4,6 +4,7 @@ import {
   FurnitureItemComponent,
   FurniturePreviewActionComponent,
   ItemListComponent,
+  TextComponent,
 } from "shared/components";
 import { InventoryFurniture, Size2d } from "shared/types";
 import {
@@ -15,6 +16,7 @@ import {
   GraphicType,
 } from "@openhotel/pixi-components";
 import {
+  useApi,
   useFurniture,
   useItemPlacePreview,
   useModal,
@@ -26,28 +28,58 @@ import {
   SCROLL_BAR_WIDTH,
 } from "shared/consts";
 import { useTranslation } from "react-i18next";
-import { Route } from "shared/enums";
+import { Modal, Route } from "shared/enums";
 
 type Props = {
   size: Size2d;
   furniture: InventoryFurniture[];
+  onRefresh?: () => void;
 };
 
 export const InventoryContentComponent: React.FC<Props> = ({
   size,
   furniture,
+  onRefresh,
 }) => {
-  const { closeAll } = useModal();
+  const { closeAll, openModal } = useModal();
   const { t } = useTranslation();
   const { get } = useFurniture();
   const { getRoute } = useRouter();
   const { setItemPreviewData, canPlace } = useItemPlacePreview();
+  const { fetch } = useApi();
 
   const [selectedFurnitureId, setSelectedFurnitureId] = useState<string>(null);
 
   useEffect(() => {
     setSelectedFurnitureId(null);
   }, []);
+
+  const selectedFurnitureItem = useMemo(() => {
+    return furniture?.find((f) => f.furnitureId === selectedFurnitureId);
+  }, [furniture, selectedFurnitureId]);
+
+  const hasItemsOnSale = useMemo(() => {
+    if (!selectedFurnitureItem?.marketplaceListingIds) return false;
+    return Object.keys(selectedFurnitureItem.marketplaceListingIds).length > 0;
+  }, [selectedFurnitureItem]);
+
+  const availableForSaleCount = useMemo(() => {
+    if (!selectedFurnitureItem) return 0;
+    const totalCount = selectedFurnitureItem.ids.length;
+    const listedCount = selectedFurnitureItem.marketplaceListingIds
+      ? Object.keys(selectedFurnitureItem.marketplaceListingIds).length
+      : 0;
+    return totalCount - listedCount;
+  }, [selectedFurnitureItem]);
+
+  const getFirstAvailableId = useCallback(() => {
+    if (!selectedFurnitureItem) return null;
+    const listedIds = selectedFurnitureItem.marketplaceListingIds
+      ? Object.keys(selectedFurnitureItem.marketplaceListingIds)
+      : [];
+
+    return selectedFurnitureItem.ids.find((id) => !listedIds.includes(id));
+  }, [selectedFurnitureItem]);
 
   const items = useMemo(
     () =>
@@ -95,6 +127,36 @@ export const InventoryContentComponent: React.FC<Props> = ({
     closeAll,
   ]);
 
+  const onOpenSellModal = useCallback(() => {
+    if (!selectedFurnitureId) return;
+
+    const instanceId = getFirstAvailableId();
+    if (!instanceId) return;
+
+    openModal(Modal.MARKETPLACE_SELL, {
+      furnitureId: selectedFurnitureId,
+      instanceId,
+      onSuccess: onRefresh,
+    });
+  }, [selectedFurnitureId, getFirstAvailableId, openModal, onRefresh]);
+
+  const onCancelListing = useCallback(() => {
+    if (!selectedFurnitureItem?.marketplaceListingIds) return;
+
+    const listingId = Object.values(
+      selectedFurnitureItem.marketplaceListingIds,
+    )[0];
+    if (!listingId) return;
+
+    fetch("/marketplace/cancel", { listingId }, false, "POST").then(
+      (result) => {
+        if (result.success) {
+          onRefresh?.();
+        }
+      },
+    );
+  }, [selectedFurnitureItem, fetch, onRefresh]);
+
   const previewPositionX = useMemo(
     () =>
       INVENTORY_DEFAULT_CATEGORY_ITEM_LIST_SIZE.cols *
@@ -137,6 +199,31 @@ export const InventoryContentComponent: React.FC<Props> = ({
             height: 20,
           }}
         >
+          {hasItemsOnSale ? (
+            <FlexContainerComponent
+              align={FLEX_ALIGN.CENTER}
+              gap={4}
+              size={{ width: previewWidth - 6, height: 14 }}
+            >
+              <TextComponent text={t("marketplace.on_sale")} color={0xaa6600} />
+              <ButtonComponent
+                autoWidth={true}
+                text={t("marketplace.cancel_sale")}
+                onPointerUp={onCancelListing}
+                size={{
+                  width: 80,
+                  height: 14,
+                }}
+              />
+            </FlexContainerComponent>
+          ) : null}
+          {availableForSaleCount > 0 ? (
+            <ButtonComponent
+              autoWidth={true}
+              text={t("marketplace.sell")}
+              onPointerUp={onOpenSellModal}
+            />
+          ) : null}
           {canPlaceItem ? (
             <ButtonComponent
               autoWidth={true}
@@ -155,6 +242,10 @@ export const InventoryContentComponent: React.FC<Props> = ({
     getRoute,
     onPlaceFurniture,
     canPlace,
+    onOpenSellModal,
+    hasItemsOnSale,
+    availableForSaleCount,
+    onCancelListing,
   ]);
 
   return (

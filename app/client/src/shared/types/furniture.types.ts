@@ -56,4 +56,5 @@ export type InventoryFurniture = {
   furnitureId: string;
   type: FurnitureType;
   ids: string[];
+  marketplaceListingIds?: Record<string, string>;
 };

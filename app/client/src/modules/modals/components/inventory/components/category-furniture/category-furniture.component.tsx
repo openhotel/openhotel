@@ -1,32 +1,53 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { InventoryFurniture, ModalInventoryCategoryProps } from "shared/types";
 import { InventoryContentComponent } from "../inventory-content";
-import { useApi } from "shared/hooks";
-import { FurnitureType } from "shared/enums";
+import { useApi, useProxy } from "shared/hooks";
+import { Event, FurnitureType } from "shared/enums";
+
+type RawFurniture = {
+  id: string;
+  furnitureId: string;
+  type: FurnitureType;
+  marketplaceListingId?: string;
+};
 
 export const CategoryFurnitureComponent: React.FC<
   ModalInventoryCategoryProps
 > = ({ size }) => {
   const { fetch } = useApi();
+  const { on } = useProxy();
   const [furniture, setFurniture] = useState<InventoryFurniture[]>([]);
 
   const $reload = useCallback(
     () =>
       fetch(`/inventory?type=${FurnitureType.FURNITURE}`).then(
-        ({ furniture }) => {
+        ({ furniture }: { furniture: RawFurniture[] }) => {
           const uniqueFurnitureIds = [
             ...new Set(furniture.map((furniture) => furniture.furnitureId)),
           ] as string[];
+
           setFurniture(
-            uniqueFurnitureIds.map((furnitureId) => ({
-              type: furniture.find(
-                (furniture) => furniture.furnitureId === furnitureId,
-              ).type,
-              furnitureId,
-              ids: furniture
-                .filter((furniture) => furniture.furnitureId === furnitureId)
-                .map((furniture) => furniture.id),
-            })),
+            uniqueFurnitureIds.map((furnitureId) => {
+              const items = furniture.filter(
+                (f) => f.furnitureId === furnitureId,
+              );
+              const marketplaceListingIds: Record<string, string> = {};
+              items.forEach((item) => {
+                if (item.marketplaceListingId) {
+                  marketplaceListingIds[item.id] = item.marketplaceListingId;
+                }
+              });
+
+              return {
+                type: items[0].type,
+                furnitureId,
+                ids: items.map((f) => f.id),
+                marketplaceListingIds:
+                  Object.keys(marketplaceListingIds).length > 0
+                    ? marketplaceListingIds
+                    : undefined,
+              };
+            }),
           );
         },
       ),
@@ -39,10 +60,19 @@ export const CategoryFurnitureComponent: React.FC<
     }, 30_000);
     $reload();
 
+    const removeOnUpdateInventory = on(Event.UPDATE_INVENTORY, $reload);
+
     return () => {
       clearInterval(interval);
+      removeOnUpdateInventory?.();
     };
-  }, [$reload]);
+  }, [$reload, on]);
 
-  return <InventoryContentComponent size={size} furniture={furniture} />;
+  return (
+    <InventoryContentComponent
+      size={size}
+      furniture={furniture}
+      onRefresh={$reload}
+    />
+  );
 };

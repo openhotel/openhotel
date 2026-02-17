@@ -44,6 +44,7 @@ export type Furniture = {
   id: string;
   furnitureId: string;
   type: FurnitureType;
+  marketplaceListingId?: string;
 };
 
 export type RoomFurniture = {
