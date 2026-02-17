@@ -19,22 +19,43 @@ async function getTranslations(directory: string) {
   return translations;
 }
 
+function flattenKeys(obj: unknown, prefix = ""): string[] {
+  if (typeof obj !== "object" || obj === null || Array.isArray(obj)) {
+    return [prefix];
+  }
+
+  const keys: string[] = [];
+  for (const [key, value] of Object.entries(obj as Record<string, unknown>)) {
+    const fullKey = prefix ? `${prefix}.${key}` : key;
+    if (typeof value === "object" && value !== null && !Array.isArray(value)) {
+      keys.push(...flattenKeys(value, fullKey));
+    } else {
+      keys.push(fullKey);
+    }
+  }
+  return keys;
+}
+
 function findMissingTranslations(translations: Record<string, unknown>) {
   const allKeys = new Set<string>();
 
   for (const [_, fileContent] of Object.entries(translations)) {
-    Object.keys(fileContent).forEach((key) => allKeys.add(key));
+    flattenKeys(fileContent).forEach((key) => allKeys.add(key));
   }
 
-  const missingKeys: Record<string, unknown[]> = {};
+  const missingKeys: Record<string, string[]> = {};
   for (const [fileName, fileContent] of Object.entries(translations)) {
-    const fileKeys = Object.keys(fileContent);
+    const fileKeys = new Set(flattenKeys(fileContent));
     missingKeys[fileName] = Array.from(allKeys).filter(
-      (key) => !fileKeys.includes(key),
+      (key) => !fileKeys.has(key),
     );
   }
 
   return missingKeys;
+}
+
+function hasMissing(missing: Record<string, string[]>): boolean {
+  return Object.values(missing).some((keys) => keys.length > 0);
 }
 
 async function main() {
@@ -44,12 +65,26 @@ async function main() {
   const clientMissingTranslations = findMissingTranslations(clientTranslations);
   const serverMissingTranslations = findMissingTranslations(serverTranslations);
 
-  const formattedOutput =
-    `## Translation Keys Report\n\n` +
-    `Client Missing Translations:\n\n\`\`\`json\n${JSON.stringify(clientMissingTranslations, null, 2)}\n\`\`\`\n\n` +
-    `Server Missing Translations:\n\n\`\`\`json\n${JSON.stringify(serverMissingTranslations, null, 2)}\n\`\`\``;
+  const clientHasMissing = hasMissing(clientMissingTranslations);
+  const serverHasMissing = hasMissing(serverMissingTranslations);
 
-  console.log(formattedOutput);
+  if (!clientHasMissing && !serverHasMissing) return;
+
+  const sections: string[] = [`## Translation Keys Report\n`];
+
+  if (clientHasMissing) {
+    sections.push(
+      `**Client Missing Translations:**\n\n\`\`\`json\n${JSON.stringify(clientMissingTranslations, null, 2)}\n\`\`\``,
+    );
+  }
+
+  if (serverHasMissing) {
+    sections.push(
+      `**Server Missing Translations:**\n\n\`\`\`json\n${JSON.stringify(serverMissingTranslations, null, 2)}\n\`\`\``,
+    );
+  }
+
+  console.log(sections.join("\n"));
 }
 
 main();
