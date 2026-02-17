@@ -49,6 +49,7 @@ import {
 import { HOT_BAR_HEIGHT_FULL } from "shared/consts";
 import { useInfo } from "shared/hooks/info";
 import { getCrossDirectionFromDirection, getDirection } from "shared/utils";
+import { ModChatComponent } from "../moderator";
 
 type Props = {};
 
@@ -64,6 +65,7 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
     selectedPreview,
     setLastPositionData,
     setAbsoluteRoomPosition,
+    getUser,
   } = usePrivateRoom();
   const { lastUpdate, update } = useUpdate();
   const { isDragging, position: cameraPosition } = useCamera();
@@ -108,10 +110,11 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
     };
   }, [windowSize, lastUpdate, roomSize, getScale]);
 
-  const currentAccountId = useMemo(() => getAccount().accountId, [getAccount]);
+  const currentAccount = useMemo(() => getAccount(), [getAccount]);
   const currentUser = useMemo(
-    () => room?.users?.find((user) => user.accountId === currentAccountId),
-    [room?.users, currentAccountId],
+    () =>
+      room?.users?.find((user) => user.accountId === currentAccount.accountId),
+    [room?.users, currentAccount.accountId],
   );
 
   useEffect(() => {
@@ -119,12 +122,12 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
   }, [setPrivateRoom, room]);
 
   useEffect(() => {
-    setCanPlace(room?.ownerId === currentAccountId);
+    setCanPlace(room?.ownerId === currentAccount.accountId);
 
     return () => {
       setCanPlace(false);
     };
-  }, [setCanPlace, currentAccountId, room]);
+  }, [setCanPlace, currentAccount.accountId, room]);
 
   useEffect(() => {
     if (!room) return;
@@ -345,6 +348,7 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
             {/*  eventMode={EventMode.NONE}*/}
             {/*/>*/}
           </CameraComponent>
+          {currentAccount.admin ? <ModChatComponent getUser={getUser} /> : null}
           <ContainerComponent
             position={{
               x: safeXPosition,

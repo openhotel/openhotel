@@ -22,7 +22,13 @@ import {
 } from "@openhotel/pixi-components";
 import { HotBarItemsComponent } from "shared/components";
 import { Event, SpriteSheetEnum } from "shared/enums";
-import { useChat, usePrivateRoom, useProxy } from "shared/hooks";
+import {
+  useAccount,
+  useChat,
+  useModeration,
+  usePrivateRoom,
+  useProxy,
+} from "shared/hooks";
 import {
   CHAT_RIGHT_MARGIN,
   HOT_BAR_HEIGHT,
@@ -48,6 +54,8 @@ export const ChatHotBarComponent: React.FC<Props> = ({
   const { lastPositionData, absoluteRoomPosition } = usePrivateRoom();
   const { getPosition: getCursorPosition } = useCursor();
   const { enabled } = useChat();
+  const { getAccount } = useAccount();
+  const { closeConsole, clearConsole, openConsole } = useModeration();
 
   const [focusInputNow, setFocusInputNow] = useState<number>(null);
   const [blurInputNow, setBlurInputNow] = useState<number>(null);
@@ -62,6 +70,8 @@ export const ChatHotBarComponent: React.FC<Props> = ({
     JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"),
   );
   const historyIndexRef = useRef<number>(-1);
+
+  const currentAccount = useMemo(() => getAccount(), [getAccount]);
 
   useEffect(() => {
     if (!enabled) setBlurInputNow(performance.now());
@@ -121,7 +131,7 @@ export const ChatHotBarComponent: React.FC<Props> = ({
             message += ` ${lastPositionData.wallPosition.x} ${lastPositionData.wallPosition.y}`;
         }
 
-        //---- /photo ------------------------------------------------------------
+        //---- /photo ----------------------------------------------------------
         if (message.startsWith("/photo") && message.split(" ").length === 1) {
           const cursor = getCursorPosition();
           const position = {
@@ -129,6 +139,24 @@ export const ChatHotBarComponent: React.FC<Props> = ({
             y: Math.round(absoluteRoomPosition.y - cursor.y),
           };
           message += ` ${position.x} ${position.y}`;
+        }
+        //---- /exit -----------------------------------------------------------
+        if (currentAccount.admin && message.startsWith("/exit")) {
+          closeConsole();
+          setValue("");
+          return;
+        }
+        //---- /clear -----------------------------------------------------------
+        if (currentAccount.admin && message.startsWith("/clear")) {
+          clearConsole();
+          setValue("");
+          return;
+        }
+        //---- /open -----------------------------------------------------------
+        if (currentAccount.admin && message.startsWith("/open")) {
+          openConsole();
+          setValue("");
+          return;
         }
 
         emit(Event.MESSAGE, { message });
@@ -159,6 +187,10 @@ export const ChatHotBarComponent: React.FC<Props> = ({
       scale,
       getCursorPosition,
       enabled,
+      currentAccount,
+      closeConsole,
+      clearConsole,
+      openConsole,
     ],
   );
 

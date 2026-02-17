@@ -17,6 +17,7 @@ export * from "./language";
 export * from "./api";
 export * from "./game";
 export * from "./chat";
+export * from "./moderation";
 
 export * from "./use-character";
 export * from "./use-contributors";

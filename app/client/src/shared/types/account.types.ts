@@ -5,4 +5,5 @@ export type Account = {
   username: string;
   apiToken: string;
   hemisphere: Hemisphere;
+  admin?: boolean;
 };
