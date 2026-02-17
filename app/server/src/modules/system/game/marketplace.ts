@@ -9,6 +9,7 @@ import {
 } from "shared/types/marketplace.types.ts";
 import { DEFAULT_MARKETPLACE_CONFIG } from "shared/consts/marketplace.consts.ts";
 import { Furniture } from "shared/types/furniture.types.ts";
+import { ProxyEvent } from "shared/enums/main.ts";
 
 export const marketplace = () => {
   let config: MarketplaceConfig = DEFAULT_MARKETPLACE_CONFIG;
@@ -174,6 +175,23 @@ export const marketplace = () => {
         return { success: false, error: "Failed to create listing" };
       }
 
+      System.proxy.emit({
+        users: sellerId,
+        event: ProxyEvent.UPDATE_INVENTORY,
+        data: {},
+      });
+
+      const cheapestListing = await getCheapestListing(furnitureId);
+      if (cheapestListing?.id === listingId) {
+        System.proxy.emit({
+          event: ProxyEvent.UPDATE_CATALOG_PRICE,
+          data: {
+            furnitureId,
+            newPrice: listPrice,
+          },
+        });
+      }
+
       return { success: true, listing };
     } catch (error) {
       console.error("Marketplace list error:", error.message);
@@ -242,6 +260,20 @@ export const marketplace = () => {
       const result = await atomic.commit();
       if (!result.ok) {
         return { success: false, error: "Failed to cancel listing" };
+      }
+
+      const newCheapestListing = await getCheapestListing(listing.furnitureId);
+      if (
+        !newCheapestListing ||
+        newCheapestListing.listPrice !== listing.listPrice
+      ) {
+        System.proxy.emit({
+          event: ProxyEvent.UPDATE_CATALOG_PRICE,
+          data: {
+            furnitureId: listing.furnitureId,
+            newPrice: newCheapestListing?.listPrice ?? null,
+          },
+        });
       }
 
       return { success: true };
@@ -413,6 +445,32 @@ export const marketplace = () => {
       const result = await atomic.commit();
       if (!result.ok) {
         return { success: false, error: "Failed to complete purchase" };
+      }
+
+      System.proxy.emit({
+        users: listing.sellerId,
+        event: ProxyEvent.UPDATE_INVENTORY,
+        data: {},
+      });
+
+      System.proxy.emit({
+        users: buyerId,
+        event: ProxyEvent.UPDATE_INVENTORY,
+        data: {},
+      });
+
+      const newCheapestListing = await getCheapestListing(listing.furnitureId);
+      if (
+        !newCheapestListing ||
+        newCheapestListing.listPrice !== listing.listPrice
+      ) {
+        System.proxy.emit({
+          event: ProxyEvent.UPDATE_CATALOG_PRICE,
+          data: {
+            furnitureId: listing.furnitureId,
+            newPrice: newCheapestListing?.listPrice ?? null,
+          },
+        });
       }
 
       return { success: true };
