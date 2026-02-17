@@ -20,7 +20,11 @@ jobs:
 
       - name: Run Translations Check
         id: translation-check
-        run: deno task check-translations
+        run: |
+          result="$(deno task check-translations || true)"
+          echo "result<<EOF" >> $GITHUB_OUTPUT
+          printf '%s\n' "$result" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Post Missing Keys to PR
         if: ${{ github.event_name == 'pull_request' }}
@@ -28,5 +32,4 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           issue-number: ${{ github.event.pull_request.number }}
-          body: |
-            ${{ steps.translation-check.outputs.result }}
+          body: ${{ steps.translation-check.outputs.result }}
