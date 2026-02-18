@@ -166,6 +166,7 @@ export const furniture = () => {
   const $mapFurnitureData = (furnitureData: any): FurnitureData => ({
     ...furnitureData,
     type: FurnitureType[furnitureData.type.toUpperCase()],
+    actions: furnitureData.actions ?? [],
   });
 
   const getList = async (): Promise<FurnitureData[]> => {

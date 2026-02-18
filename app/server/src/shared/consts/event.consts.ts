@@ -13,6 +13,7 @@ export const PROXY_CLIENT_EVENT_WHITELIST: ProxyEvent[] = [
   ProxyEvent.ROTATE_FURNITURE,
   ProxyEvent.PICK_UP_FURNITURE,
   ProxyEvent.MOVE_FURNITURE,
+  ProxyEvent.ACTION_FURNITURE,
   ProxyEvent.DELETE_ROOM,
   ProxyEvent.CLOSE_GAME,
 ];

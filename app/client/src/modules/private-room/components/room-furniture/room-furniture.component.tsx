@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo } from "react";
+import React, { useCallback, useEffect, useMemo, useRef } from "react";
 import { FurnitureComponent } from "shared/components";
 import {
   useFurniture,
@@ -28,9 +28,15 @@ export const RoomFurnitureComponent: React.FC<Props> = ({
     addFurniture,
     removeFurniture,
     updateFurniture,
+    selectedPreview,
     setSelectedPreview,
   } = usePrivateRoom();
   const { itemPreviewData } = useItemPlacePreview();
+
+  const selectedPreviewRef = useRef(selectedPreview);
+  useEffect(() => {
+    selectedPreviewRef.current = selectedPreview;
+  }, [selectedPreview]);
 
   useEffect(() => {
     if (!room) return;
@@ -46,6 +52,9 @@ export const RoomFurnitureComponent: React.FC<Props> = ({
       ProxyEvent.UPDATE_FURNITURE,
       ({ furniture }: { furniture: RoomFurniture }) => {
         updateFurniture(furniture);
+        const current = selectedPreviewRef.current;
+        if (current?.id === furniture.id)
+          setSelectedPreview({ ...current, state: furniture.state });
       },
     );
 
@@ -76,6 +85,7 @@ export const RoomFurnitureComponent: React.FC<Props> = ({
             : PrivateRoomPreviewType.FRAME,
         data,
         direction: furniture.direction,
+        state: furniture.state,
         title:
           getFurniture(furniture.furnitureId)?.label ?? furniture.furnitureId,
       });
@@ -95,6 +105,7 @@ export const RoomFurnitureComponent: React.FC<Props> = ({
             position={furniture.position}
             furnitureId={furniture.furnitureId}
             direction={furniture?.direction}
+            state={furniture?.state}
             onPointerDown={onPointerDown(furniture)}
             disableHitArea={disableHitAreas}
             isBeingPlaced={itemPreviewData?.ids?.includes(furniture.id)}

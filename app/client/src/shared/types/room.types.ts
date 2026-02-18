@@ -51,6 +51,7 @@ export type PrivateRoomPreview = {
   data: any | FurnitureData;
   title: string;
   direction: CrossDirection;
+  state?: string;
 };
 
 export type NavigatorRoom = {
