@@ -1,8 +1,4 @@
-import {
-  FurnitureActionType,
-  FurnitureDirection,
-  FurnitureType,
-} from "shared/enums";
+import { FurnitureDirection, FurnitureType } from "shared/enums";
 
 export type FurnitureBounds = {
   width: number;
@@ -40,11 +36,14 @@ export type FurnitureTexture = {
 
 export type FurnitureDirectionItem = {
   textures: FurnitureTexture[];
+  stateTextures?: Record<string, Record<string, FurnitureTexture>>;
 };
 
 export type FurnitureAction = {
-  type: FurnitureActionType;
-  meta?: unknown;
+  id: string;
+  label: string;
+  states: string[];
+  defaultState: string;
 };
 
 export type FurnitureData = {

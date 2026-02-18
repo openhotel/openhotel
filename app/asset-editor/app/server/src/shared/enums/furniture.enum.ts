@@ -8,7 +8,3 @@ export enum FurnitureDirection {
 export enum FurnitureType {
   FRAME = "frame",
 }
-
-export enum FurnitureActionType {
-  SIT = "sit",
-}

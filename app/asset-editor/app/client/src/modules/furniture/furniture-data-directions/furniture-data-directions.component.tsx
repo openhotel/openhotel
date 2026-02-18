@@ -93,6 +93,7 @@ export const FurnitureDataDirectionsComponent: React.FC = () => {
         direction: {
           ...furniture.direction,
           [directionSelection]: {
+            ...furnitureDirection,
             textures: [
               ...(furniture.direction[directionSelection]?.textures ?? []),
               $texture,
@@ -101,7 +102,13 @@ export const FurnitureDataDirectionsComponent: React.FC = () => {
         },
       });
     },
-    [setFurniture, furniture, directionSelection, furnitureDirectionTexture],
+    [
+      setFurniture,
+      furniture,
+      directionSelection,
+      furnitureDirectionTexture,
+      furnitureDirection,
+    ],
   );
   const $onRemoveDirectionTexture = useCallback(
     (index: number) => () => {
@@ -110,6 +117,7 @@ export const FurnitureDataDirectionsComponent: React.FC = () => {
         direction: {
           ...furniture.direction,
           [directionSelection]: {
+            ...furnitureDirection,
             textures:
               furniture.direction[directionSelection]?.textures?.filter(
                 (_, $index) => index !== $index,
@@ -118,7 +126,68 @@ export const FurnitureDataDirectionsComponent: React.FC = () => {
         },
       });
     },
+    [setFurniture, furniture, directionSelection, furnitureDirection],
+  );
+
+  const $onChangeStateTexture = useCallback(
+    (actionId: string, state: string, field: string) =>
+      (
+        event:
+          | React.ChangeEvent<HTMLInputElement>
+          | { target: { value: unknown } },
+      ) => {
+        const value = event.target.value;
+        setFurniture({
+          ...furniture,
+          direction: {
+            ...furniture.direction,
+            [directionSelection]: setObject(
+              furniture.direction[directionSelection],
+              `stateTextures.${actionId}.${state}.${field}`,
+              value,
+            ),
+          },
+        });
+      },
     [setFurniture, furniture, directionSelection],
+  );
+
+  const $onChangeStateTextureSelectorTexture = useCallback(
+    (actionId: string, state: string) => (option: { key: string } | null) => {
+      const dirData = furniture.direction[directionSelection];
+      const current = dirData?.stateTextures?.[actionId]?.[state] ?? {};
+      const frame = sheet.frames[option?.key];
+      setFurniture({
+        ...furniture,
+        direction: {
+          ...furniture.direction,
+          [directionSelection]: {
+            ...dirData,
+            stateTextures: {
+              ...(dirData?.stateTextures ?? {}),
+              [actionId]: {
+                ...(dirData?.stateTextures?.[actionId] ?? {}),
+                [state]: {
+                  ...current,
+                  texture: option?.key ?? null,
+                  bounds: {
+                    width:
+                      frame?.frame?.w ??
+                      (current as FurnitureTexture)?.bounds?.width ??
+                      0,
+                    height:
+                      frame?.frame?.h ??
+                      (current as FurnitureTexture)?.bounds?.height ??
+                      0,
+                  },
+                },
+              },
+            },
+          },
+        },
+      });
+    },
+    [setFurniture, furniture, directionSelection, sheet],
   );
 
   return (
@@ -341,6 +410,132 @@ export const FurnitureDataDirectionsComponent: React.FC = () => {
               <ButtonComponent>Add</ButtonComponent>
             </FormComponent>
           </div>
+
+          {furniture.actions?.length > 0 ? (
+            <>
+              <hr />
+              <label>stateTextures</label>
+              <div className={styles.list}>
+                {furniture.actions.map((action) =>
+                  action.states.map((state) => {
+                    const stateTexData = furnitureDirection?.stateTextures?.[
+                      action.id
+                    ]?.[state] as FurnitureTexture | undefined;
+                    return (
+                      <div
+                        key={`${action.id}.${state}`}
+                        className={cn(styles.column, styles.item)}
+                      >
+                        <label>
+                          {action.id}.{state}
+                        </label>
+                        <div className={styles.row}>
+                          <SpriteComponent
+                            sprite={sprite}
+                            spriteSheet={sheet}
+                            frame={sheet.frames[stateTexData?.texture]?.frame}
+                          />
+                          <SelectorComponent
+                            placeholder="texture"
+                            defaultOption={stateTexData?.texture ?? null}
+                            options={texturesOptions}
+                            onChange={$onChangeStateTextureSelectorTexture(
+                              action.id,
+                              state,
+                            )}
+                            clearable
+                          />
+                          <InputComponent
+                            placeholder="zIndex"
+                            value={stateTexData?.zIndex ?? 0}
+                            onChange={$onChangeStateTexture(
+                              action.id,
+                              state,
+                              "zIndex",
+                            )}
+                            type="number"
+                          />
+                        </div>
+                        <hr />
+                        <div className={styles.row}>
+                          <InputComponent
+                            placeholder="bounds.width"
+                            value={stateTexData?.bounds?.width ?? 0}
+                            onChange={$onChangeStateTexture(
+                              action.id,
+                              state,
+                              "bounds.width",
+                            )}
+                            type="number"
+                          />
+                          <InputComponent
+                            placeholder="bounds.height"
+                            value={stateTexData?.bounds?.height ?? 0}
+                            onChange={$onChangeStateTexture(
+                              action.id,
+                              state,
+                              "bounds.height",
+                            )}
+                            type="number"
+                          />
+                        </div>
+                        <hr />
+                        <div className={styles.row}>
+                          <InputComponent
+                            placeholder="pivot.x"
+                            value={stateTexData?.pivot?.x ?? 0}
+                            onChange={$onChangeStateTexture(
+                              action.id,
+                              state,
+                              "pivot.x",
+                            )}
+                            type="number"
+                          />
+                          <InputComponent
+                            placeholder="pivot.y"
+                            value={stateTexData?.pivot?.y ?? 0}
+                            onChange={$onChangeStateTexture(
+                              action.id,
+                              state,
+                              "pivot.y",
+                            )}
+                            type="number"
+                          />
+                        </div>
+                        {furniture.type === FurnitureType.FURNITURE ? (
+                          <>
+                            <hr />
+                            <div className={styles.row}>
+                              <InputComponent
+                                placeholder="position.x"
+                                value={stateTexData?.position?.x ?? 0}
+                                onChange={$onChangeStateTexture(
+                                  action.id,
+                                  state,
+                                  "position.x",
+                                )}
+                                type="number"
+                              />
+                              <InputComponent
+                                placeholder="position.z"
+                                value={stateTexData?.position?.z ?? 0}
+                                onChange={$onChangeStateTexture(
+                                  action.id,
+                                  state,
+                                  "position.z",
+                                )}
+                                type="number"
+                              />
+                            </div>
+                          </>
+                        ) : null}
+                      </div>
+                    );
+                  }),
+                )}
+              </div>
+            </>
+          ) : null}
         </>
       ) : null}
     </>

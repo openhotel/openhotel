@@ -1,9 +1,5 @@
 import { FurnitureData, SpriteSheet } from "shared/types";
-import {
-  FurnitureActionType,
-  FurnitureDirection,
-  FurnitureType,
-} from "shared/enums";
+import { FurnitureDirection, FurnitureType } from "shared/enums";
 import { ulid } from "ulidx";
 
 export const parseFurniture = (
@@ -13,41 +9,64 @@ export const parseFurniture = (
   const furniture = structuredClone($furniture);
 
   const furnitureTypes = Object.values(FurnitureType);
-  const actionTypes = Object.values(FurnitureActionType);
 
   if (!furniture?.type || !furnitureTypes.includes(furniture?.type))
     furniture.type = FurnitureType.FURNITURE;
 
-  const parseDirection = (furnitureDirection: FurnitureDirection) => ({
-    textures:
-      furniture?.direction?.[furnitureDirection]?.textures
-        ?.map(({ texture, bounds, pivot, position, zIndex }) => ({
-          texture: sheet.frames[texture] ? texture : null,
-          bounds: {
-            width: bounds?.width ?? 0,
-            height: bounds?.height ?? 0,
-          },
-          pivot: {
-            x: pivot?.x ?? 0,
-            y: pivot?.y ?? 0,
-          },
-          position: {
-            x: position?.x ?? 0,
-            z: position?.z ?? 0,
-          },
-          zIndex: zIndex ?? 0,
-        }))
-        .filter((texture) => texture.texture) ?? [],
+  const parseTexture = ({
+    texture,
+    bounds,
+    pivot,
+    position,
+    zIndex,
+  }: {
+    texture: string;
+    bounds?: { width?: number; height?: number };
+    pivot?: { x?: number; y?: number };
+    position?: { x?: number; z?: number };
+    zIndex?: number;
+  }) => ({
+    texture: sheet.frames[texture] ? texture : null,
+    bounds: {
+      width: bounds?.width ?? 0,
+      height: bounds?.height ?? 0,
+    },
+    pivot: {
+      x: pivot?.x ?? 0,
+      y: pivot?.y ?? 0,
+    },
+    position: {
+      x: position?.x ?? 0,
+      z: position?.z ?? 0,
+    },
+    zIndex: zIndex ?? 0,
   });
 
-  // console.log(
-  //   furniture?.actions
-  //     ?.map((action) => ({
-  //       type: actionTypes.includes(action.type) ? action.type : null,
-  //       meta: action.meta,
-  //     }))
-  //     .filter((action) => !action.type) ?? [],
-  // );
+  const parseDirection = (furnitureDirection: FurnitureDirection) => {
+    const dirData = furniture?.direction?.[furnitureDirection];
+
+    const stateTextures: Record<
+      string,
+      Record<string, ReturnType<typeof parseTexture>>
+    > = {};
+    for (const [actionId, states] of Object.entries(
+      dirData?.stateTextures ?? {},
+    )) {
+      const parsedStates: Record<string, ReturnType<typeof parseTexture>> = {};
+      for (const [state, texData] of Object.entries(states)) {
+        const parsed = parseTexture(texData);
+        if (parsed.texture) parsedStates[state] = parsed;
+      }
+      if (Object.keys(parsedStates).length > 0)
+        stateTextures[actionId] = parsedStates;
+    }
+
+    return {
+      textures:
+        dirData?.textures?.map(parseTexture).filter((t) => t.texture) ?? [],
+      stateTextures,
+    };
+  };
 
   return {
     id: furniture?.id ?? "",
@@ -82,7 +101,12 @@ export const parseFurniture = (
     },
     actions:
       furniture?.actions
-        ?.map((action) => (actionTypes.includes(action.type) ? action : null))
-        .filter((action) => Boolean(action.type)) ?? [],
+        ?.filter((action) => action?.id && action?.states?.length > 0)
+        .map((action) => ({
+          id: action.id,
+          label: action.label ?? action.id,
+          states: action.states,
+          defaultState: action.defaultState ?? action.states[0] ?? "",
+        })) ?? [],
   };
 };
