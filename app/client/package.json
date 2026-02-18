@@ -33,9 +33,9 @@
     "@vitest/coverage-v8": "3.0.7",
     "playwright": "1.50.1",
     "prop-types": "15.8.1",
-    "storybook": "8.5.1",
+    "storybook": "10.2.10",
     "storybook-dark-mode": "4.0.2",
-    "vite": "6.1.6",
+    "vite": "7.3.1",
     "vite-tsconfig-paths": "5.1.4",
     "vitest": "3.0.7"
   },
