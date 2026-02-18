@@ -134,6 +134,7 @@ export const SelectionPreviewComponent: React.FC = () => {
           <FurnitureComponent
             position={{ x: 0, y: 0, z: 0 }}
             furnitureId={(selectedPreview.data as FurnitureData).furnitureId}
+            state={selectedPreview.state}
           />
         );
     }
@@ -163,6 +164,16 @@ export const SelectionPreviewComponent: React.FC = () => {
     });
   }, [selectedPreview, emit, setSelectedPreview, setItemPreviewData]);
 
+  const onActionFurniture = useCallback(
+    (actionId: string) => () => {
+      emit(Event.ACTION_FURNITURE, {
+        id: selectedPreview.id,
+        actionId,
+      });
+    },
+    [selectedPreview, emit],
+  );
+
   const renderActions = useMemo(() => {
     const account = getAccount();
     const isRoomOwner = account.accountId === room?.ownerId;
@@ -186,25 +197,39 @@ export const SelectionPreviewComponent: React.FC = () => {
           </>
         ) : null;
       case PrivateRoomPreviewType.FURNITURE:
-        return isRoomOwner ? (
+        const furnitureData = selectedPreview.data as FurnitureData;
+        const actions = furnitureData.actions ?? [];
+        return (
           <>
-            <ButtonComponent
-              text={t("furniture.move")}
-              autoWidth
-              onPointerDown={onMoveFurniture}
-            />
-            <ButtonComponent
-              text={t("furniture.rotate")}
-              autoWidth
-              onPointerDown={onRotateFurniture}
-            />
-            <ButtonComponent
-              text={t("furniture.pick_up")}
-              autoWidth
-              onPointerDown={onPickUpFurniture}
-            />
+            {actions.map((action) => (
+              <ButtonComponent
+                key={action.id}
+                text={action.label}
+                autoWidth
+                onPointerDown={onActionFurniture(action.id)}
+              />
+            ))}
+            {isRoomOwner ? (
+              <>
+                <ButtonComponent
+                  text={t("furniture.move")}
+                  autoWidth
+                  onPointerDown={onMoveFurniture}
+                />
+                <ButtonComponent
+                  text={t("furniture.rotate")}
+                  autoWidth
+                  onPointerDown={onRotateFurniture}
+                />
+                <ButtonComponent
+                  text={t("furniture.pick_up")}
+                  autoWidth
+                  onPointerDown={onPickUpFurniture}
+                />
+              </>
+            ) : null}
           </>
-        ) : null;
+        );
     }
     return null;
   }, [
@@ -213,6 +238,7 @@ export const SelectionPreviewComponent: React.FC = () => {
     getAccount,
     onRotateFurniture,
     onPickUpFurniture,
+    onActionFurniture,
     t,
   ]);
 

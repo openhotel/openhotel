@@ -10,8 +10,16 @@ export type FurnitureDirectionTexture = {
   hitArea?: number[];
 };
 
+export type FurnitureAction = {
+  id: string;
+  label: string;
+  states: string[];
+  defaultState: string;
+};
+
 export type FurnitureDirectionData = {
   textures: FurnitureDirectionTexture[];
+  stateTextures: Record<string, Record<string, FurnitureDirectionTexture>>;
 };
 
 export type FurnitureDirectionDataMap = Record<
@@ -31,6 +39,7 @@ export type FurnitureData = {
     bounds: Size2d;
   };
   size: Size3d;
+  actions?: FurnitureAction[];
 };
 
 export type BaseFurniture = {
@@ -39,6 +48,7 @@ export type BaseFurniture = {
   position: Point3d;
   direction: CrossDirection;
   size: Size3d;
+  state?: string;
 };
 
 export type RoomFurnitureBase = {

@@ -21,7 +21,7 @@ export enum Event {
   ADD_FURNITURE = "add-furniture",
   UPDATE_FURNITURE = "update-furniture",
   REMOVE_FURNITURE = "remove-furniture",
-  INTERACT_FURNITURE = "interact-furniture",
+  ACTION_FURNITURE = "action-furniture",
 
   POINTER_TILE = "pointer-tile",
   POINTER_INTERACTIVE = "pointer-interactive",
