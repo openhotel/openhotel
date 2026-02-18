@@ -23,6 +23,7 @@ import { icon } from "modules/shared/icon.ts";
 import { image } from "modules/shared/image.ts";
 import { requestGame } from "./router/game.request.ts";
 import { core } from "./core/main.ts";
+import { usersConfig } from "../shared/users-config.ts";
 
 export const Proxy = (() => {
   const serverWorker = getChildWorker();
@@ -36,6 +37,8 @@ export const Proxy = (() => {
   const $icon = icon();
   const $auth = auth();
   const $coordinates = coordinates();
+  const $usersConfig = usersConfig();
+
   let server;
   let $config: ConfigTypes;
   let $envs: Envs;
@@ -43,12 +46,15 @@ export const Proxy = (() => {
 
   const $core = core();
 
-  const load = async ({ envs, config }: WorkerProps) => {
+  const load = async ({ envs, config, mainModule }: WorkerProps) => {
     $config = config;
     $envs = envs;
+    Deno.mainModule = mainModule;
 
     await $image.load();
     await $icon.load();
+
+    await $usersConfig.load();
 
     $coordinates.load(config);
     await $auth.load(config);
@@ -198,5 +204,6 @@ export const Proxy = (() => {
     auth: $auth,
     coordinates: $coordinates,
     core: $core,
+    usersConfig: $usersConfig,
   };
 })();

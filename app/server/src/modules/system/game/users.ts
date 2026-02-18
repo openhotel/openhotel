@@ -7,18 +7,16 @@ import {
   Transaction,
   User,
   UserMutable,
-  UsersConfig,
 } from "shared/types/main.ts";
 import { System } from "modules/system/main.ts";
 import { ProxyEvent } from "shared/enums/event.enum.ts";
 import { RoomPointEnum } from "shared/enums/room.enums.ts";
-import { USERS_CONFIG_DEFAULT } from "shared/consts/users.consts.ts";
-import { Direction, getConfig, Point3d, Point2d } from "@oh/utils";
-import { exists } from "deno/fs/mod.ts";
+import { Direction, Point3d, Point2d } from "@oh/utils";
 import { log as $log } from "shared/utils/log.utils.ts";
 import { UserAction } from "shared/enums/user.enums.ts";
 import { INITIAL_PLAYER_BALANCE } from "shared/consts/economy.consts.ts";
 import { CrossDirection } from "shared/enums/direction.enums.ts";
+import { usersConfig } from "../../shared/users-config.ts";
 
 export const users = () => {
   let $privateUserMap: Record<string, PrivateUser> = {};
@@ -28,24 +26,10 @@ export const users = () => {
   let $userLastMessageMap: Record<string, string> = {};
   let $userLastWhisperMap: Record<string, string> = {};
 
+  const { load: loadConfig, getConfig, setConfig } = usersConfig();
+
   const load = async () => {
-    // Check config file
-    const config = await exists("./users.yml");
-    if (!config) {
-      await setConfig({
-        op: {
-          users: [],
-        },
-        blacklist: {
-          active: false,
-          users: [],
-        },
-        whitelist: {
-          active: false,
-          users: [],
-        },
-      });
-    }
+    await loadConfig();
   };
 
   const $getUser = (user: User): UserMutable => {
@@ -174,7 +158,7 @@ export const users = () => {
     const isOP = async () =>
       System.auth.getOwnerId() === user.accountId ||
       $privateUserMap[user.accountId].admin ||
-      (await $getConfig()).op.users.includes(getUsername());
+      (await getConfig()).op.users.includes(getUsername());
 
     const disconnect = () =>
       System.proxy.$emit(ProxyEvent.$DISCONNECT_USER, {
@@ -521,21 +505,6 @@ export const users = () => {
   const getCacheUser = async (accountId: string): Promise<CacheUser | null> =>
     await System.db.get(["users", accountId]);
 
-  const $getConfig = (): Promise<UsersConfig> => {
-    return getConfig<UsersConfig>({
-      defaults: USERS_CONFIG_DEFAULT,
-      fileName: "users.yml",
-    });
-  };
-
-  const setConfig = async (config: UsersConfig): Promise<void> => {
-    await getConfig<UsersConfig>({
-      values: config,
-      defaults: USERS_CONFIG_DEFAULT,
-      fileName: "users.yml",
-    });
-  };
-
   return {
     load,
     add,
@@ -545,7 +514,7 @@ export const users = () => {
 
     getCacheUser,
 
-    getConfig: $getConfig,
+    getConfig,
     setConfig,
 
     $userMap,

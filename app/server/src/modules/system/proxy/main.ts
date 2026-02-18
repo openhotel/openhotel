@@ -49,6 +49,7 @@ export const proxy = () => {
     $worker.emit("start", {
       config,
       envs,
+      mainModule: Deno.mainModule,
     } as WorkerProps);
 
     $internal.load($worker);

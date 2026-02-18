@@ -17,6 +17,7 @@ export const phantom = () => {
     $worker.emit("start", {
       config,
       envs,
+      mainModule: Deno.mainModule,
       token: System.getToken(),
     });
     $worker.on("save-capture", ({ id, imageData }) => {
