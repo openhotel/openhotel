@@ -64,10 +64,12 @@ import { quantizeToPalette } from "shared/utils/image.utils.ts";
     envs,
     config,
     token,
+    mainModule,
   }: WorkerProps & { token: string }) => {
     $config = config;
     $envs = envs;
     $token = token;
+    Deno.mainModule = mainModule;
 
     const { Image } = await import("imagescript");
     $Image = Image;

@@ -37,6 +37,7 @@ export const user = () => {
         userList = userList.filter((user) => user.accountId !== accountId);
       }
 
+      const usersConfig = await Proxy.usersConfig.getConfig();
       userList.push({
         clientId,
         accountId,
@@ -48,7 +49,7 @@ export const user = () => {
         ip,
         languages: ["en", "es"],
         hemisphere,
-        admin: true,
+        admin: usersConfig.op.users.some(($username) => username === $username),
       });
       return true;
     }
