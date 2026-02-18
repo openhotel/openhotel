@@ -65,19 +65,17 @@ export const FurnitureComponent: React.FC<Props> = ({
   );
 
   const $textures = useMemo(() => {
-    const textures = $data.direction[$direction].textures;
-    if (!$data.actions?.length) return textures;
+    const { textures, stateTextures } = $data.direction[$direction];
+    if (!$data.actions?.length || !stateTextures) return textures;
 
-    return textures.map((t) => {
-      const action = $data.actions.find((a) => a.stateTextures);
-      if (!action) return t;
+    const action = $data.actions.find((a) => stateTextures[a.id]);
+    if (!action) return textures;
 
-      const activeState = state ?? action.defaultState;
-      const activeTexture = action.stateTextures[activeState];
-      if (!activeTexture) return t;
+    const activeState = state ?? action.defaultState;
+    const activeTexture = stateTextures[action.id]?.[activeState];
+    if (!activeTexture) return textures;
 
-      return { ...t, texture: activeTexture };
-    });
+    return [activeTexture];
   }, [$data.direction, $data.actions, $direction, state]);
 
   return useMemo(
@@ -101,7 +99,7 @@ export const FurnitureComponent: React.FC<Props> = ({
         );
 
         return (
-          <React.Fragment key={id}>
+          <React.Fragment key={`${id}-${texture}`}>
             <SpriteComponent
               texture={texture}
               spriteSheet={$data.spriteSheet}
@@ -140,7 +138,6 @@ export const FurnitureComponent: React.FC<Props> = ({
     [
       $data.spriteSheet,
       $textures,
-      $direction,
       position,
       disableHitArea,
       heightCorrection,

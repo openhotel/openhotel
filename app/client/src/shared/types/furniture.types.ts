@@ -15,11 +15,11 @@ export type FurnitureAction = {
   label: string;
   states: string[];
   defaultState: string;
-  stateTextures: Record<string, string>;
 };
 
 export type FurnitureDirectionData = {
   textures: FurnitureDirectionTexture[];
+  stateTextures: Record<string, Record<string, FurnitureDirectionTexture>>;
 };
 
 export type FurnitureDirectionDataMap = Record<
