@@ -71,7 +71,7 @@ export const parseFurniture = (
   return {
     id: furniture?.id ?? "",
     type: furniture.type,
-    revision: ulid(),
+    revision: furniture?.revision ?? ulid(),
     icon: {
       texture: furniture?.icon?.texture ?? "",
       bounds: {

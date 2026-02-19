@@ -52,10 +52,14 @@ export const CreateFurnitureComponent: React.FC = () => {
   }, []);
 
   const onDownloadFurniture = useCallback(async () => {
+    const downloadData = {
+      ...data,
+      furniture: { ...data.furniture, revision: ulid() },
+    };
     const response = await fetchApi({
       pathname: "furniture/create",
       method: RequestMethod.POST,
-      body: JSON.stringify(data),
+      body: JSON.stringify(downloadData),
       headers: getHeaders(),
       rawResponse: true,
     });
