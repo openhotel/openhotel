@@ -1,9 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import {
-  ButtonComponent,
-  FileInputComponent,
-  InputComponent,
-} from "@openhotel/components";
+import { FileInputComponent, InputComponent } from "@openhotel/web-components";
 //@ts-ignore
 import styles from "./sprite-sheet-form.module.scss";
 import { SpriteSheet, SpriteSheetFrame } from "shared/types";

@@ -7,7 +7,7 @@ import {
   FileInputComponent,
   UploadIconComponent,
   useModal,
-} from "@openhotel/components";
+} from "@openhotel/web-components";
 import { FurnitureDataFormComponent } from "../furniture-data-form";
 import { useApi, useAppSession, useFurniture } from "shared/hooks";
 import { SpriteSheetFormComponent } from "modules/sprite-sheet";

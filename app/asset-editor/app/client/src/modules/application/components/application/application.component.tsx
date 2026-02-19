@@ -5,7 +5,7 @@ import {
   ScaleProvider,
   SideContentProvider,
 } from "shared/hooks";
-import { ModalProvider } from "@openhotel/components";
+import { ModalProvider } from "@openhotel/web-components";
 import { AppSessionProvider } from "shared/hooks/useAppSession";
 
 export const ApplicationComponent = () => {

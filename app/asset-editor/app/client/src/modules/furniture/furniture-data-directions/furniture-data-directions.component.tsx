@@ -4,7 +4,7 @@ import {
   FormComponent,
   InputComponent,
   SelectorComponent,
-} from "@openhotel/components";
+} from "@openhotel/web-components";
 import { cn, setObject } from "shared/utils";
 import { SpriteComponent } from "shared/components";
 import { FurnitureDirection, FurnitureType } from "shared/enums";

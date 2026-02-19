@@ -2,6 +2,18 @@
 @use "sass:color";
 
 .background {
+  color: var(--text-3-c);
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+  height: 100%;
+
+  overflow: hidden auto;
+
+  image-rendering: pixelated;
+  background-color: var(--text-3-bg);
+
   .wrapper {
     display: flex;
     flex-direction: column;
