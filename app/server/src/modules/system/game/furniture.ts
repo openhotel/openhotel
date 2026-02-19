@@ -31,7 +31,7 @@ export const furniture = () => {
     const dataFile = files.find(($file) => $file.filename === "data.yml");
     const sheetFile = files.find(($file) => $file.filename === "sheet.json");
     const spriteFile = files.find(($file) => $file.filename === "sprite.png");
-    // const langFile = files.find($file => $file.filename === 'lang.yml');
+    const langFile = files.find(($file) => $file.filename === "lang.yml");
 
     const missingFiles = [
       dataFile ? "data.yml" : null,
@@ -115,9 +115,16 @@ export const furniture = () => {
     const spriteBlob = await spriteFile.getData(new BlobWriter());
     const spriteUint8Array = new Uint8Array(await spriteBlob.arrayBuffer());
 
+    // lang (optional)
+    let langUint8Array: Uint8Array | null = null;
+    if (langFile) {
+      const langBlob = await langFile.getData(new BlobWriter());
+      langUint8Array = new Uint8Array(await langBlob.arrayBuffer());
+    }
+
     System.db.set(
       ["furnitureData", furnitureData.id],
-      [furnitureUint8Array, sheetUint8Array, spriteUint8Array],
+      [furnitureUint8Array, sheetUint8Array, spriteUint8Array, langUint8Array],
     );
     log(
       `- Furniture (${furnitureData.id}) ${foundFurniture ? "updated" : "loaded"}!`,
@@ -169,6 +176,22 @@ export const furniture = () => {
     actions: furnitureData.actions ?? [],
   });
 
+  const $applyLang = (
+    furnitureData: FurnitureData,
+    langData: Record<string, { name: string; description: string }>,
+    lang: string,
+  ): FurnitureData => {
+    const fallbackLang = Object.keys(langData ?? {})[0];
+    const langEntry =
+      langData?.[lang] ?? (fallbackLang ? langData[fallbackLang] : undefined);
+
+    return {
+      ...furnitureData,
+      label: langEntry?.name ?? furnitureData.id,
+      description: langEntry?.description ?? "",
+    };
+  };
+
   const getList = async (): Promise<FurnitureData[]> => {
     const decoder = new TextDecoder();
     const { items } = await System.db.list({ prefix: ["furnitureData"] });
@@ -191,11 +214,18 @@ export const furniture = () => {
     if (!data) return null;
 
     const decoder = new TextDecoder();
-    return [
-      $mapFurnitureData(parse(decoder.decode(data[0]))),
-      JSON.parse(decoder.decode(data[1])),
-      data[2],
-    ];
+    let furnitureData = $mapFurnitureData(parse(decoder.decode(data[0])));
+
+    const { languages } = System.config.get(); // TODO: get from user preferences
+    if (languages && data[3]) {
+      const langData = parse(decoder.decode(data[3])) as Record<
+        string,
+        { name: string; description: string }
+      >;
+      furnitureData = $applyLang(furnitureData, langData, languages[0]);
+    }
+
+    return [furnitureData, JSON.parse(decoder.decode(data[1])), data[2]];
   };
 
   return {
