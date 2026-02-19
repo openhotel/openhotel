@@ -1,5 +1,5 @@
 import React, { ReactNode, useCallback, useContext, useState } from "react";
-import { FurnitureData, SpriteSheet } from "shared/types";
+import { FurnitureData, FurnitureLang, SpriteSheet } from "shared/types";
 import { parseFurniture } from "shared/utils/furniture.utils";
 import { setObject } from "shared/utils";
 
@@ -7,6 +7,7 @@ type Data = {
   sprite: string;
   sheet: SpriteSheet;
   furniture: FurnitureData;
+  lang: FurnitureLang;
 };
 
 type FurnitureState = {
@@ -14,6 +15,7 @@ type FurnitureState = {
   data: Data;
 
   setFurniture: (furniture: FurnitureData) => void;
+  setLang: (lang: FurnitureLang) => void;
 
   onChangeFurniture: (ket: string) => (event: unknown) => void;
 };
@@ -31,6 +33,7 @@ export const FurnitureProvider: React.FunctionComponent<ProviderProps> = ({
     sprite: string;
     sheet: SpriteSheet;
     furniture: FurnitureData;
+    lang: FurnitureLang;
   }>(null);
 
   //TODO check data if is correct formed or if it needs information
@@ -42,6 +45,7 @@ export const FurnitureProvider: React.FunctionComponent<ProviderProps> = ({
           ? {
               ...data,
               furniture: parseFurniture(data.furniture, data.sheet),
+              lang: data.lang ?? {},
             }
           : null,
       );
@@ -54,6 +58,13 @@ export const FurnitureProvider: React.FunctionComponent<ProviderProps> = ({
       setData({ ...data, furniture });
     },
     [data, setData],
+  );
+
+  const setLang = useCallback(
+    (lang: FurnitureLang) => {
+      $setData((prev) => (prev ? { ...prev, lang } : null));
+    },
+    [$setData],
   );
 
   const onChangeFurniture = useCallback(
@@ -70,6 +81,7 @@ export const FurnitureProvider: React.FunctionComponent<ProviderProps> = ({
         data,
 
         setFurniture,
+        setLang,
 
         onChangeFurniture,
       }}

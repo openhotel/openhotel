@@ -29,8 +29,14 @@ export const importRequest: RequestType = {
     const spriteFile = files.find(($file) => $file.filename === "sprite.png");
     const spriteFileBlob = await spriteFile.getData(new BlobWriter());
     // const spriteFileData = await sheetFileBlob.text();
-
     const spriteBase64 = await getBase64ImageFromBlob(spriteFileBlob);
+
+    let langData = {};
+    const langFile = files.find(($file) => $file.filename === "lang.yml");
+    if (langFile) {
+      const langBlob = await langFile.getData(new BlobWriter());
+      langData = await parse(await langBlob.text());
+    }
 
     return Response.json(
       {
@@ -39,6 +45,7 @@ export const importRequest: RequestType = {
           furniture: furnitureData,
           sheet: sheetFileData,
           sprite: spriteBase64,
+          lang: langData,
         },
       },
       { status: 200 },

@@ -192,6 +192,7 @@ export const FurnitureDataDirectionsComponent: React.FC = () => {
 
   return (
     <>
+      <label>textures</label>
       <SelectorComponent
         placeholder="direction"
         className={styles.alternativeSelector}

@@ -9,13 +9,16 @@ export const createRequest: RequestType = {
   pathname: "/create",
   kind: RequestKind.ACCOUNT,
   func: async (request, url) => {
-    const { sprite, sheet, furniture } = await request.json();
+    const { sprite, sheet, furniture, lang } = await request.json();
 
     const $sprite = base64ToBlob(sprite);
     const $sheet = new Blob([JSON.stringify(sheet)], {
       type: "application/json",
     });
     const $furniture = new Blob([stringify(furniture)], {
+      type: "application/json",
+    });
+    const $lang = new Blob([stringify(lang ?? {})], {
       type: "application/json",
     });
 
@@ -25,6 +28,7 @@ export const createRequest: RequestType = {
     await zipWriter.add("sprite.png", new BlobReader($sprite));
     await zipWriter.add("sheet.json", new BlobReader($sheet));
     await zipWriter.add("data.yml", new BlobReader($furniture));
+    await zipWriter.add("lang.yml", new BlobReader($lang));
 
     const zipBlob = await zipWriter.close();
 

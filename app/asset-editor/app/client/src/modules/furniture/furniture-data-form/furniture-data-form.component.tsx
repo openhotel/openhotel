@@ -7,6 +7,7 @@ import { FurniturePreviewComponent } from "modules/furniture/furniture-preview";
 import { FurnitureDataDirectionsComponent } from "modules/furniture/furniture-data-directions";
 import { FurnitureDataActionsComponent } from "modules/furniture/furniture-data-actions";
 import { FurnitureFramePreviewComponent } from "modules/furniture/furniture-frame-preview";
+import { FurnitureLangFormComponent } from "modules/furniture/furniture-lang-form";
 
 //@ts-ignore
 import styles from "./furniture-data-form.module.scss";
@@ -153,6 +154,8 @@ export const FurnitureDataFormComponent: React.FC<Props> = () => {
       </div>
       <hr />
       <FurnitureDataActionsComponent />
+      <hr />
+      <FurnitureLangFormComponent />
       <hr />
       <FurnitureDataDirectionsComponent />
       <hr />
