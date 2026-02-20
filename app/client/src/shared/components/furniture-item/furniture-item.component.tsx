@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
   ContainerComponent,
   FLEX_JUSTIFY,
@@ -6,11 +6,12 @@ import {
   GraphicsComponent,
   GraphicType,
   SpriteComponent,
+  SpriteRef,
 } from "@openhotel/pixi-components";
 import { FURNITURE_ICON_SIZE } from "shared/consts";
 import { TextComponent } from "shared/components/text";
 import { useFurniture } from "shared/hooks";
-import { FurnitureData } from "shared/types";
+import { FurnitureData, Point2d } from "shared/types";
 import { FurnitureType, SpriteSheetEnum } from "shared/enums";
 
 type Props = {
@@ -24,12 +25,15 @@ export const FurnitureItemComponent: React.FC<Props> = ({
   type = FurnitureType.FURNITURE,
   amount,
 }) => {
+  const spriteRef = useRef<SpriteRef>(null);
+
   const { get, load } = useFurniture();
   const [data, setData] = useState<FurnitureData>(null);
+  const [iconPivot, setIconPivot] = useState<Point2d>({ x: 0, y: 0 });
 
   useEffect(() => {
     load(furnitureId).then(() => setData(get(furnitureId)));
-  }, [load, get]);
+  }, [load, get, furnitureId]);
 
   const renderAmount = useMemo(
     () =>
@@ -65,17 +69,26 @@ export const FurnitureItemComponent: React.FC<Props> = ({
     [amount],
   );
 
+  useEffect(() => {
+    if (!spriteRef.current) return;
+
+    const { width, height } = spriteRef.current.texture.frame;
+
+    setIconPivot({
+      x: (width - FURNITURE_ICON_SIZE) / 2,
+      y: (height - FURNITURE_ICON_SIZE) / 2,
+    });
+  }, [data, setIconPivot]);
+
   return useMemo(
     () => (
       <>
         {data ? (
           <SpriteComponent
+            ref={spriteRef}
             texture={data.icon.texture}
             spriteSheet={data.spriteSheet}
-            pivot={{
-              x: (data.icon.bounds.width - FURNITURE_ICON_SIZE) / 2,
-              y: (data.icon.bounds.height - FURNITURE_ICON_SIZE) / 2,
-            }}
+            pivot={iconPivot}
           />
         ) : (
           <SpriteComponent
@@ -92,6 +105,6 @@ export const FurnitureItemComponent: React.FC<Props> = ({
         {renderAmount}
       </>
     ),
-    [data, renderAmount, type],
+    [data, renderAmount, type, iconPivot],
   );
 };

@@ -1,13 +1,13 @@
 import { Point2d, Point3d } from "./point.types";
-import { Size2d, Size3d } from "./size.types";
+import { Size3d } from "./size.types";
 import { CrossDirection, FurnitureType } from "shared/enums";
 
 export type FurnitureDirectionTexture = {
   texture: string;
-  bounds: Size2d;
   pivot: Point2d;
   zIndex: number;
   hitArea?: number[];
+  actions?: Record<string, string>;
 };
 
 export type FurnitureAction = {
@@ -19,7 +19,6 @@ export type FurnitureAction = {
 
 export type FurnitureDirectionData = {
   textures: FurnitureDirectionTexture[];
-  stateTextures: Record<string, Record<string, FurnitureDirectionTexture>>;
 };
 
 export type FurnitureDirectionDataMap = Record<
@@ -36,7 +35,6 @@ export type FurnitureData = {
   direction: FurnitureDirectionDataMap;
   icon: {
     texture: string;
-    bounds: Size2d;
   };
   size: Size3d;
   actions?: FurnitureAction[];
