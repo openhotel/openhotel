@@ -10,3 +10,11 @@ const envs = getProcessedEnvs({
 
 await loadEnv();
 System.load(envs);
+
+const shutdown = async () => {
+  await System.shutdown();
+  Deno.exit(0);
+};
+
+Deno.addSignalListener("SIGTERM", shutdown);
+Deno.addSignalListener("SIGINT", shutdown);

@@ -68,6 +68,14 @@ export const System = (() => {
   const isTokenValid = (token: string) => $token === token;
   // || $config.isDevelopment();
 
+  const shutdown = async () => {
+    $db.close();
+    $tasks.pause();
+    $onet.close();
+    $phantom.close();
+    $proxy.close();
+  };
+
   return {
     load,
 
@@ -75,6 +83,8 @@ export const System = (() => {
 
     getToken,
     isTokenValid,
+
+    shutdown,
 
     game: $game,
     proxy: $proxy,
