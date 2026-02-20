@@ -60,38 +60,20 @@ export const FurnitureProvider: React.FunctionComponent<FurnitureProps> = ({
             furnitureData.direction,
           ).reduce<FurnitureDirectionDataMap>(
             (dataMap, direction: CrossDirectionKeys) => {
-              const { textures, stateTextures } =
-                furnitureData.direction[direction];
+              const { textures } = furnitureData.direction[direction];
 
               const mapTexture = (textureData: any) => ({
                 texture: textureData.texture,
-                bounds: textureData.bounds,
                 pivot: textureData?.pivot ?? { x: 0, y: 0 },
                 zIndex: textureData?.zIndex ?? 0,
                 hitArea: textureData?.hitArea,
+                actions: textureData?.actions,
               });
 
               return {
                 ...dataMap,
                 [CrossDirection[direction.toUpperCase()]]: {
                   textures: textures.map(mapTexture),
-                  stateTextures: stateTextures
-                    ? Object.fromEntries(
-                        Object.entries(stateTextures).map(
-                          ([actionId, states]: [string, any]) => [
-                            actionId,
-                            Object.fromEntries(
-                              Object.entries(states).map(
-                                ([stateKey, textureData]: [string, any]) => [
-                                  stateKey,
-                                  mapTexture(textureData),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      )
-                    : {},
                 },
               };
             },
