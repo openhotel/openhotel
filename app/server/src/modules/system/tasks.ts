@@ -12,11 +12,13 @@ export const tasks = () => {
 
   const add: (props: QueueItemProps) => number = $queue.add;
   const remove: (id: number) => void = $queue.remove;
+  const pause = () => $ticker.pause();
 
   return {
     load,
 
     add,
     remove,
+    pause,
   };
 };

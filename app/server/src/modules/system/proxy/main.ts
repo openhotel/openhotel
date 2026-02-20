@@ -143,11 +143,18 @@ export const proxy = () => {
     });
   };
 
+  const close = () => {
+    if ($worker) {
+      $worker.close();
+    }
+  };
+
   return {
     load,
 
     $emit,
     emit,
     emitRoom,
+    close,
   };
 };

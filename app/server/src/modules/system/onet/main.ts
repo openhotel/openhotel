@@ -73,6 +73,12 @@ export const onet = () => {
     return await response.json();
   };
 
+  const close = () => {
+    if ($socket) {
+      $socket.close();
+    }
+  };
+
   return {
     load,
 
@@ -84,5 +90,6 @@ export const onet = () => {
     setApiToken,
 
     fetch: $fetch,
+    close,
   };
 };
