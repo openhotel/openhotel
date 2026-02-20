@@ -19,12 +19,14 @@ export const parseFurniture = (
     pivot,
     position,
     zIndex,
+    actions,
   }: {
     texture: string;
     bounds?: { width?: number; height?: number };
     pivot?: { x?: number; y?: number };
     position?: { x?: number; z?: number };
     zIndex?: number;
+    actions?: Record<string, string>;
   }) => ({
     texture: sheet.frames[texture] ? texture : null,
     bounds: {
@@ -40,31 +42,15 @@ export const parseFurniture = (
       z: position?.z ?? 0,
     },
     zIndex: zIndex ?? 0,
+    actions: actions ?? {},
   });
 
   const parseDirection = (furnitureDirection: FurnitureDirection) => {
     const dirData = furniture?.direction?.[furnitureDirection];
 
-    const stateTextures: Record<
-      string,
-      Record<string, ReturnType<typeof parseTexture>>
-    > = {};
-    for (const [actionId, states] of Object.entries(
-      dirData?.stateTextures ?? {},
-    )) {
-      const parsedStates: Record<string, ReturnType<typeof parseTexture>> = {};
-      for (const [state, texData] of Object.entries(states)) {
-        const parsed = parseTexture(texData);
-        if (parsed.texture) parsedStates[state] = parsed;
-      }
-      if (Object.keys(parsedStates).length > 0)
-        stateTextures[actionId] = parsedStates;
-    }
-
     return {
       textures:
         dirData?.textures?.map(parseTexture).filter((t) => t.texture) ?? [],
-      stateTextures,
     };
   };
 

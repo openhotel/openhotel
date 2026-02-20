@@ -7,10 +7,15 @@ import {
 } from "@openhotel/web-components";
 import { useFurniture } from "shared/hooks";
 import { cn } from "shared/utils";
-import { FurnitureAction } from "shared/types";
+import {
+  FurnitureAction,
+  FurnitureDirectionItem,
+  FurnitureTexture,
+} from "shared/types";
 
 //@ts-ignore
 import styles from "./furniture-data-actions.module.scss";
+import { FurnitureDirection } from "../../../shared/enums";
 
 type ActionItemProps = {
   action: FurnitureAction;
@@ -106,7 +111,35 @@ export const FurnitureDataActionsComponent: React.FC = () => {
     (actionId: string) => () => {
       setFurniture({
         ...furniture,
+        //remove action
         actions: furniture.actions.filter((action) => action.id !== actionId),
+        //removes existing action inside the textures
+        direction: Object.keys(furniture.direction).reduce(
+          (directionsObject, directionKey) => ({
+            ...directionsObject,
+            [directionKey]: {
+              ...furniture.direction[directionKey],
+              textures: furniture.direction[directionKey].textures.map(
+                (texture: FurnitureTexture) =>
+                  ({
+                    ...texture,
+                    actions: texture.actions
+                      ? Object.keys(texture.actions)
+                          .filter(($actionId) => actionId !== $actionId)
+                          .reduce(
+                            (actionsObject, $actionId) => ({
+                              ...actionsObject,
+                              [$actionId]: texture?.actions?.[$actionId],
+                            }),
+                            {},
+                          )
+                      : {},
+                  }) as FurnitureTexture,
+              ),
+            } as FurnitureDirectionItem,
+          }),
+          {},
+        ) as Partial<Record<FurnitureDirection, FurnitureDirectionItem>>,
       });
     },
     [setFurniture, furniture],

@@ -32,11 +32,12 @@ export type FurnitureTexture = {
   pivot: FurniturePivot;
   position: FurniturePosition;
   zIndex: number;
+
+  actions?: Record<string, string>;
 };
 
 export type FurnitureDirectionItem = {
   textures: FurnitureTexture[];
-  stateTextures?: Record<string, Record<string, FurnitureTexture>>;
 };
 
 export type FurnitureAction = {
