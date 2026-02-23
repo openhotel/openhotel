@@ -7,6 +7,7 @@
     "loading": "Cargant",
     "progress_may_be_wiped": "El progrés podria ser borrat",
     "loading_config": "Cargant configuració...",
+    "loading_changelog": "Cargant registre de canvis...",
     "redirecting": "Redirigint...",
     "proxy_disconnected": "¡Proxy desconnectat! :(",
     "proxy_not_reachable": "¡Proxy no accessible! :(",
@@ -63,7 +64,18 @@
   "furniture": {
     "move": "moure",
     "rotate": "girar",
-    "pick_up": "recollir"
+    "pick_up": "recollir",
+    "sale": "en venda",
+    "cancel_sale": "cancel·lar venda",
+    "buy": "comprar",
+    "sell_title": "Vendre moble",
+    "buy_title": "Comprar moble",
+    "catalog_price_label": "Preu del catàleg: {{price}}",
+    "price_label": "Preu: {{price}}",
+    "buy_confirmation": "Vols comprar aquest moble?",
+    "confirm_buy_button": "Comprar",
+    "set_for_sale_error": "Error en posar el moble en venda",
+    "buy_error": "Error en comprar el moble"
   },
   "marketplace": {
     "title": "Marketplace"
