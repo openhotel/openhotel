@@ -78,6 +78,15 @@
     "buy_error": "Error en comprar el moble"
   },
   "marketplace": {
-    "title": "Marketplace"
+    "title": "Mercat",
+    "sell": "Vendre",
+    "cancel_sale": "Cancel·lar venda",
+    "on_sale": "En venda",
+    "estimated_profit": "Rebràs: {{profit}}",
+    "price_limits": "Preu: {{min}} - {{max}}",
+    "commission": "Comissió: {{rate}}%",
+    "confirm_sell": "Confirmar",
+    "confirm_cancel": "Cancel·lar",
+    "error_selling": "Error en posar l'article a la venda"
   }
 }
