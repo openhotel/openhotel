@@ -64,7 +64,18 @@
   "furniture": {
     "move": "mover",
     "rotate": "girar",
-    "pick_up": "recoger"
+    "pick_up": "recoger",
+    "sale": "en venta",
+    "cancel_sale": "cancelar venta",
+    "buy": "comprar",
+    "sell_title": "Vender mueble",
+    "buy_title": "Comprar mueble",
+    "catalog_price_label": "Precio del catalogo: {{price}}",
+    "price_label": "Precio: {{price}}",
+    "buy_confirmation": "¿Quieres comprar este mueble?",
+    "confirm_buy_button": "Comprar",
+    "set_for_sale_error": "Error al poner el mueble en venta",
+    "buy_error": "Error al comprar el mueble"
   },
   "marketplace": {
     "title": "Mercado",

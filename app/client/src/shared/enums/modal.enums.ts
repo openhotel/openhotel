@@ -10,6 +10,8 @@ export enum Modal {
 
   GAME,
   MARKETPLACE_SELL,
+  ROOM_FURNITURE_SELL,
+  ROOM_FURNITURE_BUY,
 }
 
 export enum ModalNavigatorTab {

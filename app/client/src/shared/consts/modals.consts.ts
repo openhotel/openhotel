@@ -69,4 +69,12 @@ export const MODAL_SIZE_MAP: Record<Modal, Size> = {
     width: 220,
     height: 180,
   },
+  [Modal.ROOM_FURNITURE_SELL]: {
+    width: 220,
+    height: 180,
+  },
+  [Modal.ROOM_FURNITURE_BUY]: {
+    width: 220,
+    height: 140,
+  },
 };

@@ -4,6 +4,7 @@ import { roomPutRequest, roomRequest } from "./room.request.ts";
 import { listRequest } from "./list.request.ts";
 import { layoutRequest } from "./layout.request.ts";
 import { layoutsRequest } from "./layouts.request.ts";
+import { furnitureRequestList } from "./furniture/main.ts";
 
 export const roomRequestList: RequestType[] = getPathRequestList({
   requestList: [
@@ -12,6 +13,7 @@ export const roomRequestList: RequestType[] = getPathRequestList({
     listRequest,
     layoutRequest,
     layoutsRequest,
+    ...furnitureRequestList,
   ],
   pathname: "/room",
 });
