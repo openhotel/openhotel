@@ -3,11 +3,6 @@ import {
   FurnitureType,
 } from "shared/enums/furniture.enum.ts";
 
-export type FurnitureSize = {
-  width: number;
-  height: number;
-};
-
 export type FurnitureBounds = {
   width: number;
   height: number;
@@ -19,21 +14,13 @@ export type FurniturePivot = {
   y: number;
 };
 
-export type FurniturePosition = {
-  x: number;
-  z: number;
-};
-
 export type FurnitureIcon = {
   texture: string;
-  bounds: FurnitureSize;
 };
 
 export type FurnitureTexture = {
   texture: string;
-  bounds: FurnitureSize;
   pivot: FurniturePivot;
-  position: FurniturePosition;
   zIndex: number;
 
   actions?: Record<string, string>;

@@ -9,7 +9,7 @@ import {
   useModal,
 } from "@openhotel/web-components";
 import { FurnitureDataFormComponent } from "../furniture-data-form";
-import { useApi, useAppSession, useFurniture } from "shared/hooks";
+import { Data, useApi, useAppSession, useFurniture } from "shared/hooks";
 import { SpriteSheetFormComponent } from "modules/sprite-sheet";
 import { TabContentComponent } from "shared/components";
 
@@ -48,12 +48,24 @@ export const CreateFurnitureComponent: React.FC = () => {
         id: "new@furniture",
         revision: ulid(),
       },
+      lang: {},
     });
   }, []);
 
   const onDownloadFurniture = useCallback(async () => {
-    const downloadData = {
+    const downloadData: Data = {
       ...data,
+      sheet: {
+        ...data.sheet,
+        frames: Object.keys(data.sheet.frames).reduce((frameMap, frame) => {
+          //removes the temp value __key
+          delete data.sheet.frames[frame]["__key"];
+          return {
+            ...frameMap,
+            [frame]: data.sheet.frames[frame],
+          };
+        }, {}),
+      },
       furniture: { ...data.furniture, revision: ulid() },
     };
     const response = await fetchApi({

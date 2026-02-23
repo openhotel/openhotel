@@ -15,24 +15,18 @@ export const parseFurniture = (
 
   const parseTexture = ({
     texture,
-    bounds,
     pivot,
     position,
     zIndex,
     actions,
   }: {
     texture: string;
-    bounds?: { width?: number; height?: number };
     pivot?: { x?: number; y?: number };
     position?: { x?: number; z?: number };
     zIndex?: number;
     actions?: Record<string, string>;
   }) => ({
     texture: sheet.frames[texture] ? texture : null,
-    bounds: {
-      width: bounds?.width ?? 0,
-      height: bounds?.height ?? 0,
-    },
     pivot: {
       x: pivot?.x ?? 0,
       y: pivot?.y ?? 0,
@@ -60,10 +54,6 @@ export const parseFurniture = (
     revision: furniture?.revision ?? ulid(),
     icon: {
       texture: furniture?.icon?.texture ?? "",
-      bounds: {
-        width: furniture?.icon?.bounds?.width ?? 0,
-        height: furniture?.icon?.bounds?.height ?? 0,
-      },
     },
     size: {
       width: furniture?.size?.width ?? 0,

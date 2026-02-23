@@ -1,10 +1,5 @@
 import { FurnitureDirection, FurnitureType } from "shared/enums";
 
-export type FurnitureBounds = {
-  width: number;
-  height: number;
-};
-
 export type FurnitureSize = {
   width: number;
   height: number;
@@ -23,12 +18,10 @@ export type FurniturePosition = {
 
 export type FurnitureIcon = {
   texture: string;
-  bounds: FurnitureBounds;
 };
 
 export type FurnitureTexture = {
   texture: string;
-  bounds: FurnitureBounds;
   pivot: FurniturePivot;
   position: FurniturePosition;
   zIndex: number;

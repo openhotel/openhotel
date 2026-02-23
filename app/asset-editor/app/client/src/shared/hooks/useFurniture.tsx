@@ -3,7 +3,7 @@ import { FurnitureData, FurnitureLang, SpriteSheet } from "shared/types";
 import { parseFurniture } from "shared/utils/furniture.utils";
 import { setObject } from "shared/utils";
 
-type Data = {
+export type Data = {
   sprite: string;
   sheet: SpriteSheet;
   furniture: FurnitureData;

@@ -113,18 +113,6 @@ export const FurnitureDataFormComponent: React.FC<Props> = () => {
             onChangeFurniture("icon.texture")({
               target: { value: option?.value },
             });
-            if (!option?.value) return;
-            //@ts-ignore
-            const frame = sheet.frames?.[option.value]?.frame;
-            if (!frame) return;
-
-            onChangeFurniture("icon.bounds.width")({
-              target: { value: frame.w },
-            });
-
-            onChangeFurniture("icon.bounds.height")({
-              target: { value: frame.h },
-            });
           }}
           clearable={false}
         />

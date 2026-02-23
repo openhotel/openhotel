@@ -9,11 +9,7 @@ import { cn, setObject } from "shared/utils";
 import { SpriteComponent } from "shared/components";
 import { FurnitureDirection, FurnitureType } from "shared/enums";
 import { useFurniture } from "shared/hooks";
-import {
-  FurnitureBounds,
-  FurnitureDirectionItem,
-  FurnitureTexture,
-} from "shared/types";
+import { FurnitureDirectionItem, FurnitureTexture } from "shared/types";
 //@ts-ignore
 import styles from "./furniture-data-directions.module.scss";
 
@@ -26,11 +22,6 @@ export const FurnitureDataDirectionsComponent: React.FC = () => {
     useState<FurnitureDirection>(null);
   const [furnitureDirectionTexture, setFurnitureDirectionTexture] =
     useState<string>(null);
-
-  const [previewBounds, setPreviewBounds] = useState<FurnitureBounds>({
-    width: 0,
-    height: 0,
-  });
 
   const textures = useMemo(() => Object.keys(sheet?.frames ?? {}), [sheet]);
 
@@ -70,14 +61,6 @@ export const FurnitureDataDirectionsComponent: React.FC = () => {
       texturesOptions[0] ? texturesOptions[0].key : null,
     );
   }, [texturesOptions]);
-
-  useEffect(() => {
-    const data = sheet.frames[furnitureDirectionTexture];
-    setPreviewBounds({
-      width: data?.frame?.w ?? 0,
-      height: data?.frame?.h ?? 0,
-    });
-  }, [furnitureDirectionTexture]);
 
   const $onAddDirectionTexture = useCallback(
     (data) => {
@@ -181,18 +164,6 @@ export const FurnitureDataDirectionsComponent: React.FC = () => {
                       )({
                         target: { value: option?.key },
                       });
-                      const { w, h } =
-                        sheet.frames[furnitureTexture.texture].frame;
-                      onChangeFurniture(
-                        `direction.${directionSelection}.textures.${index}.bounds.width`,
-                      )({
-                        target: { value: w },
-                      });
-                      onChangeFurniture(
-                        `direction.${directionSelection}.textures.${index}.bounds.height`,
-                      )({
-                        target: { value: h },
-                      });
                     }}
                     clearable={false}
                   />
@@ -201,25 +172,6 @@ export const FurnitureDataDirectionsComponent: React.FC = () => {
                     value={furnitureTexture.zIndex}
                     onChange={onChangeFurniture(
                       `direction.${directionSelection}.textures.${index}.zIndex`,
-                    )}
-                    type="number"
-                  />
-                </div>
-                <hr />
-                <div className={styles.row}>
-                  <InputComponent
-                    placeholder={`.bounds.width`}
-                    value={furnitureTexture?.bounds?.width}
-                    onChange={onChangeFurniture(
-                      `direction.${directionSelection}.textures.${index}.bounds.width`,
-                    )}
-                    type="number"
-                  />
-                  <InputComponent
-                    placeholder={`.bounds.height`}
-                    value={furnitureTexture?.bounds?.height}
-                    onChange={onChangeFurniture(
-                      `direction.${directionSelection}.textures.${index}.bounds.height`,
                     )}
                     type="number"
                   />
@@ -330,33 +282,6 @@ export const FurnitureDataDirectionsComponent: React.FC = () => {
                   placeholder={`zIndex`}
                   type="number"
                   defaultValue={0}
-                />
-              </div>
-              <hr />
-              <div className={styles.row}>
-                <InputComponent
-                  name="bounds.width"
-                  placeholder={`bounds.width`}
-                  type="number"
-                  value={previewBounds.width}
-                  onChange={(event) =>
-                    setPreviewBounds((bounds) => ({
-                      ...bounds,
-                      width: event.target.value,
-                    }))
-                  }
-                />
-                <InputComponent
-                  name="bounds.height"
-                  placeholder={`bounds.height`}
-                  type="number"
-                  value={previewBounds.height}
-                  onChange={(event) =>
-                    setPreviewBounds((bounds) => ({
-                      ...bounds,
-                      height: event.target.value,
-                    }))
-                  }
                 />
               </div>
               <hr />

@@ -77,13 +77,15 @@ export const FurniturePreviewComponent: React.FC<Props> = ({ direction }) => {
               style={{
                 position: "absolute",
                 top:
-                  (-furnitureTexture.bounds.height +
+                  (-data.sheet.frames[furnitureTexture.texture].frame.h +
                     furnitureTexture.pivot.y +
                     (data?.furniture?.size?.height || 1) +
                     TILE_SIZE.height / 2) *
                   scale,
                 left:
-                  (-Math.round(furnitureTexture.bounds.width / 2) +
+                  (-Math.round(
+                    data.sheet.frames[furnitureTexture.texture].frame.w / 2,
+                  ) +
                     furnitureTexture.pivot.x +
                     TILE_SIZE.width / 2 +
                     TILE_SIZE_PADDING.width) *
