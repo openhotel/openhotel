@@ -109,6 +109,7 @@ export const RoomFurnitureComponent: React.FC<Props> = ({
             onPointerDown={onPointerDown(furniture)}
             disableHitArea={disableHitAreas}
             isBeingPlaced={itemPreviewData?.ids?.includes(furniture.id)}
+            isForSale={!!furniture?.forSale}
           />
         ) : (
           <FurnitureFrameComponent

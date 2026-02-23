@@ -28,6 +28,8 @@ import {
   PurseComponent,
   RoomCreatorComponent,
   MarketplaceSellComponent,
+  RoomFurnitureSellComponent,
+  RoomFurnitureBuyComponent,
 } from "modules/modals";
 
 type ModalProps = {
@@ -181,6 +183,8 @@ export const ModalProvider: React.FunctionComponent<ModalProps> = ({
       [Modal.ROOM_CREATOR]: RoomCreatorComponent,
       [Modal.GAME]: null,
       [Modal.MARKETPLACE_SELL]: MarketplaceSellComponent,
+      [Modal.ROOM_FURNITURE_SELL]: RoomFurnitureSellComponent,
+      [Modal.ROOM_FURNITURE_BUY]: RoomFurnitureBuyComponent,
     }),
     [],
   );

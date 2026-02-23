@@ -21,6 +21,7 @@ type Props = {
   disableHitArea?: boolean;
   heightCorrection?: boolean;
   isBeingPlaced?: boolean;
+  isForSale?: boolean;
 };
 
 export const FurnitureComponent: React.FC<Props> = ({
@@ -33,6 +34,7 @@ export const FurnitureComponent: React.FC<Props> = ({
   disableHitArea = false,
   heightCorrection = false,
   isBeingPlaced = false,
+  isForSale = false,
 }) => {
   const { load: loadFurniture, get: getFurniture } = useFurniture();
   const { update, lastUpdate } = useUpdate();
@@ -74,16 +76,19 @@ export const FurnitureComponent: React.FC<Props> = ({
           hitArea={hitArea}
           position={position}
           size={$data.size}
+          direction={direction}
           disableHitArea={disableHitArea}
           isBeingPlaced={isBeingPlaced}
           heightCorrection={heightCorrection}
           onPointerDown={onPointerDown}
+          isForSale={isForSale}
         />
       )),
     [
       $data.spriteSheet,
       $data.size,
       $textures,
+      isForSale,
       position,
       disableHitArea,
       heightCorrection,

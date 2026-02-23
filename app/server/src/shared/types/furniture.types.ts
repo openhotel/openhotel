@@ -59,4 +59,7 @@ export type RoomFurniture = {
   size?: Size3d;
   framePosition?: Point2d;
   state?: string;
+  forSale?: {
+    price: number;
+  };
 } & Furniture;

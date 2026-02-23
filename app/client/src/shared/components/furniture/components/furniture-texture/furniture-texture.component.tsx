@@ -15,11 +15,12 @@ import {
   TILE_Y_HEIGHT,
 } from "shared/consts";
 import {
+  getCubePolygon,
   getPositionFromIsometricPosition,
   getZIndex,
-  getCubePolygon,
 } from "shared/utils";
 import { Point2d, Point3d, Size3d } from "shared/types";
+import { SpriteSheetEnum } from "shared/enums";
 
 type Props = {
   texture: string;
@@ -34,6 +35,7 @@ type Props = {
   disableHitArea: boolean;
   isBeingPlaced: boolean;
   heightCorrection: boolean;
+  isForSale: boolean;
 
   onPointerDown: () => void;
 };
@@ -51,6 +53,7 @@ export const FurnitureTextureComponent: React.FC<Props> = ({
   disableHitArea,
   isBeingPlaced,
   heightCorrection,
+  isForSale,
 
   onPointerDown,
 }) => {
@@ -75,6 +78,13 @@ export const FurnitureTextureComponent: React.FC<Props> = ({
     [position],
   );
 
+  const $forSalePosition = useMemo(() => {
+    return {
+      x: $position.x + 1,
+      y: $position.y + 3,
+    };
+  }, [$position]);
+
   useEffect(() => {
     if (!spriteRef.current) return;
 
@@ -97,6 +107,15 @@ export const FurnitureTextureComponent: React.FC<Props> = ({
         position={$position}
         alpha={isBeingPlaced ? 0.5 : 1}
       />
+
+      {isForSale ? (
+        <SpriteComponent
+          spriteSheet={SpriteSheetEnum.UI}
+          texture={"on-sale-furniture-tile"}
+          position={$forSalePosition}
+          zIndex={$zIndex + 1}
+        />
+      ) : null}
 
       {disableHitArea ? null : (
         <GraphicsComponent

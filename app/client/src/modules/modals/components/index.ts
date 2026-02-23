@@ -6,4 +6,6 @@ export * from "./navigator";
 export * from "./purse";
 export * from "./room-creator";
 export * from "./marketplace-sell";
+export * from "./room-furniture-sell";
+export * from "./room-furniture-buy";
 export * from "./windowed-game";
