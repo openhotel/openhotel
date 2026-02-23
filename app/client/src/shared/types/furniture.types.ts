@@ -47,6 +47,9 @@ export type BaseFurniture = {
   direction: CrossDirection;
   size: Size3d;
   state?: string;
+  forSale?: {
+    price: number;
+  };
 };
 
 export type RoomFurnitureBase = {
