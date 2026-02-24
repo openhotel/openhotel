@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useRef } from "react";
 import { FurnitureComponent } from "shared/components";
 import {
+  useApi,
   useFurniture,
   useItemPlacePreview,
   usePrivateRoom,
@@ -23,6 +24,7 @@ export const RoomFurnitureComponent: React.FC<Props> = ({
 }) => {
   const { on, emit } = useProxy();
   const { get: getFurniture } = useFurniture();
+  const { fetch } = useApi();
   const {
     room,
     addFurniture,
@@ -31,7 +33,7 @@ export const RoomFurnitureComponent: React.FC<Props> = ({
     selectedPreview,
     setSelectedPreview,
   } = usePrivateRoom();
-  const { itemPreviewData } = useItemPlacePreview();
+  const { itemPreviewData, setItemPreviewData } = useItemPlacePreview();
 
   const selectedPreviewRef = useRef(selectedPreview);
   useEffect(() => {
@@ -73,9 +75,37 @@ export const RoomFurnitureComponent: React.FC<Props> = ({
   }, [room, on, emit, addFurniture, updateFurniture, removeFurniture]);
 
   const onPointerDown = useCallback(
-    (furniture: RoomFurniture) => () => {
+    (furniture: RoomFurniture) => (event: any) => {
       const data = getFurniture(furniture.furnitureId);
       if (!data) return;
+
+      if (event.button === 1) {
+        event.preventDefault();
+
+        fetch(`/inventory?type=${furniture.type}`).then(
+          (response: {
+            furniture: Array<{
+              id: string;
+              furnitureId: string;
+              type: FurnitureType;
+            }>;
+          }) => {
+            const inventoryItems = response.furniture.filter(
+              (f) => f.furnitureId === furniture.furnitureId,
+            );
+
+            if (inventoryItems.length > 0) {
+              const ids = inventoryItems.map((item) => item.id);
+              setItemPreviewData({
+                type: "place",
+                ids,
+                furnitureData: data,
+              });
+            }
+          },
+        );
+        return;
+      }
 
       setSelectedPreview({
         id: furniture.id,
@@ -90,7 +120,7 @@ export const RoomFurnitureComponent: React.FC<Props> = ({
           getFurniture(furniture.furnitureId)?.label ?? furniture.furnitureId,
       });
     },
-    [setSelectedPreview, getFurniture],
+    [setSelectedPreview, getFurniture, fetch, setItemPreviewData],
   );
 
   if (!room?.furniture) return null;
