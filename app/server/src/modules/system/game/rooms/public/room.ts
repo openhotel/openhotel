@@ -38,35 +38,25 @@ export const getRoom =
         startPosition.y = getYFromPoint(startPosition);
       }
 
-      $user.setRoom(room.id);
       $user.setPosition(startPosition);
       $user.setBodyDirection(getSpawnDirection());
 
+      //Add user to room
+      emit(ProxyEvent.ADD_HUMAN, { user: $user.getPublicObject() });
+
+      roomUserMap[room.id].push($user.getAccountId());
+
+      //Load room to user
+      $user.emit(ProxyEvent.LOAD_ROOM, {
+        room: getObjectWithUsers(),
+      });
+
+      $user.setRoom(room.id);
       //Add user to "room" internally
       System.proxy.$emit(ProxyEvent.$ADD_ROOM, {
         accountId: $user.getAccountId(),
         roomId: getId(),
       });
-
-      //Load room to user
-      $user.emit(ProxyEvent.LOAD_ROOM, {
-        room: getObject(),
-      });
-
-      //Add user to room
-      emit(ProxyEvent.ADD_HUMAN, { user: $user.getObject() });
-
-      //Send every existing user inside room to the user
-      for (const accountId of getUsers()) {
-        const user = System.game.users.get({ accountId });
-        if (!user) continue;
-
-        $user.emit(ProxyEvent.ADD_HUMAN, {
-          user: user.getObject(),
-        });
-      }
-
-      roomUserMap[room.id].push($user.getAccountId());
     };
     const removeUser = (user: User, moveToAnotherRoom: boolean = false) => {
       const $user = System.game.users.get({ accountId: user.accountId });
@@ -183,8 +173,12 @@ export const getRoom =
 
     const getObject = () => ({
       type: "public",
-      users: [],
       ...$room,
+    });
+
+    const getObjectWithUsers = () => ({
+      users: [],
+      ...getObject(),
     });
 
     const emit = <Data extends any>(

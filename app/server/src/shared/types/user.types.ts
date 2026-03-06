@@ -51,6 +51,16 @@ export type User = {
   meta?: (string | number)[];
 };
 
+export type PublicUser = {
+  accountId: string;
+  username: string;
+
+  position?: Point3d;
+  positionUpdatedAt?: number;
+
+  bodyDirection?: Direction;
+};
+
 export type UsersConfig = {
   op: {
     users: string[];
@@ -100,6 +110,7 @@ export type UserMutable = {
   getLastWhisper: () => UserMutable | null;
 
   getObject: () => User;
+  getPublicObject: () => PublicUser;
 
   getMeta: () => (number | string)[] | null;
 
