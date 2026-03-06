@@ -1,4 +1,30 @@
 
+<a name="v0.8.4"></a>
+
+## [v0.8.4](https://github.com/openhotel/openhotel/compare/v0.8.3...v0.8.4) (2026-03-06)
+
+### Bug Fixes
+
+- remove preview selection when placing furniture - fix [#1054](https://github.com/openhotel/openhotel/issues/1054) ([#1112](https://github.com/openhotel/openhotel/issues/1112))
+- minigame crashes on join - fix [#1074](https://github.com/openhotel/openhotel/issues/1074) ([#1111](https://github.com/openhotel/openhotel/issues/1111))
+
+### Features
+
+- improved notes and control + click opens task - fix [#1131](https://github.com/openhotel/openhotel/issues/1131) ([#1132](https://github.com/openhotel/openhotel/issues/1132))
+- trigger placement mode on middle-clicking furniture - fix [#1119](https://github.com/openhotel/openhotel/issues/1119) ([#1122](https://github.com/openhotel/openhotel/issues/1122))
+- add in-room furniture selling - fix [#1100](https://github.com/openhotel/openhotel/issues/1100) ([#1121](https://github.com/openhotel/openhotel/issues/1121))
+- add shutdown and close methods - fix [#1117](https://github.com/openhotel/openhotel/issues/1117) ([#1118](https://github.com/openhotel/openhotel/issues/1118))
+- read bounds from sheet instead of data in furniture - fix [#1115](https://github.com/openhotel/openhotel/issues/1115) ([#1116](https://github.com/openhotel/openhotel/issues/1116))
+- add furniture lang - fix [#774](https://github.com/openhotel/openhotel/issues/774) ([#1113](https://github.com/openhotel/openhotel/issues/1113))
+- add furniture actions - fix [#1101](https://github.com/openhotel/openhotel/issues/1101) ([#1105](https://github.com/openhotel/openhotel/issues/1105))
+- users privileges when auth is disabled from users.yml - fix [#1099](https://github.com/openhotel/openhotel/issues/1099) ([#1103](https://github.com/openhotel/openhotel/issues/1103))
+- added moderation chat console - fix [#1095](https://github.com/openhotel/openhotel/issues/1095) ([#1098](https://github.com/openhotel/openhotel/issues/1098))
+- add action to check for missing translations in locales - fix [#891](https://github.com/openhotel/openhotel/issues/891) ([#1094](https://github.com/openhotel/openhotel/issues/1094))
+- implement marketplace functionality - fix [#917](https://github.com/openhotel/openhotel/issues/917) ([#1075](https://github.com/openhotel/openhotel/issues/1075))
+- add commands to manage games - fix [#1069](https://github.com/openhotel/openhotel/issues/1069) ([#1093](https://github.com/openhotel/openhotel/issues/1093))
+- add note development component - fix [#1083](https://github.com/openhotel/openhotel/issues/1083) ([#1092](https://github.com/openhotel/openhotel/issues/1092))
+
+
 <a name="v0.8.3"></a>
 
 ## [v0.8.3](https://github.com/openhotel/openhotel/compare/v0.8.2...v0.8.3) (2026-02-15)
