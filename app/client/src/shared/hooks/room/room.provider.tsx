@@ -1,7 +1,7 @@
 import React, { ReactNode, useCallback, useEffect } from "react";
 import { RoomContext } from "./room.context";
 import { Direction, Event as ProxyEvent, Event, Route } from "shared/enums";
-import { Point3d, Room, User } from "shared/types";
+import { Point3d, PrivateRoom, Room, User } from "shared/types";
 import { useProxy } from "../proxy";
 import { useModal } from "../modal";
 import { useRouter } from "../router";
@@ -38,8 +38,9 @@ export const RoomProvider: React.FunctionComponent<TemplateProps> = ({
     const removeOnPreJoinRoom = on(Event.PRE_JOIN_ROOM, ({ room }) => {
       emit(Event.JOIN_ROOM, { roomId: room.id });
     });
-    const removeOnJoinRoom = on(Event.LOAD_ROOM, ({ room }: { room: Room }) => {
+    const removeOnJoinRoom = on(Event.LOAD_ROOM, ({ room }: { room: PrivateRoom }) => {
       setRoom(room);
+      console.log(room);
       switch (room.type) {
         case "private":
           navigate(Route.PRIVATE_ROOM);
