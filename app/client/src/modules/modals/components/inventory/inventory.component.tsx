@@ -21,7 +21,6 @@ import {
   CategoryFramesComponent,
   CategoryFurnitureComponent,
   CategoryPetsComponent,
-  CategoryRaresComponent,
   InventoryBarComponent,
 } from ".";
 
@@ -44,7 +43,6 @@ export const InventoryComponent: React.FC = () => {
       [ModalInventoryTab.FURNITURE]: CategoryFurnitureComponent,
       [ModalInventoryTab.FRAMES]: CategoryFramesComponent,
       [ModalInventoryTab.PETS]: CategoryPetsComponent,
-      [ModalInventoryTab.RARES]: CategoryRaresComponent,
     }),
     [],
   );

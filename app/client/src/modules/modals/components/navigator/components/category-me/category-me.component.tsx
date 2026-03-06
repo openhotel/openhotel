@@ -15,6 +15,7 @@ import { useTranslation } from "react-i18next";
 import {
   ButtonComponent,
   InputComponent,
+  NoteComponent,
   SoftBadgeComponent,
 } from "shared/components";
 
@@ -198,12 +199,20 @@ export const CategoryMeComponent: React.FC<Props> = ({ size }) => {
             onDelete={onDeleteRoom}
           />
         ) : (
-          <GraphicsComponent
-            type={GraphicType.RECTANGLE}
-            width={previewSize.width}
-            height={previewSize.height}
-            tint={0xff00ff}
-          />
+          <NoteComponent
+            type="TODO"
+            issue={1125}
+            title="Me banner preview"
+            description="Needs art!"
+          >
+            <GraphicsComponent
+              type={GraphicType.RECTANGLE}
+              width={previewSize.width}
+              height={previewSize.height}
+              tint={0}
+              alpha={0.2}
+            />
+          </NoteComponent>
         )}
       </ContainerComponent>
       <ContainerComponent

@@ -17,7 +17,6 @@ import {
   CategoryHotelComponent,
   CategoryMeComponent,
   CategoryRoomsComponent,
-  CategorySearchComponent,
   NavigatorBarComponent,
 } from "./components";
 import { useModal } from "shared/hooks";
@@ -46,7 +45,6 @@ export const NavigatorComponent: React.FC<Props> = ({}) => {
       [ModalNavigatorTab.HOTEL]: CategoryHotelComponent,
       [ModalNavigatorTab.ROOMS]: CategoryRoomsComponent,
       [ModalNavigatorTab.ME]: CategoryMeComponent,
-      [ModalNavigatorTab.SEARCH]: CategorySearchComponent,
     }),
     [],
   );

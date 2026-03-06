@@ -15,6 +15,7 @@ import {
   FurnitureItemComponent,
   FurniturePreviewActionComponent,
   ItemListComponent,
+  NoteComponent,
   TextComponent,
 } from "shared/components";
 import { CatalogCategoryData, MarketplaceListing } from "shared/types";
@@ -172,13 +173,20 @@ export const DefaultCategoryComponent: React.FC<Props> = ({
   const renderPreview = useMemo(() => {
     if (!selectedFurnitureData)
       return (
-        <GraphicsComponent
-          type={GraphicType.RECTANGLE}
-          tint={0}
-          width={previewWidth}
-          height={size.height}
-          alpha={0.2}
-        />
+        <NoteComponent
+          type="TODO"
+          issue={1127}
+          title="Individual category banner"
+          description="Needs art!"
+        >
+          <GraphicsComponent
+            type={GraphicType.RECTANGLE}
+            tint={0}
+            width={previewWidth}
+            height={size.height}
+            alpha={0.2}
+          />
+        </NoteComponent>
       );
 
     return (
