@@ -9,6 +9,7 @@ import { placeItemEvent } from "./place-item.event.ts";
 import { rotateFurnitureEvent } from "./rotate-furniture.event.ts";
 import { pickUpFurnitureEvent } from "./pick-up-furniture.event.ts";
 import { moveFurnitureEvent } from "./move-furniture.event.ts";
+import { actionFurnitureEvent } from "./action-furniture.event.ts";
 import { deleteRoomEvent } from "./delete-room.event.ts";
 import { closeGameEvent } from "modules/system/proxy/events/close-game.event.ts";
 export * from "./internal/main.ts";
@@ -30,6 +31,7 @@ export const eventList: ProxyEventType[] = [
   rotateFurnitureEvent,
   pickUpFurnitureEvent,
   moveFurnitureEvent,
+  actionFurnitureEvent,
 
   closeGameEvent,
 ];

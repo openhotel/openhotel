@@ -42,6 +42,20 @@ export type PrivateRoomMutable = BaseRoomMutable & {
     currentId?: string,
   ) => Promise<number | null>;
 
+  setFurnitureForSale: (
+    furnitureId: string,
+    price: number,
+  ) => Promise<{ success: boolean; error?: string }>;
+
+  unsetFurnitureForSale: (
+    furnitureId: string,
+  ) => Promise<{ success: boolean; error?: string }>;
+
+  buyFurnitureFromRoom: (
+    buyerId: string,
+    furnitureId: string,
+  ) => Promise<{ success: boolean; error?: string }>;
+
   getObject: () => PrivateRoom;
   getObjectWithUsers: () => Promise<
     PrivateRoom & {

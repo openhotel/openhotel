@@ -1,6 +1,7 @@
-import React, { useCallback, useEffect, useMemo } from "react";
+import React, { useCallback, useEffect, useMemo, useRef } from "react";
 import { FurnitureComponent } from "shared/components";
 import {
+  useApi,
   useFurniture,
   useItemPlacePreview,
   usePrivateRoom,
@@ -23,14 +24,21 @@ export const RoomFurnitureComponent: React.FC<Props> = ({
 }) => {
   const { on, emit } = useProxy();
   const { get: getFurniture } = useFurniture();
+  const { fetch } = useApi();
   const {
     room,
     addFurniture,
     removeFurniture,
     updateFurniture,
+    selectedPreview,
     setSelectedPreview,
   } = usePrivateRoom();
-  const { itemPreviewData } = useItemPlacePreview();
+  const { itemPreviewData, setItemPreviewData } = useItemPlacePreview();
+
+  const selectedPreviewRef = useRef(selectedPreview);
+  useEffect(() => {
+    selectedPreviewRef.current = selectedPreview;
+  }, [selectedPreview]);
 
   useEffect(() => {
     if (!room) return;
@@ -46,6 +54,9 @@ export const RoomFurnitureComponent: React.FC<Props> = ({
       ProxyEvent.UPDATE_FURNITURE,
       ({ furniture }: { furniture: RoomFurniture }) => {
         updateFurniture(furniture);
+        const current = selectedPreviewRef.current;
+        if (current?.id === furniture.id)
+          setSelectedPreview({ ...current, state: furniture.state });
       },
     );
 
@@ -64,9 +75,37 @@ export const RoomFurnitureComponent: React.FC<Props> = ({
   }, [room, on, emit, addFurniture, updateFurniture, removeFurniture]);
 
   const onPointerDown = useCallback(
-    (furniture: RoomFurniture) => () => {
+    (furniture: RoomFurniture) => (event: any) => {
       const data = getFurniture(furniture.furnitureId);
       if (!data) return;
+
+      if (event.button === 1) {
+        event.preventDefault();
+
+        fetch(`/inventory?type=${furniture.type}`).then(
+          (response: {
+            furniture: Array<{
+              id: string;
+              furnitureId: string;
+              type: FurnitureType;
+            }>;
+          }) => {
+            const inventoryItems = response.furniture.filter(
+              (f) => f.furnitureId === furniture.furnitureId,
+            );
+
+            if (inventoryItems.length > 0) {
+              const ids = inventoryItems.map((item) => item.id);
+              setItemPreviewData({
+                type: "place",
+                ids,
+                furnitureData: data,
+              });
+            }
+          },
+        );
+        return;
+      }
 
       setSelectedPreview({
         id: furniture.id,
@@ -76,11 +115,12 @@ export const RoomFurnitureComponent: React.FC<Props> = ({
             : PrivateRoomPreviewType.FRAME,
         data,
         direction: furniture.direction,
+        state: furniture.state,
         title:
           getFurniture(furniture.furnitureId)?.label ?? furniture.furnitureId,
       });
     },
-    [setSelectedPreview, getFurniture],
+    [setSelectedPreview, getFurniture, fetch, setItemPreviewData],
   );
 
   if (!room?.furniture) return null;
@@ -95,9 +135,11 @@ export const RoomFurnitureComponent: React.FC<Props> = ({
             position={furniture.position}
             furnitureId={furniture.furnitureId}
             direction={furniture?.direction}
+            state={furniture?.state}
             onPointerDown={onPointerDown(furniture)}
             disableHitArea={disableHitAreas}
             isBeingPlaced={itemPreviewData?.ids?.includes(furniture.id)}
+            isForSale={!!furniture?.forSale}
           />
         ) : (
           <FurnitureFrameComponent

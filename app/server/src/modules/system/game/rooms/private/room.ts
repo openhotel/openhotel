@@ -6,7 +6,12 @@ import {
   RoomPoint,
   User,
 } from "shared/types/main.ts";
-import { FurnitureType, ProxyEvent, RoomPointEnum } from "shared/enums/main.ts";
+import {
+  FurnitureType,
+  ProxyEvent,
+  RoomPointEnum,
+  TransactionType,
+} from "shared/enums/main.ts";
 import { System } from "modules/system/main.ts";
 import { getInterpolatedPath } from "shared/utils/pathfinding.utils.ts";
 import {
@@ -381,6 +386,111 @@ export const getRoom =
       await System.db.set(["rooms", "private", $room.id], $room);
     };
 
+    const setFurnitureForSale = async (
+      furnitureId: string,
+      price: number,
+    ): Promise<{ success: boolean; error?: string }> => {
+      const furniture = $room.furniture.find((f) => f.id === furnitureId);
+      if (!furniture) {
+        return { success: false, error: "Furniture not found in room" };
+      }
+
+      if (price <= 0) {
+        return { success: false, error: "Price must be a positive number" };
+      }
+
+      furniture.forSale = { price };
+      await $save();
+
+      emit(ProxyEvent.UPDATE_FURNITURE, { furniture });
+
+      return { success: true };
+    };
+
+    const unsetFurnitureForSale = async (
+      furnitureId: string,
+    ): Promise<{ success: boolean; error?: string }> => {
+      const furniture = $room.furniture.find((f) => f.id === furnitureId);
+      if (!furniture) {
+        return { success: false, error: "Furniture not found in room" };
+      }
+
+      delete furniture.forSale;
+      await $save();
+
+      emit(ProxyEvent.UPDATE_FURNITURE, { furniture });
+
+      return { success: true };
+    };
+
+    const buyFurnitureFromRoom = async (
+      buyerId: string,
+      furnitureId: string,
+    ): Promise<{ success: boolean; error?: string }> => {
+      const furniture = $room.furniture.find((f) => f.id === furnitureId);
+      if (!furniture) {
+        return { success: false, error: "Furniture not found in room" };
+      }
+
+      if (!furniture.forSale) {
+        return { success: false, error: "Furniture is not for sale" };
+      }
+
+      const sellerId = getOwnerId();
+      if (sellerId === buyerId) {
+        return { success: false, error: "Cannot buy your own furniture" };
+      }
+
+      const price = furniture.forSale.price;
+
+      const config = System.game.marketplace.getConfig();
+      const commissionRate = config.commissionRate;
+
+      const hotelCommission = Math.floor(price * commissionRate);
+      const sellerEarnings = price - hotelCommission;
+
+      const transactionResult = await System.game.economy.executeTransaction({
+        type: TransactionType.MARKETPLACE_SALE,
+        description: `Room Sale: ${furniture.furnitureId}`,
+        amount: price,
+        fromAccount: buyerId,
+        toAccount: sellerId,
+        meta: {
+          roomId: getId(),
+          furnitureId: furniture.furnitureId,
+          instanceId: furniture.id,
+          hotelCommission,
+          sellerEarnings,
+        },
+      });
+
+      if (!transactionResult.success) {
+        return { success: false, error: transactionResult.error };
+      }
+
+      $room.furniture = $room.furniture.filter((f) => f.id !== furniture.id);
+      await $save();
+
+      emit(ProxyEvent.REMOVE_FURNITURE, { furniture });
+
+      const buyer = System.game.users.get({ accountId: buyerId });
+      if (buyer) {
+        const { forSale: _, ...furnitureWithoutForSale } = furniture;
+        await buyer.addFurniture(
+          furnitureWithoutForSale.furnitureId,
+          furnitureWithoutForSale.id,
+        );
+
+        System.proxy.emit({
+          users: buyerId,
+          event: ProxyEvent.UPDATE_INVENTORY,
+          data: {},
+        });
+      }
+
+      return { success: true };
+    };
+
     return {
       type: "private",
 
@@ -411,6 +521,10 @@ export const getRoom =
       getFurniture,
       getFurnitureFromPoint,
       getFurnitureYPosition,
+
+      setFurnitureForSale,
+      unsetFurnitureForSale,
+      buyFurnitureFromRoom,
 
       getObject,
       getObjectWithUsers,

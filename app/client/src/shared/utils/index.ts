@@ -8,3 +8,5 @@ export * from "./direction.utils";
 export * from "./room.utils";
 export * from "./character.utils";
 export * from "./enum.utils";
+export * from "./polygon.utils";
+export * from "./wall.utils";

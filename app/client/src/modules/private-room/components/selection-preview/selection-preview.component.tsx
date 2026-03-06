@@ -41,11 +41,14 @@ import {
 } from "shared/enums";
 import {
   useAccount,
+  useApi,
   useItemPlacePreview,
+  useModal,
   usePrivateRoom,
   useProxy,
 } from "shared/hooks";
 import { useTranslation } from "react-i18next";
+import { Modal } from "shared/enums";
 
 const TileComponent: React.FC<{ position: Point2d }> = ({ position }) =>
   useMemo(
@@ -72,6 +75,8 @@ export const SelectionPreviewComponent: React.FC = () => {
   const { getAccount } = useAccount();
   const { selectedPreview, room, setSelectedPreview } = usePrivateRoom();
   const { emit } = useProxy();
+  const { openModal } = useModal();
+  const { fetch } = useApi();
 
   const [textSize, setTextSize] = useState<Size2d>({ width: 0, height: 0 });
 
@@ -134,6 +139,7 @@ export const SelectionPreviewComponent: React.FC = () => {
           <FurnitureComponent
             position={{ x: 0, y: 0, z: 0 }}
             furnitureId={(selectedPreview.data as FurnitureData).furnitureId}
+            state={selectedPreview.state}
           />
         );
     }
@@ -163,9 +169,60 @@ export const SelectionPreviewComponent: React.FC = () => {
     });
   }, [selectedPreview, emit, setSelectedPreview, setItemPreviewData]);
 
+  const onActionFurniture = useCallback(
+    (actionId: string) => () => {
+      emit(Event.ACTION_FURNITURE, {
+        id: selectedPreview.id,
+        actionId,
+      });
+    },
+    [selectedPreview, emit],
+  );
+
+  const onSetForSale = useCallback(() => {
+    const furnitureData = selectedPreview.data as FurnitureData;
+    openModal(Modal.ROOM_FURNITURE_SELL, {
+      furnitureId: furnitureData.furnitureId,
+      instanceId: selectedPreview.id,
+    });
+  }, [selectedPreview, openModal]);
+
+  const onUnsetForSale = useCallback(() => {
+    fetch(
+      "/room/furniture/unset-for-sale",
+      {
+        furnitureId: selectedPreview.id,
+      },
+      false,
+      "POST",
+    ).catch((error) => {
+      console.error("Error unsetting furniture for sale:", error);
+    });
+  }, [selectedPreview, fetch]);
+
+  const onBuyFurniture = useCallback(() => {
+    const currentFurniture = room?.furniture?.find(
+      (f) => f.id === selectedPreview.id,
+    );
+    if (!currentFurniture?.forSale) return;
+
+    const furnitureData = selectedPreview.data as FurnitureData;
+    openModal(Modal.ROOM_FURNITURE_BUY, {
+      furnitureId: furnitureData.furnitureId,
+      instanceId: selectedPreview.id,
+      roomId: room.id,
+      price: currentFurniture.forSale.price,
+      onSuccess: () => setSelectedPreview(null),
+    });
+  }, [selectedPreview, room, openModal, setSelectedPreview]);
+
   const renderActions = useMemo(() => {
     const account = getAccount();
     const isRoomOwner = account.accountId === room?.ownerId;
+
+    const currentFurniture = room?.furniture?.find(
+      (f) => f.id === selectedPreview?.id,
+    );
 
     switch (selectedPreview?.type) {
       case PrivateRoomPreviewType.CHARACTER:
@@ -186,25 +243,64 @@ export const SelectionPreviewComponent: React.FC = () => {
           </>
         ) : null;
       case PrivateRoomPreviewType.FURNITURE:
-        return isRoomOwner ? (
+        const furnitureData = selectedPreview.data as FurnitureData;
+        const actions = furnitureData.actions ?? [];
+        const isForSale = !!currentFurniture?.forSale;
+
+        return (
           <>
-            <ButtonComponent
-              text={t("furniture.move")}
-              autoWidth
-              onPointerDown={onMoveFurniture}
-            />
-            <ButtonComponent
-              text={t("furniture.rotate")}
-              autoWidth
-              onPointerDown={onRotateFurniture}
-            />
-            <ButtonComponent
-              text={t("furniture.pick_up")}
-              autoWidth
-              onPointerDown={onPickUpFurniture}
-            />
+            {actions.map((action) => (
+              <ButtonComponent
+                key={action.id}
+                text={action.label}
+                autoWidth
+                onPointerDown={onActionFurniture(action.id)}
+              />
+            ))}
+            {isRoomOwner ? (
+              <>
+                <ButtonComponent
+                  text={t("furniture.move")}
+                  autoWidth
+                  onPointerDown={onMoveFurniture}
+                />
+                <ButtonComponent
+                  text={t("furniture.rotate")}
+                  autoWidth
+                  onPointerDown={onRotateFurniture}
+                />
+                <ButtonComponent
+                  text={t("furniture.pick_up")}
+                  autoWidth
+                  onPointerDown={onPickUpFurniture}
+                />
+                {isForSale ? (
+                  <ButtonComponent
+                    text={t("furniture.cancel_sale")}
+                    autoWidth
+                    onPointerDown={onUnsetForSale}
+                  />
+                ) : (
+                  <ButtonComponent
+                    text={t("furniture.sale")}
+                    autoWidth
+                    onPointerDown={onSetForSale}
+                  />
+                )}
+              </>
+            ) : (
+              <>
+                {isForSale && (
+                  <ButtonComponent
+                    text={t("furniture.buy")}
+                    autoWidth
+                    onPointerDown={onBuyFurniture}
+                  />
+                )}
+              </>
+            )}
           </>
-        ) : null;
+        );
     }
     return null;
   }, [
@@ -213,6 +309,11 @@ export const SelectionPreviewComponent: React.FC = () => {
     getAccount,
     onRotateFurniture,
     onPickUpFurniture,
+    onMoveFurniture,
+    onActionFurniture,
+    onSetForSale,
+    onUnsetForSale,
+    onBuyFurniture,
     t,
   ]);
 
