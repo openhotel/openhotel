@@ -16,7 +16,7 @@ type Props = {
   direction?: CrossDirection;
   state?: string;
 
-  onPointerDown?: () => void;
+  onPointerDown?: (event?: unknown) => void;
 
   disableHitArea?: boolean;
   heightCorrection?: boolean;
@@ -76,7 +76,6 @@ export const FurnitureComponent: React.FC<Props> = ({
           hitArea={hitArea}
           position={position}
           size={$data.size}
-          direction={direction}
           disableHitArea={disableHitArea}
           isBeingPlaced={isBeingPlaced}
           heightCorrection={heightCorrection}

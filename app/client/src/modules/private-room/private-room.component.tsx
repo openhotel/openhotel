@@ -26,11 +26,11 @@ import {
   useCamera,
   useItemPlacePreview,
   useModal,
-  usePrivateRoom,
   useProxy,
+  useRoom,
   useSafeWindow,
 } from "shared/hooks";
-import { Point2d, Point3d, Size2d } from "shared/types";
+import { Point2d, Point3d, PrivateRoom, Size2d } from "shared/types";
 import {
   CrossDirection,
   Direction,
@@ -66,7 +66,7 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
     setLastPositionData,
     setAbsoluteRoomPosition,
     getUser,
-  } = usePrivateRoom();
+  } = useRoom<PrivateRoom>();
   const { lastUpdate, update } = useUpdate();
   const { isDragging, position: cameraPosition } = useCamera();
 

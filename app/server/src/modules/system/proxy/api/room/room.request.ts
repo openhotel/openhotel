@@ -37,7 +37,9 @@ export const roomRequest: ProxyRequestType = {
           },
         };
       case "public":
-        return null;
+        return {
+          status: 200,
+        };
     }
   },
 };

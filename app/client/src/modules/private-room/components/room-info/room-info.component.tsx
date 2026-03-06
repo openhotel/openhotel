@@ -6,10 +6,11 @@ import {
 } from "@openhotel/pixi-components";
 import { TextComponent } from "shared/components";
 import { HOT_BAR_HEIGHT_FULL, TEXT_BACKGROUND_BASE } from "shared/consts";
-import { usePrivateRoom } from "shared/hooks";
+import { useRoom } from "shared/hooks";
+import { PrivateRoom } from "shared/types";
 
 export const RoomInfoComponent: React.FC = () => {
-  const { room } = usePrivateRoom();
+  const { room } = useRoom<PrivateRoom>();
 
   const containerRef = useRef<ContainerRef>(null);
 
@@ -40,7 +41,7 @@ export const RoomInfoComponent: React.FC = () => {
             {...TEXT_BACKGROUND_BASE}
           />
         ) : null}
-        {room.ownerUsername ? (
+        {room?.ownerUsername ? (
           <TextComponent
             alpha={0.6}
             text={`by ${room.ownerUsername}`}

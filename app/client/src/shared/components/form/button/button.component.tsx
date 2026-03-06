@@ -13,6 +13,7 @@ import {
 } from "@openhotel/pixi-components";
 import { SpriteSheetEnum } from "shared/enums";
 import { TextComponent } from "shared/components/text";
+import { NoteComponent } from "../../note";
 
 type BaseProps = ContainerProps & {
   text: string;
@@ -36,6 +37,8 @@ export const ButtonComponent: React.FC<Props> = ({
   autoWidth,
   ...containerProps
 }) => {
+  //TODO #1136 - https://github.com/openhotel/openhotel/issues/1136
+
   const [tint, setTint] = useState<number>(0xffffff);
 
   const onPointerEnter = useCallback(() => setTint(0xe0e0e0), [setTint]);
@@ -75,6 +78,12 @@ export const ButtonComponent: React.FC<Props> = ({
       >
         <TextComponent text={text} color={color ?? 0} />
       </FlexContainerComponent>
+      <NoteComponent
+        issue={1136}
+        title="Remove tint"
+        description="Change texture on nine slice sprite to a fixed color instead of using tint!"
+        position={{ x: width, y: 0 }}
+      />
     </ContainerComponent>
   );
 };

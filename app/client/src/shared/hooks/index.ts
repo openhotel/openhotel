@@ -18,6 +18,7 @@ export * from "./api";
 export * from "./game";
 export * from "./chat";
 export * from "./moderation";
+export * from "./room";
 
 export * from "./use-character";
 export * from "./use-contributors";

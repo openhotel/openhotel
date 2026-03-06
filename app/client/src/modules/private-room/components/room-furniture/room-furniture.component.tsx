@@ -6,13 +6,14 @@ import {
   useItemPlacePreview,
   usePrivateRoom,
   useProxy,
+  useRoom,
 } from "shared/hooks";
 import {
   Event as ProxyEvent,
   FurnitureType,
   PrivateRoomPreviewType,
 } from "shared/enums";
-import { RoomFurniture, RoomFurnitureFrame } from "shared/types";
+import { PrivateRoom, RoomFurniture, RoomFurnitureFrame } from "shared/types";
 import { FurnitureFrameComponent } from "shared/components/furniture-frame";
 
 type Props = {
@@ -25,14 +26,8 @@ export const RoomFurnitureComponent: React.FC<Props> = ({
   const { on, emit } = useProxy();
   const { get: getFurniture } = useFurniture();
   const { fetch } = useApi();
-  const {
-    room,
-    addFurniture,
-    removeFurniture,
-    updateFurniture,
-    selectedPreview,
-    setSelectedPreview,
-  } = usePrivateRoom();
+  const { addFurniture, removeFurniture, updateFurniture } = usePrivateRoom();
+  const { room, selectedPreview, setSelectedPreview } = useRoom<PrivateRoom>();
   const { itemPreviewData, setItemPreviewData } = useItemPlacePreview();
 
   const selectedPreviewRef = useRef(selectedPreview);

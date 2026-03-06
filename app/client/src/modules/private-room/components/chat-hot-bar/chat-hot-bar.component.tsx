@@ -26,8 +26,8 @@ import {
   useAccount,
   useChat,
   useModeration,
-  usePrivateRoom,
   useProxy,
+  useRoom,
 } from "shared/hooks";
 import {
   CHAT_RIGHT_MARGIN,
@@ -37,6 +37,7 @@ import {
   STORAGE_KEY,
 } from "shared/consts";
 import { useTranslation } from "react-i18next";
+import { PrivateRoom } from "shared/types";
 
 type Props = {
   maxWidth: number;
@@ -51,7 +52,7 @@ export const ChatHotBarComponent: React.FC<Props> = ({
   const { on } = useEvents();
   const { emit } = useProxy();
   const { scale } = useApplication();
-  const { lastPositionData, absoluteRoomPosition } = usePrivateRoom();
+  const { lastPositionData, absoluteRoomPosition } = useRoom<PrivateRoom>();
   const { getPosition: getCursorPosition } = useCursor();
   const { enabled } = useChat();
   const { getAccount } = useAccount();
