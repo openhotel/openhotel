@@ -5,9 +5,6 @@ import {
   ContainerComponent,
   Cursor,
   EventMode,
-  GraphicsComponent,
-  GraphicType,
-  HorizontalAlign,
 } from "@openhotel/pixi-components";
 import { TextComponent } from "../text";
 
@@ -29,21 +26,29 @@ export const NoteComponent: React.FC<Props> = ({
   priority,
   type,
 
-  size = 6,
+  size = 12,
 }) => {
   if (getInternalVersion() !== "development") return children;
 
-  const onClickNote = useCallback(() => {
-    let message = "Note >> ";
-    if (type) message += `[${type}] `;
-    if (priority) message += `(${priority}) `;
-    if (title) message += title + " ";
-    if (description) message += `'${description}' `;
-    if (issue) message += `${GITHUB_REPO_ISSUES_URL}${issue} `;
+  const onClickNote = useCallback(
+    (e) => {
+      const url = `${GITHUB_REPO_ISSUES_URL}${issue}`;
+      if (e.ctrlKey) {
+        window.open(url, "_blank");
+        return;
+      }
+      let message = "Note >> ";
+      if (type) message += `[${type}] `;
+      if (priority) message += `(${priority}) `;
+      if (title) message += title + " ";
+      if (description) message += `'${description}' `;
+      if (issue) message += `${url} `;
 
-    if (message === "Note ") return;
-    console.debug(message);
-  }, [title, description, issue, priority, type]);
+      if (message === "Note ") return;
+      console.debug(message);
+    },
+    [title, description, issue, priority, type],
+  );
 
   return (
     <ContainerComponent
@@ -53,23 +58,18 @@ export const NoteComponent: React.FC<Props> = ({
       onPointerDown={onClickNote}
     >
       <ContainerComponent zIndex={Number.MAX_SAFE_INTEGER}>
-        <GraphicsComponent
-          type={GraphicType.CIRCLE}
-          radius={size + 2}
-          tint={0}
-        />
-        <GraphicsComponent
-          type={GraphicType.CIRCLE}
-          radius={size}
-          tint={0xff00ff}
-          position={{ x: 2, y: 2 }}
-        />
         <TextComponent
-          text="N"
-          position={{ x: (size + 2) / 2, y: (size + 2) / 2 }}
-          pivot={{ x: -2, y: -2 }}
-          horizontalAlign={HorizontalAlign.CENTER}
-          tint={0}
+          text={`#${issue}`}
+          position={{ x: 1, y: 1 }}
+          backgroundColor={0}
+          backgroundAlpha={1}
+          padding={{
+            bottom: 1,
+            left: 3,
+            right: 3,
+            top: 3,
+          }}
+          tint={0xff00ff}
         />
       </ContainerComponent>
       {children}

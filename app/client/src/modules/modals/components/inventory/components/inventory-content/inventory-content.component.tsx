@@ -4,6 +4,7 @@ import {
   FurnitureItemComponent,
   FurniturePreviewActionComponent,
   ItemListComponent,
+  NoteComponent,
   TextComponent,
 } from "shared/components";
 import { InventoryFurniture, Size2d } from "shared/types";
@@ -150,6 +151,7 @@ export const InventoryContentComponent: React.FC<Props> = ({
 
     fetch("/marketplace/cancel", { listingId }, false, "POST").then(
       (result) => {
+        //@ts-ignore
         if (result.success) {
           onRefresh?.();
         }
@@ -174,13 +176,20 @@ export const InventoryContentComponent: React.FC<Props> = ({
   const renderPreview = useMemo(() => {
     if (!selectedFurnitureData)
       return (
-        <GraphicsComponent
-          type={GraphicType.RECTANGLE}
-          tint={0}
-          width={previewWidth}
-          height={size.height}
-          alpha={0.2}
-        />
+        <NoteComponent
+          type="TODO"
+          issue={1128}
+          title="Inventory category banner"
+          description="Needs art!"
+        >
+          <GraphicsComponent
+            type={GraphicType.RECTANGLE}
+            tint={0}
+            width={previewWidth}
+            height={size.height}
+            alpha={0.2}
+          />
+        </NoteComponent>
       );
 
     const canPlaceItem = getRoute() === Route.PRIVATE_ROOM && canPlace();
@@ -211,7 +220,6 @@ export const InventoryContentComponent: React.FC<Props> = ({
                 text={t("marketplace.cancel_sale")}
                 onPointerUp={onCancelListing}
                 size={{
-                  width: 80,
                   height: 14,
                 }}
               />

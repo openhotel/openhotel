@@ -5,7 +5,7 @@ import {
   GraphicType,
   Size,
 } from "@openhotel/pixi-components";
-import { TextComponent } from "shared/components";
+import { NoteComponent, TextComponent } from "shared/components";
 
 type Props = {
   size: Size;
@@ -26,13 +26,20 @@ export const HeaderComponent: React.FC<Props> = ({ size, description }) => {
   return useMemo(
     () => (
       <ContainerComponent>
-        <GraphicsComponent
-          type={GraphicType.RECTANGLE}
-          width={size.width}
-          height={coverHeight}
-          tint={0}
-          alpha={0.2}
-        />
+        <NoteComponent
+          type="TODO"
+          issue={1127}
+          title="Individual category banner"
+          description="Needs art!"
+        >
+          <GraphicsComponent
+            type={GraphicType.RECTANGLE}
+            width={size.width}
+            height={coverHeight}
+            tint={0}
+            alpha={0.2}
+          />
+        </NoteComponent>
         <TextComponent
           text={description}
           maxWidth={size.width}

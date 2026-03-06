@@ -18,12 +18,10 @@ export enum ModalNavigatorTab {
   HOTEL,
   ROOMS,
   ME,
-  SEARCH,
 }
 
 export enum ModalInventoryTab {
   FURNITURE,
   FRAMES,
   PETS,
-  RARES,
 }
