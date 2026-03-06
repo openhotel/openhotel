@@ -183,6 +183,7 @@ export const getRoom =
 
     const getObject = () => ({
       type: "public",
+      users: [],
       ...$room,
     });
 
