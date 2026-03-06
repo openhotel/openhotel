@@ -1,7 +1,7 @@
 import React, { ReactNode, useCallback, useEffect } from "react";
 import { RoomContext } from "./room.context";
 import { Direction, Event as ProxyEvent, Event, Route } from "shared/enums";
-import { Point3d, Room, User } from "shared/types";
+import { Point3d, PrivateRoom, Room, User } from "shared/types";
 import { useProxy } from "../proxy";
 import { useModal } from "../modal";
 import { useRouter } from "../router";
@@ -38,27 +38,23 @@ export const RoomProvider: React.FunctionComponent<TemplateProps> = ({
     const removeOnPreJoinRoom = on(Event.PRE_JOIN_ROOM, ({ room }) => {
       emit(Event.JOIN_ROOM, { roomId: room.id });
     });
-    const removeOnJoinRoom = on(Event.LOAD_ROOM, ({ room }: { room: Room }) => {
-      setRoom(room);
-      switch (room.type) {
-        case "private":
-          navigate(Route.PRIVATE_ROOM);
-          closeAll();
-          break;
-        case "public":
-          navigate(Route.PUBLIC_ROOM);
-          closeAll();
-          break;
-      }
-    });
-    const removeOnLeaveRoom = on(
-      Event.LEAVE_ROOM,
-      ({ moveToAnotherRoomType }) => {
-        //prevents flashing between rooms
-        !moveToAnotherRoomType && navigate(Route.HOME);
-        removeRoom();
+    const removeOnJoinRoom = on(
+      Event.LOAD_ROOM,
+      ({ room }: { room: PrivateRoom }) => {
+        setRoom(room);
+        console.log(room);
+        switch (room.type) {
+          case "private":
+            navigate(Route.PRIVATE_ROOM);
+            closeAll();
+            break;
+        }
       },
     );
+    const removeOnLeaveRoom = on(Event.LEAVE_ROOM, ({ moveToAnotherRoom }) => {
+      !moveToAnotherRoom && navigate(Route.HOME);
+      removeRoom();
+    });
 
     return () => {
       removeOnPreJoinRoom();
