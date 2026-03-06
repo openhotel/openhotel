@@ -12,7 +12,11 @@ import {
   useDragContainer,
 } from "@openhotel/pixi-components";
 import { Modal, SpriteSheetEnum } from "shared/enums";
-import { ScrollComponent, TextComponent } from "shared/components";
+import {
+  NoteComponent,
+  ScrollComponent,
+  TextComponent,
+} from "shared/components";
 import { CategoriesComponent, CategoryComponent, HEADER_SIZE } from ".";
 import { MODAL_SIZE_MAP } from "shared/consts";
 import { useApi, useModal } from "shared/hooks";
@@ -242,13 +246,20 @@ export const CatalogComponent: React.FC = () => {
             />
             <ContainerComponent position={{ x: 6, y: 6 }}>
               {selectedCategoryId === "home" || !category ? (
-                <GraphicsComponent
-                  type={GraphicType.RECTANGLE}
-                  tint={0}
-                  alpha={0.2}
-                  width={contentSize.width}
-                  height={contentSize.height}
-                />
+                <NoteComponent
+                  type="TODO"
+                  issue={1126}
+                  title="Home banner preview"
+                  description="Needs art!"
+                >
+                  <GraphicsComponent
+                    type={GraphicType.RECTANGLE}
+                    width={contentSize.width}
+                    height={contentSize.height}
+                    tint={0}
+                    alpha={0.2}
+                  />
+                </NoteComponent>
               ) : (
                 <CategoryComponent
                   size={contentSize}
