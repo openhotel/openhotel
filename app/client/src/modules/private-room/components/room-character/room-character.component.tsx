@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { Point2d, User } from "shared/types";
+import { Point2d, PrivateRoom, User } from "shared/types";
 import { ContainerProps } from "@openhotel/pixi-components";
 import {
   getDirection,
@@ -13,7 +13,7 @@ import {
   Direction,
 } from "shared/enums";
 import { CharacterComponent } from "shared/components";
-import { usePrivateRoom, useTasks } from "shared/hooks";
+import { useRoom, useTasks } from "shared/hooks";
 import {
   MOVEMENT_BETWEEN_TILES_DURATION,
   SAFE_TILE_ZINDEX_MULTI,
@@ -32,7 +32,7 @@ export const RoomCharacterComponent: React.FC<Props> = ({
   disableHitArea = false,
   ...containerProps
 }) => {
-  const { setUserPosition } = usePrivateRoom();
+  const { setUserPosition } = useRoom<PrivateRoom>();
 
   const { add: addTask } = useTasks();
 

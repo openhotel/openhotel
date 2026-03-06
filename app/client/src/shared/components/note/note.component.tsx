@@ -7,6 +7,7 @@ import {
   EventMode,
 } from "@openhotel/pixi-components";
 import { TextComponent } from "../text";
+import { Point2d } from "../../types";
 
 type Props = {
   title?: string;
@@ -15,7 +16,7 @@ type Props = {
   type?: "TODO" | "BUG";
   priority?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 
-  size?: number;
+  position?: Point2d;
 } & React.PropsWithChildren;
 
 export const NoteComponent: React.FC<Props> = ({
@@ -26,7 +27,7 @@ export const NoteComponent: React.FC<Props> = ({
   priority,
   type,
 
-  size = 12,
+  position,
 }) => {
   if (getInternalVersion() !== "development") return children;
 
@@ -56,6 +57,7 @@ export const NoteComponent: React.FC<Props> = ({
       eventMode={EventMode.STATIC}
       cursor={Cursor.HELP}
       onPointerDown={onClickNote}
+      position={position}
     >
       <ContainerComponent zIndex={Number.MAX_SAFE_INTEGER}>
         <TextComponent

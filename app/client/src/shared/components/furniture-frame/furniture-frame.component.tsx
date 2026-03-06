@@ -16,7 +16,7 @@ type Props = {
   direction?: CrossDirection;
   framePosition: Point2d;
 
-  onPointerDown?: () => void;
+  onPointerDown?: (event?: unknown) => void;
 
   disableHitArea?: boolean;
   roomLayout?: RoomPoint[][];

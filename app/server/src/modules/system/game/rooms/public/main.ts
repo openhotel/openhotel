@@ -18,7 +18,7 @@ export const $public = () => {
       version: 1,
       id: "01JM5ZKX5BCD1H3EWQS3Y657PP",
       title: "Public test",
-      description: "This is a room to show all furnitures",
+      description: "This is a public room",
       layout: [],
       maxUsers: 100,
       spawnPoint: getRoomSpawnPoint([]),

@@ -23,7 +23,13 @@ import {
   TILE_SIZE,
   TILE_WIDTH,
 } from "shared/consts";
-import { FurnitureData, Point2d, Size2d, User } from "shared/types";
+import {
+  FurnitureData,
+  Point2d,
+  PrivateRoom,
+  Size2d,
+  User,
+} from "shared/types";
 import {
   ButtonComponent,
   CharacterComponent,
@@ -44,8 +50,8 @@ import {
   useApi,
   useItemPlacePreview,
   useModal,
-  usePrivateRoom,
   useProxy,
+  useRoom,
 } from "shared/hooks";
 import { useTranslation } from "react-i18next";
 import { Modal } from "shared/enums";
@@ -73,7 +79,7 @@ export const SelectionPreviewComponent: React.FC = () => {
   const { on } = useEvents();
   const { setItemPreviewData } = useItemPlacePreview();
   const { getAccount } = useAccount();
-  const { selectedPreview, room, setSelectedPreview } = usePrivateRoom();
+  const { selectedPreview, room, setSelectedPreview } = useRoom<PrivateRoom>();
   const { emit } = useProxy();
   const { openModal } = useModal();
   const { fetch } = useApi();

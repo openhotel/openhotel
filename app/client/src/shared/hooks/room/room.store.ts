@@ -3,22 +3,21 @@ import {
   Point2d,
   Point3d,
   PrivateRoom,
-  PrivateRoomPreview,
-  RoomFurniture,
+  Room,
   RoomMessage,
+  RoomPreview,
   User,
 } from "shared/types";
 import { Direction } from "shared/enums";
-import { PositionData } from "shared/hooks/private-room/private-room.context";
+import { PositionData } from "./room.context";
 
-export const usePrivateRoomStore = create<{
-  room: PrivateRoom;
+export const useRoomStore = create<{
+  room: Room;
   messages: RoomMessage[];
 
-  setRoom: (room: PrivateRoom) => void;
+  setRoom: (room: Room) => void;
   removeRoom: () => void;
 
-  //
   addUser: (user: User) => void;
   removeUser: (accountId: string) => void;
   setUserPosition: (
@@ -31,15 +30,9 @@ export const usePrivateRoomStore = create<{
     position: Point3d,
     bodyDirection: Direction,
   ) => void;
-
   //
-  addFurniture: (furniture: RoomFurniture) => void;
-  updateFurniture: (furniture: RoomFurniture) => void;
-  removeFurniture: (furniture: RoomFurniture | RoomFurniture[]) => void;
-
-  //
-  selectedPreview: PrivateRoomPreview | null;
-  setSelectedPreview: (data: PrivateRoomPreview | null) => void;
+  selectedPreview: RoomPreview | null;
+  setSelectedPreview: (data: RoomPreview | null) => void;
 
   lastPositionData: PositionData | null;
   setLastPositionData: (data: PositionData | null) => void;
@@ -55,7 +48,6 @@ export const usePrivateRoomStore = create<{
     set({
       room: null,
       messages: [],
-      selectedPreview: null,
       lastPositionData: null,
     }),
 
@@ -121,43 +113,9 @@ export const usePrivateRoomStore = create<{
         ),
       },
     })),
-  /////////////////
-  addFurniture: (furniture: RoomFurniture) =>
-    set((store) => ({
-      ...store,
-      room: {
-        ...store.room,
-        furniture: [...store.room.furniture, furniture],
-      },
-    })),
-  removeFurniture: (furniture: RoomFurniture | RoomFurniture[]) =>
-    set((store) => ({
-      ...store,
-      room: {
-        ...store.room,
-        furniture: Array.isArray(furniture)
-          ? store.room.furniture.filter(
-              ($furniture) =>
-                !furniture.map((furni) => furni.id).includes($furniture.id),
-            )
-          : store.room.furniture.filter(
-              ($furniture) => $furniture.id !== furniture.id,
-            ),
-      },
-    })),
-  updateFurniture: (furniture: RoomFurniture) =>
-    set((store) => ({
-      ...store,
-      room: {
-        ...store.room,
-        furniture: store.room.furniture.map(($furniture) =>
-          $furniture.id === furniture.id ? furniture : $furniture,
-        ),
-      },
-    })),
-  ///////
+  //
   selectedPreview: null,
-  setSelectedPreview: (selectedPreview: PrivateRoomPreview | null) =>
+  setSelectedPreview: (selectedPreview: RoomPreview | null) =>
     set((store) => ({
       ...store,
       selectedPreview,
