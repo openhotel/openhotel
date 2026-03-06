@@ -54,10 +54,17 @@ export const phantom = () => {
     return items.map((item) => item.key[1]);
   };
 
+  const close = () => {
+    if ($worker) {
+      $worker.close();
+    }
+  };
+
   return {
     load,
     capture,
     getCapture,
     getCaptureList,
+    close,
   };
 };

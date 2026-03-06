@@ -4,16 +4,22 @@ import {
   CrossDirection,
   Size3d,
   CrossDirectionKeys,
-  Size2d,
 } from "@oh/utils";
 import { FurnitureType } from "../enums/main.ts";
 
 export type FurnitureDirectionTexture = {
   texture: string;
-  bounds: Size3d;
   pivot?: Point2d;
   zIndex: number;
   hitArea: number[];
+  actions?: Record<string, string>;
+};
+
+export type FurnitureAction = {
+  id: string;
+  label: string;
+  states: string[];
+  defaultState: string;
 };
 
 export type FurnitureDirectionData = {
@@ -36,8 +42,8 @@ export type FurnitureData = {
   direction: FurnitureDirectionDataMap;
   icon: {
     texture: string;
-    bounds: Size2d;
   };
+  actions?: FurnitureAction[];
 };
 
 export type Furniture = {
@@ -52,4 +58,8 @@ export type RoomFurniture = {
   direction: CrossDirection;
   size?: Size3d;
   framePosition?: Point2d;
+  state?: string;
+  forSale?: {
+    price: number;
+  };
 } & Furniture;

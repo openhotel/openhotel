@@ -64,7 +64,18 @@
   "furniture": {
     "move": "move",
     "rotate": "rotate",
-    "pick_up": "pick up"
+    "pick_up": "pick up",
+    "sale": "sale",
+    "cancel_sale": "cancel sale",
+    "buy": "buy",
+    "sell_title": "Sell Furniture",
+    "buy_title": "Buy Furniture",
+    "catalog_price_label": "Catalog price: {{price}}",
+    "price_label": "Price: {{price}}",
+    "buy_confirmation": "Do you want to buy this furniture?",
+    "confirm_buy_button": "Buy",
+    "set_for_sale_error": "Error setting furniture for sale",
+    "buy_error": "Error buying furniture"
   },
   "marketplace": {
     "title": "Marketplace",

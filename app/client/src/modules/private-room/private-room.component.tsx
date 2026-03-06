@@ -308,12 +308,13 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
   useEffect(() => {
     if (itemPreviewData?.type === "place") {
       renderPreviewVisibleRef.current = true;
+      setSelectedPreview(null);
       return;
     }
     if (!renderPreviewVisibleRef.current) return;
 
     renderPreviewVisibleRef.current = false;
-  }, [itemPreviewData, openModal]);
+  }, [itemPreviewData, openModal, setSelectedPreview]);
 
   return useMemo(
     () =>

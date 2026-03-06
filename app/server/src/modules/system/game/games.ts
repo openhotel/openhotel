@@ -142,7 +142,7 @@ export const games = () => {
   };
 
   const $add = async (game: GameType) => {
-    const $game = ($gameMap[game.gameId] = $getGame(game));
+    const $game = $getGame(game);
 
     log(`>> Game '${game.repo}' starting...`);
 
@@ -159,45 +159,52 @@ export const games = () => {
           );
         } catch (e) {
           log(`>> Game '${game.repo}' ERROR!!`);
-          return;
+          throw e;
         }
       }
     }
-    $worker = getParentProcessWorker(executablePath, [], {
-      prefixLog: `[${game.repo}]: `,
-    });
-    $gameWorkerMap[game.gameId] = $worker;
-
-    $worker.on("USER_DATA", ({ clientId, event, message }) => {
-      System.proxy.$emit(ProxyEvent.$GAME_USER_DATA, {
-        gameId: game.gameId,
-        clientId,
-        event,
-        message,
+    try {
+      $worker = getParentProcessWorker(executablePath, [], {
+        prefixLog: `[${game.repo}]: `,
       });
-    });
-    $worker.on("DISCONNECT_USER", ({ clientId }) => {
-      System.proxy.$emit(ProxyEvent.$GAME_USER_DISCONNECT, {
-        gameId: game.gameId,
-        clientId,
-      });
-    });
-    $worker.on("USER_REWARD", ({ clientId, amount, ...props }) => {
-      System.game.economy.executeTransaction({
-        type: TransactionType.REWARD,
-        description: `Game '${game.repo}' reward`,
-        amount,
-        toAccount: $game.getUser({ clientId }).getAccountId(),
-      });
-    });
+      $gameWorkerMap[game.gameId] = $worker;
 
-    $worker.on("PONG", () => {
-      setTimeout(() => {
-        $worker.emit("PING", { d: performance.now() });
-      }, 1000);
-    });
+      $worker.on("USER_DATA", ({ clientId, event, message }) => {
+        System.proxy.$emit(ProxyEvent.$GAME_USER_DATA, {
+          gameId: game.gameId,
+          clientId,
+          event,
+          message,
+        });
+      });
+      $worker.on("DISCONNECT_USER", ({ clientId }) => {
+        System.proxy.$emit(ProxyEvent.$GAME_USER_DISCONNECT, {
+          gameId: game.gameId,
+          clientId,
+        });
+      });
+      $worker.on("USER_REWARD", ({ clientId, amount, ...props }) => {
+        System.game.economy.executeTransaction({
+          type: TransactionType.REWARD,
+          description: `Game '${game.repo}' reward`,
+          amount,
+          toAccount: $game.getUser({ clientId }).getAccountId(),
+        });
+      });
 
-    $worker.emit("PING", { d: performance.now() });
+      $worker.on("PONG", () => {
+        setTimeout(() => {
+          $worker.emit("PING", { d: performance.now() });
+        }, 1000);
+      });
+
+      $worker.emit("PING", { d: performance.now() });
+
+      $gameMap[game.gameId] = $game;
+    } catch (e) {
+      log(`>> Game '${game.repo}' ERROR on execution!!`);
+      throw e;
+    }
   };
 
   const $downloadGame = async (repo: string, gameId: string) => {
@@ -312,15 +319,15 @@ export const games = () => {
       // download first time
       if (!gameId) {
         gameId = ulid();
-        await $downloadGame(repo, gameId);
+        try {
+          await $downloadGame(repo, gameId);
+        } catch (e) {
+          console.error(`>> Something went wrong downloading '${repo}' game!`);
+          continue;
+        }
       }
 
-      gameDataMap[gameId] = {
-        gameId,
-        repo: repo ?? path,
-      };
-
-      let isDone = false;
+      let isDone = null;
       do {
         try {
           await $add({
@@ -330,15 +337,30 @@ export const games = () => {
             repo: repo ?? path,
             isLocal,
           });
-          isDone = true;
+          isDone = "ok";
         } catch (e) {
           if (isLocal) {
             console.error(`>> Game '${path}' doesn't exist!`);
-            return;
+            isDone = "ko";
+            break;
           }
-          await $downloadGame(repo, gameId);
+          try {
+            await $downloadGame(repo, gameId);
+          } catch (e) {
+            console.error(
+              `>> Something went wrong downloading '${repo}' game!`,
+            );
+            isDone = "ko";
+            break;
+          }
         }
-      } while (!isDone);
+      } while (isDone === null);
+      if (isDone === "ko") continue;
+
+      gameDataMap[gameId] = {
+        gameId,
+        repo: repo ?? path,
+      };
     }
 
     Deno.writeTextFileSync(
