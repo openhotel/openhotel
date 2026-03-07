@@ -4,6 +4,7 @@ import { Route } from "shared/enums";
 import { useRouterStore } from "./router.store";
 import { HomeComponent } from "modules/home";
 import { PrivateRoomComponent } from "modules/private-room";
+import { PublicRoomComponent } from "modules/public-room";
 
 type RouterProps = {
   children: React.ReactNode;
@@ -45,6 +46,7 @@ export const RouterProviderRenderer: React.FunctionComponent<
         ? {
             [Route.HOME]: HomeComponent,
             [Route.PRIVATE_ROOM]: PrivateRoomComponent,
+            [Route.PUBLIC_ROOM]: PublicRoomComponent,
           }[route]
         : null,
     [route],
