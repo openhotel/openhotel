@@ -106,11 +106,10 @@ export const users = () => {
         const room = await System.game.rooms.get(currentRoom);
         const targetRoom = await System.game.rooms.get(roomId);
 
-        //if room doesn't share type (public/private), send false
-        //this is because front expects to render the same component
-        const moveToAnotherRoom = room.type === targetRoom.type;
+        // send the new room type
+        const moveToAnotherRoomType = targetRoom.type;
 
-        room?.removeUser?.(getObject(), moveToAnotherRoom);
+        room?.removeUser?.(getObject(), moveToAnotherRoomType);
       }
 
       const targetRoom = await System.game.rooms.get(roomId);
