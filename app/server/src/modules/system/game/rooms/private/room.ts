@@ -4,6 +4,7 @@ import {
   PrivateRoomMutable,
   RoomFurniture,
   RoomPoint,
+  RoomType,
   User,
 } from "shared/types/main.ts";
 import {
@@ -110,7 +111,7 @@ export const getRoom =
         pivotFix: false,
       });
     };
-    const removeUser = (user: User, moveToAnotherRoom: boolean = false) => {
+    const removeUser = (user: User, moveToAnotherRoomType: RoomType = null) => {
       const $user = System.game.users.get({ accountId: user.accountId });
       if (!$user) return;
 
@@ -130,7 +131,7 @@ export const getRoom =
         roomId: room.id,
       });
       //Disconnect user from current room
-      $user.emit(ProxyEvent.LEAVE_ROOM, { moveToAnotherRoom });
+      $user.emit(ProxyEvent.LEAVE_ROOM, { moveToAnotherRoomType });
       //Remove user human from the room to existing users
       emit(ProxyEvent.REMOVE_HUMAN, { accountId: $user.getAccountId() });
     };
