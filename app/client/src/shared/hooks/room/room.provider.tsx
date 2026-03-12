@@ -40,7 +40,6 @@ export const RoomProvider: React.FunctionComponent<TemplateProps> = ({
     });
     const removeOnJoinRoom = on(Event.LOAD_ROOM, ({ room }: { room: Room }) => {
       setRoom(room);
-      console.log(room);
       switch (room.type) {
         case "private":
           navigate(Route.PRIVATE_ROOM);
@@ -52,10 +51,14 @@ export const RoomProvider: React.FunctionComponent<TemplateProps> = ({
           break;
       }
     });
-    const removeOnLeaveRoom = on(Event.LEAVE_ROOM, ({ moveToAnotherRoom }) => {
-      !moveToAnotherRoom && navigate(Route.HOME);
-      removeRoom();
-    });
+    const removeOnLeaveRoom = on(
+      Event.LEAVE_ROOM,
+      ({ moveToAnotherRoomType }) => {
+        //prevents flashing between rooms
+        !moveToAnotherRoomType && navigate(Route.HOME);
+        removeRoom();
+      },
+    );
 
     return () => {
       removeOnPreJoinRoom();
