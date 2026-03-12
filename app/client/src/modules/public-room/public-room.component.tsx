@@ -11,7 +11,7 @@ import {
 } from "@openhotel/pixi-components";
 import { useRoom, useSafeWindow } from "shared/hooks";
 import { PrivateRoom } from "shared/types";
-import { CameraComponent } from "shared/components";
+import { CameraComponent, NoteComponent } from "shared/components";
 import { HOT_BAR_HEIGHT_FULL } from "shared/consts";
 import {
   ChatHotBarComponent,
@@ -84,7 +84,13 @@ export const PublicRoomComponent: React.FC = () => {
             </ContainerComponent>
           </ContainerComponent>
         </ContainerComponent>
-      ) : null,
+      ) : (
+        <NoteComponent
+          issue={1138}
+          title="add loading on rooms"
+          description="add public room loading"
+        />
+      ),
     [room],
   );
 };
