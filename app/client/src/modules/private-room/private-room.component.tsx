@@ -7,6 +7,7 @@ import React, {
 } from "react";
 import {
   CameraComponent,
+  NoteComponent,
   PreviewTileData,
   PrivateRoomComponent as PrivateRoomComp,
 } from "shared/components";
@@ -366,7 +367,13 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
             </ContainerComponent>
           </ContainerComponent>
         </ContainerComponent>
-      ) : null,
+      ) : (
+        <NoteComponent
+          issue={1138}
+          title="add loading on rooms"
+          description="add private room loading"
+        />
+      ),
     [
       room,
       windowSize,
