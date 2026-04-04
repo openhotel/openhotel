@@ -30,3 +30,17 @@ export const FullWidth = {
     fullWidth: true,
   },
 };
+
+export const Disabled = {
+  args: {
+    children: "Button",
+    disabled: true,
+  },
+};
+
+export const Loading = {
+  args: {
+    children: "Button",
+    loading: true,
+  },
+};

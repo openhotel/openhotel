@@ -15,6 +15,25 @@
     cursor: pointer;
     user-select: none;
     outline: none;
+    position: relative;
+
+    &.loading,
+    &.disabled {
+      background-color: var(--btn-grey-bg);
+      border-color: var(--btn-grey-bd);
+      color: var(--btn-grey-c);
+      cursor: auto !important;
+
+      .content {
+        opacity: 0;
+      }
+      .loadingIcon {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+      }
+    }
 
     @include textEllipsis();
 
@@ -44,24 +63,26 @@
       }
     }
 
-    &.colorBlue {
-      @include btn-color("btn-blue");
-    }
+    &:not(&.loading):not(&.disabled) {
+      &.colorBlue {
+        @include btn-color("btn-blue");
+      }
 
-    &.colorYellow {
-      @include btn-color("btn-yellow");
-    }
+      &.colorYellow {
+        @include btn-color("btn-yellow");
+      }
 
-    &.colorGrey {
-      @include btn-color("btn-grey");
-    }
+      &.colorGrey {
+        @include btn-color("btn-grey");
+      }
 
-    &.colorDark {
-      @include btn-color("btn-dark");
-    }
+      &.colorDark {
+        @include btn-color("btn-dark");
+      }
 
-    &.colorLight {
-      @include btn-color("btn-light");
+      &.colorLight {
+        @include btn-color("btn-light");
+      }
     }
   }
 }

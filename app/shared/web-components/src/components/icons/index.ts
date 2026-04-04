@@ -21,6 +21,7 @@ export * from "./keys-icon.component";
 export * from "./burger-icon.component";
 export * from "./burger-cross-icon.component";
 export * from "./burger-arrow-icon.component";
+export * from "./loading-icon.component";
 
 export * from "./cc";
 export * from "./signal";
