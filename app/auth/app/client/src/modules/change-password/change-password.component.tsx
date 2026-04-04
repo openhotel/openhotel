@@ -5,13 +5,14 @@ import {
   PasswordComponent,
   RedirectComponent,
 } from "shared/components";
-import { useAccount } from "shared/hooks";
+import { useAccount, useCaptchaV2 } from "shared/hooks";
 import { useNavigate } from "react-router-dom";
 import styles from "./change-password.module.scss";
 
 export const ChangePasswordComponent: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState<string>();
 
+  const { submit, captchaReady } = useCaptchaV2();
   const { changePassword } = useAccount();
   const navigate = useNavigate();
 
@@ -21,12 +22,15 @@ export const ChangePasswordComponent: React.FC = () => {
   const onSubmit = useCallback(
     async (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault();
+      if (!captchaReady) return;
 
       const data = new FormData(event.target as unknown as HTMLFormElement);
       const password = data.get("password") as string;
       const rePassword = data.get("rePassword") as string;
 
-      changePassword({ token, password, rePassword })
+      const captchaData = await submit();
+
+      changePassword({ token, password, rePassword, captchaData })
         .then(() => navigate("/login"))
         .catch(({ status, message }) => {
           setErrorMessage(message);
@@ -34,7 +38,7 @@ export const ChangePasswordComponent: React.FC = () => {
             setErrorMessage("Internal server error: " + message);
         });
     },
-    [navigate, setErrorMessage],
+    [navigate, setErrorMessage, captchaReady],
   );
 
   if (!token) return <RedirectComponent to="/" />;
@@ -45,7 +49,9 @@ export const ChangePasswordComponent: React.FC = () => {
         <h1 className={styles.title}>Change password</h1>
         <PasswordComponent />
 
-        <ButtonComponent fullWidth={true}>Change</ButtonComponent>
+        <ButtonComponent fullWidth={true} loading={!captchaReady}>
+          Change
+        </ButtonComponent>
         {errorMessage ? (
           <label className={styles.error}>{errorMessage}</label>
         ) : null}

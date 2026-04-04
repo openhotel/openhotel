@@ -1,26 +1,34 @@
 import { System } from "modules/system/main.ts";
 
 export const captcha = () => {
-  const verify = async (sessionId: string): Promise<boolean> => {
-    const { id, token, url } = System.getConfig().captcha;
-    if (!isEnabled()) return true;
-    if (!sessionId) return false;
+  let captchaScript = null;
 
-    const headers = new Headers();
-    headers.append("id", id);
-    headers.append("token", token);
+  const load = async () => {
+    if (!isEnabled()) return;
+
+    const { id, token } = System.getConfig().captcha;
 
     try {
-      const data = await fetch(`${url}/v1/verify`, {
-        method: "POST",
-        headers,
-        body: JSON.stringify({ sessionId }),
-      }).then((response) => response.json());
+      captchaScript = (
+        await import(
+          `${System.captcha.getUrl()}/scripts/server.js?d=${Date.now()}`
+        )
+      )?.Captcha;
 
-      return Boolean(data?.valid);
+      captchaScript.init({
+        appId: id,
+        appToken: token,
+      });
     } catch (e) {
-      return false;
+      console.error("Captcha did not load because of an error!");
     }
+  };
+
+  const verify = async (captchaData: unknown): Promise<boolean> => {
+    if (!isEnabled()) return true;
+    if (!captchaData) return false;
+
+    return await captchaScript.check(captchaData);
   };
 
   const isEnabled = () => {
@@ -28,8 +36,14 @@ export const captcha = () => {
     return Boolean(enabled && id && token && url);
   };
 
+  const getUrl = () =>
+    System.getConfig().captcha.url +
+    (System.getConfig().version === "development" ? "/api" : "");
+
   return {
+    load,
     verify,
     isEnabled,
+    getUrl,
   };
 };

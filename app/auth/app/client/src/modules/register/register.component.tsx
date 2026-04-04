@@ -6,23 +6,21 @@ import React, {
   useState,
 } from "react";
 import {
-  CaptchaComponent,
   LinkComponent,
   PasswordComponent,
   RedirectComponent,
 } from "shared/components";
-import { useAccount, useLanguages } from "shared/hooks";
+import { useAccount, useCaptchaV2, useLanguages } from "shared/hooks";
 import { useNavigate } from "react-router-dom";
 import { ButtonComponent, SelectorComponent } from "@openhotel/web-components";
 import { EmailComponent, UsernameComponent } from "./components";
 import styles from "./register.module.scss";
 
 export const RegisterComponent: React.FC = () => {
-  const [submittedAt, setSubmittedAt] = useState<number>();
   const [errorMessage, setErrorMessage] = useState<string>();
-  const [captchaId, setCaptchaId] = useState<string>();
   const [success, setSuccess] = useState<boolean>(false);
 
+  const { submit, captchaReady } = useCaptchaV2();
   const { register, isLogged } = useAccount();
   let navigate = useNavigate();
 
@@ -44,6 +42,7 @@ export const RegisterComponent: React.FC = () => {
   const onSubmit = useCallback(
     async (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault();
+      if (!captchaReady) return;
 
       const data = new FormData(event.target as unknown as HTMLFormElement);
       const email = data.get("email") as string;
@@ -52,25 +51,26 @@ export const RegisterComponent: React.FC = () => {
       const rePassword = data.get("rePassword") as string;
       const language = data.get("language") as string;
 
+      const captchaData = await submit();
+
       register({
         email,
         username,
         password,
         rePassword,
-        captchaId,
         languages: [language],
+        captchaData,
       })
         .then(() => {
           setSuccess(true);
         })
         .catch(({ status, message }) => {
-          setSubmittedAt(performance.now());
           setErrorMessage(message);
           if (status === 500)
             setErrorMessage("Internal server error: " + message);
         });
     },
-    [captchaId, navigate],
+    [navigate, submit, captchaReady],
   );
 
   const handleSuccessRedirect = () => {
@@ -104,8 +104,9 @@ export const RegisterComponent: React.FC = () => {
           options={languageOptions}
           clearable={false}
         />
-        <CaptchaComponent submittedAt={submittedAt} onResolve={setCaptchaId} />
-        <ButtonComponent fullWidth>Register</ButtonComponent>
+        <ButtonComponent loading={!captchaReady} fullWidth>
+          Register
+        </ButtonComponent>
         {errorMessage && (
           <label key="backend-error" className={styles.error}>
             {errorMessage}

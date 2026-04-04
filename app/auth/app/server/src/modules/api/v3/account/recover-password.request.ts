@@ -14,7 +14,7 @@ export const recoverPasswordPostRequest: RequestType = {
   kind: RequestKind.PUBLIC,
   func: async (request: Request) => {
     try {
-      let { email } = await request.json();
+      let { email, captchaData } = await request.json();
 
       email = email?.toLowerCase();
 
@@ -23,6 +23,10 @@ export const recoverPasswordPostRequest: RequestType = {
           message: "Invalid email",
         });
       }
+
+      // jeje
+      const captchaResponse = await System.captcha.verify(captchaData);
+      if (!captchaResponse) return getResponse(HttpStatusCode.OK);
 
       const response = await System.accounts.sendRecover(email);
       if (!response) return getResponse(HttpStatusCode.OK);

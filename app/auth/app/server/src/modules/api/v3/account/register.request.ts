@@ -21,19 +21,25 @@ export const registerPostRequest: RequestType = {
   kind: RequestKind.PUBLIC,
   func: async (request: Request) => {
     try {
-      let { email, username, password, rePassword, languages, captchaId } =
-        await request.json();
+      let {
+        email,
+        username,
+        password,
+        rePassword,
+        languages,
+        //
+        captchaData,
+      } = await request.json();
 
-      if (
-        !(await System.captcha.verify(captchaId)) ||
-        !email ||
-        !username ||
-        !password ||
-        !languages?.length ||
-        !rePassword
-      )
+      if (!email || !username || !password || !languages?.length || !rePassword)
         return getResponse(HttpStatusCode.BAD_REQUEST, {
-          message: "Some input is missing or invalid captcha!",
+          message: "Some input is missing!",
+        });
+
+      const captchaResponse = await System.captcha.verify(captchaData);
+      if (!captchaResponse)
+        return getResponse(HttpStatusCode.BAD_REQUEST, {
+          message: "Something went wrong, try again!",
         });
 
       if (
@@ -89,6 +95,7 @@ export const registerPostRequest: RequestType = {
 
       return getResponse(HttpStatusCode.OK);
     } catch (e) {
+      console.log(e);
       return getResponse(HttpStatusCode.INTERNAL_SERVER_ERROR);
     }
   },

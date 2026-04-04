@@ -17,7 +17,7 @@ export const loginPostRequest: RequestType = {
       password,
       otpToken,
       //
-      captchaId,
+      captchaData,
     } = await request.json();
 
     if (!email || !password)
@@ -51,13 +51,11 @@ export const loginPostRequest: RequestType = {
 
     const isValidOTP = await account.otp.check(otpToken);
 
-    if (!(await System.captcha.verify(captchaId)))
-      return Response.json(
-        { status: isValidOTP ? 451 : 461, message: "Captcha is not valid!" },
-        {
-          status: isValidOTP ? 451 : 461,
-        },
-      );
+    const captchaResponse = await System.captcha.verify(captchaData);
+    if (!captchaResponse)
+      return getResponse(HttpStatusCode.BAD_REQUEST, {
+        message: "Something went wrong, try again!",
+      });
 
     if (!isValidOTP)
       return Response.json(

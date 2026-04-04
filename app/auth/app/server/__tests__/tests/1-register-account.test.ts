@@ -25,7 +25,7 @@ describe("1. register an account", () => {
       });
       assertEquals(status, 400);
       assertEquals(data, undefined);
-      assertEquals(message, "Some input is missing or invalid captcha!");
+      assertEquals(message, "Some input is missing!");
     });
     it("try to register with invalid email", async () => {
       for (const email of INVALID_EMAILS) {

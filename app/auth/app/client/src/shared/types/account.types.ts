@@ -3,7 +3,8 @@ export type AccountLoginProps = {
   password: string;
 
   otpToken?: string;
-  captchaId?: string;
+  //TODO
+  captchaData?: unknown;
 };
 
 export type AccountRegisterProps = {
@@ -14,17 +15,21 @@ export type AccountRegisterProps = {
 
   languages: string[];
 
-  captchaId?: string;
+  captchaData?: unknown;
 };
 
 export type AccountRecoverPassProps = {
   email: string;
+  //
+  captchaData?: unknown;
 };
 
 export type AccountChangePassProps = {
   token: string;
   password: string;
   rePassword: string;
+  //
+  captchaData?: unknown;
 };
 
 export type AccountSession = {

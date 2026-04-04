@@ -13,11 +13,11 @@ export const captchaRequest: RequestType = {
   kind: RequestKind.PUBLIC,
   func: async () => {
     const isEnabled = System.captcha.isEnabled();
-    const { id, url } = System.getConfig().captcha;
+    const { id } = System.getConfig().captcha;
     return getResponse(HttpStatusCode.OK, {
       enabled: isEnabled,
       id,
-      url,
+      url: System.captcha.getUrl(),
     });
   },
 };

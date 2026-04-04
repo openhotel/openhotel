@@ -14,7 +14,7 @@ export const changePasswordPostRequest: RequestType = {
   pathname: "/change-password",
   kind: RequestKind.PUBLIC,
   func: async (request: Request) => {
-    const { password, rePassword, token } = await request.json();
+    const { password, rePassword, token, captchaData } = await request.json();
 
     if (!password || !rePassword || !token) {
       return getResponse(HttpStatusCode.BAD_REQUEST, {
@@ -35,6 +35,12 @@ export const changePasswordPostRequest: RequestType = {
         message: "Invalid password",
       });
     }
+
+    const captchaResponse = await System.captcha.verify(captchaData);
+    if (!captchaResponse)
+      return getResponse(HttpStatusCode.BAD_REQUEST, {
+        message: "Something went wrong, try again!",
+      });
 
     const account = await System.accounts.getAccount({
       recoverToken: token,
