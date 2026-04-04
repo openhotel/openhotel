@@ -51,5 +51,4 @@ jobs:
         run: yarn run build
 
       - name: Publish package
-        run: npm install -g npm@latest
-      - run: npm publish --access public --tag latest
+        run: npm publish --access public --tag latest
