@@ -27,7 +27,8 @@ jobs:
       - name: Install Node.js, NPM and Yarn
         uses: actions/setup-node@v4
         with:
-          node-version: 22.x
+          node-version: 24.x
+          registry-url: "https://registry.npmjs.org"
 
       - name: Enable Corepack
         run: corepack enable
@@ -51,4 +52,4 @@ jobs:
         run: yarn run build
 
       - name: Publish package
-        run: npm publish --access public --tag latest
+        run: npm publish --provenance --access public --tag latest
