@@ -24,11 +24,7 @@ export const CaptchaV2Provider: React.FunctionComponent<ProviderProps> = ({
   children,
 }) => {
   const captchaScriptRef = useRef(null);
-  const [captchaConfig, setCaptchaConfig] = useState<{
-    enabled: boolean;
-    url: string;
-    id: string;
-  } | null>(null);
+  const captchaEnabledRef = useRef<boolean>(false);
   const [captchaReady, setCaptchaReady] = useState<boolean>(false);
 
   const { fetch } = useApi();
@@ -37,37 +33,27 @@ export const CaptchaV2Provider: React.FunctionComponent<ProviderProps> = ({
     fetch({
       method: RequestMethod.GET,
       pathname: "/_/captcha",
-    })
-      .then(async (response) => {
-        if (!response) return;
+    }).then(async (response) => {
+      if (!response) return;
 
-        const enabled = response?.enabled ?? false;
+      captchaEnabledRef.current = response?.enabled ?? false;
 
-        setCaptchaConfig({
-          enabled,
-          url: response?.url ?? "",
-          id: response?.id ?? "",
-        });
+      if (!captchaEnabledRef.current) return setCaptchaReady(true);
 
-        if (!enabled) return setCaptchaReady(true);
+      captchaScriptRef.current = (
+        await import(`${response.url}/scripts/client.js`)
+      )?.Captcha;
 
-        captchaScriptRef.current = (
-          await import(`${response.url}/scripts/client.js`)
-        )?.Captcha;
-
-        captchaScriptRef.current
-          .init({ appId: response?.id })
-          .then(setCaptchaReady);
-      })
-      .catch(() => {
-        setCaptchaConfig({ enabled: false, url: "", id: "" });
-      });
-  }, [setCaptchaReady, setCaptchaConfig]);
+      captchaScriptRef.current
+        .init({ appId: response?.id })
+        .then(setCaptchaReady);
+    });
+  }, [setCaptchaReady]);
 
   const submit = useCallback(async () => {
-    if (!captchaConfig.enabled) return null;
+    if (!captchaEnabledRef.current) return null;
     return await captchaScriptRef.current.submit();
-  }, [captchaConfig]);
+  }, []);
 
   return (
     <CaptchaV2Context.Provider
