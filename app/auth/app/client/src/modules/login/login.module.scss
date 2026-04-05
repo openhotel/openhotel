@@ -32,6 +32,16 @@
     font-size: 0.9em;
     padding-left: 1rem;
   }
+
+  .otp {
+    div {
+      gap: 1.2rem;
+      justify-content: center;
+    }
+    .otpInput {
+      width: 4rem !important;
+    }
+  }
 }
 
 .recoverPass {

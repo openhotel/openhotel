@@ -11,6 +11,7 @@ import styles from "./change-password.module.scss";
 
 export const ChangePasswordComponent: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState<string>();
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   const { submit, captchaReady } = useCaptchaV2();
   const { changePassword } = useAccount();
@@ -22,7 +23,8 @@ export const ChangePasswordComponent: React.FC = () => {
   const onSubmit = useCallback(
     async (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault();
-      if (!captchaReady) return;
+      if (!captchaReady || isSubmitting) return;
+      setIsSubmitting(true);
 
       const data = new FormData(event.target as unknown as HTMLFormElement);
       const password = data.get("password") as string;
@@ -36,9 +38,10 @@ export const ChangePasswordComponent: React.FC = () => {
           setErrorMessage(message);
           if (status === 500)
             setErrorMessage("Internal server error: " + message);
-        });
+        })
+        .finally(() => setIsSubmitting(false));
     },
-    [navigate, setErrorMessage, captchaReady],
+    [navigate, setErrorMessage, captchaReady, setIsSubmitting, isSubmitting],
   );
 
   if (!token) return <RedirectComponent to="/" />;
@@ -49,7 +52,10 @@ export const ChangePasswordComponent: React.FC = () => {
         <h1 className={styles.title}>Change password</h1>
         <PasswordComponent />
 
-        <ButtonComponent fullWidth={true} loading={!captchaReady}>
+        <ButtonComponent
+          fullWidth={true}
+          loading={!captchaReady || isSubmitting}
+        >
           Change
         </ButtonComponent>
         {errorMessage ? (

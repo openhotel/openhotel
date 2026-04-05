@@ -7,6 +7,7 @@ import styles from "../login/login.module.scss";
 export const RecoverPasswordComponent: React.FC = () => {
   const [statusMessage, setStatusMessage] = useState<string>();
   const [errorMessage, setErrorMessage] = useState<string>();
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   const { submit, captchaReady } = useCaptchaV2();
   const { recoverPassword } = useAccount();
@@ -15,6 +16,7 @@ export const RecoverPasswordComponent: React.FC = () => {
     async (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault();
       if (!captchaReady) return;
+      setIsSubmitting(true);
 
       const data = new FormData(event.target as unknown as HTMLFormElement);
       const email = data.get("email") as string;
@@ -33,7 +35,8 @@ export const RecoverPasswordComponent: React.FC = () => {
           setErrorMessage(message);
           if (status === 500)
             setErrorMessage("Internal server error: " + message);
-        });
+        })
+        .finally(() => setIsSubmitting(false));
     },
     [setStatusMessage, setErrorMessage, captchaReady, submit],
   );
@@ -44,7 +47,10 @@ export const RecoverPasswordComponent: React.FC = () => {
         <h1 className={styles.title}>Recover password</h1>
         <InputComponent name="email" placeholder="Email" />
 
-        <ButtonComponent fullWidth={true} loading={!captchaReady}>
+        <ButtonComponent
+          fullWidth={true}
+          loading={!captchaReady || isSubmitting}
+        >
           Recover
         </ButtonComponent>
         {statusMessage ? (

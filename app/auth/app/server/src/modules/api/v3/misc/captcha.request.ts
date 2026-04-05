@@ -14,10 +14,15 @@ export const captchaRequest: RequestType = {
   func: async () => {
     const isEnabled = System.captcha.isEnabled();
     const { id } = System.getConfig().captcha;
-    return getResponse(HttpStatusCode.OK, {
-      enabled: isEnabled,
-      id,
-      url: System.captcha.getUrl(),
-    });
+    return getResponse(
+      HttpStatusCode.OK,
+      isEnabled
+        ? {
+            enabled: isEnabled,
+            id,
+            url: System.captcha.getUrl(),
+          }
+        : { enabled: false },
+    );
   },
 };

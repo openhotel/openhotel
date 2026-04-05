@@ -2,13 +2,18 @@ import React, { FormEvent, useCallback, useEffect, useState } from "react";
 import { LinkComponent } from "shared/components";
 import { useAccount, useCaptchaV2, useHotel } from "shared/hooks";
 import { useNavigate } from "react-router-dom";
-import { ButtonComponent, InputComponent } from "@openhotel/web-components";
+import {
+  ButtonComponent,
+  InputComponent,
+  OtpComponent,
+} from "@openhotel/web-components";
 
 import styles from "./login.module.scss";
 
 export const LoginComponent: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState<string>();
   const [showOTP, setShowOTP] = useState<boolean>(false);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   const { submit, captchaReady } = useCaptchaV2();
   const { login, isLogged } = useAccount();
@@ -18,7 +23,8 @@ export const LoginComponent: React.FC = () => {
   const onSubmit = useCallback(
     async (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault();
-      if (!captchaReady) return;
+      if (!captchaReady || isSubmitting) return;
+      setIsSubmitting(true);
 
       const data = new FormData(event.target as unknown as HTMLFormElement);
       const email = data.get("email") as string;
@@ -27,16 +33,18 @@ export const LoginComponent: React.FC = () => {
 
       const captchaData = await submit();
 
-      login({ email, password, otpToken, captchaData }).catch(
-        ({ status, message }) => {
+      login({ email, password, otpToken, captchaData })
+        .catch(({ status, message }) => {
           if (status === 461 || status === 441) setShowOTP(true);
           setErrorMessage(message);
           if (status === 500)
             setErrorMessage("Internal server error: " + message);
-        },
-      );
+        })
+        .finally(() => {
+          setIsSubmitting(false);
+        });
     },
-    [navigate, setErrorMessage, captchaReady],
+    [navigate, setErrorMessage, captchaReady, isSubmitting, isSubmitting],
   );
 
   useEffect(() => {
@@ -77,13 +85,16 @@ export const LoginComponent: React.FC = () => {
         />
 
         {showOTP && (
-          <InputComponent
+          <OtpComponent
+            wrapperClassName={styles.otp}
+            className={styles.otpInput}
             name="otpToken"
-            placeholder="One Time Password"
-            maxLength={6}
           />
         )}
-        <ButtonComponent loading={!captchaReady} fullWidth={true}>
+        <ButtonComponent
+          loading={!captchaReady || isSubmitting}
+          fullWidth={true}
+        >
           Login
         </ButtonComponent>
         {errorMessage ? (

@@ -19,6 +19,7 @@ import styles from "./register.module.scss";
 export const RegisterComponent: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState<string>();
   const [success, setSuccess] = useState<boolean>(false);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   const { submit, captchaReady } = useCaptchaV2();
   const { register, isLogged } = useAccount();
@@ -42,7 +43,8 @@ export const RegisterComponent: React.FC = () => {
   const onSubmit = useCallback(
     async (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault();
-      if (!captchaReady) return;
+      if (!captchaReady || isSubmitting) return;
+      setIsSubmitting(true);
 
       const data = new FormData(event.target as unknown as HTMLFormElement);
       const email = data.get("email") as string;
@@ -68,9 +70,10 @@ export const RegisterComponent: React.FC = () => {
           setErrorMessage(message);
           if (status === 500)
             setErrorMessage("Internal server error: " + message);
-        });
+        })
+        .finally(() => setIsSubmitting(false));
     },
-    [navigate, submit, captchaReady],
+    [navigate, submit, captchaReady, setIsSubmitting, isSubmitting],
   );
 
   const handleSuccessRedirect = () => {
@@ -104,7 +107,7 @@ export const RegisterComponent: React.FC = () => {
           options={languageOptions}
           clearable={false}
         />
-        <ButtonComponent loading={!captchaReady} fullWidth>
+        <ButtonComponent loading={!captchaReady || isSubmitting} fullWidth>
           Register
         </ButtonComponent>
         {errorMessage && (

@@ -1,7 +1,10 @@
 import React, { FormEvent, useCallback, useEffect, useState } from "react";
 import { useOTP, useQR } from "shared/hooks";
 import styles from "./otp.module.scss";
-import { ButtonComponent, InputComponent } from "@openhotel/web-components";
+import {
+  ButtonComponent,
+  OtpComponent as OtpInputComponent,
+} from "@openhotel/web-components";
 
 export const OtpComponent: React.FC = () => {
   const { get, verify, remove } = useOTP();
@@ -60,7 +63,7 @@ export const OtpComponent: React.FC = () => {
                 Use an app like Google Authenticator, scan the QR and to verify
                 the 2FA code.
               </span>
-              <InputComponent placeholder="XXXXXX" name="token" maxLength={6} />
+              <OtpInputComponent name="token" />
               <ButtonComponent>Verify</ButtonComponent>
             </div>
           </form>
