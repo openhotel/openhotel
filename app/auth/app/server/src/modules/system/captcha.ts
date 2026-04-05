@@ -9,11 +9,14 @@ export const captcha = () => {
     const { id, token } = System.getConfig().captcha;
 
     try {
-      captchaScript = (
-        await import(
-          `${System.captcha.getUrl()}/scripts/server.js?d=${Date.now()}`
-        )
-      )?.Captcha;
+      const response = await fetch(
+        `${System.captcha.getUrl()}/scripts/server.js?d=${Date.now()}`,
+      );
+      const code = await response.text();
+
+      const dataUri = `data:application/javascript;charset=utf-8,${encodeURIComponent(code)}`;
+      const { Captcha } = await import(dataUri);
+      captchaScript = Captcha;
 
       captchaScript.init({
         appId: id,
@@ -21,6 +24,7 @@ export const captcha = () => {
       });
     } catch (e) {
       console.error("Captcha did not load because of an error!");
+      console.error(e);
     }
   };
 
