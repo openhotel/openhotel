@@ -32,7 +32,7 @@ export const OtpComponent: React.FC<Props> = ({
 
   const onChangeInput = useCallback(
     (index: number) => (event) => {
-      if (!parseInt(event.target.value)) {
+      if (isNaN(parseInt(event.target.value))) {
         event.target.value = null;
         return event.preventDefault();
       }
