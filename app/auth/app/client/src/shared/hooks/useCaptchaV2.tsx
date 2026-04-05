@@ -36,7 +36,7 @@ export const CaptchaV2Provider: React.FunctionComponent<ProviderProps> = ({
     }).then(async (response) => {
       if (!response) return;
 
-      captchaEnabledRef.current = response?.enabled ?? false;
+      captchaEnabledRef.current = response.enabled ?? false;
 
       if (!captchaEnabledRef.current) return setCaptchaReady(true);
 
@@ -45,7 +45,7 @@ export const CaptchaV2Provider: React.FunctionComponent<ProviderProps> = ({
       )?.Captcha;
 
       captchaScriptRef.current
-        .init({ appId: response?.id })
+        .init({ appId: response.id, url: response.url })
         .then(setCaptchaReady);
     });
   }, [setCaptchaReady]);

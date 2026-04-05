@@ -21,6 +21,7 @@ export const captcha = () => {
       captchaScript.init({
         appId: id,
         appToken: token,
+        url: System.captcha.getUrl(),
       });
     } catch (e) {
       console.error("Captcha did not load because of an error!");
