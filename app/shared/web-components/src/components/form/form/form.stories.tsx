@@ -2,6 +2,7 @@ import { fn } from "@storybook/test";
 import { FormComponent } from "./form.component";
 import { InputComponent, SelectorComponent, ButtonComponent } from "../index";
 import { BoxComponent, CardComponent } from "../../../components";
+import { OtpComponent } from "../otp";
 
 export default {
   title: "Components/Form",
@@ -50,6 +51,7 @@ export const Primary = {
           type="password"
           placeholder="repeat password"
         />
+        <OtpComponent name="otp" placeholder="2FA" />
         <SelectorComponent
           name="country"
           placeholder="country"

@@ -1,0 +1,71 @@
+@use "../../../styles/all.module" as *;
+
+.inputWrapper {
+  display: inline-flex;
+  position: relative;
+  width: 100%;
+  flex-direction: column;
+
+  .placeholder {
+    color: var(--input-placeholder-c);
+    padding: 0;
+    cursor: text;
+    user-select: none;
+    margin-left: 0rem;
+  }
+
+  .inputs {
+    display: flex;
+    gap: 0.5rem;
+    width: 100%;
+
+    .input {
+      background-color: var(--input-bg);
+      color: var(--input-c);
+      width: 3rem;
+      border: 0.2rem solid transparent;
+
+      padding: 1rem 0;
+      border-radius: var(--border-radius);
+      outline: none;
+      text-align: center;
+
+      display: inline-flex;
+
+      &.hasPlaceholder {
+        transition: padding;
+        transition-duration: 0.3s;
+
+        &:not(:placeholder-shown),
+        :-webkit-autofill {
+          padding-top: 1.7rem;
+          padding-bottom: 0.3rem;
+        }
+      }
+
+      &:active,
+      &:focus {
+        background-color: var(--input-focus-bg);
+        color: var(--input-focus-c);
+      }
+    }
+
+    &.bordered .input {
+      border: 0.2rem solid var(--input-bd);
+
+      &:active,
+      &:focus {
+        border: 0.2rem solid var(--input-focus-bd);
+      }
+    }
+    &.disabled {
+      opacity: 0.5;
+    }
+
+    // Weird hack to style autofill color in Chrome
+    .input:-webkit-autofill {
+      box-shadow: 0 0 0 1000px var(--input-bg) inset;
+      -webkit-text-fill-color: var(--input-c);
+    }
+  }
+}
