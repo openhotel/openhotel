@@ -10,124 +10,131 @@ import dayjs from "dayjs";
 
 export const furniture = () => {
   const unzipZipFile = async (dirEntry: Deno.DirEntry, path: string = "") => {
-    if (!dirEntry.isFile) {
-      for await (const childEntry of Deno.readDir(
-        `./assets/furniture/${dirEntry.name}`,
-      ))
-        await unzipZipFile(childEntry, `${dirEntry.name}/`);
-    }
-
-    const furniturePathname = `./assets/furniture/${path + dirEntry.name}`;
-
-    const file = await Deno.readFile(furniturePathname);
-
-    const blob = new Blob([file]);
-    const blobReader = new BlobReader(blob);
-    const zipReader = new ZipReader(blobReader);
-
-    const files = await zipReader.getEntries();
-
-    const dataFile = files.find(($file) => $file.filename === "data.yml");
-    const sheetFile = files.find(($file) => $file.filename === "sheet.json");
-    const spriteFile = files.find(($file) => $file.filename === "sprite.png");
-    const langFile = files.find(($file) => $file.filename === "lang.yml");
-
-    const missingFiles = [
-      dataFile ? "data.yml" : null,
-      sheetFile ? "sheet.json" : null,
-      spriteFile ? "sprite.png" : null,
-    ].filter(Boolean);
-
-    if (!missingFiles.length) {
-      log(
-        `Furniture ${dirEntry.name} is missing (${missingFiles.join(",")}) files!`,
-      );
-      return;
-    }
-
-    // data
-    const furnitureBlob = await dataFile.getData(new BlobWriter());
-    const furnitureUint8Array = new Uint8Array(
-      await furnitureBlob.arrayBuffer(),
-    );
-    const furnitureData = await parse(await furnitureBlob.text());
-
-    if (!furnitureData.revision)
-      return log(
-        `e001 Furniture (${furnitureData.id}) has an incorrect revision!`,
-      );
-
-    let revisionTime;
     try {
-      revisionTime = decodeTime(furnitureData.revision);
-    } catch (e) {
-      return log(
-        `e002 Furniture (${furnitureData.id}) has an incorrect revision!`,
+      if (!dirEntry.isFile) {
+        for await (const childEntry of Deno.readDir(
+          `./assets/furniture/${dirEntry.name}`,
+        ))
+          await unzipZipFile(childEntry, `${dirEntry.name}/`);
+      }
+
+      const furniturePathname = `./assets/furniture/${path + dirEntry.name}`;
+
+      const file = await Deno.readFile(furniturePathname);
+
+      const blob = new Blob([file]);
+      const blobReader = new BlobReader(blob);
+      const zipReader = new ZipReader(blobReader);
+
+      const files = await zipReader.getEntries();
+
+      const dataFile = files.find(($file) => $file.filename === "data.yml");
+      const sheetFile = files.find(($file) => $file.filename === "sheet.json");
+      const spriteFile = files.find(($file) => $file.filename === "sprite.png");
+      const langFile = files.find(($file) => $file.filename === "lang.yml");
+
+      const missingFiles = [
+        dataFile ? "data.yml" : null,
+        sheetFile ? "sheet.json" : null,
+        spriteFile ? "sprite.png" : null,
+      ].filter(Boolean);
+
+      if (!missingFiles.length) {
+        log(
+          `Furniture ${dirEntry.name} is missing (${missingFiles.join(",")}) files!`,
+        );
+        return;
+      }
+
+      // data
+      const furnitureBlob = await dataFile.getData(new BlobWriter());
+      const furnitureUint8Array = new Uint8Array(
+        await furnitureBlob.arrayBuffer(),
       );
-    }
-    const revisionDate = dayjs(revisionTime);
+      const furnitureData = await parse(await furnitureBlob.text());
 
-    const dataModificationDiffTime = revisionDate.diff(
-      dayjs(dataFile.lastModDate),
-      "minutes",
-    );
-    const sheetModificationDiffTime = revisionDate.diff(
-      dayjs(sheetFile.lastModDate),
-      "minutes",
-    );
-    const spriteModificationDiffTime = revisionDate.diff(
-      dayjs(spriteFile.lastModDate),
-      "minutes",
-    );
+      if (!furnitureData.revision)
+        return log(
+          `e001 Furniture (${furnitureData.id}) has an incorrect revision!`,
+        );
 
-    //check if any file was modified
-    if (
-      dataModificationDiffTime !== 0 ||
-      sheetModificationDiffTime !== 0 ||
-      spriteModificationDiffTime !== 0
-    )
-      return log(
-        `e003 Furniture (${furnitureData.id}) has an incorrect revision!`,
-      );
+      let revisionTime;
+      try {
+        revisionTime = decodeTime(furnitureData.revision);
+      } catch (e) {
+        return log(
+          `e002 Furniture (${furnitureData.id}) has an incorrect revision!`,
+        );
+      }
+      const revisionDate = dayjs(revisionTime);
 
-    const foundFurniture = await get(furnitureData.id);
-
-    if (foundFurniture?.revision) {
-      const currentRevisionDate = dayjs(decodeTime(foundFurniture.revision));
-      const revisionDiffTime = currentRevisionDate.diff(
-        revisionDate,
+      const dataModificationDiffTime = revisionDate.diff(
+        dayjs(dataFile.lastModDate),
         "minutes",
       );
-      //file is the same
+      const sheetModificationDiffTime = revisionDate.diff(
+        dayjs(sheetFile.lastModDate),
+        "minutes",
+      );
+      const spriteModificationDiffTime = revisionDate.diff(
+        dayjs(spriteFile.lastModDate),
+        "minutes",
+      );
+
+      //check if any file was modified
       if (
-        revisionDiffTime === 0 &&
-        foundFurniture.revision === furnitureData.revision
+        dataModificationDiffTime !== 0 ||
+        sheetModificationDiffTime !== 0 ||
+        spriteModificationDiffTime !== 0
       )
-        return;
-    }
+        return log(
+          `e003 Furniture (${furnitureData.id}) has an incorrect revision!`,
+        );
 
-    // sheet
-    const sheetBlob = await sheetFile.getData(new BlobWriter());
-    const sheetUint8Array = new Uint8Array(await sheetBlob.arrayBuffer());
+      const foundFurniture = await get(furnitureData.id);
 
-    // sprite
-    const spriteBlob = await spriteFile.getData(new BlobWriter());
-    const spriteUint8Array = new Uint8Array(await spriteBlob.arrayBuffer());
+      if (foundFurniture?.revision) {
+        const currentRevisionDate = dayjs(decodeTime(foundFurniture.revision));
+        const revisionDiffTime = currentRevisionDate.diff(
+          revisionDate,
+          "minutes",
+        );
+        //file is the same
+        if (
+          revisionDiffTime === 0 &&
+          foundFurniture.revision === furnitureData.revision
+        )
+          return;
+      }
 
-    // lang (optional)
-    let langUint8Array: Uint8Array | null = null;
-    if (langFile) {
-      const langBlob = await langFile.getData(new BlobWriter());
-      langUint8Array = new Uint8Array(await langBlob.arrayBuffer());
-    }
+      // sheet
+      const sheetBlob = await sheetFile.getData(new BlobWriter());
+      const sheetUint8Array = new Uint8Array(await sheetBlob.arrayBuffer());
 
-    System.db.set(
-      ["furnitureData", furnitureData.id],
-      [furnitureUint8Array, sheetUint8Array, spriteUint8Array, langUint8Array],
-    );
-    log(
-      `- Furniture (${furnitureData.id}) ${foundFurniture ? "updated" : "loaded"}!`,
-    );
+      // sprite
+      const spriteBlob = await spriteFile.getData(new BlobWriter());
+      const spriteUint8Array = new Uint8Array(await spriteBlob.arrayBuffer());
+
+      // lang (optional)
+      let langUint8Array: Uint8Array | null = null;
+      if (langFile) {
+        const langBlob = await langFile.getData(new BlobWriter());
+        langUint8Array = new Uint8Array(await langBlob.arrayBuffer());
+      }
+
+      System.db.set(
+        ["furnitureData", furnitureData.id],
+        [
+          furnitureUint8Array,
+          sheetUint8Array,
+          spriteUint8Array,
+          langUint8Array,
+        ],
+      );
+      log(
+        `- Furniture (${furnitureData.id}) ${foundFurniture ? "updated" : "loaded"}!`,
+      );
+    } catch (e) {}
   };
 
   const load = async () => {
