@@ -16,47 +16,53 @@ export const $public = () => {
   const $getRoom = getRoom(roomUserMap);
 
   const unzipZipFile = async (dirEntry: Deno.DirEntry, path: string = "") => {
-    if (!dirEntry.isFile) {
-      for await (const childEntry of Deno.readDir(
-        `${PUBLIC_ROOMS_PATH}/${dirEntry.name}`,
-      ))
-        await unzipZipFile(childEntry, `${dirEntry.name}/`);
-    }
+    try {
+      if (!dirEntry.isFile) {
+        for await (const childEntry of Deno.readDir(
+          `${PUBLIC_ROOMS_PATH}/${dirEntry.name}`,
+        ))
+          await unzipZipFile(childEntry, `${dirEntry.name}/`);
+      }
 
-    const roomPathname = `${PUBLIC_ROOMS_PATH}/${path + dirEntry.name}`;
+      const roomPathname = `${PUBLIC_ROOMS_PATH}/${path + dirEntry.name}`;
 
-    const file = await Deno.readFile(roomPathname);
+      const file = await Deno.readFile(roomPathname);
 
-    const blob = new Blob([file]);
-    const blobReader = new BlobReader(blob);
-    const zipReader = new ZipReader(blobReader);
+      const blob = new Blob([file]);
+      const blobReader = new BlobReader(blob);
+      const zipReader = new ZipReader(blobReader);
 
-    const files = await zipReader.getEntries();
+      const files = await zipReader.getEntries();
 
-    const dataFile = files.find(($file) => $file.filename === "data.yml");
-    const sheetFile = files.find(($file) => $file.filename === "sheet.json");
-    const spriteFile = files.find(($file) => $file.filename === "sprite.png");
-    const langFile = files.find(($file) => $file.filename === "lang.yml");
+      const dataFile = files.find(($file) => $file.filename === "data.yml");
+      const sheetFile = files.find(($file) => $file.filename === "sheet.json");
+      const spriteFile = files.find(($file) => $file.filename === "sprite.png");
+      const langFile = files.find(($file) => $file.filename === "lang.yml");
 
-    const missingFiles = [
-      dataFile ? "data.yml" : null,
-      sheetFile ? "sheet.json" : null,
-      spriteFile ? "sprite.png" : null,
-    ].filter(Boolean);
+      const missingFiles = [
+        dataFile ? "data.yml" : null,
+        sheetFile ? "sheet.json" : null,
+        spriteFile ? "sprite.png" : null,
+      ].filter(Boolean);
 
-    if (!missingFiles.length) {
-      log(
-        `Public room ${dirEntry.name} is missing (${missingFiles.join(",")}) files!`,
+      if (!missingFiles.length) {
+        log(
+          `Public room ${dirEntry.name} is missing (${missingFiles.join(",")}) files!`,
+        );
+        return;
+      }
+
+      // data
+      const furnitureBlob = await dataFile.getData(new BlobWriter());
+      const furnitureUint8Array = new Uint8Array(
+        await furnitureBlob.arrayBuffer(),
       );
-      return;
-    }
+      const furnitureData = await parse(await furnitureBlob.text());
 
-    // data
-    const furnitureBlob = await dataFile.getData(new BlobWriter());
-    const furnitureUint8Array = new Uint8Array(
-      await furnitureBlob.arrayBuffer(),
-    );
-    const furnitureData = await parse(await furnitureBlob.text());
+      console.log(furnitureData);
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   const load = async () => {
