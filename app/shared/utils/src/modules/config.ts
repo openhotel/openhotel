@@ -1,15 +1,18 @@
 import { readYaml, writeYaml } from "./yaml.ts";
 import type { ConfigProps } from "../types/config.types.ts";
+import { join } from "@std/path";
 
 export const getConfig = async <ConfigTypes extends {}>({
   values,
   defaults,
   fileName = "config.yml",
+  pathName = "./",
 }: ConfigProps<ConfigTypes>): Promise<ConfigTypes> => {
   let config: ConfigTypes = {} as ConfigTypes;
+  const pathFileName = join(pathName, fileName);
   try {
     //@ts-ignore
-    config = await readYaml<ConfigTypes>(`./${fileName}`);
+    config = await readYaml<ConfigTypes>(pathFileName);
   } catch (e) {}
 
   const $defaults: any = defaults;
@@ -26,7 +29,7 @@ export const getConfig = async <ConfigTypes extends {}>({
 
   setValue(defaults, values, config);
   try {
-    await writeYaml<ConfigTypes>(`./${fileName}`, $defaults);
+    await writeYaml<ConfigTypes>(pathFileName, $defaults);
   } catch (e) {}
 
   return $defaults;
