@@ -15,10 +15,28 @@ export const PhantomProvider: React.FC<Props> = ({ children }) => {
     if (isLogged) return;
 
     const params = new URLSearchParams(window.location.search);
+    const token = params.get("token");
 
-    fetch(getPath(`/token?token=${params.get("token")}`)).then((res) => {
-      setIsLogged(res.status === 200);
-    });
+    if (!token) return;
+
+    params.delete("token");
+
+    const search = params.toString();
+    const url = `${window.location.pathname}${search ? `?${search}` : ""}${window.location.hash}`;
+
+    window.history.replaceState({}, document.title, url);
+
+    fetch(getPath("/token"), {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => {
+        setIsLogged(res.status === 200);
+      })
+      .catch(() => {
+        setIsLogged(false);
+      });
   }, [isLogged]);
 
   return isLogged ? children : null;
