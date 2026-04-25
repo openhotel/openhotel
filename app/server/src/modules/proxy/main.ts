@@ -1,5 +1,5 @@
 import { log, parseChangelog } from "shared/utils/main.ts";
-import { getChildWorker } from "worker_ionic";
+import { getChildWorker } from "@da/worker";
 import {
   ConfigTypes,
   Envs,
@@ -46,10 +46,9 @@ export const Proxy = (() => {
 
   const $core = core();
 
-  const load = async ({ envs, config, mainModule }: WorkerProps) => {
+  const load = async ({ envs, config }: WorkerProps) => {
     $config = config;
     $envs = envs;
-    Deno.mainModule = mainModule;
 
     await $image.load();
     await $icon.load();

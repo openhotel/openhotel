@@ -1,4 +1,4 @@
-import { WorkerParent, getParentWorker } from "worker_ionic";
+import { WorkerParent, getParentWorker } from "@da/worker";
 import { System } from "modules/system/main.ts";
 import { ulid } from "@std/ulid";
 
@@ -17,7 +17,6 @@ export const phantom = () => {
     $worker.emit("start", {
       config,
       envs,
-      mainModule: Deno.mainModule,
       token: System.getToken(),
     });
     $worker.on("save-capture", ({ id, imageData }) => {

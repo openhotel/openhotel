@@ -9,6 +9,7 @@
 
     "@da/socket": "jsr:@da/socket@2.3.0",
     "@da/bcrypt": "jsr:@da/bcrypt@1.0.0",
+    "@da/worker": "jsr:@da/worker@1.4.3",
 
     "@std/yaml": "jsr:@std/yaml@1.0.5",
     "@std/ulid": "jsr:@std/ulid@1",
@@ -19,7 +20,6 @@
     "deno/": "https://deno.land/std@0.221.0/",
     "input": "https://deno.land/x/input@2.0.4/index.ts",
     "loadenv": "https://deno.land/x/loadenv@v1.0.1/mod.ts",
-    "worker_ionic": "https://deno.land/x/worker_ionic@v1.4.2/mod.ts",
 
     "@zip-js": "jsr:@zip-js/zip-js@2.7.53",
 
