@@ -5,7 +5,7 @@ import { TEXT_BACKGROUND_BASE } from "shared/consts";
 
 export const LicenseComponent: React.FC = () => {
   const onOpenLicense = useCallback(() => {
-    window.open("https://creativecommons.org/licenses/by-nc-sa/4.0/", "_blank");
+    window.open("https://creativecommons.org/licenses/by-nc-sa/4.0/", "_blank", "noopener,noreferrer");
   }, []);
   return useMemo(
     () => (
