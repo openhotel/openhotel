@@ -1,11 +1,11 @@
-import { WorkerParent } from "worker_ionic";
+import { WorkerParent } from "@da/worker";
 import { PrivateUser, WorkerProps } from "shared/types/main.ts";
 import { internal, eventList } from "./events/main.ts";
 import { ProxyEvent } from "shared/enums/main.ts";
 import { log } from "shared/utils/main.ts";
 import { System } from "modules/system/main.ts";
 import { requestList } from "./api/main.ts";
-import { getParentWorker } from "worker_ionic";
+import { getParentWorker } from "@da/worker";
 import { RequestMethod } from "@oh/utils";
 
 type WorkerDataProps = {
@@ -49,7 +49,6 @@ export const proxy = () => {
     $worker.emit("start", {
       config,
       envs,
-      mainModule: Deno.mainModule,
     } as WorkerProps);
 
     $internal.load($worker);
