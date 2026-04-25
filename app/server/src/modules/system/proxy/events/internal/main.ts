@@ -1,4 +1,4 @@
-import { WorkerParent } from "worker_ionic";
+import { WorkerParent } from "@da/worker";
 import { ProxyEventType } from "shared/types/event.types.ts";
 
 import { userJoinedEvent } from "./user-joined.event.ts";
