@@ -9,11 +9,13 @@ import { getResponse } from "../utils/response.utils.ts";
 import { HttpStatusCode } from "../enums/http-status-code.enums.ts";
 import { appendCORSHeaders } from "../utils/cors.utils.ts";
 
-export const getApiHandler = ({
+export const getApiHandler = <RequestKindT extends number = RequestKind>({
   requests,
   checkAccess,
   testMode = false,
-}: ApiHandlerProps): ApiHandlerMutable => {
+  requestKindEnum = RequestKind as unknown as Record<RequestKindT, string>,
+  requestKindColorMap = REQUEST_KIND_COLOR_MAP,
+}: ApiHandlerProps<RequestKindT>): ApiHandlerMutable => {
   const overview = () => {
     if (!testMode) {
       const maxLength = Math.max(
@@ -23,7 +25,7 @@ export const getApiHandler = ({
       for (const request of requests) {
         const kindList = (
           Array.isArray(request.kind) ? request.kind : [request.kind]
-        ).map((kind) => `color: ${REQUEST_KIND_COLOR_MAP[kind]}`);
+        ).map((kind) => `color: ${requestKindColorMap[Number(kind)]}`);
 
         console.log(
           ` %c${request.method.padStart(maxLength)} %c▓▓%c▓▓%c▓▓ %c${request.pathname}`,
@@ -34,10 +36,12 @@ export const getApiHandler = ({
       }
       console.log();
 
-      for (const kind of Object.keys(REQUEST_KIND_COLOR_MAP)) {
+      for (const kind of Object.keys(requestKindColorMap)) {
+        const kindNumber = Number(kind);
+
         console.log(
-          `%c▓▓ %c${RequestKind[kind]}`,
-          `color: ${REQUEST_KIND_COLOR_MAP[kind]}`,
+          `%c▓▓ %c${requestKindEnum[kindNumber]}`,
+          `color: ${requestKindColorMap[kindNumber]}`,
           "color: gray",
         );
       }

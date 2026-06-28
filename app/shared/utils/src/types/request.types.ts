@@ -1,9 +1,11 @@
 import { RequestMethod } from "../enums/main.ts";
 
-export interface ApiHandlerProps {
+export interface ApiHandlerProps<RequestKindT extends number = RequestKind> {
   requests: RequestType[];
   testMode?: boolean;
   checkAccess?: CheckAccess;
+  requestKindEnum?: Record<RequestKindT, string>;
+  requestKindColorMap?: Record<RequestKindT, string>;
 }
 
 export type ApiHandlerMutable = {
