@@ -7,7 +7,7 @@ import {
 import { REQUEST_KIND_COLOR_MAP } from "../consts/request.consts.ts";
 import { getResponse } from "../utils/response.utils.ts";
 import { HttpStatusCode } from "../enums/http-status-code.enums.ts";
-import { appendCORSHeaders } from "../utils/cors.utils.ts";
+import { appendCORSHeaders, getCORSHeaders } from "../utils/cors.utils.ts";
 
 export const getApiHandler = <RequestKindT extends number = RequestKind>({
   requests,
@@ -79,7 +79,13 @@ export const getApiHandler = <RequestKindT extends number = RequestKind>({
       return response;
     }
 
-    if (foundRequests.length) return getResponse(HttpStatusCode.OK);
+    //CORS
+    if (foundRequests.length && method === RequestMethod.OPTIONS) {
+      return new Response(null, {
+        headers: getCORSHeaders(),
+        status: 204,
+      });
+    }
     return getResponse(HttpStatusCode.NOT_FOUND);
   };
 
