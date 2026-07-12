@@ -80,7 +80,7 @@ if (compileAll || client) {
     viteConfigFileText.replace("__VERSION__", version),
   );
 
-  const command = new Deno.Command(`vite`, {
+  const command = new Deno.Command(`node_modules/.bin/vite`, {
     args: ["build", `--config=$vite.config.ts`],
     cwd: clientPath,
     stdout: debug ? "inherit" : "piped",
