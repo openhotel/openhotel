@@ -2,7 +2,7 @@
   "compilerOptions": {
     "moduleResolution": "node",
     "module": "ES2022",
-    "target": "ES2023",
+    "target": "es2024",
     "esModuleInterop": true,
     "sourceMap": false,
     "noUnusedLocals": true,
