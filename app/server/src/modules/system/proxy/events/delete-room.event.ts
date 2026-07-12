@@ -10,7 +10,7 @@ export const deleteRoomEvent: ProxyEventType<{ roomId: string }> = {
     if (
       !room ||
       room.type !== "private" ||
-      room.getOwnerId() !== user.getAccountId()
+      (room.getOwnerId() !== user.getAccountId() && !(await user.isOp()))
     )
       return;
 

@@ -7,7 +7,7 @@ import {
   Size,
   SpriteComponent,
 } from "@openhotel/pixi-components";
-import { useApi, useModal, useProxy } from "shared/hooks";
+import { useAccount, useApi, useModal, useProxy } from "shared/hooks";
 import { Event, Modal, SpriteSheetEnum } from "shared/enums";
 import { RoomPreviewComponent, RoomsListComponent } from "./components";
 import { NavigatorRoom } from "shared/types";
@@ -20,6 +20,7 @@ type Props = {
 
 export const CategoryRoomsComponent: React.FC<Props> = ({ size }) => {
   const { fetch } = useApi();
+  const { getAccount } = useAccount();
   const { emit } = useProxy();
   const { isModalOpen } = useModal();
   const { t } = useTranslation();
@@ -50,6 +51,7 @@ export const CategoryRoomsComponent: React.FC<Props> = ({ size }) => {
           title: room.title,
           description: room.description,
           ownerUsername: room.ownerUsername,
+          ownerId: room.ownerId,
           users: room.userCount,
           maxUsers: room.maxUsers,
           favorite: false,
@@ -111,6 +113,13 @@ export const CategoryRoomsComponent: React.FC<Props> = ({ size }) => {
     });
   }, [emit, selectedRoomId]);
 
+  const onDeleteRoom = useCallback(() => {
+    emit(Event.DELETE_ROOM, {
+      roomId: selectedRoomId,
+    });
+    $reload();
+  }, [emit, selectedRoomId, $reload]);
+
   const searchFunction = useCallback(
     (event: KeyboardEventExtended) => {
       setSearch(event.target.value);
@@ -125,6 +134,12 @@ export const CategoryRoomsComponent: React.FC<Props> = ({ size }) => {
     },
     [rooms],
   );
+
+  const canDeleteRoom = useMemo(() => {
+    if (!$selectedRoom) return false;
+    const account = getAccount();
+    return account.admin || $selectedRoom?.ownerId === account.accountId;
+  }, [getAccount, $selectedRoom]);
 
   return (
     <>
@@ -178,6 +193,8 @@ export const CategoryRoomsComponent: React.FC<Props> = ({ size }) => {
             size={previewSize}
             room={$selectedRoom}
             onJoin={onJoinRoom}
+            onDelete={onDeleteRoom}
+            canDelete={canDeleteRoom}
           />
         ) : (
           <NoteComponent

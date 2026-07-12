@@ -24,12 +24,16 @@ type Props = {
   size: Size;
   room: NavigatorRoom;
   onJoin: () => void;
+  onDelete: () => void;
+  canDelete: boolean;
 } & ContainerProps;
 
 export const RoomPreviewComponent: React.FC<Props> = ({
   size,
   room,
   onJoin,
+  onDelete,
+  canDelete,
   ...containerProps
 }) => {
   const { t } = useTranslation();
@@ -99,6 +103,17 @@ export const RoomPreviewComponent: React.FC<Props> = ({
             height: 20,
           }}
         />
+        {canDelete ? (
+          <ButtonComponent
+            autoWidth={true}
+            text={t("navigator.delete")}
+            onPointerDown={onDelete}
+            position={{
+              x: 3,
+              y: 3,
+            }}
+          />
+        ) : null}
         <FlexContainerComponent
           size={{
             width: size.width - 3,
