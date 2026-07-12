@@ -1,4 +1,14 @@
 
+<a name="v0.8.5"></a>
+
+## [v0.8.5](https://github.com/openhotel/openhotel/compare/v0.8.4...v0.8.5) (2026-07-12)
+
+### Features
+
+- add delete room for ops/owners on home - fix [#1161](https://github.com/openhotel/openhotel/issues/1161) ([#1162](https://github.com/openhotel/openhotel/issues/1162))
+- updated worker dependency - fix [#1151](https://github.com/openhotel/openhotel/issues/1151) ([#1152](https://github.com/openhotel/openhotel/issues/1152))
+
+
 <a name="v0.8.4"></a>
 
 ## [v0.8.4](https://github.com/openhotel/openhotel/compare/v0.8.3...v0.8.4) (2026-03-06)
@@ -1480,21 +1490,21 @@
 
 <a name="v0.1.4"></a>
 
-## [v0.1.4](https://github.com/openhotel/openhotel/compare/v0.1.3...v0.1.4) (2024-08-16)
+## [v0.1.4](https://github.com/openhotel/openhotel/compare/v0.1.2...v0.1.4) (2024-08-16)
 
 ### Features
 
 - Changed default config auth urls to openhotel ones - fix [#269](https://github.com/openhotel/openhotel/issues/269) ([#270](https://github.com/openhotel/openhotel/issues/270))
 
 
-<a name="v0.1.3"></a>
-
-## [v0.1.3](https://github.com/openhotel/openhotel/compare/v0.1.2...v0.1.3) (2024-08-16)
-
-
 <a name="v0.1.2"></a>
 
-## [v0.1.2](https://github.com/openhotel/openhotel/compare/v0.1.1...v0.1.2) (2024-08-16)
+## [v0.1.2](https://github.com/openhotel/openhotel/compare/v0.1.3...v0.1.2) (2024-08-16)
+
+
+<a name="v0.1.3"></a>
+
+## [v0.1.3](https://github.com/openhotel/openhotel/compare/v0.1.1...v0.1.3) (2024-08-16)
 
 ### Bug Fixes
 
@@ -1895,17 +1905,17 @@
 
 <a name="v0.0.7-alpha.25"></a>
 
-## [v0.0.7-alpha.25](https://github.com/openhotel/openhotel/compare/v0.0.7-alpha.24...v0.0.7-alpha.25) (2024-07-03)
-
-
-<a name="v0.0.7-alpha.24"></a>
-
-## [v0.0.7-alpha.24](https://github.com/openhotel/openhotel/compare/v0.0.7-alpha.23...v0.0.7-alpha.24) (2024-07-03)
+## [v0.0.7-alpha.25](https://github.com/openhotel/openhotel/compare/v0.0.7-alpha.23...v0.0.7-alpha.25) (2024-07-03)
 
 
 <a name="v0.0.7-alpha.23"></a>
 
-## [v0.0.7-alpha.23](https://github.com/openhotel/openhotel/compare/v0.0.7-alpha.22...v0.0.7-alpha.23) (2024-07-03)
+## [v0.0.7-alpha.23](https://github.com/openhotel/openhotel/compare/v0.0.7-alpha.24...v0.0.7-alpha.23) (2024-07-03)
+
+
+<a name="v0.0.7-alpha.24"></a>
+
+## [v0.0.7-alpha.24](https://github.com/openhotel/openhotel/compare/v0.0.7-alpha.22...v0.0.7-alpha.24) (2024-07-03)
 
 
 <a name="v0.0.7-alpha.22"></a>
@@ -1960,17 +1970,17 @@
 
 <a name="v0.0.7-alpha.11"></a>
 
-## [v0.0.7-alpha.11](https://github.com/openhotel/openhotel/compare/v0.0.7-alpha.10...v0.0.7-alpha.11) (2024-07-01)
-
-
-<a name="v0.0.7-alpha.10"></a>
-
-## [v0.0.7-alpha.10](https://github.com/openhotel/openhotel/compare/v0.0.7-alpha.9...v0.0.7-alpha.10) (2024-07-01)
+## [v0.0.7-alpha.11](https://github.com/openhotel/openhotel/compare/v0.0.7-alpha.9...v0.0.7-alpha.11) (2024-07-01)
 
 
 <a name="v0.0.7-alpha.9"></a>
 
-## [v0.0.7-alpha.9](https://github.com/openhotel/openhotel/compare/v0.0.7-alpha.8...v0.0.7-alpha.9) (2024-07-01)
+## [v0.0.7-alpha.9](https://github.com/openhotel/openhotel/compare/v0.0.7-alpha.10...v0.0.7-alpha.9) (2024-07-01)
+
+
+<a name="v0.0.7-alpha.10"></a>
+
+## [v0.0.7-alpha.10](https://github.com/openhotel/openhotel/compare/v0.0.7-alpha.8...v0.0.7-alpha.10) (2024-07-01)
 
 
 <a name="v0.0.7-alpha.8"></a>
@@ -2010,17 +2020,17 @@
 
 <a name="v0.0.7.alpha.1"></a>
 
-## [v0.0.7.alpha.1](https://github.com/openhotel/openhotel/compare/v0.0.6...v0.0.7.alpha.1) (2024-07-01)
-
-
-<a name="v0.0.6"></a>
-
-## [v0.0.6](https://github.com/openhotel/openhotel/compare/v0.0.7-alpha.21...v0.0.6) (2024-06-30)
+## [v0.0.7.alpha.1](https://github.com/openhotel/openhotel/compare/v0.0.7-alpha.21...v0.0.7.alpha.1) (2024-07-01)
 
 
 <a name="v0.0.7-alpha.21"></a>
 
-## [v0.0.7-alpha.21](https://github.com/openhotel/openhotel/compare/v0.0.5...v0.0.7-alpha.21) (2024-06-30)
+## [v0.0.7-alpha.21](https://github.com/openhotel/openhotel/compare/v0.0.6...v0.0.7-alpha.21) (2024-06-30)
+
+
+<a name="v0.0.6"></a>
+
+## [v0.0.6](https://github.com/openhotel/openhotel/compare/v0.0.5...v0.0.6) (2024-06-30)
 
 
 <a name="v0.0.5"></a>
