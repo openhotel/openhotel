@@ -59,6 +59,7 @@ export type NavigatorRoom = {
   title: string;
   description: string;
   ownerUsername: string;
+  ownerId: string;
   users: number;
   maxUsers: number;
   favorite: boolean;
