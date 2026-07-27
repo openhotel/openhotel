@@ -5,7 +5,7 @@
     "start:client": "cd app/client && yarn start"
   },
   "devDependencies": {
-    "prettier": "3.9.5"
+    "prettier": "3.9.6"
   },
   "packageManager": "yarn@4.6.0"
 }
