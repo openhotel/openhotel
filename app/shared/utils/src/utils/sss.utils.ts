@@ -1,4 +1,4 @@
-import randomSeed from "@random-seed";
+import { randomSeeded } from "@std/random";
 import { getSHA512HashTextHex } from "./encryption.utils.ts";
 
 const V2_CHARACTER_SET =
@@ -11,7 +11,7 @@ export const getSSSPasswordV2 = async (
   const hexadecimalSeed = await getSHA512HashTextHex(
     password + (await getSHA512HashTextHex(service)) + "2",
   );
-  const random = randomSeed.create(hexadecimalSeed);
+  const random = randomSeeded(hexadecimalSeed);
   let generatedPassword = "";
   for (let i = 0; i < 16; i++)
     generatedPassword += V2_CHARACTER_SET[random(V2_CHARACTER_SET.length)];

@@ -8,6 +8,7 @@
     "@std/yaml": "jsr:@std/yaml@1.0.5",
     "@std/encoding": "jsr:@std/encoding@1.0.5",
     "@std/streams": "jsr:@std/streams@1.0.10",
+    "@std/random": "jsr:@std/random@0.1.5",
 
     "@std/ulid": "jsr:@std/ulid@1",
     "@s3": "jsr:@sugar/minio-js-with-startpath@8.0.13",
@@ -16,8 +17,6 @@
     "@da/bcrypt": "jsr:@da/bcrypt@1.0.1",
 
     "@zip-js": "jsr:@zip-js/zip-js@2.7.53",
-
-    "@random-seed": "npm:random-seed@0.3.0",
 
     "@xtool/dayjs": "jsr:@xtool/dayjs@0.1.4",
 
