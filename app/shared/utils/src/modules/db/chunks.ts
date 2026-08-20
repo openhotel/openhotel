@@ -1,9 +1,10 @@
 import { estimateSize } from "@deno/kv-utils";
 import { encode, decode } from "cborx";
+import { ChunksMutable } from "../../types/chunks.types.ts";
 
 const CHUNK_SIZE = 65536;
 
-export const chunks = () => {
+export const chunks = (): ChunksMutable => {
   const isValueOverLimit = (value: unknown): boolean =>
     estimateSize(value) > CHUNK_SIZE;
 
