@@ -1,7 +1,7 @@
 import React, { FormEvent, useCallback, useState } from "react";
 import { ButtonComponent, InputComponent } from "@openhotel/web-components";
 import { LinkComponent } from "shared/components";
-import { useAccount, useCaptchaV2 } from "shared/hooks";
+import { useAccount, useCaptchaV3 } from "shared/hooks";
 import styles from "../login/login.module.scss";
 
 export const RecoverPasswordComponent: React.FC = () => {
@@ -9,19 +9,18 @@ export const RecoverPasswordComponent: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState<string>();
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
-  const { submit, captchaReady } = useCaptchaV2();
+  const { solve } = useCaptchaV3();
   const { recoverPassword } = useAccount();
 
   const onSubmit = useCallback(
     async (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault();
-      if (!captchaReady) return;
       setIsSubmitting(true);
 
       const data = new FormData(event.target as unknown as HTMLFormElement);
       const email = data.get("email") as string;
 
-      const captchaData = await submit();
+      const captchaData = await solve();
 
       recoverPassword({ email, captchaData })
         .then(({ redirectUrl, message }) => {
@@ -38,7 +37,7 @@ export const RecoverPasswordComponent: React.FC = () => {
         })
         .finally(() => setIsSubmitting(false));
     },
-    [setStatusMessage, setErrorMessage, captchaReady, submit],
+    [setStatusMessage, setErrorMessage, solve],
   );
 
   return (
@@ -47,10 +46,7 @@ export const RecoverPasswordComponent: React.FC = () => {
         <h1 className={styles.title}>Recover password</h1>
         <InputComponent name="email" placeholder="Email" />
 
-        <ButtonComponent
-          fullWidth={true}
-          loading={!captchaReady || isSubmitting}
-        >
+        <ButtonComponent fullWidth={true} loading={isSubmitting}>
           Recover
         </ButtonComponent>
         {statusMessage ? (

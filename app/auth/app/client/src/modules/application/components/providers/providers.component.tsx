@@ -1,5 +1,5 @@
 import { Outlet } from "react-router";
-import { TitleProvider, UserProvider } from "shared/hooks";
+import { CaptchaV3Provider, TitleProvider, UserProvider } from "shared/hooks";
 import React from "react";
 import { ModalProvider } from "@openhotel/web-components";
 
@@ -8,7 +8,9 @@ export const ProvidersComponent = () => {
     <TitleProvider>
       <ModalProvider>
         <UserProvider>
-          <Outlet />
+          <CaptchaV3Provider>
+            <Outlet />
+          </CaptchaV3Provider>
         </UserProvider>
       </ModalProvider>
     </TitleProvider>

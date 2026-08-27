@@ -5,7 +5,7 @@ import {
   PasswordComponent,
   RedirectComponent,
 } from "shared/components";
-import { useAccount, useCaptchaV2 } from "shared/hooks";
+import { useAccount, useCaptchaV3 } from "shared/hooks";
 import { useNavigate } from "react-router-dom";
 import styles from "./change-password.module.scss";
 
@@ -13,7 +13,7 @@ export const ChangePasswordComponent: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState<string>();
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
-  const { submit, captchaReady } = useCaptchaV2();
+  const { solve } = useCaptchaV3();
   const { changePassword } = useAccount();
   const navigate = useNavigate();
 
@@ -23,14 +23,14 @@ export const ChangePasswordComponent: React.FC = () => {
   const onSubmit = useCallback(
     async (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault();
-      if (!captchaReady || isSubmitting) return;
+      if (isSubmitting) return;
       setIsSubmitting(true);
 
       const data = new FormData(event.target as unknown as HTMLFormElement);
       const password = data.get("password") as string;
       const rePassword = data.get("rePassword") as string;
 
-      const captchaData = await submit();
+      const captchaData = await solve();
 
       changePassword({ token, password, rePassword, captchaData })
         .then(() => navigate("/login"))
@@ -41,7 +41,7 @@ export const ChangePasswordComponent: React.FC = () => {
         })
         .finally(() => setIsSubmitting(false));
     },
-    [navigate, setErrorMessage, captchaReady, setIsSubmitting, isSubmitting],
+    [navigate, setErrorMessage, solve, setIsSubmitting, isSubmitting],
   );
 
   if (!token) return <RedirectComponent to="/" />;
@@ -52,10 +52,7 @@ export const ChangePasswordComponent: React.FC = () => {
         <h1 className={styles.title}>Change password</h1>
         <PasswordComponent />
 
-        <ButtonComponent
-          fullWidth={true}
-          loading={!captchaReady || isSubmitting}
-        >
+        <ButtonComponent fullWidth={true} loading={isSubmitting}>
           Change
         </ButtonComponent>
         {errorMessage ? (

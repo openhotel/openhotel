@@ -32,8 +32,8 @@ export type ConfigTypes = {
   captcha: {
     enabled: boolean;
     url: string;
-    id: string;
-    token: string;
+    siteKey: string;
+    secret: string;
   };
   email: {
     enabled: boolean;

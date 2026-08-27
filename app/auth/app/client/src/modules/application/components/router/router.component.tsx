@@ -28,7 +28,7 @@ import {
   AdminUsersComponent,
   AnalyticsComponent,
 } from "modules/admin";
-import { AdminProvider, CaptchaV2Provider } from "shared/hooks";
+import { AdminProvider } from "shared/hooks";
 import { WrapperLayoutComponent } from "modules/application";
 import { AdminBackupsComponent } from "modules/admin/components/backups";
 import { AppsComponent } from "modules/apps";
@@ -40,41 +40,33 @@ const router = createBrowserRouter([
     children: [
       {
         element: (
-          <CaptchaV2Provider>
-            <CardLayoutComponent mih="20rem">
-              <LoginComponent />
-            </CardLayoutComponent>
-          </CaptchaV2Provider>
+          <CardLayoutComponent mih="20rem">
+            <LoginComponent />
+          </CardLayoutComponent>
         ),
         path: "/login",
       },
       {
         element: (
-          <CaptchaV2Provider>
-            <CardLayoutComponent mih="20rem">
-              <RecoverPasswordComponent />
-            </CardLayoutComponent>
-          </CaptchaV2Provider>
+          <CardLayoutComponent mih="20rem">
+            <RecoverPasswordComponent />
+          </CardLayoutComponent>
         ),
         path: "/recover-password",
       },
       {
         element: (
-          <CaptchaV2Provider>
-            <CardLayoutComponent mih="20rem">
-              <ChangePasswordComponent />
-            </CardLayoutComponent>
-          </CaptchaV2Provider>
+          <CardLayoutComponent mih="20rem">
+            <ChangePasswordComponent />
+          </CardLayoutComponent>
         ),
         path: "/change-password",
       },
       {
         element: (
-          <CaptchaV2Provider>
-            <CardLayoutComponent mih="30rem">
-              <RegisterComponent />
-            </CardLayoutComponent>
-          </CaptchaV2Provider>
+          <CardLayoutComponent mih="30rem">
+            <RegisterComponent />
+          </CardLayoutComponent>
         ),
         path: "/register",
       },

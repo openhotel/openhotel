@@ -73,8 +73,6 @@ export const System = (() => {
     await $email.load();
     if (isProduction) await $backups.load();
 
-    await $captcha.load();
-
     $api.load(testMode);
   };
 

@@ -1,49 +1,38 @@
 import { System } from "modules/system/main.ts";
 
 export const captcha = () => {
-  let captchaScript = null;
-
   const load = async () => {
     if (!isEnabled()) return;
-
-    const { id, token } = System.getConfig().captcha;
-
-    try {
-      const response = await fetch(
-        `${System.captcha.getUrl()}/scripts/server.js?d=${Date.now()}`,
-      );
-      const code = await response.text();
-
-      const dataUri = `data:application/javascript;charset=utf-8,${encodeURIComponent(code)}`;
-      const { Captcha } = await import(dataUri);
-      captchaScript = Captcha;
-
-      captchaScript.init({
-        appId: id,
-        appToken: token,
-        url: System.captcha.getUrl(),
-      });
-    } catch (e) {
-      console.error("Captcha did not load because of an error!");
-      console.error(e);
-    }
   };
 
-  const verify = async (captchaData: unknown): Promise<boolean> => {
+  const verify = async (captchaData: { token: string }): Promise<boolean> => {
     if (!isEnabled()) return true;
-    if (!captchaData) return false;
+    if (!captchaData || !captchaData.token) return false;
 
-    return await captchaScript.check(captchaData);
+    const {
+      captcha: { secret, siteKey, url },
+    } = System.getConfig();
+
+    const $url = new URL(url);
+    $url.pathname = `/${siteKey}/siteverify`;
+
+    const { success } = await fetch($url, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({ secret, response: captchaData.token }),
+    }).then((response) => response.json());
+
+    return success;
   };
 
   const isEnabled = () => {
-    const { enabled, id, token, url } = System.getConfig().captcha;
-    return Boolean(enabled && id && token && url);
+    const { enabled, siteKey, secret, url } = System.getConfig().captcha;
+    return Boolean(enabled && siteKey && secret && url);
   };
 
-  const getUrl = () =>
-    System.getConfig().captcha.url +
-    (System.getConfig().version === "development" ? "/api" : "");
+  const getUrl = () => System.getConfig().captcha.url;
 
   return {
     load,

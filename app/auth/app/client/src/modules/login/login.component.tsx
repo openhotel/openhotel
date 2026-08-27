@@ -1,6 +1,6 @@
 import React, { FormEvent, useCallback, useEffect, useState } from "react";
 import { LinkComponent } from "shared/components";
-import { useAccount, useCaptchaV2, useHotel } from "shared/hooks";
+import { useAccount, useCaptchaV3, useHotel } from "shared/hooks";
 import { useNavigate } from "react-router-dom";
 import {
   ButtonComponent,
@@ -15,7 +15,7 @@ export const LoginComponent: React.FC = () => {
   const [showOTP, setShowOTP] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
-  const { submit, captchaReady } = useCaptchaV2();
+  const { solve } = useCaptchaV3();
   const { login, isLogged } = useAccount();
   const { get } = useHotel();
   const navigate = useNavigate();
@@ -23,7 +23,7 @@ export const LoginComponent: React.FC = () => {
   const onSubmit = useCallback(
     async (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault();
-      if (!captchaReady || isSubmitting) return;
+      if (isSubmitting) return;
       setIsSubmitting(true);
 
       const data = new FormData(event.target as unknown as HTMLFormElement);
@@ -31,7 +31,7 @@ export const LoginComponent: React.FC = () => {
       const password = data.get("password") as string;
       const otpToken = data.get("otpToken") as string;
 
-      const captchaData = await submit();
+      const captchaData = await solve();
 
       login({ email, password, otpToken, captchaData })
         .catch(({ status, message }) => {
@@ -44,7 +44,7 @@ export const LoginComponent: React.FC = () => {
           setIsSubmitting(false);
         });
     },
-    [navigate, setErrorMessage, captchaReady, isSubmitting, isSubmitting],
+    [navigate, setErrorMessage, solve, isSubmitting, isSubmitting],
   );
 
   useEffect(() => {
@@ -91,10 +91,7 @@ export const LoginComponent: React.FC = () => {
             name="otpToken"
           />
         )}
-        <ButtonComponent
-          loading={!captchaReady || isSubmitting}
-          fullWidth={true}
-        >
+        <ButtonComponent loading={isSubmitting} fullWidth={true}>
           Login
         </ButtonComponent>
         {errorMessage ? (

@@ -33,9 +33,9 @@ export const CONFIG_DEFAULT: ConfigTypes = {
   },
   captcha: {
     enabled: false,
-    id: "",
-    token: "",
     url: "",
+    siteKey: "",
+    secret: "",
   },
   email: {
     enabled: false,

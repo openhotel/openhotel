@@ -12,4 +12,4 @@ export * from "./useHotels";
 export * from "./useLanguages";
 export * from "./useTitle";
 export * from "./useFingerprint";
-export * from "./useCaptchaV2";
+export * from "./captcha-v3";

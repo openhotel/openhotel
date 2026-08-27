@@ -10,7 +10,7 @@ import {
   PasswordComponent,
   RedirectComponent,
 } from "shared/components";
-import { useAccount, useCaptchaV2, useLanguages } from "shared/hooks";
+import { useAccount, useCaptchaV3, useLanguages } from "shared/hooks";
 import { useNavigate } from "react-router-dom";
 import { ButtonComponent, SelectorComponent } from "@openhotel/web-components";
 import { EmailComponent, UsernameComponent } from "./components";
@@ -21,7 +21,7 @@ export const RegisterComponent: React.FC = () => {
   const [success, setSuccess] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
-  const { submit, captchaReady } = useCaptchaV2();
+  const { solve } = useCaptchaV3();
   const { register, isLogged } = useAccount();
   let navigate = useNavigate();
 
@@ -43,7 +43,7 @@ export const RegisterComponent: React.FC = () => {
   const onSubmit = useCallback(
     async (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault();
-      if (!captchaReady || isSubmitting) return;
+      if (isSubmitting) return;
       setIsSubmitting(true);
 
       const data = new FormData(event.target as unknown as HTMLFormElement);
@@ -53,7 +53,7 @@ export const RegisterComponent: React.FC = () => {
       const rePassword = data.get("rePassword") as string;
       const language = data.get("language") as string;
 
-      const captchaData = await submit();
+      const captchaData = await solve();
 
       register({
         email,
@@ -73,7 +73,7 @@ export const RegisterComponent: React.FC = () => {
         })
         .finally(() => setIsSubmitting(false));
     },
-    [navigate, submit, captchaReady, setIsSubmitting, isSubmitting],
+    [navigate, solve, setIsSubmitting, isSubmitting],
   );
 
   const handleSuccessRedirect = () => {
@@ -107,7 +107,7 @@ export const RegisterComponent: React.FC = () => {
           options={languageOptions}
           clearable={false}
         />
-        <ButtonComponent loading={!captchaReady || isSubmitting} fullWidth>
+        <ButtonComponent loading={isSubmitting} fullWidth>
           Register
         </ButtonComponent>
         {errorMessage && (

@@ -212,6 +212,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@cap.js/widget@npm:0.1.57":
+  version: 0.1.57
+  resolution: "@cap.js/widget@npm:0.1.57"
+  checksum: 10c0/60167c6334ece0e0d7806fefc0d6cc0f2650cfcd49eab3cc080c1ffdd6decbb33cad825995ab48c0b85c0b60d5cc9bef8d5dde1b38c2a287ca8ec27b17185477
+  languageName: node
+  linkType: hard
+
 "@esbuild/aix-ppc64@npm:0.25.10":
   version: 0.25.10
   resolution: "@esbuild/aix-ppc64@npm:0.25.10"
@@ -2261,6 +2268,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "root-workspace-0b6124@workspace:."
   dependencies:
+    "@cap.js/widget": "npm:0.1.57"
     "@openhotel/web-components": "npm:0.3.9"
     "@rollup/plugin-alias": "npm:5.1.0"
     "@thumbmarkjs/thumbmarkjs": "npm:^0.19.1"
