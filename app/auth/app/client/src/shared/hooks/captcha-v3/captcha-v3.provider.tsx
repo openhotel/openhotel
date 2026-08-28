@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useRef } from "react";
+import "./captcha.config";
 import { RequestMethod } from "shared/enums";
 import { useApi } from "../useApi";
 import Cap, { SolveResult } from "@cap.js/widget";
