@@ -52,7 +52,7 @@ import { quantizeToPalette } from "shared/utils/image.utils.ts";
         "--disable-setuid-sandbox",
         "--disable-dev-shm-usage",
         "--disable-gpu",
-        "--single-process",
+        ...(Deno.build.os !== "windows" ? ["--single-process"] : []),
         "--no-zygote",
         "--enable-unsafe-swiftshader",
       ],
