@@ -36,10 +36,10 @@ export const ButtonComponent: React.FC<Props> = ({
   autoWidth,
   ...containerProps
 }) => {
-  const [tint, setTint] = useState<number>(0xffffff);
+  const [texture, setTexture] = useState("ui-button");
 
-  const onPointerEnter = useCallback(() => setTint(0xe0e0e0), [setTint]);
-  const onPointerLeave = useCallback(() => setTint(0xffffff), [setTint]);
+  const onPointerEnter = useCallback(() => setTexture("ui-button-gray"), []);
+  const onPointerLeave = useCallback(() => setTexture("ui-button"), []);
 
   const { getTextLength } = useText(SpriteSheetEnum.DEFAULT_FONT);
 
@@ -59,14 +59,13 @@ export const ButtonComponent: React.FC<Props> = ({
     >
       <NineSliceSpriteComponent
         spriteSheet={SpriteSheetEnum.UI}
-        texture="ui-button"
+        texture={texture}
         leftWidth={3}
         rightWidth={3}
         topHeight={3}
         bottomHeight={3}
         width={width}
         height={size.height}
-        tint={tint}
       />
       <FlexContainerComponent
         size={{ width: width, height: size.height }}
