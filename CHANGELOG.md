@@ -1,4 +1,17 @@
 
+<a name="v0.8.6"></a>
+
+## [v0.8.6](https://github.com/openhotel/openhotel/compare/v0.8.5...v0.8.6) (2026-09-22)
+
+### Bug Fixes
+
+- disable chromium single-process flag on Windows - fix [#1170](https://github.com/openhotel/openhotel/issues/1170) ([#1173](https://github.com/openhotel/openhotel/issues/1173))
+
+### Features
+
+- update puppeter dependency - fix [#1171](https://github.com/openhotel/openhotel/issues/1171) ([#1172](https://github.com/openhotel/openhotel/issues/1172))
+
+
 <a name="v0.8.5"></a>
 
 ## [v0.8.5](https://github.com/openhotel/openhotel/compare/v0.8.4...v0.8.5) (2026-07-12)
