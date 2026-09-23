@@ -53,6 +53,11 @@
   avatar_url: https://avatars.githubusercontent.com/u/36109048?v=4
   type: User
   contributions: 2
+- login: caflip
+  html_url: https://github.com/caflip
+  avatar_url: https://avatars.githubusercontent.com/u/122185157?v=4
+  type: User
+  contributions: 2
 - login: mmoya26
   html_url: https://github.com/mmoya26
   avatar_url: https://avatars.githubusercontent.com/u/46541558?v=4
@@ -76,10 +81,5 @@
 - login: Exesito
   html_url: https://github.com/Exesito
   avatar_url: https://avatars.githubusercontent.com/u/91646386?v=4
-  type: User
-  contributions: 1
-- login: caflip
-  html_url: https://github.com/caflip
-  avatar_url: https://avatars.githubusercontent.com/u/122185157?v=4
   type: User
   contributions: 1
