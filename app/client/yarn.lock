@@ -12,6 +12,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@da/socket@npm:@jsr/da__socket@2.3.0":
+  version: 2.3.0
+  resolution: "@jsr/da__socket@npm:2.3.0::__archiveUrl=https%3A%2F%2Fnpm.jsr.io%2F~%2F11%2F%40jsr%2Fda__socket%2F2.3.0.tgz"
+  checksum: 10c0/d76bf2b2c815cc6a4a1807f7b7c73f5708b7a211412bc3421c8fb05b1493540433d05be0a4e256bf7a66e1375c594bebc1fa5ce236d7af700e06b44bcf9ab6cc
+  languageName: node
+  linkType: hard
+
 "@emnapi/core@npm:1.11.1":
   version: 1.11.1
   resolution: "@emnapi/core@npm:1.11.1"
@@ -1286,6 +1293,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "root-workspace-0b6124@workspace:."
   dependencies:
+    "@da/socket": "npm:@jsr/da__socket@2.3.0"
     "@oh/queue": "npm:@jsr/oh__queue@1.1.1"
     "@openhotel/pixi-components": "npm:0.1.9"
     "@types/howler": "npm:2.2.12"
