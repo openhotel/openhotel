@@ -2,6 +2,7 @@
   "version": "5",
   "specifiers": {
     "jsr:@da/bcrypt@1.0.1": "1.0.1",
+    "jsr:@da/socket@2.3.0": "2.3.0",
     "jsr:@oh/utils@1.3.25": "1.3.25",
     "jsr:@oh/yaml@1.1.0": "1.1.0",
     "jsr:@std/cli@*": "1.0.10",
@@ -18,6 +19,9 @@
   "jsr": {
     "@da/bcrypt@1.0.1": {
       "integrity": "d2172d3acbcff52e0465557a1a48b1ff1c92df08c90712dae5372255a8c45eb3"
+    },
+    "@da/socket@2.3.0": {
+      "integrity": "837038107dd08654b8cff848f55e82c2919acd22d83b3508ad19d725e43b124c"
     },
     "@oh/utils@1.3.25": {
       "integrity": "f07cf9eb17ca99300d94225f5a02b5348f675c9fdd9a16fcd99a0dce71149826",

@@ -20,6 +20,7 @@
     "vite": "8.1.4"
   },
   "dependencies": {
+    "@da/socket": "npm:@jsr/da__socket@2.3.0",
     "@oh/queue": "npm:@jsr/oh__queue@1.1.1",
     "@openhotel/pixi-components": "0.1.9",
     "dayjs": "1.11.21",
