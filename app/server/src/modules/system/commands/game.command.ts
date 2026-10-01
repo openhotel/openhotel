@@ -28,7 +28,7 @@ const join = async ([_, ...nameArray]: string[], user: UserMutable) => {
 
   if (!foundGameSettings) {
     user.emit(ProxyEvent.SYSTEM_MESSAGE, {
-      message: `Game ${gameName} now found!`,
+      message: `Game ${gameName} not found!`,
     });
     return;
   }
