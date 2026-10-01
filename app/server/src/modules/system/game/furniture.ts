@@ -34,12 +34,12 @@ export const furniture = () => {
     const langFile = files.find(($file) => $file.filename === "lang.yml");
 
     const missingFiles = [
-      dataFile ? "data.yml" : null,
-      sheetFile ? "sheet.json" : null,
-      spriteFile ? "sprite.png" : null,
+      !dataFile && "data.yml",
+      !sheetFile && "sheet.json",
+      !spriteFile && "sprite.png",
     ].filter(Boolean);
 
-    if (!missingFiles.length) {
+    if (missingFiles.length) {
       log(
         `Furniture ${dirEntry.name} is missing (${missingFiles.join(",")}) files!`,
       );
