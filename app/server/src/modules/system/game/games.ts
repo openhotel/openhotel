@@ -363,6 +363,8 @@ export const games = () => {
       };
     }
 
+    await Deno.mkdir(OPERATIVE_PATH, { recursive: true });
+
     Deno.writeTextFileSync(
       path.join(OPERATIVE_PATH, "games.yml"),
       stringify(gameDataMap),
