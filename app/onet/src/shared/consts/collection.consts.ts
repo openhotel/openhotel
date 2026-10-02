@@ -29,3 +29,5 @@ export const COLLECTION_FURNITURE_DIRECTIONS = [
   "south",
   "west",
 ];
+
+export const COLLECTION_FILE_URL_EXPIRY_SECONDS = 120;
