@@ -20,6 +20,12 @@ export const HomeComponent: React.FC = () => {
             - Create furniture
           </LinkComponent>
         </div>
+        <h4>Collections:</h4>
+        <div className={styles.content}>
+          <LinkComponent to="/collection/create">
+            - Create collection
+          </LinkComponent>
+        </div>
       </div>
       <h4>Human:</h4>
       <div className={styles.content}>
