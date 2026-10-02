@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useMemo } from "react";
 import { SpriteSheet } from "shared/types";
 import {
   ButtonComponent,
@@ -15,7 +15,11 @@ import { TabContentComponent } from "shared/components";
 
 //@ts-ignore
 import styles from "./create.module.scss";
-import { getBase64FromBody, getImageSize } from "shared/utils";
+import {
+  getBase64FromBody,
+  getFurnitureLangErrors,
+  getImageSize,
+} from "shared/utils";
 import { RequestMethod } from "shared/enums";
 import { ulid } from "ulidx";
 
@@ -24,6 +28,11 @@ export const CreateFurnitureComponent: React.FC = () => {
   const { open, close } = useModal();
   const { fetch: fetchApi } = useApi();
   const { getHeaders } = useAppSession();
+
+  const langErrors = useMemo(
+    () => (data ? getFurnitureLangErrors(data.lang) : []),
+    [data],
+  );
 
   const onClickCreate = useCallback(async () => {
     const base64 = await getBase64FromBody(await fetch("/furniture.png"));
@@ -53,6 +62,8 @@ export const CreateFurnitureComponent: React.FC = () => {
   }, []);
 
   const onDownloadFurniture = useCallback(async () => {
+    if (langErrors.length) return;
+
     const downloadData: Data = {
       ...data,
       sheet: {
@@ -75,6 +86,8 @@ export const CreateFurnitureComponent: React.FC = () => {
       headers: getHeaders(),
       rawResponse: true,
     });
+
+    if (!response.ok) return; // TODO: show alert or something
 
     const reader = response.body.getReader();
 
@@ -101,7 +114,7 @@ export const CreateFurnitureComponent: React.FC = () => {
     link.href = URL.createObjectURL(blob);
     link.download = `${data.furniture.id}.furniture`;
     link.click();
-  }, [data]);
+  }, [data, langErrors]);
 
   const onUploadFurniture = useCallback(
     async (files: File[]) => {
@@ -168,6 +181,8 @@ export const CreateFurnitureComponent: React.FC = () => {
               <ButtonComponent
                 className={styles.button}
                 onClick={onDownloadFurniture}
+                disabled={langErrors.length > 0}
+                title={langErrors.join("\n")}
               >
                 <BYIconComponent className={styles.icon} /> Download furniture
               </ButtonComponent>

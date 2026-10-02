@@ -9,3 +9,4 @@ export * from "./download.utils";
 export * from "./object.utils";
 export * from "./random.utils";
 export * from "./scale.utils";
+export * from "./lang.utils";

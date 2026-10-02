@@ -4,6 +4,7 @@ import { decodeTime } from "@std/ulid";
 
 import { RequestType, RequestMethod, RequestKind } from "@oh/utils";
 import { base64ToBlob } from "shared/utils/base64.utils.ts";
+import { getFurnitureLangErrors } from "shared/utils/lang.utils.ts";
 
 export const createRequest: RequestType = {
   method: RequestMethod.POST,
@@ -22,6 +23,14 @@ export const createRequest: RequestType = {
       );
     }
 
+    const langErrors = getFurnitureLangErrors(lang);
+    if (langErrors.length) {
+      return Response.json(
+        { status: 400, message: langErrors.join("\n") },
+        { status: 400 },
+      );
+    }
+
     const $sprite = base64ToBlob(sprite);
     const $sheet = new Blob([JSON.stringify(sheet)], {
       type: "application/json",
@@ -29,7 +38,7 @@ export const createRequest: RequestType = {
     const $furniture = new Blob([stringify(furniture)], {
       type: "application/json",
     });
-    const $lang = new Blob([stringify(lang ?? {})], {
+    const $lang = new Blob([stringify(lang)], {
       type: "application/json",
     });
 

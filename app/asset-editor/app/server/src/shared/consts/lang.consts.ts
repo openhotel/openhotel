@@ -1,0 +1,3 @@
+export const FURNITURE_LANG_CODE_REGEX = /^[a-z]{2}$/;
+export const FURNITURE_LANG_NAME_MAX_LENGTH = 64;
+export const FURNITURE_LANG_DESCRIPTION_MAX_LENGTH = 256;

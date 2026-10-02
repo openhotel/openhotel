@@ -5,7 +5,11 @@ import {
   SelectorComponent,
 } from "@openhotel/web-components";
 import { useFurniture } from "shared/hooks";
-import { cn } from "shared/utils";
+import { cn, getFurnitureLangErrors } from "shared/utils";
+import {
+  FURNITURE_LANG_DESCRIPTION_MAX_LENGTH,
+  FURNITURE_LANG_NAME_MAX_LENGTH,
+} from "shared/consts";
 import { FurnitureLangItem } from "shared/types";
 import styles from "./furniture-lang-form.module.scss";
 
@@ -43,12 +47,14 @@ const FurnitureLangItemComponent: React.FC<LangItemProps> = ({
         <InputComponent
           placeholder="name"
           value={item.name}
+          maxLength={FURNITURE_LANG_NAME_MAX_LENGTH}
           onChange={onChange(langKey, "name")}
         />
       </div>
       <InputComponent
         placeholder="description"
         value={item.description}
+        maxLength={FURNITURE_LANG_DESCRIPTION_MAX_LENGTH}
         onChange={onChange(langKey, "description")}
       />
       <ButtonComponent color="grey" onClick={onRemove(langKey)}>
@@ -65,6 +71,7 @@ export const FurnitureLangFormComponent: React.FC = () => {
   const [selectedLang, setSelectedLang] = useState<string | null>(null);
 
   const usedKeys = useMemo(() => Object.keys(lang ?? {}), [lang]);
+  const errors = useMemo(() => getFurnitureLangErrors(lang), [lang]);
 
   const availableOptions = useMemo(
     () =>
@@ -112,6 +119,13 @@ export const FurnitureLangFormComponent: React.FC = () => {
   return (
     <>
       <label>lang</label>
+      {errors.length ? (
+        <div className={styles.errors}>
+          {errors.map((error) => (
+            <span key={error}>{error}</span>
+          ))}
+        </div>
+      ) : null}
       <div className={styles.list}>
         {usedKeys.map((langKey) => (
           <FurnitureLangItemComponent

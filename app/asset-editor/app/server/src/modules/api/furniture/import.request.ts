@@ -45,7 +45,7 @@ export const importRequest: RequestType = {
           furniture: furnitureData,
           sheet: sheetFileData,
           sprite: spriteBase64,
-          lang: langData,
+          lang: langData ?? {},
         },
       },
       { status: 200 },
