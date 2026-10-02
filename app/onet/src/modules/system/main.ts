@@ -7,6 +7,7 @@ import { serverSocket } from "./server-socket.ts";
 import { auth } from "./auth.ts";
 import { hotels } from "./hotels/main.ts";
 import { teleports } from "./teleports/main.ts";
+import { collections } from "./collections/main.ts";
 
 export const System = (() => {
   let $config: ConfigTypes;
@@ -15,9 +16,11 @@ export const System = (() => {
   const $db: DbMutable = getDb({ pathname: `./database` });
   const $api = api();
   const $serverSocket = serverSocket();
+
   const $auth = auth();
   const $hotels = hotels();
   const $teleports = teleports();
+  const $collections = collections();
 
   const load = async (envs: Envs) => {
     $envs = envs;
@@ -47,6 +50,7 @@ export const System = (() => {
     await $auth.load();
     await $db.load();
     await Migrations.load($db);
+    $collections.load();
     $api.load();
     $serverSocket.load($config.port, $api.onRequest);
   };
@@ -68,5 +72,6 @@ export const System = (() => {
     serverSocket: $serverSocket,
     hotels: $hotels,
     teleports: $teleports,
+    collections: $collections,
   };
 })();

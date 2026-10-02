@@ -7,4 +7,14 @@ export const CONFIG_DEFAULTS: ConfigTypes = {
     api: "http://localhost:2024/api/v3",
     token: "PRIVATE_TOKEN",
   },
+  collections: {
+    s3: {
+      enabled: false,
+      accessKey: "",
+      secretKey: "",
+      endpoint: "",
+      region: "",
+      bucket: "",
+    },
+  },
 };
