@@ -1,5 +1,6 @@
 import { BlobReader, BlobWriter, ZipWriter } from "@zip-js/data-uri";
 import { stringify } from "@std/yaml";
+import { decodeTime } from "@std/ulid";
 
 import { RequestType, RequestMethod, RequestKind } from "@oh/utils";
 import { base64ToBlob } from "shared/utils/base64.utils.ts";
@@ -10,6 +11,16 @@ export const createRequest: RequestType = {
   kind: RequestKind.ACCOUNT,
   func: async (request, url) => {
     const { sprite, sheet, furniture, lang } = await request.json();
+
+    let lastModDate: Date;
+    try {
+      lastModDate = new Date(decodeTime(furniture?.revision));
+    } catch (e) {
+      return Response.json(
+        { status: 400, message: "Invalid furniture revision" },
+        { status: 400 },
+      );
+    }
 
     const $sprite = base64ToBlob(sprite);
     const $sheet = new Blob([JSON.stringify(sheet)], {
@@ -25,10 +36,11 @@ export const createRequest: RequestType = {
     const zipWriter = new ZipWriter(new BlobWriter("application/zip"));
 
     // Add the files to the zip archive with the desired file names.
-    await zipWriter.add("sprite.png", new BlobReader($sprite));
-    await zipWriter.add("sheet.json", new BlobReader($sheet));
-    await zipWriter.add("data.yml", new BlobReader($furniture));
-    await zipWriter.add("lang.yml", new BlobReader($lang));
+    const options = { lastModDate };
+    await zipWriter.add("sprite.png", new BlobReader($sprite), options);
+    await zipWriter.add("sheet.json", new BlobReader($sheet), options);
+    await zipWriter.add("data.yml", new BlobReader($furniture), options);
+    await zipWriter.add("lang.yml", new BlobReader($lang), options);
 
     const zipBlob = await zipWriter.close();
 
