@@ -64,6 +64,9 @@ export const getS3 = ({
     });
   };
 
+  const getPresignedUrl = (name: string, ttl: number): Promise<string> =>
+    client.presignedGetObject(bucket, name, ttl);
+
   const removeObjects = async (objects: S3ObjectInfo[]) => {
     await client.removeObjects(bucket, objects);
   };
@@ -98,6 +101,7 @@ export const getS3 = ({
     removeFiles,
 
     getObject,
+    getPresignedUrl,
     addObject,
     removeObjects,
   };
