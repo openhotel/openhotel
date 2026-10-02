@@ -50,7 +50,7 @@ export const System = (() => {
     await $auth.load();
     await $db.load();
     await Migrations.load($db);
-    $collections.load();
+    await $collections.load();
     $api.load();
     $serverSocket.load($config.port, $api.onRequest);
   };

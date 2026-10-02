@@ -26,3 +26,32 @@ export type Collection = {
   createdAt: number;
   updatedAt: number;
 };
+
+export type CollectionFurnitureImmutableData = {
+  type: string;
+  size: { width: number; height: number; depth: number };
+  directions: string[];
+};
+
+export type CollectionFurniture = {
+  id: string;
+  revision: string;
+  sha256: string;
+  immutableData: CollectionFurnitureImmutableData;
+};
+
+export type CollectionPublishProps = {
+  id: string;
+  accountId: string;
+  license?: string;
+  minHotelVersion: string;
+  category: {
+    label: string;
+    description?: string;
+  };
+  files: Record<string, Uint8Array>;
+};
+
+export type CollectionPublishResult =
+  | { manifest: CollectionManifest; errors?: undefined }
+  | { manifest?: undefined; errors: string[] };

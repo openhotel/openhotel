@@ -1,16 +1,33 @@
 import { System } from "modules/system/main.ts";
 import { getS3, S3Mutable } from "@oh/utils";
-import { Collection, CollectionManifest } from "shared/types/main.ts";
 import {
+  Collection,
+  CollectionFurniture,
+  CollectionManifest,
+  CollectionPublishProps,
+  CollectionPublishResult,
+} from "shared/types/main.ts";
+import {
+  COLLECTION_DESCRIPTION_MAX_LENGTH,
+  COLLECTION_FORMAT_VERSION,
   COLLECTION_ID_MAX_LENGTH,
   COLLECTION_ID_REGEX,
+  COLLECTION_LABEL_MAX_LENGTH,
+  COLLECTION_MAX_FURNITURE,
   COLLECTION_RESERVED_NAMESPACES,
 } from "shared/consts/main.ts";
+import {
+  getCollectionFurniture,
+  getVersionErrors,
+  isValidHotelVersion,
+} from "shared/utils/main.ts";
+import { signature } from "./signature.ts";
 
 export const collections = () => {
   let $bucket: S3Mutable | null = null;
+  const $signature = signature();
 
-  const load = () => {
+  const load = async () => {
     const { collections } = System.getConfig();
 
     const { enabled, ...s3 } = collections.s3;
@@ -19,6 +36,8 @@ export const collections = () => {
     } else {
       console.warn("Collections bucket is disabled!");
     }
+
+    await $signature.load();
   };
 
   const isBucketEnabled = () => Boolean($bucket);
@@ -90,15 +109,33 @@ export const collections = () => {
     return !collection || collection.accountId === accountId;
   };
 
-  const addVersion = async (manifest: CollectionManifest): Promise<boolean> => {
+  const getFurnitureList = async (
+    id: string,
+  ): Promise<CollectionFurniture[]> => {
+    const { items } = await System.db.list<CollectionFurniture>({
+      prefix: ["collectionFurniture", id],
+    });
+
+    return items.map(({ value }) => value);
+  };
+
+  const addVersion = async (
+    manifest: CollectionManifest,
+    furnitureList: CollectionFurniture[] = [],
+  ): Promise<boolean> => {
     const { id, version } = manifest;
 
     const entry = await System.db.getRaw<Collection>(["collections", id]);
     const collection = entry?.value;
     if (!collection || version !== collection.latestVersion + 1) return false;
 
-    const { ok } = await System.db
-      .atomic()!
+    const atomic = System.db.atomic();
+
+    for (const furniture of furnitureList) {
+      atomic.set(["collectionFurniture", id, furniture.id], furniture);
+    }
+
+    const { ok } = await atomic
       .check(entry)
       .set(["collectionManifests", id, version], manifest)
       .set(["collections", id], {
@@ -138,6 +175,146 @@ export const collections = () => {
     );
   };
 
+  const $getPublishErrors = async ({
+    id,
+    accountId,
+    license,
+    minHotelVersion,
+    category,
+    files,
+  }: CollectionPublishProps): Promise<string[]> => {
+    const errors: string[] = [];
+
+    if (!isValidId(id)) {
+      errors.push(`id '${id}' is not valid`);
+    } else if (!(await canPublish(id, accountId))) {
+      errors.push(`namespace '${id}' belongs to another account`);
+    }
+
+    if (!isValidHotelVersion(minHotelVersion)) {
+      errors.push("minHotelVersion is not a valid version");
+    }
+
+    if (
+      typeof category?.label !== "string" ||
+      !category.label ||
+      category.label.length > COLLECTION_LABEL_MAX_LENGTH
+    ) {
+      errors.push("category.label is not valid");
+    }
+
+    if (
+      category?.description !== undefined &&
+      (typeof category.description !== "string" ||
+        category.description.length > COLLECTION_DESCRIPTION_MAX_LENGTH)
+    ) {
+      errors.push("category.description is not valid");
+    }
+
+    if (
+      license !== undefined &&
+      (typeof license !== "string" || !license || license.length > 64)
+    ) {
+      errors.push("license is not valid");
+    }
+
+    const count = Object.keys(files ?? {}).length;
+    if (!count || count > COLLECTION_MAX_FURNITURE) {
+      errors.push(
+        `a collection must have between 1 and ${COLLECTION_MAX_FURNITURE} furniture`,
+      );
+    }
+
+    return errors;
+  };
+
+  const publish = async (
+    props: CollectionPublishProps,
+  ): Promise<CollectionPublishResult> => {
+    if (!$bucket) {
+      return { errors: ["collections bucket is disabled"] };
+    }
+
+    const errors = await $getPublishErrors(props);
+    if (errors.length) {
+      return { errors };
+    }
+
+    const { id, accountId, license, minHotelVersion, category, files } = props;
+
+    const furnitureList: CollectionFurniture[] = [];
+    for (const [furnitureId, file] of Object.entries(files)) {
+      const { furniture, errors: furnitureErrors } =
+        await getCollectionFurniture(id, furnitureId, file);
+
+      if (furniture) {
+        furnitureList.push(furniture);
+      }
+      errors.push(...furnitureErrors);
+    }
+
+    if (errors.length) {
+      return { errors };
+    }
+
+    const versionErrors = getVersionErrors(
+      await getFurnitureList(id),
+      furnitureList,
+    );
+    errors.push(...versionErrors);
+
+    if (errors.length) {
+      return { errors };
+    }
+
+    const isRegistered =
+      Boolean(await get(id)) || (await register(id, accountId));
+
+    if (!isRegistered) {
+      return {
+        errors: [`namespace '${id}' was registered by another account`],
+      };
+    }
+
+    const collection = await get(id);
+    furnitureList.sort((a, b) => a.id.localeCompare(b.id));
+
+    const manifest: CollectionManifest = {
+      id,
+      version: collection.latestVersion + 1,
+      author: accountId,
+      license,
+      minHotelVersion,
+      formatVersion: COLLECTION_FORMAT_VERSION,
+      category: {
+        label: category.label,
+        description: category.description,
+      },
+      furniture: furnitureList.map(({ id, revision, sha256 }) => ({
+        id,
+        revision,
+        sha256,
+      })),
+    };
+    manifest.signature = await $signature.sign(manifest);
+
+    for (const furniture of furnitureList) {
+      await addFile(id, manifest.version, furniture.id, files[furniture.id]);
+    }
+
+    const ok = await addVersion(manifest, furnitureList);
+
+    if (!ok) {
+      return {
+        errors: [
+          `failed to add version ${manifest.version} for collection '${id}'`,
+        ],
+      };
+    }
+
+    return { manifest };
+  };
+
   return {
     load,
 
@@ -152,6 +329,11 @@ export const collections = () => {
     getManifest,
     getLatestManifest,
     addVersion,
+    getFurnitureList,
+
+    publish,
+    verify: $signature.verify,
+    getPublicKey: $signature.getPublicKey,
 
     addFile,
     getFileUrl,

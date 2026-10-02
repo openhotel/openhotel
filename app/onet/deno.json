@@ -21,6 +21,11 @@
     "@da/bcrypt": "jsr:@da/bcrypt@1.0.1",
     "@da/socket": "jsr:@da/socket@2.3.0",
 
+    "@std/encoding": "jsr:@std/encoding@1.0.11",
+    "@std/yaml": "jsr:@std/yaml@1.0.5",
+    "@std/ulid": "jsr:@std/ulid@1",
+    "@zip-js": "jsr:@zip-js/zip-js@2.7.53",
+
     "modules/": "./src/modules/",
     "shared/": "./src/shared/",
 
