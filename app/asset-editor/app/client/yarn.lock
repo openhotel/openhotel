@@ -620,6 +620,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@oh/core@npm:@jsr/oh__core@0.1.0":
+  version: 0.1.0
+  resolution: "@jsr/oh__core@npm:0.1.0::__archiveUrl=https%3A%2F%2Fnpm.jsr.io%2F~%2F11%2F%40jsr%2Foh__core%2F0.1.0.tgz"
+  checksum: 10c0/8f437d84e6c38a70071dda95604593fbdbdfdfb84c9ff44fb8b08e2337e00228df9d8b819669fae198c87b51f4f423e855841fa1b9fe5172cd061dbca87ca531
+  languageName: node
+  linkType: hard
+
 "@openhotel/web-components@npm:0.3.3":
   version: 0.3.3
   resolution: "@openhotel/web-components@npm:0.3.3"
@@ -2153,6 +2160,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "root-workspace-0b6124@workspace:."
   dependencies:
+    "@oh/core": "npm:@jsr/oh__core@0.1.0"
     "@openhotel/web-components": "npm:0.3.3"
     "@rollup/plugin-alias": "npm:5.1.0"
     "@tu/tulip": "npm:@jsr/tu__tulip@0.14.13"

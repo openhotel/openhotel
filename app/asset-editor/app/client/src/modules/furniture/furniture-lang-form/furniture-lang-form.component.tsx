@@ -5,12 +5,13 @@ import {
   SelectorComponent,
 } from "@openhotel/web-components";
 import { useFurniture } from "shared/hooks";
-import { cn, getFurnitureLangErrors } from "shared/utils";
 import {
-  FURNITURE_LANG_DESCRIPTION_MAX_LENGTH,
-  FURNITURE_LANG_NAME_MAX_LENGTH,
-} from "shared/consts";
-import { FurnitureLangItem } from "shared/types";
+  COLLECTION_LANG_DESCRIPTION_MAX_LENGTH,
+  COLLECTION_LANG_NAME_MAX_LENGTH,
+  type FurnitureLangItem,
+  getFurnitureLangErrors,
+} from "@oh/core";
+import { cn } from "shared/utils";
 import styles from "./furniture-lang-form.module.scss";
 
 const AVAILABLE_LANGUAGES = [
@@ -47,14 +48,14 @@ const FurnitureLangItemComponent: React.FC<LangItemProps> = ({
         <InputComponent
           placeholder="name"
           value={item.name}
-          maxLength={FURNITURE_LANG_NAME_MAX_LENGTH}
+          maxLength={COLLECTION_LANG_NAME_MAX_LENGTH}
           onChange={onChange(langKey, "name")}
         />
       </div>
       <InputComponent
         placeholder="description"
         value={item.description}
-        maxLength={FURNITURE_LANG_DESCRIPTION_MAX_LENGTH}
+        maxLength={COLLECTION_LANG_DESCRIPTION_MAX_LENGTH}
         onChange={onChange(langKey, "description")}
       />
       <ButtonComponent color="grey" onClick={onRemove(langKey)}>

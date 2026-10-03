@@ -1,14 +1,4 @@
-import { FurnitureLang } from "./furniture.types";
-
-export type CollectionMetadata = {
-  id: string;
-  category: {
-    label: string;
-    description?: string;
-  };
-  license?: string;
-  minHotelVersion: string;
-};
+import type { CollectionMetadata, FurnitureLang } from "@oh/core";
 
 export type CollectionFurniture = {
   id: string;

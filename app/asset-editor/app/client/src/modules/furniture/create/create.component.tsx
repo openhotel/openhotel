@@ -15,11 +15,8 @@ import { TabContentComponent } from "shared/components";
 
 //@ts-ignore
 import styles from "./create.module.scss";
-import {
-  getBase64FromBody,
-  getFurnitureLangErrors,
-  getImageSize,
-} from "shared/utils";
+import { getFurnitureLangErrors } from "@oh/core";
+import { getBase64FromBody, getImageSize } from "shared/utils";
 import { RequestMethod } from "shared/enums";
 import { ulid } from "ulidx";
 

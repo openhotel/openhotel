@@ -1,5 +1,6 @@
 import React, { ReactNode, useCallback, useContext, useState } from "react";
-import { FurnitureData, FurnitureLang, SpriteSheet } from "shared/types";
+import { FurnitureData, SpriteSheet } from "shared/types";
+import type { FurnitureLang } from "@oh/core";
 import { parseFurniture } from "shared/utils/furniture.utils";
 import { setObject } from "shared/utils";
 

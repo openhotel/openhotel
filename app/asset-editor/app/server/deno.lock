@@ -2,6 +2,7 @@
   "version": "5",
   "specifiers": {
     "jsr:@da/bcrypt@1.0.1": "1.0.1",
+    "jsr:@oh/core@0.1.0": "0.1.0",
     "jsr:@oh/utils@1.5.0": "1.5.0",
     "jsr:@oh/yaml@1.1.0": "1.1.0",
     "jsr:@std/encoding@1.0.5": "1.0.5",
@@ -32,6 +33,9 @@
   "jsr": {
     "@da/bcrypt@1.0.1": {
       "integrity": "d2172d3acbcff52e0465557a1a48b1ff1c92df08c90712dae5372255a8c45eb3"
+    },
+    "@oh/core@0.1.0": {
+      "integrity": "a46183891e82d2a35f78cad6ce8290e8ef53e22f48e8845b0df7a1e1b0525d86"
     },
     "@oh/utils@1.5.0": {
       "integrity": "3410ce0496bf98318981fab601e68928dd2eb47148445bfa4870c91606c1d30f",
@@ -469,6 +473,7 @@
   },
   "workspace": {
     "dependencies": [
+      "jsr:@oh/core@0.1.0",
       "jsr:@oh/utils@1.5.0",
       "jsr:@std/ulid@1",
       "jsr:@std/yaml@1.0.5",

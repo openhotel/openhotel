@@ -11,22 +11,16 @@ import {
 import { useApi, useAppSession } from "shared/hooks";
 import { TabContentComponent } from "shared/components";
 import { RequestMethod } from "shared/enums";
-import {
-  CollectionData,
-  CollectionFurniture,
-  CollectionMetadata,
-} from "shared/types";
-import {
-  cn,
-  getCollectionErrors,
-  getCollectionFurnitureErrors,
-  getCollectionFurnitureListErrors,
-} from "shared/utils";
+import { CollectionData, CollectionFurniture } from "shared/types";
+import { cn, getCollectionFurnitureErrors } from "shared/utils";
 import {
   COLLECTION_DESCRIPTION_MAX_LENGTH,
   COLLECTION_ID_MAX_LENGTH,
   COLLECTION_LABEL_MAX_LENGTH,
-} from "shared/consts";
+  type CollectionMetadata,
+  getCollectionFurnitureListErrors,
+  getCollectionMetadataErrors,
+} from "@oh/core";
 
 //@ts-ignore
 import styles from "./create.module.scss";
@@ -43,18 +37,24 @@ export const CreateCollectionComponent: React.FC = () => {
   const [requestError, setRequestError] = useState<string>(null);
 
   const collectionErrors = useMemo(
-    () => (data ? getCollectionErrors(data.collection) : []),
+    () => (data ? getCollectionMetadataErrors(data.collection) : []),
     [data],
   );
   const furnitureErrors = useMemo(
     () =>
       (data?.furniture ?? []).map((furniture) =>
-        getCollectionFurnitureErrors(data.collection.id, furniture),
+        getCollectionFurnitureErrors(furniture),
       ),
     [data],
   );
   const furnitureListErrors = useMemo(
-    () => (data ? getCollectionFurnitureListErrors(data.furniture) : []),
+    () =>
+      data
+        ? getCollectionFurnitureListErrors(
+            data.collection.id,
+            data.furniture.map(({ id }) => id),
+          )
+        : [],
     [data],
   );
 
@@ -68,7 +68,7 @@ export const CreateCollectionComponent: React.FC = () => {
     setData({
       collection: {
         id: "",
-        category: { label: "", description: "" },
+        category: { label: "" },
         minHotelVersion: "",
       },
       furniture: [],
@@ -98,7 +98,7 @@ export const CreateCollectionComponent: React.FC = () => {
             id: collection.id ?? "",
             category: {
               label: collection.category?.label ?? "",
-              description: collection.category?.description ?? "",
+              description: collection.category?.description || undefined,
             },
             minHotelVersion: collection.minHotelVersion ?? "",
           },
@@ -159,7 +159,10 @@ export const CreateCollectionComponent: React.FC = () => {
   const onChangeCollection = useCallback(
     (key: keyof CollectionMetadata | "label" | "description") =>
       (event: React.ChangeEvent<HTMLInputElement>) => {
-        const value = event.target.value;
+        const value =
+          key === "description"
+            ? event.target.value || undefined
+            : event.target.value;
 
         setData((data) => ({
           ...data,
@@ -302,7 +305,7 @@ export const CreateCollectionComponent: React.FC = () => {
               </div>
               <InputComponent
                 placeholder="category.description (optional)"
-                value={data.collection.category.description}
+                value={data.collection.category.description ?? ""}
                 maxLength={COLLECTION_DESCRIPTION_MAX_LENGTH}
                 onChange={onChangeCollection("description")}
               />

@@ -4,13 +4,13 @@ import { decodeTime } from "@std/ulid";
 
 import { RequestType, RequestMethod, RequestKind } from "@oh/utils";
 import { base64ToBlob } from "shared/utils/base64.utils.ts";
-import { getFurnitureLangErrors } from "shared/utils/lang.utils.ts";
+import { getFurnitureLangErrors } from "@oh/core";
 
 export const createRequest: RequestType = {
   method: RequestMethod.POST,
   pathname: "/create",
   kind: RequestKind.ACCOUNT,
-  func: async (request, url) => {
+  func: async (request) => {
     const { sprite, sheet, furniture, lang } = await request.json();
 
     let lastModDate: Date;

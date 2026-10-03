@@ -49,10 +49,3 @@ export type FurnitureData = {
   icon?: FurnitureIcon;
   direction?: Partial<Record<FurnitureDirection, furnitureDirectionItem>>;
 };
-
-//
-export type FurnitureLangItem = {
-  label: string;
-  description: string;
-};
-export type FurnitureLang = Record<string, FurnitureLangItem>;

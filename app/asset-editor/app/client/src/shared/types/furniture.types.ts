@@ -52,9 +52,3 @@ export type FurnitureData = {
   icon?: FurnitureIcon;
   direction?: Partial<Record<FurnitureDirection, FurnitureDirectionItem>>;
 };
-
-export type FurnitureLangItem = {
-  name: string;
-  description: string;
-};
-export type FurnitureLang = Record<string, FurnitureLangItem>;
