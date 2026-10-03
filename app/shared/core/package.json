@@ -1,9 +1,11 @@
 {
   "scripts": {
     "deps": "deno run -A index.ts",
-    "test": "jest --passWithNoTests",
+    "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
+    "typecheck": "tsc -p tsconfig.json",
+    "bundle:check": "esbuild index.ts --bundle --platform=browser --format=esm --log-level=warning > /dev/null",
     "prettier:check": "prettier -c ./",
     "prettier:write": "prettier --write .",
     "publish": "npx jsr publish --allow-dirty",
@@ -16,7 +18,9 @@
     "@babel/preset-typescript": "^7.26.0",
     "babel-jest": "^29.7.0",
     "jest": "^29.7.0",
-    "prettier": "3.3.3"
+    "prettier": "3.3.3",
+    "esbuild": "0.23.0",
+    "typescript": "5.6.3"
   },
   "jest": {
     "testRegex": ".test.ts",

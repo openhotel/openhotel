@@ -36,6 +36,12 @@ jobs:
       - name: run prettier checker
         run: yarn run prettier:check
 
+      - name: run type checker
+        run: yarn run typecheck
+
+      - name: check browser bundle
+        run: yarn run bundle:check
+
       - name: run tests
         run: yarn run test
 

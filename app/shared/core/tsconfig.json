@@ -1,15 +1,18 @@
 {
   "compilerOptions": {
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "module": "ES2022",
     "target": "ES2022",
     "esModuleInterop": true,
     "sourceMap": false,
     "noUnusedLocals": true,
+    "noEmit": true,
+    "strict": true,
+    "types": [],
     "lib": ["ES2022", "dom"],
-    "baseUrl": "./src/",
-    "rootDir": "./src",
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true
-  }
+  },
+  "include": ["index.ts", "src"],
+  "exclude": ["src/**/__tests__"]
 }
