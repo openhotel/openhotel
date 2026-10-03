@@ -15,6 +15,7 @@
     "build": "(deno task compile:linux) & (deno task compile:linux_aarch64) & (deno task compile:darwin) & (deno task compile:windows)"
   },
   "imports": {
+    "@oh/core": "jsr:@oh/core@0.1.0",
     "@oh/queue": "jsr:@oh/queue@1.1.1",
     "@oh/utils": "jsr:@oh/utils@1.5.31",
 

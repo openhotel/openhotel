@@ -1,26 +1,19 @@
 import { System } from "modules/system/main.ts";
 import { getS3, S3Mutable } from "@oh/utils";
 import {
+  COLLECTION_FORMAT_VERSION,
+  CollectionManifest,
+  getCollectionFurnitureListErrors,
+  getCollectionMetadataErrors,
+  isValidCollectionId,
+} from "@oh/core";
+import {
   Collection,
   CollectionFurniture,
-  CollectionManifest,
   CollectionPublishProps,
   CollectionPublishResult,
 } from "shared/types/main.ts";
-import {
-  COLLECTION_DESCRIPTION_MAX_LENGTH,
-  COLLECTION_FORMAT_VERSION,
-  COLLECTION_ID_MAX_LENGTH,
-  COLLECTION_ID_REGEX,
-  COLLECTION_LABEL_MAX_LENGTH,
-  COLLECTION_MAX_FURNITURE,
-  COLLECTION_RESERVED_NAMESPACES,
-} from "shared/consts/main.ts";
-import {
-  getCollectionFurniture,
-  getVersionErrors,
-  isValidHotelVersion,
-} from "shared/utils/main.ts";
+import { getCollectionFurniture, getVersionErrors } from "shared/utils/main.ts";
 import { signature } from "./signature.ts";
 
 export const collections = () => {
@@ -42,12 +35,6 @@ export const collections = () => {
 
   const isBucketEnabled = () => Boolean($bucket);
 
-  const isValidId = (id: string): boolean =>
-    typeof id === "string" &&
-    id.length <= COLLECTION_ID_MAX_LENGTH &&
-    COLLECTION_ID_REGEX.test(id) &&
-    !COLLECTION_RESERVED_NAMESPACES.includes(id);
-
   const get = async (id: string): Promise<Collection | null> =>
     (await System.db.get<Collection>(["collections", id])) ?? null;
 
@@ -60,7 +47,7 @@ export const collections = () => {
   };
 
   const register = async (id: string, accountId: string): Promise<boolean> => {
-    if (!isValidId(id) || !accountId) return false;
+    if (!isValidCollectionId(id) || !accountId) return false;
 
     const now = Date.now();
     const collection: Collection = {
@@ -103,7 +90,7 @@ export const collections = () => {
     id: string,
     accountId: string,
   ): Promise<boolean> => {
-    if (!isValidId(id)) return false;
+    if (!isValidCollectionId(id)) return false;
 
     const collection = await get(id);
     return !collection || collection.accountId === accountId;
@@ -183,47 +170,20 @@ export const collections = () => {
     category,
     files,
   }: CollectionPublishProps): Promise<string[]> => {
-    const errors: string[] = [];
+    const errors = getCollectionMetadataErrors({
+      id,
+      category,
+      license,
+      minHotelVersion,
+    });
 
-    if (!isValidId(id)) {
-      errors.push(`id '${id}' is not valid`);
-    } else if (!(await canPublish(id, accountId))) {
+    if (isValidCollectionId(id) && !(await canPublish(id, accountId))) {
       errors.push(`namespace '${id}' belongs to another account`);
     }
 
-    if (!isValidHotelVersion(minHotelVersion)) {
-      errors.push("minHotelVersion is not a valid version");
-    }
-
-    if (
-      typeof category?.label !== "string" ||
-      !category.label ||
-      category.label.length > COLLECTION_LABEL_MAX_LENGTH
-    ) {
-      errors.push("category.label is not valid");
-    }
-
-    if (
-      category?.description !== undefined &&
-      (typeof category.description !== "string" ||
-        category.description.length > COLLECTION_DESCRIPTION_MAX_LENGTH)
-    ) {
-      errors.push("category.description is not valid");
-    }
-
-    if (
-      license !== undefined &&
-      (typeof license !== "string" || !license || license.length > 64)
-    ) {
-      errors.push("license is not valid");
-    }
-
-    const count = Object.keys(files ?? {}).length;
-    if (!count || count > COLLECTION_MAX_FURNITURE) {
-      errors.push(
-        `a collection must have between 1 and ${COLLECTION_MAX_FURNITURE} furniture`,
-      );
-    }
+    errors.push(
+      ...getCollectionFurnitureListErrors(id, Object.keys(files ?? {})),
+    );
 
     return errors;
   };
@@ -319,7 +279,6 @@ export const collections = () => {
     load,
 
     isBucketEnabled,
-    isValidId,
 
     get,
     getList,

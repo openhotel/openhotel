@@ -1,23 +1,8 @@
-export type CollectionManifestFurniture = {
-  id: string;
-  revision: string;
-  sha256: string;
-};
-
-export type CollectionManifest = {
-  id: string;
-  version: number;
-  author: string;
-  license?: string;
-  minHotelVersion: string;
-  formatVersion: number;
-  category: {
-    label: string;
-    description?: string;
-  };
-  furniture: CollectionManifestFurniture[];
-  signature?: string;
-};
+import type {
+  CollectionCategory,
+  CollectionFurnitureImmutableData,
+  CollectionManifest,
+} from "@oh/core";
 
 export type Collection = {
   id: string;
@@ -25,12 +10,6 @@ export type Collection = {
   latestVersion: number;
   createdAt: number;
   updatedAt: number;
-};
-
-export type CollectionFurnitureImmutableData = {
-  type: string;
-  size: { width: number; height: number; depth: number };
-  directions: string[];
 };
 
 export type CollectionFurniture = {
@@ -45,10 +24,7 @@ export type CollectionPublishProps = {
   accountId: string;
   license?: string;
   minHotelVersion: string;
-  category: {
-    label: string;
-    description?: string;
-  };
+  category: CollectionCategory;
   files: Record<string, Uint8Array>;
 };
 

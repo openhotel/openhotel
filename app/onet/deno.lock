@@ -4,6 +4,7 @@
     "jsr:@da/bcrypt@1.0.1": "1.0.1",
     "jsr:@da/socket@2.3.0": "2.3.0",
     "jsr:@deno/kv-utils@0.1.3": "0.1.3",
+    "jsr:@oh/core@0.1.0": "0.1.0",
     "jsr:@oh/queue@1.1.1": "1.1.1",
     "jsr:@oh/utils@1.5.31": "1.5.31",
     "jsr:@std/bytes@^1.0.3": "1.0.6",
@@ -50,6 +51,9 @@
         "jsr:@std/bytes@^1.0.3",
         "jsr:@std/encoding@^1.0.5"
       ]
+    },
+    "@oh/core@0.1.0": {
+      "integrity": "a46183891e82d2a35f78cad6ce8290e8ef53e22f48e8845b0df7a1e1b0525d86"
     },
     "@oh/queue@1.1.1": {
       "integrity": "8e8ec809202c48beaf436b3ea01b4c3a17f8c015ca686d906822482c9c881390"
@@ -331,6 +335,7 @@
     "dependencies": [
       "jsr:@da/bcrypt@1.0.1",
       "jsr:@da/socket@2.3.0",
+      "jsr:@oh/core@0.1.0",
       "jsr:@oh/queue@1.1.1",
       "jsr:@oh/utils@1.5.31",
       "jsr:@std/encoding@1.0.11",
