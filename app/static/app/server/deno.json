@@ -16,7 +16,7 @@
     "system/": "./src/system/",
     "modules/": "./src/modules/",
 
-    "@oh/utils": "jsr:@oh/utils@1.5.2",
+    "@oh/utils": "jsr:@oh/utils@1.5.32",
     "@std/ulid": "jsr:@std/ulid@1",
 
     "@std/path": "jsr:@std/path@1.0.6",
