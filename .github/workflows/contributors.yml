@@ -38,6 +38,7 @@ jobs:
             "web"
             "game-template"
             "core"
+            "devkit"
           )
             
           declare -A contributors
