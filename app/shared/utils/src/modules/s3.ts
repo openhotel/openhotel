@@ -8,10 +8,13 @@ export const getS3 = ({
   secretKey,
   accessKey,
   region,
+  port,
+  useSSL = true,
 }: S3Props): S3Mutable => {
   const client = new Client({
     endPoint: endpoint,
-    useSSL: true,
+    port,
+    useSSL,
     accessKey,
     secretKey,
     region,

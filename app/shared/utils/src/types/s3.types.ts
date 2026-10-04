@@ -4,6 +4,8 @@ export type S3Props = {
   secretKey: string;
   accessKey: string;
   region: string;
+  port?: number;
+  useSSL?: boolean;
 };
 
 export type S3Mutable = {
