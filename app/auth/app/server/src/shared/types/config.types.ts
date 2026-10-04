@@ -21,6 +21,8 @@ export type ConfigTypes = {
       endpoint: string;
       region: string;
       bucket: string;
+      port: number;
+      useSSL: boolean;
     };
   };
   accounts: {

@@ -23,6 +23,8 @@ export const CONFIG_DEFAULT: ConfigTypes = {
       endpoint: "",
       region: "",
       bucket: "",
+      port: 443,
+      useSSL: true,
     },
   },
   accounts: {
