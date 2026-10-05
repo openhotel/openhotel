@@ -54,4 +54,9 @@ export const CONFIG_DEFAULT: ConfigTypes = {
   notifications: {
     discord: false,
   },
+  onet: {
+    enabled: false,
+    api: "http://localhost:9400/api/v1",
+    token: "",
+  },
 };

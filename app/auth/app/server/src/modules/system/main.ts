@@ -10,6 +10,7 @@ import { Migrations } from "modules/migrations/main.ts";
 import { hotels } from "./hotels/main.ts";
 import { backups } from "modules/system/backups.ts";
 import { apps } from "modules/system/apps.ts";
+import { onet } from "modules/system/onet.ts";
 
 export const System = (() => {
   let $config: ConfigTypes;
@@ -25,6 +26,7 @@ export const System = (() => {
   const $accounts = accounts();
   const $hotels = hotels();
   const $backups = backups();
+  const $onet = onet();
   let $db: DbMutable;
 
   const load = async (envs: Envs, testMode: boolean = false) => {
@@ -72,6 +74,7 @@ export const System = (() => {
 
     await $email.load();
     if (isProduction) await $backups.load();
+    if (!testMode) await $onet.load();
 
     $api.load(testMode);
   };
@@ -106,5 +109,6 @@ export const System = (() => {
     accounts: $accounts,
     hotels: $hotels,
     backups: $backups,
+    onet: $onet,
   };
 })();

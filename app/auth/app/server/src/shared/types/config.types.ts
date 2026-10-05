@@ -52,4 +52,9 @@ export type ConfigTypes = {
   notifications: {
     discord: string | false;
   };
+  onet: {
+    enabled: boolean;
+    api: string;
+    token: string;
+  };
 };
