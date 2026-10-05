@@ -1,6 +1,7 @@
 import { Client } from "@s3";
 import { walk } from "@std/fs";
 import type { S3Mutable, S3ObjectInfo, S3Props } from "../types/s3.types.ts";
+import { Buffer } from "node:buffer";
 
 export const getS3 = ({
   endpoint,
@@ -94,7 +95,7 @@ export const getS3 = ({
 
   const addObject = async (name: string, buffer: Uint8Array) => {
     await checkBucket(bucket);
-    await client.putObject(bucket, name, buffer);
+    await client.putObject(bucket, name, Buffer.from(buffer));
   };
 
   return {
