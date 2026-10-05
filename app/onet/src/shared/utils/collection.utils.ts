@@ -3,6 +3,7 @@ import { parse } from "@std/yaml";
 import { decodeTime } from "@std/ulid";
 import {
   COLLECTION_FURNITURE_FILES,
+  COLLECTION_MAX_FURNITURE,
   COLLECTION_FURNITURE_MAX_SIZE,
   COLLECTION_FURNITURE_MAX_UNCOMPRESSED_SIZE,
   type FurnitureDataFile,
@@ -12,10 +13,19 @@ import {
   getStableJson,
   isValidCollectionFurnitureId,
 } from "@oh/core";
-import { CollectionFurniture } from "shared/types/main.ts";
+import {
+  CollectionFurniture,
+  CollectionPublishProps,
+} from "shared/types/main.ts";
+import {
+  COLLECTION_FILE_MAX_UNCOMPRESSED_SIZE,
+  COLLECTION_METADATA_FILE,
+} from "shared/consts/main.ts";
 
 const $readEntries = async (
   file: Uint8Array,
+  maxUncompressedSize: number,
+  maxEntries: number = Infinity,
 ): Promise<{
   files: Record<string, Uint8Array>;
   dates: Record<string, Date>;
@@ -23,6 +33,10 @@ const $readEntries = async (
   const entries = await new ZipReader(
     new BlobReader(new Blob([file as BlobPart])),
   ).getEntries();
+
+  if (entries.length > maxEntries) {
+    throw new Error(`more than ${maxEntries} files`);
+  }
 
   const files: Record<string, Uint8Array> = {};
   const dates: Record<string, Date> = {};
@@ -43,7 +57,7 @@ const $readEntries = async (
         write: (chunk) => {
           total += chunk.length;
 
-          if (total > COLLECTION_FURNITURE_MAX_UNCOMPRESSED_SIZE) {
+          if (total > maxUncompressedSize) {
             throw new Error("uncompressed size is too big");
           }
 
@@ -95,7 +109,10 @@ export const getCollectionFurniture = async (
   let files: Record<string, Uint8Array>;
   let dates: Record<string, Date>;
   try {
-    const entries = await $readEntries(file);
+    const entries = await $readEntries(
+      file,
+      COLLECTION_FURNITURE_MAX_UNCOMPRESSED_SIZE,
+    );
     files = entries.files;
     dates = entries.dates;
   } catch (e) {
@@ -200,4 +217,64 @@ export const getVersionErrors = (
   }
 
   return errors;
+};
+
+export const getCollectionPublishProps = async (
+  accountId: string,
+  file: Uint8Array,
+): Promise<{ props?: CollectionPublishProps; errors: string[] }> => {
+  let files: Record<string, Uint8Array>;
+  try {
+    const entries = await $readEntries(
+      file,
+      COLLECTION_FILE_MAX_UNCOMPRESSED_SIZE,
+      COLLECTION_MAX_FURNITURE,
+    );
+
+    files = entries.files;
+  } catch (e) {
+    return { errors: [`invalid collection: ${e.message}`] };
+  }
+
+  const errors: string[] = [];
+
+  let metadata: Record<string, any> = {};
+  if (!files[COLLECTION_METADATA_FILE]) {
+    errors.push(`${COLLECTION_METADATA_FILE} is missing`);
+  } else {
+    try {
+      metadata =
+        parse(new TextDecoder().decode(files[COLLECTION_METADATA_FILE])) ?? {};
+    } catch {
+      errors.push(`${COLLECTION_METADATA_FILE} can't be parsed`);
+    }
+  }
+
+  const furnitureFiles: Record<string, Uint8Array> = {};
+  for (const [filename, data] of Object.entries(files)) {
+    if (filename === COLLECTION_METADATA_FILE) continue;
+
+    if (!filename.endsWith(".furniture")) {
+      errors.push(`${filename} is not allowed`);
+      continue;
+    }
+
+    const name = filename.slice(0, -".furniture".length);
+    furnitureFiles[name] = data;
+  }
+
+  if (errors.length) return { errors };
+
+  const { id, category, license, minHotelVersion } = metadata;
+  return {
+    props: {
+      id,
+      accountId,
+      license,
+      minHotelVersion,
+      category,
+      files: furnitureFiles,
+    },
+    errors: [],
+  };
 };
