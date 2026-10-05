@@ -63,6 +63,13 @@ export const api = () => {
 
           const hotel = System.hotels.get({ hotelId });
           return hotel.verify(token);
+        case RequestKind.APPS:
+          const token = request.headers.get("app-token");
+          const serviceToken = System.getConfig().auth.serviceToken;
+
+          if (!token || !serviceToken) return false;
+
+          return token === serviceToken;
         default:
           return false;
       }

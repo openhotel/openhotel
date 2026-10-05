@@ -4,6 +4,7 @@ export type ConfigTypes = {
   auth: {
     api: string;
     token: string;
+    serviceToken: string;
   };
   collections: {
     s3: {

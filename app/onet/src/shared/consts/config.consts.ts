@@ -6,6 +6,7 @@ export const CONFIG_DEFAULTS: ConfigTypes = {
   auth: {
     api: "http://localhost:2024/api/v3",
     token: "PRIVATE_TOKEN",
+    serviceToken: "",
   },
   collections: {
     s3: {
