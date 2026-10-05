@@ -1,6 +1,7 @@
 export * from "./actions";
 export * from "./connections";
 export * from "./my-hotels";
+export * from "./collections";
 export * from "./otp";
 export * from "./navigator";
 export * from "./languages";

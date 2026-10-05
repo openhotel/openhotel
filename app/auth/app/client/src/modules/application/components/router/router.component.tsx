@@ -15,6 +15,7 @@ import { RecoverPasswordComponent } from "modules/recover-password";
 import { ProvidersComponent } from "modules/application/components/providers";
 import {
   AccountComponent,
+  CollectionsComponent,
   ConnectionsComponent,
   DeleteComponent,
   GithubComponent,
@@ -103,6 +104,10 @@ const router = createBrowserRouter([
           {
             path: "my-hotels",
             element: <MyHotelsComponent />,
+          },
+          {
+            path: "collections",
+            element: <CollectionsComponent />,
           },
           {
             path: "connections",

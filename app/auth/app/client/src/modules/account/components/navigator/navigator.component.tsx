@@ -9,6 +9,7 @@ import {
   HotelIconComponent,
   KeysIconComponent,
   NavItemComponent,
+  UploadIconComponent,
 } from "@openhotel/web-components";
 import { LinkComponent } from "shared/components";
 import { useAccount, useUser } from "shared/hooks";
@@ -41,6 +42,11 @@ export const HomeNavigatorComponent: React.FC = () => {
       <LinkComponent to="/account/my-hotels">
         <NavItemComponent icon={<HotelIconComponent />}>
           My Hotels
+        </NavItemComponent>
+      </LinkComponent>
+      <LinkComponent to="/account/collections">
+        <NavItemComponent icon={<UploadIconComponent />}>
+          Collections
         </NavItemComponent>
       </LinkComponent>
       <LinkComponent to="/account/connections">

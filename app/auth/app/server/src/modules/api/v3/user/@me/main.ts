@@ -5,6 +5,7 @@ import { scopesGetRequest } from "./scopes.request.ts";
 import { emailGetRequest } from "./email.request.ts";
 import { hotelRequestList } from "./hotel/main.ts";
 import { appsGetRequest } from "./apps.request.ts";
+import { collectionsRequestList } from "./collections/main.ts";
 
 export const meRequestList: RequestType[] = getPathRequestList({
   requestList: [
@@ -15,6 +16,7 @@ export const meRequestList: RequestType[] = getPathRequestList({
     appsGetRequest,
     ...connectionRequestList,
     ...hotelRequestList,
+    ...collectionsRequestList,
   ],
   pathname: "/@me",
 });

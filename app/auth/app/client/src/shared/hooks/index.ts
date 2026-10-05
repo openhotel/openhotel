@@ -7,6 +7,7 @@ export * from "./useConnection";
 export * from "./useAdmin";
 export * from "./useHotel";
 export * from "./useMyHotels";
+export * from "./useCollections";
 export * from "./useCookies";
 export * from "./useHotels";
 export * from "./useLanguages";

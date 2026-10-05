@@ -16,14 +16,16 @@ export const useApi = () => {
       rawResponse = false,
       preventReload = false,
     }: Request) => {
+      const isFile = body instanceof Blob;
+
       const response = await fetch(`/api/v3${pathname}`, {
         method,
         headers: new Headers({
-          "Content-Type": "application/json",
+          ...(isFile ? {} : { "Content-Type": "application/json" }),
           fingerprint,
           ...headers,
         }),
-        body: body ? JSON.stringify(body) : undefined,
+        body: isFile ? body : body ? JSON.stringify(body) : undefined,
         credentials: "include",
         cache: cache ? "default" : "no-store",
       }).then(async (data) => {
