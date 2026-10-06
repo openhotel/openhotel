@@ -1,4 +1,10 @@
-import { readYaml, writeYaml } from "@oh/utils";
+import { isNewVersionGreater, readYaml, writeYaml } from "@oh/utils";
+import {
+  type CollectionManifest,
+  type FurnitureSource,
+  getCollectionManifestErrors,
+  getSha256,
+} from "@oh/core";
 import { Catalog, FurnitureData } from "shared/types/main.ts";
 import { BlobReader, BlobWriter, ZipReader } from "@zip-js/data-uri";
 import { parse } from "@std/yaml";
@@ -7,14 +13,117 @@ import { log } from "shared/utils/log.utils.ts";
 import { FurnitureType } from "shared/enums/furniture.enum.ts";
 import { decodeTime } from "@std/ulid";
 import dayjs from "dayjs";
+import { isCatalogFurnitureAvailable } from "shared/utils/catalog.utils.ts";
 
 export const furniture = () => {
-  const unzipZipFile = async (dirEntry: Deno.DirEntry, path: string = "") => {
+  let $loadedFurnitureIds = new Set<string>();
+
+  const $getManifestError = async (
+    collection: string,
+    $manifest: unknown,
+  ): Promise<string | null> => {
+    const manifestErrors = getCollectionManifestErrors($manifest);
+    if (manifestErrors.length) {
+      return manifestErrors.join(", ");
+    }
+
+    const manifest = $manifest as CollectionManifest;
+
+    if (manifest.id !== collection) {
+      return `id must be '${collection}'`;
+    }
+
+    const { version } = System.getEnvs();
+
+    if (
+      version !== "development" &&
+      isNewVersionGreater(version, manifest.minHotelVersion)
+    ) {
+      return `requires hotel version ${manifest.minHotelVersion} or greater`;
+    }
+
+    const furnitureIds = new Set(manifest.furniture.map(({ id }) => id));
+
+    const collectionPathname = `./assets/furniture/${collection}`;
+
+    for await (const { name, isFile } of Deno.readDir(collectionPathname)) {
+      if (!isFile || !name.endsWith(".furniture")) continue;
+
+      if (!furnitureIds.has(name.replace(/\.furniture$/, ""))) {
+        return `file '${name}' is not in the manifest`;
+      }
+    }
+
+    for (const furniture of manifest.furniture) {
+      let file: Uint8Array;
+      try {
+        file = await Deno.readFile(
+          `${collectionPathname}/${furniture.id}.furniture`,
+        );
+      } catch (e) {
+        return `file '${furniture.id}.furniture' is missing`;
+      }
+
+      if ((await getSha256(file)) !== furniture.sha256) {
+        return `file '${furniture.id}.furniture' sha256 does not match`;
+      }
+    }
+
+    return null;
+  };
+
+  const $getCollectionSource = async (
+    collection: string,
+  ): Promise<FurnitureSource | null> => {
+    let manifest: unknown;
+    try {
+      manifest = parse(
+        await Deno.readTextFile(
+          `./assets/furniture/${collection}/manifest.yml`,
+        ),
+      );
+    } catch (e) {
+      if (e instanceof Deno.errors.NotFound) {
+        return { source: "local" };
+      }
+
+      log(`Collection (${collection}) manifest can't be read!`);
+      return null;
+    }
+
+    const manifestError = await $getManifestError(collection, manifest);
+    if (manifestError) {
+      log(
+        `Collection (${collection}) has an invalid manifest: ${manifestError}`,
+      );
+      return null;
+    }
+
+    const { id, version } = manifest as CollectionManifest;
+
+    return {
+      source: "onet",
+      collection: id,
+      version,
+    };
+  };
+
+  const unzipZipFile = async (
+    dirEntry: Deno.DirEntry,
+    path: string = "",
+    source: FurnitureSource = { source: "local" },
+  ) => {
     if (!dirEntry.isFile) {
+      const collectionSource = path
+        ? source
+        : await $getCollectionSource(dirEntry.name);
+
+      if (!collectionSource) return;
+
       for await (const childEntry of Deno.readDir(
         `./assets/furniture/${dirEntry.name}`,
       ))
-        await unzipZipFile(childEntry, `${dirEntry.name}/`);
+        await unzipZipFile(childEntry, `${dirEntry.name}/`, collectionSource);
     }
     if (!dirEntry.name.includes(".furniture")) return;
 
@@ -37,6 +146,7 @@ export const furniture = () => {
       !dataFile && "data.yml",
       !sheetFile && "sheet.json",
       !spriteFile && "sprite.png",
+      !langFile && "lang.yml",
     ].filter(Boolean);
 
     if (missingFiles.length) {
@@ -80,16 +190,32 @@ export const furniture = () => {
       dayjs(spriteFile.lastModDate),
       "minutes",
     );
+    const langModificationDiffTime = revisionDate.diff(
+      dayjs(langFile.lastModDate),
+      "minutes",
+    );
 
     //check if any file was modified
     if (
       dataModificationDiffTime !== 0 ||
       sheetModificationDiffTime !== 0 ||
-      spriteModificationDiffTime !== 0
+      spriteModificationDiffTime !== 0 ||
+      langModificationDiffTime !== 0
     )
       return log(
         `e003 Furniture (${furnitureData.id}) has an incorrect revision!`,
       );
+
+    if (
+      source.source === "onet" &&
+      dirEntry.name !== `${furnitureData.id}.furniture`
+    )
+      return log(
+        `Furniture (${furnitureData.id}) does not match its file ${dirEntry.name}!`,
+      );
+
+    await System.db.set(["furnitureSource", furnitureData.id], source);
+    $loadedFurnitureIds.add(furnitureData.id);
 
     const foundFurniture = await get(furnitureData.id);
 
@@ -115,12 +241,9 @@ export const furniture = () => {
     const spriteBlob = await spriteFile.getData(new BlobWriter());
     const spriteUint8Array = new Uint8Array(await spriteBlob.arrayBuffer());
 
-    // lang (optional)
-    let langUint8Array: Uint8Array | null = null;
-    if (langFile) {
-      const langBlob = await langFile.getData(new BlobWriter());
-      langUint8Array = new Uint8Array(await langBlob.arrayBuffer());
-    }
+    // lang
+    const langBlob = await langFile.getData(new BlobWriter());
+    const langUint8Array = new Uint8Array(await langBlob.arrayBuffer());
 
     System.db.set(
       ["furnitureData", furnitureData.id],
@@ -131,11 +254,29 @@ export const furniture = () => {
     );
   };
 
+  const $removeUnloadedFurniture = async () => {
+    for (const prefix of ["furnitureData", "furnitureSource"]) {
+      const { items } = await System.db.list({ prefix: [prefix] });
+
+      for (const { key } of items) {
+        const furnitureId = key[1] as string;
+        if ($loadedFurnitureIds.has(furnitureId)) continue;
+
+        await System.db.delete(key);
+        if (prefix === "furnitureData")
+          log(`- Furniture (${furnitureId}) removed!`);
+      }
+    }
+  };
+
   const load = async () => {
     log("> Loading furniture...");
 
+    $loadedFurnitureIds = new Set();
     for await (const dirEntry of Deno.readDir("./assets/furniture"))
       await unzipZipFile(dirEntry);
+
+    await $removeUnloadedFurniture();
     log("> Furniture loaded!");
   };
 
@@ -159,15 +300,15 @@ export const furniture = () => {
     );
     if (!catalogCategory) return [];
 
-    return await Promise.all(
-      catalogCategory.furniture.map(async (furniture) => {
-        const data = await get(furniture.id);
-        return {
-          ...furniture,
-          type: data.type,
-        };
-      }),
+    const catalogFurniture = await Promise.all(
+      catalogCategory.furniture
+        .filter(isCatalogFurnitureAvailable)
+        .map(async (furniture) => {
+          const data = await get(furniture.id);
+          return data ? { ...furniture, type: data.type } : null;
+        }),
     );
+    return catalogFurniture.filter(Boolean);
   };
 
   const $mapFurnitureData = (furnitureData: any): FurnitureData => ({
@@ -228,8 +369,16 @@ export const furniture = () => {
     return [furnitureData, JSON.parse(decoder.decode(data[1])), data[2]];
   };
 
+  const getSource = async (
+    furnitureId: string,
+  ): Promise<FurnitureSource | null> =>
+    ((await System.db.get(["furnitureSource", furnitureId])) as
+      FurnitureSource | undefined) ?? null;
+
   return {
     load,
+
+    getSource,
 
     getCatalog,
     getCatalogFurniture,
