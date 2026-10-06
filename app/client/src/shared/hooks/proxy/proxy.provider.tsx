@@ -1,11 +1,8 @@
 import React, { ReactNode, useCallback, useMemo, useState } from "react";
 import { ProxyContext } from "./proxy.context";
 import { useConfig } from "shared/hooks";
-import {
-  getClientSocket,
-  getRandomString,
-  getWebSocketUrl,
-} from "shared/utils";
+import { getClientSocket, getWebSocketUrl } from "@da/socket";
+import { getRandomString } from "shared/utils";
 import { ulid } from "ulidx";
 import { Event, SpriteSheetEnum } from "shared/enums";
 import {
