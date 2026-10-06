@@ -10,6 +10,7 @@ import {
 import { DEFAULT_MARKETPLACE_CONFIG } from "shared/consts/marketplace.consts.ts";
 import { Furniture } from "shared/types/furniture.types.ts";
 import { ProxyEvent } from "shared/enums/main.ts";
+import { isCatalogFurnitureAvailable } from "shared/utils/catalog.utils.ts";
 
 export const marketplace = () => {
   let config: MarketplaceConfig = DEFAULT_MARKETPLACE_CONFIG;
@@ -36,7 +37,10 @@ export const marketplace = () => {
     const catalog = await System.game.furniture.getCatalog();
 
     for (const category of catalog.categories) {
-      const furniture = category.furniture.find((f) => f.id === furnitureId);
+      const furniture = category.furniture.find(
+        (f) => f.id === furnitureId && isCatalogFurnitureAvailable(f),
+      );
+
       if (furniture) {
         return furniture.price;
       }

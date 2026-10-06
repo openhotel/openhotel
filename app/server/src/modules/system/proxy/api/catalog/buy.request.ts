@@ -2,7 +2,10 @@ import { RequestMethod } from "@oh/utils";
 import { System } from "modules/system/main.ts";
 import { ProxyRequestType } from "shared/types/api.types.ts";
 import { TransactionType } from "shared/enums/economy.enum.ts";
-import { isCatalogCategoryAvailable } from "shared/utils/catalog.utils.ts";
+import {
+  isCatalogCategoryAvailable,
+  isCatalogFurnitureAvailable,
+} from "shared/utils/catalog.utils.ts";
 import {
   CatalogCategory,
   CatalogFurniture,
@@ -32,7 +35,9 @@ export const catalogBuyRequest: ProxyRequestType = {
       };
 
     const { category, furniture } = catalogData;
-    const isAvailable = isCatalogCategoryAvailable(category);
+    const isAvailable =
+      isCatalogCategoryAvailable(category) &&
+      isCatalogFurnitureAvailable(furniture);
     if (!isAvailable) {
       return {
         status: 404,
