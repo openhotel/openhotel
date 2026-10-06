@@ -1,6 +1,6 @@
 export type CatalogFurniture = {
   id: string;
-  price: number;
+  price?: number;
 };
 
 export type CatalogCategory = {

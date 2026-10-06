@@ -4,6 +4,7 @@
   },
   "imports": {
     "@oh/pathfinding": "jsr:@oh/pathfinding@2.0.3",
+    "@oh/core": "jsr:@oh/core@0.1.0",
     "@oh/queue": "jsr:@oh/queue@1.1.1",
     "@oh/utils": "jsr:@oh/utils@1.5.24",
 
