@@ -1,0 +1,20 @@
+.navigator {
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+  height: 100%;
+
+  .logout {
+    text-align: center;
+    width: fit-content;
+    margin: auto auto 1rem auto;
+    text-decoration: none;
+    font-weight: bold;
+  }
+}
+hr {
+  width: 100%;
+}
+nav > div > div {
+  height: 100%;
+}

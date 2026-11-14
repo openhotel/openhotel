@@ -1,0 +1,30 @@
+
+#
+POST http://localhost:2024/api/v3/user/@me/hotel/integration
+Content-Type: application/json
+account-id: b68e13d9-a9d0-4579-aff3-8ba3dac15a62
+token: dtKAZOizrwPzT2WXcdo7ZH2m1BCJNgsKdOb6lfrw8vbgk10cX1bVtjzOttJAOLs6
+
+{
+  "hotelId": "74dd4103-89ed-4880-a173-467224094135",
+  "name": "web",
+  "redirectUrl": "http://localhost:2025",
+  "type": "web"
+}
+
+###
+
+#
+GET http://localhost:2024/api/v3/user/@me/hotel/integration?hotelId=74dd4103-89ed-4880-a173-467224094135&integrationId=fd58ee8f-409e-4c57-8693-dcf57097039f
+account-id: b68e13d9-a9d0-4579-aff3-8ba3dac15a62
+token: zBdURuWEgAKM9cjrqWMqr3o5oM79xlrgfLugtQMF23TAiSdCOFmPGz5PaExRQ86S
+
+###
+
+#
+DELETE http://localhost:2024/api/v3/user/@me/hotel/integration?hotelId=28b33317-981d-4e8c-bd17-880a953c8eaa&integrationId=1501f368-9f84-4009-a9e0-bf7d9592a2b0
+account-id: c1277daa-65a8-42fa-9c92-b47b3482deda
+token: CneD6wrbi1TJbG4HPHx2aNuktsAwJE9QB41QT6qw8CdWRx1nAbA3EVJgltD5yn48
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:133.0) Gecko/20100101 Firefox/133.0
+
+###

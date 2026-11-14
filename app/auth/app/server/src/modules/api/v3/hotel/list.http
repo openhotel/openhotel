@@ -1,0 +1,5 @@
+#
+GET http://localhost:2024/api/v3/hotel/list
+Content-Type: application/json
+
+###

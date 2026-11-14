@@ -1,0 +1,12 @@
+/build
+/client
+
+database*
+
+deleteme-database*
+
+config.yml
+abc_config.yml
+node_modules
+.env
+/backups*

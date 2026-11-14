@@ -1,0 +1,13 @@
+#
+GET http://localhost:2024/api/v3/user/@me/scopes
+account-id: c1277daa-65a8-42fa-9c92-b47b3482deda
+token: xFvr9GWOoiXerVnwkrCnhtp7VyTKWerjuPv2yABpiYSa90xa5Rr2ORmKDPUKo3cJ
+
+###
+
+#
+GET http://localhost:2024/api/v3/user/@me/scopes
+connection-id: 2c125d00-26b2-428f-bd29-b6027ad21962
+token: GPlqm3IP5LcMe1OadE5s9yjnZsRS0yKKTAtYsrMFittOFMl4U45NXybCA4h7E4zM
+
+###

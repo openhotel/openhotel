@@ -1,0 +1,38 @@
+#
+GET http://localhost:2024/api/v3/user/@me/hotel
+account-id: b68e13d9-a9d0-4579-aff3-8ba3dac15a62
+token: dtKAZOizrwPzT2WXcdo7ZH2m1BCJNgsKdOb6lfrw8vbgk10cX1bVtjzOttJAOLs6
+
+###
+
+#
+POST http://localhost:2024/api/v3/user/@me/hotel
+Content-Type: application/json
+account-id: b68e13d9-a9d0-4579-aff3-8ba3dac15a62
+token: dtKAZOizrwPzT2WXcdo7ZH2m1BCJNgsKdOb6lfrw8vbgk10cX1bVtjzOttJAOLs6
+
+{
+  "name": "openhotel"
+}
+
+###
+
+#
+PATCH http://localhost:2024/api/v3/user/@me/hotel
+Content-Type: application/json
+account-id: fa1f7257-1642-4747-8aeb-2c32e41ed4ff
+token: SAFRhyDQqdDxl397gK9Mbe0bV4yvMbo5LwX5utUxgqjvv9jwDWRKX3dhMYYlrCmP
+
+{
+  "hotelId": "b0230736-cdd5-4034-84b9-63215302a9db",
+  "name": "openhotel"
+}
+
+###
+
+#
+DELETE http://localhost:2024/api/v3/user/@me/hotel?hotelId=699eb0b2-75d5-43cc-9482-bc83ad4fc713
+account-id: e8e0e11a-bab3-414e-ba63-60c3f1d4cfc6
+token: DJ2rUKDV4UIwV3IUzde4D9QOZ5tSnPPlwkATYOVFOH5QZ5RloCdVJSDBknz4iRUx
+
+###

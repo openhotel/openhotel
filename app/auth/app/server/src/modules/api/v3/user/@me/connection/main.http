@@ -1,0 +1,35 @@
+#
+POST http://localhost:2024/api/v3/user/@me/connection
+Content-Type: application/json
+account-id: b68e13d9-a9d0-4579-aff3-8ba3dac15a62
+token: dtKAZOizrwPzT2WXcdo7ZH2m1BCJNgsKdOb6lfrw8vbgk10cX1bVtjzOttJAOLs6
+
+{
+  "hotelId": "74dd4103-89ed-4880-a173-467224094135",
+  "integrationId": "58eb3031-0416-4e6d-8f0c-e841f79f27a3",
+  "state": "5juDd8Xes7WUmOg2Sqp2x342wJzqCDmjF2bZhAvGdMPPQXBO9C8kmnylP0qEv7MC",
+  "scopes": ["onet.messages.read"]
+}
+
+###
+
+#
+GET http://localhost:2024/api/v3/user/@me/connection
+account-id: b68e13d9-a9d0-4579-aff3-8ba3dac15a62
+token: dtKAZOizrwPzT2WXcdo7ZH2m1BCJNgsKdOb6lfrw8vbgk10cX1bVtjzOttJAOLs6
+
+###
+
+#
+GET http://localhost:2024/api/v3/user/@me/connection?hotelId=74dd4103-89ed-4880-a173-467224094135&integrationId=58eb3031-0416-4e6d-8f0c-e841f79f27a3
+account-id: b68e13d9-a9d0-4579-aff3-8ba3dac15a62
+token: dtKAZOizrwPzT2WXcdo7ZH2m1BCJNgsKdOb6lfrw8vbgk10cX1bVtjzOttJAOLs6
+
+###
+
+#
+DELETE http://localhost:2024/api/v3/user/@me/connection?hotelId=74dd4103-89ed-4880-a173-467224094135&integrationId=58eb3031-0416-4e6d-8f0c-e841f79f27a3
+account-id: b68e13d9-a9d0-4579-aff3-8ba3dac15a62
+token: dtKAZOizrwPzT2WXcdo7ZH2m1BCJNgsKdOb6lfrw8vbgk10cX1bVtjzOttJAOLs6
+
+###

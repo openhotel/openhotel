@@ -1,0 +1,44 @@
+.sessions {
+  width: 100%;
+  gap: 1rem;
+  display: flex;
+  flex-direction: column;
+
+  .row {
+    cursor: pointer;
+
+    &.selected {
+      background-color: var(--text-0-c) !important;
+      color: var(--text-2-bg) !important;
+      font-weight: bold;
+    }
+  }
+  .selectedForm {
+    padding: 2rem;
+    background-color: var(--text-2-bg);
+    border-radius: 1rem;
+    gap: 1rem;
+    display: flex;
+    flex-direction: column;
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+
+      .icon {
+        height: 2rem;
+        cursor: pointer;
+      }
+    }
+
+    .formRow {
+      display: flex;
+      gap: 1rem;
+    }
+    .actions {
+      display: flex;
+      gap: 1rem;
+      justify-content: space-between;
+    }
+  }
+}

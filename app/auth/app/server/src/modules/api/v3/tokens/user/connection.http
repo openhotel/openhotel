@@ -1,0 +1,6 @@
+#
+GET http://localhost:2024/api/v3/tokens/user/connection?accountId=35d66243-9809-4347-8428-6129b48922ec
+Content-Type: application/json
+app-token: tok.sxFALPlx.mCWgeSOm74G6AEmM1s5UtwjnkSsuhXx2sjhHZTyG0rjAngdr8BGSxFgFkTJkaUs2
+
+###

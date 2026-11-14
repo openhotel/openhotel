@@ -1,0 +1,27 @@
+.collections {
+  width: 100%;
+  gap: 1rem;
+  display: flex;
+  flex-direction: column;
+
+  .upload {
+    padding: 2rem;
+    background-color: var(--text-2-bg);
+    border-radius: 1rem;
+    gap: 1rem;
+    display: flex;
+    flex-direction: column;
+
+    .icon {
+      height: 2rem;
+    }
+
+    .errors {
+      margin: 0;
+      padding-left: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+  }
+}

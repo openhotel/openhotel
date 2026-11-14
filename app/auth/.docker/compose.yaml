@@ -1,0 +1,12 @@
+name: openhotel-auth
+services:
+  web:
+    restart: unless-stopped
+    container_name: openhotel-auth
+    ports:
+      - "2024:2024"
+    volumes:
+      - "openhotel-auth:/app"
+    image: "openhotel/auth:latest"
+volumes:
+  openhotel-auth: null

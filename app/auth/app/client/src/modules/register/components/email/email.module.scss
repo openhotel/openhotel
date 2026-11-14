@@ -1,0 +1,8 @@
+@import "../../../../shared/styles/all.module";
+
+.error {
+  display: block;
+  color: var(--text-danger);
+  font-size: 0.9em;
+  padding-left: 1rem;
+}
