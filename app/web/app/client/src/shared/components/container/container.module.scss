@@ -1,0 +1,6 @@
+@import "../../styles/mixins.module";
+
+.container {
+  padding: 0 2rem;
+  @include responsive-width();
+}

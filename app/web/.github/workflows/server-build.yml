@@ -1,0 +1,35 @@
+name: Build Server
+on:
+  push:
+    branches: [master]
+    paths:
+      - .github/**
+      - app/server/**
+  pull_request:
+    paths:
+      - .github/**
+      - app/server/**
+
+jobs:
+  server-build:
+    name: "Build Server"
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          sparse-checkout: "app/server"
+          sparse-checkout-cone-mode: false
+
+      - uses: denoland/setup-deno@v1
+        with:
+          deno-version: vx.x.x
+
+      #      - name: Tests
+      #        working-directory: ./app/server
+      #        run: deno task test
+
+      - name: Build
+        working-directory: ./app/server
+        run: deno task build

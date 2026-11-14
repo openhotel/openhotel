@@ -1,0 +1,7 @@
+@import "./shared/styles/all.module";
+@import "@openhotel/styles/dist/styles/all.module";
+
+#root {
+  height: 100%;
+  background-color: var(--text-3-bg);
+}

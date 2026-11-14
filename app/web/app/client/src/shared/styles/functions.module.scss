@@ -1,0 +1,6 @@
+@use "sass:math";
+
+// Function to convert px to rem
+@function rem($amount) {
+  @return math.div($amount, 10) * 1rem;
+}
