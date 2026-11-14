@@ -7,6 +7,7 @@ import {
   Transaction,
   User,
   UserMutable,
+  PublicUser,
 } from "shared/types/main.ts";
 import { System } from "modules/system/main.ts";
 import { ProxyEvent } from "shared/enums/event.enum.ts";
@@ -103,7 +104,12 @@ export const users = () => {
 
       if (currentRoom) {
         const room = await System.game.rooms.get(currentRoom);
-        room?.removeUser?.(getObject(), true);
+        const targetRoom = await System.game.rooms.get(roomId);
+
+        // send the new room type
+        const moveToAnotherRoomType = targetRoom.type;
+
+        room?.removeUser?.(getObject(), moveToAnotherRoomType);
       }
 
       const targetRoom = await System.game.rooms.get(roomId);
@@ -152,6 +158,13 @@ export const users = () => {
     };
 
     const getObject = (): User => $user;
+    const getPublicObject = (): PublicUser => ({
+      accountId: $user.accountId,
+      username: $user.username,
+      position: $user.position,
+      positionUpdatedAt: $user.positionUpdatedAt,
+      bodyDirection: $user.bodyDirection,
+    });
 
     const getMeta = () => $user.meta ?? null;
 
@@ -419,6 +432,7 @@ export const users = () => {
       getLastWhisper,
 
       getObject,
+      getPublicObject,
 
       disconnect,
 

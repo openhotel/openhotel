@@ -26,6 +26,7 @@ import {
   GameProvider,
   ChatProvider,
   ModerationProvider,
+  RoomProvider,
 } from "shared/hooks";
 import { NesterComponent } from "shared/components";
 
@@ -58,6 +59,7 @@ export const ApplicationComponent = () => {
       InfoProvider,
       //|\\|//|\\|//|\\|//|\\|//|\\|//|\\|//|\\|
       //|\\|//|\\|//|\\|//|\\|//|\\|//|\\|//|\\|
+      RoomProvider,
       PrivateRoomProvider,
       //|\\|//|\\|//|\\|//|\\|//|\\|//|\\|//|\\|
       //|\\|//|\\|//|\\|//|\\|//|\\|//|\\|//|\\|,

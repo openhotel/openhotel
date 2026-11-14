@@ -1,0 +1,17 @@
+{
+  "frames": {
+    "background": {
+      "frame": { "x": 0, "y": 0, "w": 620, "h": 366 },
+      "sourceSize": { "w": 620, "h": 366 },
+      "anchor": { "x": 0, "y": 0 },
+      "__key": "dbB8"
+    }
+  },
+  "meta": {
+    "size": { "w": 620, "h": 366 },
+    "format": "RGBA8888",
+    "scale": 1,
+    "image": "sprite.png"
+  },
+  "animations": {}
+}

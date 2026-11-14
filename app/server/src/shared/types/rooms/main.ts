@@ -16,6 +16,8 @@ export * from "./public.types.ts";
 
 export type RoomPoint = number | string | RoomPointEnum;
 
+export type RoomType = "public" | "private";
+
 export type FindPathProps = {
   start: Point3d;
   end: Point3d;
@@ -23,7 +25,7 @@ export type FindPathProps = {
 };
 
 export type BaseRoom = {
-  type: "public" | "private";
+  type: RoomType;
 
   version: number;
   id: string;
@@ -32,7 +34,7 @@ export type BaseRoom = {
 };
 
 export type BaseRoomMutable = {
-  type: "public" | "private";
+  type: RoomType;
 
   getId: () => string;
   getTitle: () => string;
@@ -41,7 +43,7 @@ export type BaseRoomMutable = {
   getYFromPoint: (point: Point3d) => number | null;
 
   addUser: (user: User, position?: Point3d) => Promise<void>;
-  removeUser: (user: User, moveToAnotherRoom?: boolean) => void;
+  removeUser: (user: User, moveToAnotherRoomType?: RoomType) => void;
   getUsers: () => string[];
 
   getPoint: (point: Point3d) => RoomPoint;

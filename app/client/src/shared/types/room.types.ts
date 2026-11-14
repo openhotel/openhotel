@@ -26,11 +26,18 @@ export type BaseRoom = {
 };
 
 export type PrivateRoom = BaseRoom & {
+  type: "private";
   ownerId: string;
   ownerUsername: string | null;
 
   furniture: RoomFurniture[];
 };
+
+export type PublicRoom = BaseRoom & {
+  type: "public";
+};
+
+export type Room = PrivateRoom | PublicRoom;
 
 export type RoomMessage = {
   id: string;
@@ -45,12 +52,12 @@ export type RoomMessage = {
   message: string;
 };
 
-export type PrivateRoomPreview = {
+export type RoomPreview = {
   id: string;
   type: PrivateRoomPreviewType;
   data: any | FurnitureData;
   title: string;
-  direction: CrossDirection;
+  direction?: CrossDirection;
   state?: string;
 };
 

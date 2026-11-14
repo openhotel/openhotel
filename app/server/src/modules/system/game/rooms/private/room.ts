@@ -4,6 +4,7 @@ import {
   PrivateRoomMutable,
   RoomFurniture,
   RoomPoint,
+  RoomType,
   User,
 } from "shared/types/main.ts";
 import {
@@ -56,14 +57,6 @@ export const getRoom =
     const getSpawnPoint = (): Point3d => spawnPoint;
     const getSpawnDirection = (): Direction => spawnDirection;
 
-    const mapUser = (user: User) => ({
-      accountId: user.accountId,
-      username: user.username,
-      position: user.position,
-      positionUpdatedAt: user.positionUpdatedAt,
-      bodyDirection: user.bodyDirection,
-    });
-
     const addUser = async (user: User, position?: Point3d) => {
       const $user = System.game.users.get({ accountId: user.accountId });
       if (!$user) return;
@@ -78,7 +71,7 @@ export const getRoom =
       $user.setBodyDirection(getSpawnDirection());
 
       //Add user to room
-      emit(ProxyEvent.ADD_HUMAN, { user: mapUser($user.getObject()) });
+      emit(ProxyEvent.ADD_HUMAN, { user: $user.getPublicObject() });
 
       roomUserMap[room.id].push($user.getAccountId());
 
@@ -118,7 +111,7 @@ export const getRoom =
         pivotFix: false,
       });
     };
-    const removeUser = (user: User, moveToAnotherRoom: boolean = false) => {
+    const removeUser = (user: User, moveToAnotherRoomType: RoomType = null) => {
       const $user = System.game.users.get({ accountId: user.accountId });
       if (!$user) return;
 
@@ -126,11 +119,11 @@ export const getRoom =
 
       System.game.rooms.pathfinding.remove(user.accountId);
 
+      $user.removeRoom();
+
       roomUserMap[room.id] = roomUserMap[room.id].filter(
         (accountId) => accountId !== $accountId,
       );
-
-      $user.removeRoom();
 
       //Remove user from internal "room"
       System.proxy.$emit(ProxyEvent.$REMOVE_ROOM, {
@@ -138,7 +131,7 @@ export const getRoom =
         roomId: room.id,
       });
       //Disconnect user from current room
-      $user.emit(ProxyEvent.LEAVE_ROOM, { moveToAnotherRoom });
+      $user.emit(ProxyEvent.LEAVE_ROOM, { moveToAnotherRoomType });
       //Remove user human from the room to existing users
       emit(ProxyEvent.REMOVE_HUMAN, { accountId: $user.getAccountId() });
     };
@@ -360,9 +353,10 @@ export const getRoom =
     const getObjectWithUsers = async () => ({
       ...getObject(),
       users: getUsers()
-        .map((accountId) => System.game.users.get({ accountId })?.getObject?.())
-        .filter(Boolean)
-        .map(mapUser),
+        .map((accountId) =>
+          System.game.users.get({ accountId })?.getPublicObject?.(),
+        )
+        .filter(Boolean),
       ownerUsername: await getOwnerUsername(),
     });
 

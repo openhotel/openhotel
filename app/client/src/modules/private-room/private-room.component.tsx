@@ -7,6 +7,7 @@ import React, {
 } from "react";
 import {
   CameraComponent,
+  NoteComponent,
   PreviewTileData,
   PrivateRoomComponent as PrivateRoomComp,
 } from "shared/components";
@@ -26,11 +27,11 @@ import {
   useCamera,
   useItemPlacePreview,
   useModal,
-  usePrivateRoom,
   useProxy,
+  useRoom,
   useSafeWindow,
 } from "shared/hooks";
-import { Point2d, Point3d, Size2d } from "shared/types";
+import { Point2d, Point3d, PrivateRoom, Size2d } from "shared/types";
 import {
   CrossDirection,
   Direction,
@@ -66,7 +67,7 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
     setLastPositionData,
     setAbsoluteRoomPosition,
     getUser,
-  } = usePrivateRoom();
+  } = useRoom<PrivateRoom>();
   const { lastUpdate, update } = useUpdate();
   const { isDragging, position: cameraPosition } = useCamera();
 
@@ -366,7 +367,13 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
             </ContainerComponent>
           </ContainerComponent>
         </ContainerComponent>
-      ) : null,
+      ) : (
+        <NoteComponent
+          issue={1138}
+          title="add loading on rooms"
+          description="add private room loading"
+        />
+      ),
     [
       room,
       windowSize,
