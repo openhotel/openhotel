@@ -1,0 +1,19 @@
+@use "../../../main.module" as *;
+
+.tabContent {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  .header {
+    cursor: pointer;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    margin: 0.25rem 1rem;
+
+    svg {
+      height: 2rem;
+    }
+  }
+}

@@ -1,0 +1,29 @@
+@use "../../../../main.module" as *;
+
+.footer {
+  color: var(--color-secondary);
+  background-color: var(--text-2-bg);
+
+  .container {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    line-height: 3rem;
+
+    padding: 2rem;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 90rem;
+
+    label {
+      flex: 1;
+    }
+    img {
+      height: 3rem;
+      opacity: 0.5;
+      &:hover {
+        opacity: 1;
+      }
+    }
+  }
+}

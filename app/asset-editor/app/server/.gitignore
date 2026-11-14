@@ -1,0 +1,9 @@
+/build
+config.yml
+index.html
+/data
+/sprite.png
+/sheet.json
+/data.yml
+/lang.yml
+node_modules

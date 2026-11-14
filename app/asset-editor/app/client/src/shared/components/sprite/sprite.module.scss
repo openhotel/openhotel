@@ -1,0 +1,25 @@
+.wrapper {
+  &:not(&.clean) {
+    padding: 1rem;
+    background-color: var(--text-1-bg);
+    border-radius: 1rem;
+  }
+
+  .sprite {
+    overflow: hidden;
+    position: relative;
+    cursor: zoom-in;
+
+    .background {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-color: var(--text-0-bg);
+      opacity: 0.5;
+    }
+    img {
+      position: absolute;
+      image-rendering: pixelated;
+    }
+  }
+}
