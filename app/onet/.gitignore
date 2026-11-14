@@ -1,0 +1,13 @@
+node_modules
+.idea
+.vite
+config.yml
+build
+database
+database-wal
+database-shm
+database-key
+database-pep
+database-backups
+.yarn
+collections-key

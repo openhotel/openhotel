@@ -1,0 +1,38 @@
+{
+  "tasks": {
+    "start": "deno run -A --watch=./src --unstable-kv --unstable-cron mod.ts",
+
+    "start:prod:linux": "cd build && ./onet_linux",
+
+    "compile": "deno compile -A --unstable-kv --unstable-cron --no-check",
+
+    "compile:windows": "deno task compile --target=x86_64-pc-windows-msvc --output ./build/onet_windows ./mod.ts",
+    "compile:linux": "deno task compile --target=x86_64-unknown-linux-gnu --output ./build/onet_linux ./mod.ts",
+    "compile:linux_aarch64": "deno task compile --target=aarch64-unknown-linux-gnu --output ./build/onet_linux_aarch64 ./mod.ts",
+    "compile:darwin": "deno task compile --target=x86_64-apple-darwin --output ./build/onet_darwin ./mod.ts",
+    "compile:current": "deno task compile --output ./server ./mod.ts",
+
+    "build": "(deno task compile:linux) & (deno task compile:linux_aarch64) & (deno task compile:darwin) & (deno task compile:windows)"
+  },
+  "imports": {
+    "@oh/core": "jsr:@oh/core@0.1.0",
+    "@oh/queue": "jsr:@oh/queue@1.1.1",
+    "@oh/utils": "jsr:@oh/utils@1.5.33",
+
+    "@da/bcrypt": "jsr:@da/bcrypt@1.0.1",
+    "@da/socket": "jsr:@da/socket@2.3.0",
+
+    "@std/encoding": "jsr:@std/encoding@1.0.11",
+    "@std/yaml": "jsr:@std/yaml@1.0.5",
+    "@std/ulid": "jsr:@std/ulid@1",
+    "@zip-js": "jsr:@zip-js/zip-js@2.7.53",
+
+    "modules/": "./src/modules/",
+    "shared/": "./src/shared/",
+
+    "loadenv": "https://deno.land/x/loadenv@v1.0.1/mod.ts",
+
+    "dayjs": "https://deno.land/x/deno_dayjs@v0.5.0/mod.ts"
+  },
+  "nodeModulesDir": "auto"
+}
