@@ -1,0 +1,14 @@
+{
+  "name": "@oh/core",
+  "version": "0.0.0",
+  "exports": "./index.ts",
+  "imports": {},
+  "tasks": {
+    "test:watch": "deno test --watch=./src"
+  },
+  "publish": {
+    "include": ["index.ts", "src/**/*.ts", "README.md", "LICENSE"],
+    "exclude": ["src/**/__tests__"]
+  },
+  "nodeModulesDir": "auto"
+}
