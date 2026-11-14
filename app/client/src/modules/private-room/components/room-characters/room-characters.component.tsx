@@ -1,8 +1,8 @@
-import React, { useCallback, useEffect, useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 import { RoomCharacterComponent } from "../";
-import { Event as ProxyEvent, PrivateRoomPreviewType } from "shared/enums";
-import { usePrivateRoom, useProxy } from "shared/hooks";
-import { User } from "shared/types";
+import { PrivateRoomPreviewType } from "shared/enums";
+import { useRoom } from "shared/hooks";
+import { PrivateRoom, User } from "shared/types";
 
 type Props = {
   disableHitAreas?: boolean;
@@ -11,51 +11,7 @@ type Props = {
 export const RoomCharactersComponent: React.FC<Props> = ({
   disableHitAreas = false,
 }) => {
-  const { on } = useProxy();
-  const {
-    room,
-    addUser,
-    removeUser,
-    setUserPosition,
-    setSelectedPreview,
-    setUserTargetPosition,
-  } = usePrivateRoom();
-
-  useEffect(() => {
-    if (!room) return;
-
-    const removeOnAddHuman = on(ProxyEvent.ADD_HUMAN, ({ user }) => {
-      addUser(user);
-    });
-
-    const removeOnRemoveHuman = on(ProxyEvent.REMOVE_HUMAN, ({ accountId }) => {
-      removeUser(accountId);
-    });
-
-    const removeOnMoveHuman = on(
-      ProxyEvent.MOVE_HUMAN,
-      ({ accountId, position, bodyDirection }) => {
-        const user = room.users.find((u) => u.accountId === accountId);
-        if (!user) return;
-
-        setUserTargetPosition(accountId, position, bodyDirection);
-      },
-    );
-
-    const removeOnSetPositionHuman = on(
-      ProxyEvent.SET_POSITION_HUMAN,
-      ({ accountId, position }) => {
-        setUserPosition(accountId, position);
-      },
-    );
-
-    return () => {
-      removeOnAddHuman();
-      removeOnRemoveHuman();
-      removeOnMoveHuman();
-      removeOnSetPositionHuman();
-    };
-  }, [room, on, addUser, removeUser, setUserPosition, setUserTargetPosition]);
+  const { room, setSelectedPreview } = useRoom<PrivateRoom>();
 
   const onPointerDown = useCallback(
     (user: User) => () => {

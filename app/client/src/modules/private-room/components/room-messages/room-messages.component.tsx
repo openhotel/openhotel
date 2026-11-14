@@ -6,9 +6,9 @@ import {
   useEvents,
   useWindow,
 } from "@openhotel/pixi-components";
-import { useAccount, usePrivateRoom, useProxy, useTasks } from "shared/hooks";
+import { useAccount, useProxy, useRoom, useTasks } from "shared/hooks";
 import { Event } from "shared/enums";
-import { RoomMessage, Size2d } from "shared/types";
+import { PrivateRoom, RoomMessage, Size2d } from "shared/types";
 import { getPositionFromIsometricPosition } from "shared/utils";
 import { BubbleMessageComponent } from "shared/components";
 import {
@@ -28,7 +28,7 @@ export const RoomMessagesComponent: React.FC<Props> = ({
   const { getSize } = useWindow();
   const { on: onProxy } = useProxy();
   const { getAccount } = useAccount();
-  const { room, getUser } = usePrivateRoom();
+  const { room, getUser } = useRoom<PrivateRoom>();
   const { add: addTask } = useTasks();
 
   const [maxMessages, setMaxMessages] = useState<number>(MIN_SAFE_MESSAGES);
