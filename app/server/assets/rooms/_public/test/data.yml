@@ -1,6 +1,5 @@
-id: a3f3e985-dc5c-49a8-92ba-6297b461dda5
+id: 0
 version: 1
-title: "Test"
 layout:
   - "xxxx111111111111"
   - "xxxx111111111111"
@@ -27,3 +26,6 @@ layout:
   - "33333333xxxxxxxx"
   - "xxx33xxxxxxxxxxx"
   - "xxxssxxxxxxxxxxx"
+point:
+  x: 341
+  y: 61

@@ -26,6 +26,7 @@ export const $public = () => {
 
       const roomPathname = `${PUBLIC_ROOMS_PATH}/${path + dirEntry.name}`;
 
+      console.log(roomPathname);
       const file = await Deno.readFile(roomPathname);
 
       const blob = new Blob([file]);
@@ -37,7 +38,7 @@ export const $public = () => {
       const dataFile = files.find(($file) => $file.filename === "data.yml");
       const sheetFile = files.find(($file) => $file.filename === "sheet.json");
       const spriteFile = files.find(($file) => $file.filename === "sprite.png");
-      const langFile = files.find(($file) => $file.filename === "lang.yml");
+      // const langFile = files.find(($file) => $file.filename === "lang.yml");
 
       const missingFiles = [
         dataFile ? "data.yml" : null,
@@ -53,13 +54,11 @@ export const $public = () => {
       }
 
       // data
-      const furnitureBlob = await dataFile.getData(new BlobWriter());
-      const furnitureUint8Array = new Uint8Array(
-        await furnitureBlob.arrayBuffer(),
-      );
-      const furnitureData = await parse(await furnitureBlob.text());
+      const roomBlob = await dataFile.getData(new BlobWriter());
+      const roomUint8Array = new Uint8Array(await roomBlob.arrayBuffer());
+      const roomData = await parse(await roomBlob.text());
 
-      console.log(furnitureData);
+      console.log(roomData);
     } catch (e) {
       console.error(e);
     }
