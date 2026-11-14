@@ -1,0 +1,13 @@
+@import "./shared/styles/all.module";
+@import "@oh/styles/styles.scss";
+
+#root {
+  height: 100%;
+}
+
+hr {
+  width: 100%;
+  border-bottom: 1px solid;
+  border-top: 0;
+  margin: 0;
+}

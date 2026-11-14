@@ -1,0 +1,18 @@
+{
+  "version": "4",
+  "specifiers": {
+    "npm:prettier@3.3.2": "3.3.2"
+  },
+  "npm": {
+    "prettier@3.3.2": {
+      "integrity": "sha512-rAVeHYMcv8ATV5d508CFdn+8/pHPpXeIid1DdrPwXnaAdH7cqjVbpJaT5eq4yRAFU/lsbwYwSF/n5iNrdJHPQA=="
+    }
+  },
+  "workspace": {
+    "packageJson": {
+      "dependencies": [
+        "npm:prettier@3.3.2"
+      ]
+    }
+  }
+}

@@ -1,0 +1,12 @@
+name: openhotel-static
+services:
+  web:
+    restart: unless-stopped
+    container_name: openhotel-static
+    ports:
+      - "1995:1995"
+    volumes:
+      - "openhotel-static:/app"
+    image: "openhotel/static:latest"
+volumes:
+  openhotel-static: null

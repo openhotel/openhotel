@@ -1,0 +1,32 @@
+name: Prettier Check
+on:
+  push:
+    branches: [master]
+    paths:
+      - app/server/**
+      - app/client/**
+  pull_request:
+    paths:
+      - app/server/**
+      - app/client/**
+
+jobs:
+  prettier:
+    name: "Checking code style"
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install Node.js, NPM and Yarn
+        uses: actions/setup-node@v1
+        with:
+          node-version: 20.x
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Install dependencies
+        run: yarn install --immutable
+
+      - name: Run Prettier check
+        run: yarn run prettier:check
