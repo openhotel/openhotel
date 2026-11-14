@@ -1,0 +1,15 @@
+@use "../../styles/all.module.scss" as *;
+
+.tooltip {
+  position: absolute;
+  left: 50%;
+  padding: 1rem 2rem;
+  color: var(--text-0-c);
+  border-radius: 1rem;
+
+  z-index: 9999;
+  pointer-events: none;
+
+  @include boxShadow();
+  @include glassBackground();
+}

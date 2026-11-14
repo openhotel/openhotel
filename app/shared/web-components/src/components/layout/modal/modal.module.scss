@@ -1,0 +1,11 @@
+@use "../../../styles/all.module.scss" as *;
+
+.modal {
+  border-color: var(--text-1-bd);
+  border-radius: 1rem;
+
+  background-color: var(--text-1-bg);
+  color: var(--text-1-c);
+
+  @include boxShadow();
+}

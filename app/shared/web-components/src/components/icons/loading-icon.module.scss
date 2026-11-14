@@ -1,0 +1,19 @@
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animateSpin {
+  animation: spin 1s linear infinite;
+
+  .circle {
+    opacity: 25%;
+  }
+  .move {
+    opacity: 75%;
+  }
+}

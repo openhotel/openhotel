@@ -1,0 +1,13 @@
+@use "../../../styles/colors.module.scss" as *;
+
+.footer {
+  background-color: var(--text-0-bg);
+  color: var(--text-0-c);
+
+  display: flex;
+  padding: 2rem;
+  justify-content: space-between;
+
+  text-align: center;
+  align-items: center;
+}

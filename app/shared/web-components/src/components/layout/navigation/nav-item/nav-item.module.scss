@@ -1,0 +1,26 @@
+@use "../../../../styles/all.module" as *;
+
+.navItem {
+  padding: 1rem 1rem 1rem 2rem !important;
+  border-radius: var(--border-radius-lg);
+  min-width: 100%;
+  max-width: 100%;
+
+  @include lightBoxShadow();
+
+  svg {
+    height: 1.8rem;
+  }
+
+  .text {
+    flex: 1;
+    text-align: left;
+    @include textEllipsis();
+  }
+
+  &:hover {
+    background-color: var(--btn-blue-bg) !important;
+    border-color: var(--btn-blue-bd) !important;
+    color: var(--btn-blue-c) !important;
+  }
+}

@@ -1,0 +1,53 @@
+@use "../../../styles/all.module" as *;
+
+.inputWrapper {
+  display: inline-flex;
+  position: relative;
+  width: 100%;
+  gap: 1rem;
+
+  .dragContainer {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .input {
+    display: none;
+  }
+
+  label {
+    cursor: pointer;
+    line-height: 2rem;
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    align-content: center;
+
+    padding: 1rem 2rem;
+    border-radius: var(--border-radius);
+
+    @include btn-color("btn-dark");
+
+    span {
+      line-height: 2.25rem;
+    }
+  }
+
+  .files {
+    line-height: 4rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .fileItem {
+    cursor: pointer;
+    transition: opacity 0.2s ease-in-out;
+  }
+
+  .fileItem:hover {
+    opacity: 0.7;
+    text-decoration: line-through;
+  }
+}

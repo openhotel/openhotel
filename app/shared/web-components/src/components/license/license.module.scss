@@ -1,0 +1,14 @@
+.license {
+  cursor: pointer;
+  color: var(--text-0-c);
+  display: flex;
+  text-align: center;
+  align-items: center;
+
+  text-decoration: none;
+
+  &:link,
+  &:visited {
+    text-decoration: none;
+  }
+}

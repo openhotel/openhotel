@@ -1,0 +1,46 @@
+@use "../../../../styles/all.module" as *;
+
+.navigator {
+  display: flex;
+  flex-direction: column;
+
+  padding: 1rem;
+
+  &.open {
+    display: flex !important;
+  }
+  @include phone-only() {
+    display: none;
+  }
+
+  .logo {
+    margin: 0 auto;
+
+    img {
+      width: 12.8rem;
+    }
+  }
+
+  .items {
+    height: 100%;
+
+    margin-top: 1rem;
+
+    position: relative;
+    width: 100%;
+    overflow: auto;
+    min-width: 16rem;
+
+    .content {
+      position: absolute;
+
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+
+      width: 100%;
+
+      padding: 0.3rem;
+    }
+  }
+}

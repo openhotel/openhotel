@@ -1,0 +1,9 @@
+#storybook-root {
+  padding: 0 !important;
+}
+
+.storybook-background {
+  box-sizing: border-box;
+  margin: auto;
+  min-height: 100%;
+}

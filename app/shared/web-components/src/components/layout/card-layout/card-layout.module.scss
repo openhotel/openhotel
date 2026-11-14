@@ -1,0 +1,12 @@
+.card {
+  min-width: 35rem;
+  min-height: 40rem;
+
+  &.centered {
+    margin: auto;
+  }
+
+  > main {
+    padding: 2.5rem;
+  }
+}

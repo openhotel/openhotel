@@ -1,0 +1,55 @@
+name: Publish
+on:
+  push:
+    tags:
+      - "*"
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set Versions
+        uses: actions/github-script@v4
+        id: set_version
+        with:
+          script: |
+            const tag = context.ref.substring(10).replace('v', '')
+            core.setOutput('tag', tag)
+            console.log(tag)
+
+      - name: Install Node.js, NPM and Yarn
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24.x
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Install dependencies
+        run: yarn install --immutable
+
+      - name: run prettier checker
+        run: yarn prettier:check
+
+      - name: Add version to package.json
+        uses: jaywcjlove/github-action-package@main
+        with:
+          path: "./package.json"
+          data: |
+            {
+              "version": "${{ steps.set_version.outputs.tag }}"
+            }
+
+      - name: run build
+        run: yarn run build
+
+      - name: Publish package
+        run: npm publish --provenance --access public --tag latest

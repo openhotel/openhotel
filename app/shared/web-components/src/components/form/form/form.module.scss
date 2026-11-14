@@ -1,0 +1,20 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  .inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .errors {
+    display: flex;
+    flex-direction: column;
+
+    .error {
+      color: var(--text-danger);
+    }
+  }
+}
