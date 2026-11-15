@@ -2,6 +2,9 @@ name: Check Missing Translations
 
 on:
   pull_request:
+    paths:
+      - .github/workflows/openhotel-*
+      - app/openhotel/client/**
     branches:
       - "**"
 
@@ -12,6 +15,10 @@ jobs:
       contents: read
       pull-requests: write
 
+    defaults:
+      run:
+        working-directory: app/openhotel
+
     steps:
       - uses: actions/checkout@v4
         with:
@@ -19,7 +26,7 @@ jobs:
 
       - uses: denoland/setup-deno@v1
         with:
-          deno-version: v2.x.x
+          deno-version: v2.9.x
 
       - name: Run Translations Check
         id: translation-check
