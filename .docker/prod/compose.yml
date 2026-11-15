@@ -1,8 +1,5 @@
 name: openhotel
 
-# One stock debian image, no Dockerfile and no downloader.sh.
-# On first start it downloads <APP>_linux[_aarch64].zip from the latest release into /app (volume),
-# then always runs the binary. Updates are done by the app itself.
 x-app: &app
   image: debian:bookworm-slim
   restart: unless-stopped
