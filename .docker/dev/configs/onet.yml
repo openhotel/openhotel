@@ -1,0 +1,12 @@
+auth:
+  api: http://localhost:2024/api/v3
+collections:
+  s3:
+    enabled: true
+    endpoint: localhost
+    port: 9000
+    useSSL: false
+    accessKey: openhotel
+    secretKey: openhotel
+    region: us-east-1
+    bucket: collections

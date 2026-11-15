@@ -1,0 +1,174 @@
+name: openhotel
+
+# One stock debian image, no Dockerfile and no downloader.sh.
+# On first start it downloads <APP>_linux[_aarch64].zip from the latest release into /app (volume),
+# then always runs the binary. Updates are done by the app itself.
+x-app: &app
+  image: debian:bookworm-slim
+  restart: unless-stopped
+  working_dir: /app
+  entrypoint: ["bash", "-c"]
+  command:
+    - |
+      set -euo pipefail
+      NAME="$${APP}_linux"
+      [ "$$(arch)" = "aarch64" ] && NAME="$${NAME}_aarch64"
+
+      # binary inside the zip: BIN if set, else <app>_linux, else with "-" as "_" (asset-editor -> asset_editor)
+      find_bin() {
+        for c in "$${BIN:-}" "$$NAME" "$${NAME//-/_}"; do
+          [ -n "$$c" ] && [ -f "./$$c" ] && { echo "$$c"; return 0; }
+        done
+        return 0
+      }
+
+      if ! command -v curl >/dev/null || ! command -v unzip >/dev/null; then
+        apt-get update
+        apt-get install -y --no-install-recommends curl ca-certificates jq unzip $${PACKAGES:-}
+        apt-get clean
+      fi
+
+      if [ -z "$$(find_bin)" ]; then
+        TAG="$${VERSION:-latest}"
+        API="https://api.github.com/repos/$$REPO/releases"
+
+        # optional token: anonymous GitHub API is limited to 60 requests/hour per IP
+        AUTH=()
+        [ -n "$${GITHUB_TOKEN:-}" ] && AUTH=(-H "Authorization: Bearer $$GITHUB_TOKEN")
+        api() {
+          curl -fsSL -H "Accept: application/vnd.github+json" "$${AUTH[@]}" "$$1" || {
+            echo "GitHub API failed for $$1 (rate limit or wrong version?). Retrying in 60s..." >&2
+            sleep 60
+            return 1
+          }
+        }
+
+        if [ "$$TAG" != "latest" ]; then
+          JSON=$$(api "$$API/tags/v$${TAG#v}")
+        elif [ "$${PRERELEASE:-false}" = "true" ]; then
+          # newest release, pre-releases included
+          JSON=$$(api "$$API?per_page=1" | jq '.[0]')
+        else
+          # newest stable release (GitHub skips pre-releases here)
+          JSON=$$(api "$$API/latest")
+        fi
+        echo "Release: $$(echo "$$JSON" | jq -r '.tag_name')"
+        URL=$$(echo "$$JSON" \
+          | jq -r --arg n "$$NAME.zip" '.assets[] | select(.name == $$n) | .browser_download_url')
+        [ -n "$$URL" ] || { echo "$$NAME.zip not found in release $$TAG"; exit 1; }
+        echo "Downloading $$URL"
+        curl -fsSL "$$URL" -o /tmp/app.zip
+        unzip -o -q /tmp/app.zip -d /app
+      fi
+
+      EXE=$$(find_bin)
+      if [ -z "$$EXE" ]; then
+        echo "No binary found for $$APP. Files in /app:"; ls -la /app
+        sleep 60; exit 1
+      fi
+      chmod +x "./$$EXE"
+      exec "./$$EXE"
+
+services:
+  openhotel:
+    <<: *app
+    container_name: openhotel
+    environment:
+      REPO: openhotel/openhotel
+      VERSION: ${VERSION:-latest}
+      PRERELEASE: ${PRERELEASE:-false}
+      GITHUB_TOKEN: ${GITHUB_TOKEN:-}
+      APP: openhotel
+      # Puppeteer dependencies for the hotel server
+      PACKAGES: >-
+        libglib2.0-0 libnss3 libdbus-1-3 libatk1.0-0 libatk-bridge2.0-0 libcups2
+        libxkbcommon0 libxcomposite1 libxdamage1 libxfixes3 libxrandr2 libgbm1
+        libpango-1.0-0 libcairo2 libasound2
+    ports:
+      - "1994:1994"
+    volumes:
+      - "openhotel-data:/app"
+    profiles: ["openhotel", "all"]
+
+  auth:
+    <<: *app
+    container_name: openhotel-auth
+    environment:
+      REPO: openhotel/openhotel
+      VERSION: ${VERSION:-latest}
+      PRERELEASE: ${PRERELEASE:-false}
+      GITHUB_TOKEN: ${GITHUB_TOKEN:-}
+      APP: auth
+    ports:
+      - "2024:2024"
+    volumes:
+      - "openhotel-auth:/app"
+    profiles: ["auth", "all"]
+
+  web:
+    <<: *app
+    container_name: openhotel-web
+    environment:
+      REPO: openhotel/openhotel
+      VERSION: ${VERSION:-latest}
+      PRERELEASE: ${PRERELEASE:-false}
+      GITHUB_TOKEN: ${GITHUB_TOKEN:-}
+      APP: web
+    ports:
+      - "2025:2025"
+    volumes:
+      - "openhotel-web:/app"
+    profiles: ["web", "all"]
+
+  onet:
+    <<: *app
+    container_name: openhotel-onet
+    environment:
+      REPO: openhotel/openhotel
+      VERSION: ${VERSION:-latest}
+      PRERELEASE: ${PRERELEASE:-false}
+      GITHUB_TOKEN: ${GITHUB_TOKEN:-}
+      APP: onet
+    ports:
+      - "9400:9400"
+    volumes:
+      - "openhotel-onet:/app"
+    profiles: ["onet", "all"]
+
+  static:
+    <<: *app
+    container_name: openhotel-static
+    environment:
+      REPO: openhotel/openhotel
+      VERSION: ${VERSION:-latest}
+      PRERELEASE: ${PRERELEASE:-false}
+      GITHUB_TOKEN: ${GITHUB_TOKEN:-}
+      APP: static
+    ports:
+      - "1995:1995"
+    volumes:
+      - "openhotel-static:/app"
+    profiles: ["static", "all"]
+
+  asset-editor:
+    <<: *app
+    container_name: openhotel-asset-editor
+    environment:
+      REPO: openhotel/openhotel
+      VERSION: ${VERSION:-latest}
+      PRERELEASE: ${PRERELEASE:-false}
+      GITHUB_TOKEN: ${GITHUB_TOKEN:-}
+      APP: asset-editor
+    ports:
+      - "2030:2030"
+    volumes:
+      - "openhotel-asset-editor:/app"
+    profiles: ["asset-editor", "all"]
+
+volumes:
+  openhotel-data: null
+  openhotel-auth: null
+  openhotel-web: null
+  openhotel-onet: null
+  openhotel-static: null
+  openhotel-asset-editor: null

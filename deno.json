@@ -1,0 +1,36 @@
+{
+  "tasks": {
+    "install": "corepack enable && deno task install:base && deno task install:openhotel && deno task install:auth && deno task install:web && deno task install:static && deno task install:asset-editor",
+    "install:base": "yarn install --immutable",
+    "install:openhotel": "cd app/openhotel && deno task install",
+    "install:auth": "cd app/auth && deno task install",
+    "install:web": "cd app/web && deno task install",
+    "install:static": "cd app/static && deno task install",
+    "install:asset-editor": "cd app/asset-editor && deno task install",
+
+    "start": "deno task start:openhotel",
+    "start:all": "deno task start:auth & deno task start:onet & deno task start:web & deno task start:static & deno task start:asset-editor & deno task start:openhotel",
+    "start:openhotel": "cd app/openhotel && deno task start",
+    "start:auth": "cd app/auth && deno task start",
+    "start:web": "cd app/web && deno task start",
+    "start:onet": "cd app/onet && deno task start",
+    "start:static": "cd app/static && deno task start",
+    "start:asset-editor": "cd app/asset-editor && deno task start",
+
+    "dev:setup": "cd .docker/dev && deno task setup",
+    "dev:seed": "cd .docker/dev && deno task seed",
+    "dev:up": "cd .docker/dev && deno task up",
+    "dev:logs": "cd .docker/dev && deno task logs",
+    "dev:down": "cd .docker/dev && deno task down",
+    "dev:reset": "cd .docker/dev && deno task reset",
+
+    "prod:up": "cd .docker/prod && deno task up",
+    "prod:logs": "cd .docker/prod && deno task logs",
+    "prod:ps": "cd .docker/prod && deno task ps",
+    "prod:restart": "cd .docker/prod && deno task restart",
+    "prod:down": "cd .docker/prod && deno task down",
+
+    "progress": "gource --viewport 1600x900 --user-image-dir .gource/avatars -s .25 --hide progress,mouse --high-dpi"
+  },
+  "nodeModulesDir": "auto"
+}

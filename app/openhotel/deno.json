@@ -1,9 +1,6 @@
 {
   "tasks": {
-    "install": "corepack enable && (deno task install:base --immutable & deno task install:client --immutable)",
-    "install:force": "deno task install:base & deno task install:client",
-    "install:base": "yarn install",
-    "install:client": "cd app/client && yarn install",
+    "install": "cd app/client && yarn install --immutable",
 
     "start": "deno task start:client & deno task start:server",
     "start:client": "cd app/client && yarn start",
@@ -15,9 +12,7 @@
     "build": "deno run -A ./build.ts",
 
     "check-storybook": "cd ./app/client && yarn run storybook:build && yarn run storybook:test",
-    "check-translations": "deno run --allow-read ./scripts/checkTranslations.ts",
-
-    "progress": "gource --viewport 1600x900 --user-image-dir .gource/avatars -s .25 --hide progress,mouse --high-dpi"
+    "check-translations": "deno run --allow-read ./scripts/checkTranslations.ts"
   },
   "imports": {
     "deno/": "https://deno.land/std@0.221.0/",

@@ -1,0 +1,4 @@
+version: development
+# auth.enabled & auth.appToken are set by `deno task seed`
+auth:
+  url: http://localhost:2024

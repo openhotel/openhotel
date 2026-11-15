@@ -1,6 +1,0 @@
-{
-  "tasks": {
-    "enable": "docker buildx create --use",
-    "build": "docker buildx build  --platform linux/amd64,linux/arm64 -t openhotel/auth:latest --push ."
-  }
-}

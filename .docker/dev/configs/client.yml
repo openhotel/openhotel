@@ -1,0 +1,9 @@
+version: development
+# auth.enabled & auth.licenseToken are set by `deno task seed`
+auth:
+  api: http://localhost:2024
+onet:
+  enabled: true
+  api: http://localhost:9400
+phantom:
+  enabled: false

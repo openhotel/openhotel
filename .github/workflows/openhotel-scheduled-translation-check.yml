@@ -1,0 +1,28 @@
+name: Scheduled Translation Check
+
+on:
+  schedule:
+    - cron: "0 0 * * 0"
+
+jobs:
+  scheduled-check:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+
+    defaults:
+      run:
+        working-directory: app/openhotel
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: denoland/setup-deno@v1
+        with:
+          deno-version: v2.9.x
+
+      - name: Run Translations Check
+        run: deno task check-translations

@@ -1,0 +1,47 @@
+name: openhotel/server build
+on:
+  push:
+    branches: [master, monster]
+    paths:
+      - .github/workflows/openhotel-*
+      - app/openhotel/server/**
+      - app/shared/src/**
+
+  pull_request:
+    paths:
+      - .github/workflows/openhotel-*
+      - app/openhotel/server/**
+      - app/shared/src/**
+
+jobs:
+  openhotel-server-build:
+    name: "openhotel/server build"
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: app/openhotel
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          sparse-checkout: "app/openhotel"
+          sparse-checkout-cone-mode: false
+
+      - uses: denoland/setup-deno@v1
+        with:
+          deno-version: v2.9.x
+
+      - name: Install Node.js, NPM and Yarn
+        uses: actions/setup-node@v1
+        with:
+          node-version: 22.x
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Install dependencies
+        run: yarn install --immutable
+
+      - name: Build
+        run: deno task build --debug --target=* --server --zip

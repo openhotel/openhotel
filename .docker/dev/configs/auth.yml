@@ -1,0 +1,7 @@
+version: development
+email:
+  enabled: true
+  hostname: localhost
+  port: 1025
+  username: no-reply@openhotel.local
+  password: devkit

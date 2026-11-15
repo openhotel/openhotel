@@ -163,7 +163,7 @@ export const FurnitureDataActionsComponent: React.FC = () => {
                 states,
                 defaultState: states.includes(action.defaultState)
                   ? action.defaultState
-                  : states[0] ?? "",
+                  : (states[0] ?? ""),
               };
             }
             return { ...action, [field]: value };

@@ -1,0 +1,16 @@
+{
+  "tasks": {
+    "setup": "deno run --allow-read --allow-write --allow-run=docker setup.ts",
+    "seed": "deno run --allow-read --allow-write --allow-net=localhost:2024,localhost:8025 seed.ts",
+    "reset": "deno run --allow-read --allow-write --allow-run=docker reset.ts",
+    "up": "docker compose up -d --build",
+    "logs": "docker compose logs -f --tail=100",
+    "down": "docker compose down"
+  },
+  "imports": {
+    "@std/dotenv": "jsr:@std/dotenv@0.225.8",
+    "@std/fs": "jsr:@std/fs@1.0.24",
+    "@std/path": "jsr:@std/path@1.1.6",
+    "@std/yaml": "jsr:@std/yaml@1.3.0"
+  }
+}

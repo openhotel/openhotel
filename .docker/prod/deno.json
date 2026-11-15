@@ -1,0 +1,10 @@
+{
+  "tasks": {
+    "env": "[ -f .env ] || cp .env.example .env",
+    "up": "deno task env && docker compose up -d",
+    "logs": "docker compose logs -f --tail=100",
+    "ps": "docker compose ps",
+    "restart": "docker compose restart",
+    "down": "docker compose down"
+  }
+}

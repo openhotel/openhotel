@@ -1,0 +1,13 @@
+users:
+  - username: admin
+    email: admin@openhotel.local
+    password: admin1234
+  - username: pagoru
+    email: pagoru@openhotel.local
+    password: pagoru1234
+  - username: alqubo
+    email: alqubo@openhotel.local
+    password: alqubo1234
+
+hotel:
+  name: Devkit Hotel
