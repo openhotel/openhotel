@@ -85,7 +85,7 @@ services:
         libxkbcommon0 libxcomposite1 libxdamage1 libxfixes3 libxrandr2 libgbm1
         libpango-1.0-0 libcairo2 libasound2
     ports:
-      - "1994:1994"
+      - "${OPENHOTEL_PORT:-1990-1994}:1994"
     volumes:
       - "openhotel-data:/app"
     profiles: ["openhotel", "all"]
@@ -100,7 +100,7 @@ services:
       GITHUB_TOKEN: ${GITHUB_TOKEN:-}
       APP: auth
     ports:
-      - "2024:2024"
+      - "${AUTH_PORT:-2020-2024}:2024"
     volumes:
       - "openhotel-auth:/app"
     profiles: ["auth", "all"]
@@ -115,7 +115,7 @@ services:
       GITHUB_TOKEN: ${GITHUB_TOKEN:-}
       APP: web
     ports:
-      - "2025:2025"
+      - "${WEB_PORT:-2025-2029}:2025"
     volumes:
       - "openhotel-web:/app"
     profiles: ["web", "all"]
@@ -130,7 +130,7 @@ services:
       GITHUB_TOKEN: ${GITHUB_TOKEN:-}
       APP: onet
     ports:
-      - "9400:9400"
+      - "${ONET_PORT:-9400-9410}:9400"
     volumes:
       - "openhotel-onet:/app"
     profiles: ["onet", "all"]
@@ -145,7 +145,7 @@ services:
       GITHUB_TOKEN: ${GITHUB_TOKEN:-}
       APP: static
     ports:
-      - "1995:1995"
+      - "${STATIC_PORT:-1995-1999}:1995"
     volumes:
       - "openhotel-static:/app"
     profiles: ["static", "all"]
@@ -160,7 +160,7 @@ services:
       GITHUB_TOKEN: ${GITHUB_TOKEN:-}
       APP: asset-editor
     ports:
-      - "2030:2030"
+      - "${ASSET_EDITOR_PORT:-2030-2039}:2030"
     volumes:
       - "openhotel-asset-editor:/app"
     profiles: ["asset-editor", "all"]
