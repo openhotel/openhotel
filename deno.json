@@ -1,0 +1,12 @@
+{
+  "tasks": {
+    "install": "corepack enable && (deno task install:openhotel)",
+    "install:openhotel": "cd app/openhotel && deno task install",
+
+    "start": "deno task start:openhotel",
+    "start:openhotel": "cd app/openhotel && deno task start",
+
+    "progress": "gource --viewport 1600x900 --user-image-dir .gource/avatars -s .25 --hide progress,mouse --high-dpi"
+  },
+  "nodeModulesDir": "auto"
+}

@@ -1,0 +1,39 @@
+name: auth/server Build
+on:
+  push:
+    branches: [master, monster]
+    paths:
+      - .github/workflows/auth-*
+      - app/auth/server/**
+      - app/shared/src/**
+
+  pull_request:
+    paths:
+      - .github/workflows/auth-*
+      - app/auth/server/**
+      - app/shared/src/**
+
+jobs:
+  auth-sever-build:
+    name: "auth/server build"
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: app/auth/app/server
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          sparse-checkout: "app/auth/app/server"
+          sparse-checkout-cone-mode: false
+
+      - uses: denoland/setup-deno@v1
+        with:
+          deno-version: v2.9.x
+
+      - name: Tests
+        run: deno task test
+
+      - name: Build
+        run: deno task build

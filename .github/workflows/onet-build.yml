@@ -1,0 +1,36 @@
+name: onet Build
+on:
+  push:
+    branches: [master, monster]
+    paths:
+      - .github/workflows/onet-*
+      - app/onet/**
+      - app/shared/src/**
+
+  pull_request:
+    paths:
+      - .github/workflows/onet-*
+      - app/onet/**
+      - app/shared/src/**
+
+jobs:
+  onet-build:
+    name: "onet build"
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: app/onet
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          sparse-checkout: "app/onet"
+          sparse-checkout-cone-mode: false
+
+      - uses: denoland/setup-deno@v1
+        with:
+          deno-version: 2.9.x
+
+      - name: Build
+        run: deno task build

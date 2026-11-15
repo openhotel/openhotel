@@ -1,0 +1,19 @@
+{
+  "version": "5",
+  "specifiers": {
+    "npm:prettier@3.9.5": "3.9.5"
+  },
+  "npm": {
+    "prettier@3.9.5": {
+      "integrity": "sha512-/FVl766LpUfB5vXgCYOYa0MeV/441Ia99AeICQIQFTY/Nw0roZwULcXpku5i1/m5kt/baz+s4Zogspd839HSMg==",
+      "bin": true
+    }
+  },
+  "workspace": {
+    "packageJson": {
+      "dependencies": [
+        "npm:prettier@3.9.5"
+      ]
+    }
+  }
+}

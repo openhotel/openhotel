@@ -149,7 +149,7 @@ if (compileAll || server) {
 
     const [arch, , os] = $target.split("-");
 
-    const $targetName = `server_${os}${arch === "aarch64" ? "_aarch64" : ""}`;
+    const $targetName = `openhotel_${os}${arch === "aarch64" ? "_aarch64" : ""}`;
 
     const command = new Deno.Command(Deno.execPath(), {
       args: [

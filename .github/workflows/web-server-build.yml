@@ -1,0 +1,38 @@
+name: web/server Build
+on:
+  push:
+    branches: [master, monster]
+    paths:
+      - .github/workflows/web-*
+      - app/web/server/**
+      - app/shared/src/**
+
+  pull_request:
+    paths:
+      - .github/workflows/web-*
+      - app/web/server/**
+      - app/shared/src/**
+
+jobs:
+  web-server-build:
+    name: "web/server build"
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: app/web/app/server
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          sparse-checkout: "app/web/app/server"
+          sparse-checkout-cone-mode: false
+
+      - uses: denoland/setup-deno@v1
+        with:
+          deno-version: v2.9.x
+
+      #      - name: Tests
+      #        run: deno task test
+
+      - name: Build
+        run: deno task build

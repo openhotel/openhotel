@@ -1,0 +1,436 @@
+name: Release
+on:
+  push:
+    tags:
+      - "*"
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  # bump if release.oh changes structure
+  RELEASE_SCHEMA_VERSION: 1
+  # position = id. Only append, never reorder or remove
+  RELEASE_PROJECTS: "openhotel,web,static,onet,auth,asset-editor"
+  # folders that affect every project
+  RELEASE_SHARED_PATHS: "app/shared"
+
+jobs:
+  version:
+    name: "set version"
+    runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.set_version.outputs.tag }}
+      version: ${{ steps.set_version.outputs.version }}
+    steps:
+      - name: Set Versions
+        id: set_version
+        run: |
+          if ! [[ "$GITHUB_REF_NAME" =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-.+)?$ ]]; then
+            echo "Invalid tag: $GITHUB_REF_NAME (expected vX.Y.Z)"
+            exit 1
+          fi
+          TAG="${GITHUB_REF_NAME#v}"                           # 1.1.0-beta.1
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"                  # 1.1.0-beta.1
+          echo "version=${TAG%%-*}" >> "$GITHUB_OUTPUT"        # 1.1.0
+
+  changes:
+    name: "detect changes"
+    runs-on: ubuntu-latest
+    outputs:
+      prev: ${{ steps.diff.outputs.prev }}
+      openhotel: ${{ steps.diff.outputs.openhotel }}
+      web: ${{ steps.diff.outputs.web }}
+      auth: ${{ steps.diff.outputs.auth }}
+      asset-editor: ${{ steps.diff.outputs.asset-editor }}
+      onet: ${{ steps.diff.outputs.onet }}
+      static: ${{ steps.diff.outputs.static }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # needed to see old tags and history
+
+      - name: Diff against previous release
+        id: diff
+        run: |
+          PREV=$(git describe --tags --abbrev=0 "${GITHUB_REF_NAME}^" 2>/dev/null || true)
+          echo "prev=$PREV" >> "$GITHUB_OUTPUT"
+          echo "Previous release: ${PREV:-none}"
+
+          IFS=',' read -ra PROJECTS <<< "$RELEASE_PROJECTS"
+          IFS=',' read -ra SHARED <<< "$RELEASE_SHARED_PATHS"
+
+          for project in "${PROJECTS[@]}"; do
+            if [ -z "$PREV" ] || ! git diff --quiet "$PREV" "$GITHUB_REF_NAME" -- "app/$project" "${SHARED[@]}"; then
+              result=true
+            else
+              result=false
+            fi
+            echo "$project: $result"
+            echo "$project=$result" >> "$GITHUB_OUTPUT"
+          done
+
+  reuse:
+    name: "reuse previous builds"
+    needs: [version, changes]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      PREV: ${{ needs.changes.outputs.prev }}
+      CHANGES: ${{ toJSON(needs.changes.outputs) }}
+      VERSION: ${{ needs.version.outputs.version }}
+    steps:
+      - name: Ensure release exists
+        run: |
+          gh release view "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1 \
+            || gh release create "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" --generate-notes \
+            || true
+
+      - name: Download previous assets
+        run: |
+          mkdir -p assets prev
+          if [ -z "$PREV" ]; then
+            echo "No previous release, nothing to reuse."
+            exit 0
+          fi
+
+          gh release download "$PREV" --repo "$GITHUB_REPOSITORY" \
+            --dir prev --pattern "release.oh" || true
+
+          for app in $(echo "$CHANGES" | jq -r 'to_entries[] | select(.value == "false") | .key'); do
+            echo "Reusing $app from $PREV"
+            gh release download "$PREV" --repo "$GITHUB_REPOSITORY" \
+              --dir assets --pattern "${app}_*.zip" || true
+          done
+
+      - name: Create release.oh
+        shell: python
+        run: |
+          import json, os, struct
+
+          SCHEMA = int(os.environ["RELEASE_SCHEMA_VERSION"])
+          PROJECTS = os.environ["RELEASE_PROJECTS"].split(",")
+          changes = json.loads(os.environ["CHANGES"])
+          new = tuple(int(x) for x in os.environ["VERSION"].split("."))
+
+          prev = {}
+          if os.path.exists("prev/release.oh"):
+              data = open("prev/release.oh", "rb").read()
+              if data[:2] == b"OH" and data[2] == SCHEMA:
+                  off = 4
+                  for _ in range(data[3]):
+                      pid, *v = struct.unpack_from(">BHHH", data, off)
+                      prev[pid] = tuple(v)
+                      off += 7
+
+          out = bytearray(b"OH") + bytes([SCHEMA, len(PROJECTS)])
+          for pid, name in enumerate(PROJECTS):
+              v = prev[pid] if changes.get(name) == "false" and pid in prev else new
+              out += struct.pack(">BHHH", pid, *v)
+              print(f"{pid} {name}: {'.'.join(map(str, v))}")
+
+          open("assets/release.oh", "wb").write(out)
+
+      - name: Upload
+        run: |
+          gh release upload "$GITHUB_REF_NAME" assets/* \
+            --repo "$GITHUB_REPOSITORY" --clobber
+
+  openhotel-build:
+    name: "openhotel build"
+    needs: [version, changes]
+    if: needs.changes.outputs.openhotel == 'true'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: app/openhotel
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: "app/openhotel"
+          sparse-checkout-cone-mode: false
+
+      - uses: denoland/setup-deno@v1
+        with:
+          deno-version: v2.9.x
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+
+      - name: Build
+        run: deno task build --debug --version=${{ needs.version.outputs.tag }} --zip --release
+
+      - name: "Upload to release"
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: ./app/openhotel/build/zips/*
+          tag: ${{ github.ref }}
+          overwrite: true
+          file_glob: true
+  web-build:
+    name: "web build"
+    needs: [version, changes]
+    if: needs.changes.outputs.web == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: "app/web"
+          sparse-checkout-cone-mode: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+
+      - uses: denoland/setup-deno@v1
+        with:
+          deno-version: v2.9.x
+
+      - name: Add version to package.json
+        uses: jaywcjlove/github-action-package@main
+        with:
+          path: "./app/web/app/client/package.json"
+          data: |
+            {
+              "version": "${{ needs.version.outputs.tag }}"
+            }
+
+      - name: Replace version
+        uses: richardrigutins/replace-in-files@v2
+        with:
+          files: "./app/web/app/server/mod.ts"
+          search-text: "__VERSION__"
+          replacement-text: ${{ needs.version.outputs.tag }}
+
+      - name: Build client
+        working-directory: ./app/web/app/client
+        run: |
+          corepack enable
+          yarn install --immutable
+          yarn run build
+
+      - name: Build and zip server
+        working-directory: ./app/web/app/server
+        run: |
+          mkdir -p build
+          cp -r ../client/build build/client
+          deno task compile:linux
+          (cd build && zip -r "$GITHUB_WORKSPACE/web_linux.zip" .)
+
+      - name: "Upload to release"
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: ./web_linux.zip
+          tag: ${{ github.ref }}
+          overwrite: true
+  static-build:
+    name: "static build"
+    needs: [version, changes]
+    if: needs.changes.outputs.static == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: "app/static"
+          sparse-checkout-cone-mode: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+
+      - uses: denoland/setup-deno@v1
+        with:
+          deno-version: v2.9.x
+
+      - name: Add version to package.json
+        uses: jaywcjlove/github-action-package@main
+        with:
+          path: "./app/static/app/client/package.json"
+          data: |
+            {
+              "version": "${{ needs.version.outputs.tag }}"
+            }
+
+      - name: Replace version
+        uses: richardrigutins/replace-in-files@v2
+        with:
+          files: "./app/static/app/server/mod.ts"
+          search-text: "__VERSION__"
+          replacement-text: ${{ needs.version.outputs.tag }}
+
+      - name: Build client
+        working-directory: ./app/static/app/client
+        run: |
+          corepack enable
+          yarn install --immutable
+          yarn run build
+
+      - name: Build and zip server
+        working-directory: ./app/static/app/server
+        run: |
+          mkdir -p build
+          cp -r ../client/build build/client
+          deno task compile:linux
+          (cd build && zip -r "$GITHUB_WORKSPACE/static_linux.zip" .)
+
+      - name: "Upload to release"
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: ./static_linux.zip
+          tag: ${{ github.ref }}
+          overwrite: true
+  onet-build:
+    name: "onet build"
+    needs: [version, changes]
+    if: needs.changes.outputs.onet == 'true'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: app/onet
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: "app/onet"
+          sparse-checkout-cone-mode: false
+
+      - uses: denoland/setup-deno@v1
+        with:
+          deno-version: v2.9.x
+
+      - name: Replace version
+        uses: richardrigutins/replace-in-files@v2
+        with:
+          files: "./app/onet/mod.ts"
+          search-text: "__VERSION__"
+          replacement-text: ${{ needs.version.outputs.tag }}
+
+      - name: Build and zip
+        run: |
+          deno task compile:linux
+          (cd build && zip -r "$GITHUB_WORKSPACE/onet_linux.zip" .)
+
+      - name: "Upload to release"
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: ./onet_linux.zip
+          tag: ${{ github.ref }}
+          overwrite: true
+  auth-build:
+    name: "auth build"
+    needs: [version, changes]
+    if: needs.changes.outputs.auth == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: "app/auth"
+          sparse-checkout-cone-mode: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+
+      - uses: denoland/setup-deno@v1
+        with:
+          deno-version: v2.9.x
+
+      - name: Add version to package.json
+        uses: jaywcjlove/github-action-package@main
+        with:
+          path: "./app/auth/app/client/package.json"
+          data: |
+            {
+              "version": "${{ needs.version.outputs.tag }}"
+            }
+
+      - name: Replace version
+        uses: richardrigutins/replace-in-files@v2
+        with:
+          files: "./app/auth/app/server/mod.ts"
+          search-text: "__VERSION__"
+          replacement-text: ${{ needs.version.outputs.tag }}
+
+      - name: Build client
+        working-directory: ./app/auth/app/client
+        run: |
+          corepack enable
+          yarn install --immutable
+          yarn run build
+
+      - name: Build and zip server
+        working-directory: ./app/auth/app/server
+        run: |
+          mkdir -p build
+          cp -r ../client/build build/client
+          deno task compile:linux
+          (cd build && zip -r "$GITHUB_WORKSPACE/auth_linux.zip" .)
+
+      - name: "Upload to release"
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: ./auth_linux.zip
+          tag: ${{ github.ref }}
+          overwrite: true
+  asset-editor-build:
+    name: "asset-editor build"
+    needs: [version, changes]
+    if: needs.changes.outputs.asset-editor == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: "app/asset-editor"
+          sparse-checkout-cone-mode: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+
+      - uses: denoland/setup-deno@v1
+        with:
+          deno-version: v2.9.x
+
+      - name: Add version to package.json
+        uses: jaywcjlove/github-action-package@main
+        with:
+          path: "./app/asset-editor/app/client/package.json"
+          data: |
+            {
+              "version": "${{ needs.version.outputs.tag }}"
+            }
+
+      - name: Replace version
+        uses: richardrigutins/replace-in-files@v2
+        with:
+          files: "./app/asset-editor/app/server/mod.ts"
+          search-text: "__VERSION__"
+          replacement-text: ${{ needs.version.outputs.tag }}
+
+      - name: Build client
+        working-directory: ./app/asset-editor/app/client
+        run: |
+          corepack enable
+          yarn install --immutable
+          yarn run build
+
+      - name: Build and zip server
+        working-directory: ./app/asset-editor/app/server
+        run: |
+          mkdir -p build
+          cp -r ../client/build build/client
+          deno task compile:linux
+          (cd build && zip -r "$GITHUB_WORKSPACE/asset-editor_linux.zip" .)
+
+      - name: "Upload to release"
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: ./asset-editor_linux.zip
+          tag: ${{ github.ref }}
+          overwrite: true

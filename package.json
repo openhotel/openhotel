@@ -1,0 +1,10 @@
+{
+  "scripts": {
+    "prettier:check": "prettier -c ./",
+    "prettier:write": "prettier --write ."
+  },
+  "devDependencies": {
+    "prettier": "3.9.5"
+  },
+  "packageManager": "yarn@4.6.0"
+}

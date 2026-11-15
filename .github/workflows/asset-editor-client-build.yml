@@ -1,0 +1,43 @@
+name: asset-editor/client Build
+on:
+  push:
+    branches: [master, monster]
+    paths:
+      - .github/workflows/asset-editor-*
+      - app/asset-editor/client/**
+      - app/shared/src/**
+
+  pull_request:
+    paths:
+      - .github/workflows/asset-editor-*
+      - app/asset-editor/client/**
+      - app/shared/src/**
+
+jobs:
+  asset-editor-client-build:
+    name: "asset-editor/client build"
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: app/asset-editor/app/client
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          sparse-checkout: "app/asset-editor/app/client"
+          sparse-checkout-cone-mode: false
+
+      - name: Install Node.js, NPM and Yarn
+        uses: actions/setup-node@v1
+        with:
+          node-version: 22.x
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Install dependencies
+        run: yarn install --immutable
+
+      - name: Build
+        run: yarn run build

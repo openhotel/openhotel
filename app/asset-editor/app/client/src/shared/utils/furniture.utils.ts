@@ -60,7 +60,7 @@ export const parseFurniture = (
       height: furniture?.size?.height ?? 0,
       depth:
         furniture.type === FurnitureType.FURNITURE
-          ? furniture?.size?.depth ?? 0
+          ? (furniture?.size?.depth ?? 0)
           : 0,
     },
     direction: {
