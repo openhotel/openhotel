@@ -1,33 +1,16 @@
 import { Point } from "@shared/types/point.types.ts";
 import { Grid } from "@shared/types/grid.types.ts";
 import { FindPathConfig } from "@shared/types/finder.types.ts";
-import { OpenList } from "@shared/types/open-list.types.ts";
 import { createOpenList } from "@shared/utils/open-list.utils.ts";
-
-const NOT_REACHED_COST: number = 999999;
-const MAX_JUMP_HEIGHT: number = 5;
-
-type PathNode = {
-  from: PathNode | null;
-  point: Point;
-  cost: number;
-  heuristicValue: number;
-  toString: () => string;
-};
-
-const createPathNode = (
-  point: Point,
-  from: PathNode | null,
-  cost: number,
-  heuristicValue: number,
-): PathNode => ({
-  from,
-  point,
-  cost,
-  heuristicValue,
-  toString: () =>
-    `(${point.x}, ${point.y}, cost: ${cost}, heuristic: ${heuristicValue})`,
-});
+import { getTravelHeuristic, isTilePoint } from "@shared/utils/finder.utils.ts";
+import {
+  DEFAULT_COST_MULTIPLIER,
+  DEFAULT_MAX_ITERATIONS,
+  DEFAULT_MAX_JUMP_COST,
+  MAX_JUMP_HEIGHT,
+  NON_WALKABLE_HEIGHT,
+  NOT_REACHED_COST,
+} from "@shared/consts/finder.consts.ts";
 
 export const findPath = (
   startPoint: Point,
@@ -35,175 +18,146 @@ export const findPath = (
   grid: Grid,
   config: FindPathConfig,
 ): Point[] => {
-  const diagonalCostMultiplier = config.diagonalCostMultiplier ?? 1;
-  const orthogonalCostMultiplier = config.orthogonalCostMultiplier ?? 1;
-  const maxJumpCost = config.maxJumpCost ?? 5;
-  const maxIterations = config.maxIterations ?? 99999;
+  const diagonalCostMultiplier =
+    config.diagonalCostMultiplier ?? DEFAULT_COST_MULTIPLIER;
+  const orthogonalCostMultiplier =
+    config.orthogonalCostMultiplier ?? DEFAULT_COST_MULTIPLIER;
+  const maxJumpCost = config.maxJumpCost ?? DEFAULT_MAX_JUMP_COST;
+  const maxIterations = config.maxIterations ?? DEFAULT_MAX_ITERATIONS;
   const jumpBlockedDiagonals = config.jumpBlockedDiagonals ?? false;
 
-  const index = (point: Point): number => {
-    return point.y * grid.height + point.x;
-  };
+  if (!isTilePoint(startPoint) || !isTilePoint(endPoint)) return [];
 
-  const getMoveCostAt = (src: Point, dst: Point): number | null => {
-    if (!grid.inBounds(src) || !grid.inBounds(dst)) return null;
+  if (!grid.isWalkable(startPoint) || !grid.isWalkable(endPoint)) return [];
 
-    // Difference in height
-    const srcHeight = grid.getHeightAt(src) ?? NOT_REACHED_COST;
-    const dstHeight = grid.getHeightAt(dst) ?? NOT_REACHED_COST;
+  const { width, height } = grid;
+  const heights = grid.getHeightMatrix();
 
-    // Max jump
-    if (Math.abs(srcHeight - dstHeight) > MAX_JUMP_HEIGHT) return null;
+  const visited = new Float64Array(width * height);
+  visited.fill(NOT_REACHED_COST);
 
-    return 1;
-  };
+  const travelHeuristic = getTravelHeuristic(grid, endPoint);
+  config.travelHeuristic = travelHeuristic;
+
+  const queue = createOpenList(travelHeuristic);
 
   // Orthogonal jumps from JumpPoint
   const addOrthogonalJumps = (
-    prevNode: PathNode,
-    src: Point,
+    node: number,
+    srcX: number,
+    srcY: number,
     srcCost: number,
     dirX: number,
     dirY: number,
   ) => {
-    let jumpDistance = 1;
     let accumulatedCost = 0;
-    let prevPoint = src;
+    let prevHeight = heights[srcY * height + srcX];
+    let x = srcX;
+    let y = srcY;
 
     while (true) {
-      const target: Point = {
-        x: src.x + dirX * jumpDistance,
-        y: src.y + dirY * jumpDistance,
-      };
+      x += dirX;
+      y += dirY;
+      if (x < 0 || x >= width || y < 0 || y >= height) break;
 
-      if (!grid.isWalkable(target)) {
-        break;
-      }
+      const targetIndex = y * height + x;
+      const targetHeight = heights[targetIndex];
+      if (targetHeight === NON_WALKABLE_HEIGHT) break;
 
-      const moveCost = getMoveCostAt(prevPoint, target);
-      if (moveCost === null) {
-        break;
-      }
+      // Max jump
+      if (Math.abs(prevHeight - targetHeight) > MAX_JUMP_HEIGHT) break;
 
-      accumulatedCost += moveCost * orthogonalCostMultiplier;
-      const targetIndex = index(target);
+      accumulatedCost += orthogonalCostMultiplier;
       const totalCost = srcCost + accumulatedCost;
 
       if (totalCost < visited[targetIndex]) {
         visited[targetIndex] = totalCost;
-        queue.push(
-          createPathNode(target, prevNode, totalCost, heuristic(target)),
-        );
+        queue.push(targetIndex, node, totalCost);
       }
-      prevPoint = target;
-      jumpDistance++;
+      prevHeight = targetHeight;
 
-      if (accumulatedCost > maxJumpCost) {
-        break;
-      }
+      if (accumulatedCost > maxJumpCost) break;
     }
   };
 
   // Diagonal movements with filter for adjacent walkable tiles in the same floor height
   const addDiagonal = (
-    prevNode: PathNode,
-    src: Point,
+    node: number,
+    srcX: number,
+    srcY: number,
     srcCost: number,
     dirX: number,
     dirY: number,
   ) => {
-    const target: Point = { x: src.x + dirX, y: src.y + dirY };
-    const moveCost =
-      srcCost +
-      (getMoveCostAt(src, target) ?? NOT_REACHED_COST) * diagonalCostMultiplier;
-    const targetHeight = grid.getHeightAt(target);
-    const aux1: Point = { x: src.x, y: src.y + dirY };
-    const aux2: Point = { x: src.x + dirX, y: src.y };
-    const targetIndex = index(target);
+    const x = srcX + dirX;
+    const y = srcY + dirY;
+    if (x < 0 || x >= width || y < 0 || y >= height) return;
 
-    const canJumpDiagonals =
-      jumpBlockedDiagonals ||
-      (grid.isWalkable(aux1) &&
-        grid.isWalkable(aux2) &&
-        targetHeight == grid.getHeightAt(aux1) &&
-        targetHeight == grid.getHeightAt(aux2));
+    const targetIndex = y * height + x;
+    const targetHeight = heights[targetIndex];
+    if (targetHeight === NON_WALKABLE_HEIGHT) return;
 
-    if (
-      grid.isWalkable(target) &&
-      canJumpDiagonals &&
-      moveCost < visited[targetIndex]
-    ) {
+    if (!jumpBlockedDiagonals) {
+      const aux1Height = heights[y * height + srcX];
+      const aux2Height = heights[srcY * height + x];
+      if (
+        aux1Height === NON_WALKABLE_HEIGHT ||
+        aux2Height === NON_WALKABLE_HEIGHT ||
+        targetHeight != aux1Height ||
+        targetHeight != aux2Height
+      )
+        return;
+    }
+
+    // Max jump
+    const srcHeight = heights[srcY * height + srcX];
+    if (Math.abs(srcHeight - targetHeight) > MAX_JUMP_HEIGHT) return;
+
+    const moveCost = srcCost + diagonalCostMultiplier;
+
+    if (moveCost < visited[targetIndex]) {
       visited[targetIndex] = moveCost;
-      queue.push(createPathNode(target, prevNode, moveCost, heuristic(target)));
+      queue.push(targetIndex, node, moveCost);
     }
   };
 
-  if (!grid.isWalkable(startPoint) || !grid.isWalkable(endPoint)) {
-    return [];
-  }
-
-  const visited = new Float32Array(grid.width * grid.height);
-  visited.fill(NOT_REACHED_COST);
-  config.travelCosts = visited;
-
-  // Distance to the end point, from A*
-  const travelHeuristic = new Float32Array(grid.width * grid.height);
-  travelHeuristic.fill(NOT_REACHED_COST);
-
-  grid.walkMatrix((x, y) => {
-    travelHeuristic[y * grid.height + x] = grid.distance({ x, y }, endPoint);
-  });
-  config.travelHeuristic = travelHeuristic;
-
-  const heuristic = (a: Point): number => {
-    return travelHeuristic[index(a)];
-  };
-
-  const comparator = (a: PathNode, b: PathNode): number => {
-    return a.cost + a.heuristicValue - (b.cost + b.heuristicValue);
-  };
-
-  const queue: OpenList<PathNode> = createOpenList(comparator);
+  const startIndex = startPoint.y * height + startPoint.x;
+  const endIndex = endPoint.y * height + endPoint.x;
   let iterations = 0;
 
-  visited[index(startPoint)] = 0;
-  queue.push(createPathNode(startPoint, null, 0, heuristic(startPoint)));
+  visited[startIndex] = 0;
+  queue.push(startIndex, -1, 0);
 
   while (!queue.isEmpty()) {
-    if (iterations > maxIterations) {
-      return [];
-    }
+    if (iterations > maxIterations) break;
     iterations++;
 
     const node = queue.pop();
-    const point = node.point;
+    const index = queue.getIndex(node);
 
     // If we reached the end point, return the path to it
-    if (point.x === endPoint.x && point.y === endPoint.y) {
-      return pathFromNode(node);
+    if (index === endIndex) {
+      config.travelCosts = new Float32Array(visited);
+      return queue.getPath(node, startPoint, height);
     }
 
-    addOrthogonalJumps(node, point, node.cost, 0, -1);
-    addOrthogonalJumps(node, point, node.cost, 0, 1);
-    addOrthogonalJumps(node, point, node.cost, -1, 0);
-    addOrthogonalJumps(node, point, node.cost, 1, 0);
+    const x = index % height;
+    const y = (index - x) / height;
+    const cost = queue.getCost(node);
 
-    addDiagonal(node, point, node.cost, 1, 1);
-    addDiagonal(node, point, node.cost, -1, 1);
-    addDiagonal(node, point, node.cost, 1, -1);
-    addDiagonal(node, point, node.cost, -1, -1);
+    addOrthogonalJumps(node, x, y, cost, 0, -1);
+    addOrthogonalJumps(node, x, y, cost, 0, 1);
+    addOrthogonalJumps(node, x, y, cost, -1, 0);
+    addOrthogonalJumps(node, x, y, cost, 1, 0);
+
+    addDiagonal(node, x, y, cost, 1, 1);
+    addDiagonal(node, x, y, cost, -1, 1);
+    addDiagonal(node, x, y, cost, 1, -1);
+    addDiagonal(node, x, y, cost, -1, -1);
   }
+
+  config.travelCosts = new Float32Array(visited);
 
   // No path found
   return [];
-};
-
-const pathFromNode = (lastNode: PathNode): Point[] => {
-  const path: Point[] = [];
-  let node: PathNode | null = lastNode;
-  while (node) {
-    path.push(node.point);
-    node = node.from;
-  }
-  return path.reverse();
 };

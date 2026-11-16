@@ -2,8 +2,7 @@ import { Grid } from "@shared/types/grid.types.ts";
 import { Point } from "@shared/types/point.types.ts";
 import { FindPathConfig } from "@shared/types/finder.types.ts";
 import { findPath } from "@shared/modules/finder.module.ts";
-
-const NON_WALKABLE_HEIGHT = 0;
+import { NON_WALKABLE_HEIGHT } from "@shared/consts/finder.consts.ts";
 
 export const makeSquare = (layout: number[][]): number[][] => {
   const maxLength = Math.max(layout.length, ...layout.map((row) => row.length));
@@ -98,6 +97,7 @@ export const createGridFromHeights = (
     height,
 
     getHeightAt,
+    getHeightMatrix: () => heightMatrix,
     distance,
     index,
     inBounds,
@@ -121,18 +121,16 @@ export const createGrid = (matrix: number[][]): Grid => {
   if (matrix[0] === undefined || matrix[0][0] === undefined)
     throw new Error("grid matrix cannot be empty");
 
-  const mat = makeSquare(matrix);
-  const height = mat.length;
-  const width = mat[0].length;
+  let size = matrix.length;
+  for (let y = 0; y < matrix.length; y++)
+    if (matrix[y].length > size) size = matrix[y].length;
 
-  if (height !== width) throw new Error("grid matrix must be square");
+  const heightMatrix = new Float32Array(size * size);
+  for (let y = 0; y < matrix.length; y++) {
+    const row = matrix[y];
+    const offset = y * size;
+    for (let x = 0; x < row.length; x++) heightMatrix[offset + x] = row[x];
+  }
 
-  const heightMatrix = new Float32Array(height * width);
-  mat.forEach((row, y) => {
-    row.forEach((cost, x) => {
-      heightMatrix[y * width + x] = cost;
-    });
-  });
-
-  return createGridFromHeights(width, height, heightMatrix);
+  return createGridFromHeights(size, size, heightMatrix);
 };

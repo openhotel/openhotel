@@ -1,7 +1,10 @@
-export type OpenList<T> = {
-  push: (value: T) => void;
-  pop: () => T;
-  length: () => number;
+import { Point } from "@shared/types/point.types.ts";
+
+export type OpenList = {
+  push: (index: number, from: number, cost: number) => void;
+  pop: () => number;
   isEmpty: () => boolean;
-  toString: () => string;
+  getIndex: (node: number) => number;
+  getCost: (node: number) => number;
+  getPath: (node: number, startPoint: Point, height: number) => Point[];
 };

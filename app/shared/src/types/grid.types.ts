@@ -6,6 +6,7 @@ export type Grid = {
   readonly height: number;
 
   getHeightAt: (point: Point) => number | null;
+  getHeightMatrix: () => Float32Array;
   distance: (a: Point, b: Point) => number;
   index: (point: Point) => number;
   inBounds: (point: Point) => boolean;
