@@ -92,5 +92,3 @@ This will spin up both the server (Deno) and the client (Vite/React) in developm
 ### TODO: Coding practices
 
 - Enable prettier on save
-
-TEST
