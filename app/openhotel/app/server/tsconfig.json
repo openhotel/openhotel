@@ -8,7 +8,6 @@
     "noUnusedLocals": true,
     "lib": ["ES2022", "dom"],
     "baseUrl": "./src/",
-    "rootDir": "./src",
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "paths": {

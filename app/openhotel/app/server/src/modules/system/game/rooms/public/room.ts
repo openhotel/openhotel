@@ -10,8 +10,8 @@ import { ProxyEvent, RoomPointEnum } from "shared/enums/main.ts";
 import { System } from "modules/system/main.ts";
 import { getInterpolatedPath } from "shared/utils/pathfinding.utils.ts";
 import { Direction, isPoint3dEqual, Point3d } from "@oh/utils";
-import { Grid } from "@oh/pathfinding";
 import { getBaseRoomGrid } from "shared/utils/rooms.utils.ts";
+import { createGrid } from "@shared/utils/grid.utils.ts";
 
 export const getRoom =
   (roomUserMap: Record<string, string[]>) =>
@@ -134,7 +134,7 @@ export const getRoom =
 
       //TODO add bots
 
-      const grid = Grid.from(roomLayout);
+      const grid = createGrid(roomLayout as number[][]);
 
       const path = grid
         .findPath(

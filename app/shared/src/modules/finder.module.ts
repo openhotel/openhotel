@@ -1,32 +1,33 @@
-import { Point, FindPathConfig } from "../types/main.ts";
-import { Grid } from "./grid.ts";
-import { OpenList } from "./openList.ts";
+import { Point } from "@shared/types/point.types.ts";
+import { Grid } from "@shared/types/grid.types.ts";
+import { FindPathConfig } from "@shared/types/finder.types.ts";
+import { OpenList } from "@shared/types/open-list.types.ts";
+import { createOpenList } from "@shared/utils/open-list.utils.ts";
 
 const NOT_REACHED_COST: number = 999999;
 const MAX_JUMP_HEIGHT: number = 5;
 
-class PathNode {
-  public from: PathNode | null;
-  public point: Point;
-  public cost: number;
-  public heuristicValue: number;
+type PathNode = {
+  from: PathNode | null;
+  point: Point;
+  cost: number;
+  heuristicValue: number;
+  toString: () => string;
+};
 
-  constructor(
-    point: Point,
-    from: PathNode | null,
-    cost: number,
-    heuristicValue: number,
-  ) {
-    this.from = from;
-    this.point = point;
-    this.cost = cost;
-    this.heuristicValue = heuristicValue;
-  }
-
-  toString(): string {
-    return `(${this.point.x}, ${this.point.y}, cost: ${this.cost}, heuristic: ${this.heuristicValue})`;
-  }
-}
+const createPathNode = (
+  point: Point,
+  from: PathNode | null,
+  cost: number,
+  heuristicValue: number,
+): PathNode => ({
+  from,
+  point,
+  cost,
+  heuristicValue,
+  toString: () =>
+    `(${point.x}, ${point.y}, cost: ${cost}, heuristic: ${heuristicValue})`,
+});
 
 export const findPath = (
   startPoint: Point,
@@ -91,7 +92,7 @@ export const findPath = (
       if (totalCost < visited[targetIndex]) {
         visited[targetIndex] = totalCost;
         queue.push(
-          new PathNode(target, prevNode, totalCost, heuristic(target)),
+          createPathNode(target, prevNode, totalCost, heuristic(target)),
         );
       }
       prevPoint = target;
@@ -133,7 +134,7 @@ export const findPath = (
       moveCost < visited[targetIndex]
     ) {
       visited[targetIndex] = moveCost;
-      queue.push(new PathNode(target, prevNode, moveCost, heuristic(target)));
+      queue.push(createPathNode(target, prevNode, moveCost, heuristic(target)));
     }
   };
 
@@ -162,11 +163,11 @@ export const findPath = (
     return a.cost + a.heuristicValue - (b.cost + b.heuristicValue);
   };
 
-  const queue: OpenList<PathNode> = new OpenList(comparator);
+  const queue: OpenList<PathNode> = createOpenList(comparator);
   let iterations = 0;
 
   visited[index(startPoint)] = 0;
-  queue.push(new PathNode(startPoint, null, 0, heuristic(startPoint)));
+  queue.push(createPathNode(startPoint, null, 0, heuristic(startPoint)));
 
   while (!queue.isEmpty()) {
     if (iterations > maxIterations) {
