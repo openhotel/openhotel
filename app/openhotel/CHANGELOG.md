@@ -1,4 +1,9 @@
 
+<a name="v0.9.1"></a>
+
+## [v0.9.1](https://github.com/openhotel/openhotel/compare/v0.9.0...v0.9.1) (2026-11-16)
+
+
 <a name="v0.9.0"></a>
 
 ## [v0.9.0](https://github.com/openhotel/openhotel/compare/v0.8.6...v0.9.0) (2026-11-15)
