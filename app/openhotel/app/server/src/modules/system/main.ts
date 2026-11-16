@@ -10,7 +10,7 @@ import { auth } from "modules/shared/auth.ts";
 import { config } from "./config.ts";
 import { Migrations } from "../migrations/main.ts";
 import { image } from "modules/shared/image.ts";
-import { updater } from "modules/system/updater.ts";
+import { updaterModule } from "@shared/modules/updater.module.ts";
 
 export const System = (() => {
   let $envs: Envs;
@@ -26,7 +26,8 @@ export const System = (() => {
   const $auth = auth();
   const $config = config();
   const $image = image();
-  const $updater = updater();
+  // const $updater = updater();
+  const updater = updaterModule();
 
   const load = async (envs: Envs) => {
     console.clear();
@@ -36,7 +37,19 @@ export const System = (() => {
     await $config.load(envs);
     const isDevelopment = $envs.version === "development";
 
-    await $updater.load();
+    const config = $config.get();
+
+    updater.load({
+      project: "openhotel",
+      log: console.log,
+    });
+
+    await updater.update({
+      version: envs.version,
+      target: config.version,
+      preReleases: true,
+      stopOnUpdate: true,
+    });
 
     if (isDevelopment)
       console.log(
@@ -47,8 +60,6 @@ export const System = (() => {
     // -> Load proxy
 
     log("server");
-
-    const config = $config.get();
 
     await $image.load();
     await $auth.load(config, true);

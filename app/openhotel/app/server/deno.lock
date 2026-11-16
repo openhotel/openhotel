@@ -15,12 +15,15 @@
     "jsr:@std/encoding@1.0.5": "1.0.5",
     "jsr:@std/encoding@^1.0.5": "1.0.5",
     "jsr:@std/fs@1.0.4": "1.0.4",
+    "jsr:@std/internal@^1.0.14": "1.0.14",
     "jsr:@std/path@1.0.6": "1.0.6",
-    "jsr:@std/path@^1.0.6": "1.0.6",
+    "jsr:@std/path@1.1.6": "1.1.6",
+    "jsr:@std/path@^1.0.6": "1.1.6",
     "jsr:@std/streams@1.0.10": "1.0.10",
     "jsr:@std/ulid@1": "1.0.0",
     "jsr:@std/yaml@1.0.5": "1.0.5",
     "jsr:@sugar/minio-js-with-startpath@8.0.13": "8.0.13",
+    "jsr:@zip-js/zip-js@2.25.0": "2.25.0",
     "jsr:@zip-js/zip-js@2.7.53": "2.7.53",
     "npm:@puppeteer/browsers@3.2.2": "3.2.2",
     "npm:@types/node@*": "24.2.0",
@@ -83,7 +86,7 @@
         "jsr:@std/ulid",
         "jsr:@std/yaml",
         "jsr:@sugar/minio-js-with-startpath",
-        "jsr:@zip-js/zip-js",
+        "jsr:@zip-js/zip-js@2.7.53",
         "npm:cbor-x",
         "npm:dayjs",
         "npm:random-seed"
@@ -101,8 +104,17 @@
         "jsr:@std/path@^1.0.6"
       ]
     },
+    "@std/internal@1.0.14": {
+      "integrity": "291516b3d4c35024d6ffbc0a9df5bf4c64116e05b50012cf846710152d2ffdf7"
+    },
     "@std/path@1.0.6": {
       "integrity": "ab2c55f902b380cf28e0eec501b4906e4c1960d13f00e11cfbcd21de15f18fed"
+    },
+    "@std/path@1.1.6": {
+      "integrity": "c68485c2a4dfbb5ae3cc74fae4e8c4e5d874cf8a8ed12927917235c758b46cbe",
+      "dependencies": [
+        "jsr:@std/internal"
+      ]
     },
     "@std/streams@1.0.10": {
       "integrity": "75c0b1431873cd0d8b3d679015220204d36d3c7420d93b60acfc379eb0dc30af",
@@ -136,6 +148,9 @@
     },
     "@zip-js/zip-js@2.7.53": {
       "integrity": "acea5bd8e01feb3fe4c242cfbde7d33dd5e006549a4eb1d15283bc0c778ed672"
+    },
+    "@zip-js/zip-js@2.25.0": {
+      "integrity": "0ec676ff123341238b78e135e59765ce143ad2c8d01ac30346747c159d6ad112"
     }
   },
   "npm": {

@@ -30,7 +30,9 @@
     "puppeter": "npm:puppeteer@25.10.0",
 
     "modules/": "./src/modules/",
-    "shared/": "./src/shared/"
+    "shared/": "./src/shared/",
+
+    "@shared/": "../../../shared/src/"
   },
   "nodeModulesDir": "auto"
 }

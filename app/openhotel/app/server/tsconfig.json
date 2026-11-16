@@ -10,6 +10,9 @@
     "baseUrl": "./src/",
     "rootDir": "./src",
     "allowImportingTsExtensions": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "paths": {
+      "@shared/*": ["../../../../shared/src/*"]
+    }
   }
 }
