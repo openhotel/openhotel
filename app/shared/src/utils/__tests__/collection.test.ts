@@ -1,4 +1,6 @@
-import { expect, describe, it } from "@jest/globals";
+import { describe, it } from "@std/testing/bdd";
+import { expect } from "@std/expect";
+import { CollectionManifest } from "@shared/types/collection.types.ts";
 import {
   getCollectionFurnitureListErrors,
   getCollectionManifestErrors,
@@ -10,8 +12,7 @@ import {
   isValidCollectionId,
   isValidHotelVersion,
   verifyCollectionManifest,
-} from "../collection.utils.ts";
-import type { CollectionManifest } from "../../types/main.ts";
+} from "@shared/utils/collection.utils.ts";
 
 const PUBLIC_KEY = "MC8uZMUTGtSzRzgrCvpCSZt0OPLGkBVujh0PkQSFBbA";
 const OTHER_PUBLIC_KEY = "11qYAYKxCrfVS_7TyWQHOg7hcvPapiMlrwIaaPcHURo";

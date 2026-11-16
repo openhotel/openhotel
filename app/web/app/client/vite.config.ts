@@ -1,6 +1,7 @@
 import { defineConfig } from "vite";
 import reactRefresh from "@vitejs/plugin-react-refresh";
 import react from "@vitejs/plugin-react";
+import { fileURLToPath } from "node:url";
 
 const PROXY_URL =
   process.platform === "win32"
@@ -14,6 +15,7 @@ export default defineConfig({
     proxy: {
       "/api": PROXY_URL,
     },
+    fs: { allow: [fileURLToPath(new URL("../../..", import.meta.url))] },
   },
   plugins: [react(), reactRefresh()],
   root: "./src",

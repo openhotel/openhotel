@@ -30,6 +30,8 @@
     "modules/": "./src/modules/",
     "shared/": "./src/shared/",
 
+    "@shared/": "../../../shared/src/",
+
     "loadenv": "https://deno.land/x/loadenv@v1.0.1/mod.ts",
 
     "dayjs": "https://deno.land/x/deno_dayjs@v0.5.0/mod.ts"

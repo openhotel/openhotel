@@ -1,5 +1,6 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
+import { fileURLToPath } from "node:url";
 
 // https://github.com/openhotel/openhotel/issues/469
 const PROXY_URL =
@@ -29,6 +30,7 @@ export default defineConfig({
     },
     hmr: true,
     allowedHosts: ["hotel.local"],
+    fs: { allow: [fileURLToPath(new URL("../../..", import.meta.url))] },
   },
   plugins: [react()],
   root: "./src",

@@ -1,4 +1,5 @@
-import { expect, describe, it } from "@jest/globals";
+import { describe, it } from "@std/testing/bdd";
+import { expect } from "@std/expect";
 import {
   getFurnitureDataErrors,
   getFurnitureFilesErrors,
@@ -6,8 +7,8 @@ import {
   getFurnitureLangErrors,
   getFurnitureSheetErrors,
   getFurnitureSheetFrames,
-} from "../furniture.utils.ts";
-import type { FurnitureDataFile } from "../../types/main.ts";
+} from "@shared/utils/furniture.utils.ts";
+import { FurnitureDataFile } from "@shared/types/furniture.types.ts";
 
 const FURNITURE_ID = "xmas@tree-0";
 

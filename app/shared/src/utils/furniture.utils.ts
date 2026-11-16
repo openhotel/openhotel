@@ -1,21 +1,19 @@
 import {
-  COLLECTION_FURNITURE_DIRECTIONS,
-  COLLECTION_FURNITURE_TYPES,
-  COLLECTION_LANG_CODE_REGEX,
-  COLLECTION_LANG_DESCRIPTION_MAX_LENGTH,
-  COLLECTION_LANG_NAME_MAX_LENGTH,
-} from "../consts/collection.consts.ts";
-import type {
-  CollectionFurnitureImmutableData,
-  FurnitureDataFile,
-} from "../types/main.ts";
-import {
   checkIntegers,
   checkKeys,
   isInteger,
   isObject,
   isText,
-} from "./validation.utils.ts";
+} from "@shared/utils/validation.utils.ts";
+import {
+  COLLECTION_FURNITURE_DIRECTIONS,
+  COLLECTION_FURNITURE_TYPES,
+  COLLECTION_LANG_CODE_REGEX,
+  COLLECTION_LANG_DESCRIPTION_MAX_LENGTH,
+  COLLECTION_LANG_NAME_MAX_LENGTH,
+} from "@shared/consts/collection.consts.ts";
+import { CollectionFurnitureImmutableData } from "@shared/types/collection.types.ts";
+import { FurnitureDataFile } from "@shared/types/furniture.types.ts";
 
 const $checkLang = (errors: string[], lang: unknown) => {
   const path = "lang.yml";

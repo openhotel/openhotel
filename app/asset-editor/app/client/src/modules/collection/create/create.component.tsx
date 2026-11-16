@@ -13,14 +13,6 @@ import { TabContentComponent } from "shared/components";
 import { RequestMethod } from "shared/enums";
 import { CollectionData, CollectionFurniture } from "shared/types";
 import { cn, getCollectionFurnitureErrors } from "shared/utils";
-import {
-  COLLECTION_DESCRIPTION_MAX_LENGTH,
-  COLLECTION_ID_MAX_LENGTH,
-  COLLECTION_LABEL_MAX_LENGTH,
-  type CollectionMetadata,
-  getCollectionFurnitureListErrors,
-  getCollectionMetadataErrors,
-} from "@oh/core";
 
 //@ts-ignore
 import styles from "./create.module.scss";

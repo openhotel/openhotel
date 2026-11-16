@@ -8,16 +8,15 @@ import {
   COLLECTION_LICENSE_MAX_LENGTH,
   COLLECTION_MAX_FURNITURE,
   COLLECTION_RESERVED_NAMESPACES,
-} from "../consts/collection.consts.ts";
-import type { CollectionManifest } from "../types/main.ts";
+} from "@shared/consts/collection.consts.ts";
 import {
   isInteger,
   isObject,
   isOptionalText,
   isText,
-} from "./validation.utils.ts";
-
-const SHA256_REGEX = /^[a-f0-9]{64}$/;
+} from "@shared/utils/validation.utils.ts";
+import { CollectionManifest } from "@shared/types/collection.types.ts";
+import { SHA256_REGEX } from "@shared/consts/crypto.consts.ts";
 
 export const getSha256 = async (data: Uint8Array): Promise<string> =>
   Array.from(

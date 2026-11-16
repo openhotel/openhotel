@@ -1,0 +1,6 @@
+{
+  "imports": {
+    "@std/testing": "jsr:@std/testing",
+    "@std/expect": "jsr:@std/expect"
+  }
+}

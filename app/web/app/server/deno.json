@@ -24,6 +24,8 @@
     "system/": "./src/system/",
     "modules/": "./src/modules/",
 
+    "@std/path": "jsr:@std/path@1.0.6",
+
     "deno/": "https://deno.land/std@0.221.0/",
     "@std/ulid": "jsr:@std/ulid@1",
 

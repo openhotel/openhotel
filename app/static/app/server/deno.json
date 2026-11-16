@@ -16,6 +16,8 @@
     "system/": "./src/system/",
     "modules/": "./src/modules/",
 
+    "@shared/": "../../../shared/src/",
+
     "@oh/utils": "jsr:@oh/utils@1.5.32",
     "@std/ulid": "jsr:@std/ulid@1",
 
