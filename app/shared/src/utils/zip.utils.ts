@@ -23,14 +23,14 @@ export const replaceFilesAndFoldersFromZip = async (
 
   // unzip
   for (const entry of entries) {
-    const path = join(path, entry.filename);
+    const $path = join(path, entry.filename);
     if (entry.directory) {
-      await Deno.mkdir(path, { recursive: true });
+      await Deno.mkdir($path, { recursive: true });
       continue;
     }
-    await Deno.mkdir(dirname(path), { recursive: true });
+    await Deno.mkdir(dirname($path), { recursive: true });
     const data = await entry.getData!(new Uint8ArrayWriter());
-    await Deno.writeFile(path, data, { mode: 0o755 });
+    await Deno.writeFile($path, data, { mode: 0o755 });
   }
 
   await reader.close();

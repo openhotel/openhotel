@@ -72,7 +72,7 @@ jobs:
               result=true; reason="no previous release"
             elif ! echo "$PREV_ASSETS" | grep -q "^${project}_.*\.zip$"; then
               result=true; reason="no build in $PREV"
-            elif ! git diff --quiet "$PREV" "$GITHUB_REF_NAME" -- "app/$project" "${SHARED[@]}"; then
+            elif ! git diff --quiet "$PREV" "$GITHUB_REF_NAME" -- "app/$project" "${SHARED[@]}" ':(exclude)**/CHANGELOG.md'; then
               result=true; reason="changed"
             else
               result=false; reason="unchanged, reuse from $PREV"
