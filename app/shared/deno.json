@@ -1,7 +1,0 @@
-{
-  "imports": {
-    "@std/path": "jsr:@std/path@1.1.6",
-    "@zip-js/zip-js": "jsr:@zip-js/zip-js@2.25.0"
-  },
-  "nodeModulesDir": "auto"
-}

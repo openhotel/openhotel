@@ -4,13 +4,13 @@ on:
     branches: [master, monster]
     paths:
       - .github/workflows/asset-editor-*
-      - app/asset-editor/server/**
+      - app/asset-editor/app/server/**
       - app/shared/src/**
 
   pull_request:
     paths:
       - .github/workflows/asset-editor-*
-      - app/asset-editor/server/**
+      - app/asset-editor/app/server/**
       - app/shared/src/**
 
 jobs:
@@ -25,7 +25,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          sparse-checkout: "app/asset-editor/app/server"
+          sparse-checkout: |
+            app/asset-editor/app/server
+            app/shared
           sparse-checkout-cone-mode: false
 
       - uses: denoland/setup-deno@v1

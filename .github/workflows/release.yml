@@ -171,7 +171,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          sparse-checkout: "app/openhotel"
+          sparse-checkout: |
+            app/openhotel
+            app/shared
           sparse-checkout-cone-mode: false
 
       - uses: denoland/setup-deno@v1
@@ -205,7 +207,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          sparse-checkout: "app/web"
+          sparse-checkout: |
+            app/web
+            app/shared
           sparse-checkout-cone-mode: false
 
       - uses: actions/setup-node@v4
@@ -263,7 +267,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          sparse-checkout: "app/static"
+          sparse-checkout: |
+            app/static
+            app/shared
           sparse-checkout-cone-mode: false
 
       - uses: actions/setup-node@v4
@@ -324,7 +330,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          sparse-checkout: "app/onet"
+          sparse-checkout: |
+            app/onet
+            app/shared
           sparse-checkout-cone-mode: false
 
       - uses: denoland/setup-deno@v1
@@ -359,7 +367,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          sparse-checkout: "app/auth"
+          sparse-checkout: |
+            app/auth
+            app/shared
           sparse-checkout-cone-mode: false
 
       - uses: actions/setup-node@v4
@@ -417,7 +427,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          sparse-checkout: "app/asset-editor"
+          sparse-checkout: |
+            app/asset-editor
+            app/shared
           sparse-checkout-cone-mode: false
 
       - uses: actions/setup-node@v4
