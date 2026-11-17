@@ -19,6 +19,8 @@
     "@std/cli/parse-args": "jsr:@std/cli/parse-args",
     "vite": "npm:vite@5.2.14",
 
+    "@xtool/dayjs": "jsr:@xtool/dayjs@0.1.4",
+
     "@shared/": "../shared/src/"
   },
   "nodeModulesDir": "auto"
