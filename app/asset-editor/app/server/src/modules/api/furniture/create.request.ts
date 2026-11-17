@@ -4,7 +4,7 @@ import { decodeTime } from "@std/ulid";
 
 import { RequestType, RequestMethod, RequestKind } from "@oh/utils";
 import { base64ToBlob } from "shared/utils/base64.utils.ts";
-import { getFurnitureLangErrors } from "@oh/core";
+import { getFurnitureLangErrors } from "@shared/utils/furniture.utils.ts";
 
 export const createRequest: RequestType = {
   method: RequestMethod.POST,

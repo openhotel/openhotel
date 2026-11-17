@@ -9,7 +9,7 @@
     "lib": ["es2025", "DOM"],
     "jsx": "react",
     "baseUrl": "./src",
-    "paths": { "@shared/*": ["../../core/src/shared/*"] },
+    "paths": { "@shared/*": ["../../../../shared/src/*"] },
     "allowImportingTsExtensions": true
   }
 }

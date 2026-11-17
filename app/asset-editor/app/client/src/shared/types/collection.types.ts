@@ -1,4 +1,5 @@
-import type { CollectionMetadata, FurnitureLang } from "@oh/core";
+import { FurnitureLang } from "@shared/types/furniture.types.ts";
+import { CollectionMetadata } from "@shared/types/collection.types.ts";
 
 export type CollectionFurniture = {
   id: string;

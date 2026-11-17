@@ -1,8 +1,6 @@
-import {
-  COLLECTION_FURNITURE_MAX_SIZE,
-  getFurnitureLangErrors,
-} from "@oh/core";
 import { CollectionFurniture } from "shared/types";
+import { COLLECTION_FURNITURE_MAX_SIZE } from "@shared/consts/collection.consts.ts";
+import { getFurnitureLangErrors } from "@shared/utils/furniture.utils.ts";
 
 export const getCollectionFurnitureErrors = (
   furniture: CollectionFurniture,

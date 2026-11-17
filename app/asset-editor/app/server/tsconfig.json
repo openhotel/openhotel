@@ -1,15 +1,16 @@
 {
   "compilerOptions": {
-    "moduleResolution": "node",
-    "module": "ES2022",
-    "target": "ES2022",
+    "moduleResolution": "bundler",
+    "module": "esnext",
+    "target": "es2025",
     "esModuleInterop": true,
     "sourceMap": false,
     "noUnusedLocals": true,
-    "lib": ["ES2023", "dom"],
-    "baseUrl": "./src/",
-    "rootDir": "./src",
+    "lib": ["es2025", "DOM"],
+    "jsx": "react",
+    "baseUrl": "./src",
+    "paths": { "@shared/*": ["../../../../shared/src/*"] },
     "allowImportingTsExtensions": true,
-    "resolveJsonModule": true
+    "noEmit": true
   }
 }

@@ -15,10 +15,10 @@ import { TabContentComponent } from "shared/components";
 
 //@ts-ignore
 import styles from "./create.module.scss";
-import { getFurnitureLangErrors } from "@oh/core";
 import { getBase64FromBody, getImageSize } from "shared/utils";
 import { RequestMethod } from "shared/enums";
 import { ulid } from "ulidx";
+import { getFurnitureLangErrors } from "@shared/utils/furniture.utils.ts";
 
 export const CreateFurnitureComponent: React.FC = () => {
   const { setData, data } = useFurniture();

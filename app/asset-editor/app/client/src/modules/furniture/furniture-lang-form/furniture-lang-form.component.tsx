@@ -5,14 +5,14 @@ import {
   SelectorComponent,
 } from "@openhotel/web-components";
 import { useFurniture } from "shared/hooks";
+import { cn } from "shared/utils";
+import styles from "./furniture-lang-form.module.scss";
+import { FurnitureLangItem } from "@shared/types/furniture.types.ts";
 import {
   COLLECTION_LANG_DESCRIPTION_MAX_LENGTH,
   COLLECTION_LANG_NAME_MAX_LENGTH,
-  type FurnitureLangItem,
-  getFurnitureLangErrors,
-} from "@oh/core";
-import { cn } from "shared/utils";
-import styles from "./furniture-lang-form.module.scss";
+} from "@shared/consts/collection.consts.ts";
+import { getFurnitureLangErrors } from "@shared/utils/furniture.utils.ts";
 
 const AVAILABLE_LANGUAGES = [
   { key: "en", value: "English (en)" },

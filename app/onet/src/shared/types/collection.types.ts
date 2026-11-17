@@ -1,8 +1,8 @@
-import type {
+import {
   CollectionCategory,
   CollectionFurnitureImmutableData,
   CollectionManifest,
-} from "@oh/core";
+} from "@shared/types/collection.types.ts";
 
 export type Collection = {
   id: string;

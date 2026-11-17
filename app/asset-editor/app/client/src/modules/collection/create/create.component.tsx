@@ -16,6 +16,16 @@ import { cn, getCollectionFurnitureErrors } from "shared/utils";
 
 //@ts-ignore
 import styles from "./create.module.scss";
+import {
+  getCollectionFurnitureListErrors,
+  getCollectionMetadataErrors,
+} from "@shared/utils/collection.utils.ts";
+import { CollectionMetadata } from "@shared/types/collection.types.ts";
+import {
+  COLLECTION_DESCRIPTION_MAX_LENGTH,
+  COLLECTION_ID_MAX_LENGTH,
+  COLLECTION_LABEL_MAX_LENGTH,
+} from "@shared/consts/collection.consts.ts";
 
 const getFurnitureName = ({ lang }: CollectionFurniture) =>
   (lang?.en ?? Object.values(lang ?? {})[0])?.name ?? "";
@@ -25,8 +35,8 @@ export const CreateCollectionComponent: React.FC = () => {
   const { fetch: fetchApi } = useApi();
   const { getHeaders } = useAppSession();
 
-  const [data, setData] = useState<CollectionData>(null);
-  const [requestError, setRequestError] = useState<string>(null);
+  const [data, setData] = useState<CollectionData | null>(null);
+  const [requestError, setRequestError] = useState<string | null>(null);
 
   const collectionErrors = useMemo(
     () => (data ? getCollectionMetadataErrors(data.collection) : []),

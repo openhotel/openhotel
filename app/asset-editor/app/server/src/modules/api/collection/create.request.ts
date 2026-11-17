@@ -2,13 +2,13 @@ import { BlobReader, BlobWriter, ZipWriter } from "@zip-js/data-uri";
 import { stringify } from "@std/yaml";
 
 import { RequestType, RequestMethod, RequestKind } from "@oh/utils";
-import {
-  COLLECTION_FURNITURE_MAX_SIZE,
-  getCollectionFurnitureListErrors,
-  getCollectionMetadataErrors,
-} from "@oh/core";
 import { base64ToBlob } from "shared/utils/base64.utils.ts";
 import { normalizeCollection } from "shared/utils/collection.utils.ts";
+import {
+  getCollectionFurnitureListErrors,
+  getCollectionMetadataErrors,
+} from "@shared/utils/collection.utils.ts";
+import { COLLECTION_FURNITURE_MAX_SIZE } from "@shared/consts/collection.consts.ts";
 
 export const createRequest: RequestType = {
   method: RequestMethod.POST,

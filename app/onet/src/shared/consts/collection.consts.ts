@@ -1,7 +1,7 @@
 import {
   COLLECTION_FURNITURE_MAX_SIZE,
   COLLECTION_MAX_FURNITURE,
-} from "@oh/core";
+} from "@shared/consts/collection.consts.ts";
 
 export const COLLECTION_FILE_URL_EXPIRY_SECONDS = 120;
 

@@ -1,10 +1,4 @@
 import { isNewVersionGreater, readYaml, writeYaml } from "@oh/utils";
-import {
-  type CollectionManifest,
-  type FurnitureSource,
-  getCollectionManifestErrors,
-  getSha256,
-} from "@oh/core";
 import { Catalog, FurnitureData } from "shared/types/main.ts";
 import { BlobReader, BlobWriter, ZipReader } from "@zip-js/data-uri";
 import { parse } from "@std/yaml";
@@ -14,6 +8,14 @@ import { FurnitureType } from "shared/enums/furniture.enum.ts";
 import { decodeTime } from "@std/ulid";
 import dayjs from "dayjs";
 import { isCatalogFurnitureAvailable } from "shared/utils/catalog.utils.ts";
+import {
+  getCollectionManifestErrors,
+  getSha256,
+} from "@shared/utils/collection.utils.ts";
+import {
+  CollectionManifest,
+  FurnitureSource,
+} from "@shared/types/collection.types.ts";
 
 export const furniture = () => {
   let $loadedFurnitureIds = new Set<string>();

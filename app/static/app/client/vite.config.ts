@@ -25,6 +25,7 @@ export default defineConfig({
     alias: {
       modules: "/modules",
       shared: "/shared",
+      "@shared": fileURLToPath(new URL("../../../shared/src", import.meta.url)),
       "@oh/styles": "../node_modules/@oh/components/",
     },
   },
