@@ -15,8 +15,6 @@
     "build": "(deno task compile:linux) & (deno task compile:linux_aarch64) & (deno task compile:darwin) & (deno task compile:windows)"
   },
   "imports": {
-    "@da/bcrypt": "jsr:@da/bcrypt@1.0.1",
-
     "@std/encoding": "jsr:@std/encoding@1.0.11",
     "@std/yaml": "jsr:@std/yaml@1.0.5",
     "@std/ulid": "jsr:@std/ulid@1",

@@ -3,8 +3,6 @@
     "start": "deno run -A --unstable-cron --watch=./src --unstable-kv mod.ts"
   },
   "imports": {
-    "@da/bcrypt": "jsr:@da/bcrypt@1.0.0",
-
     "@std/yaml": "jsr:@std/yaml@1.0.5",
     "@std/ulid": "jsr:@std/ulid@1",
     "@std/streams": "jsr:@std/streams@1.0.10",

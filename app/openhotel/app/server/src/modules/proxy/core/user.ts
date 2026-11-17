@@ -1,4 +1,4 @@
-import * as bcrypt from "@da/bcrypt";
+import * as bcrypt from "@shared/modules/old/bcrypt/main.ts";
 import { Proxy } from "modules/proxy/main.ts";
 import { PrivateUser } from "shared/types/user.types.ts";
 import { ProxyEvent } from "shared/enums/event.enum.ts";

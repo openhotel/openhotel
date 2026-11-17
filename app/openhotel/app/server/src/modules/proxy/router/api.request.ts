@@ -1,4 +1,4 @@
-import * as bcrypt from "@da/bcrypt";
+import * as bcrypt from "@shared/modules/old/bcrypt/main.ts";
 import { ProxyEvent } from "shared/enums/main.ts";
 import { Proxy } from "modules/proxy/main.ts";
 import { getURL } from "@shared/utils/urls.utils.ts";

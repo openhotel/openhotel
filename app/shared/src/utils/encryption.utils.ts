@@ -1,4 +1,4 @@
-import * as bcrypt from "@da/bcrypt";
+import * as bcrypt from "@shared/modules/old/bcrypt/main.ts";
 
 const deriveKeySHA256 = async (key: string): Promise<CryptoKey> => {
   const hashedKey = await crypto.subtle.digest(
