@@ -1,7 +1,7 @@
 import { getServerSocket, ServerClient } from "@da/socket";
-import { RequestMethod } from "@oh/utils";
 import { System } from "modules/system/main.ts";
 import { HotelData } from "shared/types/hotel.types.ts";
+import { RequestMethod } from "@shared/enums/request.enums.ts";
 
 export const serverSocket = () => {
   let $server;

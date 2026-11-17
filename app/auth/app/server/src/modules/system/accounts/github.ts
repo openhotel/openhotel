@@ -1,6 +1,6 @@
 import { AccountGithubMutable, DbAccount } from "shared/types/account.types.ts";
 import { System } from "modules/system/main.ts";
-import { getRandomString } from "@oh/utils";
+import { getRandomString } from "@shared/utils/random.utils.ts";
 
 export const github = (account: DbAccount): AccountGithubMutable => {
   const config = System.getConfig();

@@ -1,5 +1,4 @@
 import { System } from "modules/system/main.ts";
-import { generateToken } from "@oh/utils";
 import {
   DbHotel,
   HotelIntegrationCreation,
@@ -9,6 +8,7 @@ import {
 import { AccountMutable } from "shared/types/account.types.ts";
 import { DbHotelIntegrationType } from "shared/enums/hotel.enums.ts";
 import { ulid } from "@std/ulid";
+import { generateToken } from "@shared/utils/tokens.utils.ts";
 
 export const integrations = (hotel: DbHotel): HotelIntegrationsMutable => {
   const getIntegration = (

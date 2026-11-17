@@ -1,8 +1,9 @@
 import { api } from "./api.ts";
 import { ConfigTypes, Envs } from "shared/types/main.ts";
-import { getConfig as $getConfig, update } from "@oh/utils";
 import { CONFIG_DEFAULT } from "shared/consts/config.consts.ts";
 import { accounts } from "system/accounts.ts";
+import { getConfig as $getConfig } from "@shared/modules/old/config.ts";
+import { update } from "@shared/modules/old/updater.ts";
 
 export const System = (() => {
   const $api = api();

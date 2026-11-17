@@ -1,12 +1,9 @@
-import {
-  getResponse,
-  HttpStatusCode,
-  RequestMethod,
-  RequestType,
-  RequestKind,
-} from "@oh/utils";
 import { System } from "modules/system/main.ts";
 import { COLLECTION_FILE_URL_EXPIRY_SECONDS } from "shared/consts/main.ts";
+import { RequestType } from "@shared/types/request.types.ts";
+import { RequestKind, RequestMethod } from "@shared/enums/request.enums.ts";
+import { getResponse } from "@shared/utils/response.utils.ts";
+import { HttpStatusCode } from "@shared/enums/http-status-code.enums.ts";
 
 export const filesRequest: RequestType<unknown> = {
   method: RequestMethod.GET,

@@ -1,5 +1,5 @@
 import { System } from "modules/system/main.ts";
-import { RequestMethod } from "@oh/utils";
+import { RequestMethod } from "@shared/enums/request.enums.ts";
 
 type FetchProps = {
   method?: RequestMethod;

@@ -1,7 +1,6 @@
 import { BlobReader, BlobWriter, ZipWriter } from "@zip-js";
 import { stringify } from "@std/yaml";
 
-import { RequestType, RequestMethod, RequestKind } from "@oh/utils";
 import { base64ToBlob } from "shared/utils/base64.utils.ts";
 import { normalizeCollection } from "shared/utils/collection.utils.ts";
 import {
@@ -9,6 +8,8 @@ import {
   getCollectionMetadataErrors,
 } from "@shared/utils/collection.utils.ts";
 import { COLLECTION_FURNITURE_MAX_SIZE } from "@shared/consts/collection.consts.ts";
+import { RequestType } from "@shared/types/request.types.ts";
+import { RequestKind, RequestMethod } from "@shared/enums/request.enums.ts";
 
 export const createRequest: RequestType = {
   method: RequestMethod.POST,

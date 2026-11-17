@@ -1,11 +1,14 @@
 import { api } from "./api.ts";
 import { ConfigTypes, Envs } from "shared/types/main.ts";
-import { getConfig as $getConfig, getDb, update, DbMutable } from "@oh/utils";
 import { CONFIG_DEFAULT } from "shared/consts/config.consts.ts";
 import { Migrations } from "./migrations/main.ts";
 import { backups } from "./backups.ts";
 import { accounts } from "./accounts.ts";
 import { auth } from "system/auth.ts";
+import { DbMutable } from "@shared/types/db.types.ts";
+import { getConfig } from "@shared/modules/old/config.ts";
+import { getDb } from "@shared/modules/old/db/main.ts";
+import { update } from "@shared/modules/old/updater.ts";
 
 export const System = (() => {
   let $config: ConfigTypes;
@@ -20,7 +23,7 @@ export const System = (() => {
   let $db: DbMutable;
 
   const load = async (envs: Envs, testMode: boolean = false) => {
-    $config = await $getConfig<ConfigTypes>({
+    $config = await getConfig<ConfigTypes>({
       defaults: {
         ...CONFIG_DEFAULT,
         version: testMode ? "development" : CONFIG_DEFAULT.version,
@@ -69,7 +72,7 @@ export const System = (() => {
     $api.load(testMode);
   };
 
-  const getConfig = (): ConfigTypes => $config;
+  const $getConfig = (): ConfigTypes => $config;
   const getEnvs = (): Envs => $envs;
 
   const stop = async () => {
@@ -82,7 +85,7 @@ export const System = (() => {
     stop,
 
     load,
-    getConfig,
+    getConfig: $getConfig,
     getEnvs,
 
     get db() {

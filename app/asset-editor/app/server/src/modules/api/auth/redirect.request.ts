@@ -1,6 +1,7 @@
-import { RequestType, RequestMethod } from "@oh/utils";
 import { System } from "system/main.ts";
-import { getTokenData } from "@oh/utils";
+import { RequestType } from "@shared/types/request.types.ts";
+import { RequestMethod } from "@shared/enums/request.enums.ts";
+import { getTokenData } from "@shared/utils/tokens.utils.ts";
 
 export const redirectRequest: RequestType = {
   method: RequestMethod.GET,

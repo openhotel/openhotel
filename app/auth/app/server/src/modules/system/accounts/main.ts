@@ -7,15 +7,6 @@ import {
   DbAccount,
   PublicAccount,
 } from "shared/types/account.types.ts";
-import {
-  compareToken,
-  encryptToken,
-  getIpFromRequest,
-  getRandomString,
-  getSHA256HashText,
-  getTokenData,
-  HttpStatusCode,
-} from "@oh/utils";
 import { otp } from "./otp.ts";
 import { github } from "./github.ts";
 import { admins } from "./admins.ts";
@@ -30,6 +21,15 @@ import {
 } from "shared/utils/discord.utils.ts";
 import { getHiddenMail } from "shared/utils/mail.utils.ts";
 import { MailTypes } from "shared/types/mail.types.ts";
+import { getRandomString } from "@shared/utils/random.utils.ts";
+import {
+  compareToken,
+  encryptToken,
+  getSHA256HashText,
+} from "@shared/utils/encryption.utils.ts";
+import { getTokenData } from "@shared/utils/tokens.utils.ts";
+import { getIpFromRequest } from "@shared/utils/ip.utils.ts";
+import { HttpStatusCode } from "@shared/enums/http-status-code.enums.ts";
 
 export const accounts = () => {
   const $admins = admins();

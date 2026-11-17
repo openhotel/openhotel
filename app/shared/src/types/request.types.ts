@@ -16,7 +16,10 @@ export type ApiHandlerMutable = {
 export type RequestType<Data = undefined> = {
   pathname: string;
   method: RequestMethod;
-  kind: RequestKind | RequestKind[];
+  /**
+   *
+   */
+  kind?: RequestKind | RequestKind[];
   func: (
     request: Request,
     url: URL,

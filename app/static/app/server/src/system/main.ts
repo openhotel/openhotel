@@ -1,10 +1,13 @@
 import { ConfigTypes, Envs } from "shared/types/main.ts";
-import { getConfig as $getConfig, DbMutable, getDb, update } from "@oh/utils";
 import { CONFIG_DEFAULT } from "shared/consts/config.consts.ts";
 import { Migrations } from "modules/migrations/main.ts";
 import { api } from "./api.ts";
 import { files } from "./files.ts";
 import { accounts } from "./accounts.ts";
+import { DbMutable } from "@shared/types/db.types.ts";
+import { getConfig as $getConfig } from "@shared/modules/old/config.ts";
+import { update } from "@shared/modules/old/updater.ts";
+import { getDb } from "@shared/modules/old/db/main.ts";
 
 export const System = (() => {
   const $api = api();

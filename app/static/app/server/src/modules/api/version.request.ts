@@ -1,10 +1,6 @@
 import { System } from "system/main.ts";
-import {
-  RequestType,
-  RequestMethod,
-  getResponse,
-  HttpStatusCode,
-} from "@oh/utils";
+import { RequestType } from "@shared/types/request.types.ts";
+import { RequestMethod } from "@shared/enums/request.enums.ts";
 
 export const versionRequest: RequestType = {
   method: RequestMethod.GET,

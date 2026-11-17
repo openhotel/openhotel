@@ -1,12 +1,9 @@
 import { requestV1List } from "modules/api/v1/main.ts";
-import {
-  getCORSHeaders,
-  RequestMethod,
-  getApiHandler,
-  ApiHandlerMutable,
-  RequestKind,
-} from "@oh/utils";
 import { System } from "./main.ts";
+import { ApiHandlerMutable } from "@shared/types/request.types.ts";
+import { getApiHandler } from "@shared/modules/old/api.ts";
+import { RequestKind, RequestMethod } from "@shared/enums/request.enums.ts";
+import { getCORSHeaders } from "@shared/utils/cors.utils.ts";
 
 export const api = () => {
   let $apiHandler: ApiHandlerMutable;

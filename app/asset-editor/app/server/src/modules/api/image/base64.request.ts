@@ -1,6 +1,7 @@
-import { RequestType, RequestMethod, RequestKind } from "@oh/utils";
 import { getBase64Image } from "shared/utils/image.utils.ts";
 import { Image } from "imagescript";
+import { RequestType } from "@shared/types/request.types.ts";
+import { RequestKind, RequestMethod } from "@shared/enums/request.enums.ts";
 
 export const base64Request: RequestType = {
   method: RequestMethod.POST,

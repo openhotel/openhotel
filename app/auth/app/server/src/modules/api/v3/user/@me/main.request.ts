@@ -1,12 +1,9 @@
-import {
-  RequestMethod,
-  RequestType,
-  getResponse,
-  HttpStatusCode,
-  RequestKind,
-} from "@oh/utils";
 import { System } from "modules/system/main.ts";
 import { LANGUAGE_LIST } from "shared/consts/language.consts.ts";
+import { RequestType } from "@shared/types/request.types.ts";
+import { RequestKind, RequestMethod } from "@shared/enums/request.enums.ts";
+import { getResponse } from "@shared/utils/response.utils.ts";
+import { HttpStatusCode } from "@shared/enums/http-status-code.enums.ts";
 
 export const mainGetRequest: RequestType = {
   method: RequestMethod.GET,

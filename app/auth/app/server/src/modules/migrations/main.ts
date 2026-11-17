@@ -1,4 +1,4 @@
-import { DbMutable } from "@oh/utils";
+import { DbMutable } from "@shared/types/db.types.ts";
 
 const MIGRATION_LIST = [
   await import("./2025-02-02--23-56-github-login-fix.migration.ts"),

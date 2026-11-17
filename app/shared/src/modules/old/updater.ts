@@ -12,6 +12,17 @@ import { getTemporalUpdateFilePathname } from "@shared/utils/update.utils.ts";
 
 let isUpdating = false;
 
+/**
+ * @deprecated
+ * @param param0
+ * @param param0.version
+ * @param param0.targetVersion
+ * @param param0.repository
+ * @param param0.headers
+ * @param param0.log
+ * @param param0.debug
+ * @param param0.label
+ */
 export const update = async ({
   version,
   targetVersion,
@@ -158,6 +169,15 @@ export const update = async ({
   return false;
 };
 
+/**
+ * @deprecated
+ * @param param0
+ * @param param0.version
+ * @param param0.repository
+ * @param param0.headers
+ * @param param0.log
+ * @param param0.debug
+ */
 export const getLatestVersion = async ({
   version,
   repository,

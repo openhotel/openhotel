@@ -2,7 +2,7 @@
   "compilerOptions": {
     "moduleResolution": "bundler",
     "module": "esnext",
-    "target": "es2025",
+    "target": "es2024",
     "esModuleInterop": true,
     "sourceMap": false,
     "noUnusedLocals": true,

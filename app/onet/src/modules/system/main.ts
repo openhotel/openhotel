@@ -1,5 +1,4 @@
 import { ConfigTypes, Envs } from "shared/types/main.ts";
-import { getConfig as $getConfig, update, getDb, DbMutable } from "@oh/utils";
 import { CONFIG_DEFAULTS } from "shared/consts/config.consts.ts";
 import { Migrations } from "modules/migrations/main.ts";
 import { api } from "./api.ts";
@@ -8,6 +7,13 @@ import { auth } from "./auth.ts";
 import { hotels } from "./hotels/main.ts";
 import { teleports } from "./teleports/main.ts";
 import { collections } from "./collections/main.ts";
+import { DbMutable } from "@shared/types/db.types.ts";
+import { getDb } from "@shared/modules/old/db/main.ts";
+import {
+  getConfig,
+  getConfig as $getConfig,
+} from "@shared/modules/old/config.ts";
+import { update } from "@shared/modules/old/updater.ts";
 
 export const System = (() => {
   let $config: ConfigTypes;

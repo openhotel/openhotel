@@ -1,6 +1,5 @@
 import { api } from "./api.ts";
 import { ConfigTypes, Envs } from "shared/types/main.ts";
-import { getConfig as $getConfig, getDb, update, DbMutable } from "@oh/utils";
 import { captcha } from "./captcha.ts";
 import { email } from "./email/main.ts";
 import { CONFIG_DEFAULT } from "shared/consts/config.consts.ts";
@@ -11,6 +10,10 @@ import { hotels } from "./hotels/main.ts";
 import { backups } from "modules/system/backups.ts";
 import { apps } from "modules/system/apps.ts";
 import { onet } from "modules/system/onet.ts";
+import { DbMutable } from "@shared/types/db.types.ts";
+import { update } from "@shared/modules/old/updater.ts";
+import { getDb } from "@shared/modules/old/db/main.ts";
+import { getConfig as $getConfig } from "@shared/modules/old/config.ts";
 
 export const System = (() => {
   let $config: ConfigTypes;

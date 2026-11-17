@@ -9,8 +9,9 @@ import {
   HotelMutableGet,
 } from "shared/types/hotel.types.ts";
 import { integrations } from "./integrations.ts";
-import { getTokenData, compareToken } from "@oh/utils";
 import { ulid } from "@std/ulid";
+import { getTokenData } from "@shared/utils/tokens.utils.ts";
+import { compareToken } from "@shared/utils/encryption.utils.ts";
 
 export const hotels = () => {
   const $getLicenseData = async (licenseToken: string) => {
