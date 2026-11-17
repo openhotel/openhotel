@@ -61,13 +61,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@oh/queue@npm:@jsr/oh__queue@1.1.1":
-  version: 1.1.1
-  resolution: "@jsr/oh__queue@npm:1.1.1::__archiveUrl=https%3A%2F%2Fnpm.jsr.io%2F~%2F11%2F%40jsr%2Foh__queue%2F1.1.1.tgz"
-  checksum: 10c0/a4d2f8914960211267f8a684c46b359b6d3ec93d1efe270fe552817cebf41ee503a436d49afc69a0c3e79905599d23a2e5742ef1187b51a22bd6b4313ff29de8
-  languageName: node
-  linkType: hard
-
 "@openhotel/pixi-components@npm:0.1.9":
   version: 0.1.9
   resolution: "@openhotel/pixi-components@npm:0.1.9"
@@ -984,7 +977,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "root-workspace-0b6124@workspace:."
   dependencies:
-    "@oh/queue": "npm:@jsr/oh__queue@1.1.1"
     "@openhotel/pixi-components": "npm:0.1.9"
     "@types/howler": "npm:2.2.12"
     "@types/node": "npm:22.13.9"
