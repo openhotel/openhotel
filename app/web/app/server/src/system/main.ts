@@ -8,7 +8,7 @@ import { auth } from "system/auth.ts";
 import { DbMutable } from "@shared/types/db.types.ts";
 import { getConfig } from "@shared/modules/old/config.ts";
 import { getDb } from "@shared/modules/old/db/main.ts";
-import { update } from "@shared/modules/old/updater.ts";
+import { updaterModule } from "@shared/modules/updater.module.ts";
 
 export const System = (() => {
   let $config: ConfigTypes;
@@ -20,6 +20,8 @@ export const System = (() => {
   const $backups = backups();
   const $accounts = accounts();
   const $auth = auth();
+  const updater = updaterModule();
+
   let $db: DbMutable;
 
   const load = async (envs: Envs, testMode: boolean = false) => {
@@ -37,17 +39,18 @@ export const System = (() => {
 
     const isProduction = !testMode && $config.version !== "development";
 
-    if (
-      isProduction &&
-      (await update({
-        targetVersion: "latest",
-        version: envs.version,
-        repository: "openhotel/web",
-        log: console.log,
-        debug: console.debug,
-      }))
-    )
-      return;
+    updater.load({
+      project: "web",
+      log: console.log,
+      enabled: isProduction,
+    });
+
+    await updater.update({
+      version: envs.version,
+      target: "latest",
+      preReleases: true,
+      stopOnUpdate: true,
+    });
 
     $db = getDb({
       pathname: `./${testMode ? "deleteme-database" : $config.database.filename}`,
@@ -98,5 +101,6 @@ export const System = (() => {
     backups: $backups,
     accounts: $accounts,
     auth: $auth,
+    updater,
   };
 })();

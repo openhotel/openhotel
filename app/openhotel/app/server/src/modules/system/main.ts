@@ -28,7 +28,6 @@ export const System = (() => {
   const $auth = auth();
   const $config = config();
   const $image = image();
-  // const $updater = updater();
   const updater = updaterModule();
 
   const load = async (envs: Envs) => {
@@ -44,6 +43,7 @@ export const System = (() => {
     updater.load({
       project: "openhotel",
       log: console.log,
+      enabled: config.version !== "development",
     });
 
     await updater.update({
@@ -108,5 +108,6 @@ export const System = (() => {
     auth: $auth,
     config: $config,
     image: $image,
+    updater,
   };
 })();

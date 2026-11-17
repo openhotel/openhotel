@@ -19,18 +19,21 @@ export const updaterModule: UpdatedModule = () => {
   const load: ReturnType<UpdatedModule>["load"] = ({
     log: $log,
     project: $project,
+    enabled,
   }) => {
     log = $log;
     project = $project;
 
     const os = getOS();
     const arch = getArch();
-    canUpdate = os === OS.LINUX && arch === Arch.X64;
+    canUpdate = enabled && os === OS.LINUX && arch === Arch.X64;
 
     log(
-      `System ${os} (${arch})` + canUpdate
-        ? ""
-        : " not compatible with auto-update!",
+      `System ${os} (${arch})` + enabled
+        ? canUpdate
+          ? ""
+          : " not compatible with auto-update!"
+        : "!",
     );
     return canUpdate;
   };

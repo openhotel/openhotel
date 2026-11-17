@@ -11,9 +11,9 @@ import { backups } from "modules/system/backups.ts";
 import { apps } from "modules/system/apps.ts";
 import { onet } from "modules/system/onet.ts";
 import { DbMutable } from "@shared/types/db.types.ts";
-import { update } from "@shared/modules/old/updater.ts";
 import { getDb } from "@shared/modules/old/db/main.ts";
 import { getConfig as $getConfig } from "@shared/modules/old/config.ts";
+import { updaterModule } from "@shared/modules/updater.module.ts";
 
 export const System = (() => {
   let $config: ConfigTypes;
@@ -30,6 +30,7 @@ export const System = (() => {
   const $hotels = hotels();
   const $backups = backups();
   const $onet = onet();
+  const updater = updaterModule();
   let $db: DbMutable;
 
   const load = async (envs: Envs, testMode: boolean = false) => {
@@ -45,17 +46,18 @@ export const System = (() => {
 
     const isProduction = !testMode && $config.version !== "development";
 
-    if (
-      isProduction &&
-      (await update({
-        targetVersion: "latest",
-        version: envs.version,
-        repository: "openhotel/auth",
-        log: console.log,
-        debug: console.debug,
-      }))
-    )
-      return;
+    updater.load({
+      project: "auth",
+      log: console.log,
+      enabled: isProduction,
+    });
+
+    await updater.update({
+      version: envs.version,
+      target: "latest",
+      preReleases: true,
+      stopOnUpdate: true,
+    });
 
     $db = getDb({
       pathname: `./${testMode ? "deleteme-database" : $config.database.filename}`,
@@ -113,5 +115,6 @@ export const System = (() => {
     hotels: $hotels,
     backups: $backups,
     onet: $onet,
+    updater,
   };
 })();

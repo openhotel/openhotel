@@ -242,6 +242,9 @@ export const games = () => {
       isDevelopment ? Deno.cwd() : getPath(),
       `${OPERATIVE_PATH}/${repo}`,
     );
+    /**
+     * @deprecated SEARCH A WAY TO UPDATE MINIGAMES, BETTER
+     */
     const updateFilePath = getTemporalUpdateFilePathname(dirPath);
     const updateFile = path.join(dirPath, `update_${osAsset.name}`);
     const updatedFile = path.join(dirPath, osAsset.name);

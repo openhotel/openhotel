@@ -1,7 +1,11 @@
 import { ReleaseProject } from "@shared/types/releases.types.ts";
 
 export type UpdatedModule = () => {
-  load: (data: { log: typeof console.log; project: ReleaseProject }) => boolean;
+  load: (data: {
+    log: typeof console.log;
+    project: ReleaseProject;
+    enabled: boolean;
+  }) => boolean;
   update: (data: {
     version: string;
     target: string;
