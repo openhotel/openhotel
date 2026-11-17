@@ -17,7 +17,7 @@ import {
   MIN_SAFE_MESSAGES,
 } from "shared/consts";
 import { ulid } from "ulidx";
-import { TickerQueue } from "@oh/queue";
+import { TickerQueue } from "@shared/modules/old/queue/ticker-queue.enum.ts";
 
 type Props = {} & ContainerProps;
 

@@ -20,7 +20,6 @@
     "vite": "8.3.3"
   },
   "dependencies": {
-    "@oh/queue": "npm:@jsr/oh__queue@1.1.1",
     "@openhotel/pixi-components": "0.1.9",
     "dayjs": "1.11.21",
     "howler": "2.2.4",

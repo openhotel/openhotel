@@ -555,6 +555,7 @@
   "workspace": {
     "dependencies": [
       "jsr:@std/cli@*",
+      "jsr:@xtool/dayjs@0.1.4",
       "npm:vite@5.2.14"
     ]
   }

@@ -15,8 +15,6 @@
     "build": "(deno task compile:linux) & (deno task compile:linux_aarch64) & (deno task compile:darwin) & (deno task compile:windows)"
   },
   "imports": {
-    "@oh/queue": "jsr:@oh/queue@1.1.1",
-
     "@da/bcrypt": "jsr:@da/bcrypt@1.0.1",
     "@da/socket": "jsr:@da/socket@2.3.0",
 

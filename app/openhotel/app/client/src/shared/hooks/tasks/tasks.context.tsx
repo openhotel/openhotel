@@ -1,5 +1,5 @@
 import React from "react";
-import { QueueItemProps } from "@oh/queue";
+import { QueueItemProps } from "@shared/modules/old/queue/queue.types.ts";
 
 export type TasksState = {
   add: (props: QueueItemProps) => () => void;

@@ -16,8 +16,8 @@ import {
   TILE_WIDTH,
   TILE_Y_HEIGHT,
 } from "shared/consts";
-import { TickerQueue } from "@oh/queue";
 import { Direction } from "@shared/enums/direction.enums.ts";
+import { TickerQueue } from "@shared/modules/old/queue/ticker-queue.enum.ts";
 
 type Props = {
   user: User;

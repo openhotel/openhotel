@@ -17,8 +17,6 @@
     "test:watch": "(cd ./__tests__ && deno task test:watch) & deno task start --testMode"
   },
   "imports": {
-    "@oh/queue": "jsr:@oh/queue@1.1.1",
-
     "shared/": "./src/shared/",
     "modules/": "./src/modules/",
 

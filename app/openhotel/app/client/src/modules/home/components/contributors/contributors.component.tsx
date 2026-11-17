@@ -5,12 +5,12 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { TickerQueue } from "@oh/queue";
 import { CONTRIBUTOR_LOOP_TIME, TEXT_BACKGROUND_BASE } from "shared/consts";
 import { Cursor, EventMode } from "@openhotel/pixi-components";
 import { TextComponent } from "shared/components";
 import { useContributors, useTasks } from "shared/hooks";
 import { useTranslation } from "react-i18next";
+import { TickerQueue } from "@shared/modules/old/queue/ticker-queue.enum.ts";
 
 export const ContributorsComponent: React.FC = () => {
   const { t } = useTranslation();
