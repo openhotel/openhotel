@@ -12,6 +12,7 @@ export type UpdatedModule = () => {
     preReleases?: boolean;
     stopOnUpdate?: boolean;
   }) => Promise<boolean>;
+  getLastVersion: (data: { preReleases: boolean }) => Promise<string | null>;
 };
 
 export type GithubAsset = {

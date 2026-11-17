@@ -186,8 +186,75 @@ export const updaterModule: UpdatedModule = () => {
     }
   };
 
+  const getLastVersion: ReturnType<UpdatedModule>["getLastVersion"] = async ({
+    preReleases = false,
+  }) => {
+    try {
+      const url = preReleases
+        ? `https://api.github.com/repos/${repository}/releases?per_page=1`
+        : `https://api.github.com/repos/${repository}/releases/latest`;
+
+      const releaseResponse = await fetch(url, { headers: getGithubHeaders() });
+      if (!releaseResponse.ok) {
+        log(`GitHub API failed ${releaseResponse.status}!`);
+        return null;
+      }
+
+      const data = await releaseResponse.json();
+      const release = (preReleases ? data[0] : data) as
+        GithubResponse | undefined;
+
+      if (!release) {
+        log("No releases found!");
+        return null;
+      }
+      const { tag_name: latestVersion, assets } = release;
+
+      const releaseGithubAsset = assets.find(
+        ({ name }) => name === "release.oh",
+      );
+
+      if (!releaseGithubAsset) {
+        log(`Release file not found (${latestVersion})!`);
+        return null;
+      }
+
+      const buildAsset = await fetch(releaseGithubAsset.url, {
+        headers: getGithubHeaders("application/octet-stream"),
+      });
+
+      if (!buildAsset.ok) {
+        log(
+          `Release file cannot be downloaded ${buildAsset.status} (${latestVersion})!`,
+        );
+        return null;
+      }
+
+      const releaseData = getReleaseFileFromBytes(
+        new Uint8Array(await buildAsset.arrayBuffer()),
+      );
+
+      if (!releaseData) {
+        log(`Release file cannot be read (${latestVersion})!`);
+        return null;
+      }
+
+      const remoteVersion = releaseData.get(project);
+      if (!remoteVersion) {
+        log(`Release file does not contain ${project} (${latestVersion})!`);
+        return null;
+      }
+
+      return remoteVersion;
+    } catch (e) {
+      console.error(e);
+      return null;
+    }
+  };
+
   return {
     load,
     update,
+    getLastVersion,
   };
 };
