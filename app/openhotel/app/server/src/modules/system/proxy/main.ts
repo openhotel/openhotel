@@ -6,7 +6,7 @@ import { log } from "shared/utils/main.ts";
 import { System } from "modules/system/main.ts";
 import { requestList } from "./api/main.ts";
 import { getParentWorker } from "@da/worker";
-import { RequestMethod } from "@oh/utils";
+import { RequestMethod } from "@shared/enums/request.enums.ts";
 
 type WorkerDataProps = {
   user: PrivateUser;

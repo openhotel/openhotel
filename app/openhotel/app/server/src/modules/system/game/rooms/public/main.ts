@@ -5,7 +5,7 @@ import {
   getRoomSpawnPoint,
 } from "shared/utils/rooms.utils.ts";
 import { log } from "shared/utils/log.utils.ts";
-import { BlobReader, BlobWriter, ZipReader } from "@zip-js/data-uri";
+import { BlobReader, BlobWriter, ZipReader } from "@zip-js";
 import { parse } from "@std/yaml";
 
 const PUBLIC_ROOMS_PATH = "./assets/rooms/public";

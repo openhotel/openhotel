@@ -1,5 +1,5 @@
 import { UserMutable } from "./user.types.ts";
-import { RequestMethod } from "@oh/utils";
+import { RequestMethod } from "@shared/enums/request.enums.ts";
 
 type FuncProps = {
   data?: Record<string, string>;

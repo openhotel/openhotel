@@ -4,7 +4,8 @@ import {
   BaseRoomMutable,
   BaseRoom,
 } from "shared/types/main.ts";
-import { Point3d, Direction } from "@oh/utils";
+import { Point3d } from "@shared/types/point.types.ts";
+import { Direction } from "@shared/enums/direction.enums.ts";
 
 export type PublicRoom = BaseRoom & {
   type: "public";

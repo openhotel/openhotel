@@ -3,7 +3,7 @@ import React from "react";
 
 import { FurnitureComponent } from "./furniture.component";
 import { SmallRoomComponent } from ".storybook/__components__";
-import { CrossDirection } from "shared/enums";
+import { CrossDirection } from "@shared/enums/direction.enums.ts";
 
 export default {
   title: "Shared/Furniture",

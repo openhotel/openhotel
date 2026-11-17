@@ -1,7 +1,7 @@
-import { RequestMethod } from "@oh/utils";
 import { System } from "modules/system/main.ts";
 import { ProxyRequestType } from "shared/types/api.types.ts";
 import { isCatalogCategoryAvailable } from "shared/utils/catalog.utils.ts";
+import { RequestMethod } from "@shared/enums/request.enums.ts";
 
 export const catalogRequest: ProxyRequestType = {
   pathname: "",

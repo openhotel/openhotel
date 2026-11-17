@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from "@storybook/react";
 import React from "react";
 import { PrivateRoomStairs } from "./stairs.component";
-import { CrossDirection } from "shared/enums";
+import { CrossDirection } from "@shared/enums/direction.enums.ts";
 
 export default {
   title: "Shared/Rooms/Private/Stairs",

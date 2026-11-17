@@ -3,13 +3,13 @@ import {
   CharacterBodyAction,
   CharacterDirection,
   CharacterPart,
-  Direction,
   SpriteSheetEnum,
 } from "shared/enums";
 import { SpriteComponent } from "@openhotel/pixi-components";
 import { useCharacter } from "shared/hooks";
 import { CharacterDirectionData } from "shared/types";
 import { getCharacterBodyPart, getEnumKeyLowCase } from "shared/utils";
+import { Direction } from "@shared/enums/direction.enums.ts";
 
 type Props = {
   bodyDirection: Direction;

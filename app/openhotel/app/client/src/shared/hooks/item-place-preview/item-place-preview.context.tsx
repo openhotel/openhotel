@@ -1,6 +1,6 @@
 import React from "react";
 import { FurnitureData, PrivateRoom } from "shared/types";
-import { CrossDirection } from "shared/enums";
+import { CrossDirection } from "@shared/enums/direction.enums.ts";
 
 export type ItemPreviewData = {
   ids: string[];

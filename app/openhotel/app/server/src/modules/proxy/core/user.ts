@@ -1,10 +1,10 @@
 import * as bcrypt from "@da/bcrypt";
-import { getRandomString, decodeBase64 } from "@oh/utils";
 import { Proxy } from "modules/proxy/main.ts";
 import { PrivateUser } from "shared/types/user.types.ts";
 import { ProxyEvent } from "shared/enums/event.enum.ts";
 import { PROXY_CLIENT_EVENT_WHITELIST } from "shared/consts/event.consts.ts";
 import { ServerClient } from "@da/socket";
+import { getRandomString } from "@shared/utils/random.utils.ts";
 
 export const user = () => {
   // This maps client id to user id (1:1), to prevent the connection of the user multiple times

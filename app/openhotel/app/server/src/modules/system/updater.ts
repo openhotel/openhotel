@@ -1,6 +1,6 @@
 import { System } from "modules/system/main.ts";
 import { debug, log } from "shared/utils/log.utils.ts";
-import { update } from "@oh/utils";
+import { update } from "@shared/modules/old/updater.ts";
 
 export const updater = () => {
   const $update = async () => {

@@ -9,13 +9,10 @@ import {
   FlexContainerComponent,
 } from "@openhotel/pixi-components";
 import { PrivateRoomTile } from "shared/components/private-room/components";
-import {
-  CharacterArmAction,
-  CharacterBodyAction,
-  Direction,
-} from "shared/enums";
+import { CharacterArmAction, CharacterBodyAction } from "shared/enums";
 import { TextComponent } from "shared/components/text";
 import { getPositionFromIsometricPosition } from "shared/utils";
+import { Direction } from "@shared/enums/direction.enums.ts";
 
 export default {
   title: "Shared/Character",

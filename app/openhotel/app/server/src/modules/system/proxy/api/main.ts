@@ -1,5 +1,3 @@
-import { RequestType, getPathRequestList } from "@oh/utils";
-
 import { onlineUsersRequest } from "./online-users.request.ts";
 import { furnitureRequest } from "./furniture.request.ts";
 import { tokenRequest } from "./token.request.ts";
@@ -12,6 +10,9 @@ import { roomRequestList } from "./room/main.ts";
 import { captureRequestList } from "./capture/main.ts";
 import { gameRequestList } from "./game/main.ts";
 import { marketplaceRequestList } from "./marketplace/main.ts";
+
+import { RequestType } from "@shared/types/request.types.ts";
+import { getPathRequestList } from "@shared/utils/request.utils.ts";
 
 export const requestList: RequestType[] = getPathRequestList({
   requestList: [

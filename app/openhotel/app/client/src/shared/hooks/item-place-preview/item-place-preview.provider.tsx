@@ -17,7 +17,6 @@ import {
 } from "shared/components";
 import { Event, useEvents } from "@openhotel/pixi-components";
 import {
-  CrossDirection,
   Event as ProxyEvent,
   FurnitureType,
   InternalEvent,
@@ -31,6 +30,7 @@ import {
 } from "shared/utils";
 import { useFurniture } from "shared/hooks/furniture";
 import { TILE_Y_HEIGHT, WALL_HEIGHT } from "shared/consts";
+import { CrossDirection } from "@shared/enums/direction.enums.ts";
 
 type Props = {
   children: ReactNode;

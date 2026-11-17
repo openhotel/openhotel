@@ -1,6 +1,6 @@
-import { RequestMethod } from "@oh/utils";
 import { ProxyRequestType } from "shared/types/api.types.ts";
 import { FurnitureType } from "shared/enums/furniture.enum.ts";
+import { RequestMethod } from "@shared/enums/request.enums.ts";
 
 export const inventoryRequest: ProxyRequestType = {
   pathname: "/inventory",

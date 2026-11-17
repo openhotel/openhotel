@@ -7,7 +7,7 @@ import React, {
   useState,
 } from "react";
 import { ContainerComponent, ContainerRef } from "@openhotel/pixi-components";
-import { CrossDirection, RoomPointEnum } from "shared/enums";
+import { RoomPointEnum } from "shared/enums";
 import {
   getPositionFromIsometricPosition,
   isCurrentPointStairs,
@@ -27,6 +27,7 @@ import {
   PrivateRoomTilePreview,
   PrivateRoomWallComponent,
 } from "./components";
+import { CrossDirection } from "@shared/enums/direction.enums.ts";
 
 type Props = {
   ref?: React.Ref<ContainerRef>;

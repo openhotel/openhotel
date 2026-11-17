@@ -24,7 +24,7 @@
     "@std/encoding": "jsr:@std/encoding@1.0.11",
     "@std/yaml": "jsr:@std/yaml@1.0.5",
     "@std/ulid": "jsr:@std/ulid@1",
-    "@zip-js": "jsr:@zip-js/zip-js@2.7.53",
+    "@zip-js": "jsr:@zip-js/zip-js@2.25.0",
 
     "modules/": "./src/modules/",
     "shared/": "./src/shared/",

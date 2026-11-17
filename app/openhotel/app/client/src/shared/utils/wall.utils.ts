@@ -1,5 +1,5 @@
 import { Point2d } from "shared/types";
-import { CrossDirection } from "shared/enums";
+import { CrossDirection } from "@shared/enums/direction.enums.ts";
 
 export const getWallIsometricPositionFromPosition = (
   position: Point2d,

@@ -4,7 +4,6 @@
     "jsr:@da/bcrypt@1.0.1": "1.0.1",
     "jsr:@da/socket@2.3.0": "2.3.0",
     "jsr:@deno/kv-utils@0.1.3": "0.1.3",
-    "jsr:@oh/core@0.1.0": "0.1.0",
     "jsr:@oh/queue@1.1.1": "1.1.1",
     "jsr:@oh/utils@1.5.33": "1.5.33",
     "jsr:@std/bytes@^1.0.3": "1.0.6",
@@ -21,6 +20,7 @@
     "jsr:@std/yaml@1.0.5": "1.0.5",
     "jsr:@sugar/minio-js-with-startpath@8.0.13": "8.0.13",
     "jsr:@xtool/dayjs@0.1.4": "0.1.4",
+    "jsr:@zip-js/zip-js@2.25.0": "2.25.0",
     "jsr:@zip-js/zip-js@2.7.53": "2.7.53",
     "npm:async@^3.2.4": "3.2.6",
     "npm:block-stream2@^2.1.0": "2.1.0",
@@ -51,9 +51,6 @@
         "jsr:@std/encoding@^1.0.5"
       ]
     },
-    "@oh/core@0.1.0": {
-      "integrity": "a46183891e82d2a35f78cad6ce8290e8ef53e22f48e8845b0df7a1e1b0525d86"
-    },
     "@oh/queue@1.1.1": {
       "integrity": "8e8ec809202c48beaf436b3ea01b4c3a17f8c015ca686d906822482c9c881390"
     },
@@ -71,7 +68,7 @@
         "jsr:@std/yaml",
         "jsr:@sugar/minio-js-with-startpath",
         "jsr:@xtool/dayjs",
-        "jsr:@zip-js/zip-js",
+        "jsr:@zip-js/zip-js@2.7.53",
         "npm:cbor-x"
       ]
     },
@@ -131,6 +128,9 @@
     },
     "@zip-js/zip-js@2.7.53": {
       "integrity": "acea5bd8e01feb3fe4c242cfbde7d33dd5e006549a4eb1d15283bc0c778ed672"
+    },
+    "@zip-js/zip-js@2.25.0": {
+      "integrity": "0ec676ff123341238b78e135e59765ce143ad2c8d01ac30346747c159d6ad112"
     }
   },
   "npm": {
@@ -330,13 +330,12 @@
     "dependencies": [
       "jsr:@da/bcrypt@1.0.1",
       "jsr:@da/socket@2.3.0",
-      "jsr:@oh/core@0.1.0",
       "jsr:@oh/queue@1.1.1",
       "jsr:@oh/utils@1.5.33",
       "jsr:@std/encoding@1.0.11",
       "jsr:@std/ulid@1",
       "jsr:@std/yaml@1.0.5",
-      "jsr:@zip-js/zip-js@2.7.53"
+      "jsr:@zip-js/zip-js@2.25.0"
     ]
   }
 }

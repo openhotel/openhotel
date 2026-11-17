@@ -8,8 +8,8 @@ import {
   RoomPreview,
   User,
 } from "shared/types";
-import { Direction } from "shared/enums";
 import { PositionData } from "./room.context";
+import { Direction } from "@shared/enums/direction.enums.ts";
 
 export const useRoomStore = create<{
   room: Room;

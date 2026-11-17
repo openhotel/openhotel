@@ -13,7 +13,8 @@ export const getOS = (): OS => {
 };
 
 export const getOSName = (): string | null => {
-  switch (Deno.build.os) {
+  const { os } = Deno.build;
+  switch (os) {
     case "linux":
     case "darwin":
     case "windows":

@@ -2,9 +2,9 @@ import { Meta, StoryObj } from "@storybook/react";
 import React, { useCallback, useState } from "react";
 import { FurnitureFrameComponent } from "./furniture-frame.component";
 import { SmallRoomComponent } from ".storybook/__components__";
-import { CrossDirection } from "shared/enums";
 import { Point2d, Point3d } from "shared/types";
 import { FurnitureComponent } from "shared/components/furniture";
+import { CrossDirection } from "@shared/enums/direction.enums.ts";
 
 export default {
   title: "Shared/Furniture/Frame",

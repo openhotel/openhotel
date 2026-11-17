@@ -1,4 +1,5 @@
-import { Migration, DbMutable, getRandomString } from "@oh/utils";
+import { DbMutable, Migration } from "@shared/types/db.types.ts";
+import { getRandomString } from "@shared/utils/random.utils.ts";
 import {
   getRoomSpawnDirection,
   getRoomSpawnPoint,

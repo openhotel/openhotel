@@ -1,4 +1,4 @@
-import { BlobReader, BlobWriter, ZipWriter } from "@zip-js/data-uri";
+import { BlobReader, BlobWriter, ZipWriter } from "@zip-js";
 import { stringify } from "@std/yaml";
 
 import { RequestType, RequestMethod, RequestKind } from "@oh/utils";

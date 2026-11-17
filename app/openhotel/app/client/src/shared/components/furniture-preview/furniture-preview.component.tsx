@@ -7,9 +7,10 @@ import {
   Size,
 } from "@openhotel/pixi-components";
 import { FurnitureComponent, FurnitureFrameComponent } from "shared/components";
-import { CrossDirection, FurnitureType } from "shared/enums";
+import { FurnitureType } from "shared/enums";
 import { FurnitureData } from "shared/types";
 import { TILE_SIZE } from "shared/consts";
+import { CrossDirection } from "@shared/enums/direction.enums.ts";
 
 type Props = {
   furnitureData: FurnitureData;

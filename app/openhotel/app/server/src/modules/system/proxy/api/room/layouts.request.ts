@@ -1,6 +1,6 @@
 import { ProxyRequestType } from "shared/types/api.types.ts";
-import { RequestMethod, getContentType } from "@oh/utils";
 import { System } from "modules/system/main.ts";
+import { RequestMethod } from "@shared/enums/request.enums.ts";
 
 export const layoutsRequest: ProxyRequestType = {
   pathname: "/layouts",

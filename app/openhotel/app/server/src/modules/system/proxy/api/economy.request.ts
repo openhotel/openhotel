@@ -1,5 +1,5 @@
-import { RequestMethod } from "@oh/utils";
 import { ProxyRequestType } from "shared/types/api.types.ts";
+import { RequestMethod } from "@shared/enums/request.enums.ts";
 
 export const economyRequest: ProxyRequestType = {
   pathname: "/economy",

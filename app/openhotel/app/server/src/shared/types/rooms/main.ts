@@ -1,5 +1,4 @@
 import { RoomPointEnum } from "shared/enums/room.enums.ts";
-import { Point3d } from "@oh/utils";
 import { User } from "shared/types/user.types.ts";
 import { ProxyEvent } from "shared/enums/event.enum.ts";
 import {
@@ -10,6 +9,7 @@ import {
   PublicRoom,
   PublicRoomMutable,
 } from "shared/types/rooms/public.types.ts";
+import { Point3d } from "@shared/types/point.types.ts";
 
 export * from "./private.types.ts";
 export * from "./public.types.ts";

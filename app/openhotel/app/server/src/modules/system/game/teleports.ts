@@ -1,6 +1,6 @@
 import { System } from "modules/system/main.ts";
-import { RequestMethod } from "@oh/utils";
 import { ulid } from "@std/ulid";
+import { RequestMethod } from "@shared/enums/request.enums.ts";
 
 export const teleports = () => {
   const setRoom = async (id: string, roomId: string) => {

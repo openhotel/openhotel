@@ -1,7 +1,7 @@
 import { PrivateRoomMutable, PrivateRoom } from "shared/types/main.ts";
 import { System } from "modules/system/main.ts";
-import { getRandomNumber } from "@oh/utils";
 import { getRoom } from "./room.ts";
+import { getRandomNumber } from "@shared/utils/random.utils.ts";
 
 export const $private = () => {
   let roomUserMap: Record<string, string[]> = {};

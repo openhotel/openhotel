@@ -10,7 +10,7 @@ import {
   NineSliceSpriteComponent,
   SpriteComponent,
 } from "@openhotel/pixi-components";
-import { CrossDirection, SpriteSheetEnum } from "shared/enums";
+import { SpriteSheetEnum } from "shared/enums";
 import { getPositionFromIsometricPosition, getZIndex } from "shared/utils";
 import { Point2d, Point3d } from "shared/types";
 import {
@@ -21,6 +21,7 @@ import {
   WALL_WIDTH,
 } from "shared/consts";
 import { getWallIsometricPositionFromPosition } from "shared/utils/wall.utils";
+import { CrossDirection } from "@shared/enums/direction.enums.ts";
 
 type Props = {
   direction: CrossDirection.NORTH | CrossDirection.EAST | "corner";

@@ -1,4 +1,4 @@
-import { CrossDirection } from "shared/enums/direction.enums.ts";
+import { CrossDirection } from "@shared/enums/direction.enums.ts";
 
 export const getNextCrossDirection = (
   direction: CrossDirection,

@@ -19,8 +19,8 @@ import {
   getWallPositionFromIsometricPosition,
   getZIndex,
 } from "shared/utils";
-import { CrossDirection } from "shared/enums";
 import { Point2d, Point3d, RoomPoint, Size2d, Size3d } from "shared/types";
+import { CrossDirection } from "@shared/enums/direction.enums.ts";
 
 type Props = {
   texture: string;

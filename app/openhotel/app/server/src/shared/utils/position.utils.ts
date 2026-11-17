@@ -1,5 +1,5 @@
-import { Point3d, Point2d } from "@oh/utils";
 import { TILE_WIDTH } from "../consts/main.ts";
+import { Point, Point3d } from "@shared/types/point.types.ts";
 
 export const isPointAdjacent = (
   currentPoint: Point3d,
@@ -12,7 +12,7 @@ export const isPointAdjacent = (
   return xDifference <= 1 && zDifference <= 1 && xDifference + zDifference > 0;
 };
 
-export const getPositionFromIsometricPosition = ({ x, y, z }): Point2d => ({
+export const getPositionFromIsometricPosition = ({ x, y, z }): Point => ({
   x: (x * TILE_WIDTH - z * TILE_WIDTH) * 2,
   y: z * TILE_WIDTH + x * TILE_WIDTH - y,
 });

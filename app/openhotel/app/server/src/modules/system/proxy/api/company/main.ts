@@ -1,4 +1,3 @@
-import { RequestType, getPathRequestList } from "@oh/utils";
 import {
   companyDeleteRequest,
   companyPutRequest,
@@ -10,6 +9,8 @@ import {
   contractRequest,
   contractRespondPostRequest,
 } from "./contract.request.ts";
+import { RequestType } from "@shared/types/request.types.ts";
+import { getPathRequestList } from "@shared/utils/request.utils.ts";
 
 export const requestList: RequestType[] = getPathRequestList({
   requestList: [

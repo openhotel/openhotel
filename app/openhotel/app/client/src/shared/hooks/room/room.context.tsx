@@ -1,6 +1,6 @@
 import React from "react";
 import { Point2d, Point3d, RoomPreview, Room, User } from "shared/types";
-import { CrossDirection, Direction } from "shared/enums";
+import { CrossDirection, Direction } from "@shared/enums/direction.enums.ts";
 
 export type PositionData = {
   position: Point3d;

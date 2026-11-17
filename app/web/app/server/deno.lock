@@ -1,5 +1,5 @@
 {
-  "version": "4",
+  "version": "5",
   "specifiers": {
     "jsr:@da/bcrypt@1.0.1": "1.0.1",
     "jsr:@oh/utils@1.5.2": "1.5.2",
@@ -126,7 +126,8 @@
       "integrity": "sha512-RKihhV+SHsIUGXObeVy9AXiBbFwkVk7Syp8XgwN5U3JV416+Gwp/GO9i0JYKmikykgz/UHRrrV4ROuZEo/T0ig==",
       "dependencies": [
         "strnum"
-      ]
+      ],
+      "bin": true
     },
     "filter-obj@1.1.0": {
       "integrity": "sha512-8rXg1ZnX7xzy2NGDVkBVaAy+lSlPNwad13BtgSlLuxfIslyt5Vg64U7tFcCt4WS1R0hvtnQybT/IyCkGZ3DpXQ=="
@@ -371,6 +372,7 @@
     "dependencies": [
       "jsr:@oh/queue@1.1.1",
       "jsr:@oh/utils@1.5.2",
+      "jsr:@std/path@1.0.6",
       "jsr:@std/ulid@1",
       "npm:nodemailer@6.9.15"
     ]

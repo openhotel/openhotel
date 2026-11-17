@@ -1,4 +1,3 @@
-import { RequestMethod } from "@oh/utils";
 import { System } from "modules/system/main.ts";
 import { ProxyRequestType } from "shared/types/api.types.ts";
 import { TransactionType } from "shared/enums/economy.enum.ts";
@@ -11,6 +10,7 @@ import {
   CatalogFurniture,
 } from "shared/types/catalog.types.ts";
 import { ulid } from "@std/ulid";
+import { RequestMethod } from "@shared/enums/request.enums.ts";
 
 export const catalogBuyRequest: ProxyRequestType = {
   pathname: "/buy",

@@ -1,6 +1,7 @@
 import { Point2d, Point3d } from "./point.types";
 import { Size3d } from "./size.types";
-import { CrossDirection, FurnitureType } from "shared/enums";
+import { FurnitureType } from "shared/enums";
+import { CrossDirection } from "@shared/enums/direction.enums.ts";
 
 export type FurnitureDirectionTexture = {
   texture: string;

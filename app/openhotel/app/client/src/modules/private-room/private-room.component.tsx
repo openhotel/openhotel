@@ -33,8 +33,6 @@ import {
 } from "shared/hooks";
 import { Point2d, Point3d, PrivateRoom, Size2d } from "shared/types";
 import {
-  CrossDirection,
-  Direction,
   Event as ProxyEvent,
   InternalEvent,
   PrivateRoomPreviewType,
@@ -51,6 +49,7 @@ import { HOT_BAR_HEIGHT_FULL } from "shared/consts";
 import { useInfo } from "shared/hooks/info";
 import { getCrossDirectionFromDirection, getDirection } from "shared/utils";
 import { ModChatComponent } from "../moderator";
+import { CrossDirection, Direction } from "@shared/enums/direction.enums.ts";
 
 type Props = {};
 

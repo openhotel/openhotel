@@ -40,7 +40,6 @@ import {
 import {
   CharacterArmAction,
   CharacterBodyAction,
-  Direction,
   Event,
   PrivateRoomPreviewType,
   SpriteSheetEnum,
@@ -55,6 +54,7 @@ import {
 } from "shared/hooks";
 import { useTranslation } from "react-i18next";
 import { Modal } from "shared/enums";
+import { Direction } from "@shared/enums/direction.enums.ts";
 
 const TileComponent: React.FC<{ position: Point2d }> = ({ position }) =>
   useMemo(

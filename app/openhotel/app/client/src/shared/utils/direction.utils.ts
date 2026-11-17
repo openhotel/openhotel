@@ -1,5 +1,5 @@
 import { Point3d } from "shared/types";
-import { Direction, CrossDirection } from "shared/enums";
+import { CrossDirection, Direction } from "@shared/enums/direction.enums.ts";
 
 export const getDirection = (
   currentPoint: Point3d,

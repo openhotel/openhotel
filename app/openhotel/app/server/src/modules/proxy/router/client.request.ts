@@ -1,4 +1,5 @@
-import { getContentType, getURL } from "@oh/utils";
+import { getURL } from "@shared/utils/urls.utils.ts";
+import { getContentType } from "@shared/utils/content-type.utils.ts";
 
 export const requestClient = async (request: Request) => {
   const ROOT_DIR_PATH = "/";

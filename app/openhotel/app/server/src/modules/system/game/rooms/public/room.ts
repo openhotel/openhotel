@@ -9,9 +9,11 @@ import {
 import { ProxyEvent, RoomPointEnum } from "shared/enums/main.ts";
 import { System } from "modules/system/main.ts";
 import { getInterpolatedPath } from "shared/utils/pathfinding.utils.ts";
-import { Direction, isPoint3dEqual, Point3d } from "@oh/utils";
 import { getBaseRoomGrid } from "shared/utils/rooms.utils.ts";
 import { createGrid } from "@shared/utils/grid.utils.ts";
+import { Point3d } from "@shared/types/point.types.ts";
+import { Direction } from "@shared/enums/direction.enums.ts";
+import { isPoint3dEqual } from "@shared/utils/point.utils.ts";
 
 export const getRoom =
   (roomUserMap: Record<string, string[]>) =>

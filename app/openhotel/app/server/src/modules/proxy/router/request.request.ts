@@ -1,6 +1,6 @@
-import { getURL } from "@oh/utils";
 import { Proxy } from "modules/proxy/main.ts";
 import { Scope } from "shared/enums/scopes.enums.ts";
+import { getURL } from "@shared/utils/urls.utils.ts";
 
 export const getRequestRequest = {
   method: "GET",

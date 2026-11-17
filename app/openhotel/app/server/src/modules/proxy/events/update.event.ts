@@ -2,7 +2,7 @@ import { ProxyEventType } from "shared/types/main.ts";
 import { ProxyEvent } from "shared/enums/main.ts";
 import { Proxy } from "modules/proxy/main.ts";
 import { debug, log } from "shared/utils/log.utils.ts";
-import { update } from "@oh/utils";
+import { update } from "@shared/modules/old/updater.ts";
 
 export const updateEvent: ProxyEventType = {
   event: ProxyEvent.$UPDATE,

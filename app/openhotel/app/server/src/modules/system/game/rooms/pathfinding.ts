@@ -1,9 +1,10 @@
 import { System } from "modules/system/main.ts";
 import { MOVEMENT_BETWEEN_TILES_DURATION } from "shared/consts/tiles.consts.ts";
 import { TickerQueue } from "@oh/queue";
-import { Point3d, getDirection } from "@oh/utils";
 import { RoomPointEnum } from "shared/enums/room.enums.ts";
 import { ProxyEvent } from "shared/enums/event.enum.ts";
+import { Point3d } from "@shared/types/point.types.ts";
+import { getDirection } from "@shared/utils/direction.utils.ts";
 
 export const pathfinding = () => {
   const $userPathfindingMap: Record<string, Point3d[]> = {};

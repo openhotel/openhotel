@@ -1,8 +1,8 @@
 import { ProxyEventType } from "shared/types/main.ts";
 import { ProxyEvent } from "shared/enums/main.ts";
 import { System } from "modules/system/main.ts";
-import { getLatestVersion } from "@oh/utils";
 import { getTextFromArgs } from "shared/utils/args.utils.ts";
+import { getLatestVersion } from "@shared/modules/old/updater.ts";
 
 export const joinRoomEvent: ProxyEventType<{ roomId: string }> = {
   event: ProxyEvent.JOIN_ROOM,

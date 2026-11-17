@@ -7,11 +7,7 @@ import {
   getZIndex,
   isPosition3dEqual,
 } from "shared/utils";
-import {
-  CharacterArmAction,
-  CharacterBodyAction,
-  Direction,
-} from "shared/enums";
+import { CharacterArmAction, CharacterBodyAction } from "shared/enums";
 import { CharacterComponent } from "shared/components";
 import { useRoom, useTasks } from "shared/hooks";
 import {
@@ -21,6 +17,7 @@ import {
   TILE_Y_HEIGHT,
 } from "shared/consts";
 import { TickerQueue } from "@oh/queue";
+import { Direction } from "@shared/enums/direction.enums.ts";
 
 type Props = {
   user: User;

@@ -20,3 +20,27 @@ export type GithubResponse = {
   assets: GithubAsset[];
   tag_name: string;
 };
+
+/**
+ * @deprecated
+ */
+export type UpdateProps = {
+  version: string;
+  targetVersion: string;
+  repository: string;
+  headers?: Record<string, string>;
+  log?: (text: string) => void;
+  debug?: (text: string) => void;
+  label?: string;
+};
+
+/**
+ * @deprecated
+ */
+export type LatestVersionProps = {
+  version: string;
+  repository: string;
+  headers?: Record<string, string>;
+  log?: (text: string) => void;
+  debug?: (text: string) => void;
+};

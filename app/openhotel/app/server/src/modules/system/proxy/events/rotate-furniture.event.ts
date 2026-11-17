@@ -1,9 +1,5 @@
 import { PrivateRoomMutable, ProxyEventType } from "shared/types/main.ts";
-import {
-  CrossDirection,
-  FurnitureType,
-  ProxyEvent,
-} from "shared/enums/main.ts";
+import { FurnitureType, ProxyEvent } from "shared/enums/main.ts";
 import { System } from "modules/system/main.ts";
 import { getNextCrossDirection } from "shared/utils/direction.utils.ts";
 

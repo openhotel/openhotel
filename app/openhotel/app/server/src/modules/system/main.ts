@@ -4,13 +4,15 @@ import { phantom } from "./phantom/main.ts";
 import { game } from "./game/main.ts";
 import { initLog, log } from "shared/utils/main.ts";
 import { tasks } from "./tasks.ts";
-import { getDb, DbMutable, getRandomString } from "@oh/utils";
 import { onet } from "./onet/main.ts";
 import { auth } from "modules/shared/auth.ts";
 import { config } from "./config.ts";
 import { Migrations } from "../migrations/main.ts";
 import { image } from "modules/shared/image.ts";
 import { updaterModule } from "@shared/modules/updater.module.ts";
+import { getRandomString } from "@shared/utils/random.utils.ts";
+import { getDb } from "@shared/modules/old/db/main.ts";
+import { DbMutable } from "@shared/types/db.types.ts";
 
 export const System = (() => {
   let $envs: Envs;

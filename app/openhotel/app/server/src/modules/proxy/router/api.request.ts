@@ -1,7 +1,8 @@
 import * as bcrypt from "@da/bcrypt";
-import { getRandomString, getURL } from "@oh/utils";
 import { ProxyEvent } from "shared/enums/main.ts";
 import { Proxy } from "modules/proxy/main.ts";
+import { getURL } from "@shared/utils/urls.utils.ts";
+import { getRandomString } from "@shared/utils/random.utils.ts";
 
 export const getApiRequest = {
   method: ["GET", "PUT", "POST", "DELETE"],

@@ -2,12 +2,12 @@ import { Meta, StoryObj } from "@storybook/react";
 import React from "react";
 import { PrivateRoomComponent } from "./private-room.component";
 import { RoomPoint } from "shared/types";
-import { CrossDirection } from "shared/enums";
 import {
   FLEX_ALIGN,
   FLEX_JUSTIFY,
   FlexContainerComponent,
 } from "@openhotel/pixi-components";
+import { CrossDirection } from "@shared/enums/direction.enums.ts";
 
 export default {
   title: "Shared/Rooms/Private",

@@ -1,5 +1,5 @@
 import { UserMutable } from "shared/types/user.types.ts";
-import { Size2d } from "@oh/utils";
+import { Size2d } from "@shared/types/size.types.ts";
 
 export type GameSettings = {
   version: string;

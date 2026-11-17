@@ -1,6 +1,5 @@
-import { isNewVersionGreater, readYaml, writeYaml } from "@oh/utils";
 import { Catalog, FurnitureData } from "shared/types/main.ts";
-import { BlobReader, BlobWriter, ZipReader } from "@zip-js/data-uri";
+import { BlobReader, BlobWriter, ZipReader } from "@zip-js";
 import { parse } from "@std/yaml";
 import { System } from "modules/system/main.ts";
 import { log } from "shared/utils/log.utils.ts";
@@ -16,6 +15,8 @@ import {
   CollectionManifest,
   FurnitureSource,
 } from "@shared/types/collection.types.ts";
+import { isNewVersionGreater } from "@shared/utils/versions.utils.ts";
+import { readYaml, writeYaml } from "@shared/modules/old/yaml.ts";
 
 export const furniture = () => {
   let $loadedFurnitureIds = new Set<string>();
