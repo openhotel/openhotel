@@ -1,5 +1,4 @@
 import { log, parseChangelog } from "shared/utils/main.ts";
-import { getChildWorker } from "@da/worker";
 import {
   ConfigTypes,
   Envs,
@@ -22,6 +21,7 @@ import { getRandomString } from "@shared/utils/random.utils.ts";
 import { getURL } from "@shared/utils/urls.utils.ts";
 import { appendCORSHeaders } from "@shared/utils/cors.utils.ts";
 import { getIpFromRequest } from "@shared/utils/ip.utils.ts";
+import { getChildWorker } from "@shared/modules/old/worker/child.ts";
 
 export const Proxy = (() => {
   const serverWorker = getChildWorker();

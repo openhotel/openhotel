@@ -4,7 +4,6 @@
     "jsr:@da/bcrypt@1.0.0": "1.0.0",
     "jsr:@da/bcrypt@1.0.1": "1.0.1",
     "jsr:@da/socket@2.3.0": "2.3.0",
-    "jsr:@da/worker@1.4.3": "1.4.3",
     "jsr:@deno/kv-utils@0.1.3": "0.1.3",
     "jsr:@std/bytes@^1.0.3": "1.0.6",
     "jsr:@std/bytes@^1.0.6": "1.0.6",
@@ -50,9 +49,6 @@
     },
     "@da/socket@2.3.0": {
       "integrity": "837038107dd08654b8cff848f55e82c2919acd22d83b3508ad19d725e43b124c"
-    },
-    "@da/worker@1.4.3": {
-      "integrity": "726cd35324985d4363c2d03957ac93902a692c9b7219f1931284dfa67e0a0af6"
     },
     "@deno/kv-utils@0.1.3": {
       "integrity": "f3877510f82ce78a1946f6fc9727393d44421928c971572c18d90f9206448e98",
@@ -899,7 +895,6 @@
     "dependencies": [
       "jsr:@da/bcrypt@1.0.0",
       "jsr:@da/socket@2.3.0",
-      "jsr:@da/worker@1.4.3",
       "jsr:@deno/kv-utils@0.1.3",
       "jsr:@std/fs@1.0.24",
       "jsr:@std/path@1.1.6",

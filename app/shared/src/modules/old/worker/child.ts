@@ -1,9 +1,8 @@
-import { WorkerChild } from "@shared/types/worker.types.ts";
+import { WorkerChild } from "./types.ts";
 
 export const getChildWorker = (): WorkerChild => {
-  const events: Record<string, any[]> = {};
+  const events: Record<string, any> = {};
 
-  //@ts-ignore
   self.onmessage = ({ data: { event, message } }: any) => {
     const eventList = (events[event] || []).filter(Boolean);
     if (eventList) {
@@ -22,7 +21,6 @@ export const getChildWorker = (): WorkerChild => {
   };
 
   const emit = (event: string, message: any) =>
-    //@ts-ignore
     self.postMessage({ event, message });
 
   const remove = (event: string, id: number) =>
@@ -33,7 +31,10 @@ export const getChildWorker = (): WorkerChild => {
   const close = () => self.close();
 
   emit("__internal__pong", {});
-  on("__internal__ping", () => emit("__internal__pong", {}));
+  on("__internal__ping", ({ mainModule }) => {
+    if (mainModule) Deno.mainModule = mainModule;
+    emit("__internal__pong", {});
+  });
 
   return {
     on,

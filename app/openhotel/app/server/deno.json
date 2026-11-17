@@ -5,7 +5,6 @@
   "imports": {
     "@da/socket": "jsr:@da/socket@2.3.0",
     "@da/bcrypt": "jsr:@da/bcrypt@1.0.0",
-    "@da/worker": "jsr:@da/worker@1.4.3",
 
     "@std/yaml": "jsr:@std/yaml@1.0.5",
     "@std/ulid": "jsr:@std/ulid@1",

@@ -1,4 +1,4 @@
-import { WorkerParent, WorkerParentProps } from "@shared/types/worker.types.ts";
+import { WorkerParent, WorkerParentProps } from "./types.ts";
 
 export const getParentWorker = ({
   url,
@@ -37,11 +37,20 @@ export const getParentWorker = ({
   const close = () => worker.terminate();
 
   // ping child to know is alive, if not, disconnect
-  let lastTimeout: number | undefined;
-  let lastPingTimeout: number | undefined;
+  let lastTimeout;
+  let lastPingTimeout;
+  let firstTime = true;
   on("__internal__pong", () => {
     lastPingTimeout = setTimeout(() => {
-      emit("__internal__ping", {});
+      emit(
+        "__internal__ping",
+        firstTime
+          ? {
+              mainModule: Deno.mainModule,
+            }
+          : {},
+      );
+      firstTime = false;
     }, pingInterval);
     clearTimeout(lastTimeout);
     lastTimeout = setTimeout(() => {
