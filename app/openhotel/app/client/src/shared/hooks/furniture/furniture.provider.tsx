@@ -4,9 +4,9 @@ import { useFurnitureStore } from "./furniture.store";
 import { useTextures } from "@openhotel/pixi-components";
 import { FurnitureDirectionDataMap } from "shared/types";
 import { useApi } from "shared/hooks";
-import { waitUntil } from "shared/utils";
 import { CrossDirectionKeys } from "@shared/types/direction.types.ts";
 import { CrossDirection } from "@shared/enums/direction.enums.ts";
+import { waitUntil } from "@shared/utils/wait.utils.ts";
 
 type FurnitureProps = {
   children: ReactNode;
