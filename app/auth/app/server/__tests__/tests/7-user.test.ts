@@ -5,7 +5,7 @@ import { fetcher } from "../utils.ts";
 import { INVALID_LANGUAGE, USER_1 } from "../consts.ts";
 
 import { STATE } from "../state.ts";
-import { LANGUAGE_LIST } from "../../src/shared/consts/language.consts.ts";
+import { LANGUAGE_LIST } from "shared/consts/language.consts.ts";
 
 describe("7. user", () => {
   describe("get and update user", () => {

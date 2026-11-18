@@ -2,7 +2,7 @@ import { describe, it } from "jsr:@std/testing/bdd";
 import { assertEquals } from "jsr:@std/assert";
 
 import { fetcher } from "../utils.ts";
-import { LANGUAGE_LIST } from "../../src/shared/consts/language.consts.ts";
+import { LANGUAGE_LIST } from "shared/consts/language.consts.ts";
 
 describe("0. public calls", () => {
   it("retrieves the version", async () => {
