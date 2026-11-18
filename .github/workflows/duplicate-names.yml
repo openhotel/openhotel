@@ -13,12 +13,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # Warning only: never fails. Lists exported types, interfaces, enums and
-      # UPPER_CASE consts declared with the same name in more than one file.
+      # Fails when an exported type, interface, enum or UPPER_CASE const is
+      # declared with the same name in more than one file. Lists all of them first.
       - name: Find duplicated names
         shell: python3 {0}
         run: |
-          import re, os, collections, hashlib
+          import re, os, sys, collections, hashlib
 
           SKIP_DIRS = {"node_modules", "build", "dist", ".git", "__tests__"}
           SKIP_PATHS = ("app/shared/old",)
@@ -58,5 +58,9 @@ jobs:
               others = lambda f: ", ".join(p for _, p, _, _ in items if p != f)
               for kind, path, line, _ in items:
                   print(f"  {path}:{line}")
-                  print(f"::warning file={path},line={line}::{kind} {name} also declared in {others(path)} ({label})")
+                  print(f"::error file={path},line={line}::{kind} {name} also declared in {others(path)} ({label})")
               print()
+
+          if dups:
+              sys.exit(1)
+          print("No duplicated names")
