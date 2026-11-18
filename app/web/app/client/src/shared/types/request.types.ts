@@ -1,4 +1,4 @@
-import { RequestMethod } from "shared/enums";
+import { RequestMethod } from "@shared/enums/request.enums.ts";
 
 export type Request = {
   method?: RequestMethod;

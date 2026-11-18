@@ -5,7 +5,6 @@ import {
   VersionContent,
   WorkerProps,
 } from "shared/types/main.ts";
-import { Scope } from "shared/enums/main.ts";
 import { routesList } from "./router/main.ts";
 import { requestClient } from "./router/client.request.ts";
 import { eventList } from "./events/main.ts";
@@ -23,6 +22,7 @@ import { getIpFromRequest } from "@shared/utils/ip.utils.ts";
 import { getChildWorker } from "@shared/modules/old/worker/child.ts";
 import { ServerClient } from "@shared/modules/old/socket/types.ts";
 import { getServerSocket } from "@shared/modules/old/socket/server.ts";
+import { Scope } from "@shared/enums/scope.enums.ts";
 
 export const Proxy = (() => {
   const serverWorker = getChildWorker();

@@ -31,7 +31,7 @@ import {
   useRoom,
   useSafeWindow,
 } from "shared/hooks";
-import { Point2d, Point3d, PrivateRoom, Size2d } from "shared/types";
+import { Point2d, Point3d, PrivateRoom } from "shared/types";
 import {
   Event as ProxyEvent,
   InternalEvent,
@@ -47,9 +47,13 @@ import {
 } from ".";
 import { HOT_BAR_HEIGHT_FULL } from "shared/consts";
 import { useInfo } from "shared/hooks/info";
-import { getCrossDirectionFromDirection, getDirection } from "shared/utils";
 import { ModChatComponent } from "../moderator";
 import { CrossDirection, Direction } from "@shared/enums/direction.enums.ts";
+import { Size2d } from "@shared/types/size.types.ts";
+import {
+  getCrossDirectionFromDirection,
+  getDirection,
+} from "@shared/utils/direction.utils.ts";
 
 type Props = {};
 

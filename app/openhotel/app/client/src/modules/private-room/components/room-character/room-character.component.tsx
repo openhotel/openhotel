@@ -2,7 +2,6 @@ import React, { useEffect, useMemo, useState } from "react";
 import { Point2d, PrivateRoom, User } from "shared/types";
 import { ContainerProps } from "@openhotel/pixi-components";
 import {
-  getDirection,
   getPositionFromIsometricPosition,
   getZIndex,
   isPosition3dEqual,
@@ -18,6 +17,7 @@ import {
 } from "shared/consts";
 import { Direction } from "@shared/enums/direction.enums.ts";
 import { TickerQueue } from "@shared/modules/old/queue/ticker-queue.enum.ts";
+import { getDirection } from "@shared/utils/direction.utils.ts";
 
 type Props = {
   user: User;

@@ -1,7 +1,8 @@
 import React, { useMemo } from "react";
-import { CatalogCategory, Size2d } from "shared/types";
+import { CatalogCategory } from "shared/types";
 import { ContainerComponent, ContainerProps } from "@openhotel/pixi-components";
 import { DefaultCategoryComponent, HeaderComponent } from "./components";
+import { Size2d } from "@shared/types/size.types.ts";
 
 type Props = {
   size: Size2d;

@@ -21,16 +21,13 @@ import {
   FurnitureType,
   InternalEvent,
 } from "shared/enums";
-import { PositionData } from "shared/hooks/private-room";
 import { useProxy } from "shared/hooks/proxy";
-import {
-  getNextCrossDirection,
-  isCurrentPointStairs,
-  isPosition3dEqual,
-} from "shared/utils";
+import { isCurrentPointStairs, isPosition3dEqual } from "shared/utils";
 import { useFurniture } from "shared/hooks/furniture";
 import { TILE_Y_HEIGHT, WALL_HEIGHT } from "shared/consts";
 import { CrossDirection } from "@shared/enums/direction.enums.ts";
+import { PositionData } from "shared/hooks/room";
+import { getNextCrossDirection } from "@shared/utils/direction.utils.ts";
 
 type Props = {
   children: ReactNode;

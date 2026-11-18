@@ -1,10 +1,4 @@
 import { System } from "modules/system/main.ts";
-import {
-  Collection,
-  CollectionFurniture,
-  CollectionPublishProps,
-  CollectionPublishResult,
-} from "shared/types/main.ts";
 import { getCollectionFurniture, getVersionErrors } from "shared/utils/main.ts";
 import { signature } from "./signature.ts";
 import {
@@ -12,7 +6,12 @@ import {
   getCollectionMetadataErrors,
   isValidCollectionId,
 } from "@shared/utils/collection.utils.ts";
-import { CollectionManifest } from "@shared/types/collection.types.ts";
+import {
+  Collection,
+  CollectionFurniture,
+  CollectionManifest,
+  CollectionPublishProps,
+} from "@shared/types/collection.types.ts";
 import { COLLECTION_FORMAT_VERSION } from "@shared/consts/collection.consts.ts";
 import { S3Mutable } from "@shared/types/s3.types.ts";
 import { getS3 } from "@shared/modules/old/s3.ts";

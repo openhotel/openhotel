@@ -3,6 +3,35 @@ export type CollectionCategory = {
   description?: string;
 };
 
+export type Collection = {
+  id: string;
+  category: CollectionCategory | null;
+  latestVersion: number;
+  furnitureCount: number;
+  createdAt: number;
+  updatedAt: number;
+};
+
+export type CollectionPublishProps = {
+  id: string;
+  accountId: string;
+  license?: string;
+  minHotelVersion: string;
+  category: CollectionCategory;
+  files: Record<string, Uint8Array>;
+};
+
+export type CollectionPublishResult =
+  | { manifest: CollectionManifest; errors?: undefined }
+  | { manifest?: undefined; errors: string[] };
+
+export type CollectionFurniture = {
+  id: string;
+  revision: string;
+  sha256: string;
+  immutableData: CollectionFurnitureImmutableData;
+};
+
 export type CollectionMetadata = {
   id: string;
   category: CollectionCategory;

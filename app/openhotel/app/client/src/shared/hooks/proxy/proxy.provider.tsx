@@ -1,11 +1,7 @@
 import React, { ReactNode, useCallback, useMemo, useState } from "react";
 import { ProxyContext } from "./proxy.context";
 import { useConfig } from "shared/hooks";
-import {
-  getClientSocket,
-  getRandomString,
-  getWebSocketUrl,
-} from "shared/utils";
+import { getClientSocket, getWebSocketUrl } from "shared/utils";
 import { ulid } from "ulidx";
 import { Event, SpriteSheetEnum } from "shared/enums";
 import {
@@ -21,6 +17,7 @@ import {
   FlexContainerComponent,
 } from "@openhotel/pixi-components";
 import { SOCKET_RECONNECT_SECONDS } from "shared/consts/socket.consts";
+import { getRandomString } from "@shared/utils/random.utils.ts";
 
 type ProxyProps = {
   children: ReactNode;

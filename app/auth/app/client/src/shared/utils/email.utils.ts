@@ -1,4 +1,4 @@
-import { EMAIL_REGEX } from "shared/consts";
+import { EMAIL_REGEX } from "@shared/consts/account.consts.ts";
 
 export const getCensoredEmail = (email: string): string =>
   email.substring(0, 1) +

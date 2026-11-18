@@ -4,10 +4,11 @@ import { FileInputComponent, InputComponent } from "@openhotel/web-components";
 import styles from "./sprite-sheet-form.module.scss";
 import { SpriteSheet, SpriteSheetFrame } from "shared/types";
 import { SpriteComponent } from "shared/components";
-import { getRandomString, setObject } from "shared/utils";
+import { setObject } from "shared/utils";
 import { SpriteSheetFrameFormComponent } from "modules/sprite-sheet/sprite-sheet-frame-form";
-import { RequestMethod } from "shared/enums";
 import { useApi, useAppSession } from "shared/hooks";
+import { RequestMethod } from "@shared/enums/request.enums.ts";
+import { getRandomString } from "@shared/utils/random.utils.ts";
 
 type Props = {
   sheet: SpriteSheet;

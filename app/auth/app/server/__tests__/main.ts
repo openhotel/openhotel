@@ -1,5 +1,5 @@
-import { waitUntil } from "../src/shared/utils/wait.utils.ts";
 import { fetcher } from "./utils.ts";
+import { waitUntil } from "@shared/utils/wait.utils.ts";
 
 const isDevelopmentMode = Deno.args.includes("--development");
 

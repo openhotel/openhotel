@@ -1,9 +1,9 @@
 import { System } from "modules/system/main.ts";
-import { EMAIL_REGEX, USERNAME_REGEX } from "shared/consts/main.ts";
 import { RequestType } from "@shared/types/request.types.ts";
 import { RequestKind, RequestMethod } from "@shared/enums/request.enums.ts";
 import { getResponse } from "@shared/utils/response.utils.ts";
 import { HttpStatusCode } from "@shared/enums/http-status-code.enums.ts";
+import { EMAIL_REGEX, USERNAME_REGEX } from "@shared/consts/account.consts.ts";
 
 export const userDeleteRequest: RequestType = {
   method: RequestMethod.DELETE,

@@ -1,6 +1,6 @@
 import { useApi } from "./useApi";
-import { RequestMethod } from "shared/enums";
 import { useCallback, useState } from "react";
+import { RequestMethod } from "@shared/enums/request.enums.ts";
 
 export const useLanguages = () => {
   const { fetch } = useApi();

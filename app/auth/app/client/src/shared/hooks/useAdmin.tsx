@@ -2,7 +2,7 @@ import React, { ReactNode, useCallback, useContext, useState } from "react";
 import { useApi } from "shared/hooks/useApi";
 import { useAccount } from "shared/hooks/useAccount";
 import { Backup, DbHotel, AppToken, Token, User } from "shared/types";
-import { RequestMethod } from "shared/enums";
+import { RequestMethod } from "@shared/enums/request.enums.ts";
 
 type AdminState = {
   users: User[];

@@ -1,4 +1,4 @@
-import { Size2d } from "shared/types";
+import { Size2d } from "@shared/types/size.types.ts";
 
 /**
  * DO NOT CHANGE THIS VALUES!!

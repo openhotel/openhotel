@@ -2,8 +2,8 @@ import React, { ReactNode, useCallback, useContext, useState } from "react";
 import { User } from "shared/types";
 import { useApi } from "shared/hooks/useApi";
 import { useAccount } from "shared/hooks/useAccount";
-import { RequestMethod } from "shared/enums";
 import { useNavigate } from "react-router-dom";
+import { RequestMethod } from "@shared/enums/request.enums.ts";
 
 type UserState = {
   user: User | null;

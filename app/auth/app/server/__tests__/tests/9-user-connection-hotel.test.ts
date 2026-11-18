@@ -5,7 +5,7 @@ import { fetcher } from "../utils.ts";
 import { HOTEL_1, USER_1 } from "../consts.ts";
 
 import { STATE } from "../state.ts";
-import { wait } from "../../src/shared/utils/wait.utils.ts";
+import { wait } from "@shared/utils/wait.utils.ts";
 
 describe("9. user connection hotel", () => {
   describe("user connection", () => {

@@ -6,9 +6,9 @@ import {
   FlexContainerComponent,
 } from "@openhotel/pixi-components";
 import { HotBarItemsComponent } from "shared/components";
-import { wait } from "shared/utils";
 import { useTasks } from "shared/hooks";
 import { TickerQueue } from "@shared/modules/old/queue/ticker-queue.enum.ts";
+import { wait } from "@shared/utils/wait.utils.ts";
 
 const DELTA_MULTIPLIER = 0.25;
 const TARGET_Y = 0;

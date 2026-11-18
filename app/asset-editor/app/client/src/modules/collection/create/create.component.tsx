@@ -10,7 +10,6 @@ import {
 } from "@openhotel/web-components";
 import { useApi, useAppSession } from "shared/hooks";
 import { TabContentComponent } from "shared/components";
-import { RequestMethod } from "shared/enums";
 import { CollectionData, CollectionFurniture } from "shared/types";
 import { cn, getCollectionFurnitureErrors } from "shared/utils";
 
@@ -26,6 +25,7 @@ import {
   COLLECTION_ID_MAX_LENGTH,
   COLLECTION_LABEL_MAX_LENGTH,
 } from "@shared/consts/collection.consts.ts";
+import { RequestMethod } from "@shared/enums/request.enums.ts";
 
 const getFurnitureName = ({ lang }: CollectionFurniture) =>
   (lang?.en ?? Object.values(lang ?? {})[0])?.name ?? "";

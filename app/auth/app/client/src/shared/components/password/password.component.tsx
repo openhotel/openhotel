@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { PASSWORD_MIN_LEN } from "shared/consts";
 import { InputComponent } from "@openhotel/web-components";
 import styles from "./password.module.scss";
+import { PASSWORD_MIN_LEN } from "@shared/consts/account.consts.ts";
 
 export const PasswordComponent: React.FC = () => {
   const [pass1, setPass1] = useState("");

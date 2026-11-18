@@ -1,4 +1,4 @@
-import { Size2d } from "shared/types";
+import { Size2d } from "@shared/types/size.types.ts";
 
 export const getBase64FromBody = async (body: Response): Promise<string> => {
   return new Promise(async (resolve, reject) => {

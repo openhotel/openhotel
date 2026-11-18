@@ -1,4 +1,4 @@
-import { getRandomNumber } from "./random.utils.ts";
+import { getRandomNumber } from "@shared/utils/random.utils.ts";
 
 // min 49152
 // max 65535

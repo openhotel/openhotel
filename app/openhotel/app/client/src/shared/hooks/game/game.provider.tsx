@@ -18,7 +18,6 @@ import {
   useEvents,
   useWindow,
 } from "@openhotel/pixi-components";
-import { Size2d } from "shared/types";
 import {
   useAccount,
   useCamera,
@@ -30,6 +29,7 @@ import {
 } from "shared/hooks";
 import { Event as ProxyEvent, Modal } from "shared/enums";
 import { WindowedGameComponent } from "modules/modals";
+import { Size2d } from "@shared/types/size.types.ts";
 
 type GameProps = {
   children: ReactNode;

@@ -1,7 +1,7 @@
 import { Request } from "shared/types";
-import { RequestMethod } from "../enums";
 import { useCallback } from "react";
 import { useFingerprint } from "./useFingerprint";
+import { RequestMethod } from "@shared/enums/request.enums.ts";
 
 export const useApi = () => {
   const { fingerprint } = useFingerprint();
