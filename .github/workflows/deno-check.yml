@@ -24,6 +24,7 @@ jobs:
         env:
           NO_COLOR: "1"
         run: |
+          set +e
           failed=()
           projects=$(find app -name deno.json \
             -not -path "*/node_modules/*" \
@@ -42,9 +43,9 @@ jobs:
                     [ -f "$d/deno.json" ] && { nested=1; break; }
                     d=$(dirname "$d")
                   done
-                  [ "$nested" -eq 0 ] && echo "$f"
+                  if [ "$nested" -eq 0 ]; then echo "$f"; fi
                 done)
-            [ -z "$files" ] && continue
+            if [ -z "$files" ]; then continue; fi
 
             echo "::group::$dir ($(echo "$files" | wc -l) files)"
             if (cd "$dir" && deno check --unstable-kv --unstable-cron $files); then
