@@ -16,7 +16,6 @@ export * from "./response.utils.ts";
 export * from "./tokens.utils.ts";
 export * from "./update.utils.ts";
 export * from "./urls.utils.ts";
-export * from "./version.utils.ts";
 export * from "./wait.utils.ts";
 export * from "./zip.utils.ts";
 export * from "./sss.utils.ts";
