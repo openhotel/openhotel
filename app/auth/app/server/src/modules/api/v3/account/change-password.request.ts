@@ -1,10 +1,10 @@
 import { System } from "modules/system/main.ts";
-import { PASSWORD_REGEX } from "shared/consts/main.ts";
 import { getPasswordMaxLength } from "shared/utils/password.utils.ts";
 import { RequestType } from "@shared/types/request.types.ts";
 import { RequestKind, RequestMethod } from "@shared/enums/request.enums.ts";
 import { getResponse } from "@shared/utils/response.utils.ts";
 import { HttpStatusCode } from "@shared/enums/http-status-code.enums.ts";
+import { PASSWORD_REGEX } from "@shared/consts/account.consts.ts";
 
 export const changePasswordPostRequest: RequestType = {
   method: RequestMethod.POST,
