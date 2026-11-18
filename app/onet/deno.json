@@ -15,20 +15,15 @@
     "build": "(deno task compile:linux) & (deno task compile:linux_aarch64) & (deno task compile:darwin) & (deno task compile:windows)"
   },
   "imports": {
-    "@oh/core": "jsr:@oh/core@0.1.0",
-    "@oh/queue": "jsr:@oh/queue@1.1.1",
-    "@oh/utils": "jsr:@oh/utils@1.5.33",
-
-    "@da/bcrypt": "jsr:@da/bcrypt@1.0.1",
-    "@da/socket": "jsr:@da/socket@2.3.0",
-
     "@std/encoding": "jsr:@std/encoding@1.0.11",
     "@std/yaml": "jsr:@std/yaml@1.0.5",
     "@std/ulid": "jsr:@std/ulid@1",
-    "@zip-js": "jsr:@zip-js/zip-js@2.7.53",
+    "@zip-js": "jsr:@zip-js/zip-js@2.25.0",
 
     "modules/": "./src/modules/",
     "shared/": "./src/shared/",
+
+    "@shared/": "../shared/src/",
 
     "loadenv": "https://deno.land/x/loadenv@v1.0.1/mod.ts",
 

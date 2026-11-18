@@ -1,5 +1,5 @@
 import { parseArgs } from "@std/cli/parse-args";
-import { getBeautyDate } from "@oh/utils";
+import { getBeautyDate } from "@shared/utils/date.utils.ts";
 
 const VALID_TARGET_LIST = [
   "x86_64-unknown-linux-gnu",

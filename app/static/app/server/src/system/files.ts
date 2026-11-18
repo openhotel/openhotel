@@ -1,7 +1,8 @@
 import { System } from "system/main.ts";
 import { type File } from "shared/types/main.ts";
-import { getS3, S3Mutable } from "@oh/utils";
 import { join } from "@std/path";
+import { S3Mutable } from "@shared/types/s3.types.ts";
+import { getS3 } from "@shared/modules/old/s3.ts";
 
 const FILES_PATH = "files";
 

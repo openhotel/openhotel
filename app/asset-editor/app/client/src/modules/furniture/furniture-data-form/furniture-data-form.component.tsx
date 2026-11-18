@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo } from "react";
 import { InputComponent, SelectorComponent } from "@openhotel/web-components";
-import { FurnitureDirection, FurnitureType } from "shared/enums";
 import { SpriteComponent } from "shared/components";
 import { useFurniture, useSideContent } from "shared/hooks";
 import { FurniturePreviewComponent } from "modules/furniture/furniture-preview";
@@ -11,6 +10,10 @@ import { FurnitureLangFormComponent } from "modules/furniture/furniture-lang-for
 
 //@ts-ignore
 import styles from "./furniture-data-form.module.scss";
+import {
+  FurnitureDirection,
+  FurnitureType,
+} from "@shared/enums/furniture.enum.ts";
 
 type Props = {};
 

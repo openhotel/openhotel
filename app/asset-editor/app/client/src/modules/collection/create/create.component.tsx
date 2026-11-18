@@ -10,20 +10,22 @@ import {
 } from "@openhotel/web-components";
 import { useApi, useAppSession } from "shared/hooks";
 import { TabContentComponent } from "shared/components";
-import { RequestMethod } from "shared/enums";
 import { CollectionData, CollectionFurniture } from "shared/types";
 import { cn, getCollectionFurnitureErrors } from "shared/utils";
+
+//@ts-ignore
+import styles from "./create.module.scss";
+import {
+  getCollectionFurnitureListErrors,
+  getCollectionMetadataErrors,
+} from "@shared/utils/collection.utils.ts";
+import { CollectionMetadata } from "@shared/types/collection.types.ts";
 import {
   COLLECTION_DESCRIPTION_MAX_LENGTH,
   COLLECTION_ID_MAX_LENGTH,
   COLLECTION_LABEL_MAX_LENGTH,
-  type CollectionMetadata,
-  getCollectionFurnitureListErrors,
-  getCollectionMetadataErrors,
-} from "@oh/core";
-
-//@ts-ignore
-import styles from "./create.module.scss";
+} from "@shared/consts/collection.consts.ts";
+import { RequestMethod } from "@shared/enums/request.enums.ts";
 
 const getFurnitureName = ({ lang }: CollectionFurniture) =>
   (lang?.en ?? Object.values(lang ?? {})[0])?.name ?? "";
@@ -33,8 +35,8 @@ export const CreateCollectionComponent: React.FC = () => {
   const { fetch: fetchApi } = useApi();
   const { getHeaders } = useAppSession();
 
-  const [data, setData] = useState<CollectionData>(null);
-  const [requestError, setRequestError] = useState<string>(null);
+  const [data, setData] = useState<CollectionData | null>(null);
+  const [requestError, setRequestError] = useState<string | null>(null);
 
   const collectionErrors = useMemo(
     () => (data ? getCollectionMetadataErrors(data.collection) : []),

@@ -1,5 +1,6 @@
-import { RequestType, RequestMethod, RequestKind } from "@oh/utils";
 import { getFurnitureSummary } from "shared/utils/furniture.utils.ts";
+import { RequestType } from "@shared/types/request.types.ts";
+import { RequestKind, RequestMethod } from "@shared/enums/request.enums.ts";
 
 export const furnitureRequest: RequestType = {
   method: RequestMethod.POST,

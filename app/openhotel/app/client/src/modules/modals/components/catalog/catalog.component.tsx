@@ -20,8 +20,8 @@ import {
 import { CategoriesComponent, CategoryComponent, HEADER_SIZE } from ".";
 import { MODAL_SIZE_MAP } from "shared/consts";
 import { useApi, useModal } from "shared/hooks";
-import { Catalog } from "shared/types";
 import { useTranslation } from "react-i18next";
+import { Catalog } from "@shared/types/catalog.types.ts";
 
 const HEADER_HEIGHT = 17;
 const CONTENT_PADDING = 5;

@@ -1,5 +1,3 @@
-import { RequestType, getPathRequestList } from "@oh/utils";
-
 import { loginPostRequest } from "./login.request.ts";
 import { registerPostRequest } from "./register.request.ts";
 import { verifyGetRequest } from "./verify.request.ts";
@@ -11,6 +9,8 @@ import { recoverPasswordPostRequest } from "./recover-password.request.ts";
 import { changePasswordPostRequest } from "./change-password.request.ts";
 import { accountDeleteRequest } from "./main.request.ts";
 import { tokenGetRequest, tokenDeleteRequest } from "./token.request.ts";
+import { RequestType } from "@shared/types/request.types.ts";
+import { getPathRequestList } from "@shared/utils/request.utils.ts";
 
 export const accountRequestList: RequestType[] = getPathRequestList({
   requestList: [

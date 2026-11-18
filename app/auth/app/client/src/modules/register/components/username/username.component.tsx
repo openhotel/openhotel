@@ -1,11 +1,11 @@
 import React, { useState } from "react";
+import { InputComponent } from "@openhotel/web-components";
+import styles from "./username.module.scss";
 import {
   USERNAME_MAX_LEN,
   USERNAME_MIN_LEN,
   USERNAME_REGEX,
-} from "shared/consts";
-import { InputComponent } from "@openhotel/web-components";
-import styles from "./username.module.scss";
+} from "@shared/consts/account.consts.ts";
 
 export const UsernameComponent: React.FC = () => {
   const [username, setUsername] = useState("");

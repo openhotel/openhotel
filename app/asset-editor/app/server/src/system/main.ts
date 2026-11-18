@@ -1,12 +1,14 @@
 import { api } from "./api.ts";
 import { ConfigTypes, Envs } from "shared/types/main.ts";
-import { getConfig as $getConfig, update } from "@oh/utils";
 import { CONFIG_DEFAULT } from "shared/consts/config.consts.ts";
 import { accounts } from "system/accounts.ts";
+import { getConfig as $getConfig } from "@shared/modules/old/config.ts";
+import { updaterModule } from "@shared/modules/updater.module.ts";
 
 export const System = (() => {
   const $api = api();
   const $accounts = accounts();
+  const updater = updaterModule();
 
   let $config: ConfigTypes;
   let $envs: Envs;
@@ -15,17 +17,18 @@ export const System = (() => {
     $envs = envs;
     $config = await $getConfig<ConfigTypes>({ defaults: CONFIG_DEFAULT });
 
-    if (
-      $config.version !== "development" &&
-      (await update({
-        targetVersion: "latest",
-        version: envs.version,
-        repository: "openhotel/asset-editor",
-        log: console.log,
-        debug: console.debug,
-      }))
-    )
-      return;
+    updater.load({
+      project: "asset-editor",
+      log: console.log,
+      enabled: $config.version !== "development",
+    });
+
+    await updater.update({
+      version: envs.version,
+      target: "latest",
+      preReleases: true,
+      stopOnUpdate: true,
+    });
 
     $api.load();
   };
@@ -38,6 +41,7 @@ export const System = (() => {
     getConfig,
     getEnvs,
 
+    updater,
     api: $api,
     accounts: $accounts,
   };

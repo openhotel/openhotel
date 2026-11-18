@@ -4,10 +4,13 @@ import {
   TableComponent,
   UploadIconComponent,
 } from "@openhotel/web-components";
-import { Collection, CollectionManifest } from "shared/types";
 import { useCollections } from "shared/hooks";
 import dayjs from "dayjs";
 import styles from "./collections.module.scss";
+import {
+  Collection,
+  CollectionManifest,
+} from "@shared/types/collection.types.ts";
 
 type Props = {} & React.HTMLProps<HTMLDivElement>;
 

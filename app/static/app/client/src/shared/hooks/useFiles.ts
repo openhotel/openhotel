@@ -1,8 +1,8 @@
 import { useApi } from "./useApi";
 import { useCallback, useState } from "react";
-import { RequestMethod } from "shared/enums";
 import { File } from "../types/index.ts";
 import { useAppSession } from "./useAppSession.tsx";
+import { RequestMethod } from "@shared/enums/request.enums.ts";
 
 export const useFiles = () => {
   const { fetch } = useApi();

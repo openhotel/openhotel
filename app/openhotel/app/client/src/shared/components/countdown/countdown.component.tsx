@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { SpriteTextProps } from "@openhotel/pixi-components";
 import { TextComponent } from "shared/components/text";
 import { useTasks } from "shared/hooks";
-import { TickerQueue } from "@oh/queue";
+import { TickerQueue } from "@shared/modules/old/queue/ticker-queue.enum.ts";
 
 type Props = {
   count: number;

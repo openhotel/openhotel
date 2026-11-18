@@ -1,8 +1,8 @@
 import { ProxyRequestType } from "shared/types/api.types.ts";
 import { System } from "modules/system/main.ts";
-import { RequestMethod } from "@oh/utils";
 import { ulid } from "@std/ulid";
 import { PrivateRoom } from "shared/types/rooms/private.types.ts";
+import { RequestMethod } from "@shared/enums/request.enums.ts";
 
 export const roomRequest: ProxyRequestType = {
   pathname: "",

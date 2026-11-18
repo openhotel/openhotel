@@ -5,13 +5,13 @@ import {
   CharacterBodyAction,
   CharacterDirection,
   CharacterPart,
-  Direction,
   SpriteSheetEnum,
 } from "shared/enums";
 import { useCharacter } from "shared/hooks";
 import { CharacterDirectionData } from "shared/types";
 import { getCharacterBodyPart, getEnumKeyLowCase } from "shared/utils";
 import { SpriteComponent } from "@openhotel/pixi-components";
+import { Direction } from "@shared/enums/direction.enums.ts";
 
 type Props = {
   skinColor: number;

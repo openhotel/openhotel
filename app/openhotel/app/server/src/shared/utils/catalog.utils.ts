@@ -1,5 +1,8 @@
 import dayjs from "dayjs";
-import { CatalogCategory, CatalogFurniture } from "../types/catalog.types.ts";
+import {
+  CatalogCategory,
+  CatalogFurniture,
+} from "@shared/types/catalog.types.ts";
 
 export const isCatalogCategoryAvailable = (catalog: CatalogCategory) => {
   const from = catalog?.range?.from;

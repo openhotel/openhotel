@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect, useRef } from "react";
 import "./captcha.config";
-import { RequestMethod } from "shared/enums";
 import { useApi } from "../useApi";
 import Cap, { SolveResult } from "@cap.js/widget";
 import { CaptchaV3Context } from "./captcha-v3.context";
+import { RequestMethod } from "@shared/enums/request.enums.ts";
 
 type ProviderProps = {} & React.PropsWithChildren;
 

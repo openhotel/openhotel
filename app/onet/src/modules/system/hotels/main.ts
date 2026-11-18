@@ -2,9 +2,9 @@ import { System } from "modules/system/main.ts";
 import { Hotel, HotelMutable } from "shared/types/hotel.types.ts";
 import { eventList } from "./events/main.ts";
 import { Event } from "shared/enums/event.enums.ts";
-import { getRandomString } from "@oh/utils";
-import * as bcrypt from "@da/bcrypt";
-import { Scope } from "shared/enums/scope.enums.ts";
+import * as bcrypt from "@shared/modules/old/bcrypt/main.ts";
+import { getRandomString } from "@shared/utils/random.utils.ts";
+import { Scope } from "@shared/enums/scope.enums.ts";
 
 export const hotels = () => {
   const $hotelMap: Record<string, HotelMutable> = {};

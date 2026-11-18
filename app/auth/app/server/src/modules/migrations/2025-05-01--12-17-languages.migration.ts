@@ -1,5 +1,5 @@
-import { Migration, DbMutable } from "@oh/utils";
-import { LANGUAGE_LIST } from "shared/consts/language.consts.ts";
+import { DbMutable, Migration } from "@shared/types/db.types.ts";
+import { LANGUAGE_LIST } from "@shared/consts/language.consts.ts";
 
 export default {
   id: "2025-05-01--12-17-languages",

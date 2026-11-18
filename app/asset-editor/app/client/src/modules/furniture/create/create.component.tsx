@@ -1,5 +1,4 @@
 import React, { useCallback, useMemo } from "react";
-import { SpriteSheet } from "shared/types";
 import {
   ButtonComponent,
   BYIconComponent,
@@ -15,10 +14,11 @@ import { TabContentComponent } from "shared/components";
 
 //@ts-ignore
 import styles from "./create.module.scss";
-import { getFurnitureLangErrors } from "@oh/core";
 import { getBase64FromBody, getImageSize } from "shared/utils";
-import { RequestMethod } from "shared/enums";
 import { ulid } from "ulidx";
+import { getFurnitureLangErrors } from "@shared/utils/furniture.utils.ts";
+import { RequestMethod } from "@shared/enums/request.enums.ts";
+import { SpriteSheet } from "@shared/types/sprite-sheet.types.ts";
 
 export const CreateFurnitureComponent: React.FC = () => {
   const { setData, data } = useFurniture();

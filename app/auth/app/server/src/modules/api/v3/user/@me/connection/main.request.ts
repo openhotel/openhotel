@@ -1,12 +1,9 @@
-import {
-  getResponse,
-  HttpStatusCode,
-  RequestKind,
-  RequestMethod,
-  RequestType,
-} from "@oh/utils";
-import { Scope } from "shared/enums/scopes.enums.ts";
 import { System } from "modules/system/main.ts";
+import { RequestType } from "@shared/types/request.types.ts";
+import { RequestKind, RequestMethod } from "@shared/enums/request.enums.ts";
+import { getResponse } from "@shared/utils/response.utils.ts";
+import { HttpStatusCode } from "@shared/enums/http-status-code.enums.ts";
+import { Scope } from "@shared/enums/scope.enums.ts";
 
 export const mainPostRequest: RequestType = {
   method: RequestMethod.POST,

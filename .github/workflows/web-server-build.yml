@@ -4,13 +4,13 @@ on:
     branches: [master, monster]
     paths:
       - .github/workflows/web-*
-      - app/web/server/**
+      - app/web/app/server/**
       - app/shared/src/**
 
   pull_request:
     paths:
       - .github/workflows/web-*
-      - app/web/server/**
+      - app/web/app/server/**
       - app/shared/src/**
 
 jobs:
@@ -24,7 +24,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          sparse-checkout: "app/web/app/server"
+          sparse-checkout: |
+            app/web/app/server
+            app/shared
           sparse-checkout-cone-mode: false
 
       - uses: denoland/setup-deno@v1

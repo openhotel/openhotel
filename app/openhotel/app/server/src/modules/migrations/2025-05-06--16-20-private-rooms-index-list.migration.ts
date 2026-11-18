@@ -1,4 +1,4 @@
-import { Migration, DbMutable } from "@oh/utils";
+import { DbMutable, Migration } from "@shared/types/db.types.ts";
 import { ulid } from "@std/ulid";
 import {
   getParsedRoomLayout,

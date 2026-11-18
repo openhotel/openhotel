@@ -1,7 +1,6 @@
 import { ProxyEventType } from "shared/types/main.ts";
 import { ProxyEvent } from "shared/enums/main.ts";
 import { System } from "modules/system/main.ts";
-import { getLatestVersion } from "@oh/utils";
 import { getTextFromArgs } from "shared/utils/args.utils.ts";
 
 export const joinRoomEvent: ProxyEventType<{ roomId: string }> = {
@@ -15,11 +14,11 @@ export const joinRoomEvent: ProxyEventType<{ roomId: string }> = {
     if (!(await user.isOp())) return;
 
     const { version } = System.getEnvs();
-    const newVersion = await getLatestVersion({
-      version,
-      repository: "openhotel/openhotel",
+    const newVersion = await System.updater.getLastVersion({
+      preReleases: true,
     });
-    if (!newVersion) return;
+    console.log(newVersion);
+    if (version === newVersion) return;
 
     user.emit(ProxyEvent.SYSTEM_MESSAGE, {
       message: getTextFromArgs("New version {{newVersion}} available!", {

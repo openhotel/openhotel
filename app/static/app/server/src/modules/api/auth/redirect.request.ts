@@ -1,11 +1,9 @@
 import { System } from "system/main.ts";
-import {
-  getTokenData,
-  RequestType,
-  RequestMethod,
-  getResponse,
-  HttpStatusCode,
-} from "@oh/utils";
+import { RequestType } from "@shared/types/request.types.ts";
+import { RequestMethod } from "@shared/enums/request.enums.ts";
+import { getTokenData } from "@shared/utils/tokens.utils.ts";
+import { getResponse } from "@shared/utils/response.utils.ts";
+import { HttpStatusCode } from "@shared/enums/http-status-code.enums.ts";
 
 export const redirectRequest: RequestType = {
   method: RequestMethod.GET,

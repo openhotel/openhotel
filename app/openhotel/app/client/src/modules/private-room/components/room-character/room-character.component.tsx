@@ -2,25 +2,22 @@ import React, { useEffect, useMemo, useState } from "react";
 import { Point2d, PrivateRoom, User } from "shared/types";
 import { ContainerProps } from "@openhotel/pixi-components";
 import {
-  getDirection,
   getPositionFromIsometricPosition,
   getZIndex,
   isPosition3dEqual,
 } from "shared/utils";
-import {
-  CharacterArmAction,
-  CharacterBodyAction,
-  Direction,
-} from "shared/enums";
+import { CharacterArmAction, CharacterBodyAction } from "shared/enums";
 import { CharacterComponent } from "shared/components";
 import { useRoom, useTasks } from "shared/hooks";
+import { SAFE_TILE_ZINDEX_MULTI } from "shared/consts";
+import { Direction } from "@shared/enums/direction.enums.ts";
+import { TickerQueue } from "@shared/modules/old/queue/ticker-queue.enum.ts";
+import { getDirection } from "@shared/utils/direction.utils.ts";
 import {
   MOVEMENT_BETWEEN_TILES_DURATION,
-  SAFE_TILE_ZINDEX_MULTI,
   TILE_WIDTH,
   TILE_Y_HEIGHT,
-} from "shared/consts";
-import { TickerQueue } from "@oh/queue";
+} from "@shared/consts/tiles.consts.ts";
 
 type Props = {
   user: User;

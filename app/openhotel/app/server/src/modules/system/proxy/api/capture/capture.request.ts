@@ -1,6 +1,7 @@
 import { ProxyRequestType } from "shared/types/api.types.ts";
 import { System } from "modules/system/main.ts";
-import { RequestMethod, getContentType } from "@oh/utils";
+import { RequestMethod } from "@shared/enums/request.enums.ts";
+import { getContentType } from "@shared/utils/content-type.utils.ts";
 
 export const captureRequest: ProxyRequestType = {
   pathname: "",

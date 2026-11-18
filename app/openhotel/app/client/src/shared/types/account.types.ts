@@ -1,4 +1,4 @@
-import { Hemisphere } from "shared/enums";
+import { Hemisphere } from "@shared/enums/hemisphere.enums.ts";
 
 export type Account = {
   accountId: string;

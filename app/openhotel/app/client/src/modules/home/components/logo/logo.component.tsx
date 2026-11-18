@@ -1,9 +1,9 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { TextureEnum } from "shared/enums";
 import { SpriteComponent } from "@openhotel/pixi-components";
-import { wait } from "shared/utils";
-import { TickerQueue } from "@oh/queue";
 import { useTasks } from "shared/hooks";
+import { TickerQueue } from "@shared/modules/old/queue/ticker-queue.enum.ts";
+import { wait } from "@shared/utils/wait.utils.ts";
 
 const DELTA_MULTIPLIER = 0.5;
 const TARGET_Y = -14;

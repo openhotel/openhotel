@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { TickerQueue } from "@oh/queue";
 import {
   ContainerComponent,
   Event,
@@ -10,6 +9,7 @@ import {
   useWindow,
 } from "@openhotel/pixi-components";
 import { useTasks } from "shared/hooks";
+import { TickerQueue } from "@shared/modules/old/queue/ticker-queue.enum.ts";
 
 const DELTA_MULTIPLIER = 0.35;
 

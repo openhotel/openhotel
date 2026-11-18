@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { CrossDirection, SpriteSheetEnum } from "shared/enums";
+import { SpriteSheetEnum } from "shared/enums";
 import {
   Cursor,
   DisplayObjectProps,
@@ -11,7 +11,12 @@ import {
 } from "@openhotel/pixi-components";
 import { Point3d } from "shared/types";
 import { getPositionFromIsometricPosition, getZIndex } from "shared/utils";
-import { SAFE_Z_INDEX, STEP_TILE_HEIGHT, TILE_Y_HEIGHT } from "shared/consts";
+import { SAFE_Z_INDEX } from "shared/consts";
+import { CrossDirection } from "@shared/enums/direction.enums.ts";
+import {
+  STEP_TILE_HEIGHT,
+  TILE_Y_HEIGHT,
+} from "@shared/consts/tiles.consts.ts";
 
 type Props = {
   position: Point3d;

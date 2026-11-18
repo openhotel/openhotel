@@ -1,8 +1,11 @@
 import { useApi } from "./useApi";
 import { useCallback } from "react";
-import { RequestMethod } from "shared/enums";
 import { useAccount } from "./useAccount";
-import { Collection, CollectionManifest } from "shared/types";
+import { RequestMethod } from "@shared/enums/request.enums.ts";
+import {
+  Collection,
+  CollectionManifest,
+} from "@shared/types/collection.types.ts";
 
 export const useCollections = () => {
   const { fetch } = useApi();

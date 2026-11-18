@@ -12,12 +12,12 @@ import {
 import { System } from "modules/system/main.ts";
 import { ProxyEvent } from "shared/enums/event.enum.ts";
 import { RoomPointEnum } from "shared/enums/room.enums.ts";
-import { Direction, Point3d, Point2d } from "@oh/utils";
 import { log as $log } from "shared/utils/log.utils.ts";
 import { UserAction } from "shared/enums/user.enums.ts";
 import { INITIAL_PLAYER_BALANCE } from "shared/consts/economy.consts.ts";
-import { CrossDirection } from "shared/enums/direction.enums.ts";
 import { usersConfig } from "../../shared/users-config.ts";
+import { Point, Point3d } from "@shared/types/point.types.ts";
+import { CrossDirection, Direction } from "@shared/enums/direction.enums.ts";
 
 export const users = () => {
   let $privateUserMap: Record<string, PrivateUser> = {};
@@ -286,7 +286,7 @@ export const users = () => {
       id: string,
       position: Point3d,
       direction: CrossDirection,
-      framePosition?: Point2d,
+      framePosition?: Point,
     ) => {
       const roomId = getRoom();
       if (!roomId) return false;

@@ -1,13 +1,10 @@
-import { Point3d, Point2d, Direction } from "@oh/utils";
-import {
-  ProxyEvent,
-  Hemisphere,
-  UserAction,
-  CrossDirection,
-} from "shared/enums/main.ts";
+import { ProxyEvent, UserAction } from "shared/enums/main.ts";
 import { Transaction } from "./economy.types.ts";
 import { Furniture } from "shared/types/furniture.types.ts";
 import { Contract } from "./company.types.ts";
+import { Point, Point3d } from "@shared/types/point.types.ts";
+import { CrossDirection, Direction } from "@shared/enums/direction.enums.ts";
+import { Hemisphere } from "@shared/enums/hemisphere.enums.ts";
 
 export type CacheUser = {
   accountId: string;
@@ -135,7 +132,7 @@ export type UserMutable = {
     id: string,
     position: Point3d,
     direction?: CrossDirection,
-    wallPosition?: Point2d,
+    wallPosition?: Point,
   ) => Promise<boolean>;
 
   moveFurnitureFromRoomToInventory: (id: string) => Promise<boolean>;

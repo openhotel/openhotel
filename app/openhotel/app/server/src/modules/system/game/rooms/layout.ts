@@ -1,7 +1,8 @@
 import { System } from "modules/system/main.ts";
 import { parse } from "@std/yaml";
 import { RoomLayout } from "shared/types/room.types.ts";
-import { CrossDirection, RoomPointEnum } from "shared/enums/main.ts";
+import { RoomPointEnum } from "shared/enums/main.ts";
+import { CrossDirection } from "@shared/enums/direction.enums.ts";
 
 const TILE_WIDTH = 2;
 const TILE_Y_HEIGHT = 2;

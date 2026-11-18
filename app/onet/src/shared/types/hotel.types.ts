@@ -1,6 +1,6 @@
-import { ServerClient } from "@da/socket";
 import { Event } from "shared/enums/event.enums.ts";
-import { Scope } from "shared/enums/scope.enums.ts";
+import { ServerClient } from "@shared/modules/old/socket/types.ts";
+import { Scope } from "@shared/enums/scope.enums.ts";
 
 export type HotelData = {
   name: string;

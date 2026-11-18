@@ -1,6 +1,6 @@
-import { Hemisphere } from "../../shared/enums/main.ts";
-import { wait } from "@oh/utils";
 import { ConfigTypes } from "shared/types/config.types.ts";
+import { wait } from "@shared/utils/wait.utils.ts";
+import { Hemisphere } from "@shared/enums/hemisphere.enums.ts";
 
 export const coordinates = () => {
   const defaultLatitude = 41.997548;

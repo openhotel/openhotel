@@ -2,10 +2,13 @@ import React, { useCallback } from "react";
 import { cn, setObject } from "shared/utils";
 import { SpriteComponent } from "shared/components";
 import { ButtonComponent, InputComponent } from "@openhotel/web-components";
-import { SpriteSheet, SpriteSheetFrame } from "shared/types";
 
 //@ts-ignore
 import styles from "./sprite-sheet-frame-form.module.scss";
+import {
+  SpriteSheet,
+  SpriteSheetFrame,
+} from "@shared/types/sprite-sheet.types.ts";
 
 type Props = {
   sheet: SpriteSheet;

@@ -1,8 +1,9 @@
 import React, { useMemo } from "react";
-import { CrossDirection, SpriteSheetEnum } from "shared/enums";
+import { SpriteSheetEnum } from "shared/enums";
 import { getPositionFromIsometricPosition, getZIndex } from "shared/utils";
 import { EventMode, SpriteComponent } from "@openhotel/pixi-components";
 import { Point3d } from "shared/types";
+import { CrossDirection } from "@shared/enums/direction.enums.ts";
 
 type Props = {
   type: "tile" | "stairs";

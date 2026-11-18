@@ -1,6 +1,7 @@
-import { WorkerParent, getParentWorker } from "@da/worker";
 import { System } from "modules/system/main.ts";
 import { ulid } from "@std/ulid";
+import { WorkerParent } from "@shared/modules/old/worker/types.ts";
+import { getParentWorker } from "@shared/modules/old/worker/parent.ts";
 
 export const phantom = () => {
   let $worker: WorkerParent;

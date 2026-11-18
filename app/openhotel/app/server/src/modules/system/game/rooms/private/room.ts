@@ -7,29 +7,21 @@ import {
   RoomType,
   User,
 } from "shared/types/main.ts";
-import {
-  FurnitureType,
-  ProxyEvent,
-  RoomPointEnum,
-  TransactionType,
-} from "shared/enums/main.ts";
+import { ProxyEvent, RoomPointEnum } from "shared/enums/main.ts";
 import { System } from "modules/system/main.ts";
 import { getInterpolatedPath } from "shared/utils/pathfinding.utils.ts";
-import {
-  TILE_Y_HEIGHT,
-  WALKABLE_FURNITURE_TYPE,
-  WALL_HEIGHT,
-} from "shared/consts/main.ts";
-import {
-  Direction,
-  getRandomNumber,
-  isPoint3dEqual,
-  Point2d,
-  Point3d,
-} from "@oh/utils";
-import { Grid } from "@oh/pathfinding";
+import { WALKABLE_FURNITURE_TYPE } from "shared/consts/main.ts";
 import { getBaseRoomGrid } from "shared/utils/rooms.utils.ts";
 import { getPositionFromIsometricPosition } from "shared/utils/position.utils.ts";
+import { createGrid } from "@shared/utils/grid.utils.ts";
+import { Point, Point3d } from "@shared/types/point.types.ts";
+import { Direction } from "@shared/enums/direction.enums.ts";
+import { getRandomNumber } from "@shared/utils/random.utils.ts";
+import { isPoint3dEqual } from "@shared/utils/point.utils.ts";
+import { TILE_Y_HEIGHT } from "@shared/consts/tiles.consts.ts";
+import { WALL_HEIGHT } from "@shared/consts/wall.consts.ts";
+import { TransactionType } from "@shared/enums/economy.enum.ts";
+import { FurnitureType } from "@shared/enums/furniture.enum.ts";
 
 export const getRoom =
   (roomUserMap: Record<string, string[]>) =>
@@ -137,7 +129,7 @@ export const getRoom =
     };
     const getUsers = () => roomUserMap[room.id];
 
-    const getRandomPoint = (): Point2d => {
+    const getRandomPoint = (): Point => {
       const z = getRandomNumber(0, layout.length - 1);
       const x = getRandomNumber(0, layout[z].length - 1);
       if (layout[z][x] === undefined) return getRandomPoint();
@@ -204,7 +196,7 @@ export const getRoom =
         roomLayout[position.z][position.x] = 0;
       }
 
-      const grid = Grid.from(roomLayout);
+      const grid = createGrid(roomLayout as number[][]);
 
       const path = grid
         .findPath(

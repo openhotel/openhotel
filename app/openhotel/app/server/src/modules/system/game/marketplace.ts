@@ -1,16 +1,16 @@
 import { log } from "shared/utils/log.utils.ts";
 import { System } from "../main.ts";
 import { ulid } from "@std/ulid";
-import { TransactionType } from "shared/enums/economy.enum.ts";
-import {
-  MarketplaceConfig,
-  MarketplaceListing,
-  MarketplaceListingStatus,
-} from "shared/types/marketplace.types.ts";
 import { DEFAULT_MARKETPLACE_CONFIG } from "shared/consts/marketplace.consts.ts";
 import { Furniture } from "shared/types/furniture.types.ts";
 import { ProxyEvent } from "shared/enums/main.ts";
 import { isCatalogFurnitureAvailable } from "shared/utils/catalog.utils.ts";
+import { TransactionType } from "@shared/enums/economy.enum.ts";
+import {
+  MarketplaceConfig,
+  MarketplaceListing,
+  MarketplaceListingStatus,
+} from "@shared/types/marketplace.types.ts";
 
 export const marketplace = () => {
   let config: MarketplaceConfig = DEFAULT_MARKETPLACE_CONFIG;

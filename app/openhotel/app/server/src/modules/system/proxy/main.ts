@@ -1,12 +1,12 @@
-import { WorkerParent } from "@da/worker";
 import { PrivateUser, WorkerProps } from "shared/types/main.ts";
 import { internal, eventList } from "./events/main.ts";
 import { ProxyEvent } from "shared/enums/main.ts";
 import { log } from "shared/utils/main.ts";
 import { System } from "modules/system/main.ts";
 import { requestList } from "./api/main.ts";
-import { getParentWorker } from "@da/worker";
-import { RequestMethod } from "@oh/utils";
+import { RequestMethod } from "@shared/enums/request.enums.ts";
+import { WorkerParent } from "@shared/modules/old/worker/types.ts";
+import { getParentWorker } from "@shared/modules/old/worker/parent.ts";
 
 type WorkerDataProps = {
   user: PrivateUser;

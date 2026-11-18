@@ -1,5 +1,5 @@
-import { DbHotelIntegrationType } from "shared/enums/hotel.enums.ts";
 import { AccountMutable } from "shared/types/account.types.ts";
+import { DbHotelIntegrationType } from "@shared/enums/hotel.enums.ts";
 
 export type DbHotel = {
   accountId: string;

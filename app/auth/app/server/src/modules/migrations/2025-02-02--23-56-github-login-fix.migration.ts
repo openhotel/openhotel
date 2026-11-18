@@ -1,4 +1,4 @@
-import { Migration, DbMutable } from "@oh/utils";
+import { DbMutable, Migration } from "@shared/types/db.types.ts";
 
 export default {
   id: "2025-02-02--23-56-github-login-fix",

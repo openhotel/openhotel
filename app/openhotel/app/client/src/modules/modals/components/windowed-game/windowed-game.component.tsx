@@ -13,7 +13,7 @@ import {
 import { ModalNavigatorTab, SpriteSheetEnum } from "shared/enums";
 import { TextComponent } from "shared/components";
 import { useTranslation } from "react-i18next";
-import { Size2d } from "shared/types";
+import { Size2d } from "@shared/types/size.types.ts";
 
 const HORIZONTAL_MARGIN = 12 * 2;
 const TOP_MARGIN = 38;

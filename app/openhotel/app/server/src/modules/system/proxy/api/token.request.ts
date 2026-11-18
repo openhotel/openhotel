@@ -1,6 +1,6 @@
 import { ProxyRequestType } from "shared/types/api.types.ts";
 import { System } from "modules/system/main.ts";
-import { RequestMethod } from "@oh/utils";
+import { RequestMethod } from "@shared/enums/request.enums.ts";
 
 export const tokenRequest: ProxyRequestType = {
   pathname: "/token",

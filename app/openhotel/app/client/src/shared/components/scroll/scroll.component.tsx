@@ -7,9 +7,9 @@ import {
   SpriteComponent,
   TilingSpriteComponent,
 } from "@openhotel/pixi-components";
-import { Size2d } from "shared/types";
 import { SpriteSheetEnum } from "shared/enums";
 import { SCROLL_BAR_WIDTH, SCROLL_HEIGHT } from "shared/consts";
+import { Size2d } from "@shared/types/size.types.ts";
 
 type Props = {
   size: Size2d;

@@ -1,10 +1,10 @@
-import { BlobReader, BlobWriter, ZipWriter } from "@zip-js/data-uri";
+import { BlobReader, BlobWriter, ZipWriter } from "@zip-js";
 import { stringify } from "@std/yaml";
 import { decodeTime } from "@std/ulid";
-
-import { RequestType, RequestMethod, RequestKind } from "@oh/utils";
 import { base64ToBlob } from "shared/utils/base64.utils.ts";
-import { getFurnitureLangErrors } from "@oh/core";
+import { getFurnitureLangErrors } from "@shared/utils/furniture.utils.ts";
+import { RequestType } from "@shared/types/request.types.ts";
+import { RequestKind, RequestMethod } from "@shared/enums/request.enums.ts";
 
 export const createRequest: RequestType = {
   method: RequestMethod.POST,

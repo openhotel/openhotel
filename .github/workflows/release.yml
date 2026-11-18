@@ -12,6 +12,8 @@ env:
   RELEASE_PROJECTS: "openhotel,web,static,onet,auth,asset-editor"
   # folders that affect every project
   RELEASE_SHARED_PATHS: "app/shared"
+  # commits by this author never count as a change (changelog, contributors...)
+  RELEASE_BOT_EMAIL: "actions@openhotel.club"
 
 jobs:
   version:
@@ -72,7 +74,8 @@ jobs:
               result=true; reason="no previous release"
             elif ! echo "$PREV_ASSETS" | grep -q "^${project}_.*\.zip$"; then
               result=true; reason="no build in $PREV"
-            elif ! git diff --quiet "$PREV" "$GITHUB_REF_NAME" -- "app/$project" "${SHARED[@]}"; then
+            # commits since PREV touching the app or shared, ignoring the bot (changelog, contributors...)
+            elif [ -n "$(git log --format='%ae' "$PREV..$GITHUB_REF_NAME" -- "app/$project" "${SHARED[@]}" | grep -vxF "$RELEASE_BOT_EMAIL")" ]; then
               result=true; reason="changed"
             else
               result=false; reason="unchanged, reuse from $PREV"
@@ -171,7 +174,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          sparse-checkout: "app/openhotel"
+          sparse-checkout: |
+            app/openhotel
+            app/shared
           sparse-checkout-cone-mode: false
 
       - uses: denoland/setup-deno@v1
@@ -205,7 +210,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          sparse-checkout: "app/web"
+          sparse-checkout: |
+            app/web
+            app/shared
           sparse-checkout-cone-mode: false
 
       - uses: actions/setup-node@v4
@@ -263,7 +270,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          sparse-checkout: "app/static"
+          sparse-checkout: |
+            app/static
+            app/shared
           sparse-checkout-cone-mode: false
 
       - uses: actions/setup-node@v4
@@ -324,7 +333,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          sparse-checkout: "app/onet"
+          sparse-checkout: |
+            app/onet
+            app/shared
           sparse-checkout-cone-mode: false
 
       - uses: denoland/setup-deno@v1
@@ -359,7 +370,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          sparse-checkout: "app/auth"
+          sparse-checkout: |
+            app/auth
+            app/shared
           sparse-checkout-cone-mode: false
 
       - uses: actions/setup-node@v4
@@ -417,7 +430,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          sparse-checkout: "app/asset-editor"
+          sparse-checkout: |
+            app/asset-editor
+            app/shared
           sparse-checkout-cone-mode: false
 
       - uses: actions/setup-node@v4

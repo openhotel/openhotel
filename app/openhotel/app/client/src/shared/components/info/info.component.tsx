@@ -13,7 +13,8 @@ import {
 } from "@openhotel/pixi-components";
 import React, { useEffect, useMemo, useState } from "react";
 import { useAccount, useConfig, useRouter, useSafeWindow } from "shared/hooks";
-import { Hemisphere, InternalEvent, Route } from "shared/enums";
+import { InternalEvent, Route } from "shared/enums";
+import { Hemisphere } from "@shared/enums/hemisphere.enums.ts";
 
 const Text = ({ text }) => (
   <TextComponent

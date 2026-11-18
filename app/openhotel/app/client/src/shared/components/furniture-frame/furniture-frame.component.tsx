@@ -1,12 +1,12 @@
 import React, { useEffect, useMemo } from "react";
 import { useUpdate } from "@openhotel/pixi-components";
 import { DUMMY_FURNITURE_FRAME_DATA } from "shared/consts";
-import { CrossDirection } from "shared/enums";
 import { Point2d, Point3d, RoomPoint } from "shared/types";
 import { getZIndex } from "shared/utils";
 import { useFurniture } from "shared/hooks";
 import { ulid } from "ulidx";
 import { FurnitureFrameTextureComponent } from "./components";
+import { CrossDirection } from "@shared/enums/direction.enums.ts";
 
 type Props = {
   id?: string;

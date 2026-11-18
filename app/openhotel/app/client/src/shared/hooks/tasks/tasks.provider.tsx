@@ -1,7 +1,11 @@
 import React, { ReactNode, useCallback, useEffect, useRef } from "react";
 import { TasksContext } from "./tasks.context";
-import { queue, QueueItemProps, ticker } from "@oh/queue";
-import { QueueMutable } from "@oh/queue";
+import { ticker } from "@shared/modules/old/queue/ticker.ts";
+import {
+  QueueItemProps,
+  QueueMutable,
+} from "@shared/modules/old/queue/queue.types.ts";
+import { queue } from "@shared/modules/old/queue/queue.ts";
 
 type TasksProps = {
   children: ReactNode;

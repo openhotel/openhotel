@@ -1,8 +1,8 @@
 import React, { ReactNode, useCallback, useContext, useState } from "react";
-import { FurnitureData, SpriteSheet } from "shared/types";
-import type { FurnitureLang } from "@oh/core";
 import { parseFurniture } from "shared/utils/furniture.utils";
 import { setObject } from "shared/utils";
+import { FurnitureData, FurnitureLang } from "@shared/types/furniture.types.ts";
+import { SpriteSheet } from "@shared/types/sprite-sheet.types.ts";
 
 export type Data = {
   sprite: string;

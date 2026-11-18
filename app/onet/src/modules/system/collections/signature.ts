@@ -1,9 +1,9 @@
 import { encodeBase64 } from "@std/encoding/base64";
+import { CollectionManifest } from "@shared/types/collection.types.ts";
 import {
-  CollectionManifest,
   getCollectionManifestPayload,
   verifyCollectionManifest,
-} from "@oh/core";
+} from "@shared/utils/collection.utils.ts";
 
 const KEY_PATHNAME = "./collections-key";
 

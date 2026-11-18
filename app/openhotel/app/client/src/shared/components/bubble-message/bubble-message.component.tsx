@@ -9,7 +9,7 @@ import {
 } from "@openhotel/pixi-components";
 import { TextComponent } from "shared/components/text";
 import { SpriteSheetEnum } from "shared/enums";
-import { TILE_SIZE } from "shared/consts";
+import { TILE_SIZE } from "@shared/consts/tiles.consts.ts";
 
 type Props = {
   username: string;

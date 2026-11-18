@@ -6,7 +6,7 @@ import {
   EventMode,
 } from "@openhotel/pixi-components";
 import { CategoryOptionComponent } from "../";
-import { CatalogCategory } from "shared/types";
+import { CatalogCategory } from "@shared/types/catalog.types.ts";
 
 type Props = {
   width: number;

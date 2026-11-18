@@ -1,4 +1,6 @@
-import { queue, ticker, QueueItemProps } from "@oh/queue";
+import { ticker } from "@shared/modules/old/queue/ticker.ts";
+import { queue } from "@shared/modules/old/queue/queue.ts";
+import { QueueItemProps } from "@shared/modules/old/queue/queue.types.ts";
 
 export const tasks = () => {
   const $ticker = ticker();

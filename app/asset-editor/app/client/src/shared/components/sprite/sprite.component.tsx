@@ -1,10 +1,13 @@
 import React, { CSSProperties, useCallback, useMemo } from "react";
-import { SpriteSheet, SpriteSheetRectangle } from "shared/types";
 
 //@ts-ignore
 import styles from "./sprite.module.scss";
 import { cn } from "shared/utils";
 import { useScale } from "shared/hooks/useScale";
+import {
+  SpriteSheet,
+  SpriteSheetRectangle,
+} from "@shared/types/sprite-sheet.types.ts";
 
 type Props = {
   className?: string;

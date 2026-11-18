@@ -10,7 +10,7 @@ import {
 } from "@openhotel/pixi-components";
 import { useApi } from "shared/hooks";
 import { ItemComponent, ScrollComponent } from "shared/components";
-import { Size2d } from "shared/types";
+import { Size2d } from "@shared/types/size.types.ts";
 
 const ITEM_SIZE = {
   width: 96,

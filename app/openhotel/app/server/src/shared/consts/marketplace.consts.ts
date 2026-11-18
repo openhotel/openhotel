@@ -1,4 +1,4 @@
-import { MarketplaceConfig } from "../types/marketplace.types.ts";
+import { MarketplaceConfig } from "@shared/types/marketplace.types.ts";
 
 export const DEFAULT_MARKETPLACE_CONFIG: MarketplaceConfig = {
   commissionRate: 0.1,

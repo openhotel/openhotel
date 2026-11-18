@@ -1,4 +1,4 @@
-import { BlobReader, TextWriter, ZipReader } from "@zip-js/data-uri";
+import { BlobReader, TextWriter, ZipReader } from "@zip-js";
 import { parse } from "@std/yaml";
 
 import { blobToBase64 } from "./base64.utils.ts";

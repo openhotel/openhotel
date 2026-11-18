@@ -1,10 +1,6 @@
 import { useFurniture } from "shared/hooks";
 import React, { useEffect, useMemo, useState } from "react";
-import {
-  CharacterArmAction,
-  CharacterBodyAction,
-  FurnitureType,
-} from "shared/enums";
+import { CharacterArmAction, CharacterBodyAction } from "shared/enums";
 import {
   CharacterComponent,
   FurnitureComponent,
@@ -19,6 +15,7 @@ import {
   GraphicType,
   useWindow,
 } from "@openhotel/pixi-components";
+import { FurnitureType } from "@shared/enums/furniture.enum.ts";
 
 export const PrivateRoomRenderComponent = () => {
   const { load: loadFurniture } = useFurniture();

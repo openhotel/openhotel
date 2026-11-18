@@ -1,4 +1,4 @@
-import { RequestMethod } from "@oh/utils";
+import { RequestMethod } from "@shared/enums/request.enums.ts";
 import { ProxyRequestType } from "shared/types/api.types.ts";
 
 export const getGameRequest: ProxyRequestType = {

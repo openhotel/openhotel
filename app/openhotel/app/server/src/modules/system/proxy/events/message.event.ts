@@ -3,9 +3,9 @@ import { ProxyEvent } from "shared/enums/main.ts";
 import { System } from "modules/system/main.ts";
 import { log } from "shared/utils/main.ts";
 import { executeCommand } from "modules/system/commands/main.ts";
-import { getRandomNumberFromSeed } from "@oh/utils";
 import { ulid } from "@std/ulid";
 import { MAX_MESSAGE_LENGTH } from "shared/consts/messages.consts.ts";
+import { getRandomNumberFromSeed } from "@shared/utils/random.utils.ts";
 
 export const messageEvent: ProxyEventType<{ message: string }> = {
   event: ProxyEvent.MESSAGE,

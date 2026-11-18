@@ -6,7 +6,7 @@ import {
   CharacterPart,
 } from "shared/enums";
 import { Point2d } from "shared/types/point.types";
-import { DirectionKeys } from "shared/types/direction.types";
+import { DirectionKeys } from "@shared/types/direction.types.ts";
 
 export type CharacterBodyPartId =
   | CharacterPart

@@ -1,5 +1,4 @@
 import { ConfigTypes, Envs } from "shared/types/main.ts";
-import { getConfig as $getConfig, update, getDb, DbMutable } from "@oh/utils";
 import { CONFIG_DEFAULTS } from "shared/consts/config.consts.ts";
 import { Migrations } from "modules/migrations/main.ts";
 import { api } from "./api.ts";
@@ -8,6 +7,10 @@ import { auth } from "./auth.ts";
 import { hotels } from "./hotels/main.ts";
 import { teleports } from "./teleports/main.ts";
 import { collections } from "./collections/main.ts";
+import { DbMutable } from "@shared/types/db.types.ts";
+import { getDb } from "@shared/modules/old/db/main.ts";
+import { getConfig as $getConfig } from "@shared/modules/old/config.ts";
+import { updaterModule } from "@shared/modules/updater.module.ts";
 
 export const System = (() => {
   let $config: ConfigTypes;
@@ -21,6 +24,7 @@ export const System = (() => {
   const $hotels = hotels();
   const $teleports = teleports();
   const $collections = collections();
+  const updater = updaterModule();
 
   const load = async (envs: Envs) => {
     $envs = envs;
@@ -30,17 +34,18 @@ export const System = (() => {
 
     const isDevelopment = $envs.version === "development";
 
-    if (
-      !isDevelopment &&
-      (await update({
-        targetVersion: $config.version,
-        version: envs.version,
-        repository: "openhotel/onet",
-        log: console.log,
-        debug: console.debug,
-      }))
-    )
-      return;
+    updater.load({
+      project: "onet",
+      log: console.log,
+      enabled: isDevelopment,
+    });
+
+    await updater.update({
+      version: envs.version,
+      target: $config.version,
+      preReleases: true,
+      stopOnUpdate: true,
+    });
 
     if (System.isDevelopment())
       console.log(
@@ -73,5 +78,6 @@ export const System = (() => {
     hotels: $hotels,
     teleports: $teleports,
     collections: $collections,
+    updater,
   };
 })();

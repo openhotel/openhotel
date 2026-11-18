@@ -1,4 +1,3 @@
-import { RequestType, getPathRequestList } from "@oh/utils";
 import { updatePatchRequest } from "./update.request.ts";
 import { adminPostRequest } from "./main.request.ts";
 import {
@@ -21,6 +20,8 @@ import {
   appsGetRequest,
   appsPostRequest,
 } from "./apps.request.ts";
+import { RequestType } from "@shared/types/request.types.ts";
+import { getPathRequestList } from "@shared/utils/request.utils.ts";
 
 export const adminRequestList: RequestType[] = getPathRequestList({
   requestList: [

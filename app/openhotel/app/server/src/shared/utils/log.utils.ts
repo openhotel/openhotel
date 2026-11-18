@@ -1,5 +1,5 @@
-import { getBeautyDate } from "@oh/utils";
 import { System } from "modules/system/main.ts";
+import { getBeautyDate } from "@shared/utils/date.utils.ts";
 
 export const initLog = () => {
   if (System.getEnvs().version === "development") return;

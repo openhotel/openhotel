@@ -1,4 +1,4 @@
-import { RequestMethod } from "shared/enums";
+import { RequestMethod } from "@openhotel/web-components";
 
 export type Request = {
   method?: RequestMethod;

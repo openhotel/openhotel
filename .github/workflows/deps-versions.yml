@@ -1,0 +1,201 @@
+name: deps-versions
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check that shared dependencies use the same version
+        shell: python3 {0}
+        run: |
+          import json, re, sys, collections
+          from pathlib import Path
+
+          IGNORE = ("node_modules", "app/shared/old")
+          files = [
+              p for name in ("deno.json", "package.json")
+              for p in Path(".").rglob(name)
+              if not any(i in p.as_posix() for i in IGNORE)
+          ]
+
+          # package -> version -> [(file, key)]
+          found = collections.defaultdict(lambda: collections.defaultdict(list))
+
+          def add(file, key, spec):
+              if key.endswith("/") or spec.startswith((".", "/", "file:", "link:")):
+                  return
+              m = re.match(r"^(jsr|npm):(@?[^@]+)@?(.*)$", spec)
+              if m:
+                  pkg, ver = m.group(2), m.group(3) or "(none)"
+              elif spec.startswith("http"):
+                  pkg, ver = key, spec
+              else:
+                  pkg, ver = key, spec
+              m = re.match(r"^@jsr/([^_]+)__(.+)$", pkg)
+              if m:
+                  pkg = f"@{m.group(1)}/{m.group(2)}"
+              found[pkg][ver].append((file, key))
+
+          for f in files:
+              try:
+                  data = json.loads(f.read_text())
+              except Exception as e:
+                  print(f"::error file={f}::invalid JSON: {e}")
+                  sys.exit(1)
+              if f.name == "deno.json":
+                  for k, v in data.get("imports", {}).items():
+                      add(f.as_posix(), k, v)
+              for section in ("dependencies", "devDependencies", "peerDependencies"):
+                  for k, v in data.get(section, {}).items():
+                      add(f.as_posix(), k, v)
+
+          mismatches = {p: v for p, v in sorted(found.items()) if len(v) > 1}
+          if not mismatches:
+              print(f"OK: {len(found)} packages, all versions match")
+              sys.exit(0)
+
+          print(f"{len(mismatches)} of {len(found)} packages have different versions:\n")
+          for pkg, versions in mismatches.items():
+              print(f"{pkg}")
+              for ver, uses in sorted(versions.items()):
+                  for file, key in uses:
+                      print(f"  {ver:<20} {file}  ({key})")
+                      print(f"::error file={file}::{pkg} is {ver} here, other files use "
+                            + ", ".join(v for v in versions if v != ver))
+              print()
+          sys.exit(1)
+
+      - name: Check that libraries come only from jsr/npm/node through deno.json or package.json
+        if: ${{ !cancelled() }}
+        shell: python3 {0}
+        run: |
+          import json, re, sys
+          from pathlib import Path
+
+          IGNORE = ("node_modules", "app/shared/old", "/build/", "/dist/", ".git/")
+          EXTENSIONS = {".ts", ".tsx", ".js", ".jsx", ".mjs", ".mts", ".cjs", ".cts"}
+          INLINE = ("jsr:", "npm:", "http:", "https:")
+          IMPORT_RE = re.compile(
+              r"""(?:\bfrom|\bimport|\bimport\s*\(|\brequire\s*\(|<reference\s+types=)\s*(["'])([^"'\n]+)\1"""
+          )
+          COMMENT_RE = re.compile(r"/\*.*?\*/|^\s*//(?!/\s*<reference).*$", re.S | re.M)
+
+          def read_json(path):
+              text = path.read_text()
+              try:
+                  return json.loads(text)
+              except Exception:
+                  text = re.sub(r"/\*.*?\*/|^\s*//.*$", "", text, flags=re.S | re.M)
+                  return json.loads(re.sub(r",(\s*[}\]])", r"\1", text))
+
+          def package_name(spec):
+              parts = spec.split("/")
+              return "/".join(parts[:2]) if spec.startswith("@") else parts[0]
+
+          def is_local(spec):
+              return spec.startswith((".", "/", "node:", "data:", "#"))
+
+          # deno resolves bare specifiers with the import map of the app that runs the code
+          # (app/shared is resolved by each app), so only inline specifiers are checked here
+          def deno_scope():
+              return "deno.json", lambda spec: True
+
+          def client_scope(directory):
+              pkg = read_json(directory / "package.json")
+              names = set()
+              for section in ("dependencies", "devDependencies", "peerDependencies"):
+                  names.update(pkg.get(section, {}))
+              aliases = set()
+              tsconfig = directory / "tsconfig.json"
+              base = directory
+              if tsconfig.exists():
+                  options = read_json(tsconfig).get("compilerOptions", {})
+                  aliases.update(k.rstrip("*").rstrip("/") for k in options.get("paths", {}))
+                  base = directory / options.get("baseUrl", ".")
+              if base.is_dir():
+                  aliases.update(p.stem if p.is_file() else p.name for p in base.iterdir())
+              for vite in directory.glob("vite.config.*"):
+                  block = re.search(r"alias\s*:\s*{(.*?)}\s*,?\s*}", vite.read_text(), re.S)
+                  if block:
+                      aliases.update(re.findall(r"""^\s*["']?([@\w./-]+)["']?\s*:""", block.group(1), re.M))
+              def allowed(spec):
+                  if package_name(spec) in names:
+                      return True
+                  return any(spec == a or spec.startswith(a + "/") for a in aliases)
+              return "package.json", allowed
+
+          scopes = {}
+          def scope_for(path):
+              for directory in path.parents:
+                  if directory in scopes:
+                      return scopes[directory]
+                  if (directory / "deno.json").exists():
+                      scopes[directory] = deno_scope()
+                      return scopes[directory]
+                  if (directory / "package.json").exists() and directory != Path("."):
+                      scopes[directory] = client_scope(directory)
+                      return scopes[directory]
+              return None
+
+          errors = []
+
+          # deno.json may only point to jsr:, npm:, node: or local paths; package.json only to registry versions
+          DENO_ALLOWED = ("jsr:", "npm:", "node:", "./", "../", "/")
+          PACKAGE_BLOCKED = ("http:", "https:", "git:", "git+", "github:", "gitlab:", "bitbucket:")
+          configs = sorted(
+              p for name in ("deno.json", "package.json") for p in Path(".").rglob(name)
+              if not any(i in "/" + p.as_posix() + "/" for i in IGNORE)
+          )
+          for config in configs:
+              data = read_json(config)
+              lines = config.read_text().split("\n")
+              entries = list(data.get("imports", {}).items()) if config.name == "deno.json" else [
+                  item for section in ("dependencies", "devDependencies", "peerDependencies")
+                  for item in data.get(section, {}).items()
+              ]
+              for key, value in entries:
+                  if config.name == "deno.json" and value.startswith(DENO_ALLOWED):
+                      continue
+                  if config.name == "package.json" and not value.startswith(PACKAGE_BLOCKED):
+                      continue
+                  line = next((i + 1 for i, l in enumerate(lines) if f'"{key}"' in l and value in l), 1)
+                  errors.append((config.as_posix(), line, value, f"{key}: only jsr:, npm: or node: libraries are allowed"))
+
+          files = sorted(
+              p for p in Path(".").rglob("*")
+              if p.suffix in EXTENSIONS and p.is_file()
+              and not any(i in "/" + p.as_posix() + "/" for i in IGNORE)
+          )
+          for path in files:
+              scope = scope_for(path)
+              if not scope:
+                  continue
+              kind, allowed = scope
+              text = COMMENT_RE.sub(lambda m: "\n" * m.group(0).count("\n"), path.read_text())
+              for m in IMPORT_RE.finditer(text):
+                  spec = m.group(2)
+                  if is_local(spec) and not spec.startswith(INLINE):
+                      continue
+                  if spec.startswith(INLINE):
+                      reason = f"inline import, declare it in {kind} and import it by name"
+                  elif allowed(spec):
+                      continue
+                  else:
+                      reason = f"not declared in {kind}"
+                  line = text.count("\n", 0, m.start(2)) + 1
+                  errors.append((path.as_posix(), line, spec, reason))
+
+          if not errors:
+              print(f"OK: {len(configs)} configs and {len(files)} files, no inline or url library imports")
+              sys.exit(0)
+
+          print(f"{len(errors)} library imports not allowed:\n")
+          for file, line, spec, reason in errors:
+              print(f"{file}:{line}  {spec}  ({reason})")
+              print(f"::error file={file},line={line}::{spec}: {reason}")
+          sys.exit(1)

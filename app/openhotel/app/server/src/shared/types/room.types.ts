@@ -1,5 +1,6 @@
 import { RoomPoint } from "shared/types/rooms/main.ts";
-import { Direction, Point3d } from "@oh/utils";
+import { Point3d } from "@shared/types/point.types.ts";
+import { Direction } from "@shared/enums/direction.enums.ts";
 
 export type RoomLayout = {
   id: number;

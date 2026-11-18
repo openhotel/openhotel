@@ -1,4 +1,4 @@
-import { Migration, DbMutable } from "@oh/utils";
+import { DbMutable, Migration } from "@shared/types/db.types.ts";
 
 export default {
   id: "2024-12-16--01-03-remove-furniture-uid",

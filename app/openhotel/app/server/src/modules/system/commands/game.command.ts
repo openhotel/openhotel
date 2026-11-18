@@ -1,7 +1,7 @@
 import { Command, CommandRoles, UserMutable } from "shared/types/main.ts";
 import { System } from "modules/system/main.ts";
 import { ProxyEvent } from "shared/enums/event.enum.ts";
-import { getRandomString } from "@oh/utils";
+import { getRandomString } from "@shared/utils/random.utils.ts";
 
 const list = async (_: string[], user: UserMutable) => {
   const gameDataList = await Promise.all(

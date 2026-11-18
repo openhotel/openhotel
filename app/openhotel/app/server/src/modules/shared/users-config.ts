@@ -1,7 +1,7 @@
 import { UsersConfig } from "shared/types/main.ts";
 import { USERS_CONFIG_DEFAULT } from "shared/consts/users.consts.ts";
-import { getConfig } from "@oh/utils";
 import { exists } from "deno/fs/mod.ts";
+import { getConfig } from "@shared/modules/old/config.ts";
 
 export const usersConfig = () => {
   const load = async () => {

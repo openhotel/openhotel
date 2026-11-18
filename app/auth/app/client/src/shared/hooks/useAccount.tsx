@@ -14,7 +14,7 @@ import {
   AccountRegisterProps,
   AccountSession,
 } from "shared/types";
-import { RequestMethod } from "shared/enums";
+import { RequestMethod } from "@shared/enums/request.enums.ts";
 
 type AccountState = {
   getAccountHeaders: () => Record<string, string>;

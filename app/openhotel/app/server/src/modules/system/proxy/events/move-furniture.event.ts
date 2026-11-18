@@ -1,6 +1,7 @@
 import { PrivateRoomMutable, ProxyEventType } from "shared/types/main.ts";
-import { FurnitureType, ProxyEvent } from "shared/enums/main.ts";
+import { ProxyEvent } from "shared/enums/main.ts";
 import { System } from "modules/system/main.ts";
+import { FurnitureType } from "@shared/enums/furniture.enum.ts";
 
 export const moveFurnitureEvent: ProxyEventType<any> = {
   event: ProxyEvent.MOVE_FURNITURE,

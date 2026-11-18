@@ -4,13 +4,13 @@ on:
     branches: [master, monster]
     paths:
       - .github/workflows/static-*
-      - app/static/client/**
+      - app/static/app/client/**
       - app/shared/src/**
 
   pull_request:
     paths:
       - .github/workflows/static-*
-      - app/static/client/**
+      - app/static/app/client/**
       - app/shared/src/**
 
 jobs:
@@ -25,7 +25,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          sparse-checkout: "app/static/app/client"
+          sparse-checkout: |
+            app/static/app/client
+            app/shared
           sparse-checkout-cone-mode: false
 
       - name: Install Node.js, NPM and Yarn

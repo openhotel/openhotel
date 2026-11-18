@@ -1,4 +1,4 @@
-import { Migration, DbMutable } from "@oh/utils";
+import { DbMutable, Migration } from "@shared/types/db.types.ts";
 
 export default {
   id: "2025-01-24--23-32-add-private-rooms",

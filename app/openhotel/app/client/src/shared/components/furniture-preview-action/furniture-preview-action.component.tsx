@@ -3,7 +3,8 @@ import { ContainerComponent } from "@openhotel/pixi-components";
 import { FurniturePreviewComponent } from "shared/components/furniture-preview";
 import { TextComponent } from "shared/components/text";
 import { SoftBadgeComponent } from "shared/components/soft-badge";
-import { FurnitureData, Size2d } from "shared/types";
+import { FurnitureData } from "shared/types";
+import { Size2d } from "@shared/types/size.types.ts";
 
 type Props = {
   furniture: FurnitureData;

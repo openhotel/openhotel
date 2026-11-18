@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "moduleResolution": "bundler",
+    "module": "esnext",
+    "target": "es2025",
+    "esModuleInterop": true,
+    "sourceMap": false,
+    "noUnusedLocals": true,
+    "lib": ["es2025", "DOM"],
+    "jsx": "react",
+    "baseUrl": "./src",
+    "paths": { "@shared/*": ["../shared/src/*"] },
+    "allowImportingTsExtensions": true,
+    "noEmit": true
+  }
+}

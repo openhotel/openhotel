@@ -16,10 +16,10 @@
     "system/": "./src/system/",
     "modules/": "./src/modules/",
 
-    "@oh/core": "jsr:@oh/core@0.1.0",
-    "@oh/utils": "jsr:@oh/utils@1.5.0",
+    "@shared/": "../../../shared/src/",
 
-    "@zip-js": "jsr:@zip-js/zip-js@2.7.53",
+    "@zip-js": "jsr:@zip-js/zip-js@2.25.0",
+
     "@std/yaml": "jsr:@std/yaml@1.0.5",
     "@std/ulid": "jsr:@std/ulid@1",
 

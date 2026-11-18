@@ -1,6 +1,6 @@
 import { ConfigTypes, Envs } from "shared/types/main.ts";
 import { CONFIG_DEFAULT } from "shared/consts/config.consts.ts";
-import { getConfig } from "@oh/utils";
+import { getConfig } from "@shared/modules/old/config.ts";
 
 export const config = () => {
   let $config: ConfigTypes;

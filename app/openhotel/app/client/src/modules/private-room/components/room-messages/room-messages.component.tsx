@@ -8,7 +8,7 @@ import {
 } from "@openhotel/pixi-components";
 import { useAccount, useProxy, useRoom, useTasks } from "shared/hooks";
 import { Event } from "shared/enums";
-import { PrivateRoom, RoomMessage, Size2d } from "shared/types";
+import { PrivateRoom, RoomMessage } from "shared/types";
 import { getPositionFromIsometricPosition } from "shared/utils";
 import { BubbleMessageComponent } from "shared/components";
 import {
@@ -17,7 +17,8 @@ import {
   MIN_SAFE_MESSAGES,
 } from "shared/consts";
 import { ulid } from "ulidx";
-import { TickerQueue } from "@oh/queue";
+import { TickerQueue } from "@shared/modules/old/queue/ticker-queue.enum.ts";
+import { Size2d } from "@shared/types/size.types.ts";
 
 type Props = {} & ContainerProps;
 

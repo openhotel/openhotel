@@ -1,5 +1,6 @@
 import { System } from "modules/system/main.ts";
-import { generateToken, getTokenData, compareToken } from "@oh/utils";
+import { generateToken, getTokenData } from "@shared/utils/tokens.utils.ts";
+import { compareToken } from "@shared/utils/encryption.utils.ts";
 
 export const apps = () => {
   const get = async (tokenId: string): Promise<{ id: string; url: string }> => {

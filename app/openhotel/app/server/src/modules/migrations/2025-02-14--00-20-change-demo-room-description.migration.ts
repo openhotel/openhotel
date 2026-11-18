@@ -1,4 +1,4 @@
-import { Migration, DbMutable } from "@oh/utils";
+import { DbMutable, Migration } from "@shared/types/db.types.ts";
 
 export default {
   id: "2025-02-14--00-20-change-demo-room-description",

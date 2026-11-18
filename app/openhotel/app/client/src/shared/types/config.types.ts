@@ -1,3 +1,4 @@
+// @ignore-duplicate
 export type ConfigTypes = {
   name: string;
   description: string;

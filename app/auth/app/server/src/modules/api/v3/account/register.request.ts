@@ -1,19 +1,16 @@
-import {
-  RequestType,
-  RequestMethod,
-  getResponse,
-  HttpStatusCode,
-  RequestKind,
-} from "@oh/utils";
 import { System } from "modules/system/main.ts";
-import {
-  PASSWORD_REGEX,
-  EMAIL_REGEX,
-  USERNAME_REGEX,
-  LANGUAGE_LIST,
-} from "shared/consts/main.ts";
 import { getPasswordMaxLength } from "shared/utils/password.utils.ts";
 import { getEmailMaxLength } from "shared/utils/mail.utils.ts";
+import { RequestType } from "@shared/types/request.types.ts";
+import { RequestKind, RequestMethod } from "@shared/enums/request.enums.ts";
+import { getResponse } from "@shared/utils/response.utils.ts";
+import { HttpStatusCode } from "@shared/enums/http-status-code.enums.ts";
+import {
+  EMAIL_REGEX,
+  PASSWORD_REGEX,
+  USERNAME_REGEX,
+} from "@shared/consts/account.consts.ts";
+import { LANGUAGE_LIST } from "@shared/consts/language.consts.ts";
 
 export const registerPostRequest: RequestType = {
   method: RequestMethod.POST,

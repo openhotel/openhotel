@@ -40,8 +40,8 @@
 
 #### Install Dependencies
 
-- Deno >= 2.9.8
-- Node >= 22.22.2
+- Deno >= 2.9.x
+- Node >= 22.x.x
 - Yarn (make sure Corepack is enabled if using Yarn 4)
 
 #### Start project

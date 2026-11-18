@@ -1,4 +1,4 @@
-import { TransactionType } from "../enums";
+import { TransactionType } from "@shared/enums/economy.enum.ts";
 
 export type TransactionParams = {
   type: TransactionType;

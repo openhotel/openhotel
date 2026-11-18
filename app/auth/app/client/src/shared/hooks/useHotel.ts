@@ -1,7 +1,7 @@
 import { useApi } from "./useApi";
 import { useCallback } from "react";
-import { RequestMethod } from "shared/enums";
 import { useAccount } from "./useAccount";
+import { RequestMethod } from "@shared/enums/request.enums.ts";
 
 export const useHotel = () => {
   const { fetch: $fetch } = useApi();

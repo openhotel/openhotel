@@ -1,4 +1,4 @@
-import { RestrictionCode } from "shared/enums";
+import { RestrictionCode } from "@shared/enums/restriction.enums.ts";
 
 export type User = {
   createdAt: number;

@@ -1,8 +1,8 @@
 import { ProxyRequestType } from "shared/types/api.types.ts";
 import { System } from "modules/system/main.ts";
-import { RequestMethod } from "@oh/utils";
 import { PrivateRoomMutable } from "shared/types/rooms/private.types.ts";
 import { PublicRoomMutable } from "shared/types/rooms/public.types.ts";
+import { RequestMethod } from "@shared/enums/request.enums.ts";
 
 export const listRequest: ProxyRequestType = {
   pathname: "/list",

@@ -1,21 +1,12 @@
 import { log, parseChangelog } from "shared/utils/main.ts";
-import { getChildWorker } from "@da/worker";
 import {
   ConfigTypes,
   Envs,
   VersionContent,
   WorkerProps,
 } from "shared/types/main.ts";
-import { getServerSocket, ServerClient } from "@da/socket";
-import { Scope } from "shared/enums/main.ts";
 import { routesList } from "./router/main.ts";
 import { requestClient } from "./router/client.request.ts";
-import {
-  getRandomString,
-  getURL,
-  appendCORSHeaders,
-  getIpFromRequest,
-} from "@oh/utils";
 import { eventList } from "./events/main.ts";
 import { auth } from "../shared/auth.ts";
 import { coordinates } from "../shared/coordinates.ts";
@@ -24,6 +15,14 @@ import { image } from "modules/shared/image.ts";
 import { requestGame } from "./router/game.request.ts";
 import { core } from "./core/main.ts";
 import { usersConfig } from "../shared/users-config.ts";
+import { getRandomString } from "@shared/utils/random.utils.ts";
+import { getURL } from "@shared/utils/urls.utils.ts";
+import { appendCORSHeaders } from "@shared/utils/cors.utils.ts";
+import { getIpFromRequest } from "@shared/utils/ip.utils.ts";
+import { getChildWorker } from "@shared/modules/old/worker/child.ts";
+import { ServerClient } from "@shared/modules/old/socket/types.ts";
+import { getServerSocket } from "@shared/modules/old/socket/server.ts";
+import { Scope } from "@shared/enums/scope.enums.ts";
 
 export const Proxy = (() => {
   const serverWorker = getChildWorker();

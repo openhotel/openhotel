@@ -8,13 +8,10 @@ import {
   useProxy,
   useRoom,
 } from "shared/hooks";
-import {
-  Event as ProxyEvent,
-  FurnitureType,
-  PrivateRoomPreviewType,
-} from "shared/enums";
+import { Event as ProxyEvent, PrivateRoomPreviewType } from "shared/enums";
 import { PrivateRoom, RoomFurniture, RoomFurnitureFrame } from "shared/types";
 import { FurnitureFrameComponent } from "shared/components/furniture-frame";
+import { FurnitureType } from "@shared/enums/furniture.enum.ts";
 
 type Props = {
   disableHitAreas?: boolean;

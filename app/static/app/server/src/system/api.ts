@@ -1,17 +1,13 @@
 import { requestList } from "modules/api/main.ts";
-import {
-  getCORSHeaders,
-  getResponse,
-  HttpStatusCode,
-  RequestMethod,
-  getApiHandler,
-  RequestKind,
-  getURL,
-  getContentType,
-  appendCORSHeaders,
-} from "@oh/utils";
 import { System } from "system/main.ts";
 import { decodeTime } from "@std/ulid";
+import { getApiHandler } from "@shared/modules/old/api.ts";
+import { RequestKind, RequestMethod } from "@shared/enums/request.enums.ts";
+import { appendCORSHeaders, getCORSHeaders } from "@shared/utils/cors.utils.ts";
+import { getResponse } from "@shared/utils/response.utils.ts";
+import { HttpStatusCode } from "@shared/enums/http-status-code.enums.ts";
+import { getURL } from "@shared/utils/urls.utils.ts";
+import { getContentType } from "@shared/utils/content-type.utils.ts";
 
 export const api = () => {
   const load = () => {

@@ -7,7 +7,7 @@ import {
   NoteComponent,
   TextComponent,
 } from "shared/components";
-import { InventoryFurniture, Size2d } from "shared/types";
+import { InventoryFurniture } from "shared/types";
 import {
   ContainerComponent,
   FLEX_ALIGN,
@@ -30,6 +30,7 @@ import {
 } from "shared/consts";
 import { useTranslation } from "react-i18next";
 import { Modal, Route } from "shared/enums";
+import { Size2d } from "@shared/types/size.types.ts";
 
 type Props = {
   size: Size2d;

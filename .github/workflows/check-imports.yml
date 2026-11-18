@@ -1,0 +1,93 @@
+name: check-imports
+
+on:
+  push:
+    branches: [master, monster]
+  pull_request:
+
+jobs:
+  clients:
+    name: "${{ matrix.app }}/client imports"
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        app: [openhotel, auth, web, static, asset-editor]
+
+    defaults:
+      run:
+        working-directory: app/${{ matrix.app }}/app/client
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            app/${{ matrix.app }}/app/client
+            app/shared
+          sparse-checkout-cone-mode: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+
+      - run: corepack enable
+      - run: yarn install --immutable
+
+      # Only import errors fail the job; other type errors are ignored.
+      # TS2307 module not found, TS2305/TS2724/TS2614 missing export, TS2306 not a module.
+      # Style and asset imports are skipped (vite handles them).
+      - name: Check imports
+        run: |
+          npx -y -p typescript@6.0.3 tsc --noEmit --skipLibCheck --ignoreDeprecations 6.0 -p tsconfig.json > tsc.log 2>&1 || true
+          grep -E "error TS(2307|2305|2724|2614|2306):" tsc.log \
+            | grep -vE "'[^']+\.(s?css|sass|less|svg|png|jpe?g|gif|webp|json|wav|mp3|ogg)'" \
+            > broken.log || true
+          if [ -s broken.log ]; then
+            echo "Broken imports in ${{ matrix.app }}/client:"
+            cat broken.log
+            sed -E 's#^([^(]+)\(([0-9]+),([0-9]+)\): (.*)#::error file=app/${{ matrix.app }}/app/client/\1,line=\2,col=\3::\4#' broken.log
+            exit 1
+          fi
+          echo "No broken imports"
+
+  servers:
+    name: "${{ matrix.app }} imports"
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        app:
+          - openhotel/app/server
+          - auth/app/server
+          - web/app/server
+          - static/app/server
+          - asset-editor/app/server
+          - onet
+
+    defaults:
+      run:
+        working-directory: app/${{ matrix.app }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            app/${{ matrix.app }}
+            app/shared
+          sparse-checkout-cone-mode: false
+
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.9.x
+
+      # deno check stops on a missing module; type errors are ignored, only import errors fail.
+      - name: Check imports
+        run: |
+          NO_COLOR=1 deno check --unstable-kv mod.ts > check.log 2>&1 || true
+          grep -E "Module not found|Unable to load|Relative import path|TS(2307|2305|2724|2614|2306) " -A3 check.log > broken.log || true
+          if [ -s broken.log ]; then
+            echo "Broken imports in ${{ matrix.app }}:"
+            cat broken.log
+            exit 1
+          fi
+          echo "No broken imports"

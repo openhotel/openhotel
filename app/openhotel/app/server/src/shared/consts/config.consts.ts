@@ -1,5 +1,6 @@
 import { ConfigTypes } from "shared/types/config.types.ts";
 
+// @ignore-duplicate
 export const CONFIG_DEFAULT: ConfigTypes = {
   version: "latest",
   name: "Open Hotel",

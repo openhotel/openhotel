@@ -4,13 +4,15 @@ import { phantom } from "./phantom/main.ts";
 import { game } from "./game/main.ts";
 import { initLog, log } from "shared/utils/main.ts";
 import { tasks } from "./tasks.ts";
-import { getDb, DbMutable, getRandomString } from "@oh/utils";
 import { onet } from "./onet/main.ts";
 import { auth } from "modules/shared/auth.ts";
 import { config } from "./config.ts";
 import { Migrations } from "../migrations/main.ts";
 import { image } from "modules/shared/image.ts";
-import { updater } from "modules/system/updater.ts";
+import { updaterModule } from "@shared/modules/updater.module.ts";
+import { getRandomString } from "@shared/utils/random.utils.ts";
+import { getDb } from "@shared/modules/old/db/main.ts";
+import { DbMutable } from "@shared/types/db.types.ts";
 
 export const System = (() => {
   let $envs: Envs;
@@ -26,7 +28,7 @@ export const System = (() => {
   const $auth = auth();
   const $config = config();
   const $image = image();
-  const $updater = updater();
+  const updater = updaterModule();
 
   const load = async (envs: Envs) => {
     console.clear();
@@ -36,7 +38,20 @@ export const System = (() => {
     await $config.load(envs);
     const isDevelopment = $envs.version === "development";
 
-    await $updater.load();
+    const config = $config.get();
+
+    updater.load({
+      project: "openhotel",
+      log: console.log,
+      enabled: config.version !== "development",
+    });
+
+    await updater.update({
+      version: envs.version,
+      target: config.version,
+      preReleases: true,
+      stopOnUpdate: true,
+    });
 
     if (isDevelopment)
       console.log(
@@ -48,8 +63,6 @@ export const System = (() => {
 
     log("server");
 
-    const config = $config.get();
-
     await $image.load();
     await $auth.load(config, true);
     $proxy.load();
@@ -57,9 +70,10 @@ export const System = (() => {
     await Migrations.load($db);
     await $game.load();
     $tasks.load();
-    await $onet.load();
 
     if (config.phantom.enabled) $phantom.load();
+
+    await $onet.load();
   };
 
   const getEnvs = () => $envs;
@@ -95,5 +109,6 @@ export const System = (() => {
     auth: $auth,
     config: $config,
     image: $image,
+    updater,
   };
 })();

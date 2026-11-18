@@ -1,6 +1,7 @@
 import { RoomPoint } from "shared/types/main.ts";
 import { RoomPointEnum } from "shared/enums/main.ts";
-import { Point3d, Direction } from "@oh/utils";
+import { Point3d } from "@shared/types/point.types.ts";
+import { Direction } from "@shared/enums/direction.enums.ts";
 
 export const getBaseRoomGrid = (layout: RoomPoint[][]): RoomPoint[][] => {
   const $baseRoomGrid: number[][] = [];

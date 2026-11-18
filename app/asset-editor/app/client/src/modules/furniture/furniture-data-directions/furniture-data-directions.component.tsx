@@ -7,11 +7,17 @@ import {
 } from "@openhotel/web-components";
 import { cn, setObject } from "shared/utils";
 import { SpriteComponent } from "shared/components";
-import { FurnitureDirection, FurnitureType } from "shared/enums";
 import { useFurniture } from "shared/hooks";
-import { FurnitureDirectionItem, FurnitureTexture } from "shared/types";
 //@ts-ignore
 import styles from "./furniture-data-directions.module.scss";
+import {
+  FurnitureDirection,
+  FurnitureType,
+} from "@shared/enums/furniture.enum.ts";
+import {
+  FurnitureDirectionItem,
+  FurnitureTexture,
+} from "@shared/types/furniture.types.ts";
 
 export const FurnitureDataDirectionsComponent: React.FC = () => {
   const { data, setFurniture, onChangeFurniture } = useFurniture();

@@ -1,6 +1,6 @@
-import { ServerClient } from "@da/socket";
 import { Proxy } from "modules/proxy/main.ts";
 import { ProxyEvent } from "shared/enums/event.enum.ts";
+import { ServerClient } from "@shared/modules/old/socket/types.ts";
 
 type UserRequestType = {
   accountId: string;

@@ -2,7 +2,8 @@ import React, { useCallback, useEffect, useState } from "react";
 import { InventoryFurniture, ModalInventoryCategoryProps } from "shared/types";
 import { InventoryContentComponent } from "../inventory-content";
 import { useApi, useProxy } from "shared/hooks";
-import { Event, FurnitureType } from "shared/enums";
+import { Event } from "shared/enums";
+import { FurnitureType } from "@shared/enums/furniture.enum.ts";
 
 type RawFurniture = {
   id: string;

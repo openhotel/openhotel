@@ -1,9 +1,7 @@
 import React, { CSSProperties, useCallback, useEffect, useState } from "react";
-import { Size2d } from "shared/types";
-
-//@ts-ignore
 import { getImageSize } from "shared/utils";
 import { useScale } from "shared/hooks/useScale";
+import { Size2d } from "@shared/types/size.types.ts";
 
 type Props = {
   className?: string;

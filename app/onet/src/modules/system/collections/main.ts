@@ -1,20 +1,20 @@
 import { System } from "modules/system/main.ts";
-import { getS3, S3Mutable } from "@oh/utils";
+import { getCollectionFurniture, getVersionErrors } from "shared/utils/main.ts";
+import { signature } from "./signature.ts";
 import {
-  COLLECTION_FORMAT_VERSION,
-  CollectionManifest,
   getCollectionFurnitureListErrors,
   getCollectionMetadataErrors,
   isValidCollectionId,
-} from "@oh/core";
+} from "@shared/utils/collection.utils.ts";
 import {
   Collection,
   CollectionFurniture,
+  CollectionManifest,
   CollectionPublishProps,
-  CollectionPublishResult,
-} from "shared/types/main.ts";
-import { getCollectionFurniture, getVersionErrors } from "shared/utils/main.ts";
-import { signature } from "./signature.ts";
+} from "@shared/types/collection.types.ts";
+import { COLLECTION_FORMAT_VERSION } from "@shared/consts/collection.consts.ts";
+import { S3Mutable } from "@shared/types/s3.types.ts";
+import { getS3 } from "@shared/modules/old/s3.ts";
 
 export const collections = () => {
   let $bucket: S3Mutable | null = null;

@@ -1,4 +1,4 @@
-import { getRandomString } from "@oh/utils";
+import { getRandomString } from "@shared/utils/random.utils.ts";
 
 type Account = {
   accountId: string;

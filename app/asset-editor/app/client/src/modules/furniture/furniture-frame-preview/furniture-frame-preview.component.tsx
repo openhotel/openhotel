@@ -2,9 +2,9 @@ import React, { useMemo } from "react";
 import { ImageComponent } from "shared/components/image";
 import { SpriteComponent } from "shared/components";
 import { useFurniture, useScale } from "shared/hooks";
-import { FurnitureDirection } from "shared/enums";
 //@ts-ignore
 import styles from "./furniture-frame-preview.module.scss";
+import { FurnitureDirection } from "@shared/enums/furniture.enum.ts";
 
 type Props = {
   direction: FurnitureDirection;

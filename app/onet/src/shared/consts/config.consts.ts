@@ -1,5 +1,6 @@
 import { ConfigTypes } from "shared/types/config.types.ts";
 
+// @ignore-duplicate
 export const CONFIG_DEFAULTS: ConfigTypes = {
   version: "latest",
   port: 9400,

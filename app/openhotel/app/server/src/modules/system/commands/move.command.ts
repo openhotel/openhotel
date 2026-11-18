@@ -1,7 +1,8 @@
 import { Command, CommandRoles } from "shared/types/main.ts";
 import { System } from "modules/system/main.ts";
-import { FurnitureType, ProxyEvent } from "shared/enums/main.ts";
-import { CrossDirection } from "@oh/utils";
+import { ProxyEvent } from "shared/enums/main.ts";
+import { CrossDirection } from "@shared/enums/direction.enums.ts";
+import { FurnitureType } from "@shared/enums/furniture.enum.ts";
 
 export const moveCommand: Command = {
   command: "move",

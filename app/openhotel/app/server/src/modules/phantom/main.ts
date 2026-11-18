@@ -1,4 +1,3 @@
-import { getChildWorker } from "@da/worker";
 import { WorkerProps } from "shared/types/worker.types.ts";
 import { ConfigTypes } from "shared/types/config.types.ts";
 import { Envs } from "shared/types/envs.types.ts";
@@ -7,6 +6,7 @@ import puppeteer from "puppeter";
 import { install } from "puppeter-browser";
 import { log } from "shared/utils/log.utils.ts";
 import { quantizeToPalette } from "shared/utils/image.utils.ts";
+import { getChildWorker } from "@shared/modules/old/worker/child.ts";
 
 (() => {
   const serverWorker = getChildWorker();

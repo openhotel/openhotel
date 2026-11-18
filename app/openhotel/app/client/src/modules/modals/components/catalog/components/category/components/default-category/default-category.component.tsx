@@ -18,7 +18,6 @@ import {
   NoteComponent,
   TextComponent,
 } from "shared/components";
-import { CatalogCategoryData, MarketplaceListing } from "shared/types";
 import {
   useApi,
   useFurniture,
@@ -30,6 +29,8 @@ import { useTranslation } from "react-i18next";
 import { FURNITURE_ICON_BOX_SIZE, SCROLL_BAR_WIDTH } from "shared/consts";
 import { CATALOG_DEFAULT_CATEGORY_ITEM_LIST_SIZE } from "shared/consts/catalog.consts";
 import { Event, SpriteSheetEnum } from "shared/enums";
+import { MarketplaceListing } from "@shared/types/marketplace.types.ts";
+import { CatalogCategoryData } from "@shared/types/catalog.types.ts";
 
 type Props = {
   categoryId: string;

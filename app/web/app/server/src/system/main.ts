@@ -1,11 +1,14 @@
 import { api } from "./api.ts";
 import { ConfigTypes, Envs } from "shared/types/main.ts";
-import { getConfig as $getConfig, getDb, update, DbMutable } from "@oh/utils";
 import { CONFIG_DEFAULT } from "shared/consts/config.consts.ts";
 import { Migrations } from "./migrations/main.ts";
 import { backups } from "./backups.ts";
 import { accounts } from "./accounts.ts";
 import { auth } from "system/auth.ts";
+import { DbMutable } from "@shared/types/db.types.ts";
+import { getConfig } from "@shared/modules/old/config.ts";
+import { getDb } from "@shared/modules/old/db/main.ts";
+import { updaterModule } from "@shared/modules/updater.module.ts";
 
 export const System = (() => {
   let $config: ConfigTypes;
@@ -17,10 +20,12 @@ export const System = (() => {
   const $backups = backups();
   const $accounts = accounts();
   const $auth = auth();
+  const updater = updaterModule();
+
   let $db: DbMutable;
 
   const load = async (envs: Envs, testMode: boolean = false) => {
-    $config = await $getConfig<ConfigTypes>({
+    $config = await getConfig<ConfigTypes>({
       defaults: {
         ...CONFIG_DEFAULT,
         version: testMode ? "development" : CONFIG_DEFAULT.version,
@@ -34,17 +39,18 @@ export const System = (() => {
 
     const isProduction = !testMode && $config.version !== "development";
 
-    if (
-      isProduction &&
-      (await update({
-        targetVersion: "latest",
-        version: envs.version,
-        repository: "openhotel/web",
-        log: console.log,
-        debug: console.debug,
-      }))
-    )
-      return;
+    updater.load({
+      project: "web",
+      log: console.log,
+      enabled: isProduction,
+    });
+
+    await updater.update({
+      version: envs.version,
+      target: "latest",
+      preReleases: true,
+      stopOnUpdate: true,
+    });
 
     $db = getDb({
       pathname: `./${testMode ? "deleteme-database" : $config.database.filename}`,
@@ -69,7 +75,7 @@ export const System = (() => {
     $api.load(testMode);
   };
 
-  const getConfig = (): ConfigTypes => $config;
+  const $getConfig = (): ConfigTypes => $config;
   const getEnvs = (): Envs => $envs;
 
   const stop = async () => {
@@ -82,7 +88,7 @@ export const System = (() => {
     stop,
 
     load,
-    getConfig,
+    getConfig: $getConfig,
     getEnvs,
 
     get db() {
@@ -95,5 +101,6 @@ export const System = (() => {
     backups: $backups,
     accounts: $accounts,
     auth: $auth,
+    updater,
   };
 })();

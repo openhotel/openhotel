@@ -1,5 +1,6 @@
 import { parse } from "@std/yaml";
-import { getContentType, getURL } from "@oh/utils";
+import { getURL } from "@shared/utils/urls.utils.ts";
+import { getContentType } from "@shared/utils/content-type.utils.ts";
 
 export const requestGame = async (request: Request) => {
   const ROOT_DIR_PATH = "/game/";

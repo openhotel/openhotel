@@ -4,13 +4,13 @@ on:
     branches: [master, monster]
     paths:
       - .github/workflows/openhotel-*
-      - app/openhotel/client/**
+      - app/openhotel/app/client/**
       - app/shared/src/**
 
   pull_request:
     paths:
       - .github/workflows/openhotel-*
-      - app/openhotel/client/**
+      - app/openhotel/app/client/**
       - app/shared/src/**
 
 jobs:
@@ -25,7 +25,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          sparse-checkout: "app/openhotel"
+          sparse-checkout: |
+            app/openhotel
+            app/shared
           sparse-checkout-cone-mode: false
 
       - uses: denoland/setup-deno@v1
@@ -39,9 +41,6 @@ jobs:
 
       - name: Enable Corepack
         run: corepack enable
-
-      - name: Install dependencies
-        run: yarn install --immutable
 
       - name: Build
         run: deno task build --debug --target=* --client --zip
