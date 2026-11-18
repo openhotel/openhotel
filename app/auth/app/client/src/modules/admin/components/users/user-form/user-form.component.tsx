@@ -12,8 +12,8 @@ import { User } from "shared/types";
 import dayjs from "dayjs";
 import { useAdmin } from "shared/hooks";
 import styles from "./user-form.module.scss";
-import { RestrictionCode } from "shared/enums";
 import { EMAIL_REGEX, USERNAME_REGEX } from "@shared/consts/account.consts.ts";
+import { RestrictionCode } from "@shared/enums/restriction.enums.ts";
 
 type Props = {
   user: User;

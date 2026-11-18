@@ -4,10 +4,7 @@
   "license": "CC BY-NC-SA 4.0",
   "scripts": {
     "start": "vite --host",
-    "storybook": "storybook dev -p 7007",
-    "link:pixi-components": "npm link @openhotel/pixi-components --force",
-    "storybook:build": "storybook build --debug --test",
-    "storybook:test": "storybook dev --smoke-test --debug"
+    "link:pixi-components": "npm link @openhotel/pixi-components --force"
   },
   "devDependencies": {
     "@types/howler": "2.2.12",

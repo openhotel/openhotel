@@ -1,7 +1,7 @@
 import "../styles.scss";
 import "./style.css";
 import { BackgroundComponent } from "../src/components";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { addons } from "@storybook/preview-api";
 import { DARK_MODE_EVENT_NAME } from "storybook-dark-mode";
 import { LayoutProvider } from "../src/hooks";

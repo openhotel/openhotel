@@ -4,8 +4,8 @@ import {
   HotelMutableGet,
 } from "shared/types/hotel.types.ts";
 import { DbHotelIntegrationType } from "shared/enums/hotel.enums.ts";
-import { RestrictionCode } from "shared/enums/restrictions.enums.ts";
 import { Scope } from "@shared/enums/scope.enums.ts";
+import { RestrictionCode } from "@shared/enums/restriction.enums.ts";
 
 export type DbAccount = {
   accountId: string;
