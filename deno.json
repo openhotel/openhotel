@@ -30,7 +30,7 @@
     "prod:restart": "cd .docker/prod && deno task restart",
     "prod:down": "cd .docker/prod && deno task down",
 
-    "progress": "gource --viewport 1600x900 --user-image-dir .gource/avatars -s .25 --hide progress,mouse --high-dpi"
+    "progress": "gource --viewport 1600x900 --user-image-dir .gource/avatars -s .15 --auto-skip-seconds .3 --max-file-lag .5 --high-dpi"
   },
   "nodeModulesDir": "auto"
 }
