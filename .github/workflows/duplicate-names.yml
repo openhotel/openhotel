@@ -15,6 +15,8 @@ jobs:
 
       # Fails when an exported type, interface, enum or UPPER_CASE const is
       # declared with the same name in more than one file. Lists all of them first.
+      # Ignore one declaration with `// @ignore-duplicate` on the line above it
+      # (or at the end of the same line).
       - name: Find duplicated names
         shell: python3 {0}
         run: |
@@ -28,6 +30,7 @@ jobs:
               re.M,
           )
 
+          IGNORE = "@ignore-duplicate"
           found = collections.defaultdict(list)  # name -> [(kind, file, line, hash)]
           for dp, dn, fn in os.walk("app"):
               dn[:] = [d for d in dn if d not in SKIP_DIRS]
@@ -38,13 +41,17 @@ jobs:
                       continue
                   path = os.path.join(dp, n)
                   src = open(path, encoding="utf-8", errors="ignore").read()
+                  lines = src.split("\n")
                   matches = list(DECL.finditer(src))
                   for i, m in enumerate(matches):
+                      line = src.count("\n", 0, m.start()) + 1
+                      prev = lines[line - 2] if line > 1 else ""
+                      if IGNORE in lines[line - 1] or (IGNORE in prev and prev.strip().startswith(("//", "/*", "*"))):
+                          continue
                       kind = (m.group(1) or "const").split()[-1]
                       name = m.group(2) or m.group(3)
                       end = matches[i + 1].start() if i + 1 < len(matches) else len(src)
                       body = re.sub(r"\s+", "", re.sub(r"//[^\n]*", "", src[m.start():end]))
-                      line = src.count("\n", 0, m.start()) + 1
                       found[name].append((kind, path, line, hashlib.md5(body.encode()).hexdigest()))
 
           dups = {n: v for n, v in sorted(found.items()) if len({f for _, f, _, _ in v}) > 1}
