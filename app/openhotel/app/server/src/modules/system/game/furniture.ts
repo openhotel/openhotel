@@ -144,13 +144,13 @@ export const furniture = () => {
     const dataFile = files.find(($file) => $file.filename === "data.yml");
     const sheetFile = files.find(($file) => $file.filename === "sheet.json");
     const spriteFile = files.find(($file) => $file.filename === "sprite.png");
-    const langFile = files.find(($file) => $file.filename === "lang.yml");
+    // const langFile = files.find(($file) => $file.filename === "lang.yml");
 
     const missingFiles = [
       !dataFile && "data.yml",
       !sheetFile && "sheet.json",
       !spriteFile && "sprite.png",
-      !langFile && "lang.yml",
+      // !langFile && "lang.yml",
     ].filter(Boolean);
 
     if (missingFiles.length) {
@@ -194,17 +194,17 @@ export const furniture = () => {
       dayjs(spriteFile.lastModDate),
       "minutes",
     );
-    const langModificationDiffTime = revisionDate.diff(
-      dayjs(langFile.lastModDate),
-      "minutes",
-    );
+    // const langModificationDiffTime = revisionDate.diff(
+    //   dayjs(langFile.lastModDate),
+    //   "minutes",
+    // );
 
     //check if any file was modified
     if (
       dataModificationDiffTime !== 0 ||
       sheetModificationDiffTime !== 0 ||
-      spriteModificationDiffTime !== 0 ||
-      langModificationDiffTime !== 0
+      spriteModificationDiffTime !== 0
+      // || langModificationDiffTime !== 0
     )
       return log(
         `e003 Furniture (${furnitureData.id}) has an incorrect revision!`,
@@ -246,12 +246,17 @@ export const furniture = () => {
     const spriteUint8Array = new Uint8Array(await spriteBlob.arrayBuffer());
 
     // lang
-    const langBlob = await langFile.getData(new BlobWriter());
-    const langUint8Array = new Uint8Array(await langBlob.arrayBuffer());
+    // const langBlob = await langFile.getData(new BlobWriter());
+    // const langUint8Array = new Uint8Array(await langBlob.arrayBuffer());
 
     System.db.set(
       ["furnitureData", furnitureData.id],
-      [furnitureUint8Array, sheetUint8Array, spriteUint8Array, langUint8Array],
+      [
+        furnitureUint8Array,
+        sheetUint8Array,
+        spriteUint8Array,
+        // langUint8Array
+      ],
     );
     log(
       `- Furniture (${furnitureData.id}) ${foundFurniture ? "updated" : "loaded"}!`,
