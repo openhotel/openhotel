@@ -1,4 +1,4 @@
-import { Point3d } from "../types/main.ts";
+import { Point3d } from "@shared/types/point.types.ts";
 
 export const getInterpolatedPath = (path: Point3d[]): Point3d[] => {
   if (!path) return [];
