@@ -70,9 +70,10 @@ export const System = (() => {
     await Migrations.load($db);
     await $game.load();
     $tasks.load();
-    await $onet.load();
 
     if (config.phantom.enabled) $phantom.load();
+
+    await $onet.load();
   };
 
   const getEnvs = () => $envs;
