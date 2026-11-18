@@ -1,6 +1,10 @@
-import { FurnitureData, SpriteSheet } from "shared/types";
-import { FurnitureDirection, FurnitureType } from "shared/enums";
 import { ulid } from "ulidx";
+import {
+  FurnitureDirection,
+  FurnitureType,
+} from "@shared/enums/furniture.enum.ts";
+import { FurnitureData } from "@shared/types/furniture.types.ts";
+import { SpriteSheet } from "@shared/types/sprite-sheet.types.ts";
 
 export const parseFurniture = (
   $furniture: Partial<FurnitureData>,

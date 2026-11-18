@@ -1,4 +1,5 @@
-import { FurniturePosition, SpriteSheetPoint } from "shared/types";
+import { FurniturePosition } from "@shared/types/furniture.types.ts";
+import { SpriteSheetPoint } from "@shared/types/sprite-sheet.types.ts";
 
 export const getPositionFromIsometricPosition = ({
   x,

@@ -12,7 +12,8 @@ import { FURNITURE_ICON_SIZE } from "shared/consts";
 import { TextComponent } from "shared/components/text";
 import { useFurniture } from "shared/hooks";
 import { FurnitureData, Point2d } from "shared/types";
-import { FurnitureType, SpriteSheetEnum } from "shared/enums";
+import { SpriteSheetEnum } from "shared/enums";
+import { FurnitureType } from "@shared/enums/furniture.enum.ts";
 
 type Props = {
   furnitureId: string;

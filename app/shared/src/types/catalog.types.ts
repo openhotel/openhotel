@@ -1,4 +1,4 @@
-import { FurnitureType } from "shared/enums";
+import { FurnitureType } from "@shared/enums/furniture.enum.ts";
 
 export type CatalogFurniture = {
   id: string;
@@ -14,6 +14,12 @@ export type CatalogCategory = {
   id: string;
   label: string;
   description: string;
+  enabled: boolean;
+  range?: {
+    from?: string;
+    to?: string;
+  };
+  furniture: CatalogFurniture[];
 };
 
 export type Catalog = {

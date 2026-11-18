@@ -5,8 +5,8 @@ import {
   RoomPoint,
   User,
 } from "shared/types/main.ts";
-import { FurnitureType } from "shared/enums/furniture.enum.ts";
 import { Point3d } from "@shared/types/point.types.ts";
+import { FurnitureType } from "@shared/enums/furniture.enum.ts";
 
 export type PrivateRoom = BaseRoom & {
   type: "private";

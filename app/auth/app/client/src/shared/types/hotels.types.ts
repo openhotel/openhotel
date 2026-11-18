@@ -1,4 +1,5 @@
 import { HotelIntegrationType } from "shared/enums";
+import { DbHotelIntegrationType } from "@shared/enums/hotel.enums.ts";
 
 export type Hotel = {
   accountId: string;
@@ -82,11 +83,6 @@ export type PrivateHotel = {
  * --------- DB -------------------------------------
  * -------------------------------------------------------
  */
-
-export enum DbHotelIntegrationType {
-  WEB = "web",
-  CLIENT = "client",
-}
 
 export type DbHotelUser = {
   username: string;

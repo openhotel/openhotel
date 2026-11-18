@@ -1,5 +1,5 @@
-import { TILE_WIDTH } from "../consts/main.ts";
 import { Point, Point3d } from "@shared/types/point.types.ts";
+import { TILE_WIDTH } from "@shared/consts/tiles.consts.ts";
 
 export const isPointAdjacent = (
   currentPoint: Point3d,

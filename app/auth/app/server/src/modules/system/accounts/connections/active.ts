@@ -6,10 +6,10 @@ import {
 } from "shared/types/account.types.ts";
 import { System } from "modules/system/main.ts";
 import { Connection } from "shared/types/connection.types.ts";
-import { DbHotelIntegrationType } from "shared/enums/hotel.enums.ts";
 import { generateToken } from "@shared/utils/tokens.utils.ts";
 import { getIpFromRequest } from "@shared/utils/ip.utils.ts";
 import { Scope } from "@shared/enums/scope.enums.ts";
+import { DbHotelIntegrationType } from "@shared/enums/hotel.enums.ts";
 
 export const active = (account: DbAccount): AccountActiveConnection => {
   const create = async ({

@@ -1,9 +1,6 @@
 import { Point2d, Point3d } from "shared/types";
-import {
-  SAFE_TILE_ZINDEX_MULTI,
-  TILE_WIDTH,
-  TILE_Y_HEIGHT,
-} from "shared/consts";
+import { SAFE_TILE_ZINDEX_MULTI } from "shared/consts";
+import { TILE_WIDTH, TILE_Y_HEIGHT } from "@shared/consts/tiles.consts.ts";
 
 export const getPositionFromIsometricPosition = (
   { x, y, z },

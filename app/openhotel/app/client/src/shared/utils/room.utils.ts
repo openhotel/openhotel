@@ -1,7 +1,8 @@
 import { RoomPointEnum } from "shared/enums";
 import { Point3d, PrivateRoom, RoomPoint } from "shared/types";
-import { TILE_SIZE, WALL_HEIGHT, WALL_WIDTH } from "shared/consts";
 import { CrossDirection } from "@shared/enums/direction.enums.ts";
+import { TILE_SIZE } from "@shared/consts/tiles.consts.ts";
+import { WALL_HEIGHT, WALL_WIDTH } from "@shared/consts/wall.consts.ts";
 
 type WallRenderableProps = {
   position: Partial<Point3d>;

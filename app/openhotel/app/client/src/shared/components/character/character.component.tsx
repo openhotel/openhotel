@@ -14,10 +14,11 @@ import {
   CharacterBodyAction,
   SpriteSheetEnum,
 } from "shared/enums";
-import { SAFE_Z_INDEX, TILE_SIZE } from "shared/consts";
+import { SAFE_Z_INDEX } from "shared/consts";
 import { ArmComponent, BodyComponent, HeadComponent } from "./components";
 import { getCubePolygon } from "shared/utils/polygon.utils";
 import { Direction } from "@shared/enums/direction.enums.ts";
+import { TILE_SIZE } from "@shared/consts/tiles.consts.ts";
 
 type Props = {
   bodyAction: CharacterBodyAction;

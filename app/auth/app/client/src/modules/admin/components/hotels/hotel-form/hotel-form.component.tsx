@@ -1,10 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import {
-  DbHotel,
-  DbHotelIntegration,
-  DbHotelIntegrationType,
-  HotelInfo,
-} from "shared/types";
+import { DbHotel, DbHotelIntegration, HotelInfo } from "shared/types";
 import {
   ButtonComponent,
   ConfirmationModalComponent,
@@ -22,6 +17,7 @@ import styles from "./hotel-form.module.scss";
 import { useAdmin, useHotel } from "shared/hooks";
 import { cn } from "shared/utils";
 import dayjs from "dayjs";
+import { DbHotelIntegrationType } from "@shared/enums/hotel.enums.ts";
 
 type Props = {
   hotel: DbHotel;

@@ -7,13 +7,7 @@ import {
   SpriteComponent,
   SpriteRef,
 } from "@openhotel/pixi-components";
-import {
-  DUMMY_FURNITURE_FRAME_DATA,
-  SAFE_Z_INDEX,
-  TILE_SIZE,
-  WALL_HEIGHT,
-  WALL_WIDTH,
-} from "shared/consts";
+import { DUMMY_FURNITURE_FRAME_DATA, SAFE_Z_INDEX } from "shared/consts";
 import {
   getPositionFromIsometricPosition,
   getWallPositionFromIsometricPosition,
@@ -22,6 +16,8 @@ import {
 import { Point2d, Point3d, RoomPoint } from "shared/types";
 import { CrossDirection } from "@shared/enums/direction.enums.ts";
 import { Size2d, Size3d } from "@shared/types/size.types.ts";
+import { TILE_SIZE } from "@shared/consts/tiles.consts.ts";
+import { WALL_HEIGHT, WALL_WIDTH } from "@shared/consts/wall.consts.ts";
 
 type Props = {
   texture: string;

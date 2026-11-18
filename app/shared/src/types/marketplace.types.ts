@@ -32,3 +32,10 @@ export type MarketplaceRetiredFurniture = {
   cheapestPrice: number;
   count: number;
 };
+
+export type MarketplaceConfig = {
+  commissionRate: number;
+  retiredCommissionRate: number;
+  minPricePercent: number;
+  maxPricePercent: number;
+};

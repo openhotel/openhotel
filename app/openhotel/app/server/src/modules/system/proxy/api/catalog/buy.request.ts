@@ -1,16 +1,16 @@
 import { System } from "modules/system/main.ts";
 import { ProxyRequestType } from "shared/types/api.types.ts";
-import { TransactionType } from "shared/enums/economy.enum.ts";
 import {
   isCatalogCategoryAvailable,
   isCatalogFurnitureAvailable,
 } from "shared/utils/catalog.utils.ts";
+import { ulid } from "@std/ulid";
+import { RequestMethod } from "@shared/enums/request.enums.ts";
+import { TransactionType } from "@shared/enums/economy.enum.ts";
 import {
   CatalogCategory,
   CatalogFurniture,
-} from "shared/types/catalog.types.ts";
-import { ulid } from "@std/ulid";
-import { RequestMethod } from "@shared/enums/request.enums.ts";
+} from "@shared/types/catalog.types.ts";
 
 export const catalogBuyRequest: ProxyRequestType = {
   pathname: "/buy",

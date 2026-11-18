@@ -5,7 +5,7 @@ import {
 } from "shared/types/account.types.ts";
 import { System } from "modules/system/main.ts";
 import { active } from "modules/system/accounts/connections/active.ts";
-import { DbHotelIntegrationType } from "shared/enums/hotel.enums.ts";
+import { DbHotelIntegrationType } from "@shared/enums/hotel.enums.ts";
 
 export const connections = (account: DbAccount): AccountConnections => {
   const $active = active(account);

@@ -1,6 +1,13 @@
+export enum FurnitureDirection {
+  NORTH = "north",
+  EAST = "east",
+  SOUTH = "south",
+  WEST = "west",
+}
+
 export enum FurnitureType {
-  FURNITURE,
-  FRAME,
+  FRAME = "frame",
+  FURNITURE = "furniture",
 }
 
 export enum FurnitureAction {

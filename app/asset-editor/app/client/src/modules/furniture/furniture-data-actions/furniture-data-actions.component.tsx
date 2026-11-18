@@ -7,15 +7,15 @@ import {
 } from "@openhotel/web-components";
 import { useFurniture } from "shared/hooks";
 import { cn } from "shared/utils";
+
+//@ts-ignore
+import styles from "./furniture-data-actions.module.scss";
+import { FurnitureDirection } from "@shared/enums/furniture.enum.ts";
 import {
   FurnitureAction,
   FurnitureDirectionItem,
   FurnitureTexture,
-} from "shared/types";
-
-//@ts-ignore
-import styles from "./furniture-data-actions.module.scss";
-import { FurnitureDirection } from "../../../shared/enums";
+} from "@shared/types/furniture.types.ts";
 
 type ActionItemProps = {
   action: FurnitureAction;

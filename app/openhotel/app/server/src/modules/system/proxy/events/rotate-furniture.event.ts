@@ -1,8 +1,9 @@
 import { PrivateRoomMutable, ProxyEventType } from "shared/types/main.ts";
-import { FurnitureType, ProxyEvent } from "shared/enums/main.ts";
+import { ProxyEvent } from "shared/enums/main.ts";
 import { System } from "modules/system/main.ts";
 import { getNextCrossDirection } from "@shared/utils/direction.utils.ts";
 import { CrossDirection } from "@shared/enums/direction.enums.ts";
+import { FurnitureType } from "@shared/enums/furniture.enum.ts";
 
 export const rotateFurnitureEvent: ProxyEventType<any> = {
   event: ProxyEvent.ROTATE_FURNITURE,

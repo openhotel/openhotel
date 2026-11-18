@@ -16,12 +16,6 @@ import {
 } from "shared/utils";
 import { Point2d, Point3d, PrivateRoom } from "shared/types";
 import {
-  TILE_SIZE,
-  WALL_DOOR_HEIGHT,
-  WALL_HEIGHT,
-  WALL_WIDTH,
-} from "shared/consts";
-import {
   PrivateRoomStairs,
   PrivateRoomTile,
   PrivateRoomTilePreview,
@@ -29,6 +23,12 @@ import {
 } from "./components";
 import { CrossDirection } from "@shared/enums/direction.enums.ts";
 import { Size2d } from "@shared/types/size.types.ts";
+import { TILE_SIZE } from "@shared/consts/tiles.consts.ts";
+import {
+  WALL_DOOR_HEIGHT,
+  WALL_HEIGHT,
+  WALL_WIDTH,
+} from "@shared/consts/wall.consts.ts";
 
 type Props = {
   ref?: React.Ref<ContainerRef>;

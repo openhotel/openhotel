@@ -2,9 +2,10 @@ import React, { useMemo } from "react";
 import { ImageComponent } from "shared/components/image";
 import { SpriteComponent } from "shared/components";
 import { useFurniture, useScale } from "shared/hooks";
-import { FurnitureDirection } from "shared/enums";
 //@ts-ignore
 import styles from "./furniture-preview.module.scss";
+import { TILE_SIZE, TILE_SIZE_PADDING } from "@shared/consts/tiles.consts.ts";
+import { FurnitureDirection } from "@shared/enums/furniture.enum.ts";
 
 type Props = {
   direction: FurnitureDirection;
@@ -18,14 +19,6 @@ export const FurniturePreviewComponent: React.FC<Props> = ({ direction }) => {
     () => data?.furniture?.direction?.[direction],
     [data, direction],
   );
-
-  const TILE_SIZE = {
-    width: 48,
-    height: 24,
-  };
-  const TILE_SIZE_PADDING = {
-    width: 1,
-  };
 
   if (!data || !furnitureDirection) return null;
 

@@ -1,8 +1,9 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { InventoryFurniture, ModalInventoryCategoryProps } from "shared/types";
 import { useApi, useProxy } from "shared/hooks";
-import { Event, FurnitureType } from "shared/enums";
+import { Event } from "shared/enums";
 import { InventoryContentComponent } from "../inventory-content";
+import { FurnitureType } from "@shared/enums/furniture.enum.ts";
 
 export const CategoryFramesComponent: React.FC<ModalInventoryCategoryProps> = ({
   size,

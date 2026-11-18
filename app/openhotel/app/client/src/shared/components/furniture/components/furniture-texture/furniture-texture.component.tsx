@@ -11,8 +11,6 @@ import {
   DUMMY_FURNITURE_DATA,
   FURNITURE_SAFE_TILE_MARGIN,
   SAFE_Z_INDEX,
-  TILE_SIZE,
-  TILE_Y_HEIGHT,
 } from "shared/consts";
 import {
   getCubePolygon,
@@ -22,6 +20,7 @@ import {
 import { Point2d, Point3d } from "shared/types";
 import { SpriteSheetEnum } from "shared/enums";
 import { Size3d } from "@shared/types/size.types.ts";
+import { TILE_SIZE, TILE_Y_HEIGHT } from "@shared/consts/tiles.consts.ts";
 
 type Props = {
   texture: string;

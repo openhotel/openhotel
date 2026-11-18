@@ -4,13 +4,13 @@ import { GameMutable, GameType } from "shared/types/games.types.ts";
 import { log } from "shared/utils/log.utils.ts";
 import { ProxyEvent } from "shared/enums/event.enum.ts";
 import { UserMutable } from "shared/types/user.types.ts";
-import { TransactionType } from "shared/enums/economy.enum.ts";
 import * as path from "@std/path";
 import { ulid } from "@std/ulid";
 import { copyDirectory, getPath } from "@shared/utils/path.utils.ts";
 import { getParentProcessWorker } from "@shared/modules/old/process-worker/parent-process-worker.ts";
 import { getOSName } from "@shared/utils/os.utils.ts";
 import { getTemporalUpdateFilePathname } from "@shared/utils/update.utils.ts";
+import { TransactionType } from "@shared/enums/economy.enum.ts";
 
 const GAMES_PATH_FILE = "./assets/games.yml";
 const LOCAL_GAMES_PATH = "./assets/games";

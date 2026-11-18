@@ -5,7 +5,6 @@ export * from "./sprite-sheet.enum";
 export * from "./texture.enum";
 export * from "./furniture.enum";
 export * from "./navigator.enums";
-export * from "./hemisphere.enums";
 export * from "./modal.enums";
 export * from "./character.enums";
 export * from "./assets.enums";

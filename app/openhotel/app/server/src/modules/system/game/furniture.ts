@@ -1,9 +1,8 @@
-import { Catalog, FurnitureData } from "shared/types/main.ts";
+import { FurnitureData } from "shared/types/main.ts";
 import { BlobReader, BlobWriter, ZipReader } from "@zip-js";
 import { parse } from "@std/yaml";
 import { System } from "modules/system/main.ts";
 import { log } from "shared/utils/log.utils.ts";
-import { FurnitureType } from "shared/enums/furniture.enum.ts";
 import { decodeTime } from "@std/ulid";
 import dayjs from "dayjs";
 import { isCatalogFurnitureAvailable } from "shared/utils/catalog.utils.ts";
@@ -17,6 +16,8 @@ import {
 } from "@shared/types/collection.types.ts";
 import { isNewVersionGreater } from "@shared/utils/versions.utils.ts";
 import { readYaml, writeYaml } from "@shared/modules/old/yaml.ts";
+import { Catalog } from "@shared/types/catalog.types.ts";
+import { FurnitureType } from "@shared/enums/furniture.enum.ts";
 
 export const furniture = () => {
   let $loadedFurnitureIds = new Set<string>();

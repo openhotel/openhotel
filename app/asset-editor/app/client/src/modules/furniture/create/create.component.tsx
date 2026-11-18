@@ -1,5 +1,4 @@
 import React, { useCallback, useMemo } from "react";
-import { SpriteSheet } from "shared/types";
 import {
   ButtonComponent,
   BYIconComponent,
@@ -19,6 +18,7 @@ import { getBase64FromBody, getImageSize } from "shared/utils";
 import { ulid } from "ulidx";
 import { getFurnitureLangErrors } from "@shared/utils/furniture.utils.ts";
 import { RequestMethod } from "@shared/enums/request.enums.ts";
+import { SpriteSheet } from "@shared/types/sprite-sheet.types.ts";
 
 export const CreateFurnitureComponent: React.FC = () => {
   const { setData, data } = useFurniture();

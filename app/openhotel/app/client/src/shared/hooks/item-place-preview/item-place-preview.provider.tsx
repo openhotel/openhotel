@@ -16,18 +16,16 @@ import {
   PreviewTileData,
 } from "shared/components";
 import { Event, useEvents } from "@openhotel/pixi-components";
-import {
-  Event as ProxyEvent,
-  FurnitureType,
-  InternalEvent,
-} from "shared/enums";
+import { Event as ProxyEvent, InternalEvent } from "shared/enums";
 import { useProxy } from "shared/hooks/proxy";
 import { isCurrentPointStairs, isPosition3dEqual } from "shared/utils";
 import { useFurniture } from "shared/hooks/furniture";
-import { TILE_Y_HEIGHT, WALL_HEIGHT } from "shared/consts";
 import { CrossDirection } from "@shared/enums/direction.enums.ts";
 import { PositionData } from "shared/hooks/room";
 import { getNextCrossDirection } from "@shared/utils/direction.utils.ts";
+import { TILE_Y_HEIGHT } from "@shared/consts/tiles.consts.ts";
+import { WALL_HEIGHT } from "@shared/consts/wall.consts.ts";
+import { FurnitureType } from "@shared/enums/furniture.enum.ts";
 
 type Props = {
   children: ReactNode;

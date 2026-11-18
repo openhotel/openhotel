@@ -1,8 +1,8 @@
 import { Command, CommandRoles } from "shared/types/main.ts";
 import { ProxyEvent } from "shared/enums/event.enum.ts";
 import { System } from "modules/system/main.ts";
-import { TransactionType } from "shared/enums/economy.enum.ts";
 import { getTextFromArgs } from "shared/utils/args.utils.ts";
+import { TransactionType } from "@shared/enums/economy.enum.ts";
 
 export const creditsCommand: Command = {
   command: "credits",

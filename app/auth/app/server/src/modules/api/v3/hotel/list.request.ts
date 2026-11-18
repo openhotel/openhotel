@@ -1,9 +1,9 @@
 import { System } from "modules/system/main.ts";
-import { DbHotelIntegrationType } from "shared/enums/hotel.enums.ts";
 import { RequestType } from "@shared/types/request.types.ts";
 import { RequestKind, RequestMethod } from "@shared/enums/request.enums.ts";
 import { getResponse } from "@shared/utils/response.utils.ts";
 import { HttpStatusCode } from "@shared/enums/http-status-code.enums.ts";
+import { DbHotelIntegrationType } from "@shared/enums/hotel.enums.ts";
 
 export const listRequest: RequestType = {
   method: RequestMethod.GET,
