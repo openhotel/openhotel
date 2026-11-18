@@ -1,5 +1,4 @@
 import { System } from "modules/system/main.ts";
-import { LANGUAGE_LIST } from "shared/consts/main.ts";
 import { getPasswordMaxLength } from "shared/utils/password.utils.ts";
 import { getEmailMaxLength } from "shared/utils/mail.utils.ts";
 import { RequestType } from "@shared/types/request.types.ts";
@@ -11,6 +10,7 @@ import {
   PASSWORD_REGEX,
   USERNAME_REGEX,
 } from "@shared/consts/account.consts.ts";
+import { LANGUAGE_LIST } from "@shared/consts/language.consts.ts";
 
 export const registerPostRequest: RequestType = {
   method: RequestMethod.POST,

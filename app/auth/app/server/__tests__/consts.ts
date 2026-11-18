@@ -1,5 +1,5 @@
-import { LANGUAGE_LIST } from "shared/consts/language.consts.ts";
 import { Scope } from "@shared/enums/scope.enums.ts";
+import { LANGUAGE_LIST } from "@shared/consts/language.consts.ts";
 
 export const USER_1 = {
   email: "Jorji@Obristan.obr",
