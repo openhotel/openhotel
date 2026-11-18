@@ -19,8 +19,9 @@ import {
   getPositionFromIsometricPosition,
   getZIndex,
 } from "shared/utils";
-import { Point2d, Point3d, Size3d } from "shared/types";
+import { Point2d, Point3d } from "shared/types";
 import { SpriteSheetEnum } from "shared/enums";
+import { Size3d } from "@shared/types/size.types.ts";
 
 type Props = {
   texture: string;

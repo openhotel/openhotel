@@ -1,5 +1,6 @@
 import { Point3d } from "shared/types";
-import { CharacterBodyAnimation, Direction } from "shared/enums";
+import { CharacterBodyAnimation } from "shared/enums";
+import { Direction } from "@shared/enums/direction.enums.ts";
 
 export type User = {
   accountId: string;

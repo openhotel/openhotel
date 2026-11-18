@@ -4,7 +4,6 @@ export * from "./connections.types";
 export * from "./user.types";
 export * from "./tokens.types";
 export * from "./hotels.types";
-export * from "./collections.types";
 export * from "./backup.types";
 export * from "./apps.types";
 export * from "./login.types";

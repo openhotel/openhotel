@@ -2,10 +2,6 @@ import { BlobReader, ZipReader } from "@zip-js";
 import { parse } from "@std/yaml";
 import { decodeTime } from "@std/ulid";
 import {
-  CollectionFurniture,
-  CollectionPublishProps,
-} from "shared/types/main.ts";
-import {
   COLLECTION_FILE_MAX_UNCOMPRESSED_SIZE,
   COLLECTION_METADATA_FILE,
 } from "shared/consts/main.ts";
@@ -25,6 +21,10 @@ import {
   getFurnitureImmutableData,
 } from "@shared/utils/furniture.utils.ts";
 import { FurnitureDataFile } from "@shared/types/furniture.types.ts";
+import {
+  CollectionFurniture,
+  CollectionPublishProps,
+} from "@shared/types/collection.types.ts";
 
 const $readEntries = async (
   file: Uint8Array,

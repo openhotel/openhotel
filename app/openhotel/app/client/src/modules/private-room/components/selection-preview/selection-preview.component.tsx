@@ -23,13 +23,7 @@ import {
   TILE_SIZE,
   TILE_WIDTH,
 } from "shared/consts";
-import {
-  FurnitureData,
-  Point2d,
-  PrivateRoom,
-  Size2d,
-  User,
-} from "shared/types";
+import { FurnitureData, Point2d, PrivateRoom, User } from "shared/types";
 import {
   ButtonComponent,
   CharacterComponent,
@@ -55,6 +49,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { Modal } from "shared/enums";
 import { Direction } from "@shared/enums/direction.enums.ts";
+import { Size2d } from "@shared/types/size.types.ts";
 
 const TileComponent: React.FC<{ position: Point2d }> = ({ position }) =>
   useMemo(
