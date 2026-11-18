@@ -7,7 +7,7 @@
     "deno/": "https://deno.land/std@0.221.0/",
     "otp": "https://deno.land/x/otpauth@v9.3.3/dist/otpauth.esm.js",
 
-    "@shared/": "../../shared/src/"
+    "@shared/": "../../../../shared/src/"
   },
   "test": {
     "include": ["./**/*.spec.ts", "./**/*.test.ts"]
