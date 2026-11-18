@@ -23,7 +23,7 @@ import {
 import { MODAL_SIZE_MAP } from "shared/consts";
 import { useTranslation } from "react-i18next";
 import { useApi, useFurniture, useModal } from "shared/hooks";
-import { MarketplacePriceLimits } from "shared/types";
+import { MarketplacePriceLimits } from "@shared/types/marketplace.types.ts";
 
 const MODAL_SIZE = MODAL_SIZE_MAP[Modal.MARKETPLACE_SELL];
 const METADATA_WIDTH = MODAL_SIZE.width - 24 - (MODAL_SIZE.width - 24) / 3 - 8;

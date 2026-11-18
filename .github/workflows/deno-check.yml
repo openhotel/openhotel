@@ -1,0 +1,63 @@
+name: deno-check
+
+on:
+  push:
+    branches: [master, monster]
+  pull_request:
+
+jobs:
+  deno-check:
+    name: "deno check"
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.9.x
+
+      # Type checks every Deno project (dir with a deno.json) with its own config.
+      # Skips client folders, .tsx, node_modules, build output and nested projects
+      # (a subfolder with its own deno.json is checked as its own project).
+      - name: Check all Deno projects
+        env:
+          NO_COLOR: "1"
+        run: |
+          failed=()
+          projects=$(find app -name deno.json \
+            -not -path "*/node_modules/*" \
+            -not -path "*/client/*" \
+            -not -path "app/shared/old/*" \
+            -exec dirname {} \; | sort)
+
+          for dir in $projects; do
+            files=$(cd "$dir" && find . -name "*.ts" -not -name "*.d.ts" \
+              -not -path "*/node_modules/*" -not -path "*/build/*" \
+              -not -path "*/client/*" -not -path "./old/*" \
+              | while read -r f; do
+                  # skip files that belong to a nested project
+                  d=$(dirname "$f"); nested=0
+                  while [ "$d" != "." ]; do
+                    [ -f "$d/deno.json" ] && { nested=1; break; }
+                    d=$(dirname "$d")
+                  done
+                  [ "$nested" -eq 0 ] && echo "$f"
+                done)
+            [ -z "$files" ] && continue
+
+            echo "::group::$dir ($(echo "$files" | wc -l) files)"
+            if (cd "$dir" && deno check --unstable-kv --unstable-cron $files); then
+              echo "::endgroup::"
+            else
+              echo "::endgroup::"
+              echo "::error::deno check failed in $dir"
+              failed+=("$dir")
+            fi
+          done
+
+          if [ ${#failed[@]} -gt 0 ]; then
+            echo "Failed: ${failed[*]}"
+            exit 1
+          fi
+          echo "All Deno projects passed"
