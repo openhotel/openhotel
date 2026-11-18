@@ -1,7 +1,7 @@
 import { System } from "./main.ts";
 import { requestList } from "modules/api/main.ts";
 import { getApiHandler } from "@shared/modules/old/api.ts";
-import { RequestMethod } from "@shared/enums/request.enums.ts";
+import { RequestKind, RequestMethod } from "@shared/enums/request.enums.ts";
 import { getCORSHeaders } from "@shared/utils/cors.utils.ts";
 
 export const api = () => {
