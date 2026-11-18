@@ -1,6 +1,6 @@
 import { join } from "@std/path";
 import { ConfigProps } from "@shared/types/config.types.ts";
-import { writeYaml } from "@shared/modules/old/yaml.ts";
+import { readYaml, writeYaml } from "@shared/modules/old/yaml.ts";
 
 export const getConfig = async <ConfigTypes extends {}>({
   values,
