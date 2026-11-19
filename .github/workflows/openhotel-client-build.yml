@@ -1,7 +1,7 @@
 name: openhotel/client build
 on:
   push:
-    branches: [master, monster]
+    branches: [master]
     paths:
       - .github/workflows/openhotel-*
       - app/openhotel/app/client/**

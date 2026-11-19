@@ -1,7 +1,7 @@
 name: web/client Build
 on:
   push:
-    branches: [master, monster]
+    branches: [master]
     paths:
       - .github/workflows/web-*
       - app/web/app/client/**
