@@ -10,13 +10,11 @@
     "@types/node": "22.13.9",
     "@types/react": "19.3.0",
     "vite": "8.3.3",
-    "vite-plugin-singlefile": "^2.0.2",
     "vite-tsconfig-paths": "4.3.2"
   },
   "dependencies": {
     "@oh/components": "npm:@jsr/oh__components@0.1.42",
     "@vitejs/plugin-react": "6.0.3",
-    "@vitejs/plugin-react-refresh": "1.3.6",
     "dayjs": "1.11.21",
     "js-cookie": "3.0.7",
     "react": "19.3.1",

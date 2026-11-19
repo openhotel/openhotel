@@ -1,12 +1,8 @@
 import { defineConfig } from "vite";
-import reactRefresh from "@vitejs/plugin-react-refresh";
 import react from "@vitejs/plugin-react";
 import { fileURLToPath } from "node:url";
 
-const PROXY_URL =
-  process.platform === "win32"
-    ? "http://127.0.0.1:20250"
-    : "http://localhost:20250";
+const PROXY_URL = "http://127.0.0.1:20250";
 
 export default defineConfig({
   clearScreen: false,
@@ -17,7 +13,7 @@ export default defineConfig({
     },
     fs: { allow: [fileURLToPath(new URL("../../..", import.meta.url))] },
   },
-  plugins: [react(), reactRefresh()],
+  plugins: [react()],
   root: "./src",
   base: "/",
   publicDir: "assets",
