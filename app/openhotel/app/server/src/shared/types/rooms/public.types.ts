@@ -1,11 +1,7 @@
-import {
-  FindPathProps,
-  RoomPoint,
-  BaseRoomMutable,
-  BaseRoom,
-} from "shared/types/main.ts";
+import { FindPathProps, BaseRoomMutable, BaseRoom } from "shared/types/main.ts";
 import { Point3d } from "@shared/types/point.types.ts";
 import { Direction } from "@shared/enums/direction.enums.ts";
+import { RoomPoint } from "@shared/types/room.types.ts";
 
 //@ignore-duplicate
 export type PublicRoom = BaseRoom & {

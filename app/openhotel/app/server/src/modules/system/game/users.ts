@@ -4,7 +4,6 @@ import {
   Contract,
   PrivateRoomMutable,
   PrivateUser,
-  Transaction,
   User,
   UserMutable,
   PublicUser,
@@ -18,6 +17,7 @@ import { usersConfig } from "../../shared/users-config.ts";
 import { Point, Point3d } from "@shared/types/point.types.ts";
 import { CrossDirection, Direction } from "@shared/enums/direction.enums.ts";
 import { RoomPointEnum } from "@shared/enums/room.enums.ts";
+import { Transaction } from "@shared/types/economy.types.ts";
 
 export const users = () => {
   let $privateUserMap: Record<string, PrivateUser> = {};
