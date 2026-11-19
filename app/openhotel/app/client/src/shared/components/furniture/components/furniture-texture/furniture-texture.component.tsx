@@ -17,16 +17,16 @@ import {
   getPositionFromIsometricPosition,
   getZIndex,
 } from "shared/utils";
-import { Point2d, Point3d } from "shared/types";
 import { SpriteSheetEnum } from "shared/enums";
 import { Size3d } from "@shared/types/size.types.ts";
 import { TILE_SIZE, TILE_Y_HEIGHT } from "@shared/consts/tiles.consts.ts";
+import { Point, Point3d } from "@shared/types/point.types.ts";
 
 type Props = {
   texture: string;
   spriteSheet: string;
 
-  pivot: Point2d;
+  pivot: Point;
   zIndex: number;
   hitArea: number[];
   position: Point3d;
@@ -59,7 +59,7 @@ export const FurnitureTextureComponent: React.FC<Props> = ({
 }) => {
   const spriteRef = useRef<SpriteRef>(null);
 
-  const [$pivot, setPivot] = useState<Point2d>({ x: 0, y: 0 });
+  const [$pivot, setPivot] = useState<Point>({ x: 0, y: 0 });
 
   const $position = useMemo(
     () => getPositionFromIsometricPosition(position, heightCorrection),

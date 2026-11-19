@@ -9,7 +9,7 @@ export type ItemPreviewData = {
   direction?: CrossDirection;
 };
 
-export type TemplateState = {
+export type ItemPreviewState = {
   setItemPreviewData: (data: ItemPreviewData) => void;
   itemPreviewData: ItemPreviewData | null;
   clearItemPreviewData: () => void;
@@ -24,4 +24,4 @@ export type TemplateState = {
 };
 
 export const ItemPlacePreviewContext =
-  React.createContext<TemplateState>(undefined);
+  React.createContext<ItemPreviewState>(undefined);

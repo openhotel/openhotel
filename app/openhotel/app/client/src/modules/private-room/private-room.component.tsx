@@ -31,7 +31,7 @@ import {
   useRoom,
   useSafeWindow,
 } from "shared/hooks";
-import { Point2d, Point3d, PrivateRoom } from "shared/types";
+import { PrivateRoom } from "shared/types";
 import {
   Event as ProxyEvent,
   InternalEvent,
@@ -54,6 +54,7 @@ import {
   getCrossDirectionFromDirection,
   getDirection,
 } from "@shared/utils/direction.utils.ts";
+import { Point, Point3d } from "@shared/types/point.types.ts";
 
 type Props = {};
 
@@ -89,7 +90,7 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
     width: 0,
     height: 0,
   });
-  const [roomPivot, setRoomPivot] = useState<Point2d>({
+  const [roomPivot, setRoomPivot] = useState<Point>({
     x: 0,
     y: 0,
   });
@@ -98,7 +99,7 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
     null,
   );
   const [wallDataPoint, setWallDataPoint] = useState<
-    [Point3d, Point2d, CrossDirection] | [null, null]
+    [Point3d, Point, CrossDirection] | [null, null]
   >([null, null]);
 
   const renderPreviewVisibleRef = useRef(false);
@@ -277,7 +278,7 @@ export const PrivateRoomComponent: React.FC<Props> = () => {
   );
 
   const onMoveWall = useCallback(
-    (position: Point3d, wallPosition: Point2d, direction: CrossDirection) => {
+    (position: Point3d, wallPosition: Point, direction: CrossDirection) => {
       const data: PositionData = {
         position,
         wallPosition,

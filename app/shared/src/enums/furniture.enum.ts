@@ -10,7 +10,7 @@ export enum FurnitureType {
   FURNITURE = "furniture",
 }
 
-export enum FurnitureAction {
+export enum FurnitureActionE {
   // rotates between textures
   INTERACTIVE,
   // has a 1/0 value on interaction // 0 > closed // 1 > open

@@ -32,12 +32,12 @@ import {
 import {
   CHAT_RIGHT_MARGIN,
   HOT_BAR_HEIGHT,
-  MAX_MESSAGE_LENGTH,
   MAX_MESSAGES_HISTORY,
   STORAGE_KEY,
 } from "shared/consts";
 import { useTranslation } from "react-i18next";
 import { PrivateRoom } from "shared/types";
+import { MAX_MESSAGE_LENGTH } from "@shared/consts/messages.consts.ts";
 
 type Props = {
   maxWidth: number;

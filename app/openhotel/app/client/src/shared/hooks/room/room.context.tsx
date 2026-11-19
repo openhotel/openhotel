@@ -1,10 +1,11 @@
 import React from "react";
-import { Point2d, Point3d, RoomPreview, Room, User } from "shared/types";
+import { RoomPreview, Room, User } from "shared/types";
 import { CrossDirection, Direction } from "@shared/enums/direction.enums.ts";
+import { Point, Point3d } from "@shared/types/point.types.ts";
 
 export type PositionData = {
   position: Point3d;
-  wallPosition?: Point2d;
+  wallPosition?: Point;
   direction?: CrossDirection;
 };
 
@@ -32,8 +33,8 @@ export type RoomState<RoomType extends Room> = {
   lastPositionData: PositionData | null;
   setLastPositionData: (data: PositionData | null) => void;
 
-  absoluteRoomPosition: Point2d | null;
-  setAbsoluteRoomPosition: (point: Point2d | null) => void;
+  absoluteRoomPosition: Point | null;
+  setAbsoluteRoomPosition: (point: Point | null) => void;
 };
 
 export const RoomContext = React.createContext<RoomState<Room>>(undefined);

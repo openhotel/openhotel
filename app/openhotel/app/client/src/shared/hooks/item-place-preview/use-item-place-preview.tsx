@@ -1,8 +1,8 @@
 import { useContext } from "react";
 import {
   ItemPlacePreviewContext,
-  TemplateState,
+  ItemPreviewState,
 } from "./item-place-preview.context";
 
-export const useItemPlacePreview = (): TemplateState =>
+export const useItemPlacePreview = (): ItemPreviewState =>
   useContext(ItemPlacePreviewContext);

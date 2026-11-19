@@ -1,13 +1,13 @@
 import { log } from "shared/utils/log.utils.ts";
 import { System } from "../main.ts";
 import { ulid } from "@std/ulid";
-import { Transaction, TransactionParams } from "shared/types/economy.types.ts";
 import {
   buildAtomicTransaction,
   getBalanceEntry,
   validateBalance,
 } from "shared/utils/economy.utils.ts";
 import { TransactionType } from "@shared/enums/economy.enum.ts";
+import { Transaction, TransactionParams } from "@shared/types/economy.types.ts";
 
 export const economy = () => {
   const load = async () => {

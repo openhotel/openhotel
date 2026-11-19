@@ -9,6 +9,7 @@ export type HotelData = {
   type: "web" | "client";
 };
 
+// @ignore-duplicate
 export type Hotel = {
   clientId: string;
   licenseToken: string;
@@ -20,6 +21,7 @@ export type Hotel = {
   hotelData: HotelData;
 };
 
+//@ignore-duplicate
 export type HotelMutable = {
   load: () => void;
 

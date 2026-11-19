@@ -11,9 +11,10 @@ import {
 import { FURNITURE_ICON_SIZE } from "shared/consts";
 import { TextComponent } from "shared/components/text";
 import { useFurniture } from "shared/hooks";
-import { FurnitureData, Point2d } from "shared/types";
+import { FurnitureData } from "shared/types";
 import { SpriteSheetEnum } from "shared/enums";
 import { FurnitureType } from "@shared/enums/furniture.enum.ts";
+import { Point } from "@shared/types/point.types.ts";
 
 type Props = {
   furnitureId: string;
@@ -30,7 +31,7 @@ export const FurnitureItemComponent: React.FC<Props> = ({
 
   const { get, load } = useFurniture();
   const [data, setData] = useState<FurnitureData>(null);
-  const [iconPivot, setIconPivot] = useState<Point2d>({ x: 0, y: 0 });
+  const [iconPivot, setIconPivot] = useState<Point>({ x: 0, y: 0 });
 
   useEffect(() => {
     load(furnitureId).then(() => setData(get(furnitureId)));

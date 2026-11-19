@@ -1,7 +1,6 @@
 import { Command, CommandRoles, RoomFurniture } from "shared/types/main.ts";
 import { ProxyEvent } from "shared/enums/event.enum.ts";
 import { System } from "modules/system/main.ts";
-import { RoomPointEnum } from "shared/enums/room.enums.ts";
 import {
   isDoorRenderable,
   isWallRenderable,
@@ -10,6 +9,7 @@ import { ulid } from "@std/ulid";
 import { getTextFromArgs } from "shared/utils/args.utils.ts";
 import { CrossDirection } from "@shared/enums/direction.enums.ts";
 import { FurnitureType } from "@shared/enums/furniture.enum.ts";
+import { RoomPointEnum } from "@shared/enums/room.enums.ts";
 
 export const setCommand: Command = {
   command: "set",

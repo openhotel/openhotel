@@ -1,12 +1,13 @@
 import React, { useEffect, useMemo } from "react";
 import { useUpdate } from "@openhotel/pixi-components";
 import { DUMMY_FURNITURE_FRAME_DATA } from "shared/consts";
-import { Point2d, Point3d, RoomPoint } from "shared/types";
 import { getZIndex } from "shared/utils";
 import { useFurniture } from "shared/hooks";
 import { ulid } from "ulidx";
 import { FurnitureFrameTextureComponent } from "./components";
 import { CrossDirection } from "@shared/enums/direction.enums.ts";
+import { Point, Point3d } from "@shared/types/point.types.ts";
+import { RoomPoint } from "@shared/types/room.types.ts";
 
 type Props = {
   id?: string;
@@ -14,7 +15,7 @@ type Props = {
   position: Point3d;
 
   direction?: CrossDirection;
-  framePosition: Point2d;
+  framePosition: Point;
 
   onPointerDown?: (event?: unknown) => void;
 

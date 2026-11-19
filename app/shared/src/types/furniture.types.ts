@@ -2,10 +2,23 @@ import {
   FurnitureDirection,
   FurnitureType,
 } from "@shared/enums/furniture.enum.ts";
+import { Point } from "@shared/types/point.types.ts";
 
 export type FurnitureDataFileBounds = {
   width: number;
   height: number;
+};
+
+export type FurnitureDirectionTexture = {
+  texture: string;
+  pivot?: Point;
+  zIndex: number;
+  hitArea: number[];
+  actions?: Record<string, string>;
+};
+
+export type FurnitureDirectionData = {
+  textures: FurnitureDirectionTexture[];
 };
 
 export type FurnitureDataFileTexture = {
@@ -99,6 +112,7 @@ export type FurnitureAction = {
   defaultState: string;
 };
 
+// @ignore-duplicate
 export type FurnitureData = {
   version: 1;
   id: string;

@@ -1,4 +1,4 @@
-import { Request } from "shared/types";
+import { Request } from "@shared/types/request.types.ts";
 import { useCallback } from "react";
 import { useFingerprint } from "./useFingerprint";
 import { RequestMethod } from "@shared/enums/request.enums.ts";

@@ -16,9 +16,9 @@ import { Modal, SpriteSheetEnum } from "shared/enums";
 import { MODAL_SIZE_MAP } from "shared/consts";
 import { ScrollComponent, TextComponent } from "shared/components";
 import { useApi, useModal } from "shared/hooks";
-import { Economy, Transaction } from "shared/types";
 import { TransactionComponent } from "./components";
 import { useTranslation } from "react-i18next";
+import { Economy, Transaction } from "@shared/types/economy.types.ts";
 
 const MODAL_SIZE = MODAL_SIZE_MAP[Modal.PURSE];
 

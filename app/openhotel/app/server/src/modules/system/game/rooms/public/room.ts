@@ -1,12 +1,11 @@
 import {
   FindPathProps,
-  RoomPoint,
   User,
   PublicRoomMutable,
   PublicRoom,
   RoomType,
 } from "shared/types/main.ts";
-import { ProxyEvent, RoomPointEnum } from "shared/enums/main.ts";
+import { ProxyEvent } from "shared/enums/main.ts";
 import { System } from "modules/system/main.ts";
 import { getInterpolatedPath } from "shared/utils/pathfinding.utils.ts";
 import { getBaseRoomGrid } from "shared/utils/rooms.utils.ts";
@@ -14,6 +13,8 @@ import { createGrid } from "@shared/utils/grid.utils.ts";
 import { Point3d } from "@shared/types/point.types.ts";
 import { Direction } from "@shared/enums/direction.enums.ts";
 import { isPoint3dEqual } from "@shared/utils/point.utils.ts";
+import { RoomPoint } from "@shared/types/room.types.ts";
+import { RoomPointEnum } from "@shared/enums/room.enums.ts";
 
 export const getRoom =
   (roomUserMap: Record<string, string[]>) =>

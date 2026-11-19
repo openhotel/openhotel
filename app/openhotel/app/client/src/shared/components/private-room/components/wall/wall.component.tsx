@@ -12,7 +12,6 @@ import {
 } from "@openhotel/pixi-components";
 import { SpriteSheetEnum } from "shared/enums";
 import { getPositionFromIsometricPosition, getZIndex } from "shared/utils";
-import { Point2d, Point3d } from "shared/types";
 import { getWallIsometricPositionFromPosition } from "shared/utils/wall.utils";
 import { CrossDirection } from "@shared/enums/direction.enums.ts";
 import {
@@ -21,14 +20,15 @@ import {
   TILE_Y_HEIGHT,
 } from "@shared/consts/tiles.consts.ts";
 import { WALL_HEIGHT, WALL_WIDTH } from "@shared/consts/wall.consts.ts";
+import { Point, Point3d } from "@shared/types/point.types.ts";
 
 type Props = {
   direction: CrossDirection.NORTH | CrossDirection.EAST | "corner";
   position: Point3d;
   height?: number;
 
-  onPointerDown?: (position: Point2d) => void;
-  onPointerMove?: (position: Point2d) => void;
+  onPointerDown?: (position: Point) => void;
+  onPointerMove?: (position: Point) => void;
   onPointerLeave?: () => void;
 } & Omit<DisplayObjectProps<ContainerRef>, "position">;
 

@@ -5,8 +5,8 @@ import {
   useEvents,
   useWindow,
 } from "@openhotel/pixi-components";
-import { Point2d } from "shared/types";
 import { useCamera } from "shared/hooks";
+import { Point } from "@shared/types/point.types.ts";
 
 type Props = {
   children: React.ReactNode;
@@ -15,7 +15,7 @@ type Props = {
   }>;
   margin?: number;
   bottomPadding?: number;
-  onOffsetChange?: (offset: Point2d) => void;
+  onOffsetChange?: (offset: Point) => void;
 };
 
 export const CameraComponent: React.FC<Props> = ({
@@ -29,7 +29,7 @@ export const CameraComponent: React.FC<Props> = ({
   const { on: onEvent } = useEvents();
 
   const [windowSize, setWindowSize] = useState(getSize());
-  const [offset, setOffset] = useState<Point2d>({ x: 0, y: 0 });
+  const [offset, setOffset] = useState<Point>({ x: 0, y: 0 });
 
   const { setDragging, canDrag, setPosition } = useCamera();
 

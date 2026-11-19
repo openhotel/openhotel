@@ -1,5 +1,6 @@
 import { RestrictionCode } from "@shared/enums/restriction.enums.ts";
 
+//@ignore-duplicate
 export type User = {
   createdAt: number;
   accountId: string;

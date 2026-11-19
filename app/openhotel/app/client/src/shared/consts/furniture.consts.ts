@@ -1,6 +1,7 @@
-import { FurnitureData, FurnitureDirectionData } from "shared/types";
+import { FurnitureData } from "shared/types";
 import { SpriteSheetEnum } from "shared/enums";
 import { CrossDirection } from "@shared/enums/direction.enums.ts";
+import { FurnitureDirectionData } from "@shared/types/furniture.types.ts";
 
 export const FURNITURE_ICON_SIZE = 22;
 export const FURNITURE_ICON_BOX_SIZE = FURNITURE_ICON_SIZE + 2;

@@ -7,7 +7,7 @@ import {
   EventMode,
 } from "@openhotel/pixi-components";
 import { TextComponent } from "../text";
-import { Point2d } from "../../types";
+import { Point } from "@shared/types/point.types.ts";
 
 type Props = {
   title?: string;
@@ -16,7 +16,7 @@ type Props = {
   type?: "TODO" | "BUG";
   priority?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 
-  position?: Point2d;
+  position?: Point;
 } & React.PropsWithChildren;
 
 export const NoteComponent: React.FC<Props> = ({

@@ -2,12 +2,13 @@ import {
   BaseRoom,
   BaseRoomMutable,
   RoomFurniture,
-  RoomPoint,
   User,
 } from "shared/types/main.ts";
 import { Point3d } from "@shared/types/point.types.ts";
 import { FurnitureType } from "@shared/enums/furniture.enum.ts";
+import { RoomPoint } from "@shared/types/room.types.ts";
 
+// @ignore-duplicate
 export type PrivateRoom = BaseRoom & {
   type: "private";
 

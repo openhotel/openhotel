@@ -1,11 +1,11 @@
-import { PrivateRoomPreviewType, RoomPointEnum } from "shared/enums";
-import { Point2d, Point3d } from "./point.types";
+import { PrivateRoomPreviewType } from "shared/enums";
 import { FurnitureData, RoomFurniture } from "shared/types/furniture.types";
 import { User } from "shared/types/user.types";
 import { CrossDirection } from "@shared/enums/direction.enums.ts";
+import { Point, Point3d } from "@shared/types/point.types.ts";
+import { RoomPoint } from "@shared/types/room.types.ts";
 
-export type RoomPoint = string | RoomPointEnum;
-
+//@ignore-duplicate
 export type BaseRoom = {
   type: "public" | "private";
 
@@ -22,6 +22,7 @@ export type BaseRoom = {
   maxUsers: number;
 };
 
+// @ignore-duplicate
 export type PrivateRoom = BaseRoom & {
   type: "private";
   ownerId: string;
@@ -30,10 +31,12 @@ export type PrivateRoom = BaseRoom & {
   furniture: RoomFurniture[];
 };
 
+//@ignore-duplicate
 export type PublicRoom = BaseRoom & {
   type: "public";
 };
 
+// @ignore-duplicate
 export type Room = PrivateRoom | PublicRoom;
 
 export type RoomMessage = {
@@ -45,7 +48,7 @@ export type RoomMessage = {
   usernameColor?: number;
   backgroundColor?: number;
   messageColor?: number;
-  position: Point2d;
+  position: Point;
   message: string;
 };
 

@@ -1,10 +1,10 @@
 import { create } from "zustand";
 import { Modal } from "shared/enums";
-import { Point2d } from "shared/types";
+import { Point } from "@shared/types/point.types.ts";
 
 type ModalType = {
   visible: boolean;
-  position: Point2d;
+  position: Point;
   data?: unknown;
 };
 
@@ -13,8 +13,8 @@ export const useModalStore = create<{
   get: (modal: Modal) => ModalType;
   getData: <T>(modal: Modal) => T | undefined;
   isOpen: (modal: Modal) => boolean;
-  setPosition: (modal: Modal, position: Point2d) => void;
-  open: (modal: Modal, position?: Point2d, data?: unknown) => void;
+  setPosition: (modal: Modal, position: Point) => void;
+  open: (modal: Modal, position?: Point, data?: unknown) => void;
   close: (modal: Modal) => void;
   closeAll: () => void;
 }>((set, get) => ({
@@ -22,7 +22,7 @@ export const useModalStore = create<{
   get: (modal: Modal) => get().modals[modal],
   getData: <T>(modal: Modal) => get().modals[modal]?.data as T | undefined,
   isOpen: (modal: Modal) => Boolean(get().get(modal)?.visible),
-  setPosition: (modal: Modal, position: Point2d) =>
+  setPosition: (modal: Modal, position: Point) =>
     set((store) => ({
       ...store,
       modals: {
@@ -33,7 +33,7 @@ export const useModalStore = create<{
         },
       },
     })),
-  open: (modal: Modal, position?: Point2d, data?: unknown) =>
+  open: (modal: Modal, position?: Point, data?: unknown) =>
     set((store) => ({
       ...store,
       modals: {

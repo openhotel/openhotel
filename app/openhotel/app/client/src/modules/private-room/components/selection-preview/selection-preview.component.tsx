@@ -17,7 +17,7 @@ import {
   useEvents,
 } from "@openhotel/pixi-components";
 import { HOT_BAR_HEIGHT_FULL, TEXT_BACKGROUND_BASE } from "shared/consts";
-import { FurnitureData, Point2d, PrivateRoom, User } from "shared/types";
+import { FurnitureData, PrivateRoom, User } from "shared/types";
 import {
   ButtonComponent,
   CharacterComponent,
@@ -49,8 +49,9 @@ import {
   TILE_SIZE,
   TILE_WIDTH,
 } from "@shared/consts/tiles.consts.ts";
+import { Point } from "@shared/types/point.types.ts";
 
-const TileComponent: React.FC<{ position: Point2d }> = ({ position }) =>
+const TileComponent: React.FC<{ position: Point }> = ({ position }) =>
   useMemo(
     () => (
       <SpriteComponent

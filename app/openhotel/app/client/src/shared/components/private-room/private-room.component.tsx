@@ -7,14 +7,13 @@ import React, {
   useState,
 } from "react";
 import { ContainerComponent, ContainerRef } from "@openhotel/pixi-components";
-import { RoomPointEnum } from "shared/enums";
 import {
   getPositionFromIsometricPosition,
   isCurrentPointStairs,
   isDoorRenderable,
   isWallRenderable,
 } from "shared/utils";
-import { Point2d, Point3d, PrivateRoom } from "shared/types";
+import { PrivateRoom } from "shared/types";
 import {
   PrivateRoomStairs,
   PrivateRoomTile,
@@ -29,6 +28,8 @@ import {
   WALL_HEIGHT,
   WALL_WIDTH,
 } from "@shared/consts/wall.consts.ts";
+import { Point, Point3d } from "@shared/types/point.types.ts";
+import { RoomPointEnum } from "@shared/enums/room.enums.ts";
 
 type Props = {
   ref?: React.Ref<ContainerRef>;
@@ -36,12 +37,12 @@ type Props = {
   onHoverTile?: (data: PreviewTileData) => void;
   onClickWall?: (
     position: Point3d,
-    point: Point2d,
+    point: Point,
     direction: CrossDirection,
   ) => void;
   onMoveWall?: (
     position: Point3d,
-    point: Point2d,
+    point: Point,
     direction: CrossDirection,
   ) => void;
   onLeaveWall?: (direction: CrossDirection) => void;
@@ -182,11 +183,10 @@ export const PrivateRoomComponent: React.FC<Props> = ({
             direction: CrossDirection.NORTH,
           });
 
-          const $onClickWall =
-            (direction: CrossDirection) => (point: Point2d) =>
-              onClickWall?.(position, point, direction);
+          const $onClickWall = (direction: CrossDirection) => (point: Point) =>
+            onClickWall?.(position, point, direction);
 
-          const $onMoveWall = (direction: CrossDirection) => (point: Point2d) =>
+          const $onMoveWall = (direction: CrossDirection) => (point: Point) =>
             onMoveWall?.(position, point, direction);
 
           const $onLeaveWall = (direction: CrossDirection) => () =>

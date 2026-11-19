@@ -1,6 +1,7 @@
 import { Scope } from "@shared/enums/scope.enums.ts";
 import { DbHotelIntegrationType } from "@shared/enums/hotel.enums.ts";
 
+//@ignore-duplicate
 export type Connection = {
   connectionId: string;
 

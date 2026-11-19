@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { Point2d, PrivateRoom, User } from "shared/types";
+import { PrivateRoom, User } from "shared/types";
 import { ContainerProps } from "@openhotel/pixi-components";
 import {
   getPositionFromIsometricPosition,
@@ -18,6 +18,7 @@ import {
   TILE_WIDTH,
   TILE_Y_HEIGHT,
 } from "@shared/consts/tiles.consts.ts";
+import { Point } from "@shared/types/point.types.ts";
 
 type Props = {
   user: User;
@@ -37,7 +38,7 @@ export const RoomCharacterComponent: React.FC<Props> = ({
     CharacterBodyAction.IDLE,
   );
 
-  const [$position, $setPosition] = useState<Point2d | null>(null);
+  const [$position, $setPosition] = useState<Point | null>(null);
   const [$zIndex, $setZIndex] = useState<number>(null);
 
   useEffect(() => {
@@ -47,7 +48,7 @@ export const RoomCharacterComponent: React.FC<Props> = ({
     if (direction === Direction.NONE) return;
     if (isPosition3dEqual(user.position, user.targetPosition)) return;
 
-    let getPosFunc = (pos: Point2d): Point2d => pos;
+    let getPosFunc = (pos: Point): Point => pos;
 
     switch (direction) {
       case Direction.NORTH:

@@ -1,12 +1,13 @@
 import React, { ReactNode, useCallback, useEffect } from "react";
 import { RoomContext } from "./room.context";
 import { Event as ProxyEvent, Event, Route } from "shared/enums";
-import { Point3d, Room, User } from "shared/types";
+import { Room, User } from "shared/types";
 import { useProxy } from "../proxy";
 import { useModal } from "../modal";
 import { useRouter } from "../router";
 import { useRoomStore } from "./room.store";
 import { Direction } from "@shared/enums/direction.enums.ts";
+import { Point3d } from "@shared/types/point.types.ts";
 
 type TemplateProps = {
   children: ReactNode;

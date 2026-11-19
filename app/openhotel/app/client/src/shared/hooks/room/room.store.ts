@@ -1,7 +1,5 @@
 import { create } from "zustand";
 import {
-  Point2d,
-  Point3d,
   PrivateRoom,
   Room,
   RoomMessage,
@@ -10,6 +8,7 @@ import {
 } from "shared/types";
 import { PositionData } from "./room.context";
 import { Direction } from "@shared/enums/direction.enums.ts";
+import { Point, Point3d } from "@shared/types/point.types.ts";
 
 export const useRoomStore = create<{
   room: Room;
@@ -37,8 +36,8 @@ export const useRoomStore = create<{
   lastPositionData: PositionData | null;
   setLastPositionData: (data: PositionData | null) => void;
 
-  absoluteRoomPosition: Point2d | null;
-  setAbsoluteRoomPosition: (point: Point2d | null) => void;
+  absoluteRoomPosition: Point | null;
+  setAbsoluteRoomPosition: (point: Point | null) => void;
 }>((set) => ({
   room: null,
   messages: [],
@@ -129,7 +128,7 @@ export const useRoomStore = create<{
     })),
   //
   absoluteRoomPosition: null,
-  setAbsoluteRoomPosition: (point: Point2d | null) =>
+  setAbsoluteRoomPosition: (point: Point | null) =>
     set((store) => ({
       ...store,
       absoluteRoomPosition: point,

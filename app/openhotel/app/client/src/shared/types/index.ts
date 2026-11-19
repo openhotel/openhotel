@@ -1,5 +1,4 @@
 export * from "./config.types";
-export * from "./point.types";
 export * from "./room.types";
 export * from "./user.types";
 export * from "./preview.types";
@@ -10,4 +9,3 @@ export * from "./loader.types";
 export * from "./account.types";
 export * from "./character.types";
 export * from "./modal.types";
-export * from "./economy.types";

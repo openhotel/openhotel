@@ -1,5 +1,5 @@
 import { System } from "system/main.ts";
-import { type File } from "shared/types/main.ts";
+import { File } from "@shared/types/files.types.ts";
 import { join } from "@std/path";
 import { S3Mutable } from "@shared/types/s3.types.ts";
 import { getS3 } from "@shared/modules/old/s3.ts";

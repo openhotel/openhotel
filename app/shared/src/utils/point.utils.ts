@@ -1,4 +1,4 @@
-import { Point3d } from "../types/point.types.ts";
+import { Point3d } from "@shared/types/point.types.ts";
 
 export const isPoint3dEqual = (
   pointA: Point3d,

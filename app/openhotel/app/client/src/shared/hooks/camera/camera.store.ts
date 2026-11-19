@@ -1,10 +1,10 @@
 import { create } from "zustand";
-import { Point2d } from "shared/types";
+import { Point } from "@shared/types/point.types.ts";
 
 type CameraState = {
   $isDragging: boolean;
   $canDrag: boolean;
-  $position: Point2d;
+  $position: Point;
 
   isDragging: () => boolean;
   setDragging: (dragging: boolean) => void;
@@ -12,8 +12,8 @@ type CameraState = {
   canDrag: () => boolean;
   setCanDrag: (canDrag: boolean) => void;
 
-  getPosition: () => Point2d;
-  setPosition: (position: Point2d) => void;
+  getPosition: () => Point;
+  setPosition: (position: Point) => void;
 };
 
 export const useCameraStore = create<CameraState>((set, get) => ({

@@ -1,4 +1,4 @@
-export type Backup = {
+export type OldBackup = {
   id: string;
   name: string;
   size: number;
