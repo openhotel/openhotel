@@ -104,7 +104,7 @@ for (const path of paths) {
 
 console.log(`
 Done! Next steps:${RESET_CONFIGS ? "\n  0. deno task setup" : ""}
-  1. deno task up auth
-  2. deno task seed
-  3. deno task up
+  1. deno task dev:up auth
+  2. deno task dev:seed
+  3. deno task dev:up
 `);

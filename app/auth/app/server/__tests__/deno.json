@@ -10,6 +10,7 @@
 
     "otp": "jsr:@hectorm/otpauth@9.6.0",
 
+    "shared/": "../src/shared/",
     "@shared/": "../../../../shared/src/"
   },
   "test": {
