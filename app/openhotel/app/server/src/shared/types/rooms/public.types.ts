@@ -7,6 +7,7 @@ import {
 import { Point3d } from "@shared/types/point.types.ts";
 import { Direction } from "@shared/enums/direction.enums.ts";
 
+//@ignore-duplicate
 export type PublicRoom = BaseRoom & {
   type: "public";
 

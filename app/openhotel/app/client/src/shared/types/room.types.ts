@@ -31,6 +31,7 @@ export type PrivateRoom = BaseRoom & {
   furniture: RoomFurniture[];
 };
 
+//@ignore-duplicate
 export type PublicRoom = BaseRoom & {
   type: "public";
 };
