@@ -1,7 +1,7 @@
 name: auth/server Build
 on:
   push:
-    branches: [master, monster]
+    branches: [master]
     paths:
       - .github/workflows/auth-*
       - app/auth/app/server/**
