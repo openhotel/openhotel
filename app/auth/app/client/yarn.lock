@@ -122,6 +122,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@remix-run/route-pattern@npm:^0.22.1":
+  version: 0.22.1
+  resolution: "@remix-run/route-pattern@npm:0.22.1"
+  checksum: 10c0/752fd1b76ce5c1c40648ab6a731c18b88ecd16e43d4333a7eb724c852df775761ed70d0caef7da7d2360425886d62b5d6d47e707f15bc922669d1c66b757cd33
+  languageName: node
+  linkType: hard
+
 "@rolldown/binding-android-arm-eabi@npm:1.2.19":
   version: 1.2.19
   resolution: "@rolldown/binding-android-arm-eabi@npm:1.2.19"
@@ -457,11 +464,11 @@ __metadata:
   linkType: hard
 
 "brace-expansion@npm:^2.0.1":
-  version: 2.0.2
-  resolution: "brace-expansion@npm:2.0.2"
+  version: 2.1.8
+  resolution: "brace-expansion@npm:2.1.8"
   dependencies:
     balanced-match: "npm:^1.0.0"
-  checksum: 10c0/6d117a4c793488af86b83172deb6af143e94c17bc53b0b3cec259733923b4ca84679d506ac261f4ba3c7ed37c46018e2ff442f9ce453af8643ecd64f4a54e6cf
+  checksum: 10c0/72e79fbb273a10ec3d01f45a09a4fb08344f1bac88477a1664401cd1b7730887e755a094b012a2487e3007ad73bef5fa54efb25aef389d7f41268cb137b857d8
   languageName: node
   linkType: hard
 
@@ -551,6 +558,13 @@ __metadata:
   version: 1.1.4
   resolution: "color-name@npm:1.1.4"
   checksum: 10c0/a1a3f914156960902f46f7f56bc62effc6c94e84b2cae157a526b1c1f74b677a47ec602bf68a61abfa2b42d15b7c5651c6dbe72a43af720bc588dff885b10f95
+  languageName: node
+  linkType: hard
+
+"cookie-es@npm:^3.1.1":
+  version: 3.1.1
+  resolution: "cookie-es@npm:3.1.1"
+  checksum: 10c0/62cf0c325cc547b52477b351e9b5d068b3ffc74f7d143cdf7af854648dd1015fca3aed1498b355365e24b0746333f0b15688ed3a535abecc5ed0a046ae956a84
   languageName: node
   linkType: hard
 
@@ -957,9 +971,9 @@ __metadata:
   linkType: hard
 
 "immutable@npm:^4.0.0":
-  version: 4.3.7
-  resolution: "immutable@npm:4.3.7"
-  checksum: 10c0/9b099197081b22f6433003e34929da8ecddbbdc1474cdc8aa3b7669dee4adda349c06143de22def36016d1b6de5322b043eccd7a11db1dad2ca85dad4fff5435
+  version: 4.3.9
+  resolution: "immutable@npm:4.3.9"
+  checksum: 10c0/394faa90ac8f2f62824e6c639705efdb8313787d6bc7864e28a48ee36aa2ba4b724eaf54a701ad991c278967a412b09143dd24fd19e3e2b0204eb481a5afa6ef
   languageName: node
   linkType: hard
 
@@ -1218,9 +1232,9 @@ __metadata:
   linkType: hard
 
 "lodash@npm:^4.17.19, lodash@npm:^4.17.21":
-  version: 4.17.21
-  resolution: "lodash@npm:4.17.21"
-  checksum: 10c0/d8cbea072bb08655bb4c989da418994b073a608dffa608b09ac04b43a791b12aeae7cd7ad919aa4c925f33b48490b5cfe6c1f71d827956071dae2e7bb3a6b74c
+  version: 4.18.1
+  resolution: "lodash@npm:4.18.1"
+  checksum: 10c0/757228fc68805c59789e82185135cf85f05d0b2d3d54631d680ca79ec21944ec8314d4533639a14b8bcfbd97a517e78960933041a5af17ecb693ec6eecb99a27
   languageName: node
   linkType: hard
 
@@ -1346,12 +1360,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mkdirp@npm:^3.0.1":
-  version: 3.0.1
-  resolution: "mkdirp@npm:3.0.1"
-  bin:
-    mkdirp: dist/cjs/src/bin.js
-  checksum: 10c0/9f2b975e9246351f5e3a40dcfac99fcd0baa31fbfab615fe059fb11e51f10e4803c63de1f384c54d656e4db31d000e4767e9ef076a22e12a641357602e31d57d
+"minizlib@npm:^3.1.0":
+  version: 3.1.0
+  resolution: "minizlib@npm:3.1.0"
+  dependencies:
+    minipass: "npm:^7.1.2"
+  checksum: 10c0/5aad75ab0090b8266069c9aabe582c021ae53eb33c6c691054a13a45db3b4f91a7fb1bd79151e6b4e9e9a86727b522527c0a06ec7d45206b745d54cd3097bcec
   languageName: node
   linkType: hard
 
@@ -1602,6 +1616,28 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-router@npm:8.5.2":
+  version: 8.5.2
+  resolution: "react-router@npm:8.5.2"
+  dependencies:
+    "@remix-run/route-pattern": "npm:^0.22.1"
+    cookie-es: "npm:^3.1.1"
+  peerDependencies:
+    "@types/react": ">=19.2.0"
+    "@types/react-dom": ">=19.2.0"
+    react: ">=19.2.7"
+    react-dom: ">=19.2.7"
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+    "@types/react-dom":
+      optional: true
+    react-dom:
+      optional: true
+  checksum: 10c0/4ff6e74255ca0372cd29698874534d21c4be3c4ca8853707f7176d9fb6284339112896db9a87ae79a6346aa6f8afeb608534de675320c2cd6c674b3ee0bdbf09
+  languageName: node
+  linkType: hard
+
 "react@npm:18.3.1":
   version: 18.3.1
   resolution: "react@npm:18.3.1"
@@ -1718,7 +1754,7 @@ __metadata:
     qrcode: "npm:1.5.4"
     react: "npm:18.3.1"
     react-dom: "npm:18.3.1"
-    react-router: "npm:7.18.2"
+    react-router: "npm:8.5.2"
     react-router-dom: "npm:7.18.2"
     sass: "npm:1.77.8"
     ulidx: "npm:2.4.1"
@@ -1838,14 +1874,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"source-map-js@npm:>=0.6.2 <2.0.0":
-  version: 1.2.1
-  resolution: "source-map-js@npm:1.2.1"
-  checksum: 10c0/7bda1fc4c197e3c6ff17de1b8b2c20e60af81b63a52cb32ec5a5d67a20a7d42651e2cb34ebe93833c5a2a084377e17455854fee3e21e7925c64a51b6a52b0faf
-  languageName: node
-  linkType: hard
-
-"source-map-js@npm:^1.2.2":
+"source-map-js@npm:>=0.6.2 <2.0.0, source-map-js@npm:^1.2.2":
   version: 1.2.4
   resolution: "source-map-js@npm:1.2.4"
   checksum: 10c0/b0fb346b142e89a19fa3299a259d8c0dc66626321634c30df260b2e8a1d4c1e219a6a28e8d10617cc54e7816d94eff5c4edd96e208172e93efc2c6fd75b111c6
@@ -1909,16 +1938,15 @@ __metadata:
   linkType: hard
 
 "tar@npm:^7.4.3":
-  version: 7.4.3
-  resolution: "tar@npm:7.4.3"
+  version: 7.5.23
+  resolution: "tar@npm:7.5.23"
   dependencies:
     "@isaacs/fs-minipass": "npm:^4.0.0"
     chownr: "npm:^3.0.0"
     minipass: "npm:^7.1.2"
-    minizlib: "npm:^3.0.1"
-    mkdirp: "npm:^3.0.1"
+    minizlib: "npm:^3.1.0"
     yallist: "npm:^5.0.0"
-  checksum: 10c0/d4679609bb2a9b48eeaf84632b6d844128d2412b95b6de07d53d8ee8baf4ca0857c9331dfa510390a0727b550fd543d4d1a10995ad86cdf078423fbb8d99831d
+  checksum: 10c0/41324dc475f655e6a322729dacac14e3114ed4b18cba350be5d1eb52b1aa2794a1c78c2a5b7f49d3d15f53c058158168121eaf6c5d2f75a0a9565b344bf3a18a
   languageName: node
   linkType: hard
 
