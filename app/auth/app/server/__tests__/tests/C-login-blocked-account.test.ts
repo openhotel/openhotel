@@ -1,4 +1,4 @@
-import { describe, it } from "@std/testing";
+import { describe, it } from "@std/testing/bdd";
 import { assertEquals, assertExists } from "@std/assert";
 import { STATE } from "../state.ts";
 import { USER_1, USER_2 } from "../consts.ts";

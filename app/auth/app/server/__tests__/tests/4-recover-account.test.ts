@@ -1,4 +1,4 @@
-import { describe, it } from "@std/testing";
+import { describe, it } from "@std/testing/bdd";
 import { assertEquals, assertExists } from "@std/assert";
 
 import { fetcher } from "../utils.ts";
