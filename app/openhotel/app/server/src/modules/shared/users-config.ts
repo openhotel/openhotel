@@ -1,6 +1,6 @@
 import { UsersConfig } from "shared/types/main.ts";
 import { USERS_CONFIG_DEFAULT } from "shared/consts/users.consts.ts";
-import { exists } from "deno/fs/mod.ts";
+import { exists } from "@std/fs";
 import { getConfig } from "@shared/modules/old/config.ts";
 
 export const usersConfig = () => {

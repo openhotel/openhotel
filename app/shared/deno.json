@@ -1,4 +1,7 @@
 {
+  "tasks": {
+    "install": "deno install"
+  },
   "imports": {
     "@shared/": "./src/",
 

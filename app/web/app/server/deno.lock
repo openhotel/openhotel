@@ -4,6 +4,7 @@
     "jsr:@da/bcrypt@1.0.1": "1.0.1",
     "jsr:@deno/kv-utils@0.1.3": "0.1.3",
     "jsr:@std/bytes@^1.0.3": "1.0.6",
+    "jsr:@std/dotenv@0.225.8": "0.225.8",
     "jsr:@std/encoding@^1.0.5": "1.0.11",
     "jsr:@std/fs@1.0.4": "1.0.4",
     "jsr:@std/internal@^1.0.14": "1.0.14",
@@ -43,6 +44,9 @@
     },
     "@std/bytes@1.0.6": {
       "integrity": "f6ac6adbd8ccd99314045f5703e23af0a68d7f7e58364b47d2c7f408aeb5820a"
+    },
+    "@std/dotenv@0.225.8": {
+      "integrity": "27b8c1a9d00cbf938345a5924487c04d9b27bdd7e7bd1983f54bcf76d0a0174a"
     },
     "@std/encoding@1.0.11": {
       "integrity": "e7cef2f0b3153bccc17431e7c864a1de03a4b6d9647389c43e08aaa775d37385"
@@ -416,6 +420,7 @@
   },
   "workspace": {
     "dependencies": [
+      "jsr:@std/dotenv@0.225.8",
       "jsr:@std/path@1.0.6",
       "jsr:@std/ulid@1",
       "npm:nodemailer@6.9.15"

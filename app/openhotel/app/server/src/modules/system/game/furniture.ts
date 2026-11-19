@@ -4,7 +4,7 @@ import { parse } from "@std/yaml";
 import { System } from "modules/system/main.ts";
 import { log } from "shared/utils/log.utils.ts";
 import { decodeTime } from "@std/ulid";
-import dayjs from "dayjs";
+import { dayjs } from "@xtool/dayjs";
 import { isCatalogFurnitureAvailable } from "shared/utils/catalog.utils.ts";
 import {
   getCollectionManifestErrors,

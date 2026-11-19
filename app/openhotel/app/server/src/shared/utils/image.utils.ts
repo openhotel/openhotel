@@ -5,7 +5,7 @@ export const quantizeToPalette = async (
 ) => {
   const sourceImage = await Image.decode(data);
 
-  if (!palette) return await sourceImage.encode();
+  if (!palette) return await sourceImage.encodePNG();
 
   const $palette = palette.map((color) => {
     const r = (color >>> 16) & 0xff;
@@ -15,8 +15,8 @@ export const quantizeToPalette = async (
     return (r << 24) | (g << 16) | (b << 8) | 0xff;
   });
 
-  for (let y = 1; y < sourceImage.height + 1; y++) {
-    for (let x = 1; x < sourceImage.width + 1; x++) {
+  for (let y = 0; y < sourceImage.height; y++) {
+    for (let x = 0; x < sourceImage.width; x++) {
       const px = sourceImage.getPixelAt(x, y);
       const pr = (px >>> 24) & 0xff;
       const pg = (px >>> 16) & 0xff;

@@ -1,4 +1,4 @@
-import dayjs from "dayjs";
+import { dayjs } from "@xtool/dayjs";
 import {
   CatalogCategory,
   CatalogFurniture,

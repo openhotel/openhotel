@@ -1,6 +1,6 @@
 /// <reference lib="deno.ns" />
-import { walk } from "deno/fs/mod.ts";
-import { basename } from "deno/path/mod.ts";
+import { walk } from "@std/fs";
+import { basename } from "@std/path";
 
 const clientLocalesDir = "./app/client/src/assets/locales";
 const serverLocalesDir = "./app/server/assets/locales";

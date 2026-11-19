@@ -168,6 +168,7 @@ export const Proxy = (() => {
   const getChangelog = async () => {
     if ($changelog.length) return $changelog;
 
+    //TODO Change to pipeline
     const rawChangelog = await fetch(
       "https://raw.githubusercontent.com/openhotel/openhotel/master/CHANGELOG.md",
     ).then((response) => response.text());
