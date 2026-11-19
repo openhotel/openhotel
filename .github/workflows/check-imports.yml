@@ -2,7 +2,7 @@ name: check-imports
 
 on:
   push:
-    branches: [master, monster]
+    branches: [master]
   pull_request:
 
 jobs:

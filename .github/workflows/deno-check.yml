@@ -2,7 +2,7 @@ name: deno-check
 
 on:
   push:
-    branches: [master, monster]
+    branches: [master]
   pull_request:
 
 jobs:
