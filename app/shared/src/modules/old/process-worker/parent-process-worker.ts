@@ -1,5 +1,5 @@
 import { TextLineStream } from "@std/streams";
-import { WorkerParent } from "@shared/types/worker.types.ts";
+import { WorkerParent } from "@shared/modules/old/worker/types.ts";
 
 type Props = {
   prefixLog?: string;

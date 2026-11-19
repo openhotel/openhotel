@@ -1,33 +1,6 @@
 import { AccountMutable } from "shared/types/account.types.ts";
 import { DbHotelIntegrationType } from "@shared/enums/hotel.enums.ts";
-
-export type DbHotel = {
-  accountId: string;
-  hotelId: string;
-  name: string;
-  public: boolean;
-
-  integrations: DbHotelIntegration[];
-
-  createdAt: number;
-  updatedAt: number;
-
-  official: boolean;
-  verified: boolean;
-
-  blocked: boolean;
-};
-
-export type DbHotelIntegration = {
-  integrationId: string;
-  name: string;
-  redirectUrl: string;
-  type: DbHotelIntegrationType;
-  createdAt: number;
-  updatedAt: number;
-  // hotel: number;
-  // accounts: string[];
-};
+import { DbHotel, DbHotelIntegration } from "@shared/types/hotels.types.ts";
 
 export type HotelCreation = {
   name: string;
@@ -35,8 +8,7 @@ export type HotelCreation = {
   accountId: string;
 };
 
-//
-
+//@ignore-duplicate
 export type HotelMutable = {
   getLicenseData: () => Promise<HotelIntegrationLicenseData | null>;
 

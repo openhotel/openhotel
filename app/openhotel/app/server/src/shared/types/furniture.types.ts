@@ -3,26 +3,12 @@ import { CrossDirectionKeys } from "@shared/types/direction.types.ts";
 import { Size3d } from "@shared/types/size.types.ts";
 import { CrossDirection } from "@shared/enums/direction.enums.ts";
 import { FurnitureType } from "@shared/enums/furniture.enum.ts";
+import {
+  FurnitureAction,
+  FurnitureDirectionData,
+} from "@shared/types/furniture.types.ts";
 
-export type FurnitureDirectionTexture = {
-  texture: string;
-  pivot?: Point;
-  zIndex: number;
-  hitArea: number[];
-  actions?: Record<string, string>;
-};
-
-export type FurnitureAction = {
-  id: string;
-  label: string;
-  states: string[];
-  defaultState: string;
-};
-
-export type FurnitureDirectionData = {
-  textures: FurnitureDirectionTexture[];
-};
-
+//@ignore-duplicate
 export type FurnitureDirectionDataMap = Record<
   Partial<CrossDirectionKeys>,
   FurnitureDirectionData

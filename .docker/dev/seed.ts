@@ -139,6 +139,7 @@ const setAdmin = async (user: User, session: Session) => {
   else ok(`auth already has an admin`);
 };
 
+// @ignore-duplicate
 type Hotel = {
   hotelId: string;
   name: string;

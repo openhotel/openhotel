@@ -9,7 +9,6 @@ import {
   SpriteComponent,
   SpriteRef,
 } from "@openhotel/pixi-components";
-import { Point3d } from "shared/types";
 import { getPositionFromIsometricPosition, getZIndex } from "shared/utils";
 import { SAFE_Z_INDEX } from "shared/consts";
 import { CrossDirection } from "@shared/enums/direction.enums.ts";
@@ -17,6 +16,7 @@ import {
   STEP_TILE_HEIGHT,
   TILE_Y_HEIGHT,
 } from "@shared/consts/tiles.consts.ts";
+import { Point3d } from "@shared/types/point.types.ts";
 
 type Props = {
   position: Point3d;

@@ -1,11 +1,11 @@
-import { Point2d } from "./point.types";
 import { DirectionKeys } from "@shared/types/direction.types.ts";
+import { Point } from "@shared/types/point.types.ts";
 
 export type HumanDirectionData = {
-  pivot: Point2d;
+  pivot: Point;
   xScale?: number;
   head: {
-    pivot: Point2d;
+    pivot: Point;
   };
   directionInitials?: string;
 };

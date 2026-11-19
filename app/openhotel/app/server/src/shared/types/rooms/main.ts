@@ -1,4 +1,3 @@
-import { RoomPointEnum } from "shared/enums/room.enums.ts";
 import { User } from "shared/types/user.types.ts";
 import { ProxyEvent } from "shared/enums/event.enum.ts";
 import {
@@ -10,11 +9,10 @@ import {
   PublicRoomMutable,
 } from "shared/types/rooms/public.types.ts";
 import { Point3d } from "@shared/types/point.types.ts";
+import { RoomPoint } from "@shared/types/room.types.ts";
 
 export * from "./private.types.ts";
 export * from "./public.types.ts";
-
-export type RoomPoint = number | string | RoomPointEnum;
 
 export type RoomType = "public" | "private";
 
@@ -24,6 +22,7 @@ export type FindPathProps = {
   accountId?: string;
 };
 
+//@ignore-duplicate
 export type BaseRoom = {
   type: RoomType;
 

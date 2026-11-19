@@ -1,7 +1,7 @@
 import { System } from "system/main.ts";
 import { ulid } from "@std/ulid";
 import { Buffer } from "node:buffer";
-import { type File } from "shared/types/main.ts";
+import { File } from "@shared/types/files.types.ts";
 import { RequestType } from "@shared/types/request.types.ts";
 import { RequestKind, RequestMethod } from "@shared/enums/request.enums.ts";
 import { getResponse } from "@shared/utils/response.utils.ts";

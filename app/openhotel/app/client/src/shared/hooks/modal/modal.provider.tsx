@@ -16,7 +16,6 @@ import {
   useWindow,
 } from "@openhotel/pixi-components";
 import { Modal } from "shared/enums";
-import { Point2d } from "shared/types";
 import { useModalStore } from "./modal.store";
 import { MODAL_SIZE_MAP } from "shared/consts";
 import {
@@ -31,6 +30,7 @@ import {
   RoomFurnitureSellComponent,
   RoomFurnitureBuyComponent,
 } from "modules/modals";
+import { Point } from "@shared/types/point.types.ts";
 
 type ModalProps = {
   children: ReactNode;
@@ -98,7 +98,7 @@ export const ModalProvider: React.FunctionComponent<ModalProps> = ({
   const isModalOpen = useCallback((modal: Modal) => isOpen(modal), [isOpen]);
 
   const setModalPosition = useCallback(
-    (modal: Modal, position: Point2d) => {
+    (modal: Modal, position: Point) => {
       setPosition(modal, position);
     },
     [setPosition],

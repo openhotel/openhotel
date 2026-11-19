@@ -9,7 +9,7 @@ import {
   ItemPlacePreviewContext,
   ItemPreviewData,
 } from "./item-place-preview.context";
-import { Point3d, PrivateRoom } from "shared/types";
+import { PrivateRoom } from "shared/types";
 import {
   FurnitureComponent,
   FurnitureFrameComponent,
@@ -26,6 +26,7 @@ import { getNextCrossDirection } from "@shared/utils/direction.utils.ts";
 import { TILE_Y_HEIGHT } from "@shared/consts/tiles.consts.ts";
 import { WALL_HEIGHT } from "@shared/consts/wall.consts.ts";
 import { FurnitureType } from "@shared/enums/furniture.enum.ts";
+import { Point3d } from "@shared/types/point.types.ts";
 
 type Props = {
   children: ReactNode;

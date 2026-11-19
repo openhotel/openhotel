@@ -1,7 +1,7 @@
 import { System } from "modules/system/main.ts";
 import { OnetEvent } from "shared/enums/event.enum.ts";
 import { eventList } from "modules/system/onet/events/main.ts";
-import { Request } from "shared/types/request.types.ts";
+import { Request } from "@shared/types/request.types.ts";
 import { RequestMethod } from "@shared/enums/request.enums.ts";
 import {
   getClientSocket,

@@ -3,11 +3,10 @@ import {
   PrivateRoom,
   PrivateRoomMutable,
   RoomFurniture,
-  RoomPoint,
   RoomType,
   User,
 } from "shared/types/main.ts";
-import { ProxyEvent, RoomPointEnum } from "shared/enums/main.ts";
+import { ProxyEvent } from "shared/enums/main.ts";
 import { System } from "modules/system/main.ts";
 import { getInterpolatedPath } from "shared/utils/pathfinding.utils.ts";
 import { WALKABLE_FURNITURE_TYPE } from "shared/consts/main.ts";
@@ -22,6 +21,8 @@ import { TILE_Y_HEIGHT } from "@shared/consts/tiles.consts.ts";
 import { WALL_HEIGHT } from "@shared/consts/wall.consts.ts";
 import { TransactionType } from "@shared/enums/economy.enum.ts";
 import { FurnitureType } from "@shared/enums/furniture.enum.ts";
+import { RoomPoint } from "@shared/types/room.types.ts";
+import { RoomPointEnum } from "@shared/enums/room.enums.ts";
 
 export const getRoom =
   (roomUserMap: Record<string, string[]>) =>

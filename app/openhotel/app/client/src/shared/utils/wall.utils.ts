@@ -1,10 +1,10 @@
-import { Point2d } from "shared/types";
 import { CrossDirection } from "@shared/enums/direction.enums.ts";
+import { Point } from "@shared/types/point.types.ts";
 
 export const getWallIsometricPositionFromPosition = (
-  position: Point2d,
+  position: Point,
   direction: CrossDirection.NORTH | CrossDirection.EAST | "corner",
-): Point2d => ({
+): Point => ({
   x: Math.round(position.x / 2),
   y: Math.round(
     direction === CrossDirection.NORTH
@@ -14,9 +14,9 @@ export const getWallIsometricPositionFromPosition = (
 });
 
 export const getWallPositionFromIsometricPosition = (
-  position: Point2d,
+  position: Point,
   direction: CrossDirection,
-): Point2d => ({
+): Point => ({
   x: direction === CrossDirection.NORTH ? -2 * position.x : 2 * position.x,
   y:
     direction === CrossDirection.NORTH

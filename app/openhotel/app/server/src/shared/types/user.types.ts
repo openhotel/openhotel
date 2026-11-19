@@ -31,6 +31,7 @@ export type PrivateUser = {
   ip: string;
 };
 
+//@ignore-duplicate
 export type User = {
   accountId: string;
   username: string;

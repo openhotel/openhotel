@@ -7,6 +7,7 @@ import React, {
 } from "react";
 import { useApi, useCookies } from "shared/hooks";
 
+//@ignore-duplicate
 type User = {
   accountId: string;
   admin: boolean;

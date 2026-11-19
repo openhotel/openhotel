@@ -1,6 +1,6 @@
-import { HotelIntegrationType } from "shared/enums";
 import { DbHotelIntegrationType } from "@shared/enums/hotel.enums.ts";
 
+// @ignore-duplicate
 export type Hotel = {
   accountId: string;
   hotelId: string;
@@ -14,7 +14,7 @@ export type HotelIntegration = {
   integrationId: string;
   name: string;
   redirectUrl: string;
-  type: HotelIntegrationType;
+  type: DbHotelIntegrationType;
   hotel: number;
   accounts: number;
 };
@@ -70,53 +70,10 @@ export type PrivateHotelIntegration = {
   integrationId: string;
   name: string;
   redirectUrl: string;
-  type: HotelIntegrationType;
+  type: DbHotelIntegrationType;
   connections: PrivateHotelIntegrationConnection[];
 };
 
 export type PrivateHotel = {
   integrations: PrivateHotelIntegration[];
 } & Exclude<Hotel, "integrations">;
-
-/**
- * -------------------------------------------------------
- * --------- DB -------------------------------------
- * -------------------------------------------------------
- */
-
-export type DbHotelUser = {
-  username: string;
-  accountId: string;
-};
-
-export type DbHotelIntegration = {
-  integrationId: string;
-  name: string;
-  redirectUrl: string;
-  type: DbHotelIntegrationType;
-  createdAt: number;
-  updatedAt: number;
-
-  accounts: DbHotelUser[];
-};
-
-export type DbHotel = {
-  accountId: string;
-  username: string;
-
-  hotelId: string;
-  name: string;
-  public: boolean;
-
-  accounts: DbHotelUser[];
-
-  integrations: DbHotelIntegration[];
-
-  createdAt: number;
-  updatedAt: number;
-
-  official: boolean;
-  verified: boolean;
-
-  blocked: boolean;
-};

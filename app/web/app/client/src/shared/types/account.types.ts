@@ -1,3 +1,4 @@
+//@ignore-duplicate
 export type Account = {
   accountId: string;
   username: string;

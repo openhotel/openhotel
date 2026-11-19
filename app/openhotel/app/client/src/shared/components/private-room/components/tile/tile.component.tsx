@@ -9,13 +9,13 @@ import {
   SpriteComponent,
   SpriteRef,
 } from "@openhotel/pixi-components";
-import { Point3d } from "shared/types";
 import {
   getPositionFromIsometricPosition,
   getTilePolygon,
   getZIndex,
 } from "shared/utils";
 import { SAFE_Z_INDEX } from "shared/consts";
+import { Point3d } from "@shared/types/point.types.ts";
 
 type Props = {
   position: Point3d;

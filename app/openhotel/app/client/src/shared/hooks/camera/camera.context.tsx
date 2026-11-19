@@ -1,9 +1,9 @@
 import React from "react";
-import { Point2d } from "shared/types";
+import { Point } from "@shared/types/point.types.ts";
 
 export type CameraState = {
-  position: Point2d;
-  setPosition: (position: Point2d) => void;
+  position: Point;
+  setPosition: (position: Point) => void;
 
   setDragging: (dragging: boolean) => void;
   isDragging: () => boolean;

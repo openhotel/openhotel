@@ -13,20 +13,21 @@ import {
   getWallPositionFromIsometricPosition,
   getZIndex,
 } from "shared/utils";
-import { Point2d, Point3d, RoomPoint } from "shared/types";
 import { CrossDirection } from "@shared/enums/direction.enums.ts";
 import { Size2d, Size3d } from "@shared/types/size.types.ts";
 import { TILE_SIZE } from "@shared/consts/tiles.consts.ts";
 import { WALL_HEIGHT, WALL_WIDTH } from "@shared/consts/wall.consts.ts";
+import { Point, Point3d } from "@shared/types/point.types.ts";
+import { RoomPoint } from "@shared/types/room.types.ts";
 
 type Props = {
   texture: string;
   spriteSheet: string;
 
   direction?: CrossDirection;
-  framePosition: Point2d;
+  framePosition: Point;
 
-  pivot: Point2d;
+  pivot: Point;
   zIndex: number;
   hitArea: number[];
   position: Point3d;

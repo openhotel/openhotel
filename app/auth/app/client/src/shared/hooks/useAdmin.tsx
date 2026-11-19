@@ -1,8 +1,9 @@
 import React, { ReactNode, useCallback, useContext, useState } from "react";
 import { useApi } from "shared/hooks/useApi";
 import { useAccount } from "shared/hooks/useAccount";
-import { Backup, DbHotel, AppToken, Token, User } from "shared/types";
+import { OldBackup, AppToken, Token, User } from "shared/types";
 import { RequestMethod } from "@shared/enums/request.enums.ts";
+import { DbHotel } from "@shared/types/hotels.types.ts";
 
 type AdminState = {
   users: User[];
@@ -36,7 +37,7 @@ type AdminState = {
   deleteUser: (user: User) => Promise<void>;
   resendVerificationUser: (accountId: string) => Promise<void>;
 
-  backups: Backup[];
+  backups: OldBackup[];
   fetchBackups: () => Promise<void>;
   backup: (name: string) => Promise<void>;
   deleteBackup: (name: string) => Promise<void>;
@@ -59,7 +60,7 @@ export const AdminProvider: React.FunctionComponent<ProviderProps> = ({
   const [tokens, setTokens] = useState<Token[]>([]);
   const [apps, setApps] = useState<AppToken[]>([]);
   const [hotels, setHotels] = useState<DbHotel[]>([]);
-  const [backups, setBackups] = useState<Backup[]>([]);
+  const [backups, setBackups] = useState<OldBackup[]>([]);
 
   const fetchUsers = useCallback(async () => {
     return fetch({

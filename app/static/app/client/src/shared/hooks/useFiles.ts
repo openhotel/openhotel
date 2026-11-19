@@ -1,6 +1,6 @@
 import { useApi } from "./useApi";
 import { useCallback, useState } from "react";
-import { File } from "../types/index.ts";
+import { File } from "@shared/types/files.types.ts";
 import { useAppSession } from "./useAppSession.tsx";
 import { RequestMethod } from "@shared/enums/request.enums.ts";
 

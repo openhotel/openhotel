@@ -1,7 +1,7 @@
 import React, { ReactNode, useCallback } from "react";
 import { CameraContext } from "./camera.context";
 import { useCameraStore } from "./camera.store";
-import { Point2d } from "shared/types";
+import { Point } from "@shared/types/point.types.ts";
 
 type CameraProviderProps = {
   children: ReactNode;
@@ -28,7 +28,7 @@ export const CameraProvider: React.FC<CameraProviderProps> = ({ children }) => {
   );
 
   const setPosition = useCallback(
-    (position: Point2d) => $setPosition(position),
+    (position: Point) => $setPosition(position),
     [$setPosition],
   );
 

@@ -1,6 +1,6 @@
-import { Request } from "shared/types";
 import { useCallback } from "react";
 import { RequestMethod } from "@shared/enums/request.enums.ts";
+import { Request } from "@shared/types/request.types.ts";
 
 export const useApi = () => {
   const $fetch = useCallback(

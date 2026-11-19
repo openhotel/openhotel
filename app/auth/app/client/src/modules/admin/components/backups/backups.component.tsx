@@ -7,7 +7,7 @@ import {
   TableComponent,
   useModal,
 } from "@openhotel/web-components";
-import { Backup } from "shared/types";
+import { OldBackup } from "shared/types";
 import { decodeTime } from "ulidx";
 import styles from "./backups.module.scss";
 
@@ -48,7 +48,7 @@ export const AdminBackupsComponent = () => {
               ),
               size: `${Math.round(backup.size / 1e4) / 1e2}MB`,
             }))}
-          rowFunc={($row: Backup & { id: string }, columns) => {
+          rowFunc={($row: OldBackup & { id: string }, columns) => {
             return (
               <tr key={$row.id + "row"}>
                 {columns.map(($column) => {

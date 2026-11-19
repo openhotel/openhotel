@@ -5,8 +5,8 @@ import {
   CharacterDirection,
   CharacterPart,
 } from "shared/enums";
-import { Point2d } from "shared/types/point.types";
 import { DirectionKeys } from "@shared/types/direction.types.ts";
+import { Point } from "@shared/types/point.types.ts";
 
 export type CharacterBodyPartId =
   | CharacterPart
@@ -16,15 +16,15 @@ export type CharacterBodyPartId =
   | CharacterArmAction;
 
 export type CharacterBodyData = {
-  pivot: Point2d;
+  pivot: Point;
 };
 
 export type CharacterHeadData = {
-  pivot: Point2d;
+  pivot: Point;
 };
 export type CharacterArmData = {
   visible?: boolean;
-  pivot: Point2d;
+  pivot: Point;
   zIndex?: number;
 };
 
@@ -39,23 +39,23 @@ export type CharacterDirectionData = {
 
 export type CharacterFrame = {
   body: {
-    pivot: Point2d;
-    position: Point2d;
+    pivot: Point;
+    position: Point;
   };
   head: {
-    pivot: Point2d;
+    pivot: Point;
   };
   left_arm: {
     target: string;
     visible: false;
     zIndex: number;
-    pivot: Point2d;
+    pivot: Point;
   };
   right_arm: {
     target: string;
     visible: false;
     zIndex: number;
-    pivot: Point2d;
+    pivot: Point;
   };
 };
 
@@ -75,7 +75,7 @@ export type CharacterFixesData = {
     Record<
       CharacterPartTypes,
       {
-        pivot?: Point2d;
+        pivot?: Point;
       }
     >
   >;
@@ -88,12 +88,12 @@ export type CharacterAnimationsData = {
         {
           body: {
             frame: "idle";
-            pivot: Point2d;
+            pivot: Point;
             direction: "north";
           };
           head: {
             frame: "idle";
-            pivot: Point2d;
+            pivot: Point;
             direction: "north";
           };
         },
@@ -104,12 +104,12 @@ export type CharacterAnimationsData = {
         {
           body: {
             frame: "walk_0";
-            pivot: Point2d;
+            pivot: Point;
             direction: "north";
           };
           head: {
             frame: "idle";
-            pivot: Point2d;
+            pivot: Point;
             direction: "north";
           };
         },

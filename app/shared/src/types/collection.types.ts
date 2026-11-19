@@ -25,6 +25,7 @@ export type CollectionPublishResult =
   | { manifest: CollectionManifest; errors?: undefined }
   | { manifest?: undefined; errors: string[] };
 
+//@ignore-duplicate
 export type CollectionFurniture = {
   id: string;
   revision: string;
