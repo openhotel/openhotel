@@ -1,5 +1,5 @@
-import { describe, it } from "jsr:@std/testing/bdd";
-import { assertEquals, assertExists } from "jsr:@std/assert";
+import { describe, it } from "@std/testing";
+import { assertEquals, assertExists } from "@std/assert";
 
 import { fetcher } from "../utils.ts";
 import { INVALID_EMAILS, INVALID_PASSWORD, USER_1 } from "../consts.ts";
