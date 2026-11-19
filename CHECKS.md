@@ -4,6 +4,7 @@
 [![release](https://img.shields.io/github/actions/workflow/status/openhotel/openhotel/release.yml?style=for-the-badge&label=release)](https://github.com/openhotel/openhotel/actions/workflows/release.yml)
 
 ### Global checks
+
 [![check-imports](https://img.shields.io/github/actions/workflow/status/openhotel/openhotel/check-imports.yml?branch=master&style=for-the-badge&label=check-imports)](https://github.com/openhotel/openhotel/actions/workflows/check-imports.yml)
 [![deno-check](https://img.shields.io/github/actions/workflow/status/openhotel/openhotel/deno-check.yml?branch=master&style=for-the-badge&label=deno-check)](https://github.com/openhotel/openhotel/actions/workflows/deno-check.yml)
 [![deps-versions](https://img.shields.io/github/actions/workflow/status/openhotel/openhotel/deps-versions.yml?branch=master&style=for-the-badge&label=deps-versions)](https://github.com/openhotel/openhotel/actions/workflows/deps-versions.yml)
@@ -16,7 +17,6 @@
 
 [![openhotel-client](https://img.shields.io/github/actions/workflow/status/openhotel/openhotel/openhotel-client-build.yml?branch=master&style=for-the-badge&label=openhotel-client)](https://github.com/openhotel/openhotel/actions/workflows/openhotel-client-build.yml)
 [![openhotel-server](https://img.shields.io/github/actions/workflow/status/openhotel/openhotel/openhotel-server-build.yml?branch=master&style=for-the-badge&label=openhotel-server)](https://github.com/openhotel/openhotel/actions/workflows/openhotel-server-build.yml)
-
 
 #### Auth
 

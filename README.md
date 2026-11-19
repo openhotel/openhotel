@@ -6,7 +6,6 @@
 [![release](https://img.shields.io/github/actions/workflow/status/openhotel/openhotel/release.yml?style=for-the-badge&label=release)](./CHECKS.md)
 [![Static Badge](https://img.shields.io/badge/discord-b?style=for-the-badge&logo=discord&color=white)](https://discord.gg/qBZfPdNWUj)
 
-
 #### Please read everything before opening an issue, starting a hotel, or running code. Thank you!
 
 ## License
