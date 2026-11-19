@@ -3,6 +3,7 @@
   "specifiers": {
     "jsr:@da/bcrypt@1.0.1": "1.0.1",
     "jsr:@deno/kv-utils@0.1.3": "0.1.3",
+    "jsr:@hectorm/otpauth@9.6.0": "9.6.0",
     "jsr:@std/assert@^1.0.19": "1.0.19",
     "jsr:@std/async@^1.5.1": "1.5.1",
     "jsr:@std/bytes@^1.0.3": "1.0.6",
@@ -55,6 +56,9 @@
         "jsr:@std/bytes@^1.0.3",
         "jsr:@std/encoding@^1.0.5"
       ]
+    },
+    "@hectorm/otpauth@9.6.0": {
+      "integrity": "eae84b9fffaad81584fe50931e26e8f61ed8574e245db1f78bf8d2aa09fd0e63"
     },
     "@std/assert@1.0.19": {
       "integrity": "eaada96ee120cb980bc47e040f82814d786fe8162ecc53c91d8df60b8755991e",
@@ -497,6 +501,7 @@
   },
   "workspace": {
     "dependencies": [
+      "jsr:@hectorm/otpauth@9.6.0",
       "jsr:@std/dotenv@0.225.8",
       "jsr:@std/ulid@1",
       "npm:nodemailer@6.9.15"

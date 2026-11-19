@@ -358,6 +358,7 @@
       "jsr:@std/encoding@1.0.11",
       "jsr:@std/ulid@1",
       "jsr:@std/yaml@1.0.5",
+      "jsr:@xtool/dayjs@0.1.4",
       "jsr:@zip-js/zip-js@2.25.0"
     ]
   }
