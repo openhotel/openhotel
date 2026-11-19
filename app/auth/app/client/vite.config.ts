@@ -26,6 +26,7 @@ export default defineConfig({
     emptyOutDir: true, // also necessary
   },
   resolve: {
+    dedupe: ["react", "react-dom"],
     alias: {
       modules: "/modules",
       shared: "/shared",

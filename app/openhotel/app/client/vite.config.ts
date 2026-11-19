@@ -58,6 +58,7 @@ export default defineConfig({
     __APP_VERSION: `{ "version": "__VERSION__" }`,
   },
   resolve: {
+    dedupe: ["react", "react-dom"],
     alias: {
       modules: "/modules",
       shared: "/shared",
