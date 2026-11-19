@@ -598,14 +598,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openhotel/web-components@npm:0.3.3":
-  version: 0.3.3
-  resolution: "@openhotel/web-components@npm:0.3.3"
+"@openhotel/web-components@npm:0.3.9":
+  version: 0.3.9
+  resolution: "@openhotel/web-components@npm:0.3.9"
   dependencies:
     dayjs: "npm:^1.11.13"
     react: "npm:18.3.1"
     react-dom: "npm:18.3.1"
-  checksum: 10c0/7b470014ef2b5ec2bb4f9add9ad5073812826580a7169dec20df4905d2e34ab82e0defd3356e13732b6166425a96103dbceae7b100ed067e1390b9080ff00cf7
+  checksum: 10c0/5fdc6a7c4c90da242f35c70a0fedf0ebada9e1bb15e8368afc3580eef91d83f6f015aab25e5e2889ab85aa2695e5f199cf7471f1b0e3354f9fc4dd86faac0737
   languageName: node
   linkType: hard
 
@@ -1876,7 +1876,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "root-workspace-0b6124@workspace:."
   dependencies:
-    "@openhotel/web-components": "npm:0.3.3"
+    "@openhotel/web-components": "npm:0.3.9"
     "@rollup/plugin-alias": "npm:5.1.0"
     "@tu/tulip": "npm:@jsr/tu__tulip@0.14.13"
     "@types/js-cookie": "npm:3.0.6"

@@ -16,7 +16,7 @@
   },
   "imports": {
     "@std/encoding": "jsr:@std/encoding@1.0.11",
-    "@std/yaml": "jsr:@std/yaml@1.0.5",
+    "@std/yaml": "jsr:@std/yaml@1.3.0",
     "@std/ulid": "jsr:@std/ulid@1",
     "@std/dotenv": "jsr:@std/dotenv@0.225.8",
 
