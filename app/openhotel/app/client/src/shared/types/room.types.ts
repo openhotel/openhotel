@@ -22,6 +22,7 @@ export type BaseRoom = {
   maxUsers: number;
 };
 
+// @ignore-duplicate
 export type PrivateRoom = BaseRoom & {
   type: "private";
   ownerId: string;
@@ -34,6 +35,7 @@ export type PublicRoom = BaseRoom & {
   type: "public";
 };
 
+// @ignore-duplicate
 export type Room = PrivateRoom | PublicRoom;
 
 export type RoomMessage = {

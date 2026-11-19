@@ -24,6 +24,7 @@ export type ServerClient = {
   getSocket: () => WebSocket;
 };
 
+// @ignore-duplicate
 export type Room = {
   name: string;
   emit: (event: string, data?: unknown) => void;

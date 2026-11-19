@@ -14,6 +14,7 @@ export type FurnitureDirectionDataMap = Record<
   FurnitureDirectionData
 >;
 
+// @ignore-duplicate
 export type FurnitureData = {
   revision: string;
   id: string;
@@ -36,6 +37,7 @@ export type Furniture = {
   marketplaceListingId?: string;
 };
 
+// @ignore-duplicate
 export type RoomFurniture = {
   position: Point3d;
   direction: CrossDirection;

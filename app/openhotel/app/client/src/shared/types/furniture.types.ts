@@ -13,6 +13,7 @@ export type FurnitureDirectionDataMap = Record<
   FurnitureDirectionData
 >;
 
+// @ignore-duplicate
 export type FurnitureData = {
   type: FurnitureType;
   furnitureId: string;
@@ -48,6 +49,7 @@ export type RoomFurnitureFrame = {
   framePosition: Point;
 } & BaseFurniture;
 
+// @ignore-duplicate
 export type RoomFurniture = RoomFurnitureFrame | RoomFurnitureBase;
 
 export type InventoryFurniture = {

@@ -9,8 +9,8 @@ import {
 } from "@openhotel/pixi-components";
 import { SpriteSheetEnum } from "shared/enums";
 import { TextComponent } from "shared/components";
-import { Transaction } from "shared/types";
 import { Size2d } from "@shared/types/size.types.ts";
+import { Transaction } from "@shared/types/economy.types.ts";
 
 type Props = {
   transaction: Transaction;

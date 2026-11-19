@@ -55,5 +55,6 @@ export type BaseRoomMutable = {
   emit: <Data extends any>(event: ProxyEvent, data?: Data) => void;
 };
 
+// @ignore-duplicate
 export type Room = PrivateRoom | PublicRoom;
 export type RoomMutable = PrivateRoomMutable | PublicRoomMutable;

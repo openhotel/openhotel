@@ -11,5 +11,4 @@ export * from "./room.types.ts";
 
 export * from "./rooms/main.ts";
 
-export * from "./economy.types.ts";
 export * from "./company.types.ts";

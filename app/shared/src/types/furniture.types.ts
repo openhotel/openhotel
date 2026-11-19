@@ -112,6 +112,7 @@ export type FurnitureAction = {
   defaultState: string;
 };
 
+// @ignore-duplicate
 export type FurnitureData = {
   version: 1;
   id: string;
