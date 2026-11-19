@@ -1,7 +1,5 @@
 import { defineConfig } from "vite";
-import reactRefresh from "@vitejs/plugin-react-refresh";
 import react from "@vitejs/plugin-react";
-import { viteSingleFile } from "vite-plugin-singlefile";
 import { fileURLToPath } from "node:url";
 
 export default defineConfig({
@@ -13,7 +11,7 @@ export default defineConfig({
     },
     fs: { allow: [fileURLToPath(new URL("../../..", import.meta.url))] },
   },
-  plugins: [react(), reactRefresh(), viteSingleFile()],
+  plugins: [react()],
   root: "./src",
   base: "/",
   publicDir: "assets",
@@ -22,6 +20,7 @@ export default defineConfig({
     emptyOutDir: true, // also necessary
   },
   resolve: {
+    dedupe: ["react", "react-dom"],
     alias: {
       modules: "/modules",
       shared: "/shared",

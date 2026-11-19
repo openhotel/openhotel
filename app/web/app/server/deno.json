@@ -23,13 +23,9 @@
 
     "@shared/": "../../../shared/src/",
 
-    "@std/path": "jsr:@std/path@1.0.6",
-
-    "deno/": "https://deno.land/std@0.221.0/",
+    "@std/path": "jsr:@std/path@1.1.6",
     "@std/ulid": "jsr:@std/ulid@1",
-
-    "nodemailer": "npm:nodemailer@6.9.15",
-    "otp": "https://deno.land/x/otpauth@v9.3.3/dist/otpauth.esm.js"
+    "@std/dotenv": "jsr:@std/dotenv@0.225.8"
   },
   "nodeModulesDir": "auto"
 }

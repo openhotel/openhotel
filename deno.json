@@ -1,9 +1,11 @@
 {
   "tasks": {
-    "install": "corepack enable && deno task install:base && deno task install:openhotel && deno task install:auth && deno task install:web && deno task install:static && deno task install:asset-editor",
+    "install": "corepack enable && (deno task install:base & deno task install:openhotel & deno task install:auth & deno task install:onet & deno task install:shared & deno task install:web & deno task install:static & deno task install:asset-editor)",
     "install:base": "yarn install --immutable",
     "install:openhotel": "cd app/openhotel && deno task install",
     "install:auth": "cd app/auth && deno task install",
+    "install:onet": "cd app/onet && deno install",
+    "install:shared": "cd app/shared && deno task install",
     "install:web": "cd app/web && deno task install",
     "install:static": "cd app/static && deno task install",
     "install:asset-editor": "cd app/asset-editor && deno task install",

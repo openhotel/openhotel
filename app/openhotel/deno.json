@@ -1,6 +1,8 @@
 {
   "tasks": {
-    "install": "cd app/client && yarn install --immutable",
+    "install": "deno task install:client & deno task install:server",
+    "install:client": "cd app/client && yarn install --immutable",
+    "install:server": "cd app/server && deno install",
 
     "start": "deno task start:client & deno task start:server",
     "start:client": "cd app/client && yarn start",
@@ -14,9 +16,9 @@
     "check-translations": "deno run --allow-read ./scripts/checkTranslations.ts"
   },
   "imports": {
-    "deno/": "https://deno.land/std@0.221.0/",
+    "@std/fs": "jsr:@std/fs@1.0.24",
+    "@std/path": "jsr:@std/path@1.1.6",
     "@std/cli/parse-args": "jsr:@std/cli/parse-args",
-    "vite": "npm:vite@5.2.14",
 
     "@xtool/dayjs": "jsr:@xtool/dayjs@0.1.4",
 

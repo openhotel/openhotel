@@ -2,7 +2,7 @@ import { Image } from "imagescript";
 import { blobToBase64 } from "shared/utils/base64.utils.ts";
 
 export const getBase64Image = async (image: Image): Promise<string> => {
-  const base64Image = await image.encode(0);
+  const base64Image = await image.encodePNG({ compression: 0 });
   const base64String = btoa(String.fromCharCode(...base64Image));
   return `data:image/png;base64,${base64String}`;
 };
@@ -18,5 +18,5 @@ export const getEmptyImage = (
   color: number = 0xff00ffff,
 ): Image => {
   const image = new Image(width, height);
-  return image.drawBox(1, 1, width, height, color);
+  return image.drawBox(0, 0, width, height, color);
 };

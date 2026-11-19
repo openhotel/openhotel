@@ -3,10 +3,7 @@ import react from "@vitejs/plugin-react";
 import { fileURLToPath } from "node:url";
 
 // https://github.com/openhotel/openhotel/issues/469
-const PROXY_URL =
-  process.platform === "win32"
-    ? "http://127.0.0.1:19940"
-    : "http://localhost:19940";
+const PROXY_URL = "http://127.0.0.1:19940";
 
 const getHash = () => Math.floor(Math.random() * 90000) + 10000;
 
@@ -58,6 +55,7 @@ export default defineConfig({
     __APP_VERSION: `{ "version": "__VERSION__" }`,
   },
   resolve: {
+    dedupe: ["react", "react-dom"],
     alias: {
       modules: "/modules",
       shared: "/shared",

@@ -1,6 +1,6 @@
 import { join } from "@std/path";
 import { walk } from "@std/fs";
-import { ulid } from "jsr:@std/ulid@1";
+import { ulid } from "@std/ulid";
 import {
   BackupFile,
   DbConsistency,

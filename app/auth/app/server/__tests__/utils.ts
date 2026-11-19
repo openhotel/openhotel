@@ -1,5 +1,5 @@
-import { parse } from "jsr:@std/yaml";
-import { ConfigTypes } from "../src/shared/types/config.types.ts";
+import { parse } from "@std/yaml";
+import { ConfigTypes } from "shared/types/config.types.ts";
 
 export const fetcher = async (pathname: string, init?: RequestInit) =>
   fetch(`${await getUrl()}${pathname}`, init).then((response) =>

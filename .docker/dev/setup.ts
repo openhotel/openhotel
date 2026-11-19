@@ -94,7 +94,7 @@ await copyConfigs(reposDir);
 
 console.log(`
 Ready! Next steps:
-  1. deno task up auth
-  2. deno task seed
-  3. deno task up
+  1. deno task dev:up auth
+  2. deno task dev:seed
+  3. deno task dev:up
 `);

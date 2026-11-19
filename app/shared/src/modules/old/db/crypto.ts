@@ -1,4 +1,4 @@
-import { ulid } from "jsr:@std/ulid@1";
+import { ulid } from "@std/ulid";
 import { DbCryptoMutable, DbProps } from "@shared/types/db.types.ts";
 import { getModulePath } from "@shared/utils/path.utils.ts";
 import {

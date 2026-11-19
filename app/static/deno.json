@@ -1,6 +1,8 @@
 {
   "tasks": {
-    "install": "cd app/client && yarn install --immutable",
+    "install": "deno task install:client & deno task install:server",
+    "install:client": "cd app/client && yarn install --immutable",
+    "install:server": "cd app/server && deno install",
 
     "start": "deno task start:server & deno task start:client",
     "start:nowatch": "deno task start:server:nowatch & deno task start:client",

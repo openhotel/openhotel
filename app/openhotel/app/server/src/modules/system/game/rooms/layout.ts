@@ -287,9 +287,11 @@ export const layout = () => {
     const scene = new Image(finalSize.width, finalSize.height);
     scene.composite(tempScene, -MARGIN - minX, -MARGIN - minY);
 
-    scene.resize(finalSize.width * SCALE, finalSize.height * SCALE);
+    scene.resize(finalSize.width * SCALE, finalSize.height * SCALE, {
+      mode: "nearest-neighbor",
+    });
 
-    layoutImageCacheMap[layoutIndex] = await scene.encode();
+    layoutImageCacheMap[layoutIndex] = await scene.encodePNG();
 
     return layoutImageCacheMap[layoutIndex];
   };

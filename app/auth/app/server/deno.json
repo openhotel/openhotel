@@ -22,11 +22,11 @@
 
     "@shared/": "../../../shared/src/",
 
-    "deno/": "https://deno.land/std@0.221.0/",
     "@std/ulid": "jsr:@std/ulid@1",
+    "@std/dotenv": "jsr:@std/dotenv@0.225.8",
 
     "nodemailer": "npm:nodemailer@6.9.15",
-    "otp": "https://deno.land/x/otpauth@v9.3.3/dist/otpauth.esm.js"
+    "otp": "jsr:@hectorm/otpauth@9.6.0"
   },
   "nodeModulesDir": "auto"
 }

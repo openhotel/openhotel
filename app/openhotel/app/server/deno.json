@@ -3,25 +3,21 @@
     "start": "deno run -A --unstable-cron --watch=./src --unstable-kv mod.ts"
   },
   "imports": {
-    "@std/yaml": "jsr:@std/yaml@1.0.5",
+    "@std/yaml": "jsr:@std/yaml@1.3.0",
     "@std/ulid": "jsr:@std/ulid@1",
     "@std/streams": "jsr:@std/streams@1.0.10",
     "@std/path": "jsr:@std/path@1.1.6",
     "@std/fs": "jsr:@std/fs@1.0.24",
     "@std/random": "jsr:@std/random@0.1.5",
+    "@std/dotenv": "jsr:@std/dotenv@0.225.8",
+
     "@s3": "jsr:@sugar/minio-js-with-startpath@8.0.13",
 
     "@deno/kv-utils": "jsr:@deno/kv-utils@0.1.3",
 
-    "dayjs": "https://deno.land/x/deno_dayjs@v0.5.0/mod.ts",
-    "deno/": "https://deno.land/std@0.221.0/",
-    "input": "https://deno.land/x/input@2.0.4/index.ts",
-    "loadenv": "https://deno.land/x/loadenv@v1.0.1/mod.ts",
-
     "@zip-js": "jsr:@zip-js/zip-js@2.25.0",
-    "@xtool/dayjs": "jsr:@xtool/dayjs@0.1.4",
-
-    "imagescript": "https://deno.land/x/imagescript@1.3.0/mod.ts",
+    "dayjs": "npm:dayjs@1.11.21",
+    "imagescript": "jsr:@matmen/imagescript@3.20.4",
 
     "puppeter-browser": "npm:@puppeteer/browsers@3.2.2",
     "puppeter": "npm:puppeteer@25.10.0",

@@ -6,7 +6,7 @@
     "esModuleInterop": true,
     "sourceMap": false,
     "noUnusedLocals": true,
-    "lib": ["es2025", "DOM"],
+    "lib": ["es2024", "DOM"],
     "jsx": "react",
     "baseUrl": "./src",
     "paths": { "@shared/*": ["../../../../shared/src/*"] },
