@@ -26,6 +26,5 @@
 
     "yaml": "npm:yaml@2.9.0",
     "imagescript": "jsr:@matmen/imagescript@3.20.4"
-  },
-  "nodeModulesDir": "auto"
+  }
 }

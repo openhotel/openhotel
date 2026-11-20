@@ -23,6 +23,5 @@
     "@xtool/dayjs": "jsr:@xtool/dayjs@0.1.4",
 
     "@shared/": "../shared/src/"
-  },
-  "nodeModulesDir": "auto"
+  }
 }

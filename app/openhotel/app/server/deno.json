@@ -26,6 +26,5 @@
     "shared/": "./src/shared/",
 
     "@shared/": "../../../shared/src/"
-  },
-  "nodeModulesDir": "auto"
+  }
 }

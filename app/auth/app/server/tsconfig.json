@@ -6,10 +6,9 @@
     "esModuleInterop": true,
     "sourceMap": false,
     "noUnusedLocals": true,
-    "lib": ["es2025", "DOM"],
+    "lib": ["es2025", "DOM", "deno.ns", "deno.unstable"],
     "jsx": "react",
-    "baseUrl": "./src",
-    "paths": { "@shared/*": ["../../../../shared/src/*"] },
+    "paths": { "@shared/*": ["../../../shared/src/*"] },
     "allowImportingTsExtensions": true,
     "noEmit": true
   }

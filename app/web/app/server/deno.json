@@ -26,6 +26,5 @@
     "@std/path": "jsr:@std/path@1.1.6",
     "@std/ulid": "jsr:@std/ulid@1",
     "@std/dotenv": "jsr:@std/dotenv@0.225.8"
-  },
-  "nodeModulesDir": "auto"
+  }
 }

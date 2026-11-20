@@ -28,6 +28,8 @@ jobs:
           sparse-checkout: |
             app/onet
             app/shared
+            deno.json
+            deno.lock
           sparse-checkout-cone-mode: false
 
       - uses: denoland/setup-deno@v1

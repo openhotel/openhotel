@@ -34,5 +34,11 @@
 
     "progress": "gource --viewport 1600x900 --user-image-dir .gource/avatars -s .15 --auto-skip-seconds .3 --max-file-lag .5 --high-dpi"
   },
+  "workspace": [
+    "./app/*",
+    "./app/*/app/server",
+    "./app/*/app/server/__tests__",
+    "./.docker/*"
+  ],
   "nodeModulesDir": "auto"
 }

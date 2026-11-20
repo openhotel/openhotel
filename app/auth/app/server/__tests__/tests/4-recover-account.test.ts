@@ -2,7 +2,7 @@ import { describe, it } from "@std/testing/bdd";
 import { assertEquals, assertExists } from "@std/assert";
 
 import { fetcher } from "../utils.ts";
-import { INVALID_EMAILS, INVALID_PASSWORD, USER_1 } from "../consts.ts";
+import { INVALID_EMAILS, USER_1 } from "../consts.ts";
 
 import { STATE } from "../state.ts";
 
