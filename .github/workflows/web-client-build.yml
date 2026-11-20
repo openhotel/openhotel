@@ -28,6 +28,8 @@ jobs:
           sparse-checkout: |
             app/web/app/client
             app/shared
+            deno.json
+            deno.lock
           sparse-checkout-cone-mode: false
 
       - name: Install Node.js, NPM and Yarn

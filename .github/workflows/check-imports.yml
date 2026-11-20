@@ -24,6 +24,8 @@ jobs:
           sparse-checkout: |
             app/${{ matrix.app }}/app/client
             app/shared
+            deno.json
+            deno.lock
           sparse-checkout-cone-mode: false
 
       - uses: actions/setup-node@v4
@@ -74,6 +76,8 @@ jobs:
           sparse-checkout: |
             app/${{ matrix.app }}
             app/shared
+            deno.json
+            deno.lock
           sparse-checkout-cone-mode: false
 
       - uses: denoland/setup-deno@v2

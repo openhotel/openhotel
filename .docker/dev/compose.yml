@@ -57,7 +57,7 @@ services:
       context: .
       args:
         DENO_VERSION: ${DENO_VERSION:-2.9.7}
-    working_dir: /src/auth
+    working_dir: /src/app/auth
     command: bash -c "deno task install && deno task start"
     healthcheck:
       test: curl -fs http://localhost:20240/api/v3/_/version
@@ -66,10 +66,10 @@ services:
       retries: 5
       start_period: 5m
     volumes:
-      - ${REPOS_DIR:-../../app}/auth:/src/auth
-      - ${REPOS_DIR:-../../app}/shared:/src/shared
-      - /src/auth/node_modules
-      - /src/auth/app/client/node_modules
+      - ../..:/src
+      - /src/node_modules
+      - /src/app/auth/node_modules
+      - /src/app/auth/app/client/node_modules
       - deno-cache:/root/.cache/deno
 
   client:
@@ -82,14 +82,14 @@ services:
         condition: service_healthy
       onet:
         condition: service_healthy
-    working_dir: /src/openhotel
+    working_dir: /src/app/openhotel
     command: bash -c "deno task install && deno task start"
     volumes:
-      - ${REPOS_DIR:-../../app}/openhotel:/src/openhotel
-      - ${REPOS_DIR:-../../app}/shared:/src/shared
-      - /src/openhotel/node_modules
-      - /src/openhotel/app/client/node_modules
-      - /src/openhotel/app/server/node_modules
+      - ../..:/src
+      - /src/node_modules
+      - /src/app/openhotel/node_modules
+      - /src/app/openhotel/app/client/node_modules
+      - /src/app/openhotel/app/server/node_modules
       - deno-cache:/root/.cache/deno
 
   onet:
@@ -100,8 +100,8 @@ services:
         condition: service_started
       auth:
         condition: service_healthy
-    working_dir: /src/onet
-    command: bash -c "yarn install && deno task start"
+    working_dir: /src/app/onet
+    command: bash -c "deno task start"
     healthcheck:
       test: curl -fs http://localhost:9400/api/v1/version
       interval: 5s
@@ -109,9 +109,9 @@ services:
       retries: 5
       start_period: 5m
     volumes:
-      - ${REPOS_DIR:-../../app}/onet:/src/onet
-      - ${REPOS_DIR:-../../app}/shared:/src/shared
-      - /src/onet/node_modules
+      - ../..:/src
+      - /src/node_modules
+      - /src/app/onet/node_modules
       - deno-cache:/root/.cache/deno
 
   web:
@@ -122,38 +122,38 @@ services:
         condition: service_started
       auth:
         condition: service_healthy
-    working_dir: /src/web
+    working_dir: /src/app/web
     command: bash -c "deno task install && deno task start"
     volumes:
-      - ${REPOS_DIR:-../../app}/web:/src/web
-      - ${REPOS_DIR:-../../app}/shared:/src/shared
-      - /src/web/node_modules
-      - /src/web/app/client/node_modules
+      - ../..:/src
+      - /src/node_modules
+      - /src/app/web/node_modules
+      - /src/app/web/app/client/node_modules
       - deno-cache:/root/.cache/deno
 
   asset-editor:
     <<: *dev
     container_name: asset-editor
-    working_dir: /src/asset-editor
+    working_dir: /src/app/asset-editor
     command: bash -c "deno task install && deno task start"
     volumes:
-      - ${REPOS_DIR:-../../app}/asset-editor:/src/asset-editor
-      - ${REPOS_DIR:-../../app}/shared:/src/shared
-      - /src/asset-editor/node_modules
-      - /src/asset-editor/app/client/node_modules
-      - /src/asset-editor/app/server/node_modules
+      - ../..:/src
+      - /src/node_modules
+      - /src/app/asset-editor/node_modules
+      - /src/app/asset-editor/app/client/node_modules
+      - /src/app/asset-editor/app/server/node_modules
       - deno-cache:/root/.cache/deno
 
   static:
     <<: *dev
     container_name: static
-    working_dir: /src/static
+    working_dir: /src/app/static
     command: bash -c "deno task install && deno task start"
     volumes:
-      - ${REPOS_DIR:-../../app}/static:/src/static
-      - ${REPOS_DIR:-../../app}/shared:/src/shared
-      - /src/static/node_modules
-      - /src/static/app/client/node_modules
+      - ../..:/src
+      - /src/node_modules
+      - /src/app/static/node_modules
+      - /src/app/static/app/client/node_modules
       - deno-cache:/root/.cache/deno
 
 volumes:

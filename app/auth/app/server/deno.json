@@ -27,6 +27,5 @@
 
     "nodemailer": "npm:nodemailer@6.9.15",
     "otp": "jsr:@hectorm/otpauth@9.6.0"
-  },
-  "nodeModulesDir": "auto"
+  }
 }
