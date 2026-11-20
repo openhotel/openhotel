@@ -4,27 +4,26 @@
   "devDependencies": {
     "@rollup/plugin-alias": "5.1.0",
     "@types/node": "22.13.9",
-    "@types/react": "18.3.3",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
     "vite": "8.3.3",
     "vite-tsconfig-paths": "4.3.2"
   },
   "dependencies": {
-    "@openhotel/web-components": "0.3.9",
     "@vitejs/plugin-react": "6.0.3",
     "dayjs": "1.11.21",
     "js-cookie": "3.0.7",
     "qrcode": "1.5.4",
-    "react": "18.3.1",
-    "react-dom": "18.3.1",
-    "react-router": "7.18.2",
-    "react-router-dom": "7.18.2",
-    "sass": "1.77.8",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "react-router": "7.18.6",
+    "react-router-dom": "7.18.6",
+    "tailwindcss": "4.3.5",
     "ulidx": "2.4.1"
   },
   "packageManager": "yarn@4.6.0",
   "scripts": {
-    "start": "vite --host",
-    "build": "vite build",
-    "link:components": "npm link @openhotel/web-components"
+    "start": "vite --host & deno run -A --watch=./_development.ts ./_development.ts",
+    "build": "vite build"
   }
 }
