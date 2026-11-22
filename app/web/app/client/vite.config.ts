@@ -1,6 +1,7 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import { fileURLToPath } from "node:url";
+import tailwindcss from "@tailwindcss/vite";
 
 const PROXY_URL = "http://127.0.0.1:20250";
 
@@ -13,7 +14,7 @@ export default defineConfig({
     },
     fs: { allow: [fileURLToPath(new URL("../../..", import.meta.url))] },
   },
-  plugins: [react()],
+  plugins: [react(), tailwindcss()],
   root: "./src",
   base: "/",
   publicDir: "assets",

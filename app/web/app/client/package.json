@@ -3,6 +3,7 @@
   "license": "CC BY-NC-SA 4.0",
   "devDependencies": {
     "@rollup/plugin-alias": "5.1.0",
+    "@tailwindcss/vite": "4.3.5",
     "@types/node": "22.13.9",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
@@ -17,13 +18,12 @@
     "react": "19.3.1",
     "react-dom": "19.3.1",
     "react-router": "7.18.6",
-    "react-router-dom": "7.18.6",
     "tailwindcss": "4.3.5",
     "ulidx": "2.4.1"
   },
   "packageManager": "yarn@4.6.0",
   "scripts": {
-    "start": "vite --host & deno run -A --watch=./_development.ts ./_development.ts",
+    "start": "vite --host",
     "build": "vite build"
   }
 }
