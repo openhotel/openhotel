@@ -1,0 +1,40 @@
+{
+  "setup": {
+    "steps": "Steps",
+    "welcome": {
+      "label": "Welcome",
+      "title": "OpenHotel Setup Wizard!",
+      "description": "Complete this wizard to get your hotel running. It only takes a few minutes.",
+      "code": {
+        "title": "Setup code",
+        "hint": "The server prints a one-time code in its log when it starts empty. This keeps strangers from setting up your server first."
+      },
+      "language": {
+        "title": "Language",
+        "hint": "Choose your hotel default language. Guests can pick their own from the available ones."
+      }
+    },
+    "mode": {
+      "label": "Choose a mode",
+      "mode": {
+        "managed": {
+          "title": "Managed",
+          "recommended": "Recommended",
+          "hint": "Joins an existing network such as openhotel.club. You get a license from the network and guests use their network account."
+        },
+        "standalone": {
+          "title": "Standalone",
+          "hint": "One hotel on its own, with its own accounts. No network, no license."
+        },
+        "network": {
+          "title": "Network",
+          "hint": "You run the network: accounts, hotels, licenses and news. Your first hotel is part of it."
+        }
+      }
+    },
+    "navigation": {
+      "next": "Next",
+      "back": "Back"
+    }
+  }
+}

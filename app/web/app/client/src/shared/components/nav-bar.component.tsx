@@ -1,6 +1,6 @@
 import React from "react";
 import { NavItem } from "shared/types/navigation.types.ts";
-import { ButtonComponent } from "shared/components/button.component.tsx";
+import { ButtonComponent } from "shared/components/forms/button.component.tsx";
 
 type Props = {
   items?: NavItem[];

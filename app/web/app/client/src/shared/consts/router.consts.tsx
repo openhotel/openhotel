@@ -5,7 +5,7 @@ import { CoreLayoutComponent } from "shared/components/layouts/core-layout.compo
 import { HomeLayoutComponent } from "shared/components/layouts/home-layout.component.tsx";
 
 const SetupComponent = lazy(() =>
-  import("modules/setup/setup.component").then((m) => ({
+  import("modules/setup/components/setup.component.tsx").then((m) => ({
     default: m.SetupComponent,
   })),
 );
@@ -15,7 +15,7 @@ const HomeComponent = lazy(() =>
   })),
 );
 
-const withSuspense = (element: React.ReactNode) => (
+export const withSuspense = (element: React.ReactNode) => (
   <Suspense fallback={null}>{element}</Suspense>
 );
 
@@ -30,14 +30,8 @@ export const ROUTER_LIST: RouteObject[] = [
             index: true,
             element: withSuspense(<HomeComponent />),
           },
-        ],
-      },
-      {
-        element: <HomeLayoutComponent />,
-        path: "setup",
-        children: [
           {
-            index: true,
+            path: "setup/*",
             element: withSuspense(<SetupComponent />),
           },
         ],

@@ -10,14 +10,14 @@ import {
 export const FooterComponent: React.FC = () => {
   return (
     <div className="border bg-(--field) text-(--ink) flex flex-col items-center gap-1 justify-center py-3">
-      <div className="flex flex-dots text-lg mb-3">
-        <Link className="link" to={GITHUB_URL}>
+      <div className="flex flex-dots">
+        <Link className="link" to={GITHUB_URL} target="_blank">
           GitHub
         </Link>
-        <Link className="link" to={DISCORD_URL}>
+        <Link className="link" to={DISCORD_URL} target="_blank">
           Discord
         </Link>
-        <Link className="link" to={BSKY_URL}>
+        <Link className="link" to={BSKY_URL} target="_blank">
           Bluesky
         </Link>
       </div>

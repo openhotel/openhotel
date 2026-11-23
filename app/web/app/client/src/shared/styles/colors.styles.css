@@ -1,0 +1,33 @@
+:root {
+  --page: #efefef; /* page background under the tiled pattern */
+  --box: #fff; /* box and footer background */
+  --hero: #dcdde2; /* hero, avatar and thumbnail backdrop */
+  --field: #fff; /* input background */
+  --fill: #ececec; /* default button, badge, 5px section divider */
+  --line: #ccc; /* dotted separators between rows */
+  --border: #000; /* every box, button, input and image border */
+  --ink: #333; /* body text, labels, footer text */
+  --strong: #111; /* bold text, links, button text, input text */
+  --muted: #777; /* dates, hints, secondary text */
+  --head: #b05a00; /* box titles, values, link hover */
+  --accent: #f2b630; /* main button, credits box, official tag, focus ring, stars */
+  --accent-ink: #2b1d00; /* text on accent */
+  --danger: #c0392b; /* destructive text */
+  --bg-image: url("/backgrounds/light-bg.webp");
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --page: #2e3035;
+    --box: #232427;
+    --hero: #2e3035;
+    --field: #151619;
+    --fill: #3b3c41;
+    --line: #444;
+    --ink: #d6d6d6;
+    --strong: #fff;
+    --muted: #9a9a9a;
+    --head: #ffd166;
+    --bg-image: url("/backgrounds/dark-bg.webp");
+  }
+}

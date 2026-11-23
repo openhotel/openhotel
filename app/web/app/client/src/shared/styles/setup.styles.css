@@ -1,0 +1,18 @@
+@utility setup-grip {
+  @apply grid grid-cols-1;
+  @apply min-[720px]:grid-cols-[minmax(0,3fr)_minmax(0,2fr)];
+}
+
+@utility setup-grid-steps {
+  @apply flex flex-col gap-4;
+  @apply order-first border-b border-(--line);
+  @apply min-[720px]:order-0 min-[720px]:border-b-0 min-[720px]:border-l;
+}
+
+@utility setup-step-complete {
+  @apply after:content-['_\2713'];
+}
+
+@utility setup-step-next {
+  @apply after:content-['_\25CB'];
+}
