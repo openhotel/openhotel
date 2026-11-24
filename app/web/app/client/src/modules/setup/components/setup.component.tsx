@@ -90,32 +90,39 @@ export const SetupComponent: React.FC = () => {
       <MainCardComponent />
       <div className="border bg-(--box) setup-grip">
         <Routes>
-          {leafSteps.map(({ step: { key, render: StepRender }, path }) => (
-            <Route
-              key={path}
-              index={!path}
-              path={path || undefined}
-              element={
-                StepRender ? (
-                  <StepRender
-                    onSubmit={(stepData) => onSubmitStep(key, stepData)}
-                    defaultValues={(setupData as any)[key] ?? {}}
-                    onBack={onBackStep}
-                    onChange={(data) =>
-                      setSetupData((setupData) => ({
-                        ...setupData,
-                        [key]: data,
-                      }))
-                    }
-                  />
-                ) : null
-              }
-            />
-          ))}
+          {leafSteps.map(
+            ({ step: { key, render: StepRender }, path }, index) => (
+              <Route
+                key={path}
+                index={!path}
+                path={path || undefined}
+                element={
+                  StepRender ? (
+                    <StepRender
+                      setupData={
+                        leafSteps.length === index + 1
+                          ? (setupData as SetupFormData)
+                          : undefined
+                      }
+                      onSubmit={(stepData) => onSubmitStep(key, stepData)}
+                      defaultValues={(setupData as any)[key] ?? {}}
+                      onBack={onBackStep}
+                      onChange={(data) =>
+                        setSetupData((setupData) => ({
+                          ...setupData,
+                          [key]: data,
+                        }))
+                      }
+                    />
+                  ) : null
+                }
+              />
+            ),
+          )}
           <Route path="*" element={<Navigate to={SETUP_PATH} replace />} />
         </Routes>
         <div className="p-card setup-grid-steps">
-          <div className="title">{t("setup.steps")}</div>
+          <div className="title">{t("setup.steps.label")}</div>
           <SetupStepsComponent
             steps={steps}
             reachable={reachable}

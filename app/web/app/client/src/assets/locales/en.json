@@ -1,34 +1,62 @@
 {
   "setup": {
-    "steps": "Steps",
-    "welcome": {
-      "label": "Welcome",
-      "title": "OpenHotel Setup Wizard!",
-      "description": "Complete this wizard to get your hotel running. It only takes a few minutes.",
-      "code": {
-        "title": "Setup code",
-        "hint": "The server prints a one-time code in its log when it starts empty. This keeps strangers from setting up your server first."
+    "steps": {
+      "label": "Steps",
+      "welcome": {
+        "label": "Welcome",
+        "title": "OpenHotel Setup Wizard!",
+        "description": "Complete this wizard to get your hotel running. It only takes a few minutes.",
+        "code": {
+          "title": "Setup code",
+          "hint": "The server prints a one-time code in its log when it starts empty. This keeps strangers from setting up your server first.",
+          "error": "Invalid code!"
+        },
+        "language": {
+          "title": "Language",
+          "hint": "Choose your hotel default language. Guests can pick their own from the available ones."
+        }
       },
-      "language": {
-        "title": "Language",
-        "hint": "Choose your hotel default language. Guests can pick their own from the available ones."
-      }
-    },
-    "mode": {
-      "label": "Choose a mode",
       "mode": {
-        "managed": {
-          "title": "Managed",
-          "recommended": "Recommended",
-          "hint": "Joins an existing network such as openhotel.club. You get a license from the network and guests use their network account."
+        "label": "Choose a mode",
+        "title": "Choose a mode",
+        "mode": {
+          "managed": {
+            "title": "Managed",
+            "recommended": "Recommended",
+            "hint": "Joins an existing network such as openhotel.club. You get a license from the network and guests use their network account."
+          },
+          "standalone": {
+            "title": "Standalone",
+            "hint": "One hotel on its own, with its own accounts. No network, no license."
+          },
+          "network": {
+            "title": "Network",
+            "hint": "You run the network: accounts, hotels, licenses and news. Your first hotel is part of it."
+          },
+          "error": "Select one mode!"
+        }
+      },
+      "standalone": {
+        "label": "Standalone config",
+        "title": "Standalone config"
+      },
+      "admin": {
+        "label": "Hotel admin",
+        "username": {
+          "title": "Admin username",
+          "error": "Username needs to be between 3 and 16 characters, without spaces"
         },
-        "standalone": {
-          "title": "Standalone",
-          "hint": "One hotel on its own, with its own accounts. No network, no license."
+        "email": {
+          "title": "Email",
+          "error": "Email is not valid"
         },
-        "network": {
-          "title": "Network",
-          "hint": "You run the network: accounts, hotels, licenses and news. Your first hotel is part of it."
+        "password": {
+          "title": "Password",
+          "error": "Password needs to be at least 8 characters length"
+        },
+        "repeat_password": {
+          "title": "Repeat password",
+          "error": "Passwords don't match"
         }
       }
     },

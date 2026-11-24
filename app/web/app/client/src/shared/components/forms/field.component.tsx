@@ -20,8 +20,8 @@ export const FieldComponent: React.FC<Props> = ({
   return (
     <Wrapper
       className={[
-        "flex flex-col text-(--ink)",
-        inline ? "gap-0.5" : "gap-2",
+        "flex flex-col text-(--strong)",
+        inline ? "gap-0.5" : "gap-1",
         error
           ? "[&_:is(input,select,textarea)]:border-(--danger)! [&_:is(input,select,textarea)]:outline-(--danger)!"
           : "",

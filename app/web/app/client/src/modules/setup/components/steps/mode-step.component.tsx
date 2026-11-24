@@ -7,6 +7,7 @@ import { MODE_SETUP_SCHEMA } from "shared/consts/setup.consts.ts";
 import { RadioComponent } from "shared/components/forms/radio.component.tsx";
 import { LabelComponent } from "shared/components/label.component.tsx";
 import { useTranslation } from "react-i18next";
+import { SETUP_DEBUG } from "shared/consts/development.consts.ts";
 
 export const ModeStepComponent: React.FC<SetupStepProps<ModeStepForm>> = ({
   onSubmit,
@@ -17,7 +18,7 @@ export const ModeStepComponent: React.FC<SetupStepProps<ModeStepForm>> = ({
   const { t } = useTranslation();
 
   const { field, handleSubmit } = useAppForm<ModeStepForm>({
-    resolver: zodResolver(MODE_SETUP_SCHEMA),
+    resolver: SETUP_DEBUG ? undefined : zodResolver(MODE_SETUP_SCHEMA),
     mode: "all",
     defaultValues,
     onChange,
@@ -31,32 +32,33 @@ export const ModeStepComponent: React.FC<SetupStepProps<ModeStepForm>> = ({
       onSubmit={handleSubmit(onSubmit)}
     >
       <div className="flex gap-3 flex-col">
-        <label className="title">{t("setup.mode.title")}</label>
+        <label className="title">{t("setup.steps.mode.title")}</label>
         <RadioComponent
           {...mode}
           value="managed"
           title={
             <div className="flex gap-3">
-              <span>{t("setup.mode.mode.managed.title")}</span>
+              <span>{t("setup.steps.mode.mode.managed.title")}</span>
               <LabelComponent>
-                {t("setup.mode.mode.managed.recommended")}
+                {t("setup.steps.mode.mode.managed.recommended")}
               </LabelComponent>
             </div>
           }
-          hint={t("setup.mode.mode.managed.hint")}
+          hint={t("setup.steps.mode.mode.managed.hint")}
         />
         <RadioComponent
           {...mode}
           value="standalone"
-          title={t("setup.mode.mode.standalone.title")}
-          hint={t("setup.mode.mode.standalone.hint")}
+          title={t("setup.steps.mode.mode.standalone.title")}
+          hint={t("setup.steps.mode.mode.standalone.hint")}
         />
         <RadioComponent
           {...mode}
           value="network"
-          title={t("setup.mode.mode.network.title")}
-          hint={t("setup.mode.mode.network.hint")}
+          title={t("setup.steps.mode.mode.network.title")}
+          hint={t("setup.steps.mode.mode.network.hint")}
         />
+        {error ? <span className="text-(--danger) ">{error}</span> : null}
       </div>
       <div className="mt-auto flex gap-3 justify-end">
         <ButtonComponent type="button" onClick={onBack}>

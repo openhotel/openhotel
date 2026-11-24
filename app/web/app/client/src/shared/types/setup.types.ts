@@ -1,12 +1,16 @@
 import React from "react";
 import { z, ZodObject } from "zod";
-import type {
+import {
+  ADMIN_SETUP_SCHEMA,
+  EMAIL_SETUP_SCHEMA,
+  HOTEL_SETUP_SCHEMA,
   MODE_SETUP_SCHEMA,
   SETUP_STEPS,
   WELCOME_SETUP_SCHEMA,
 } from "shared/consts/setup.consts.ts";
 
 export type SetupStepProps<StepData = any> = {
+  setupData?: SetupFormData;
   defaultValues?: StepData;
   onSubmit: (data: StepData) => void;
   onChange?: (data: Partial<StepData>) => void;
@@ -46,3 +50,6 @@ export type SetupFormData = SetupData<typeof SETUP_STEPS>;
 
 export type WelcomeStepForm = z.infer<typeof WELCOME_SETUP_SCHEMA>;
 export type ModeStepForm = z.infer<typeof MODE_SETUP_SCHEMA>;
+export type AdminStepForm = z.infer<typeof ADMIN_SETUP_SCHEMA>;
+export type EmailStepForm = z.infer<typeof EMAIL_SETUP_SCHEMA>;
+export type HotelStepForm = z.infer<typeof HOTEL_SETUP_SCHEMA>;

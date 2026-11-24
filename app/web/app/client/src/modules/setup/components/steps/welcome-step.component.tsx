@@ -8,6 +8,7 @@ import { SetupStepProps, WelcomeStepForm } from "shared/types/setup.types.ts";
 import { useTranslation } from "react-i18next";
 import { SelectComponent } from "shared/components/forms/select.component.tsx";
 import { useLanguage } from "shared/hooks/language/use-language.tsx";
+import { SETUP_DEBUG } from "shared/consts/development.consts.ts";
 
 export const WelcomeStepComponent: React.FC<
   SetupStepProps<WelcomeStepForm>
@@ -16,7 +17,7 @@ export const WelcomeStepComponent: React.FC<
   const { changeLanguage } = useLanguage();
 
   const { field, handleSubmit } = useAppForm<WelcomeStepForm>({
-    resolver: zodResolver(WELCOME_SETUP_SCHEMA),
+    resolver: SETUP_DEBUG ? undefined : zodResolver(WELCOME_SETUP_SCHEMA),
     mode: "all",
     defaultValues,
   });
@@ -42,11 +43,11 @@ export const WelcomeStepComponent: React.FC<
       onSubmit={handleSubmit($onSubmit)}
     >
       <div className="flex gap-3 flex-col">
-        <label className="title">{t("setup.welcome.title")}</label>
-        <label>{t("setup.welcome.description")}</label>
+        <label className="title">{t("setup.steps.welcome.title")}</label>
+        <label>{t("setup.steps.welcome.description")}</label>
         <SelectComponent
-          title={t("setup.welcome.language.title")}
-          hint={t("setup.welcome.language.hint")}
+          title={t("setup.steps.welcome.language.title")}
+          hint={t("setup.steps.welcome.language.hint")}
           className="max-w-100"
           onChange={onChangeLanguage}
           defaultValue={i18n.language}
@@ -55,8 +56,8 @@ export const WelcomeStepComponent: React.FC<
           <option value="es">Español</option>
         </SelectComponent>
         <InputComponent
-          title={t("setup.welcome.code.title")}
-          hint={t("setup.welcome.code.hint")}
+          title={t("setup.steps.welcome.code.title")}
+          hint={t("setup.steps.welcome.code.hint")}
           placeholder="xxx-xxx-xxx"
           maxLength={11}
           className="max-w-100"
