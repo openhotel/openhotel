@@ -1,5 +1,9 @@
-import React from "react";
-import { SetupStepProps, ModeStepForm } from "shared/types/setup.types.ts";
+import React, { useCallback } from "react";
+import {
+  SetupStepProps,
+  ModeStepForm,
+  SetupFormData,
+} from "shared/types/setup.types.ts";
 import { ButtonComponent } from "shared/components/forms/button.component.tsx";
 import { useAppForm } from "shared/hooks/use-app-form.tsx";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -14,6 +18,7 @@ export const ModeStepComponent: React.FC<SetupStepProps<ModeStepForm>> = ({
   defaultValues,
   onBack,
   onChange,
+  setupData,
 }) => {
   const { t } = useTranslation();
 
@@ -26,10 +31,14 @@ export const ModeStepComponent: React.FC<SetupStepProps<ModeStepForm>> = ({
 
   const { error, ...mode } = field("mode");
 
+  const $onSubmit = useCallback((data: Partial<SetupFormData>) => {
+    console.log(data);
+  }, []);
+
   return (
     <form
       className="p-card flex gap-6 flex-col"
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={handleSubmit($onSubmit)}
     >
       <div className="flex gap-3 flex-col">
         <label className="title">{t("setup.steps.mode.title")}</label>

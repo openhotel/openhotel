@@ -4,6 +4,9 @@ import {
   ADMIN_SETUP_SCHEMA,
   EMAIL_SETUP_SCHEMA,
   HOTEL_SETUP_SCHEMA,
+  MANAGED_ADMIN_SETUP_SCHEMA,
+  MANAGED_LICENSE_SETUP_SCHEMA,
+  MANAGED_NETWORK_SETUP_SCHEMA,
   MODE_SETUP_SCHEMA,
   SETUP_STEPS,
   WELCOME_SETUP_SCHEMA,
@@ -53,3 +56,10 @@ export type ModeStepForm = z.infer<typeof MODE_SETUP_SCHEMA>;
 export type AdminStepForm = z.infer<typeof ADMIN_SETUP_SCHEMA>;
 export type EmailStepForm = z.infer<typeof EMAIL_SETUP_SCHEMA>;
 export type HotelStepForm = z.infer<typeof HOTEL_SETUP_SCHEMA>;
+export type ManagedNetworkStepForm = z.infer<
+  typeof MANAGED_NETWORK_SETUP_SCHEMA
+>;
+export type ManagedLicenseStepForm = z.infer<
+  typeof MANAGED_LICENSE_SETUP_SCHEMA
+>;
+export type ManagedAdminStepForm = z.infer<typeof MANAGED_ADMIN_SETUP_SCHEMA>;

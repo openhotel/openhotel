@@ -56,6 +56,33 @@ const ReviewStepComponent: React.ComponentType<SetupStepProps> = lazy(() =>
   ),
 );
 
+const ManagedNetworkStepComponent: React.ComponentType<SetupStepProps> = lazy(
+  () =>
+    import("modules/setup/components/steps/managed/managed-network-step.component.tsx").then(
+      (m) => ({
+        default: m.ManagedNetworkStepComponent,
+      }),
+    ),
+);
+
+const ManagedLicenseStepComponent: React.ComponentType<SetupStepProps> = lazy(
+  () =>
+    import("modules/setup/components/steps/managed/managed-license-step.component.tsx").then(
+      (m) => ({
+        default: m.ManagedLicenseStepComponent,
+      }),
+    ),
+);
+
+const ManagedAdminStepComponent: React.ComponentType<SetupStepProps> = lazy(
+  () =>
+    import("modules/setup/components/steps/managed/managed-admin-step.component.tsx").then(
+      (m) => ({
+        default: m.ManagedAdminStepComponent,
+      }),
+    ),
+);
+
 export const WELCOME_SETUP_SCHEMA = z.object({
   code: z
     .string()
@@ -104,26 +131,36 @@ export const HOTEL_SETUP_SCHEMA = z.object({
   client: z.url(),
 });
 
+export const MANAGED_NETWORK_SETUP_SCHEMA = z.object({
+  network: z.url(),
+});
+
+export const MANAGED_LICENSE_SETUP_SCHEMA = z.object({
+  license: z.string(),
+});
+
+export const MANAGED_ADMIN_SETUP_SCHEMA = z.object({
+  accountId: z.string(),
+});
+
 export const MANAGED_SETUP_STEPS = [
   {
-    key: "managed_network",
-    label: "setup.managed.network.label",
+    key: "managed-network",
+    label: "setup.steps.managed_network.label",
+    render: ManagedNetworkStepComponent,
+    schema: MANAGED_NETWORK_SETUP_SCHEMA,
   },
   {
-    key: "managed_license",
-    label: "setup.managed.license.label",
+    key: "managed-license",
+    label: "setup.steps.managed_license.label",
+    render: ManagedLicenseStepComponent,
+    schema: MANAGED_LICENSE_SETUP_SCHEMA,
   },
   {
-    key: "managed_admin",
-    label: "setup.managed.admin.label",
-  },
-  {
-    key: "managed_hotel",
-    label: "setup.managed.hotel.label",
-  },
-  {
-    key: "managed_registration",
-    label: "setup.managed.registration.label",
+    key: "managed-admin",
+    label: "setup.steps.managed_admin.label",
+    render: ManagedAdminStepComponent,
+    schema: MANAGED_ADMIN_SETUP_SCHEMA,
   },
 ] as const satisfies readonly Step[];
 
@@ -150,8 +187,8 @@ export const STANDALONE_SETUP_STEPS = [
 
 export const NETWORK_SETUP_STEPS = [
   {
-    key: "network",
-    label: "setup.network.label",
+    key: "",
+    label: "",
   },
 ] as const satisfies readonly Step[];
 
