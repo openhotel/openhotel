@@ -13,7 +13,7 @@ import {
 } from "shared/consts/setup.consts.ts";
 
 export type SetupStepProps<StepData = any> = {
-  setupData?: SetupFormData;
+  setupData?: Partial<SetupFormData>;
   defaultValues?: StepData;
   onSubmit: (data: StepData) => void;
   onChange?: (data: Partial<StepData>) => void;

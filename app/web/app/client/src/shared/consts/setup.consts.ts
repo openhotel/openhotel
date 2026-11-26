@@ -177,12 +177,6 @@ export const STANDALONE_SETUP_STEPS = [
     render: EmailStepComponent,
     schema: EMAIL_SETUP_SCHEMA,
   },
-  {
-    key: "hotel",
-    label: "setup.steps.hotel.label",
-    render: HotelStepComponent,
-    schema: HOTEL_SETUP_SCHEMA,
-  },
 ] as const satisfies readonly Step[];
 
 export const NETWORK_SETUP_STEPS = [
@@ -198,6 +192,12 @@ export const SETUP_STEPS = [
     label: "setup.steps.welcome.label",
     render: WelcomeStepComponent,
     schema: WELCOME_SETUP_SCHEMA,
+  },
+  {
+    key: "hotel",
+    label: "setup.steps.hotel.label",
+    render: HotelStepComponent,
+    schema: HOTEL_SETUP_SCHEMA,
   },
   {
     key: "mode",

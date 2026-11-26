@@ -105,11 +105,7 @@ export const SetupComponent: React.FC = () => {
                 element={
                   StepRender ? (
                     <StepRender
-                      setupData={
-                        leafSteps.length === index + 1
-                          ? (setupData as SetupFormData)
-                          : undefined
-                      }
+                      setupData={setupData}
                       onSubmit={(stepData) => onSubmitStep(key, stepData)}
                       defaultValues={(setupData as any)[key] ?? {}}
                       onBack={onBackStep}
