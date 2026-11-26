@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React from "react";
 import {
   SetupStepProps,
   ManagedAdminStepForm,
@@ -12,13 +12,14 @@ import { SETUP_DEBUG } from "shared/consts/development.consts.ts";
 
 export const ManagedAdminStepComponent: React.FC<
   SetupStepProps<ManagedAdminStepForm>
-> = ({ onSubmit, defaultValues, setupData, onBack }) => {
+> = ({ onSubmit, defaultValues, onChange, onBack }) => {
   const { t } = useTranslation();
 
-  const { field, handleSubmit } = useAppForm<ManagedAdminStepForm>({
+  const { handleSubmit } = useAppForm<ManagedAdminStepForm>({
     resolver: SETUP_DEBUG ? undefined : zodResolver(MANAGED_ADMIN_SETUP_SCHEMA),
     mode: "all",
     defaultValues,
+    onChange,
   });
 
   return (

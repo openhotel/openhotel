@@ -28,3 +28,16 @@ export const getReachableIndex = (
   );
   return firstIncomplete === -1 ? leafSteps.length - 1 : firstIncomplete;
 };
+
+export const clearNextSteps = <T extends Record<string, unknown>>(
+  data: T,
+  leafSteps: LeafStep[],
+  index: number,
+): Partial<T> => {
+  const keep = new Set(
+    leafSteps.slice(0, index + 1).map(({ step }) => step.key),
+  );
+  return Object.fromEntries(
+    Object.entries(data).filter(([key]) => keep.has(key)),
+  ) as Partial<T>;
+};

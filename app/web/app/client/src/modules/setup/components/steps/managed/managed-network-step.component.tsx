@@ -17,7 +17,7 @@ import { getRandomNumber } from "@shared/utils/random.utils.ts";
 
 export const ManagedNetworkStepComponent: React.FC<
   SetupStepProps<ManagedNetworkStepForm>
-> = ({ onSubmit, defaultValues, setupData, onBack }) => {
+> = ({ onSubmit, defaultValues, onBack, onChange }) => {
   const { t } = useTranslation();
 
   const { field, handleSubmit, setValue } = useAppForm<ManagedNetworkStepForm>({
@@ -26,6 +26,7 @@ export const ManagedNetworkStepComponent: React.FC<
       : zodResolver(MANAGED_NETWORK_SETUP_SCHEMA),
     mode: "all",
     defaultValues: { network: OFFICIAL_NETWORK_URL, ...defaultValues },
+    onChange,
   });
   const [disabled, setDisabled] = useState<boolean>(
     (defaultValues?.network ?? OFFICIAL_NETWORK_URL) === OFFICIAL_NETWORK_URL,

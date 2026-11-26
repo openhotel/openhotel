@@ -5,6 +5,7 @@ import { FooterComponent } from "shared/components/footer.component.tsx";
 import { SetupStepsComponent } from "modules/setup/components/setup-steps.component.tsx";
 import { SETUP_PATH, SETUP_STEPS } from "shared/consts/setup.consts.ts";
 import {
+  clearNextSteps,
   getLeafSteps,
   getReachableIndex,
   getVisibleSteps,
@@ -75,6 +76,11 @@ export const SetupComponent: React.FC = () => {
     [setupData, stepIndex, leafSteps, goToStep, onFinish],
   );
 
+  const clearNextData = useCallback(
+    () => setSetupData((data) => clearNextSteps(data, leafSteps, stepIndex)),
+    [leafSteps, stepIndex],
+  );
+
   useEffect(() => {
     if (ready) return;
     navigate(SETUP_PATH, { replace: true });
@@ -107,12 +113,13 @@ export const SetupComponent: React.FC = () => {
                       onSubmit={(stepData) => onSubmitStep(key, stepData)}
                       defaultValues={(setupData as any)[key] ?? {}}
                       onBack={onBackStep}
-                      onChange={(data) =>
+                      onChange={(data) => {
                         setSetupData((setupData) => ({
                           ...setupData,
                           [key]: data,
-                        }))
-                      }
+                        }));
+                        clearNextData();
+                      }}
                     />
                   ) : null
                 }

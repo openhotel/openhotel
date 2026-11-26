@@ -19,7 +19,7 @@ import { LabelComponent } from "shared/components/label.component.tsx";
 
 export const ManagedLicenseStepComponent: React.FC<
   SetupStepProps<ManagedLicenseStepForm>
-> = ({ onSubmit, defaultValues, setupData, onBack }) => {
+> = ({ onSubmit, defaultValues, setupData, onBack, onChange }) => {
   const { t } = useTranslation();
 
   const { field, handleSubmit } = useAppForm<ManagedLicenseStepForm>({
@@ -28,6 +28,7 @@ export const ManagedLicenseStepComponent: React.FC<
       : zodResolver(MANAGED_LICENSE_SETUP_SCHEMA),
     mode: "all",
     defaultValues,
+    onChange,
   });
 
   const [verifiedStatus, setVerifiedStatus] = useState<
